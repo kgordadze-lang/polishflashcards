@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#f8fafc">
+<title>Polski w Warszawie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f8fafc;
+    --card:#ffffff;
+    --forest:#022c22;
+    --forest-hover:#064e3b;
+    --mint-bg:#ecfdf5;
+    --mint-text:#047857;
+    --emerald:#059669;
+    --sage:#047857;
+    --sage-hover:#065f46;
+    --coral:#c97c5d;
+    --coral-hover:#b56a4c;
+    --coral-bg:#fdf2ec;
+    --ink:#0f2b23;
+    --muted:#64748b;
+    --border:#e6ebf1;
+    --shadow:0 1px 2px rgba(2,44,34,.04), 0 12px 28px rgba(2,44,34,.06);
+    --shadow-sm:0 1px 2px rgba(2,44,34,.05), 0 4px 12px rgba(2,44,34,.05);
+    --r-lg:26px; --r-md:18px; --r-sm:13px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{
+    background:var(--bg);color:var(--forest);
+    font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+    min-height:100dvh;display:flex;flex-direction:column;
+    padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+  .wrap{width:100%;max-width:560px;margin:0 auto;padding:0 20px;flex:1;display:flex;flex-direction:column}
+  .screen{display:none;flex:1;flex-direction:column;animation:fade .35s ease}
+  .screen.active{display:flex}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* ---------- header ---------- */
+  .top{display:flex;align-items:center;justify-content:space-between;padding:26px 0 6px}
+  .logo{display:flex;align-items:center;gap:10px}
+  .logo-mark{width:34px;height:34px;border-radius:11px;background:var(--forest);color:#eafff4;
+    display:grid;place-items:center;font-weight:800;font-size:17px}
+  .logo b{font-size:16.5px;font-weight:700;letter-spacing:-.2px}
+  .logo span{display:block;font-size:12px;color:var(--muted);font-weight:500;margin-top:1px}
+
+  /* ---------- home ---------- */
+  .lead{margin:22px 0 20px}
+  .lead h1{font-size:27px;line-height:1.2;font-weight:800;letter-spacing:-.6px;margin:0 0 8px}
+  .lead p{margin:0;color:var(--muted);font-size:15px;line-height:1.5}
+  .seg-label{font-size:12px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin:8px 0 12px}
+  .levels{display:flex;gap:9px;margin-bottom:26px}
+  .lvl{flex:0 0 auto;border:1px solid var(--border);background:var(--card);color:var(--forest);
+    border-radius:999px;padding:9px 18px;font-size:14.5px;font-weight:600;cursor:pointer;
+    transition:.18s;box-shadow:var(--shadow-sm)}
+  .lvl[aria-pressed="true"]{background:var(--forest);color:#eafff4;border-color:var(--forest)}
+  .lvl:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+
+  .topics{display:flex;flex-direction:column;gap:13px;padding-bottom:26px}
+  .topic{border:1px solid var(--border);background:var(--card);border-radius:var(--r-md);
+    padding:18px 18px;box-shadow:var(--shadow-sm);cursor:pointer;text-align:left;
+    display:flex;align-items:center;gap:15px;transition:.18s;width:100%}
+  .topic:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:#d7e0e8}
+  .topic:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  .t-emoji{width:46px;height:46px;flex:0 0 auto;border-radius:14px;background:var(--mint-bg);
+    display:grid;place-items:center;font-size:23px}
+  .t-body{flex:1;min-width:0}
+  .t-title{font-size:16.5px;font-weight:700;letter-spacing:-.2px}
+  .t-desc{font-size:13.5px;color:var(--muted);margin-top:3px;line-height:1.4}
+  .t-meta{display:flex;align-items:center;gap:8px;margin-top:9px}
+  .chip{font-size:11.5px;font-weight:700;letter-spacing:.3px;background:var(--mint-bg);
+    color:var(--mint-text);padding:4px 9px;border-radius:999px}
+  .t-count{font-size:12.5px;color:var(--muted);font-weight:500}
+  .t-arrow{flex:0 0 auto;color:#b7c2cc;font-size:20px}
+
+  /* ---------- study top bar ---------- */
+  .sbar{display:flex;align-items:center;gap:12px;padding:22px 0 8px}
+  .back{border:1px solid var(--border);background:var(--card);border-radius:12px;width:40px;height:40px;
+    flex:0 0 auto;display:grid;place-items:center;cursor:pointer;color:var(--forest);
+    box-shadow:var(--shadow-sm);transition:.15s}
+  .back:hover{border-color:#d7e0e8}
+  .back:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  .sbar-title{flex:1;min-width:0}
+  .sbar-title b{display:block;font-size:15.5px;font-weight:700;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sbar-title span{font-size:12.5px;color:var(--muted);font-weight:500}
+
+  .progress{display:flex;align-items:center;gap:11px;padding:8px 0 4px}
+  .track{flex:1;height:9px;border-radius:999px;background:#e8eef3;overflow:hidden}
+  .fill{height:100%;border-radius:999px;width:0%;
+    background:linear-gradient(90deg,var(--emerald),var(--forest));transition:width .35s cubic-bezier(.2,.7,.2,1)}
+  .p-count{font-size:12.5px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums;min-width:44px;text-align:right}
+
+  /* ---------- card ---------- */
+  .stage{flex:1;display:flex;align-items:center;justify-content:center;padding:16px 0 8px;min-height:452px}
+  .scene{width:100%;perspective:1600px}
+  .flip{position:relative;width:100%;min-height:452px;transform-style:preserve-3d;
+    transition:transform .55s cubic-bezier(.2,.75,.2,1);cursor:pointer}
+  .flip.flipped{transform:rotateY(180deg)}
+  .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+    background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);
+    box-shadow:var(--shadow);padding:30px 24px;overflow-y:auto;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px}
+  .eyebrow{position:absolute;top:20px;left:22px;font-size:11px;font-weight:700;letter-spacing:.7px;
+    text-transform:uppercase;color:#9fb2ab}
+  .pl{font-size:36px;line-height:1.18;font-weight:800;letter-spacing:-.8px;color:var(--forest)}
+  .en{font-size:27px;line-height:1.2;font-weight:700;letter-spacing:-.4px;color:var(--forest)}
+  .hint{font-size:14px;color:var(--muted);line-height:1.5;max-width:34ch}
+  .cue{position:absolute;bottom:20px;left:0;right:0;font-size:12px;color:#aebbc4;font-weight:500}
+  .back-face{transform:rotateY(180deg);justify-content:center;gap:13px}
+
+  /* example sentence block */
+  .example{width:100%;max-width:370px;background:var(--mint-bg);border-radius:15px;
+    padding:13px 14px;text-align:left;display:flex;align-items:flex-start;gap:11px}
+  .ex-text{flex:1;min-width:0}
+  .ex-label{font-size:10px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--emerald);margin-bottom:4px}
+  .ex-pl{font-size:15.5px;font-weight:700;color:var(--forest);line-height:1.35}
+  .ex-en{font-size:13px;color:var(--muted);margin-top:3px;line-height:1.35}
+  .ex-audio{flex:0 0 auto;width:36px;height:36px;border-radius:50%;border:none;background:#fff;
+    color:var(--mint-text);display:grid;place-items:center;cursor:pointer;
+    box-shadow:0 2px 7px rgba(4,120,87,.16);transition:.15s;margin-top:2px}
+  .ex-audio:hover{background:var(--emerald);color:#fff}
+  .ex-audio:active{transform:scale(.93)}
+  .ex-audio:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  .ex-audio svg{width:16px;height:16px}
+
+  /* audio FAB */
+  .fab{position:absolute;top:16px;right:16px;width:46px;height:46px;border-radius:50%;border:none;
+    background:var(--mint-bg);color:var(--mint-text);display:grid;place-items:center;cursor:pointer;
+    box-shadow:0 4px 12px rgba(4,120,87,.16);transition:.18s}
+  .fab:hover{background:var(--emerald);color:#fff;transform:translateY(-1px)}
+  .fab:active{transform:scale(.93)}
+  .fab:focus-visible{outline:2px solid var(--emerald);outline-offset:3px}
+  .fab svg{width:20px;height:20px}
+
+  /* feedback buttons */
+  .feedback{display:flex;gap:11px;width:100%;max-width:370px;margin-top:2px}
+  .fb{flex:1;border:none;border-radius:14px;padding:13px 10px;font-size:14.5px;font-weight:700;
+    cursor:pointer;color:#fff;transition:.16s;font-family:inherit}
+  .fb.know{background:var(--sage)}
+  .fb.know:hover{background:var(--sage-hover)}
+  .fb.still{background:var(--coral)}
+  .fb.still:hover{background:var(--coral-hover)}
+  .fb:active{transform:translateY(1px)}
+  .fb:focus-visible{outline:2px solid var(--forest);outline-offset:2px}
+
+  /* ---------- bottom controls ---------- */
+  .controls{display:flex;align-items:center;gap:11px;padding:14px 0 24px;max-width:420px;margin:0 auto;width:100%}
+  .ctrl{flex:1;border:1px solid var(--border);background:var(--card);color:var(--forest);
+    border-radius:15px;padding:14px 10px;font-size:14.5px;font-weight:600;cursor:pointer;
+    box-shadow:var(--shadow-sm);transition:.15s;font-family:inherit;
+    display:flex;align-items:center;justify-content:center;gap:7px}
+  .ctrl:hover{border-color:#d7e0e8;transform:translateY(-1px)}
+  .ctrl:active{transform:translateY(0)}
+  .ctrl:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  .ctrl.mid{flex:0 0 auto;width:56px;background:var(--forest);color:#eafff4;border-color:var(--forest)}
+  .ctrl.mid:hover{background:var(--forest-hover)}
+
+  /* ---------- completion ---------- */
+  .done{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;gap:6px;padding:20px 10px 40px;animation:fade .35s ease}
+  .done-badge{width:76px;height:76px;border-radius:50%;background:var(--mint-bg);color:var(--emerald);
+    display:grid;place-items:center;margin-bottom:14px}
+  .done-badge svg{width:36px;height:36px}
+  .done h2{font-size:24px;font-weight:800;letter-spacing:-.5px;margin:0}
+  .done p{color:var(--muted);font-size:15px;margin:6px 0 0;line-height:1.5}
+  .stat-row{display:flex;gap:12px;margin:22px 0 24px;width:100%;max-width:320px}
+  .stat{flex:1;background:var(--card);border:1px solid var(--border);border-radius:var(--r-md);
+    padding:16px 10px;box-shadow:var(--shadow-sm)}
+  .stat b{display:block;font-size:26px;font-weight:800;letter-spacing:-.5px}
+  .stat b.know-n{color:var(--sage)}
+  .stat b.still-n{color:var(--coral)}
+  .stat span{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.2px}
+  .done-actions{display:flex;flex-direction:column;gap:11px;width:100%;max-width:320px}
+  .btn-primary{border:none;background:var(--forest);color:#eafff4;border-radius:15px;padding:15px;
+    font-size:15px;font-weight:700;cursor:pointer;transition:.16s;font-family:inherit;box-shadow:var(--shadow-sm)}
+  .btn-primary:hover{background:var(--forest-hover)}
+  .btn-primary:disabled{opacity:.4;cursor:default}
+  .btn-ghost{border:1px solid var(--border);background:var(--card);color:var(--forest);border-radius:15px;
+    padding:14px;font-size:14.5px;font-weight:600;cursor:pointer;transition:.15s;font-family:inherit}
+  .btn-ghost:hover{border-color:#d7e0e8}
+  .btn-primary:focus-visible,.btn-ghost:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+
+  footer{text-align:center;color:#9fb2ab;font-size:12px;padding:6px 0 18px;font-weight:500}
+
+  @media (max-width:400px){ .pl{font-size:31px} .en{font-size:24px} .flip,.stage{min-height:430px} }
+  @media (prefers-reduced-motion:reduce){ .flip,.screen,.done{transition:none;animation:none} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ HOME ============ -->
+  <section class="screen active" id="home">
+    <div class="top">
+      <div class="logo">
+        <div class="logo-mark">P</div>
+        <div><b>Polski w Warszawie</b><span>Everyday Polish, made for Warsaw</span></div>
+      </div>
+    </div>
+
+    <div class="lead">
+      <h1>Learn the Polish<br>you'll actually use.</h1>
+      <p>Pick your level and a topic. Tap a card to flip it, tap the speaker to hear it. No account needed.</p>
+    </div>
+
+    <div class="seg-label">Choose your level</div>
+    <div class="levels" id="levels"></div>
+
+    <div class="seg-label">Topics</div>
+    <div class="topics" id="topics"></div>
+  </section>
+
+  <!-- ============ STUDY ============ -->
+  <section class="screen" id="study">
+    <div class="sbar">
+      <button class="back" id="back" aria-label="Back to topics">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="sbar-title"><b id="studyTitle"></b><span id="studyLevel"></span></div>
+    </div>
+
+    <div class="progress">
+      <div class="track"><div class="fill" id="fill"></div></div>
+      <div class="p-count" id="pcount">0 / 0</div>
+    </div>
+
+    <!-- card view -->
+    <div id="cardView" style="display:flex;flex-direction:column;flex:1">
+      <div class="stage">
+        <div class="scene">
+          <div class="flip" id="flip">
+            <div class="face">
+              <span class="eyebrow" id="eyebrow">Polish</span>
+              <button class="fab" id="speak" aria-label="Play pronunciation">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>
+              </button>
+              <div class="pl" id="plText"></div>
+              <div class="hint" id="frontHint"></div>
+              <div class="cue">tap to see meaning</div>
+            </div>
+            <div class="face back-face">
+              <span class="eyebrow">Meaning</span>
+              <div class="en" id="enText"></div>
+              <div class="hint" id="backHint"></div>
+              <div class="example" id="exampleBox">
+                <div class="ex-text">
+                  <div class="ex-label">In everyday use</div>
+                  <div class="ex-pl" id="exPl"></div>
+                  <div class="ex-en" id="exEn"></div>
+                </div>
+                <button class="ex-audio" id="speakEx" aria-label="Play example sentence">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
+                </button>
+              </div>
+              <div class="feedback">
+                <button class="fb still" id="markStill">Still learning</button>
+                <button class="fb know" id="markKnow">I knew it</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="ctrl" id="prev">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg> Prev
+        </button>
+        <button class="ctrl mid" id="shuffle" aria-label="Shuffle">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="m15 15 6 6"/><path d="M4 4l5 5"/></svg>
+        </button>
+        <button class="ctrl" id="next">
+          Next <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- completion view -->
+    <div class="done" id="doneView" style="display:none">
+      <div class="done-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <h2 id="doneTitle">Nice work!</h2>
+      <p id="doneMsg"></p>
+      <div class="stat-row">
+        <div class="stat"><b class="know-n" id="knowN">0</b><span>KNEW IT</span></div>
+        <div class="stat"><b class="still-n" id="stillN">0</b><span>STILL LEARNING</span></div>
+      </div>
+      <div class="done-actions">
+        <button class="btn-primary" id="practiceStill">Practice still learning</button>
+        <button class="btn-ghost" id="restart">Restart this set</button>
+        <button class="btn-ghost" id="toTopics">Back to topics</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>Works on any phone - add to home screen to use it like an app.</footer>
+</div>
+
+<script>
+/* =========================================================================
+   LEVELS - the ONLY thing you edit to grow the app.
+   -------------------------------------------------------------------------
+   To add a TOPIC to a level:  paste one  { name, emoji, desc, cards:[...] }
+                               block into that level's "topics" list.
+   To add a whole LEVEL:       paste one  { level, blurb, topics:[...] }  block.
+   Card fields:
+     pl    = Polish word / phrase
+     en    = English meaning
+     hint  = short note (gender / usage)          [optional]
+     ex    = Polish example sentence (daily use)  [optional]
+     exEn  = English translation of the example   [optional]
+   Ask Claude "make me a <topic> block for <level>" and drop the result in.
+   ========================================================================= */
+const LEVELS = [
+  {
+    level: "A1",
+    blurb: "Survival basics",
+    topics: [
+      {
+        name: "Pierwsze zwroty",
+        emoji: "👋",
+        desc: "Greetings and the phrases you need in week one",
+        cards: [
+          { pl:"Dzień dobry", en:"Good morning / Hello", hint:"Formal - use any time of day until evening.", ex:"Dzień dobry, poproszę bilet.", exEn:"Hello, one ticket please." },
+          { pl:"Dobry wieczór", en:"Good evening", hint:"Swap in for dzień dobry once it gets dark.", ex:"Dobry wieczór, stolik dla dwóch osób.", exEn:"Good evening, a table for two." },
+          { pl:"Cześć", en:"Hi / Bye", hint:"Informal - for friends, not officials.", ex:"Cześć, dawno się nie widzieliśmy!", exEn:"Hi, long time no see!" },
+          { pl:"Do widzenia", en:"Goodbye", hint:"The polite, all-purpose goodbye.", ex:"Do widzenia, do jutra!", exEn:"Goodbye, see you tomorrow!" },
+          { pl:"Na razie", en:"See you / Bye for now", hint:"Casual, between friends.", ex:"Na razie, muszę już iść.", exEn:"See you, I have to go now." },
+          { pl:"Dziękuję", en:"Thank you", hint:"'Dzięki' is the casual short form.", ex:"Dziękuję za pomoc.", exEn:"Thank you for your help." },
+          { pl:"Proszę", en:"Please / Here you go / You're welcome", hint:"One word, several jobs.", ex:"Proszę, to dla ciebie.", exEn:"Here you go, this is for you." },
+          { pl:"Przepraszam", en:"Sorry / Excuse me", hint:"Also to get someone's attention.", ex:"Przepraszam, gdzie jest wyjście?", exEn:"Excuse me, where is the exit?" },
+          { pl:"Tak / Nie", en:"Yes / No", hint:"The two you'll say most often.", ex:"Tak, poproszę. Nie, dziękuję.", exEn:"Yes, please. No, thank you." },
+          { pl:"Nie rozumiem", en:"I don't understand", hint:"Add 'po polsku' for 'in Polish'.", ex:"Przepraszam, nie rozumiem.", exEn:"Sorry, I don't understand." },
+          { pl:"Nie wiem", en:"I don't know", hint:"Very handy, very common.", ex:"Nie wiem, gdzie to jest.", exEn:"I don't know where it is." },
+          { pl:"Czy mówi pan po angielsku?", en:"Do you speak English?", hint:"To a man. To a woman say 'pani' instead of 'pan'.", ex:"Przepraszam, czy mówi pan po angielsku?", exEn:"Excuse me, do you speak English?" },
+          { pl:"Jak masz na imię?", en:"What's your name?", hint:"Informal. Formal: 'Jak się pan/pani nazywa?'", ex:"Cześć, jak masz na imię?", exEn:"Hi, what's your name?" },
+          { pl:"Mam na imię...", en:"My name is...", hint:"Follow with your first name.", ex:"Mam na imię Anna.", exEn:"My name is Anna." },
+          { pl:"Miło mi", en:"Nice to meet you", hint:"Short and natural when introduced.", ex:"Miło mi cię poznać.", exEn:"Nice to meet you." },
+          { pl:"Jak się masz?", en:"How are you?", hint:"Informal. A common reply: 'dobrze' - good.", ex:"Cześć Marek, jak się masz?", exEn:"Hi Marek, how are you?" },
+          { pl:"Wszystko w porządku", en:"Everything's fine / All good", hint:"Also asked as a question to check on someone.", ex:"Wszystko w porządku, dziękuję.", exEn:"Everything's fine, thanks." },
+          { pl:"Poproszę...", en:"I'd like... (ordering)", hint:"Softer than 'chcę'. 'Poproszę kawę' - a coffee, please.", ex:"Poproszę kawę i wodę.", exEn:"A coffee and a water, please." },
+          { pl:"Ile to kosztuje?", en:"How much is it?", hint:"Your everyday shopping question.", ex:"Przepraszam, ile to kosztuje?", exEn:"Excuse me, how much is it?" },
+          { pl:"Gdzie jest toaleta?", en:"Where is the toilet?", hint:"'Gdzie jest...' = where is... for anything.", ex:"Przepraszam, gdzie jest toaleta?", exEn:"Excuse me, where is the toilet?" }
+        ]
+      }
+    ]
+  },
+  {
+    level: "A2",
+    blurb: "Living in Warsaw",
+    topics: [
+      {
+        name: "Komunikacja miejska",
+        emoji: "🚋",
+        desc: "Trams, buses and the metro - the Warsaw way",
+        cards: [
+          { pl:"przystanek", en:"stop (bus / tram)", hint:"Masculine noun.", ex:"Wysiadam na następnym przystanku.", exEn:"I'm getting off at the next stop." },
+          { pl:"bilet", en:"ticket", hint:"jednorazowy = single, czasowy = time-based.", ex:"Kupiłem bilet w automacie.", exEn:"I bought a ticket at the machine." },
+          { pl:"Poproszę bilet 20-minutowy", en:"A 20-minute ticket, please", hint:"Warsaw sells time-based tickets, not per-ride.", ex:"Dzień dobry, poproszę bilet 20-minutowy.", exEn:"Hello, a 20-minute ticket, please." },
+          { pl:"Czy ten tramwaj jedzie do centrum?", en:"Does this tram go to the centre?", hint:"Swap 'tramwaj' for 'autobus' for a bus.", ex:"Przepraszam, czy ten tramwaj jedzie do centrum?", exEn:"Excuse me, does this tram go to the centre?" },
+          { pl:"Który autobus jedzie na Mokotów?", en:"Which bus goes to Mokotów?", hint:"Drop in any district name.", ex:"Przepraszam, który autobus jedzie na Mokotów?", exEn:"Excuse me, which bus goes to Mokotów?" },
+          { pl:"Gdzie mam wysiąść?", en:"Where should I get off?", hint:"Ask the driver or a fellow passenger.", ex:"Gdzie mam wysiąść na dworzec?", exEn:"Where should I get off for the station?" },
+          { pl:"Następny przystanek", en:"Next stop", hint:"You'll hear this announced on board.", ex:"Następny przystanek: Metro Centrum.", exEn:"Next stop: Metro Centrum." },
+          { pl:"Przepraszam, wysiadam", en:"Excuse me, I'm getting off", hint:"Say it to move toward the door.", ex:"Przepraszam, wysiadam na następnym.", exEn:"Excuse me, I'm getting off at the next one." },
+          { pl:"Czy mogę przejść?", en:"Can I get through?", hint:"For a crowded tram or bus.", ex:"Przepraszam, czy mogę przejść?", exEn:"Excuse me, can I get through?" },
+          { pl:"metro", en:"metro / underground", hint:"Two lines in Warsaw: M1 and M2.", ex:"Codziennie jadę metrem do pracy.", exEn:"I take the metro to work every day." },
+          { pl:"Muszę się przesiąść", en:"I have to change lines", hint:"'przesiadka' = a transfer.", ex:"Muszę się przesiąść na Świętokrzyskiej.", exEn:"I have to change at Świętokrzyska." },
+          { pl:"Czy muszę skasować bilet?", en:"Do I need to validate the ticket?", hint:"'kasownik' = the validator machine.", ex:"Przepraszam, czy muszę skasować bilet?", exEn:"Excuse me, do I need to validate the ticket?" },
+          { pl:"Tramwaj ma opóźnienie", en:"The tram is delayed", hint:"'opóźnienie' = delay.", ex:"Mój tramwaj ma dziś opóźnienie.", exEn:"My tram is delayed today." },
+          { pl:"rozkład jazdy", en:"timetable", hint:"Posted at every stop and in the app.", ex:"Sprawdzam rozkład jazdy w aplikacji.", exEn:"I'm checking the timetable in the app." },
+          { pl:"Kiedy jest następny autobus?", en:"When is the next bus?", hint:"Or check the countdown on the stop sign.", ex:"Przepraszam, kiedy jest następny autobus?", exEn:"Excuse me, when is the next bus?" },
+          { pl:"Bilet miesięczny", en:"Monthly ticket", hint:"Cheaper if you travel daily.", ex:"Mam bilet miesięczny na metro.", exEn:"I have a monthly ticket for the metro." },
+          { pl:"Wsiadam / Wysiadam", en:"I'm getting on / getting off", hint:"The verb pair you'll use most.", ex:"Wsiadam do tramwaju na Placu Wilsona.", exEn:"I get on the tram at Plac Wilsona." },
+          { pl:"peron", en:"platform", hint:"For the metro and rail stations.", ex:"Pociąg odjeżdża z peronu drugiego.", exEn:"The train leaves from platform two." },
+          { pl:"Czy to jest dobry kierunek?", en:"Is this the right direction?", hint:"Handy when you're unsure which way.", ex:"Przepraszam, czy to jest dobry kierunek na Wilanów?", exEn:"Excuse me, is this the right direction for Wilanów?" },
+          { pl:"Zgubiłem się", en:"I'm lost", hint:"A woman says 'zgubiłam się'.", ex:"Chyba się zgubiłem, gdzie jest metro?", exEn:"I think I'm lost, where's the metro?" }
+        ]
+      }
+    ]
+  }
+];
+
+/* ---------------- app state ---------------- */
+const S = { levelIdx:0, topicIdx:0, cards:[], queue:[], pos:0, still:new Set() };
+const $ = id => document.getElementById(id);
+function show(scr){ document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active")); $(scr).classList.add("active"); window.scrollTo(0,0); }
+
+/* ---------------- home ---------------- */
+function renderLevels(){
+  const box = $("levels"); box.innerHTML = "";
+  LEVELS.forEach((lv,i)=>{
+    const b = document.createElement("button");
+    b.className = "lvl"; b.textContent = lv.level;
+    b.setAttribute("aria-pressed", i===S.levelIdx ? "true":"false");
+    b.onclick = ()=>{ S.levelIdx = i; renderLevels(); renderTopics(); };
+    box.appendChild(b);
+  });
+}
+function renderTopics(){
+  const box = $("topics"); box.innerHTML = "";
+  const lv = LEVELS[S.levelIdx];
+  lv.topics.forEach((t,i)=>{
+    const b = document.createElement("button");
+    b.className = "topic";
+    b.innerHTML =
+      '<div class="t-emoji">'+(t.emoji||"📘")+'</div>'+
+      '<div class="t-body">'+
+        '<div class="t-title"></div>'+
+        '<div class="t-desc"></div>'+
+        '<div class="t-meta"><span class="chip">'+lv.level+'</span><span class="t-count">'+t.cards.length+' cards</span></div>'+
+      '</div>'+
+      '<div class="t-arrow">›</div>';
+    b.querySelector(".t-title").textContent = t.name;
+    b.querySelector(".t-desc").textContent = t.desc || "";
+    b.onclick = ()=> startTopic(S.levelIdx, i);
+    box.appendChild(b);
+  });
+}
+
+/* ---------------- study ---------------- */
+function startTopic(l,t){
+  S.levelIdx=l; S.topicIdx=t;
+  S.cards = LEVELS[l].topics[t].cards;
+  S.queue = S.cards.map((_,k)=>k);
+  S.pos = 0; S.still = new Set();
+  $("studyTitle").textContent = LEVELS[l].topics[t].name;
+  $("studyLevel").textContent = LEVELS[l].level + " · " + S.cards.length + " cards";
+  show("study"); render();
+}
+function currentCard(){ return S.cards[S.queue[S.pos]]; }
+function render(){
+  if(S.pos >= S.queue.length){ showDone(); return; }
+  $("cardView").style.display="flex"; $("doneView").style.display="none";
+  const c = currentCard();
+  $("flip").classList.remove("flipped");
+  $("plText").textContent = c.pl;
+  $("frontHint").textContent = c.hint || "";
+  $("enText").textContent = c.en;
+  $("backHint").textContent = c.hint || "";
+  // example sentence (hides cleanly if a card has none)
+  if(c.ex){
+    $("exampleBox").style.display = "flex";
+    $("exPl").textContent = c.ex;
+    $("exEn").textContent = c.exEn || "";
+  } else {
+    $("exampleBox").style.display = "none";
+  }
+  const pct = (S.pos / S.queue.length) * 100;
+  $("fill").style.width = pct + "%";
+  $("pcount").textContent = (S.pos+1) + " / " + S.queue.length;
+}
+function flip(){ $("flip").classList.toggle("flipped"); }
+function advance(){ S.pos++; render(); }
+function goPrev(){ if(S.pos>0){ S.pos--; render(); } }
+function markKnown(){ S.still.delete(S.queue[S.pos]); advance(); }
+function markStill(){ S.still.add(S.queue[S.pos]); advance(); }
+function shuffle(){
+  for(let i=S.queue.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [S.queue[i],S.queue[j]]=[S.queue[j],S.queue[i]]; }
+  S.pos=0; render();
+}
+
+/* ---------------- completion ---------------- */
+function showDone(){
+  $("cardView").style.display="none"; $("doneView").style.display="flex";
+  $("fill").style.width="100%"; $("pcount").textContent = S.queue.length + " / " + S.queue.length;
+  const stillCount = S.still.size, knowCount = S.queue.length - stillCount;
+  $("knowN").textContent = knowCount; $("stillN").textContent = stillCount;
+  const ps = $("practiceStill");
+  if(stillCount>0){
+    ps.disabled=false;
+    ps.textContent = "Practice still learning (" + stillCount + ")";
+    $("doneMsg").textContent = "You've got " + stillCount + " to firm up. Give those another pass.";
+  } else {
+    ps.disabled=true;
+    ps.textContent = "Nothing left to review";
+    $("doneMsg").textContent = "You knew every card in this set. Świetnie!";
+  }
+}
+function practiceStill(){
+  if(S.still.size===0) return;
+  S.queue = [...S.still];
+  S.pos = 0;
+  show("study"); render();
+}
+function restart(){ startTopic(S.levelIdx, S.topicIdx); }
+
+/* ---------------- Polish audio (Web Speech API) ---------------- */
+let plVoice=null;
+function pickVoice(){ const v=speechSynthesis.getVoices(); plVoice=v.find(x=>x.lang&&x.lang.toLowerCase().startsWith("pl"))||null; }
+if("speechSynthesis" in window){ pickVoice(); speechSynthesis.onvoiceschanged=pickVoice; }
+function speakText(txt){
+  if(!txt || !("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(txt);
+  u.lang="pl-PL"; if(plVoice) u.voice=plVoice; u.rate=.9;
+  speechSynthesis.speak(u);
+}
+
+/* ---------------- events ---------------- */
+$("flip").addEventListener("click", flip);
+$("speak").addEventListener("click", e=>{ e.stopPropagation(); speakText(currentCard().pl); });
+$("speakEx").addEventListener("click", e=>{ e.stopPropagation(); speakText(currentCard().ex); });
+$("markKnow").addEventListener("click", e=>{ e.stopPropagation(); markKnown(); });
+$("markStill").addEventListener("click", e=>{ e.stopPropagation(); markStill(); });
+$("prev").addEventListener("click", goPrev);
+$("next").addEventListener("click", advance);
+$("shuffle").addEventListener("click", shuffle);
+$("back").addEventListener("click", ()=>show("home"));
+$("practiceStill").addEventListener("click", practiceStill);
+$("restart").addEventListener("click", restart);
+$("toTopics").addEventListener("click", ()=>show("home"));
+document.addEventListener("keydown", e=>{
+  if(!$("study").classList.contains("active")) return;
+  if($("doneView").style.display!=="none") return;
+  if(e.key==="ArrowRight") advance();
+  else if(e.key==="ArrowLeft") goPrev();
+  else if(e.key===" "){ e.preventDefault(); flip(); }
+});
+
+/* ---------------- installable: inline manifest (keeps it one file) ---------------- */
+(function(){
+  const icon="data:image/svg+xml;base64,"+btoa('<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512"><rect width="512" height="512" rx="112" fill="#022c22"/><text x="50%" y="57%" font-size="300" text-anchor="middle" fill="#eafff4" font-family="sans-serif" font-weight="800">P</text></svg>');
+  const m={name:"Polski w Warszawie",short_name:"Polski",display:"standalone",background_color:"#f8fafc",theme_color:"#f8fafc",start_url:".",icons:[{src:icon,sizes:"512x512",type:"image/svg+xml"}]};
+  const link=document.createElement("link"); link.rel="manifest";
+  link.href=URL.createObjectURL(new Blob([JSON.stringify(m)],{type:"application/json"}));
+  document.head.appendChild(link);
+})();
+
+/* ---------------- init ---------------- */
+renderLevels(); renderTopics();
+</script>
+</body>
+</html>
