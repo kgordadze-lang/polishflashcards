@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#f8fafc">
-<title>Polski w Warszawie</title>
+<title>Po polsku - learn the Polish you'll actually use</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -17,12 +17,11 @@
     --mint-bg:#ecfdf5;
     --mint-text:#047857;
     --emerald:#059669;
+    --cream:#eafff4;
     --sage:#047857;
     --sage-hover:#065f46;
     --coral:#c97c5d;
     --coral-hover:#b56a4c;
-    --coral-bg:#fdf2ec;
-    --ink:#0f2b23;
     --muted:#64748b;
     --border:#e6ebf1;
     --shadow:0 1px 2px rgba(2,44,34,.04), 0 12px 28px rgba(2,44,34,.06);
@@ -45,22 +44,27 @@
 
   /* ---------- header ---------- */
   .top{display:flex;align-items:center;justify-content:space-between;padding:26px 0 6px}
-  .logo{display:flex;align-items:center;gap:10px}
-  .logo-mark{width:34px;height:34px;border-radius:11px;background:var(--forest);color:#eafff4;
-    display:grid;place-items:center;font-weight:800;font-size:17px}
-  .logo b{font-size:16.5px;font-weight:700;letter-spacing:-.2px}
-  .logo span{display:block;font-size:12px;color:var(--muted);font-weight:500;margin-top:1px}
+  .logo{display:flex;align-items:center;gap:12px}
+  /* PL card-stack mark */
+  .logo-mark{position:relative;width:38px;height:38px;flex:0 0 auto}
+  .logo-mark .lm-back{position:absolute;inset:0;border-radius:11px;background:var(--mint-bg);transform:rotate(-9deg) translate(-2px,1px)}
+  .logo-mark .lm-front{position:absolute;inset:0;border-radius:11px;background:var(--forest);color:var(--cream);
+    display:grid;place-items:center;font-weight:800;font-size:14px;letter-spacing:-.5px;box-shadow:0 4px 10px rgba(2,44,34,.18)}
+  .logo-mark .lm-kreska{position:absolute;top:6px;right:6px;width:9px;height:2.6px;border-radius:2px;background:var(--emerald);transform:rotate(-28deg);z-index:2}
+  .logo b{font-size:17px;font-weight:700;letter-spacing:-.3px}
 
-  /* ---------- home ---------- */
-  .lead{margin:22px 0 20px}
-  .lead h1{font-size:27px;line-height:1.2;font-weight:800;letter-spacing:-.6px;margin:0 0 8px}
-  .lead p{margin:0;color:var(--muted);font-size:15px;line-height:1.5}
+  /* ---------- home hero ---------- */
+  .hero{margin:26px 0 22px}
+  .hero h1{font-size:33px;line-height:1.06;font-weight:800;letter-spacing:-1.1px;margin:0}
+  .hero h1 em{font-style:normal;color:var(--emerald)}
+  .hero-sub{margin:12px 0 0;font-size:14.5px;color:var(--muted);font-weight:500;line-height:1.5;max-width:34ch}
+
   .seg-label{font-size:12px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin:8px 0 12px}
   .levels{display:flex;gap:9px;margin-bottom:26px}
   .lvl{flex:0 0 auto;border:1px solid var(--border);background:var(--card);color:var(--forest);
     border-radius:999px;padding:9px 18px;font-size:14.5px;font-weight:600;cursor:pointer;
     transition:.18s;box-shadow:var(--shadow-sm)}
-  .lvl[aria-pressed="true"]{background:var(--forest);color:#eafff4;border-color:var(--forest)}
+  .lvl[aria-pressed="true"]{background:var(--forest);color:var(--cream);border-color:var(--forest)}
   .lvl:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
 
   .topics{display:flex;flex-direction:column;gap:13px;padding-bottom:26px}
@@ -159,7 +163,7 @@
   .ctrl:hover{border-color:#d7e0e8;transform:translateY(-1px)}
   .ctrl:active{transform:translateY(0)}
   .ctrl:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
-  .ctrl.mid{flex:0 0 auto;width:56px;background:var(--forest);color:#eafff4;border-color:var(--forest)}
+  .ctrl.mid{flex:0 0 auto;width:56px;background:var(--forest);color:var(--cream);border-color:var(--forest)}
   .ctrl.mid:hover{background:var(--forest-hover)}
 
   /* ---------- completion ---------- */
@@ -178,7 +182,7 @@
   .stat b.still-n{color:var(--coral)}
   .stat span{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.2px}
   .done-actions{display:flex;flex-direction:column;gap:11px;width:100%;max-width:320px}
-  .btn-primary{border:none;background:var(--forest);color:#eafff4;border-radius:15px;padding:15px;
+  .btn-primary{border:none;background:var(--forest);color:var(--cream);border-radius:15px;padding:15px;
     font-size:15px;font-weight:700;cursor:pointer;transition:.16s;font-family:inherit;box-shadow:var(--shadow-sm)}
   .btn-primary:hover{background:var(--forest-hover)}
   .btn-primary:disabled{opacity:.4;cursor:default}
@@ -189,7 +193,7 @@
 
   footer{text-align:center;color:#9fb2ab;font-size:12px;padding:6px 0 18px;font-weight:500}
 
-  @media (max-width:400px){ .pl{font-size:31px} .en{font-size:24px} .flip,.stage{min-height:430px} }
+  @media (max-width:400px){ .pl{font-size:31px} .en{font-size:24px} .flip,.stage{min-height:430px} .hero h1{font-size:29px;letter-spacing:-.9px} }
   @media (prefers-reduced-motion:reduce){ .flip,.screen,.done{transition:none;animation:none} }
 </style>
 </head>
@@ -200,14 +204,18 @@
   <section class="screen active" id="home">
     <div class="top">
       <div class="logo">
-        <div class="logo-mark">P</div>
-        <div><b>Polski w Warszawie</b><span>Everyday Polish, made for Warsaw</span></div>
+        <div class="logo-mark">
+          <span class="lm-back"></span>
+          <span class="lm-front">PL</span>
+          <span class="lm-kreska"></span>
+        </div>
+        <b>Po polsku</b>
       </div>
     </div>
 
-    <div class="lead">
-      <h1>Learn the Polish<br>you'll actually use.</h1>
-      <p>Pick your level and a topic. Tap a card to flip it, tap the speaker to hear it. No account needed.</p>
+    <div class="hero">
+      <h1>Learn the Polish<br>you'll <em>actually</em> use.</h1>
+      <p class="hero-sub">Pick a level and a topic. Tap to flip, tap to hear it. No account needed.</p>
     </div>
 
     <div class="seg-label">Choose your level</div>
@@ -349,38 +357,254 @@ const LEVELS = [
           { pl:"Ile to kosztuje?", en:"How much is it?", hint:"Your everyday shopping question.", ex:"Przepraszam, ile to kosztuje?", exEn:"Excuse me, how much is it?" },
           { pl:"Gdzie jest toaleta?", en:"Where is the toilet?", hint:"'Gdzie jest...' = where is... for anything.", ex:"Przepraszam, gdzie jest toaleta?", exEn:"Excuse me, where is the toilet?" }
         ]
+      },
+      {
+        name: "Liczby i ceny",
+        emoji: "🔢",
+        desc: "Numbers, money and paying for things",
+        cards: [
+          { pl:"jeden", en:"one", hint:"The number 1.", ex:"Poproszę jeden bilet.", exEn:"One ticket, please." },
+          { pl:"dwa", en:"two", hint:"The number 2.", ex:"Mam dwa koty.", exEn:"I have two cats." },
+          { pl:"trzy", en:"three", hint:"The number 3.", ex:"Trzy kawy poproszę.", exEn:"Three coffees, please." },
+          { pl:"cztery", en:"four", hint:"The number 4.", ex:"Stolik na cztery osoby.", exEn:"A table for four." },
+          { pl:"pięć", en:"five", hint:"The number 5.", ex:"To kosztuje pięć złotych.", exEn:"It costs five zloty." },
+          { pl:"sześć", en:"six", hint:"The number 6.", ex:"Mam sześć jabłek.", exEn:"I have six apples." },
+          { pl:"siedem", en:"seven", hint:"The number 7.", ex:"Autobus numer siedem.", exEn:"Bus number seven." },
+          { pl:"osiem", en:"eight", hint:"The number 8.", ex:"Pracuję osiem godzin.", exEn:"I work eight hours." },
+          { pl:"dziewięć", en:"nine", hint:"The number 9.", ex:"Dziewięć złotych za bilet.", exEn:"Nine zloty for a ticket." },
+          { pl:"dziesięć", en:"ten", hint:"The number 10.", ex:"Dziesięć minut do tramwaju.", exEn:"Ten minutes until the tram." },
+          { pl:"dwadzieścia", en:"twenty", hint:"The number 20.", ex:"To kosztuje dwadzieścia złotych.", exEn:"It costs twenty zloty." },
+          { pl:"sto", en:"a hundred", hint:"The number 100.", ex:"Sto złotych, proszę.", exEn:"A hundred zloty, please." },
+          { pl:"złoty", en:"zloty (the currency)", hint:"PLN. Plural forms: złote / złotych.", ex:"Płacę pięćdziesiąt złotych.", exEn:"I'm paying fifty zloty." },
+          { pl:"grosz", en:"grosz (a penny)", hint:"1/100 of a złoty.", ex:"To kosztuje dwa złote pięćdziesiąt groszy.", exEn:"It costs two zloty fifty." },
+          { pl:"Ile płacę?", en:"How much do I pay?", hint:"Ask this at the till.", ex:"Ile płacę za wszystko?", exEn:"How much do I pay for everything?" },
+          { pl:"Czy mogę zapłacić kartą?", en:"Can I pay by card?", hint:"Card is accepted almost everywhere.", ex:"Czy mogę zapłacić kartą?", exEn:"Can I pay by card?" },
+          { pl:"gotówka", en:"cash", hint:"'gotówką' = in cash.", ex:"Płacę gotówką.", exEn:"I'm paying in cash." },
+          { pl:"razem", en:"together / in total", hint:"Useful when splitting or totalling.", ex:"Ile razem?", exEn:"How much in total?" },
+          { pl:"reszta", en:"change (money back)", hint:"Feminine noun.", ex:"Proszę zatrzymać resztę.", exEn:"Keep the change." },
+          { pl:"drogo / tanio", en:"expensive / cheap", hint:"Adverb forms you'll hear a lot.", ex:"To jest za drogo.", exEn:"That's too expensive." }
+        ]
+      },
+      {
+        name: "W kawiarni",
+        emoji: "☕",
+        desc: "Ordering coffee, snacks and drinks",
+        cards: [
+          { pl:"kawa", en:"coffee", hint:"Feminine noun.", ex:"Poproszę kawę z mlekiem.", exEn:"A coffee with milk, please." },
+          { pl:"herbata", en:"tea", hint:"Feminine noun.", ex:"Wolę herbatę niż kawę.", exEn:"I prefer tea to coffee." },
+          { pl:"woda", en:"water", hint:"gazowana = sparkling, niegazowana = still.", ex:"Poproszę wodę niegazowaną.", exEn:"Still water, please." },
+          { pl:"mleko", en:"milk", hint:"Neuter noun.", ex:"Kawa z mlekiem, proszę.", exEn:"Coffee with milk, please." },
+          { pl:"cukier", en:"sugar", hint:"Masculine noun.", ex:"Bez cukru, dziękuję.", exEn:"No sugar, thank you." },
+          { pl:"sok", en:"juice", hint:"'sok pomarańczowy' = orange juice.", ex:"Poproszę sok pomarańczowy.", exEn:"An orange juice, please." },
+          { pl:"ciasto", en:"cake", hint:"A slice = 'kawałek'.", ex:"Kawałek ciasta poproszę.", exEn:"A slice of cake, please." },
+          { pl:"kanapka", en:"sandwich", hint:"'z serem' = with cheese.", ex:"Poproszę kanapkę z serem.", exEn:"A cheese sandwich, please." },
+          { pl:"Co pan poleca?", en:"What do you recommend?", hint:"To a woman: 'Co pani poleca?'", ex:"Nie wiem, co wybrać. Co pan poleca?", exEn:"I don't know what to pick. What do you recommend?" },
+          { pl:"Dla mnie...", en:"For me... (ordering)", hint:"Point and name your choice.", ex:"Dla mnie herbata, proszę.", exEn:"A tea for me, please." },
+          { pl:"na wynos", en:"to take away", hint:"'na miejscu' = to have here.", ex:"Na wynos, proszę.", exEn:"To take away, please." },
+          { pl:"na miejscu", en:"to have here / dine in", hint:"The opposite of na wynos.", ex:"Na miejscu czy na wynos?", exEn:"To have here or take away?" },
+          { pl:"Smacznego!", en:"Enjoy your meal!", hint:"Said before eating - reply the same.", ex:"Smacznego!", exEn:"Enjoy your meal!" },
+          { pl:"stolik", en:"table", hint:"Diminutive of 'stół'.", ex:"Czy ten stolik jest wolny?", exEn:"Is this table free?" },
+          { pl:"karta / menu", en:"menu", hint:"Both are used.", ex:"Poproszę kartę.", exEn:"The menu, please." },
+          { pl:"Czy jest wi-fi?", en:"Is there wi-fi?", hint:"Ask for the 'hasło' - password.", ex:"Przepraszam, czy jest tu wi-fi?", exEn:"Excuse me, is there wi-fi here?" },
+          { pl:"gorący / zimny", en:"hot / cold", hint:"Adjectives - endings change by gender.", ex:"Poproszę zimną wodę.", exEn:"Cold water, please." },
+          { pl:"duży / mały", en:"big / small", hint:"For sizes.", ex:"Dużą kawę poproszę.", exEn:"A large coffee, please." },
+          { pl:"Jeszcze coś?", en:"Anything else?", hint:"What staff often ask you.", ex:"Jeszcze coś do picia?", exEn:"Anything else to drink?" },
+          { pl:"To wszystko", en:"That's all", hint:"To close your order.", ex:"Nie, dziękuję, to wszystko.", exEn:"No thanks, that's all." }
+        ]
+      },
+      {
+        name: "Orientacja",
+        emoji: "🧭",
+        desc: "Finding your way and asking directions",
+        cards: [
+          { pl:"Gdzie jest...?", en:"Where is...?", hint:"The key question for anything.", ex:"Gdzie jest apteka?", exEn:"Where is the pharmacy?" },
+          { pl:"na lewo", en:"to the left", hint:"Also 'w lewo'.", ex:"Proszę skręcić na lewo.", exEn:"Turn left, please." },
+          { pl:"na prawo", en:"to the right", hint:"Also 'w prawo'.", ex:"Sklep jest na prawo.", exEn:"The shop is on the right." },
+          { pl:"prosto", en:"straight ahead", hint:"Direction, not 'simple' here.", ex:"Proszę iść prosto.", exEn:"Go straight ahead." },
+          { pl:"blisko", en:"near / close", hint:"Opposite of daleko.", ex:"To jest bardzo blisko.", exEn:"It's very close." },
+          { pl:"daleko", en:"far", hint:"'Czy to daleko?' = Is it far?", ex:"Czy to daleko stąd?", exEn:"Is it far from here?" },
+          { pl:"tutaj / tu", en:"here", hint:"Both are common.", ex:"Proszę się zatrzymać tutaj.", exEn:"Please stop here." },
+          { pl:"tam", en:"there", hint:"Point as you say it.", ex:"Sklep jest tam.", exEn:"The shop is over there." },
+          { pl:"obok", en:"next to / beside", hint:"Followed by the genitive.", ex:"Apteka jest obok banku.", exEn:"The pharmacy is next to the bank." },
+          { pl:"za rogiem", en:"around the corner", hint:"'róg' = corner.", ex:"Piekarnia jest za rogiem.", exEn:"The bakery is around the corner." },
+          { pl:"ulica", en:"street", hint:"Shortened to 'ul.' in addresses.", ex:"Mieszkam na ulicy Długiej.", exEn:"I live on Długa Street." },
+          { pl:"centrum", en:"the centre / downtown", hint:"City centre.", ex:"Idę do centrum.", exEn:"I'm going to the centre." },
+          { pl:"sklep", en:"shop", hint:"'sklep spożywczy' = grocery shop.", ex:"Gdzie jest najbliższy sklep?", exEn:"Where's the nearest shop?" },
+          { pl:"dworzec", en:"station (train / bus)", hint:"'dworzec kolejowy' = train station.", ex:"Jak dojść na dworzec?", exEn:"How do I get to the station?" },
+          { pl:"bank", en:"bank", hint:"'bankomat' = ATM.", ex:"Szukam banku.", exEn:"I'm looking for a bank." },
+          { pl:"Jak dojść do...?", en:"How do I get to...? (on foot)", hint:"For walking directions.", ex:"Jak dojść do rynku?", exEn:"How do I get to the market square?" },
+          { pl:"mapa", en:"map", hint:"Feminine noun.", ex:"Mam mapę w telefonie.", exEn:"I have a map on my phone." },
+          { pl:"skręcić", en:"to turn", hint:"'skręcić w prawo/lewo'.", ex:"Proszę skręcić w prawo.", exEn:"Turn right, please." },
+          { pl:"róg", en:"corner", hint:"'na rogu' = on the corner.", ex:"Na rogu jest kawiarnia.", exEn:"There's a café on the corner." },
+          { pl:"w pobliżu", en:"nearby / in the area", hint:"'niedaleko' works too.", ex:"Czy jest tu w pobliżu bankomat?", exEn:"Is there an ATM nearby?" }
+        ]
+      },
+      {
+        name: "O mnie",
+        emoji: "🙋",
+        desc: "Introducing yourself and getting understood",
+        cards: [
+          { pl:"Nazywam się...", en:"My name is... (full name)", hint:"Use with your surname.", ex:"Nazywam się Jan Kowalski.", exEn:"My name is Jan Kowalski." },
+          { pl:"Jestem z...", en:"I'm from...", hint:"Country takes the genitive.", ex:"Jestem z Hiszpanii.", exEn:"I'm from Spain." },
+          { pl:"Mieszkam w...", en:"I live in...", hint:"City takes the locative.", ex:"Mieszkam w Krakowie.", exEn:"I live in Kraków." },
+          { pl:"Uczę się polskiego", en:"I'm learning Polish", hint:"'uczyć się' + genitive.", ex:"Uczę się polskiego od roku.", exEn:"I've been learning Polish for a year." },
+          { pl:"Pracuję jako...", en:"I work as...", hint:"Add your job after 'jako'.", ex:"Pracuję jako programista.", exEn:"I work as a programmer." },
+          { pl:"Mam... lat", en:"I'm ... years old", hint:"'Mam trzydzieści lat.'", ex:"Mam trzydzieści lat.", exEn:"I'm thirty years old." },
+          { pl:"Nie mówię dobrze po polsku", en:"I don't speak Polish well", hint:"Buys you patience.", ex:"Przepraszam, nie mówię dobrze po polsku.", exEn:"Sorry, I don't speak Polish well." },
+          { pl:"Mówię trochę po polsku", en:"I speak a little Polish", hint:"'trochę' = a little.", ex:"Mówię trochę po polsku.", exEn:"I speak a little Polish." },
+          { pl:"Czy może pan powtórzyć?", en:"Can you repeat that?", hint:"To a woman: 'pani'.", ex:"Przepraszam, czy może pan powtórzyć?", exEn:"Sorry, can you repeat that?" },
+          { pl:"Proszę mówić wolniej", en:"Please speak more slowly", hint:"A lifesaver early on.", ex:"Proszę mówić wolniej.", exEn:"Please speak more slowly." },
+          { pl:"Nie jestem stąd", en:"I'm not from here", hint:"'stąd' = from here.", ex:"Nie jestem stąd, jestem turystą.", exEn:"I'm not from here, I'm a tourist." },
+          { pl:"Jak się to pisze?", en:"How do you spell it?", hint:"For names and addresses.", ex:"Jak się pisze pana nazwisko?", exEn:"How do you spell your surname?" },
+          { pl:"Mam pytanie", en:"I have a question", hint:"Polite way to start.", ex:"Przepraszam, mam pytanie.", exEn:"Excuse me, I have a question." },
+          { pl:"Rozumiem", en:"I understand", hint:"'Nie rozumiem' = I don't.", ex:"Tak, teraz rozumiem.", exEn:"Yes, now I understand." },
+          { pl:"Może pan mi pomóc?", en:"Can you help me?", hint:"To a woman: 'Może pani...'", ex:"Przepraszam, może pan mi pomóc?", exEn:"Excuse me, can you help me?" },
+          { pl:"Skąd pan jest?", en:"Where are you from?", hint:"To a woman: 'Skąd pani jest?'", ex:"A skąd pan jest?", exEn:"And where are you from?" },
+          { pl:"mój / moja", en:"my (m / f)", hint:"Agrees with the noun's gender.", ex:"To jest mój telefon.", exEn:"This is my phone." },
+          { pl:"Miłego dnia!", en:"Have a nice day!", hint:"Warm way to end a chat.", ex:"Dziękuję, miłego dnia!", exEn:"Thanks, have a nice day!" },
+          { pl:"Do zobaczenia", en:"See you (later)", hint:"Friendlier than 'do widzenia'.", ex:"Do zobaczenia jutro.", exEn:"See you tomorrow." },
+          { pl:"Nie ma problemu", en:"No problem", hint:"Very common reassurance.", ex:"Nie ma problemu!", exEn:"No problem!" }
+        ]
       }
     ]
   },
   {
     level: "A2",
-    blurb: "Living in Warsaw",
+    blurb: "Living in Poland",
     topics: [
       {
         name: "Komunikacja miejska",
         emoji: "🚋",
-        desc: "Trams, buses and the metro - the Warsaw way",
+        desc: "Trams, buses, tickets and getting around",
         cards: [
           { pl:"przystanek", en:"stop (bus / tram)", hint:"Masculine noun.", ex:"Wysiadam na następnym przystanku.", exEn:"I'm getting off at the next stop." },
           { pl:"bilet", en:"ticket", hint:"jednorazowy = single, czasowy = time-based.", ex:"Kupiłem bilet w automacie.", exEn:"I bought a ticket at the machine." },
-          { pl:"Poproszę bilet 20-minutowy", en:"A 20-minute ticket, please", hint:"Warsaw sells time-based tickets, not per-ride.", ex:"Dzień dobry, poproszę bilet 20-minutowy.", exEn:"Hello, a 20-minute ticket, please." },
+          { pl:"Poproszę bilet 20-minutowy", en:"A 20-minute ticket, please", hint:"Many Polish cities sell time-based tickets, not per-ride.", ex:"Dzień dobry, poproszę bilet 20-minutowy.", exEn:"Hello, a 20-minute ticket, please." },
           { pl:"Czy ten tramwaj jedzie do centrum?", en:"Does this tram go to the centre?", hint:"Swap 'tramwaj' for 'autobus' for a bus.", ex:"Przepraszam, czy ten tramwaj jedzie do centrum?", exEn:"Excuse me, does this tram go to the centre?" },
-          { pl:"Który autobus jedzie na Mokotów?", en:"Which bus goes to Mokotów?", hint:"Drop in any district name.", ex:"Przepraszam, który autobus jedzie na Mokotów?", exEn:"Excuse me, which bus goes to Mokotów?" },
+          { pl:"Który autobus jedzie na dworzec?", en:"Which bus goes to the station?", hint:"Swap 'dworzec' for any destination.", ex:"Przepraszam, który autobus jedzie na dworzec?", exEn:"Excuse me, which bus goes to the station?" },
           { pl:"Gdzie mam wysiąść?", en:"Where should I get off?", hint:"Ask the driver or a fellow passenger.", ex:"Gdzie mam wysiąść na dworzec?", exEn:"Where should I get off for the station?" },
-          { pl:"Następny przystanek", en:"Next stop", hint:"You'll hear this announced on board.", ex:"Następny przystanek: Metro Centrum.", exEn:"Next stop: Metro Centrum." },
+          { pl:"Następny przystanek", en:"Next stop", hint:"You'll hear this announced on board.", ex:"Następny przystanek: Rynek.", exEn:"Next stop: the Main Square." },
           { pl:"Przepraszam, wysiadam", en:"Excuse me, I'm getting off", hint:"Say it to move toward the door.", ex:"Przepraszam, wysiadam na następnym.", exEn:"Excuse me, I'm getting off at the next one." },
           { pl:"Czy mogę przejść?", en:"Can I get through?", hint:"For a crowded tram or bus.", ex:"Przepraszam, czy mogę przejść?", exEn:"Excuse me, can I get through?" },
-          { pl:"metro", en:"metro / underground", hint:"Two lines in Warsaw: M1 and M2.", ex:"Codziennie jadę metrem do pracy.", exEn:"I take the metro to work every day." },
-          { pl:"Muszę się przesiąść", en:"I have to change lines", hint:"'przesiadka' = a transfer.", ex:"Muszę się przesiąść na Świętokrzyskiej.", exEn:"I have to change at Świętokrzyska." },
+          { pl:"metro", en:"metro / underground", hint:"Only Warsaw has a metro - other cities rely on trams and buses.", ex:"Codziennie jadę metrem do pracy.", exEn:"I take the metro to work every day." },
+          { pl:"Muszę się przesiąść", en:"I have to change lines", hint:"'przesiadka' = a transfer.", ex:"Muszę się przesiąść na inny tramwaj.", exEn:"I have to change to another tram." },
           { pl:"Czy muszę skasować bilet?", en:"Do I need to validate the ticket?", hint:"'kasownik' = the validator machine.", ex:"Przepraszam, czy muszę skasować bilet?", exEn:"Excuse me, do I need to validate the ticket?" },
           { pl:"Tramwaj ma opóźnienie", en:"The tram is delayed", hint:"'opóźnienie' = delay.", ex:"Mój tramwaj ma dziś opóźnienie.", exEn:"My tram is delayed today." },
           { pl:"rozkład jazdy", en:"timetable", hint:"Posted at every stop and in the app.", ex:"Sprawdzam rozkład jazdy w aplikacji.", exEn:"I'm checking the timetable in the app." },
           { pl:"Kiedy jest następny autobus?", en:"When is the next bus?", hint:"Or check the countdown on the stop sign.", ex:"Przepraszam, kiedy jest następny autobus?", exEn:"Excuse me, when is the next bus?" },
           { pl:"Bilet miesięczny", en:"Monthly ticket", hint:"Cheaper if you travel daily.", ex:"Mam bilet miesięczny na metro.", exEn:"I have a monthly ticket for the metro." },
-          { pl:"Wsiadam / Wysiadam", en:"I'm getting on / getting off", hint:"The verb pair you'll use most.", ex:"Wsiadam do tramwaju na Placu Wilsona.", exEn:"I get on the tram at Plac Wilsona." },
+          { pl:"Wsiadam / Wysiadam", en:"I'm getting on / getting off", hint:"The verb pair you'll use most.", ex:"Wsiadam do tramwaju numer 10.", exEn:"I get on tram number 10." },
           { pl:"peron", en:"platform", hint:"For the metro and rail stations.", ex:"Pociąg odjeżdża z peronu drugiego.", exEn:"The train leaves from platform two." },
-          { pl:"Czy to jest dobry kierunek?", en:"Is this the right direction?", hint:"Handy when you're unsure which way.", ex:"Przepraszam, czy to jest dobry kierunek na Wilanów?", exEn:"Excuse me, is this the right direction for Wilanów?" },
-          { pl:"Zgubiłem się", en:"I'm lost", hint:"A woman says 'zgubiłam się'.", ex:"Chyba się zgubiłem, gdzie jest metro?", exEn:"I think I'm lost, where's the metro?" }
+          { pl:"Czy to jest dobry kierunek?", en:"Is this the right direction?", hint:"Handy when you're unsure which way.", ex:"Przepraszam, czy to jest dobry kierunek na centrum?", exEn:"Excuse me, is this the right direction for the centre?" },
+          { pl:"Zgubiłem się", en:"I'm lost", hint:"A woman says 'zgubiłam się'.", ex:"Chyba się zgubiłem, gdzie jest przystanek?", exEn:"I think I'm lost, where's the stop?" }
+        ]
+      },
+      {
+        name: "W aptece",
+        emoji: "💊",
+        desc: "The pharmacy: symptoms and medicine",
+        cards: [
+          { pl:"apteka", en:"pharmacy", hint:"'apteka całodobowa' = 24-hour pharmacy.", ex:"Gdzie jest najbliższa apteka?", exEn:"Where's the nearest pharmacy?" },
+          { pl:"lek / lekarstwo", en:"medicine", hint:"Both mean medicine.", ex:"Potrzebuję leku na gardło.", exEn:"I need medicine for my throat." },
+          { pl:"recepta", en:"prescription", hint:"'na receptę' = prescription-only.", ex:"Czy to jest na receptę?", exEn:"Is this prescription-only?" },
+          { pl:"bez recepty", en:"over the counter", hint:"No prescription needed.", ex:"Czy dostanę to bez recepty?", exEn:"Can I get this without a prescription?" },
+          { pl:"Coś na ból głowy", en:"Something for a headache", hint:"'coś na...' = something for...", ex:"Poproszę coś na ból głowy.", exEn:"Something for a headache, please." },
+          { pl:"ból gardła", en:"sore throat", hint:"'ból' = pain / ache.", ex:"Mam ból gardła od wczoraj.", exEn:"I've had a sore throat since yesterday." },
+          { pl:"gorączka", en:"fever", hint:"'Mam gorączkę' = I have a fever.", ex:"Mam gorączkę i boli mnie głowa.", exEn:"I have a fever and a headache." },
+          { pl:"przeziębienie", en:"a cold", hint:"'jestem przeziębiony/a' = I have a cold.", ex:"Chyba mam przeziębienie.", exEn:"I think I have a cold." },
+          { pl:"kaszel", en:"cough", hint:"'suchy' = dry, 'mokry' = chesty.", ex:"Mam suchy kaszel.", exEn:"I have a dry cough." },
+          { pl:"katar", en:"runny / blocked nose", hint:"Very common word in winter.", ex:"Mam katar i kaszel.", exEn:"I have a runny nose and a cough." },
+          { pl:"tabletki", en:"tablets / pills", hint:"Singular: 'tabletka'.", ex:"Ile tabletek dziennie?", exEn:"How many tablets a day?" },
+          { pl:"syrop", en:"syrup", hint:"'syrop na kaszel' = cough syrup.", ex:"Poproszę syrop na kaszel.", exEn:"Cough syrup, please." },
+          { pl:"plaster", en:"plaster / band-aid", hint:"Plural: 'plastry'.", ex:"Czy ma pan plastry?", exEn:"Do you have any plasters?" },
+          { pl:"Boli mnie...", en:"My ... hurts", hint:"'Boli mnie głowa/brzuch'.", ex:"Boli mnie brzuch.", exEn:"My stomach hurts." },
+          { pl:"Jak często?", en:"How often?", hint:"For dosing questions.", ex:"Jak często brać ten lek?", exEn:"How often should I take this medicine?" },
+          { pl:"po jedzeniu", en:"after meals", hint:"'przed jedzeniem' = before meals.", ex:"Brać po jedzeniu.", exEn:"Take after meals." },
+          { pl:"dawka", en:"dose", hint:"Feminine noun.", ex:"Jaka jest dawka dla dorosłych?", exEn:"What's the dose for adults?" },
+          { pl:"Czy to jest bezpieczne?", en:"Is it safe?", hint:"Good to ask about side effects.", ex:"Czy to jest bezpieczne dla dzieci?", exEn:"Is it safe for children?" },
+          { pl:"antybiotyk", en:"antibiotic", hint:"Always prescription-only in Poland.", ex:"Czy potrzebuję antybiotyku?", exEn:"Do I need an antibiotic?" },
+          { pl:"Poproszę o paragon", en:"A receipt, please", hint:"Useful for insurance claims.", ex:"Poproszę o paragon.", exEn:"A receipt, please." }
+        ]
+      },
+      {
+        name: "Sprawy urzędowe",
+        emoji: "🏛️",
+        desc: "Offices, paperwork and appointments",
+        cards: [
+          { pl:"urząd", en:"office (government)", hint:"'urząd miasta' = city office.", ex:"Muszę iść do urzędu.", exEn:"I have to go to the office." },
+          { pl:"PESEL", en:"PESEL (national ID number)", hint:"Poland's personal ID number - you'll need it often.", ex:"Potrzebuję numeru PESEL.", exEn:"I need a PESEL number." },
+          { pl:"wniosek", en:"application", hint:"'złożyć wniosek' = to submit one.", ex:"Muszę złożyć wniosek.", exEn:"I have to submit an application." },
+          { pl:"złożyć wniosek", en:"to submit an application", hint:"The core bureaucratic verb.", ex:"Gdzie mogę złożyć wniosek?", exEn:"Where can I submit the application?" },
+          { pl:"dokument", en:"document", hint:"Often means ID here.", ex:"Proszę pokazać dokument.", exEn:"Please show some ID." },
+          { pl:"dowód osobisty", en:"ID card", hint:"For citizens; foreigners use passport / karta pobytu.", ex:"Nie mam dowodu osobistego.", exEn:"I don't have an ID card." },
+          { pl:"paszport", en:"passport", hint:"Your main ID as a foreigner.", ex:"Proszę o paszport.", exEn:"Your passport, please." },
+          { pl:"karta pobytu", en:"residence card", hint:"The key document for foreigners.", ex:"Czekam na kartę pobytu.", exEn:"I'm waiting for my residence card." },
+          { pl:"formularz", en:"form", hint:"'wypełnić formularz' = fill in a form.", ex:"Jak wypełnić ten formularz?", exEn:"How do I fill in this form?" },
+          { pl:"wypełnić", en:"to fill in", hint:"Used for forms.", ex:"Proszę wypełnić formularz.", exEn:"Please fill in the form." },
+          { pl:"podpis", en:"signature", hint:"'podpisać' = to sign.", ex:"Proszę o podpis tutaj.", exEn:"Your signature here, please." },
+          { pl:"podpisać", en:"to sign", hint:"The verb form.", ex:"Gdzie mam podpisać?", exEn:"Where do I sign?" },
+          { pl:"termin", en:"deadline / appointment date", hint:"Two meanings by context.", ex:"Jaki jest termin?", exEn:"What's the deadline?" },
+          { pl:"umówić się na wizytę", en:"to book an appointment", hint:"For offices and clinics.", ex:"Chciałbym umówić się na wizytę.", exEn:"I'd like to book an appointment." },
+          { pl:"kolejka", en:"queue / line", hint:"'stać w kolejce' = to queue.", ex:"Muszę stać w kolejce.", exEn:"I have to stand in the queue." },
+          { pl:"numerek", en:"queue ticket (number)", hint:"Take one on arrival.", ex:"Proszę pobrać numerek.", exEn:"Please take a queue ticket." },
+          { pl:"okienko", en:"service window / counter", hint:"Where you're served.", ex:"Proszę podejść do okienka numer trzy.", exEn:"Please go to window number three." },
+          { pl:"opłata", en:"fee / charge", hint:"'bezpłatny' = free of charge.", ex:"Jaka jest opłata?", exEn:"What's the fee?" },
+          { pl:"zaświadczenie", en:"certificate / official confirmation", hint:"Often needed as proof.", ex:"Potrzebuję zaświadczenia z pracy.", exEn:"I need a certificate from work." },
+          { pl:"Czy potrzebuję...?", en:"Do I need...?", hint:"For checking requirements.", ex:"Czy potrzebuję tłumaczenia?", exEn:"Do I need a translation?" }
+        ]
+      },
+      {
+        name: "W restauracji",
+        emoji: "🍽️",
+        desc: "Booking, ordering and paying at a restaurant",
+        cards: [
+          { pl:"stolik na dwie osoby", en:"a table for two", hint:"Change the number as needed.", ex:"Poproszę stolik na dwie osoby.", exEn:"A table for two, please." },
+          { pl:"rezerwacja", en:"reservation", hint:"'na nazwisko' = under the name of.", ex:"Mam rezerwację na nazwisko Nowak.", exEn:"I have a reservation under Nowak." },
+          { pl:"karta / menu", en:"menu", hint:"'karta win' = wine list.", ex:"Poproszę kartę.", exEn:"The menu, please." },
+          { pl:"przystawka", en:"starter / appetiser", hint:"Comes before the main.", ex:"Na przystawkę poproszę zupę.", exEn:"For a starter, I'll have soup." },
+          { pl:"danie główne", en:"main course", hint:"'danie' = dish.", ex:"Co pan poleca na danie główne?", exEn:"What do you recommend for the main?" },
+          { pl:"zupa", en:"soup", hint:"'zupa pomidorowa' = tomato soup.", ex:"Poproszę zupę pomidorową.", exEn:"Tomato soup, please." },
+          { pl:"deser", en:"dessert", hint:"'na deser' = for dessert.", ex:"Na deser poproszę lody.", exEn:"For dessert, I'll have ice cream." },
+          { pl:"Dla mnie...", en:"For me... (ordering)", hint:"Then name your dish.", ex:"Dla mnie kurczak, proszę.", exEn:"The chicken for me, please." },
+          { pl:"Jestem wegetarianinem", en:"I'm vegetarian", hint:"A woman says 'wegetarianką'.", ex:"Jestem wegetarianinem.", exEn:"I'm vegetarian." },
+          { pl:"Czy to danie jest ostre?", en:"Is this dish spicy?", hint:"'ostry' = spicy / sharp.", ex:"Czy to danie jest ostre?", exEn:"Is this dish spicy?" },
+          { pl:"Czy jest wolny stolik?", en:"Is there a free table?", hint:"When you walk in without booking.", ex:"Dzień dobry, czy jest wolny stolik?", exEn:"Hello, is there a free table?" },
+          { pl:"Czy mogę prosić o...?", en:"Could I have...?", hint:"Polite request.", ex:"Czy mogę prosić o wodę?", exEn:"Could I have some water?" },
+          { pl:"widelec / nóż / łyżka", en:"fork / knife / spoon", hint:"The basic cutlery.", ex:"Brakuje mi widelca.", exEn:"I'm missing a fork." },
+          { pl:"Było pyszne", en:"It was delicious", hint:"'pyszny' = delicious.", ex:"Dziękuję, było pyszne!", exEn:"Thank you, it was delicious!" },
+          { pl:"Rachunek, proszę", en:"The bill, please", hint:"'rachunek' = the bill.", ex:"Poproszę rachunek.", exEn:"The bill, please." },
+          { pl:"Płacimy razem", en:"We're paying together", hint:"One bill for the table.", ex:"Płacimy razem.", exEn:"We're paying together." },
+          { pl:"Płacimy osobno", en:"We're paying separately", hint:"Split the bill.", ex:"Czy możemy zapłacić osobno?", exEn:"Can we pay separately?" },
+          { pl:"napiwek", en:"tip", hint:"Around 10% is normal if happy.", ex:"Zostawię napiwek.", exEn:"I'll leave a tip." },
+          { pl:"na wynos", en:"to take away", hint:"Same as in a café.", ex:"Czy mogę to wziąć na wynos?", exEn:"Can I take this away?" },
+          { pl:"Smacznego", en:"Enjoy your meal", hint:"Said to others before eating.", ex:"Smacznego!", exEn:"Enjoy your meal!" }
+        ]
+      },
+      {
+        name: "Mieszkanie",
+        emoji: "🏠",
+        desc: "Renting a flat and dealing with problems",
+        cards: [
+          { pl:"mieszkanie", en:"flat / apartment", hint:"'wynajmować mieszkanie' = to rent a flat.", ex:"Wynajmuję mieszkanie w centrum.", exEn:"I rent a flat in the centre." },
+          { pl:"wynajem", en:"rent / rental", hint:"The rent amount / the renting.", ex:"Ile wynosi wynajem?", exEn:"How much is the rent?" },
+          { pl:"czynsz", en:"building service charge", hint:"Monthly building fee, often on top of rent.", ex:"Czynsz jest osobno.", exEn:"The service charge is separate." },
+          { pl:"kaucja", en:"deposit", hint:"Usually one month's rent.", ex:"Ile wynosi kaucja?", exEn:"How much is the deposit?" },
+          { pl:"umowa", en:"contract", hint:"'podpisać umowę' = to sign a contract.", ex:"Muszę podpisać umowę.", exEn:"I have to sign the contract." },
+          { pl:"właściciel", en:"owner / landlord", hint:"A woman is 'właścicielka'.", ex:"Zadzwonię do właściciela.", exEn:"I'll call the landlord." },
+          { pl:"rachunki", en:"bills / utilities", hint:"'wliczone' = included.", ex:"Czy rachunki są wliczone?", exEn:"Are the bills included?" },
+          { pl:"prąd", en:"electricity", hint:"Masculine noun.", ex:"Nie mam prądu w kuchni.", exEn:"There's no electricity in the kitchen." },
+          { pl:"woda", en:"water (utility)", hint:"'ciepła woda' = hot water.", ex:"Nie ma ciepłej wody.", exEn:"There's no hot water." },
+          { pl:"ogrzewanie", en:"heating", hint:"Matters a lot in winter.", ex:"Ogrzewanie nie działa.", exEn:"The heating isn't working." },
+          { pl:"internet", en:"internet", hint:"'w cenie' = included in the price.", ex:"Czy internet jest w cenie?", exEn:"Is internet included in the price?" },
+          { pl:"klucze", en:"keys", hint:"Singular: 'klucz'.", ex:"Zgubiłem klucze.", exEn:"I've lost my keys." },
+          { pl:"Coś nie działa", en:"Something isn't working", hint:"'działać' = to work / function.", ex:"Przepraszam, coś nie działa.", exEn:"Sorry, something isn't working." },
+          { pl:"zepsuł się", en:"it broke / is broken", hint:"'zepsuty' = broken.", ex:"Zepsuł się piekarnik.", exEn:"The oven has broken." },
+          { pl:"naprawić", en:"to repair / fix", hint:"'naprawa' = a repair.", ex:"Czy może pan to naprawić?", exEn:"Can you fix this?" },
+          { pl:"kuchnia", en:"kitchen", hint:"Also means 'cuisine'.", ex:"Kuchnia jest mała, ale wygodna.", exEn:"The kitchen is small but comfortable." },
+          { pl:"łazienka", en:"bathroom", hint:"Feminine noun.", ex:"Łazienka jest po lewej.", exEn:"The bathroom is on the left." },
+          { pl:"sypialnia", en:"bedroom", hint:"'dwie sypialnie' = two bedrooms.", ex:"Mieszkanie ma dwie sypialnie.", exEn:"The flat has two bedrooms." },
+          { pl:"sąsiad", en:"neighbour", hint:"A woman is 'sąsiadka'.", ex:"Mój sąsiad jest miły.", exEn:"My neighbour is nice." },
+          { pl:"umeblowane", en:"furnished", hint:"'nieumeblowane' = unfurnished.", ex:"Czy mieszkanie jest umeblowane?", exEn:"Is the flat furnished?" }
         ]
       }
     ]
@@ -444,7 +668,6 @@ function render(){
   $("frontHint").textContent = c.hint || "";
   $("enText").textContent = c.en;
   $("backHint").textContent = c.hint || "";
-  // example sentence (hides cleanly if a card has none)
   if(c.ex){
     $("exampleBox").style.display = "flex";
     $("exPl").textContent = c.ex;
@@ -524,10 +747,16 @@ document.addEventListener("keydown", e=>{
   else if(e.key===" "){ e.preventDefault(); flip(); }
 });
 
-/* ---------------- installable: inline manifest (keeps it one file) ---------------- */
+/* ---------------- installable: inline manifest with PL card-stack icon ---------------- */
 (function(){
-  const icon="data:image/svg+xml;base64,"+btoa('<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512"><rect width="512" height="512" rx="112" fill="#022c22"/><text x="50%" y="57%" font-size="300" text-anchor="middle" fill="#eafff4" font-family="sans-serif" font-weight="800">P</text></svg>');
-  const m={name:"Polski w Warszawie",short_name:"Polski",display:"standalone",background_color:"#f8fafc",theme_color:"#f8fafc",start_url:".",icons:[{src:icon,sizes:"512x512",type:"image/svg+xml"}]};
+  const svg='<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512">'
+    +'<rect x="86" y="104" width="300" height="300" rx="64" fill="#ecfdf5" transform="rotate(-9 236 254)"/>'
+    +'<rect x="118" y="106" width="300" height="300" rx="64" fill="#022c22"/>'
+    +'<text x="268" y="304" font-size="132" text-anchor="middle" fill="#eafff4" font-family="sans-serif" font-weight="800" letter-spacing="-4">PL</text>'
+    +'<rect x="338" y="150" width="60" height="15" rx="7" fill="#059669" transform="rotate(-28 368 157)"/>'
+    +'</svg>';
+  const icon="data:image/svg+xml;base64,"+btoa(svg);
+  const m={name:"Po polsku",short_name:"Po polsku",display:"standalone",background_color:"#f8fafc",theme_color:"#f8fafc",start_url:".",icons:[{src:icon,sizes:"512x512",type:"image/svg+xml"}]};
   const link=document.createElement("link"); link.rel="manifest";
   link.href=URL.createObjectURL(new Blob([JSON.stringify(m)],{type:"application/json"}));
   document.head.appendChild(link);
