@@ -58,6 +58,7 @@
   .hero h1{font-size:33px;line-height:1.06;font-weight:800;letter-spacing:-1.1px;margin:0}
   .hero h1 em{font-style:normal;color:var(--emerald)}
   .hero-sub{margin:12px 0 0;font-size:14.5px;color:var(--muted);font-weight:500;line-height:1.5;max-width:34ch}
+  .hero-sub .hero-free{color:var(--emerald);font-weight:700}
 
   .seg-label{font-size:12px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin:8px 0 12px}
   .levels{display:flex;gap:9px;margin-bottom:26px}
@@ -191,7 +192,32 @@
   .btn-ghost:hover{border-color:#d7e0e8}
   .btn-primary:focus-visible,.btn-ghost:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
 
-  footer{text-align:center;color:#9fb2ab;font-size:12px;padding:6px 0 18px;font-weight:500}
+  /* ---------- footer ---------- */
+  footer{display:flex;flex-direction:column;align-items:center;gap:11px;padding:8px 0 22px;text-align:center}
+  .foot-badge{display:inline-block;background:var(--mint-bg);color:var(--mint-text);
+    font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;line-height:1.45;
+    padding:9px 15px;border-radius:999px;max-width:340px}
+  .foot-note{color:#9fb2ab;font-size:12px;font-weight:500;line-height:1.5;max-width:340px}
+  .foot-link{background:none;border:none;font-family:inherit;font-size:inherit;color:var(--emerald);
+    font-weight:700;cursor:pointer;padding:0;vertical-align:baseline;
+    text-decoration:underline;text-underline-offset:2px}
+  .foot-link:hover{color:var(--sage-hover)}
+  .foot-link:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+
+  /* ---------- privacy notice ---------- */
+  .privacy-wrap{flex:1;display:flex;flex-direction:column;padding:14px 0 24px}
+  .privacy-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);
+    box-shadow:var(--shadow);padding:26px 24px}
+  .privacy-intro{margin:0 0 18px;font-size:16.5px;font-weight:700;line-height:1.45;
+    color:var(--forest);letter-spacing:-.2px}
+  .privacy-intro .brand-pill{background:var(--mint-bg);color:var(--mint-text);
+    padding:1px 8px;border-radius:7px;font-weight:700;white-space:nowrap}
+  .privacy-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:16px}
+  .privacy-list li{position:relative;padding-left:22px;font-size:14px;line-height:1.55;
+    color:var(--muted);font-weight:500}
+  .privacy-list li::before{content:"";position:absolute;left:2px;top:8px;width:7px;height:7px;
+    border-radius:50%;background:var(--emerald)}
+  .privacy-list li b{color:var(--forest);font-weight:700}
 
   @media (max-width:400px){ .pl{font-size:31px} .en{font-size:24px} .flip,.stage{min-height:430px} .hero h1{font-size:29px;letter-spacing:-.9px} }
   @media (prefers-reduced-motion:reduce){ .flip,.screen,.done{transition:none;animation:none} }
@@ -215,7 +241,7 @@
 
     <div class="hero">
       <h1>Learn the Polish<br>you'll <em>actually</em> use.</h1>
-      <p class="hero-sub">Pick a level and a topic. Tap to flip, tap to hear it. No account needed.</p>
+      <p class="hero-sub">Pick a level and a topic. Tap to flip, tap to hear it. <span class="hero-free">Completely free. No account needed.</span></p>
     </div>
 
     <div class="seg-label">Choose your level</div>
@@ -308,7 +334,31 @@
     </div>
   </section>
 
-  <footer>Works on any phone - add to home screen to use it like an app.</footer>
+  <!-- ============ PRIVACY NOTICE ============ -->
+  <section class="screen" id="privacy">
+    <div class="sbar">
+      <button class="back" id="backPrivacy" aria-label="Back to home">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="sbar-title"><b>Privacy Notice</b></div>
+    </div>
+
+    <div class="privacy-wrap">
+      <div class="privacy-card">
+        <p class="privacy-intro"><span class="brand-pill">Po polsku</span> is designed to help you learn Polish, not to collect your personal information.</p>
+        <ul class="privacy-list">
+          <li><b>No Data Collection:</b> We do not ask for your email, we do not track your behavior, and we do not use marketing or analytics cookies.</li>
+          <li><b>Local Storage Only:</b> Any progress you make (like your flashcard scores) is saved locally on your own device. It is never transmitted to or stored on our servers.</li>
+          <li><b>Standard Server Logs:</b> Like almost all websites, our hosting provider temporarily logs basic technical requests (such as IP addresses) strictly to ensure the website functions securely and reliably. We do not access or use this information to identify anyone.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-badge">Works on any phone - add to home screen to use it like an app.</div>
+    <div class="foot-note">We do not collect your data in any form. See more in <button class="foot-link" id="openPrivacy">Privacy Notice</button></div>
+  </footer>
 </div>
 
 <script>
@@ -465,6 +515,30 @@ const LEVELS = [
           { pl:"Do zobaczenia", en:"See you (later)", hint:"Friendlier than 'do widzenia'.", ex:"Do zobaczenia jutro.", exEn:"See you tomorrow." },
           { pl:"Nie ma problemu", en:"No problem", hint:"Very common reassurance.", ex:"Nie ma problemu!", exEn:"No problem!" }
         ]
+      },
+      {
+        name: "Poranna rutyna",
+        emoji: "⏰",
+        desc: "Getting up, showering, getting dressed, and having breakfast",
+        cards: [
+          { pl:"budzik", en:"alarm clock", hint:"Masculine noun.", ex:"Mój budzik dzwoni o siódmej rano.", exEn:"My alarm clock rings at seven in the morning." },
+          { pl:"budzić się", en:"to wake up", hint:"Verb. 'Budzę się' = I wake up.", ex:"Budzę się wcześnie rano.", exEn:"I wake up early in the morning." },
+          { pl:"wstawać", en:"to get up", hint:"Verb. 'Wstaję' = I get up.", ex:"Budzę się o szóstej, ale wstaję o wpół do siódmej.", exEn:"I wake up at six, but I get up at half past six." },
+          { pl:"łazienka", en:"bathroom", hint:"Feminine noun.", ex:"Najpierw idę do łazienki.", exEn:"First, I go to the bathroom." },
+          { pl:"brać prysznic", en:"to take a shower", hint:"Verb. 'Biorę prysznic' = I take a shower.", ex:"Rano zazwyczaj biorę szybki prysznic.", exEn:"In the morning, I usually take a quick shower." },
+          { pl:"myć zęby", en:"to brush teeth", hint:"Literally 'to wash teeth'. 'Myję zęby' = I brush my teeth.", ex:"Po śniadaniu myję zęby.", exEn:"I brush my teeth after breakfast." },
+          { pl:"ręcznik", en:"towel", hint:"Masculine noun.", ex:"Gdzie jest mój czysty ręcznik?", exEn:"Where is my clean towel?" },
+          { pl:"ubierać się", en:"to get dressed", hint:"Verb. 'Ubieram się' = I get dressed.", ex:"Biorę prysznic i szybko się ubieram.", exEn:"I take a shower and get dressed quickly." },
+          { pl:"ubranie", en:"clothes", hint:"Neuter noun. Often used in singular.", ex:"Zakładam czyste ubranie.", exEn:"I put on clean clothes." },
+          { pl:"śniadanie", en:"breakfast", hint:"Neuter noun. 'Na śniadanie' = for breakfast.", ex:"Co jesz na śniadanie?", exEn:"What do you eat for breakfast?" },
+          { pl:"robić śniadanie", en:"to make breakfast", hint:"Verb. 'Robię' = I make/do.", ex:"Robię śniadanie dla mojej rodziny.", exEn:"I am making breakfast for my family." },
+          { pl:"jeść śniadanie", en:"to eat breakfast", hint:"Verb. 'Jem' = I eat.", ex:"Codziennie jem śniadanie w domu.", exEn:"I eat breakfast at home every day." },
+          { pl:"Jestem głodny", en:"I am hungry", hint:"A woman says 'Jestem głodna'.", ex:"Rano zawsze jestem bardzo głodny.", exEn:"I am always very hungry in the morning." },
+          { pl:"najpierw", en:"first", hint:"Used for sequencing actions.", ex:"Najpierw piję kawę, a potem jem.", exEn:"First I drink coffee, and then I eat." },
+          { pl:"potem", en:"then / later", hint:"Used to describe what happens next.", ex:"Jem śniadanie, a potem ubieram się.", exEn:"I eat breakfast, and then I get dressed." },
+          { pl:"spieszyć się", en:"to be in a hurry", hint:"Verb. 'Spieszę się' = I am in a hurry.", ex:"Nie mam czasu na śniadanie, spieszę się do pracy.", exEn:"I don't have time for breakfast, I am in a hurry to work." },
+          { pl:"wychodzić z domu", en:"to leave the house", hint:"Verb. 'Wychodzę' = I am leaving.", ex:"Wychodzę z domu o ósmej piętnaście.", exEn:"I leave the house at eight fifteen." }
+        ]
       }
     ]
   },
@@ -606,6 +680,149 @@ const LEVELS = [
           { pl:"sąsiad", en:"neighbour", hint:"A woman is 'sąsiadka'.", ex:"Mój sąsiad jest miły.", exEn:"My neighbour is nice." },
           { pl:"umeblowane", en:"furnished", hint:"'nieumeblowane' = unfurnished.", ex:"Czy mieszkanie jest umeblowane?", exEn:"Is the flat furnished?" }
         ]
+      },
+      {
+        name: "Życie codzienne i rutyna",
+        emoji: "🔄",
+        desc: "Daily life, routines, and frequency",
+        cards: [
+          { pl:"zazwyczaj", en:"usually", hint:"Adverb of frequency.", ex:"Zazwyczaj wstaję o siódmej rano.", exEn:"I usually get up at seven in the morning." },
+          { pl:"codziennie", en:"every day", hint:"Very common for habits.", ex:"Codziennie piję dwie kawy.", exEn:"I drink two coffees every day." },
+          { pl:"często / rzadko", en:"often / rarely", hint:"Opposites.", ex:"Często czytam, ale rzadko oglądam telewizję.", exEn:"I often read, but I rarely watch TV." },
+          { pl:"wracać do domu", en:"to return home", hint:"Verb. 'Wracam' = I return.", ex:"Zazwyczaj wracam do domu po szesnastej.", exEn:"I usually return home after 4 PM." },
+          { pl:"sprzątać", en:"to clean", hint:"Verb. 'Sprzątam' = I clean.", ex:"W sobotę sprzątam całe mieszkanie.", exEn:"On Saturday I clean the whole flat." },
+          { pl:"prać", en:"to do laundry", hint:"Verb. 'Piorę' = I wash (clothes).", ex:"Muszę dzisiaj wyprać ubrania.", exEn:"I have to wash clothes today." },
+          { pl:"odpoczywać", en:"to rest", hint:"Verb. 'Odpoczywam' = I rest.", ex:"Wieczorem wreszcie mogę odpocząć.", exEn:"In the evening I can finally rest." },
+          { pl:"kłaść się spać", en:"to go to sleep", hint:"Reflexive verb. 'Kładę się' = I lay down.", ex:"Kładę się spać około północy.", exEn:"I go to sleep around midnight." },
+          { pl:"zasypiać", en:"to fall asleep", hint:"Verb.", ex:"Zasypiam bardzo szybko.", exEn:"I fall asleep very fast." },
+          { pl:"w dni robocze", en:"on weekdays", hint:"Monday to Friday.", ex:"W dni robocze jestem bardzo zajęty.", exEn:"On weekdays I am very busy." },
+          { pl:"harmonogram", en:"schedule", hint:"Masculine noun.", ex:"Mój harmonogram jest bardzo napięty.", exEn:"My schedule is very tight." },
+          { pl:"obowiązki domowe", en:"chores", hint:"Plural noun.", ex:"Nie lubię obowiązków domowych.", exEn:"I don't like household chores." }
+        ]
+      },
+      {
+        name: "Dom i rodzina",
+        emoji: "🛋️",
+        desc: "Family relations, flats, and furniture",
+        cards: [
+          { pl:"rodzice", en:"parents", hint:"Plural noun.", ex:"Moi rodzice mieszkają na wsi.", exEn:"My parents live in the countryside." },
+          { pl:"rodzeństwo", en:"siblings", hint:"Neuter noun. Used collectively.", ex:"Czy masz rodzeństwo?", exEn:"Do you have any siblings?" },
+          { pl:"wujek / ciocia", en:"uncle / aunt", hint:"Extended family.", ex:"W weekend odwiedzam ciocię.", exEn:"I am visiting my aunt this weekend." },
+          { pl:"dziadkowie", en:"grandparents", hint:"Plural noun.", ex:"Moi dziadkowie mają małego psa.", exEn:"My grandparents have a small dog." },
+          { pl:"małżeństwo", en:"married couple / marriage", hint:"Neuter noun.", ex:"Oni są szczęśliwym małżeństwem.", exEn:"They are a happy married couple." },
+          { pl:"salon", en:"living room", hint:"Masculine noun.", ex:"Wieczorem siedzimy w salonie.", exEn:"In the evening we sit in the living room." },
+          { pl:"meble", en:"furniture", hint:"Plural noun.", ex:"Kupiliśmy nowe meble do sypialni.", exEn:"We bought new furniture for the bedroom." },
+          { pl:"szafa", en:"wardrobe", hint:"Feminine noun.", ex:"Moja szafa jest pełna ubrań.", exEn:"My wardrobe is full of clothes." },
+          { pl:"kanapa", en:"sofa", hint:"Feminine noun.", ex:"Ta kanapa jest bardzo wygodna.", exEn:"This sofa is very comfortable." },
+          { pl:"lodówka", en:"fridge", hint:"Feminine noun.", ex:"W lodówce nie ma mleka.", exEn:"There is no milk in the fridge." },
+          { pl:"pralka", en:"washing machine", hint:"Feminine noun.", ex:"Pralka znowu się zepsuła.", exEn:"The washing machine broke again." },
+          { pl:"zmywarka", en:"dishwasher", hint:"Feminine noun.", ex:"Muszę rozładować zmywarkę.", exEn:"I have to unload the dishwasher." },
+          { pl:"odkurzacz", en:"vacuum cleaner", hint:"Masculine noun.", ex:"Gdzie schowałeś odkurzacz?", exEn:"Where did you hide the vacuum?" },
+          { pl:"przeprowadzka", en:"moving house", hint:"Feminine noun.", ex:"Przeprowadzka to duży stres.", exEn:"Moving house is a big stress." }
+        ]
+      },
+      {
+        name: "Zdrowie i ciało",
+        emoji: "🩺",
+        desc: "Body parts, well-being, and doctor visits",
+        cards: [
+          { pl:"lekarz", en:"doctor", hint:"Masculine noun. 'Lekarka' for a woman.", ex:"Muszę umówić się do lekarza.", exEn:"I need to make an appointment with a doctor." },
+          { pl:"dentysta", en:"dentist", hint:"Masculine/Feminine noun.", ex:"Boli mnie ząb, idę do dentysty.", exEn:"My tooth hurts, I'm going to the dentist." },
+          { pl:"przychodnia", en:"clinic / health centre", hint:"Feminine noun.", ex:"Przychodnia jest otwarta do osiemnastej.", exEn:"The clinic is open until 6 PM." },
+          { pl:"badanie", en:"examination / test", hint:"Neuter noun. E.g., badanie krwi (blood test).", ex:"Lekarz zlecił dodatkowe badania.", exEn:"The doctor ordered additional tests." },
+          { pl:"skierowanie", en:"referral", hint:"Neuter noun. Needed for specialists.", ex:"Mam skierowanie do specjalisty.", exEn:"I have a referral to a specialist." },
+          { pl:"głowa", en:"head", hint:"Feminine noun.", ex:"Strasznie boli mnie głowa.", exEn:"My head hurts terribly." },
+          { pl:"brzuch", en:"stomach / belly", hint:"Masculine noun.", ex:"Nie mogę jeść, boli mnie brzuch.", exEn:"I can't eat, my stomach hurts." },
+          { pl:"plecy", en:"back", hint:"Plural noun.", ex:"Bolą mnie plecy od siedzenia.", exEn:"My back hurts from sitting." },
+          { pl:"ręka", en:"arm / hand", hint:"Feminine noun.", ex:"Złamałem prawą rękę.", exEn:"I broke my right arm." },
+          { pl:"noga", en:"leg", hint:"Feminine noun.", ex:"Boli mnie lewa noga.", exEn:"My left leg hurts." },
+          { pl:"oko / oczy", en:"eye / eyes", hint:"Irregular plural.", ex:"Mam niebieskie oczy.", exEn:"I have blue eyes." },
+          { pl:"krew", en:"blood", hint:"Feminine noun.", ex:"Boję się pobierania krwi.", exEn:"I'm afraid of drawing blood." },
+          { pl:"Jak się pan czuje?", en:"How are you feeling?", hint:"Formal question to a man.", ex:"Jak się pan dzisiaj czuje?", exEn:"How are you feeling today?" },
+          { pl:"chorować", en:"to be sick / ill", hint:"Verb. 'Choruję' = I am sick.", ex:"Często choruję zimą.", exEn:"I am often sick in winter." },
+          { pl:"zdrowieć", en:"to get well", hint:"Verb.", ex:"Bierz leki i szybko zdrowiej!", exEn:"Take your medicine and get well soon!" }
+        ]
+      },
+      {
+        name: "Jedzenie i zakupy",
+        emoji: "🥟",
+        desc: "Polish dishes, recipes, and shopping for food",
+        cards: [
+          { pl:"pierogi", en:"dumplings", hint:"Plural noun. Polish classic.", ex:"Pierogi ruskie to moje ulubione danie.", exEn:"Russian dumplings are my favorite dish." },
+          { pl:"schabowy", en:"breaded pork cutlet", hint:"Short for 'kotlet schabowy'.", ex:"Na obiad jest schabowy z ziemniakami.", exEn:"For dinner there is pork cutlet with potatoes." },
+          { pl:"przepis", en:"recipe", hint:"Masculine noun.", ex:"Masz świetny przepis na to ciasto.", exEn:"You have a great recipe for this cake." },
+          { pl:"składniki", en:"ingredients", hint:"Plural noun.", ex:"Muszę kupić wszystkie składniki na zupę.", exEn:"I need to buy all the ingredients for the soup." },
+          { pl:"gotować", en:"to cook", hint:"Verb. 'Gotuję' = I cook.", ex:"Uwielbiam gotować w weekendy.", exEn:"I love to cook on weekends." },
+          { pl:"smażyć", en:"to fry", hint:"Verb.", ex:"Trzeba usmażyć cebulę na patelni.", exEn:"You need to fry the onion in a pan." },
+          { pl:"piec", en:"to bake", hint:"Verb. 'Piekę' = I bake.", ex:"Często piekę chleb w domu.", exEn:"I often bake bread at home." },
+          { pl:"targ / rynek", en:"farmer's market", hint:"Masculine noun.", ex:"Kupuję warzywa na targu.", exEn:"I buy vegetables at the market." },
+          { pl:"warzywniak", en:"greengrocer's", hint:"Masculine noun.", ex:"Idę do warzywniaka po pomidory.", exEn:"I'm going to the greengrocer for tomatoes." },
+          { pl:"piekarnia", en:"bakery", hint:"Feminine noun.", ex:"Świeży chleb z piekarni pachnie pięknie.", exEn:"Fresh bread from the bakery smells beautiful." },
+          { pl:"świeży", en:"fresh", hint:"Adjective.", ex:"Te owoce są bardzo świeże.", exEn:"These fruits are very fresh." },
+          { pl:"puszka / słoik", en:"can / jar", hint:"Packaging types.", ex:"Kupiłem puszkę fasoli i słoik dżemu.", exEn:"I bought a can of beans and a jar of jam." }
+        ]
+      },
+      {
+        name: "Podróże i wakacje",
+        emoji: "✈️",
+        desc: "Transport, accommodation, and weather",
+        cards: [
+          { pl:"lotnisko", en:"airport", hint:"Neuter noun.", ex:"Jedziemy taksówką na lotnisko.", exEn:"We are taking a taxi to the airport." },
+          { pl:"samolot", en:"airplane", hint:"Masculine noun.", ex:"Samolot startuje o ósmej.", exEn:"The plane takes off at eight." },
+          { pl:"pociąg", en:"train", hint:"Masculine noun.", ex:"Wolę podróżować pociągiem niż autobusem.", exEn:"I prefer traveling by train rather than by bus." },
+          { pl:"walizka", en:"suitcase", hint:"Feminine noun.", ex:"Moja walizka jest bardzo ciężka.", exEn:"My suitcase is very heavy." },
+          { pl:"bagaż", en:"luggage", hint:"Masculine noun.", ex:"Gdzie mogę zostawić mój bagaż?", exEn:"Where can I leave my luggage?" },
+          { pl:"bilet lotniczy", en:"flight ticket", hint:"Masculine noun.", ex:"Kupiłem bilety lotnicze do Hiszpanii.", exEn:"I bought flight tickets to Spain." },
+          { pl:"rezerwować", en:"to book / reserve", hint:"Verb. 'Rezerwuję' = I book.", ex:"Chcę zarezerwować pokój na dwie noce.", exEn:"I want to book a room for two nights." },
+          { pl:"nocleg", en:"accommodation", hint:"Masculine noun.", ex:"Szukamy taniego noclegu w centrum.", exEn:"We are looking for cheap accommodation in the center." },
+          { pl:"hotel", en:"hotel", hint:"Masculine noun.", ex:"Ten hotel ma pięć gwiazdek.", exEn:"This hotel has five stars." },
+          { pl:"góry", en:"mountains", hint:"Plural noun. 'W górach' = in the mountains.", ex:"Latem jedziemy w góry.", exEn:"In the summer we are going to the mountains." },
+          { pl:"morze", en:"sea", hint:"Neuter noun. 'Nad morzem' = by the sea.", ex:"Uwielbiam wakacje nad morzem.", exEn:"I love holidays by the sea." },
+          { pl:"upał", en:"heatwave", hint:"Masculine noun.", ex:"Dzisiaj jest straszny upał.", exEn:"There is a terrible heatwave today." },
+          { pl:"burza", en:"storm", hint:"Feminine noun.", ex:"Boję się, że będzie burza.", exEn:"I'm afraid there will be a storm." },
+          { pl:"wiatr", en:"wind", hint:"Masculine noun.", ex:"Dzisiaj wieje silny wiatr.", exEn:"A strong wind is blowing today." }
+        ]
+      },
+      {
+        name: "Praca i edukacja",
+        emoji: "🎓",
+        desc: "Professions, studying, and the workplace",
+        cards: [
+          { pl:"nauczyciel / nauczycielka", en:"teacher (m/f)", hint:"Profession.", ex:"Mój brat jest nauczycielem historii.", exEn:"My brother is a history teacher." },
+          { pl:"uczeń / student", en:"pupil / university student", hint:"'Student' strictly means uni student in Polish.", ex:"Jestem studentem pierwszego roku.", exEn:"I am a first-year student." },
+          { pl:"szkoła", en:"school", hint:"Feminine noun.", ex:"Dzieci są w szkole.", exEn:"The children are at school." },
+          { pl:"uniwersytet", en:"university", hint:"Masculine noun.", ex:"Studiuję na uniwersytecie.", exEn:"I study at the university." },
+          { pl:"wykład", en:"lecture", hint:"Masculine noun.", ex:"Wykład z ekonomii był bardzo nudny.", exEn:"The economics lecture was very boring." },
+          { pl:"egzamin", en:"exam", hint:"Masculine noun.", ex:"Jutro rano mam trudny egzamin.", exEn:"I have a difficult exam tomorrow morning." },
+          { pl:"uczyć się", en:"to study / learn", hint:"Verb. 'Uczę się' = I study.", ex:"Muszę się uczyć do egzaminu.", exEn:"I have to study for the exam." },
+          { pl:"zawód", en:"profession", hint:"Masculine noun.", ex:"Jaki masz zawód?", exEn:"What is your profession?" },
+          { pl:"inżynier", en:"engineer", hint:"Profession.", ex:"Ona pracuje jako inżynier oprogramowania.", exEn:"She works as a software engineer." },
+          { pl:"szukać pracy", en:"to look for a job", hint:"Verb phrase.", ex:"Od miesiąca szukam nowej pracy.", exEn:"I have been looking for a new job for a month." },
+          { pl:"rozmowa kwalifikacyjna", en:"job interview", hint:"Feminine noun.", ex:"Mam jutro rozmowę kwalifikacyjną.", exEn:"I have a job interview tomorrow." },
+          { pl:"doświadczenie", en:"experience", hint:"Neuter noun.", ex:"Wymagane jest doświadczenie w branży.", exEn:"Experience in the industry is required." },
+          { pl:"wynagrodzenie", en:"salary", hint:"Neuter noun.", ex:"Oczekuję dobrego wynagrodzenia.", exEn:"I expect a good salary." },
+          { pl:"awans", en:"promotion", hint:"Masculine noun.", ex:"Dostałem awans i podwyżkę!", exEn:"I got a promotion and a raise!" }
+        ]
+      },
+      {
+        name: "Czas wolny i kultura",
+        emoji: "🎭",
+        desc: "Hobbies, sports, and going out",
+        cards: [
+          { pl:"hobby", en:"hobby", hint:"Neuter noun. Does not decline.", ex:"Moje główne hobby to fotografia.", exEn:"My main hobby is photography." },
+          { pl:"interesować się", en:"to be interested in", hint:"Reflexive verb + instrumental case.", ex:"Interesuję się polityką i sportem.", exEn:"I am interested in politics and sports." },
+          { pl:"kino", en:"cinema", hint:"Neuter noun.", ex:"Idziemy dzisiaj do kina na komedię.", exEn:"We are going to the cinema for a comedy today." },
+          { pl:"teatr", en:"theater", hint:"Masculine noun.", ex:"Mam bilety do teatru na sobotę.", exEn:"I have theater tickets for Saturday." },
+          { pl:"wystawa", en:"exhibition", hint:"Feminine noun.", ex:"To bardzo ciekawa wystawa sztuki.", exEn:"This is a very interesting art exhibition." },
+          { pl:"koncert", en:"concert", hint:"Masculine noun.", ex:"Bilety na ten koncert są wyprzedane.", exEn:"Tickets for this concert are sold out." },
+          { pl:"uprawiać sport", en:"to do sports", hint:"Verb phrase.", ex:"Trzeba uprawiać sport, żeby być zdrowym.", exEn:"You need to do sports to be healthy." },
+          { pl:"biegać", en:"to run / jog", hint:"Verb. 'Biegam' = I run.", ex:"Biegam w parku trzy razy w tygodniu.", exEn:"I run in the park three times a week." },
+          { pl:"siłownia", en:"gym", hint:"Feminine noun.", ex:"Po pracy idę na siłownię.", exEn:"After work, I go to the gym." },
+          { pl:"basen", en:"swimming pool", hint:"Masculine noun.", ex:"W niedzielę rano chodzę na basen.", exEn:"I go to the swimming pool on Sunday morning." },
+          { pl:"spotykać się", en:"to meet up", hint:"Reflexive verb.", ex:"Często spotykam się z przyjaciółmi w pubie.", exEn:"I often meet with friends at the pub." },
+          { pl:"znajomi", en:"acquaintances / friends", hint:"Plural noun. Less intimate than 'przyjaciele'.", ex:"Zaprosiłem kilku znajomych z pracy.", exEn:"I invited a few friends from work." },
+          { pl:"spacer", en:"walk / stroll", hint:"Masculine noun. 'Iść na spacer' = go for a walk.", ex:"Chodźmy na długi spacer do lasu.", exEn:"Let's go for a long walk to the forest." }
+        ]
       }
     ]
   }
@@ -739,6 +956,8 @@ $("back").addEventListener("click", ()=>show("home"));
 $("practiceStill").addEventListener("click", practiceStill);
 $("restart").addEventListener("click", restart);
 $("toTopics").addEventListener("click", ()=>show("home"));
+$("openPrivacy").addEventListener("click", ()=>show("privacy"));
+$("backPrivacy").addEventListener("click", ()=>show("home"));
 document.addEventListener("keydown", e=>{
   if(!$("study").classList.contains("active")) return;
   if($("doneView").style.display!=="none") return;
