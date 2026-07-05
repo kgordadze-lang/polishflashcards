@@ -194,9 +194,6 @@
 
   /* ---------- footer ---------- */
   footer{display:flex;flex-direction:column;align-items:center;gap:11px;padding:8px 0 22px;text-align:center}
-  .foot-badge{display:inline-block;background:var(--mint-bg);color:var(--mint-text);
-    font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;line-height:1.45;
-    padding:9px 15px;border-radius:999px;max-width:340px}
   .foot-note{color:#9fb2ab;font-size:12px;font-weight:500;line-height:1.5;max-width:340px}
   .foot-link{background:none;border:none;font-family:inherit;font-size:inherit;color:var(--emerald);
     font-weight:700;cursor:pointer;padding:0;vertical-align:baseline;
@@ -218,6 +215,73 @@
   .privacy-list li::before{content:"";position:absolute;left:2px;top:8px;width:7px;height:7px;
     border-radius:50%;background:var(--emerald)}
   .privacy-list li b{color:var(--forest);font-weight:700}
+
+  /* ---------- grammar: teach card ---------- */
+  .front-q{font-size:25px;line-height:1.22;font-weight:800;letter-spacing:-.5px;color:var(--forest)}
+  .front-q .muted{display:block;margin-top:8px;font-size:15px;font-weight:600;color:var(--muted)}
+  .back-face.g-back{justify-content:flex-start;gap:12px;padding-top:34px}
+  .b-answer{font-size:23px;font-weight:800;letter-spacing:-.4px;color:var(--emerald);line-height:1.2}
+  .b-sub{font-size:15px;color:var(--forest);font-weight:600;line-height:1.45}
+  .b-explain{font-size:13.5px;color:var(--muted);line-height:1.55;max-width:38ch}
+  .b-explain b,.b-sub b{color:var(--forest);font-weight:700}
+  .b-note{font-size:12.5px;color:var(--mint-text);background:var(--mint-bg);border-radius:12px;padding:9px 12px;line-height:1.45}
+  .b-note b{color:var(--sage-hover)}
+  .rule-list{list-style:none;margin:0;padding:0;width:100%;max-width:400px;display:flex;flex-direction:column;gap:9px;text-align:left}
+  .rule-list li{position:relative;padding-left:20px;font-size:13.5px;line-height:1.5;color:var(--muted)}
+  .rule-list li::before{content:"";position:absolute;left:2px;top:7px;width:6px;height:6px;border-radius:50%;background:var(--emerald)}
+  .rule-list li b{color:var(--forest);font-weight:700}
+  .end-table{width:100%;max-width:400px;border:1px solid var(--border);border-radius:14px;overflow:hidden}
+  .end-row{display:grid;grid-template-columns:1fr auto 1.5fr;gap:8px;align-items:center;padding:9px 12px;font-size:12.5px;text-align:left}
+  .end-row+.end-row{border-top:1px solid var(--border)}
+  .end-row .g{color:var(--muted);font-weight:600}
+  .end-row .e{color:var(--emerald);font-weight:800;font-size:14px;text-align:center}
+  .end-row .ex{color:var(--forest);font-weight:600}
+  .end-row .ex b{color:var(--emerald)}
+  .ex-line{width:100%;max-width:400px;background:var(--mint-bg);border-radius:14px;padding:11px 13px;text-align:left;display:flex;align-items:flex-start;gap:10px}
+  .ex-line .t{flex:1;min-width:0}
+  .ex-line .p{font-size:14.5px;font-weight:700;color:var(--forest);line-height:1.35}
+  .ex-line .e{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .mini-audio{flex:0 0 auto;width:32px;height:32px;border-radius:50%;border:none;background:#fff;color:var(--mint-text);display:grid;place-items:center;cursor:pointer;box-shadow:0 2px 7px rgba(4,120,87,.16);transition:.15s}
+  .mini-audio:hover{background:var(--emerald);color:#fff}
+  .mini-audio:active{transform:scale(.93)}
+  .mini-audio svg{width:15px;height:15px}
+
+  /* ---------- grammar: drills ---------- */
+  .drill{flex:1;display:flex;flex-direction:column;padding:10px 0 0}
+  .drill-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:26px 22px;display:flex;flex-direction:column}
+  .d-type{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:#9fb2ab;margin-bottom:14px}
+  .q-prompt{font-size:22px;font-weight:800;line-height:1.35;letter-spacing:-.4px;color:var(--forest)}
+  .q-prompt .blank{display:inline-block;min-width:56px;border-bottom:3px solid var(--emerald);margin:0 3px;vertical-align:middle;height:1.1em}
+  .q-en{font-size:14px;color:var(--muted);font-weight:500;margin-top:8px}
+  .opts{display:flex;flex-direction:column;gap:10px;margin-top:22px}
+  .opt{border:1.5px solid var(--border);background:#fff;color:var(--forest);border-radius:14px;padding:14px 16px;font-size:16px;font-weight:700;cursor:pointer;text-align:center;transition:.14s;font-family:inherit}
+  .opt:hover:not(:disabled){border-color:var(--emerald);transform:translateY(-1px)}
+  .opt:disabled{cursor:default}
+  .opt:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  .opt.correct{background:var(--mint-bg);border-color:var(--emerald);color:var(--sage-hover)}
+  .opt.wrong{background:#fbeee8;border-color:var(--coral);color:var(--coral-hover)}
+  .build-row{min-height:56px;border:1.5px dashed #c7d3db;border-radius:14px;background:#fbfdfe;margin-top:20px;padding:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .build-row.empty::before{content:"Tap words below to build the sentence";color:#aebbc4;font-size:13px;font-weight:500;padding:4px 6px}
+  .build-row.shake{animation:shake .32s}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+  .build-row.locked .wchip{background:var(--mint-bg);border-color:var(--emerald);color:var(--sage-hover);cursor:default}
+  .build-pool{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  .wchip{border:1.5px solid var(--border);background:#fff;color:var(--forest);border-radius:11px;padding:9px 14px;font-size:15px;font-weight:700;cursor:pointer;transition:.13s;font-family:inherit}
+  .wchip:hover{border-color:var(--emerald);transform:translateY(-1px)}
+  .wchip:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  .wchip.in-row{background:var(--mint-bg);border-color:#bfe6d5;color:var(--sage-hover)}
+  .fb-box{margin-top:18px;display:none}
+  .fb-box.show{display:block;animation:fade .3s ease}
+  .fb-good{background:var(--mint-bg);border-radius:14px;padding:13px 14px;display:flex;align-items:flex-start;gap:11px}
+  .fb-good .t{flex:1;min-width:0}
+  .fb-good .p{font-size:15.5px;font-weight:700;color:var(--forest);line-height:1.35}
+  .fb-good .e{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .fb-explain{font-size:13px;color:var(--sage-hover);font-weight:600;margin-top:9px;line-height:1.45}
+  .check-btn{margin-top:18px;align-self:flex-start;border:none;background:var(--forest);color:var(--cream);border-radius:13px;padding:12px 22px;font-size:14.5px;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s}
+  .check-btn:hover:not(:disabled){background:var(--forest-hover)}
+  .check-btn:disabled{opacity:.4;cursor:default}
+  .score-ring{margin:20px 0 22px;font-size:40px;font-weight:800;letter-spacing:-1px;color:var(--forest)}
+  .score-ring span.lbl{color:var(--muted);font-size:20px;font-weight:700}
 
   @media (max-width:400px){ .pl{font-size:31px} .en{font-size:24px} .flip,.stage{min-height:430px} .hero h1{font-size:29px;letter-spacing:-.9px} }
   @media (prefers-reduced-motion:reduce){ .flip,.screen,.done{transition:none;animation:none} }
@@ -334,6 +398,70 @@
     </div>
   </section>
 
+  <!-- ============ GRAMMAR ============ -->
+  <section class="screen" id="grammar">
+    <div class="sbar">
+      <button class="back" id="gBack" aria-label="Back">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="sbar-title"><b id="gTitle"></b><span id="gPhase"></span></div>
+    </div>
+    <div class="progress" id="gProgress">
+      <div class="track"><div class="fill" id="gFill"></div></div>
+      <div class="p-count" id="gCount">0 / 0</div>
+    </div>
+
+    <!-- learn -->
+    <div id="gLearn" style="display:none;flex-direction:column;flex:1">
+      <div class="stage"><div class="scene">
+        <div class="flip" id="gFlip">
+          <div class="face">
+            <span class="eyebrow">Concept</span>
+            <div class="front-q" id="gFront"></div>
+            <div class="cue">tap to reveal</div>
+          </div>
+          <div class="face back-face g-back" id="gBackFace"></div>
+        </div>
+      </div></div>
+      <div class="controls">
+        <button class="ctrl" id="gPrev">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg> Prev
+        </button>
+        <button class="ctrl" id="gNext"><span id="gNextLabel">Next</span></button>
+      </div>
+    </div>
+
+    <!-- practice -->
+    <div id="gPractice" style="display:none;flex-direction:column;flex:1">
+      <div class="drill">
+        <div class="drill-card" id="gDrillCard"></div>
+        <div class="controls">
+          <button class="ctrl" id="gDrillNext" disabled>
+            <span id="gDrillNextLabel">Next</span>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- done -->
+    <div id="gDone" style="display:none;flex:1">
+      <div class="done">
+        <div class="done-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        </div>
+        <h2>Brawo!</h2>
+        <p id="gDoneMsg"></p>
+        <div class="score-ring"><span id="gScore">0</span><span class="lbl"> / <span id="gTotal">0</span> first try</span></div>
+        <div class="done-actions">
+          <button class="btn-primary" id="gAgain">Practice again</button>
+          <button class="btn-ghost" id="gReview">Review the lesson</button>
+          <button class="btn-ghost" id="gHome">Back to topics</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ PRIVACY NOTICE ============ -->
   <section class="screen" id="privacy">
     <div class="sbar">
@@ -356,7 +484,6 @@
   </section>
 
   <footer>
-    <div class="foot-badge">Works on any phone - add to home screen to use it like an app.</div>
     <div class="foot-note">We do not collect your data in any form. See more in <button class="foot-link" id="openPrivacy">Privacy Notice</button></div>
   </footer>
 </div>
@@ -825,6 +952,244 @@ const LEVELS = [
         ]
       }
     ]
+  },
+  {
+    level: "Grammar",
+    blurb: "Cases and patterns",
+    topics: [
+      {
+        name: "Narzędnik (Instrumental)",
+        emoji: "🔧",
+        kind: "grammar",
+        desc: "z kim? z czym? - jobs, transport, interests",
+        teach: [
+          { front:"Narzędnik - when do you use it?",
+            sub:"It answers <b>z kim?</b> / <b>z czym?</b> - with whom / with what.",
+            points:[
+              "Tools and transport: <b>jadę autobusem</b> (no preposition)",
+              "After <b>być</b> - jobs and identity: <b>jestem nauczycielem</b>",
+              "After <b>interesować się</b>: <b>interesuję się sportem</b>",
+              "After <b>z</b> = (together) with: <b>kawa z mlekiem</b>"
+            ],
+            examples:[
+              { pl:"Jadę do pracy autobusem.", en:"I go to work by bus." },
+              { pl:"Interesuję się sportem.", en:"I'm interested in sport." }
+            ] },
+          { front:"How do the endings change?",
+            table:[
+              { g:"Masculine", e:"-em", ex:"nauczyciel &rarr; nauczyciel<b>em</b>" },
+              { g:"after k, g", e:"-iem", ex:"pociąg &rarr; pociąg<b>iem</b>" },
+              { g:"Neuter", e:"-em", ex:"okno &rarr; okn<b>em</b>" },
+              { g:"Feminine", e:"-ą", ex:"kawa &rarr; kaw<b>ą</b>" },
+              { g:"Plural", e:"-ami", ex:"koledzy &rarr; koleg<b>ami</b>" }
+            ],
+            note:"Adjectives agree too: <b>dobrym</b> nauczycielem, <b>dobrą</b> kawą.",
+            examples:[ { pl:"Rozmawiam z kolegami z pracy.", en:"I'm talking with colleagues from work." } ] },
+          { front:"Jestem ___ . <span class='muted'>(nauczyciel)</span>",
+            answer:"Jestem nauczycielem.",
+            explain:"After <b>być</b>, your profession or identity takes the instrumental. A woman says: <b>Jestem nauczycielką</b>.",
+            examples:[
+              { pl:"On jest lekarzem.", en:"He is a doctor." },
+              { pl:"Ona jest lekarką.", en:"She is a doctor." }
+            ] },
+          { front:"Jadę do pracy ___ . <span class='muted'>(tramwaj)</span>",
+            answer:"Jadę do pracy tramwajem.",
+            explain:"Means of transport take the instrumental with <b>no preposition</b>: autobusem, tramwajem, samochodem, rowerem.",
+            examples:[
+              { pl:"Piszę długopisem.", en:"I write with a pen." },
+              { pl:"Jadę rowerem do parku.", en:"I ride a bike to the park." }
+            ] }
+        ],
+        drills: [
+          { type:"choose", prompt:"Jestem ___ .", promptEn:"I am a teacher.",
+            options:["nauczycielem","nauczyciela","nauczyciel"], answer:"nauczycielem",
+            explain:"być + profession &rarr; the ending -em.", full:"Jestem nauczycielem.", fullEn:"I am a teacher." },
+          { type:"choose", prompt:"Ona jest ___ .", promptEn:"She is a doctor.",
+            options:["lekarką","lekarkę","lekarka"], answer:"lekarką",
+            explain:"Feminine -a changes to -ą.", full:"Ona jest lekarką.", fullEn:"She is a doctor." },
+          { type:"choose", prompt:"Codziennie jadę do pracy ___ .", promptEn:"I go to work by tram every day.",
+            options:["tramwajem","tramwaju","tramwaj"], answer:"tramwajem",
+            explain:"Transport takes -em, with no preposition.", full:"Codziennie jadę do pracy tramwajem.", fullEn:"I go to work by tram every day." },
+          { type:"choose", prompt:"Wolę podróżować ___ .", promptEn:"I prefer to travel by train.",
+            options:["pociągiem","pociągem","pociąga"], answer:"pociągiem",
+            explain:"After k / g the ending softens to -iem.", full:"Wolę podróżować pociągiem.", fullEn:"I prefer to travel by train." },
+          { type:"choose", prompt:"Interesuję się ___ .", promptEn:"I'm interested in music.",
+            options:["muzyką","muzykę","muzyki"], answer:"muzyką",
+            explain:"interesować się is always followed by the instrumental.", full:"Interesuję się muzyką.", fullEn:"I'm interested in music." },
+          { type:"build", promptEn:"My brother is a teacher.",
+            answer:["Mój","brat","jest","nauczycielem"],
+            explain:"być &rarr; the job goes into the instrumental: nauczycielem.", full:"Mój brat jest nauczycielem.", fullEn:"My brother is a teacher." },
+          { type:"choose", prompt:"Idę do kina z ___ .", promptEn:"I'm going to the cinema with a friend.",
+            options:["przyjacielem","przyjaciela","przyjacielu"], answer:"przyjacielem",
+            explain:"z = 'with' &rarr; the instrumental.", full:"Idę do kina z przyjacielem.", fullEn:"I'm going to the cinema with a friend." },
+          { type:"choose", prompt:"Mieszkam z ___ .", promptEn:"I live with my sister.",
+            options:["siostrą","siostrę","siostry"], answer:"siostrą",
+            explain:"z + feminine -a &rarr; -ą.", full:"Mieszkam z siostrą.", fullEn:"I live with my sister." },
+          { type:"choose", prompt:"Rozmawiam z ___ z pracy.", promptEn:"I talk with colleagues from work.",
+            options:["kolegami","kolegów","koledzy"], answer:"kolegami",
+            explain:"Plural instrumental &rarr; -ami.", full:"Rozmawiam z kolegami z pracy.", fullEn:"I talk with colleagues from work." },
+          { type:"build", promptEn:"I go to work by tram.",
+            answer:["Jadę","do","pracy","tramwajem"],
+            explain:"Transport with no preposition: tramwajem.", full:"Jadę do pracy tramwajem.", fullEn:"I go to work by tram." }
+        ]
+      },
+      {
+        name: "Biernik (Accusative)",
+        emoji: "🎯",
+        kind: "grammar",
+        desc: "kogo? co? - the direct object",
+        teach: [
+          { front:"Biernik - kogo? co? (whom? what?)",
+            sub:"The <b>direct object</b> - what the action lands on.",
+            points:[
+              "After <b>lubić, mieć, jeść, pić, widzieć, kupować</b>",
+              "Feminine <b>-a &rarr; -ę</b>: kawa &rarr; kawę",
+              "Masculine inanimate: <b>no change</b> (mam bilet)",
+              "Masculine animate &rarr; <b>-a</b> (mam psa, brata)"
+            ],
+            examples:[
+              { pl:"Lubię czarną kawę.", en:"I like black coffee." },
+              { pl:"Mam nowy telefon.", en:"I have a new phone." }
+            ] },
+          { front:"How do the endings change?",
+            table:[
+              { g:"Feminine", e:"-ę", ex:"kawa &rarr; kaw<b>ę</b>" },
+              { g:"Masc. inanimate", e:"=", ex:"bilet &rarr; bilet" },
+              { g:"Masc. animate", e:"-a", ex:"pies &rarr; ps<b>a</b>" },
+              { g:"Neuter", e:"=", ex:"okno &rarr; okno" }
+            ],
+            note:"Adjectives agree: <b>czarną</b> kawę, <b>małego</b> psa.",
+            examples:[ { pl:"Czytam ciekawą książkę.", en:"I'm reading an interesting book." } ] },
+          { front:"Feminine: -a becomes -ę",
+            answer:"Lubię kawę.",
+            explain:"Feminine nouns swap <b>-a</b> for <b>-ę</b>: kawa &rarr; kawę, książka &rarr; książkę, herbata &rarr; herbatę.",
+            examples:[
+              { pl:"Piję zieloną herbatę.", en:"I'm drinking green tea." },
+              { pl:"Kupuję nową książkę.", en:"I'm buying a new book." }
+            ] },
+          { front:"Where are you going? Also accusative.",
+            sub:"<b>na</b> / <b>w</b> for direction, and <b>w</b> + a day, take the accusative.",
+            points:[
+              "Direction: <b>idę na koncert</b>, <b>jadę w góry</b>",
+              "Time: <b>w sobotę</b>, <b>w niedzielę</b>"
+            ],
+            examples:[
+              { pl:"Idę na obiad.", en:"I'm going for lunch." },
+              { pl:"W sobotę mam czas.", en:"On Saturday I have time." }
+            ] }
+        ],
+        drills: [
+          { type:"choose", prompt:"Lubię czarną ___ .", promptEn:"I like black coffee.",
+            options:["kawę","kawa","kawy"], answer:"kawę",
+            explain:"Feminine -a &rarr; -ę.", full:"Lubię czarną kawę.", fullEn:"I like black coffee." },
+          { type:"choose", prompt:"Czytam ciekawą ___ .", promptEn:"I'm reading an interesting book.",
+            options:["książkę","książka","książki"], answer:"książkę",
+            explain:"Feminine -a &rarr; -ę: książka &rarr; książkę.", full:"Czytam ciekawą książkę.", fullEn:"I'm reading an interesting book." },
+          { type:"choose", prompt:"Mam nowy ___ .", promptEn:"I have a new phone.",
+            options:["telefon","telefonu","telefona"], answer:"telefon",
+            explain:"Masculine inanimate - no change.", full:"Mam nowy telefon.", fullEn:"I have a new phone." },
+          { type:"choose", prompt:"Mam małego ___ .", promptEn:"I have a small dog.",
+            options:["psa","pies","psu"], answer:"psa",
+            explain:"Animate masculine &rarr; -a (like the genitive).", full:"Mam małego psa.", fullEn:"I have a small dog." },
+          { type:"choose", prompt:"Piję zieloną ___ .", promptEn:"I'm drinking green tea.",
+            options:["herbatę","herbata","herbaty"], answer:"herbatę",
+            explain:"Feminine -a &rarr; -ę.", full:"Piję zieloną herbatę.", fullEn:"I'm drinking green tea." },
+          { type:"build", promptEn:"On Saturday I have time.",
+            answer:["W","sobotę","mam","czas"],
+            explain:"w + a day &rarr; accusative (sobotę); czas is the object.", full:"W sobotę mam czas.", fullEn:"On Saturday I have time." },
+          { type:"choose", prompt:"W niedzielę idę na ___ .", promptEn:"On Sunday I'm going to a concert.",
+            options:["koncert","koncercie","koncertu"], answer:"koncert",
+            explain:"na + direction &rarr; accusative; koncert (inanimate) is unchanged.", full:"W niedzielę idę na koncert.", fullEn:"On Sunday I'm going to a concert." },
+          { type:"choose", prompt:"Widzę moją ___ .", promptEn:"I see my sister.",
+            options:["siostrę","siostra","siostry"], answer:"siostrę",
+            explain:"Feminine -a &rarr; -ę, even for people.", full:"Widzę moją siostrę.", fullEn:"I see my sister." },
+          { type:"choose", prompt:"Znam tego ___ .", promptEn:"I know this doctor.",
+            options:["lekarza","lekarz","lekarzowi"], answer:"lekarza",
+            explain:"People are animate &rarr; -a: lekarz &rarr; lekarza.", full:"Znam tego lekarza.", fullEn:"I know this doctor." },
+          { type:"build", promptEn:"I really like black coffee.",
+            answer:["Bardzo","lubię","czarną","kawę"],
+            explain:"kawa &rarr; kawę (feminine -a &rarr; -ę).", full:"Bardzo lubię czarną kawę.", fullEn:"I really like black coffee." }
+        ]
+      },
+      {
+        name: "Dopełniacz (Genitive)",
+        emoji: "📦",
+        kind: "grammar",
+        desc: "kogo? czego? - of, without, negation",
+        teach: [
+          { front:"Dopełniacz - 'of', and much more.",
+            sub:"It answers <b>kogo?</b> / <b>czego?</b> and shows up everywhere.",
+            points:[
+              "Possession and 'of': <b>filiżanka kawy</b>",
+              "After <b>bez, dla, do, od, z</b> (from), <b>u</b>",
+              "Quantity: <b>dużo pracy</b>, <b>trochę czasu</b>",
+              "Negation: <b>nie ma mleka</b>"
+            ],
+            examples:[
+              { pl:"Poproszę kawę bez cukru.", en:"A coffee without sugar, please." },
+              { pl:"Nie ma mleka w lodówce.", en:"There's no milk in the fridge." }
+            ] },
+          { front:"How do the endings change?",
+            table:[
+              { g:"Feminine", e:"-y / -i", ex:"kawa &rarr; kaw<b>y</b>" },
+              { g:"Neuter", e:"-a", ex:"mleko &rarr; mlek<b>a</b>" },
+              { g:"Masc. (a)", e:"-a", ex:"chleb &rarr; chleb<b>a</b>" },
+              { g:"Masc. (u)", e:"-u", ex:"cukier &rarr; cukr<b>u</b>" }
+            ],
+            note:"Masculine <b>-a</b> vs <b>-u</b> is learned word by word.",
+            examples:[ { pl:"Szukam dobrej kawy.", en:"I'm looking for good coffee." } ] },
+          { front:"Negation flips the object to genitive.",
+            answer:"Nie mam czasu.",
+            explain:"After a <b>negated</b> verb, the accusative object becomes genitive: mam kawę &rarr; nie mam kawy.",
+            examples:[
+              { pl:"Nie mam czasu.", en:"I don't have time." },
+              { pl:"Nie ma tu apteki.", en:"There's no pharmacy here." }
+            ] },
+          { front:"After bez / dla / do / z (from)",
+            sub:"These prepositions <b>always</b> take the genitive.",
+            points:[
+              "<b>bez</b> cukru, <b>dla</b> mamy",
+              "<b>do</b> domu, <b>z</b> Polski (from Poland)"
+            ],
+            examples:[
+              { pl:"Idę do domu.", en:"I'm going home." },
+              { pl:"To prezent dla mamy.", en:"This is a present for mum." }
+            ] }
+        ],
+        drills: [
+          { type:"choose", prompt:"Poproszę kawę bez ___ .", promptEn:"A coffee without sugar, please.",
+            options:["cukru","cukier","cukrem"], answer:"cukru",
+            explain:"bez + genitive; cukier &rarr; cukru.", full:"Poproszę kawę bez cukru.", fullEn:"A coffee without sugar, please." },
+          { type:"choose", prompt:"W lodówce nie ma ___ .", promptEn:"There's no milk in the fridge.",
+            options:["mleka","mleko","mlekiem"], answer:"mleka",
+            explain:"nie ma + genitive; neuter &rarr; -a.", full:"W lodówce nie ma mleka.", fullEn:"There's no milk in the fridge." },
+          { type:"choose", prompt:"Nie mam ___ .", promptEn:"I don't have time.",
+            options:["czasu","czas","czasem"], answer:"czasu",
+            explain:"A negated object goes into the genitive; czas &rarr; czasu.", full:"Nie mam czasu.", fullEn:"I don't have time." },
+          { type:"choose", prompt:"Szukam dobrej ___ .", promptEn:"I'm looking for good coffee.",
+            options:["kawy","kawa","kawę"], answer:"kawy",
+            explain:"szukać + genitive; kawa &rarr; kawy.", full:"Szukam dobrej kawy.", fullEn:"I'm looking for good coffee." },
+          { type:"choose", prompt:"Wracam do ___ .", promptEn:"I'm going back home.",
+            options:["domu","dom","domem"], answer:"domu",
+            explain:"do + genitive; dom &rarr; domu.", full:"Wracam do domu.", fullEn:"I'm going back home." },
+          { type:"build", promptEn:"There's no pharmacy here.",
+            answer:["Nie","ma","tu","apteki"],
+            explain:"nie ma + genitive; apteka &rarr; apteki.", full:"Nie ma tu apteki.", fullEn:"There's no pharmacy here." },
+          { type:"choose", prompt:"To prezent dla ___ .", promptEn:"This is a present for mum.",
+            options:["mamy","mama","mamę"], answer:"mamy",
+            explain:"dla + genitive; mama &rarr; mamy.", full:"To prezent dla mamy.", fullEn:"This is a present for mum." },
+          { type:"choose", prompt:"Mam dużo ___ .", promptEn:"I have a lot of work.",
+            options:["pracy","praca","pracę"], answer:"pracy",
+            explain:"dużo + genitive; praca &rarr; pracy.", full:"Mam dużo pracy.", fullEn:"I have a lot of work." },
+          { type:"choose", prompt:"Jestem z ___ .", promptEn:"I'm from Poland.",
+            options:["Polski","Polska","Polską"], answer:"Polski",
+            explain:"z (from) + genitive; Polska &rarr; Polski.", full:"Jestem z Polski.", fullEn:"I'm from Poland." },
+          { type:"build", promptEn:"I don't have time today.",
+            answer:["Nie","mam","dzisiaj","czasu"],
+            explain:"Negation &rarr; genitive: czas &rarr; czasu.", full:"Nie mam dzisiaj czasu.", fullEn:"I don't have time today." }
+        ]
+      }
+    ]
   }
 ];
 
@@ -855,12 +1220,12 @@ function renderTopics(){
       '<div class="t-body">'+
         '<div class="t-title"></div>'+
         '<div class="t-desc"></div>'+
-        '<div class="t-meta"><span class="chip">'+lv.level+'</span><span class="t-count">'+t.cards.length+' cards</span></div>'+
+        '<div class="t-meta"><span class="chip">'+lv.level+'</span><span class="t-count">'+(t.kind==="grammar" ? (t.drills.length+' drills') : (t.cards.length+' cards'))+'</span></div>'+
       '</div>'+
       '<div class="t-arrow">›</div>';
     b.querySelector(".t-title").textContent = t.name;
     b.querySelector(".t-desc").textContent = t.desc || "";
-    b.onclick = ()=> startTopic(S.levelIdx, i);
+    b.onclick = ()=> (t.kind==="grammar" ? startGrammar(S.levelIdx, i) : startTopic(S.levelIdx, i));
     box.appendChild(b);
   });
 }
@@ -965,6 +1330,147 @@ document.addEventListener("keydown", e=>{
   else if(e.key==="ArrowLeft") goPrev();
   else if(e.key===" "){ e.preventDefault(); flip(); }
 });
+
+/* ---------------- grammar (teach -> drill) ---------------- */
+const G = { topic:null, li:0, tpi:0, ti:0, di:0, results:[], attempted:false, build:{pool:[],row:[]} };
+const G_AUDIO='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>';
+
+function gExampleHTML(ex){
+  return '<div class="ex-line"><div class="t"><div class="p">'+ex.pl+'</div><div class="e">'+ex.en+'</div></div>'+
+         '<button class="mini-audio" data-say="'+encodeURIComponent(ex.pl)+'" aria-label="Play">'+G_AUDIO+'</button></div>';
+}
+function gPhaseView(v){
+  $("gLearn").style.display    = v==="learn"    ? "flex":"none";
+  $("gPractice").style.display = v==="practice" ? "flex":"none";
+  $("gDone").style.display     = v==="done"     ? "flex":"none";
+  $("gProgress").style.display = v==="done"     ? "none":"flex";
+}
+function startGrammar(l,t){
+  G.li=l; G.tpi=t; G.topic=LEVELS[l].topics[t]; G.ti=0;
+  $("gTitle").textContent = G.topic.name;
+  gRenderTeach(); gPhaseView("learn"); show("grammar");
+}
+function gShuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+function gRenderTeach(){
+  const t=G.topic.teach[G.ti], last=G.ti===G.topic.teach.length-1;
+  $("gFlip").classList.remove("flipped");
+  $("gFront").innerHTML=t.front;
+  $("gPhase").textContent="Learn \u00b7 card "+(G.ti+1)+" of "+G.topic.teach.length;
+  $("gCount").textContent=(G.ti+1)+" / "+G.topic.teach.length;
+  $("gFill").style.width=((G.ti+1)/G.topic.teach.length*100)+"%";
+  $("gPrev").disabled=G.ti===0;
+  $("gNextLabel").textContent=last?"Start practice \u2192":"Next";
+  let b="";
+  if(t.answer)   b+='<div class="b-answer">'+t.answer+'</div>';
+  if(t.sub)      b+='<div class="b-sub">'+t.sub+'</div>';
+  if(t.points)   b+='<ul class="rule-list">'+t.points.map(p=>'<li>'+p+'</li>').join('')+'</ul>';
+  if(t.table)    b+='<div class="end-table">'+t.table.map(r=>'<div class="end-row"><span class="g">'+r.g+'</span><span class="e">'+r.e+'</span><span class="ex">'+r.ex+'</span></div>').join('')+'</div>';
+  if(t.explain)  b+='<div class="b-explain">'+t.explain+'</div>';
+  if(t.note)     b+='<div class="b-note">'+t.note+'</div>';
+  if(t.examples) b+=t.examples.map(gExampleHTML).join('');
+  $("gBackFace").innerHTML=b;
+}
+function gStartPractice(){ G.di=0; G.results=[]; gRenderDrill(); gPhaseView("practice"); }
+function gRenderDrill(){
+  const c=G.topic.drills[G.di], last=G.di===G.topic.drills.length-1;
+  G.attempted=false;
+  $("gPhase").textContent="Practice \u00b7 "+(G.di+1)+" of "+G.topic.drills.length;
+  $("gCount").textContent=(G.di+1)+" / "+G.topic.drills.length;
+  $("gFill").style.width=(G.di/G.topic.drills.length*100)+"%";
+  $("gDrillNext").disabled=true;
+  $("gDrillNextLabel").textContent=last?"See results":"Next";
+  if(c.type==="choose") gRenderChoose(c); else gRenderBuild(c);
+}
+function gRenderChoose(c){
+  const p=c.prompt.replace("___",'<span class="blank"></span>');
+  let h='<div class="d-type">Choose the right form</div><div class="q-prompt">'+p+'</div><div class="q-en">'+c.promptEn+'</div><div class="opts">';
+  gShuffle(c.options).forEach(o=>{ h+='<button class="opt" data-val="'+o+'">'+o+'</button>'; });
+  h+='</div><div class="fb-box" id="gFbBox"></div>';
+  $("gDrillCard").innerHTML=h;
+  $("gDrillCard").querySelectorAll(".opt").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const val=btn.getAttribute("data-val");
+      if(val===c.answer){
+        btn.classList.add("correct");
+        $("gDrillCard").querySelectorAll(".opt").forEach(b=>b.disabled=true);
+        if(!G.attempted) G.results[G.di]=true;
+        gChooseFeedback(c);
+        $("gDrillNext").disabled=false;
+      } else { btn.classList.add("wrong"); btn.disabled=true; G.attempted=true; G.results[G.di]=false; }
+    });
+  });
+}
+function gChooseFeedback(c){
+  const fb=$("gFbBox");
+  fb.innerHTML='<div class="fb-good"><div class="t"><div class="p">'+c.full+'</div><div class="e">'+c.fullEn+'</div></div>'+
+    '<button class="mini-audio" data-say="'+encodeURIComponent(c.full)+'" aria-label="Play">'+G_AUDIO+'</button></div>'+
+    '<div class="fb-explain">'+c.explain+'</div>';
+  fb.classList.add("show");
+}
+function gRenderBuild(c){
+  G.build.pool=gShuffle(c.answer).map((w,i)=>({w:w,id:i+"-"+w}));
+  G.build.row=[];
+  $("gDrillCard").innerHTML='<div class="d-type">Build the sentence</div><div class="q-prompt">'+c.promptEn+'</div>'+
+    '<div class="q-en">Tap the words in the right order</div>'+
+    '<div class="build-row" id="gBuildRow"></div><div class="build-pool" id="gBuildPool"></div>'+
+    '<button class="check-btn" id="gCheckBtn" disabled>Check</button><div class="fb-box" id="gFbBox"></div>';
+  gPaintBuild();
+  $("gCheckBtn").addEventListener("click",()=>gCheckBuild(c));
+}
+function gPaintBuild(){
+  const row=$("gBuildRow"), pool=$("gBuildPool");
+  row.className="build-row"+(G.build.row.length===0?" empty":"");
+  row.innerHTML=G.build.row.map(t=>'<button class="wchip in-row" data-id="'+t.id+'">'+t.w+'</button>').join('');
+  pool.innerHTML=G.build.pool.map(t=>'<button class="wchip" data-id="'+t.id+'">'+t.w+'</button>').join('');
+  row.querySelectorAll(".wchip").forEach(ch=>ch.addEventListener("click",()=>{
+    const id=ch.getAttribute("data-id"); const t=G.build.row.find(x=>x.id===id);
+    G.build.row=G.build.row.filter(x=>x.id!==id); G.build.pool.push(t); gPaintBuild();
+  }));
+  pool.querySelectorAll(".wchip").forEach(ch=>ch.addEventListener("click",()=>{
+    const id=ch.getAttribute("data-id"); const t=G.build.pool.find(x=>x.id===id);
+    G.build.pool=G.build.pool.filter(x=>x.id!==id); G.build.row.push(t); gPaintBuild();
+  }));
+  const cb=$("gCheckBtn"); if(cb) cb.disabled=G.build.row.length===0;
+}
+function gCheckBuild(c){
+  const got=G.build.row.map(t=>t.w).join(" "), want=c.answer.join(" ");
+  if(got===want){
+    if(!G.attempted) G.results[G.di]=true;
+    $("gBuildRow").classList.add("locked");
+    $("gBuildPool").style.display="none"; $("gCheckBtn").style.display="none";
+    const fb=$("gFbBox");
+    fb.innerHTML='<div class="fb-good"><div class="t"><div class="p">'+c.full+'</div><div class="e">'+c.fullEn+'</div></div>'+
+      '<button class="mini-audio" data-say="'+encodeURIComponent(c.full)+'" aria-label="Play">'+G_AUDIO+'</button></div>'+
+      '<div class="fb-explain">'+c.explain+'</div>';
+    fb.classList.add("show"); $("gDrillNext").disabled=false;
+  } else {
+    G.attempted=true; G.results[G.di]=false;
+    const r=$("gBuildRow"); r.classList.add("shake"); setTimeout(()=>r.classList.remove("shake"),340);
+  }
+}
+function gDrillAdvance(){ if(G.di<G.topic.drills.length-1){ G.di++; gRenderDrill(); } else gShowDone(); }
+function gShowDone(){
+  const total=G.topic.drills.length, score=G.results.filter(Boolean).length;
+  $("gScore").textContent=score; $("gTotal").textContent=total;
+  $("gDoneMsg").textContent = score===total
+    ? "Every answer right on the first try. This case is clicking."
+    : "Nice work through the set. The ones you retried are worth another pass.";
+  gPhaseView("done");
+}
+
+/* grammar events */
+$("gBack").addEventListener("click", ()=>{ if($("gPractice").style.display!=="none"){ gRenderTeach(); gPhaseView("learn"); } else show("home"); });
+$("gPrev").addEventListener("click", ()=>{ if(G.ti>0){ G.ti--; gRenderTeach(); } });
+$("gNext").addEventListener("click", ()=>{ if(G.ti<G.topic.teach.length-1){ G.ti++; gRenderTeach(); } else gStartPractice(); });
+$("gFlip").addEventListener("click", ()=> $("gFlip").classList.toggle("flipped"));
+$("gDrillNext").addEventListener("click", gDrillAdvance);
+$("gAgain").addEventListener("click", gStartPractice);
+$("gReview").addEventListener("click", ()=>{ G.ti=0; gRenderTeach(); gPhaseView("learn"); });
+$("gHome").addEventListener("click", ()=>show("home"));
+
+/* play any [data-say] Polish audio (grammar cards + feedback) */
+document.addEventListener("click", e=>{ const b=e.target.closest("[data-say]"); if(b){ e.stopPropagation(); speakText(decodeURIComponent(b.getAttribute("data-say"))); } });
 
 /* ---------------- installable: inline manifest with PL card-stack icon ---------------- */
 (function(){
