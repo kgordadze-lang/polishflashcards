@@ -75,7 +75,8 @@
   .topic:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:#d7e0e8}
   .topic:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
   .t-emoji{width:46px;height:46px;flex:0 0 auto;border-radius:14px;background:var(--mint-bg);
-    display:grid;place-items:center;font-size:23px}
+    display:grid;place-items:center;font-size:23px;color:var(--mint-text)}
+  .t-emoji svg{width:24px;height:24px}
   .t-body{flex:1;min-width:0}
   .t-title{font-size:16.5px;font-weight:700;letter-spacing:-.2px}
   .t-desc{font-size:13.5px;color:var(--muted);margin-top:3px;line-height:1.4}
@@ -322,6 +323,9 @@
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
       <div class="sbar-title"><b id="studyTitle"></b><span id="studyLevel"></span></div>
+      <button class="back home-btn" aria-label="Home page">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </button>
     </div>
 
     <div class="progress">
@@ -405,6 +409,9 @@
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
       <div class="sbar-title"><b id="gTitle"></b><span id="gPhase"></span></div>
+      <button class="back home-btn" aria-label="Home page">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </button>
     </div>
     <div class="progress" id="gProgress">
       <div class="track"><div class="fill" id="gFill"></div></div>
@@ -469,6 +476,9 @@
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
       <div class="sbar-title"><b>Privacy Notice</b></div>
+      <button class="back home-btn" aria-label="Home page">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </button>
     </div>
 
     <div class="privacy-wrap">
@@ -950,93 +960,354 @@ const LEVELS = [
           { pl:"znajomi", en:"acquaintances / friends", hint:"Plural noun. Less intimate than 'przyjaciele'.", ex:"Zaprosiłem kilku znajomych z pracy.", exEn:"I invited a few friends from work." },
           { pl:"spacer", en:"walk / stroll", hint:"Masculine noun. 'Iść na spacer' = go for a walk.", ex:"Chodźmy na długi spacer do lasu.", exEn:"Let's go for a long walk to the forest." }
         ]
+      },
+      {
+        name: "Pogoda i klimat",
+        emoji: "⛅",
+        desc: "Weather, phenomena and describing the forecast",
+        cards: [
+          { pl:"upał", en:"heatwave, scorching heat", hint:"rzecz. m. · lm. upały · Often used in plural (upały) for a hot spell.", ex:"Dzisiaj jest straszny upał.", exEn:"Today it's terribly hot." },
+          { pl:"powódź", en:"flood", hint:"rzecz. ż. · lm. powodzie", ex:"Po ulewach była powódź.", exEn:"After the downpours there was a flood." },
+          { pl:"trąba powietrzna", en:"tornado, whirlwind", hint:"rzecz. ż. · lm. trąby powietrzne · Literally “air trumpet”.", ex:"Trąba powietrzna zniszczyła las.", exEn:"A tornado destroyed the forest." },
+          { pl:"susza", en:"drought", hint:"rzecz. ż. · lm. susze", ex:"Latem często jest susza.", exEn:"In summer there is often a drought." },
+          { pl:"ulewa", en:"downpour, heavy rain", hint:"rzecz. ż. · lm. ulewy", ex:"Wczoraj była wielka ulewa.", exEn:"Yesterday there was a heavy downpour." },
+          { pl:"huragan", en:"hurricane", hint:"rzecz. m. · lm. huragany", ex:"Nadchodzi huragan.", exEn:"A hurricane is coming." },
+          { pl:"burza", en:"(thunder)storm", hint:"rzecz. ż.", ex:"Wieczorem będzie burza.", exEn:"In the evening there will be a storm." },
+          { pl:"grad", en:"hail", hint:"rzecz. m.", ex:"Podczas burzy padał grad.", exEn:"During the storm it was hailing." },
+          { pl:"tornado", en:"tornado", hint:"rzecz. n. · nieodm. · Borrowed word; doesn't decline.", ex:"W USA często są tornada.", exEn:"In the USA there are often tornadoes." },
+          { pl:"pogoda", en:"weather", hint:"rzecz. ż.", ex:"Jaka jest dzisiaj pogoda?", exEn:"What's the weather like today?" },
+          { pl:"klimat", en:"climate", hint:"rzecz. m.", ex:"Klimat się zmienia.", exEn:"The climate is changing." },
+          { pl:"pora roku", en:"season (of the year)", hint:"rzecz. ż. · lm. pory roku · “dwie pory roku” = two seasons.", ex:"Jaka jest twoja ulubiona pora roku?", exEn:"What's your favourite season?" },
+          { pl:"opady", en:"precipitation, rainfall", hint:"rzecz. lm. · Plural-only; “opady deszczu” = rainfall.", ex:"Jutro będą opady deszczu.", exEn:"Tomorrow there will be rainfall." },
+          { pl:"deszcz", en:"rain", hint:"rzecz. m. · “pada deszcz” = it's raining.", ex:"Weź parasol, bo pada deszcz.", exEn:"Take an umbrella, because it's raining." },
+          { pl:"śnieg", en:"snow", hint:"rzecz. m.", ex:"Zimą pada śnieg.", exEn:"In winter it snows." },
+          { pl:"wiatr", en:"wind", hint:"rzecz. m. · “wieje wiatr” = the wind is blowing.", ex:"Na dworze wieje silny wiatr.", exEn:"Outside a strong wind is blowing." },
+          { pl:"woda", en:"water", hint:"rzecz. ż.", ex:"Latem brakuje wody.", exEn:"In summer there is a shortage of water." },
+          { pl:"prędkość", en:"speed", hint:"rzecz. ż. · “z prędkością...” = at a speed of...", ex:"Wiatr wieje z prędkością 100 km/h.", exEn:"The wind blows at a speed of 100 km/h." },
+          { pl:"ciepły", en:"warm (warmer)", hint:"przym. · stopień wyższy: cieplejszy · Adverb: ciepło / cieplej.", ex:"Maj będzie cieplejszy niż kwiecień.", exEn:"May will be warmer than April." },
+          { pl:"chłodny", en:"cool (cooler)", hint:"przym. · st. wyższy: chłodniejszy · Adverb: chłodno / chłodniej.", ex:"Zimy będą chłodniejsze niż teraz.", exEn:"Winters will be cooler than now." },
+          { pl:"zimny", en:"cold (colder)", hint:"przym. · st. wyższy: zimniejszy · Adverb: zimno / zimniej.", ex:"Ta zima jest zimniejsza niż poprzednia.", exEn:"This winter is colder than the previous one." },
+          { pl:"suchy", en:"dry", hint:"przym. · st. wyższy: bardziej suchy", ex:"Lato będzie bardziej suche.", exEn:"The summer will be drier." },
+          { pl:"mokry", en:"wet", hint:"przym.", ex:"Po deszczu trawa jest mokra.", exEn:"After the rain the grass is wet." },
+          { pl:"deszczowy", en:"rainy", hint:"przym.", ex:"Jesień jest deszczowa.", exEn:"Autumn is rainy." },
+          { pl:"silny", en:"strong (stronger)", hint:"przym. · st. wyższy: silniejszy · Of wind and storms.", ex:"Burze będą silniejsze niż teraz.", exEn:"Storms will be stronger than now." },
+          { pl:"słaby", en:"weak (weaker)", hint:"przym. · st. wyższy: słabszy", ex:"Deszcz będzie słabszy niż wczoraj.", exEn:"The rain will be weaker than yesterday." },
+          { pl:"ulewny", en:"torrential", hint:"przym. · “deszcz ulewny” = torrential rain.", ex:"Padał ulewny deszcz.", exEn:"Torrential rain was falling." },
+          { pl:"upalny", en:"sweltering, boiling hot", hint:"przym. · Adjective from upał. Adverb: upalnie.", ex:"To był upalny dzień.", exEn:"It was a sweltering day." },
+          { pl:"zmiana", en:"change", hint:"rzecz. ż. · “zmiana klimatu” = climate change.", ex:"Zmiana klimatu to wielki problem.", exEn:"Climate change is a big problem." },
+          { pl:"rolnictwo", en:"agriculture", hint:"rzecz. n.", ex:"Zmiany klimatu wpływają na rolnictwo.", exEn:"Climate changes affect agriculture." }
+        ]
+      },
+      {
+        name: "Cechy charakteru",
+        emoji: "🙂",
+        desc: "Personality traits - for work and social life",
+        cards: [
+          { pl:"pracowity", en:"hardworking", hint:"≠ leniwy. A great trait for a CV.", ex:"Moja koleżanka jest bardzo pracowita.", exEn:"My colleague is very hardworking." },
+          { pl:"leniwy", en:"lazy", hint:"≠ pracowity.", ex:"W weekend jestem leniwy.", exEn:"At the weekend I'm lazy." },
+          { pl:"dokładny", en:"meticulous, accurate", hint:"≈ precyzyjny. Careful and thorough.", ex:"Dobry księgowy jest dokładny.", exEn:"A good accountant is meticulous." },
+          { pl:"wytrwały", en:"persistent, persevering", hint:"≈ konsekwentny. Keeps going to the end.", ex:"Musisz być wytrwały, żeby nauczyć się polskiego.", exEn:"You have to be persistent to learn Polish." },
+          { pl:"zorganizowany", en:"organized", hint:"≠ roztrzepany.", ex:"Jestem dobrze zorganizowana.", exEn:"I'm well organized." },
+          { pl:"roztrzepany", en:"scatterbrained", hint:"≠ (dobrze) zorganizowany. Absent-minded.", ex:"Czasem jestem roztrzepany i gubię klucze.", exEn:"Sometimes I'm scatterbrained and lose my keys." },
+          { pl:"ambitny", en:"ambitious", hint:"Wants to achieve a lot.", ex:"To bardzo ambitna osoba.", exEn:"That's a very ambitious person." },
+          { pl:"wymagający", en:"demanding", hint:"Expects a lot - of self and others.", ex:"Mój szef jest wymagający.", exEn:"My boss is demanding." },
+          { pl:"kreatywny", en:"creative", hint:"≈ twórczy.", ex:"Artyści są kreatywni.", exEn:"Artists are creative." },
+          { pl:"szczery", en:"honest, sincere", hint:"Says what they really think.", ex:"Bądź ze mną szczery.", exEn:"Be honest with me." },
+          { pl:"gadatliwy", en:"talkative", hint:"Talks a lot (mildly negative).", ex:"Moja sąsiadka jest gadatliwa.", exEn:"My neighbour is talkative." },
+          { pl:"bezpośredni", en:"direct, straightforward", hint:"≈ naturalny. Says things straight.", ex:"Wolę ludzi bezpośrednich.", exEn:"I prefer direct people." },
+          { pl:"otwarty", en:"open", hint:"≠ zamknięty w sobie.", ex:"Jest otwarty na nowych ludzi.", exEn:"He's open to new people." },
+          { pl:"zamknięty w sobie", en:"reserved, withdrawn", hint:"≠ otwarty. Keeps to themselves.", ex:"Jako dziecko był zamknięty w sobie.", exEn:"As a child he was withdrawn." },
+          { pl:"nieśmiały", en:"shy", hint:"≠ pewny siebie.", ex:"Nie bądź taki nieśmiały!", exEn:"Don't be so shy!" },
+          { pl:"towarzyski", en:"sociable", hint:"Enjoys company and people.", ex:"Jest bardzo towarzyska i ma dużo przyjaciół.", exEn:"She's very sociable and has lots of friends." },
+          { pl:"kłótliwy", en:"quarrelsome", hint:"≈ konfliktowy. Picks arguments.", ex:"Nie lubię kłótliwych ludzi.", exEn:"I don't like quarrelsome people." },
+          { pl:"opiekuńczy", en:"caring, protective", hint:"Looks after and cares for others.", ex:"Jest opiekuńczym ojcem.", exEn:"He's a caring father." },
+          { pl:"miły", en:"nice, kind, pleasant", hint:"One of the most-used compliments in Polish.", ex:"Nasz nowy sąsiad jest bardzo miły.", exEn:"Our new neighbour is very nice." },
+          { pl:"spokojny", en:"calm", hint:"≠ nerwowy.", ex:"Po jodze jestem spokojny.", exEn:"After yoga I'm calm." },
+          { pl:"nerwowy", en:"nervous, edgy", hint:"≠ spokojny. Easily stressed.", ex:"Przed egzaminem jestem nerwowa.", exEn:"Before an exam I'm nervous." },
+          { pl:"pogodny", en:"cheerful", hint:"≈ wesoły; ≠ smutny.", ex:"Ma pogodne usposobienie.", exEn:"She has a cheerful disposition." },
+          { pl:"wesoły", en:"merry, happy", hint:"≈ pogodny; ≠ poważny.", ex:"Jest zawsze wesoły.", exEn:"He's always cheerful." },
+          { pl:"poważny", en:"serious", hint:"≠ wesoły.", ex:"Dlaczego jesteś taki poważny?", exEn:"Why are you so serious?" },
+          { pl:"cierpliwy", en:"patient", hint:"≠ niecierpliwy. Can wait calmly.", ex:"Nauczyciel musi być cierpliwy.", exEn:"A teacher must be patient." },
+          { pl:"niecierpliwy", en:"impatient", hint:"≠ cierpliwy.", ex:"Jestem niecierpliwy, kiedy czekam.", exEn:"I'm impatient when I'm waiting." },
+          { pl:"chłodny", en:"cold, aloof", hint:"≈ zimny (of a person). Distant.", ex:"Był wobec mnie chłodny.", exEn:"He was cold towards me." },
+          { pl:"uparty", en:"stubborn", hint:"Never changes their mind. Idiom: uparty jak osioł.", ex:"Jesteś uparty jak osioł!", exEn:"You're as stubborn as a mule!" },
+          { pl:"odważny", en:"brave, courageous", hint:"Afraid of nothing.", ex:"Bądź odważny i spróbuj!", exEn:"Be brave and try!" },
+          { pl:"pewny siebie", en:"self-confident", hint:"≠ nieśmiały. Self-assured.", ex:"Na rozmowie o pracę bądź pewny siebie.", exEn:"At a job interview, be self-confident." },
+          { pl:"niezależny", en:"independent", hint:"≈ wolny. Doesn't rely on others.", ex:"Jest finansowo niezależna.", exEn:"She's financially independent." },
+          { pl:"dominujący", en:"domineering", hint:"≈ despotyczny. Likes to be in control.", ex:"Ma dominujący charakter.", exEn:"He has a domineering character." },
+          { pl:"wrażliwy", en:"sensitive", hint:"≈ delikatny. Feels things deeply.", ex:"Jest wrażliwy na krytykę.", exEn:"He's sensitive to criticism." },
+          { pl:"oszczędny", en:"thrifty, economical", hint:"≠ rozrzutny. Saves money - the positive word.", ex:"Moi rodzice są oszczędni.", exEn:"My parents are thrifty." },
+          { pl:"skąpy", en:"stingy, miserly", hint:"Hates spending - the negative twin of oszczędny.", ex:"Nie bądź skąpy, postaw kawę!", exEn:"Don't be stingy, buy a coffee!" },
+          { pl:"rozrzutny", en:"wasteful, extravagant", hint:"≠ oszczędny. Spends too freely.", ex:"Jest rozrzutny i wydaje za dużo.", exEn:"He's wasteful and spends too much." }
+        ]
+      },
+      {
+        name: "Ekologia",
+        emoji: "🌿",
+        desc: "Recycling, waste and saving water and energy",
+        cards: [
+          { pl:"oddawać / oddać", en:"to give back, return", hint:"czas. niedok. / dok. · oddać coś komuś = give sth back to sb.", ex:"Oddam butelki w sklepie.", exEn:"I'll return the bottles at the shop." },
+          { pl:"zwracać / zwrócić", en:"to return, give back", hint:"czas. niedok. / dok. · Close to oddać; often used for refunds.", ex:"Zwrócę butelki i dostanę pieniądze.", exEn:"I'll return the bottles and get money back." },
+          { pl:"zbierać / zebrać", en:"to collect, gather", hint:"czas. niedok. / dok.", ex:"Będę zbierać butelki do recyklingu.", exEn:"I will collect bottles for recycling." },
+          { pl:"wyrzucać / wyrzucić", en:"to throw out", hint:"czas. niedok. / dok. · wyrzucać śmieci = take out the rubbish.", ex:"Wyrzucę śmieci wieczorem.", exEn:"I'll take out the rubbish in the evening." },
+          { pl:"segregować", en:"to sort, segregate", hint:"czas. (niedok.) · segregować śmieci / odpady.", ex:"Będę segregować śmieci w domu.", exEn:"I will sort the rubbish at home." },
+          { pl:"system kaucyjny", en:"deposit-return system", hint:"rzecz. m. · kaucja = the deposit you get back.", ex:"W Polsce działa system kaucyjny na butelki.", exEn:"In Poland there's a deposit-return system for bottles." },
+          { pl:"butelka zwrotna", en:"returnable (deposit) bottle", hint:"rzecz. ż. · You return it for money.", ex:"To jest butelka zwrotna.", exEn:"This is a returnable bottle." },
+          { pl:"opakowanie", en:"packaging", hint:"rzecz. n. · jednorazowe = single-use, wielorazowe = reusable.", ex:"To opakowanie nadaje się do recyklingu.", exEn:"This packaging is recyclable." },
+          { pl:"szkło", en:"glass (the material)", hint:"rzecz. n. · The substance, not the cup.", ex:"Szkło wyrzucam do zielonego pojemnika.", exEn:"I throw glass into the green container." },
+          { pl:"szklanka", en:"(drinking) glass, tumbler", hint:"rzecz. ż. · The object you drink from.", ex:"Wypiłem szklankę wody.", exEn:"I drank a glass of water." },
+          { pl:"śmieci", en:"rubbish, trash", hint:"rzecz. lm. · Everyday word; plural.", ex:"Wyrzuć śmieci, proszę.", exEn:"Take out the rubbish, please." },
+          { pl:"odpady", en:"waste", hint:"rzecz. lm. · More formal/technical than śmieci.", ex:"Segregujemy odpady w domu.", exEn:"We sort waste at home." },
+          { pl:"oszczędzać / oszczędzić", en:"to save (water, power)", hint:"czas. niedok. / dok. · oszczędzać wodę, prąd.", ex:"Będę oszczędzać wodę i prąd.", exEn:"I will save water and electricity." },
+          { pl:"wyłączać / wyłączyć", en:"to switch off, turn off", hint:"czas. niedok. / dok. · Opposite: włączać / włączyć (turn on).", ex:"Wyłączę komputer na noc.", exEn:"I'll switch off the computer for the night." },
+          { pl:"zakręcać / zakręcić", en:"to turn off (a tap)", hint:"czas. niedok. / dok. · zakręcać wodę = turn off the water.", ex:"Zakręcaj wodę podczas mycia zębów.", exEn:"Turn off the tap while brushing your teeth." },
+          { pl:"marnować / zmarnować", en:"to waste", hint:"czas. niedok. / dok. · marnować wodę, jedzenie, czas.", ex:"Nie będę marnować jedzenia.", exEn:"I won't waste food." },
+          { pl:"energooszczędny", en:"energy-efficient", hint:"przym. · sprzęt RTV i AGD = electronics & appliances.", ex:"Kupię energooszczędny sprzęt.", exEn:"I'll buy energy-efficient appliances." },
+          { pl:"twarda woda", en:"hard water", hint:"rzecz. ż. · High in minerals; opp. miękka woda.", ex:"W naszym kranie jest twarda woda.", exEn:"Our tap has hard water." },
+          { pl:"wanna", en:"bathtub", hint:"rzecz. ż. · kąpiel = a bath; prysznic = a shower.", ex:"Wolę prysznic niż kąpiel w wannie.", exEn:"I prefer a shower to a bath in the tub." },
+          { pl:"brać / wziąć prysznic", en:"to take a shower", hint:"czas. niedok. / dok. · zamiast kąpieli = instead of a bath.", ex:"Będę brać prysznic zamiast kąpieli.", exEn:"I'll take a shower instead of a bath." },
+          { pl:"kupować / kupić", en:"to buy", hint:"czas. niedok. / dok.", ex:"Nie będę kupować nowych ubrań.", exEn:"I won't buy new clothes." },
+          { pl:"wymieniać się / wymienić się", en:"to swap, exchange", hint:"czas. niedok. / dok. + narzędnik · wymieniać się ubraniami = swap clothes.", ex:"Wymieniam się ubraniami z koleżankami.", exEn:"I swap clothes with friends." },
+          { pl:"pakować / zapakować", en:"to pack", hint:"czas. niedok. / dok.", ex:"Zapakuję zakupy do własnej torby.", exEn:"I'll pack the shopping into my own bag." },
+          { pl:"używać / użyć", en:"to use", hint:"czas. niedok. / dok. + dopełniacz · Takes genitive: używać plastiku.", ex:"Będę używać wielorazowych opakowań.", exEn:"I'll use reusable packaging." },
+          { pl:"komunikacja miejska", en:"public transport", hint:"rzecz. ż. · zamiast samochodem = instead of by car.", ex:"Jeżdżę komunikacją miejską zamiast samochodem.", exEn:"I travel by public transport instead of by car." },
+          { pl:"inwestować / zainwestować", en:"to invest", hint:"czas. niedok. / dok. · inwestować w zieloną energię.", ex:"Będę inwestować w zieloną energię.", exEn:"I will invest in green energy." },
+          { pl:"redukować / zredukować", en:"to reduce", hint:"czas. niedok. / dok. · redukować emisję CO2.", ex:"Musimy redukować emisję CO2.", exEn:"We must reduce CO2 emissions." },
+          { pl:"wycinać / wyciąć", en:"to cut down", hint:"czas. niedok. / dok. · wycinać drzewa = cut down trees.", ex:"Nie powinniśmy wycinać drzew.", exEn:"We shouldn't cut down trees." },
+          { pl:"globalne ocieplenie", en:"global warming", hint:"rzecz. n. · ocieplenie klimatu = climate warming.", ex:"Globalne ocieplenie to wielki problem.", exEn:"Global warming is a big problem." },
+          { pl:"środowisko", en:"environment", hint:"rzecz. n. · chronić środowisko = protect the environment.", ex:"Chcę chronić środowisko.", exEn:"I want to protect the environment." }
+        ]
       }
     ]
   },
   {
     level: "Grammar",
-    blurb: "Cases and patterns",
+    blurb: "The 7 cases",
     topics: [
       {
-        name: "Narzędnik (Instrumental)",
-        emoji: "🔧",
-        kind: "grammar",
-        desc: "z kim? z czym? - jobs, transport, interests",
+        name: "Mianownik (Nominative)", emoji: "\uD83C\uDFC1", kind: "grammar",
+        desc: "kto? co? - the subject / base form",
         teach: [
-          { front:"Narzędnik - when do you use it?",
-            sub:"It answers <b>z kim?</b> / <b>z czym?</b> - with whom / with what.",
+          { front:"Mianownik - kto? co? The subject.",
+            sub:"The <b>base form</b> from the dictionary - the doer of the action.",
             points:[
-              "Tools and transport: <b>jadę autobusem</b> (no preposition)",
-              "After <b>być</b> - jobs and identity: <b>jestem nauczycielem</b>",
-              "After <b>interesować się</b>: <b>interesuję się sportem</b>",
-              "After <b>z</b> = (together) with: <b>kawa z mlekiem</b>"
+              "The subject: <b>Kot śpi</b> (the cat sleeps)",
+              "After <b>to jest</b>: To jest dom.",
+              "Gender lives here: -a usually feminine, a consonant usually masculine, -o / -e neuter"
             ],
             examples:[
-              { pl:"Jadę do pracy autobusem.", en:"I go to work by bus." },
-              { pl:"Interesuję się sportem.", en:"I'm interested in sport." }
+              { pl:"To jest mój dom.", en:"This is my house." },
+              { pl:"Kawa jest gorąca.", en:"The coffee is hot." }
             ] },
-          { front:"How do the endings change?",
+          { front:"Three genders",
             table:[
-              { g:"Masculine", e:"-em", ex:"nauczyciel &rarr; nauczyciel<b>em</b>" },
-              { g:"after k, g", e:"-iem", ex:"pociąg &rarr; pociąg<b>iem</b>" },
-              { g:"Neuter", e:"-em", ex:"okno &rarr; okn<b>em</b>" },
-              { g:"Feminine", e:"-ą", ex:"kawa &rarr; kaw<b>ą</b>" },
-              { g:"Plural", e:"-ami", ex:"koledzy &rarr; koleg<b>ami</b>" }
+              { g:"Masculine", e:"-", ex:"kot, dom, student" },
+              { g:"Feminine", e:"-a", ex:"kawa, kobieta, książka" },
+              { g:"Neuter", e:"-o / -e", ex:"okno, dziecko, mieszkanie" }
             ],
-            note:"Adjectives agree too: <b>dobrym</b> nauczycielem, <b>dobrą</b> kawą.",
-            examples:[ { pl:"Rozmawiam z kolegami z pracy.", en:"I'm talking with colleagues from work." } ] },
-          { front:"Jestem ___ . <span class='muted'>(nauczyciel)</span>",
-            answer:"Jestem nauczycielem.",
-            explain:"After <b>być</b>, your profession or identity takes the instrumental. A woman says: <b>Jestem nauczycielką</b>.",
+            note:"A few exceptions: <b>mężczyzna</b> (man) is masculine although it ends in -a.",
+            examples:[ { pl:"Ten student jest miły.", en:"This student is nice." } ] },
+          { front:"Nominative plural - the real change",
+            answer:"student &rarr; studenci",
+            explain:"Plurals: most nouns take <b>-y / -i</b> (kot &rarr; koty), neuter takes <b>-a</b> (okno &rarr; okna), and groups with men take a special <b>-i</b> (student &rarr; studenci).",
             examples:[
-              { pl:"On jest lekarzem.", en:"He is a doctor." },
-              { pl:"Ona jest lekarką.", en:"She is a doctor." }
+              { pl:"To są moje książki.", en:"These are my books." },
+              { pl:"Studenci są tutaj.", en:"The students are here." }
             ] },
-          { front:"Jadę do pracy ___ . <span class='muted'>(tramwaj)</span>",
-            answer:"Jadę do pracy tramwajem.",
-            explain:"Means of transport take the instrumental with <b>no preposition</b>: autobusem, tramwajem, samochodem, rowerem.",
-            examples:[
-              { pl:"Piszę długopisem.", en:"I write with a pen." },
-              { pl:"Jadę rowerem do parku.", en:"I ride a bike to the park." }
-            ] }
+          { front:"The subject stays nominative.",
+            sub:"Even when other words change case, the <b>subject</b> keeps its base form.",
+            points:[
+              "<b>Kot</b> śpi. (subject stays) vs Mam <b>kota</b>. (object changes)",
+              "After <b>być</b> the job goes to instrumental, but the subject stays nominative"
+            ],
+            examples:[ { pl:"Mój brat jest studentem.", en:"My brother is a student." } ] }
         ],
         drills: [
-          { type:"choose", prompt:"Jestem ___ .", promptEn:"I am a teacher.",
-            options:["nauczycielem","nauczyciela","nauczyciel"], answer:"nauczycielem",
-            explain:"być + profession &rarr; the ending -em.", full:"Jestem nauczycielem.", fullEn:"I am a teacher." },
-          { type:"choose", prompt:"Ona jest ___ .", promptEn:"She is a doctor.",
-            options:["lekarką","lekarkę","lekarka"], answer:"lekarką",
-            explain:"Feminine -a changes to -ą.", full:"Ona jest lekarką.", fullEn:"She is a doctor." },
-          { type:"choose", prompt:"Codziennie jadę do pracy ___ .", promptEn:"I go to work by tram every day.",
-            options:["tramwajem","tramwaju","tramwaj"], answer:"tramwajem",
-            explain:"Transport takes -em, with no preposition.", full:"Codziennie jadę do pracy tramwajem.", fullEn:"I go to work by tram every day." },
-          { type:"choose", prompt:"Wolę podróżować ___ .", promptEn:"I prefer to travel by train.",
-            options:["pociągiem","pociągem","pociąga"], answer:"pociągiem",
-            explain:"After k / g the ending softens to -iem.", full:"Wolę podróżować pociągiem.", fullEn:"I prefer to travel by train." },
-          { type:"choose", prompt:"Interesuję się ___ .", promptEn:"I'm interested in music.",
-            options:["muzyką","muzykę","muzyki"], answer:"muzyką",
-            explain:"interesować się is always followed by the instrumental.", full:"Interesuję się muzyką.", fullEn:"I'm interested in music." },
-          { type:"build", promptEn:"My brother is a teacher.",
-            answer:["Mój","brat","jest","nauczycielem"],
-            explain:"być &rarr; the job goes into the instrumental: nauczycielem.", full:"Mój brat jest nauczycielem.", fullEn:"My brother is a teacher." },
-          { type:"choose", prompt:"Idę do kina z ___ .", promptEn:"I'm going to the cinema with a friend.",
-            options:["przyjacielem","przyjaciela","przyjacielu"], answer:"przyjacielem",
-            explain:"z = 'with' &rarr; the instrumental.", full:"Idę do kina z przyjacielem.", fullEn:"I'm going to the cinema with a friend." },
-          { type:"choose", prompt:"Mieszkam z ___ .", promptEn:"I live with my sister.",
-            options:["siostrą","siostrę","siostry"], answer:"siostrą",
-            explain:"z + feminine -a &rarr; -ą.", full:"Mieszkam z siostrą.", fullEn:"I live with my sister." },
-          { type:"choose", prompt:"Rozmawiam z ___ z pracy.", promptEn:"I talk with colleagues from work.",
-            options:["kolegami","kolegów","koledzy"], answer:"kolegami",
-            explain:"Plural instrumental &rarr; -ami.", full:"Rozmawiam z kolegami z pracy.", fullEn:"I talk with colleagues from work." },
-          { type:"build", promptEn:"I go to work by tram.",
-            answer:["Jadę","do","pracy","tramwajem"],
-            explain:"Transport with no preposition: tramwajem.", full:"Jadę do pracy tramwajem.", fullEn:"I go to work by tram." }
+          { type:"choose", prompt:"Na parkingu są nowe ___ .", promptEn:"There are new cars in the car park.",
+            options:["samochody","samochód","samochodów"], answer:"samochody",
+            explain:"Nominative plural &rarr; -y: samochód &rarr; samochody.", full:"Na parkingu są nowe samochody.", fullEn:"There are new cars in the car park." },
+          { type:"choose", prompt:"To są duże ___ .", promptEn:"These are big windows.",
+            options:["okna","okno","okien"], answer:"okna",
+            explain:"Neuter plural &rarr; -a: okno &rarr; okna.", full:"To są duże okna.", fullEn:"These are big windows." },
+          { type:"choose", prompt:"Ci ___ są mili.", promptEn:"These students are nice.",
+            options:["studenci","studentów","studenty"], answer:"studenci",
+            explain:"A plural group with men &rarr; -i: student &rarr; studenci.", full:"Ci studenci są mili.", fullEn:"These students are nice." },
+          { type:"choose", prompt:"___ śpi na kanapie.", promptEn:"The cat is sleeping on the sofa.",
+            options:["Kot","Kota","Kotem"], answer:"Kot",
+            explain:"The subject stays in the nominative.", full:"Kot śpi na kanapie.", fullEn:"The cat is sleeping on the sofa." },
+          { type:"choose", prompt:"To jest moja ___ .", promptEn:"This is my sister.",
+            options:["siostra","siostrę","siostry"], answer:"siostra",
+            explain:"After 'to jest', the noun stays nominative.", full:"To jest moja siostra.", fullEn:"This is my sister." },
+          { type:"build", promptEn:"These are my books.",
+            answer:["To","są","moje","książki"],
+            explain:"Subjects stay nominative; plural książka &rarr; książki.", full:"To są moje książki.", fullEn:"These are my books." },
+          { type:"choose", prompt:"Moja ___ jest w domu.", promptEn:"My mum is at home.",
+            options:["mama","mamę","mamie"], answer:"mama",
+            explain:"The subject is nominative: mama.", full:"Moja mama jest w domu.", fullEn:"My mum is at home." },
+          { type:"choose", prompt:"Ten nowy ___ jest drogi.", promptEn:"This new phone is expensive.",
+            options:["telefon","telefonu","telefonem"], answer:"telefon",
+            explain:"The subject keeps its base nominative form.", full:"Ten nowy telefon jest drogi.", fullEn:"This new phone is expensive." },
+          { type:"choose", prompt:"Te ___ są ładne.", promptEn:"These women are pretty.",
+            options:["kobiety","kobieta","kobiet"], answer:"kobiety",
+            explain:"Nominative plural &rarr; -y: kobieta &rarr; kobiety.", full:"Te kobiety są ładne.", fullEn:"These women are pretty." },
+          { type:"build", promptEn:"My brother is a student.",
+            answer:["Mój","brat","jest","studentem"],
+            explain:"'brat' is the nominative subject; after być, studentem is instrumental.", full:"Mój brat jest studentem.", fullEn:"My brother is a student." }
         ]
       },
       {
-        name: "Biernik (Accusative)",
-        emoji: "🎯",
-        kind: "grammar",
+        name: "Dopełniacz (Genitive)", emoji: "\uD83D\uDCE6", kind: "grammar",
+        desc: "kogo? czego? - of, without, negation",
+        teach: [
+          { front:"Dopełniacz - 'of', and much more.",
+            sub:"It answers <b>kogo?</b> / <b>czego?</b> and shows up everywhere.",
+            points:[
+              "Possession and 'of': <b>filiżanka kawy</b>",
+              "After <b>bez, dla, do, od, z</b> (from), <b>u</b>",
+              "Quantity: <b>dużo pracy</b>, <b>trochę czasu</b>",
+              "Negation: <b>nie ma mleka</b>"
+            ],
+            examples:[
+              { pl:"Poproszę kawę bez cukru.", en:"A coffee without sugar, please." },
+              { pl:"Nie ma mleka w lodówce.", en:"There's no milk in the fridge." }
+            ] },
+          { front:"How do the endings change?",
+            table:[
+              { g:"Feminine", e:"-y / -i", ex:"kawa &rarr; kaw<b>y</b>" },
+              { g:"Neuter", e:"-a", ex:"mleko &rarr; mlek<b>a</b>" },
+              { g:"Masc. (a)", e:"-a", ex:"chleb &rarr; chleb<b>a</b>" },
+              { g:"Masc. (u)", e:"-u", ex:"cukier &rarr; cukr<b>u</b>" }
+            ],
+            note:"Masculine <b>-a</b> vs <b>-u</b> is learned word by word.",
+            examples:[ { pl:"Szukam dobrej kawy.", en:"I'm looking for good coffee." } ] },
+          { front:"Negation flips the object to genitive.",
+            answer:"Nie mam czasu.",
+            explain:"After a <b>negated</b> verb, the accusative object becomes genitive: mam kawę &rarr; nie mam kawy.",
+            examples:[
+              { pl:"Nie mam czasu.", en:"I don't have time." },
+              { pl:"Nie ma tu apteki.", en:"There's no pharmacy here." }
+            ] },
+          { front:"After bez / dla / do / z (from)",
+            sub:"These prepositions <b>always</b> take the genitive.",
+            points:[
+              "<b>bez</b> cukru, <b>dla</b> mamy",
+              "<b>do</b> domu, <b>z</b> Polski (from Poland)"
+            ],
+            examples:[
+              { pl:"Idę do domu.", en:"I'm going home." },
+              { pl:"To prezent dla mamy.", en:"This is a present for mum." }
+            ] }
+        ],
+        drills: [
+          { type:"choose", prompt:"Poproszę kawę bez ___ .", promptEn:"A coffee without sugar, please.",
+            options:["cukru","cukier","cukrem"], answer:"cukru",
+            explain:"bez + genitive; cukier &rarr; cukru.", full:"Poproszę kawę bez cukru.", fullEn:"A coffee without sugar, please." },
+          { type:"choose", prompt:"W lodówce nie ma ___ .", promptEn:"There's no milk in the fridge.",
+            options:["mleka","mleko","mlekiem"], answer:"mleka",
+            explain:"nie ma + genitive; neuter &rarr; -a.", full:"W lodówce nie ma mleka.", fullEn:"There's no milk in the fridge." },
+          { type:"choose", prompt:"Nie mam ___ .", promptEn:"I don't have time.",
+            options:["czasu","czas","czasem"], answer:"czasu",
+            explain:"A negated object goes into the genitive; czas &rarr; czasu.", full:"Nie mam czasu.", fullEn:"I don't have time." },
+          { type:"choose", prompt:"Szukam dobrej ___ .", promptEn:"I'm looking for good coffee.",
+            options:["kawy","kawa","kawę"], answer:"kawy",
+            explain:"szukać + genitive; kawa &rarr; kawy.", full:"Szukam dobrej kawy.", fullEn:"I'm looking for good coffee." },
+          { type:"choose", prompt:"Wracam do ___ .", promptEn:"I'm going back home.",
+            options:["domu","dom","domem"], answer:"domu",
+            explain:"do + genitive; dom &rarr; domu.", full:"Wracam do domu.", fullEn:"I'm going back home." },
+          { type:"build", promptEn:"There's no pharmacy here.",
+            answer:["Nie","ma","tu","apteki"],
+            explain:"nie ma + genitive; apteka &rarr; apteki.", full:"Nie ma tu apteki.", fullEn:"There's no pharmacy here." },
+          { type:"choose", prompt:"To prezent dla ___ .", promptEn:"This is a present for mum.",
+            options:["mamy","mama","mamę"], answer:"mamy",
+            explain:"dla + genitive; mama &rarr; mamy.", full:"To prezent dla mamy.", fullEn:"This is a present for mum." },
+          { type:"choose", prompt:"Mam dużo ___ .", promptEn:"I have a lot of work.",
+            options:["pracy","praca","pracę"], answer:"pracy",
+            explain:"dużo + genitive; praca &rarr; pracy.", full:"Mam dużo pracy.", fullEn:"I have a lot of work." },
+          { type:"choose", prompt:"Jestem z ___ .", promptEn:"I'm from Poland.",
+            options:["Polski","Polska","Polską"], answer:"Polski",
+            explain:"z (from) + genitive; Polska &rarr; Polski.", full:"Jestem z Polski.", fullEn:"I'm from Poland." },
+          { type:"build", promptEn:"I don't have time today.",
+            answer:["Nie","mam","dzisiaj","czasu"],
+            explain:"Negation &rarr; genitive: czas &rarr; czasu.", full:"Nie mam dzisiaj czasu.", fullEn:"I don't have time today." }
+        ]
+      },
+      {
+        name: "Celownik (Dative)", emoji: "\uD83C\uDF81", kind: "grammar",
+        desc: "komu? czemu? - to / for someone",
+        teach: [
+          { front:"Celownik - komu? czemu? (to/for whom?)",
+            sub:"The <b>receiver</b> - the indirect object.",
+            points:[
+              "After <b>dawać, pomagać, dziękować, mówić</b> (+ komuś)",
+              "Impersonal feelings: <b>jest mi zimno</b>, <b>podoba mi się</b>",
+              "Verbs that take it: pomagać, dziękować, ufać komuś"
+            ],
+            examples:[
+              { pl:"Pomagam mamie w kuchni.", en:"I help mum in the kitchen." },
+              { pl:"Jest mi zimno.", en:"I'm cold." }
+            ] },
+          { front:"How do the endings change?",
+            table:[
+              { g:"Masculine", e:"-owi", ex:"student &rarr; student<b>owi</b>" },
+              { g:"Neuter", e:"-u", ex:"dziecko &rarr; dzieck<b>u</b>" },
+              { g:"Feminine", e:"-e / -i", ex:"mama &rarr; mam<b>ie</b>" }
+            ],
+            note:"Feminine often changes the consonant: mama &rarr; mamie, siostra &rarr; siostrze.",
+            examples:[ { pl:"Dziękuję lekarzowi.", en:"I thank the doctor." } ] },
+          { front:"The little words: mi, ci, mu, jej, nam, im",
+            answer:"Podoba mi się.",
+            explain:"Dative pronouns appear constantly: <b>daj mi</b> (give me), <b>mówię ci</b> (I'm telling you), <b>pomagam mu</b> (I help him).",
+            examples:[
+              { pl:"Podoba mi się ten film.", en:"I like this film." },
+              { pl:"Daj mi wodę.", en:"Give me water." }
+            ] },
+          { front:"Verbs that always take the dative.",
+            sub:"In English these take a direct object, but Polish uses the dative.",
+            points:[
+              "<b>pomagać</b> komuś - to help someone",
+              "<b>dziękować</b> komuś - to thank someone",
+              "<b>ufać</b> komuś - to trust someone"
+            ],
+            examples:[
+              { pl:"Dziękuję ci bardzo.", en:"Thank you very much." },
+              { pl:"Ufam ci.", en:"I trust you." }
+            ] }
+        ],
+        drills: [
+          { type:"choose", prompt:"Dziękuję ___ .", promptEn:"I thank the doctor.",
+            options:["lekarzowi","lekarza","lekarzem"], answer:"lekarzowi",
+            explain:"Masculine dative &rarr; -owi.", full:"Dziękuję lekarzowi.", fullEn:"I thank the doctor." },
+          { type:"choose", prompt:"Podoba ___ się ten film.", promptEn:"I like this film.",
+            options:["mi","ja","mną"], answer:"mi",
+            explain:"podobać się + the dative pronoun 'mi'.", full:"Podoba mi się ten film.", fullEn:"I like this film." },
+          { type:"choose", prompt:"Pomagam ___ .", promptEn:"I help my sister.",
+            options:["siostrze","siostrę","siostry"], answer:"siostrze",
+            explain:"Feminine dative: siostra &rarr; siostrze (r &rarr; rz).", full:"Pomagam siostrze.", fullEn:"I help my sister." },
+          { type:"choose", prompt:"Dziękuję ___ bardzo.", promptEn:"Thank you very much.",
+            options:["ci","cię","ciebie"], answer:"ci",
+            explain:"dziękować + dative; 'you' = ci.", full:"Dziękuję ci bardzo.", fullEn:"Thank you very much." },
+          { type:"choose", prompt:"Kupiłem ___ prezent.", promptEn:"I bought my son a present.",
+            options:["synowi","syna","synem"], answer:"synowi",
+            explain:"Masculine dative &rarr; -owi; the receiver of the gift.", full:"Kupiłem synowi prezent.", fullEn:"I bought my son a present." },
+          { type:"build", promptEn:"I'm giving him a present.",
+            answer:["Daję","mu","prezent"],
+            explain:"mu = 'to him' (dative pronoun).", full:"Daję mu prezent.", fullEn:"I'm giving him a present." },
+          { type:"choose", prompt:"Kupujemy prezent ___ .", promptEn:"We're buying a present for the child.",
+            options:["dziecku","dziecko","dziecka"], answer:"dziecku",
+            explain:"Neuter dative &rarr; -u: dziecko &rarr; dziecku.", full:"Kupujemy prezent dziecku.", fullEn:"We're buying a present for the child." },
+          { type:"choose", prompt:"Jest ___ zimno.", promptEn:"I'm cold.",
+            options:["mi","mną","ja"], answer:"mi",
+            explain:"Impersonal feelings use the dative: jest mi zimno.", full:"Jest mi zimno.", fullEn:"I'm cold." },
+          { type:"choose", prompt:"Ufam ___ .", promptEn:"I trust you.",
+            options:["ci","cię","ty"], answer:"ci",
+            explain:"ufać + dative.", full:"Ufam ci.", fullEn:"I trust you." },
+          { type:"build", promptEn:"I help my mum in the kitchen.",
+            answer:["Pomagam","mamie","w","kuchni"],
+            explain:"pomagać + dative: mama &rarr; mamie.", full:"Pomagam mamie w kuchni.", fullEn:"I help my mum in the kitchen." }
+        ]
+      },
+      {
+        name: "Biernik (Accusative)", emoji: "\uD83C\uDFAF", kind: "grammar",
         desc: "kogo? co? - the direct object",
         teach: [
           { front:"Biernik - kogo? co? (whom? what?)",
@@ -1112,81 +1383,226 @@ const LEVELS = [
         ]
       },
       {
-        name: "Dopełniacz (Genitive)",
-        emoji: "📦",
-        kind: "grammar",
-        desc: "kogo? czego? - of, without, negation",
+        name: "Narzędnik (Instrumental)", emoji: "\uD83D\uDD27", kind: "grammar",
+        desc: "z kim? z czym? - jobs, transport, interests",
         teach: [
-          { front:"Dopełniacz - 'of', and much more.",
-            sub:"It answers <b>kogo?</b> / <b>czego?</b> and shows up everywhere.",
+          { front:"Narzędnik - when do you use it?",
+            sub:"It answers <b>z kim?</b> / <b>z czym?</b> - with whom / with what.",
             points:[
-              "Possession and 'of': <b>filiżanka kawy</b>",
-              "After <b>bez, dla, do, od, z</b> (from), <b>u</b>",
-              "Quantity: <b>dużo pracy</b>, <b>trochę czasu</b>",
-              "Negation: <b>nie ma mleka</b>"
+              "Tools and transport: <b>jadę autobusem</b> (no preposition)",
+              "After <b>być</b> - jobs and identity: <b>jestem nauczycielem</b>",
+              "After <b>interesować się</b>: <b>interesuję się sportem</b>",
+              "After <b>z</b> = (together) with: <b>kawa z mlekiem</b>"
             ],
             examples:[
-              { pl:"Poproszę kawę bez cukru.", en:"A coffee without sugar, please." },
-              { pl:"Nie ma mleka w lodówce.", en:"There's no milk in the fridge." }
+              { pl:"Jadę do pracy autobusem.", en:"I go to work by bus." },
+              { pl:"Interesuję się sportem.", en:"I'm interested in sport." }
             ] },
           { front:"How do the endings change?",
             table:[
-              { g:"Feminine", e:"-y / -i", ex:"kawa &rarr; kaw<b>y</b>" },
-              { g:"Neuter", e:"-a", ex:"mleko &rarr; mlek<b>a</b>" },
-              { g:"Masc. (a)", e:"-a", ex:"chleb &rarr; chleb<b>a</b>" },
-              { g:"Masc. (u)", e:"-u", ex:"cukier &rarr; cukr<b>u</b>" }
+              { g:"Masculine", e:"-em", ex:"nauczyciel &rarr; nauczyciel<b>em</b>" },
+              { g:"after k, g", e:"-iem", ex:"pociąg &rarr; pociąg<b>iem</b>" },
+              { g:"Neuter", e:"-em", ex:"okno &rarr; okn<b>em</b>" },
+              { g:"Feminine", e:"-ą", ex:"kawa &rarr; kaw<b>ą</b>" },
+              { g:"Plural", e:"-ami", ex:"koledzy &rarr; koleg<b>ami</b>" }
             ],
-            note:"Masculine <b>-a</b> vs <b>-u</b> is learned word by word.",
-            examples:[ { pl:"Szukam dobrej kawy.", en:"I'm looking for good coffee." } ] },
-          { front:"Negation flips the object to genitive.",
-            answer:"Nie mam czasu.",
-            explain:"After a <b>negated</b> verb, the accusative object becomes genitive: mam kawę &rarr; nie mam kawy.",
+            note:"Adjectives agree too: <b>dobrym</b> nauczycielem, <b>dobrą</b> kawą.",
+            examples:[ { pl:"Rozmawiam z kolegami z pracy.", en:"I'm talking with colleagues from work." } ] },
+          { front:"Jestem ___ . <span class='muted'>(nauczyciel)</span>",
+            answer:"Jestem nauczycielem.",
+            explain:"After <b>być</b>, your profession or identity takes the instrumental. A woman says: <b>Jestem nauczycielką</b>.",
             examples:[
-              { pl:"Nie mam czasu.", en:"I don't have time." },
-              { pl:"Nie ma tu apteki.", en:"There's no pharmacy here." }
+              { pl:"On jest lekarzem.", en:"He is a doctor." },
+              { pl:"Ona jest lekarką.", en:"She is a doctor." }
             ] },
-          { front:"After bez / dla / do / z (from)",
-            sub:"These prepositions <b>always</b> take the genitive.",
-            points:[
-              "<b>bez</b> cukru, <b>dla</b> mamy",
-              "<b>do</b> domu, <b>z</b> Polski (from Poland)"
-            ],
+          { front:"Jadę do pracy ___ . <span class='muted'>(tramwaj)</span>",
+            answer:"Jadę do pracy tramwajem.",
+            explain:"Means of transport take the instrumental with <b>no preposition</b>: autobusem, tramwajem, samochodem, rowerem.",
             examples:[
-              { pl:"Idę do domu.", en:"I'm going home." },
-              { pl:"To prezent dla mamy.", en:"This is a present for mum." }
+              { pl:"Piszę długopisem.", en:"I write with a pen." },
+              { pl:"Jadę rowerem do parku.", en:"I ride a bike to the park." }
             ] }
         ],
         drills: [
-          { type:"choose", prompt:"Poproszę kawę bez ___ .", promptEn:"A coffee without sugar, please.",
-            options:["cukru","cukier","cukrem"], answer:"cukru",
-            explain:"bez + genitive; cukier &rarr; cukru.", full:"Poproszę kawę bez cukru.", fullEn:"A coffee without sugar, please." },
-          { type:"choose", prompt:"W lodówce nie ma ___ .", promptEn:"There's no milk in the fridge.",
-            options:["mleka","mleko","mlekiem"], answer:"mleka",
-            explain:"nie ma + genitive; neuter &rarr; -a.", full:"W lodówce nie ma mleka.", fullEn:"There's no milk in the fridge." },
-          { type:"choose", prompt:"Nie mam ___ .", promptEn:"I don't have time.",
-            options:["czasu","czas","czasem"], answer:"czasu",
-            explain:"A negated object goes into the genitive; czas &rarr; czasu.", full:"Nie mam czasu.", fullEn:"I don't have time." },
-          { type:"choose", prompt:"Szukam dobrej ___ .", promptEn:"I'm looking for good coffee.",
-            options:["kawy","kawa","kawę"], answer:"kawy",
-            explain:"szukać + genitive; kawa &rarr; kawy.", full:"Szukam dobrej kawy.", fullEn:"I'm looking for good coffee." },
-          { type:"choose", prompt:"Wracam do ___ .", promptEn:"I'm going back home.",
+          { type:"choose", prompt:"Jestem ___ .", promptEn:"I am a teacher.",
+            options:["nauczycielem","nauczyciela","nauczyciel"], answer:"nauczycielem",
+            explain:"być + profession &rarr; the ending -em.", full:"Jestem nauczycielem.", fullEn:"I am a teacher." },
+          { type:"choose", prompt:"Ona jest ___ .", promptEn:"She is a doctor.",
+            options:["lekarką","lekarkę","lekarka"], answer:"lekarką",
+            explain:"Feminine -a changes to -ą.", full:"Ona jest lekarką.", fullEn:"She is a doctor." },
+          { type:"choose", prompt:"Codziennie jadę do pracy ___ .", promptEn:"I go to work by tram every day.",
+            options:["tramwajem","tramwaju","tramwaj"], answer:"tramwajem",
+            explain:"Transport takes -em, with no preposition.", full:"Codziennie jadę do pracy tramwajem.", fullEn:"I go to work by tram every day." },
+          { type:"choose", prompt:"Wolę podróżować ___ .", promptEn:"I prefer to travel by train.",
+            options:["pociągiem","pociągem","pociąga"], answer:"pociągiem",
+            explain:"After k / g the ending softens to -iem.", full:"Wolę podróżować pociągiem.", fullEn:"I prefer to travel by train." },
+          { type:"choose", prompt:"Interesuję się ___ .", promptEn:"I'm interested in music.",
+            options:["muzyką","muzykę","muzyki"], answer:"muzyką",
+            explain:"interesować się is always followed by the instrumental.", full:"Interesuję się muzyką.", fullEn:"I'm interested in music." },
+          { type:"build", promptEn:"My brother is a teacher.",
+            answer:["Mój","brat","jest","nauczycielem"],
+            explain:"być &rarr; the job goes into the instrumental: nauczycielem.", full:"Mój brat jest nauczycielem.", fullEn:"My brother is a teacher." },
+          { type:"choose", prompt:"Idę do kina z ___ .", promptEn:"I'm going to the cinema with a friend.",
+            options:["przyjacielem","przyjaciela","przyjacielu"], answer:"przyjacielem",
+            explain:"z = 'with' &rarr; the instrumental.", full:"Idę do kina z przyjacielem.", fullEn:"I'm going to the cinema with a friend." },
+          { type:"choose", prompt:"Mieszkam z ___ .", promptEn:"I live with my sister.",
+            options:["siostrą","siostrę","siostry"], answer:"siostrą",
+            explain:"z + feminine -a &rarr; -ą.", full:"Mieszkam z siostrą.", fullEn:"I live with my sister." },
+          { type:"choose", prompt:"Rozmawiam z ___ z pracy.", promptEn:"I talk with colleagues from work.",
+            options:["kolegami","kolegów","koledzy"], answer:"kolegami",
+            explain:"Plural instrumental &rarr; -ami.", full:"Rozmawiam z kolegami z pracy.", fullEn:"I talk with colleagues from work." },
+          { type:"build", promptEn:"I go to work by tram.",
+            answer:["Jadę","do","pracy","tramwajem"],
+            explain:"Transport with no preposition: tramwajem.", full:"Jadę do pracy tramwajem.", fullEn:"I go to work by tram." }
+        ]
+      },
+      {
+        name: "Miejscownik (Locative)", emoji: "\uD83D\uDCCD", kind: "grammar",
+        desc: "gdzie? o czym? - only after prepositions",
+        teach: [
+          { front:"Miejscownik - only after a preposition.",
+            sub:"It <b>never stands alone</b> - always with a preposition.",
+            points:[
+              "Location with <b>w</b> (in) / <b>na</b> (on): w domu, na stole",
+              "Topic with <b>o</b> (about): mówimy o pogodzie",
+              "Also <b>przy</b> (by), <b>po</b> (after)"
+            ],
+            examples:[
+              { pl:"Mieszkam w Warszawie.", en:"I live in Warsaw." },
+              { pl:"Książka jest na stole.", en:"The book is on the table." }
+            ] },
+          { front:"How do the endings change?",
+            table:[
+              { g:"Feminine", e:"-e / -i", ex:"szkoła &rarr; szkol<b>e</b>" },
+              { g:"Masc / Neut", e:"-e / -u", ex:"dom &rarr; dom<b>u</b>" },
+              { g:"Watch the change", e:"", ex:"miasto &rarr; mie<b>ście</b>" }
+            ],
+            note:"The locative loves consonant changes - learn frequent phrases whole: w domu, w pracy, w mieście.",
+            examples:[ { pl:"Jestem w pracy.", en:"I'm at work." } ] },
+          { front:"Fixed phrases you'll use daily.",
+            answer:"Jestem w domu.",
+            explain:"Learn these as blocks: <b>w domu</b> (at home), <b>w pracy</b> (at work), <b>w szkole</b> (at school), <b>w kinie</b> (at the cinema).",
+            examples:[
+              { pl:"Jestem w domu.", en:"I'm at home." },
+              { pl:"Uczę się w szkole.", en:"I study at school." }
+            ] },
+          { front:"o + locative = about",
+            sub:"For talking or thinking <b>about</b> something.",
+            points:[
+              "<b>mówić o</b> - to talk about",
+              "<b>myśleć o</b> - to think about"
+            ],
+            examples:[
+              { pl:"Rozmawiamy o pogodzie.", en:"We're talking about the weather." },
+              { pl:"Myślę o wakacjach.", en:"I'm thinking about the holidays." }
+            ] }
+        ],
+        drills: [
+          { type:"choose", prompt:"Mieszkam w ___ .", promptEn:"I live in Warsaw.",
+            options:["Warszawie","Warszawa","Warszawę"], answer:"Warszawie",
+            explain:"w + locative; Warszawa &rarr; Warszawie.", full:"Mieszkam w Warszawie.", fullEn:"I live in Warsaw." },
+          { type:"choose", prompt:"Jestem w ___ .", promptEn:"I'm at home.",
             options:["domu","dom","domem"], answer:"domu",
-            explain:"do + genitive; dom &rarr; domu.", full:"Wracam do domu.", fullEn:"I'm going back home." },
-          { type:"build", promptEn:"There's no pharmacy here.",
-            answer:["Nie","ma","tu","apteki"],
-            explain:"nie ma + genitive; apteka &rarr; apteki.", full:"Nie ma tu apteki.", fullEn:"There's no pharmacy here." },
-          { type:"choose", prompt:"To prezent dla ___ .", promptEn:"This is a present for mum.",
-            options:["mamy","mama","mamę"], answer:"mamy",
-            explain:"dla + genitive; mama &rarr; mamy.", full:"To prezent dla mamy.", fullEn:"This is a present for mum." },
-          { type:"choose", prompt:"Mam dużo ___ .", promptEn:"I have a lot of work.",
+            explain:"w + locative; dom &rarr; domu.", full:"Jestem w domu.", fullEn:"I'm at home." },
+          { type:"choose", prompt:"Jestem w ___ .", promptEn:"I'm at work.",
             options:["pracy","praca","pracę"], answer:"pracy",
-            explain:"dużo + genitive; praca &rarr; pracy.", full:"Mam dużo pracy.", fullEn:"I have a lot of work." },
-          { type:"choose", prompt:"Jestem z ___ .", promptEn:"I'm from Poland.",
-            options:["Polski","Polska","Polską"], answer:"Polski",
-            explain:"z (from) + genitive; Polska &rarr; Polski.", full:"Jestem z Polski.", fullEn:"I'm from Poland." },
-          { type:"build", promptEn:"I don't have time today.",
-            answer:["Nie","mam","dzisiaj","czasu"],
-            explain:"Negation &rarr; genitive: czas &rarr; czasu.", full:"Nie mam dzisiaj czasu.", fullEn:"I don't have time today." }
+            explain:"w + locative; praca &rarr; pracy.", full:"Jestem w pracy.", fullEn:"I'm at work." },
+          { type:"choose", prompt:"Książka leży na ___ .", promptEn:"The book is lying on the table.",
+            options:["stole","stół","stołem"], answer:"stole",
+            explain:"na + locative; stół &rarr; stole (ó &rarr; o).", full:"Książka leży na stole.", fullEn:"The book is lying on the table." },
+          { type:"choose", prompt:"Rozmawiamy o ___ .", promptEn:"We're talking about the weather.",
+            options:["pogodzie","pogoda","pogodę"], answer:"pogodzie",
+            explain:"o (about) + locative; pogoda &rarr; pogodzie.", full:"Rozmawiamy o pogodzie.", fullEn:"We're talking about the weather." },
+          { type:"build", promptEn:"The book is on the table.",
+            answer:["Książka","jest","na","stole"],
+            explain:"na + locative: stół &rarr; stole.", full:"Książka jest na stole.", fullEn:"The book is on the table." },
+          { type:"choose", prompt:"Uczę się w ___ .", promptEn:"I study at school.",
+            options:["szkole","szkoła","szkołę"], answer:"szkole",
+            explain:"w + locative; szkoła &rarr; szkole.", full:"Uczę się w szkole.", fullEn:"I study at school." },
+          { type:"choose", prompt:"Jesteśmy w ___ .", promptEn:"We're at the cinema.",
+            options:["kinie","kino","kina"], answer:"kinie",
+            explain:"w + locative; kino &rarr; kinie.", full:"Jesteśmy w kinie.", fullEn:"We're at the cinema." },
+          { type:"choose", prompt:"Mieszkam w ___ .", promptEn:"I live in the city.",
+            options:["mieście","miasto","miastem"], answer:"mieście",
+            explain:"w + locative; miasto &rarr; mieście (a big consonant change).", full:"Mieszkam w mieście.", fullEn:"I live in the city." },
+          { type:"build", promptEn:"I'm thinking about the holidays.",
+            answer:["Myślę","o","wakacjach"],
+            explain:"o + locative (plural): wakacje &rarr; wakacjach.", full:"Myślę o wakacjach.", fullEn:"I'm thinking about the holidays." }
+        ]
+      },
+      {
+        name: "Wołacz (Vocative)", emoji: "\uD83D\uDCE3", kind: "grammar",
+        desc: "direct address - calling someone",
+        teach: [
+          { front:"Wołacz - for calling or addressing someone.",
+            sub:"Used when you <b>call out to</b> or address a person directly.",
+            points:[
+              "Polite address: <b>Panie profesorze!</b>",
+              "Family: <b>Mamo!</b>, <b>Tato!</b>",
+              "In letters: <b>Drogi Piotrze</b>, <b>Szanowna Pani</b>",
+              "In casual speech, first names often just use the nominative"
+            ],
+            examples:[
+              { pl:"Mamo, gdzie jesteś?", en:"Mum, where are you?" },
+              { pl:"Dzień dobry, panie profesorze!", en:"Good morning, professor!" }
+            ] },
+          { front:"How do the endings change?",
+            table:[
+              { g:"Feminine", e:"-o", ex:"mama &rarr; mam<b>o</b>" },
+              { g:"Feminine (soft)", e:"-u", ex:"Kasia &rarr; Kasi<b>u</b>" },
+              { g:"Masculine", e:"-e / -u", ex:"pan &rarr; pan<b>ie</b>" }
+            ],
+            note:"Neuter and many first names in casual speech just use the nominative.",
+            examples:[ { pl:"Aniu, chodź tutaj!", en:"Ania, come here!" } ] },
+          { front:"Family and affection.",
+            answer:"Mamo, gdzie jesteś?",
+            explain:"Warm, everyday address: <b>mama &rarr; mamo</b>, <b>tata &rarr; tato</b>, <b>syn &rarr; synu</b>, <b>babcia &rarr; babciu</b>.",
+            examples:[
+              { pl:"Tato, pomóż mi.", en:"Dad, help me." },
+              { pl:"Synu, chodź na obiad.", en:"Son, come for dinner." }
+            ] },
+          { front:"Polite and formal address.",
+            sub:"This is where the vocative stays alive in daily Polish.",
+            points:[
+              "<b>Panie</b> + title: Panie doktorze, Panie profesorze",
+              "Used with strangers, officials, in shops"
+            ],
+            examples:[
+              { pl:"Dzień dobry, pani Anno!", en:"Good morning, Mrs Anna!" },
+              { pl:"Panie doktorze, mam pytanie.", en:"Doctor, I have a question." }
+            ] }
+        ],
+        drills: [
+          { type:"choose", prompt:"___, gdzie jesteś?", promptEn:"Mum, where are you?",
+            options:["Mamo","Mama","Mamę"], answer:"Mamo",
+            explain:"Feminine vocative &rarr; -o: mama &rarr; mamo.", full:"Mamo, gdzie jesteś?", fullEn:"Mum, where are you?" },
+          { type:"choose", prompt:"___, chodź na obiad!", promptEn:"Son, come for dinner!",
+            options:["Synu","Syn","Syna"], answer:"Synu",
+            explain:"syn &rarr; synu (vocative).", full:"Synu, chodź na obiad!", fullEn:"Son, come for dinner!" },
+          { type:"choose", prompt:"Dzień dobry, pani ___ !", promptEn:"Good morning, Mrs Anna!",
+            options:["Anno","Anna","Annę"], answer:"Anno",
+            explain:"Feminine name &rarr; -o: Anna &rarr; Anno.", full:"Dzień dobry, pani Anno!", fullEn:"Good morning, Mrs Anna!" },
+          { type:"choose", prompt:"Panie ___ , mam pytanie.", promptEn:"Doctor, I have a question.",
+            options:["doktorze","doktor","doktora"], answer:"doktorze",
+            explain:"Masculine vocative &rarr; -e: doktor &rarr; doktorze.", full:"Panie doktorze, mam pytanie.", fullEn:"Doctor, I have a question." },
+          { type:"choose", prompt:"___, chodź tutaj!", promptEn:"Kasia, come here!",
+            options:["Kasiu","Kasia","Kasię"], answer:"Kasiu",
+            explain:"Soft feminine &rarr; -u: Kasia &rarr; Kasiu.", full:"Kasiu, chodź tutaj!", fullEn:"Kasia, come here!" },
+          { type:"build", promptEn:"Dad, help me.",
+            answer:["Tato","pomóż","mi"],
+            explain:"tata &rarr; tato (vocative).", full:"Tato, pomóż mi.", fullEn:"Dad, help me." },
+          { type:"choose", prompt:"Cześć, ___ !", promptEn:"Hi, Piotr!",
+            options:["Piotrze","Piotr","Piotra"], answer:"Piotrze",
+            explain:"Masculine name &rarr; -e: Piotr &rarr; Piotrze.", full:"Cześć, Piotrze!", fullEn:"Hi, Piotr!" },
+          { type:"choose", prompt:"___, jak się masz?", promptEn:"Ewa, how are you?",
+            options:["Ewo","Ewa","Ewę"], answer:"Ewo",
+            explain:"Feminine name &rarr; -o: Ewa &rarr; Ewo.", full:"Ewo, jak się masz?", fullEn:"Ewa, how are you?" },
+          { type:"choose", prompt:"Dziękuję, ___ profesorze.", promptEn:"Thank you, professor.",
+            options:["panie","pan","pana"], answer:"panie",
+            explain:"pan &rarr; panie (vocative), used with titles.", full:"Dziękuję, panie profesorze.", fullEn:"Thank you, professor." },
+          { type:"build", promptEn:"Good morning, professor!",
+            answer:["Dzień","dobry","panie","profesorze"],
+            explain:"Addressing with a title uses the vocative: panie profesorze.", full:"Dzień dobry, panie profesorze!", fullEn:"Good morning, professor!" }
         ]
       }
     ]
@@ -1209,6 +1625,40 @@ function renderLevels(){
     box.appendChild(b);
   });
 }
+/* ---------------- topic icons (Lucide-style stroke SVGs) ---------------- */
+const ICON_SVG = p => '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg>';
+const ICONS = {
+  "\uD83D\uDC4B":'<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/>',
+  "\uD83D\uDD22":'<rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/>',
+  "\u2615":'<path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" x2="6" y1="2" y2="4"/><line x1="10" x2="10" y1="2" y2="4"/><line x1="14" x2="14" y1="2" y2="4"/>',
+  "\uD83E\uDDED":'<circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>',
+  "\uD83D\uDE4B":'<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+  "\u23F0":'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3 2 6"/><path d="M22 6l-3-3"/><path d="M6.38 18.7 4 21"/><path d="M17.64 18.67 20 21"/>',
+  "\uD83D\uDE8B":'<rect x="4" y="3" width="16" height="16" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><path d="M8 19l-2 3"/><path d="M16 19l2 3"/><circle cx="8.5" cy="15" r="1"/><circle cx="15.5" cy="15" r="1"/>',
+  "\uD83D\uDC8A":'<path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/>',
+  "\uD83C\uDFDB\uFE0F":'<line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/>',
+  "\uD83C\uDF7D\uFE0F":'<path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>',
+  "\uD83C\uDFE0":'<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+  "\uD83D\uDD04":'<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>',
+  "\uD83D\uDECB\uFE0F":'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  "\uD83E\uDE7A":'<path d="M4 3a1 1 0 0 0-1 1v5a5 5 0 0 0 10 0V4a1 1 0 0 0-1-1"/><path d="M8 14v1a6 6 0 0 0 12 0v-3"/><circle cx="20" cy="10" r="2"/>',
+  "\uD83E\uDD5F":'<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>',
+  "\u2708\uFE0F":'<path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>',
+  "\uD83C\uDF93":'<path d="M21.42 10.92a1 1 0 0 0 0-1.84L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.84l8.57 3.9a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/>',
+  "\uD83C\uDFAD":'<path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/>',
+  "\uD83D\uDD27":'<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
+  "\uD83C\uDFAF":'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+  "\uD83D\uDCE6":'<path d="M16.5 9.4 7.5 4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.27 6.96 12 12.01l8.73-5.05"/><path d="M12 22.08V12"/>',
+  "\uD83C\uDFC1":'<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/>',
+  "\uD83C\uDF81":'<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/>',
+  "\uD83D\uDCCD":'<path d="M20 10c0 4.4-8 12-8 12s-8-7.6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+  "\uD83D\uDCE3":'<path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>',
+  "\u26C5":'<path d="M12 2v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="M20 12h2"/><path d="m19.07 4.93-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/>',
+  "\uD83D\uDE42":'<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/>',
+  "\uD83C\uDF3F":'<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>'
+};
+function topicIcon(t){ return ICONS[t.emoji] ? ICON_SVG(ICONS[t.emoji]) : (t.emoji||"\uD83D\uDCD8"); }
+
 function renderTopics(){
   const box = $("topics"); box.innerHTML = "";
   const lv = LEVELS[S.levelIdx];
@@ -1216,7 +1666,7 @@ function renderTopics(){
     const b = document.createElement("button");
     b.className = "topic";
     b.innerHTML =
-      '<div class="t-emoji">'+(t.emoji||"📘")+'</div>'+
+      '<div class="t-emoji">'+topicIcon(t)+'</div>'+
       '<div class="t-body">'+
         '<div class="t-title"></div>'+
         '<div class="t-desc"></div>'+
@@ -1471,6 +1921,8 @@ $("gHome").addEventListener("click", ()=>show("home"));
 
 /* play any [data-say] Polish audio (grammar cards + feedback) */
 document.addEventListener("click", e=>{ const b=e.target.closest("[data-say]"); if(b){ e.stopPropagation(); speakText(decodeURIComponent(b.getAttribute("data-say"))); } });
+/* home button - always return to landing page */
+document.addEventListener("click", e=>{ if(e.target.closest(".home-btn")) show("home"); });
 
 /* ---------------- installable: inline manifest with PL card-stack icon ---------------- */
 (function(){
