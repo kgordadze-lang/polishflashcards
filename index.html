@@ -285,7 +285,44 @@
   .score-ring span.lbl{color:var(--muted);font-size:20px;font-weight:700}
 
   @media (max-width:400px){ .pl{font-size:31px} .en{font-size:24px} .flip,.stage{min-height:430px} .hero h1{font-size:29px;letter-spacing:-.9px} }
-  @media (prefers-reduced-motion:reduce){ .flip,.screen,.done{transition:none;animation:none} }
+  /* ---------- conversation (Rozmowy) ---------- */
+  .thread{flex:1;overflow-y:auto;padding:10px 2px 8px;display:flex;flex-direction:column;gap:13px}
+  .scene-card{background:linear-gradient(180deg,var(--cream),#fff);border:1px solid var(--border);border-radius:var(--r-md);padding:16px 17px;box-shadow:var(--shadow-sm)}
+  .scene-role{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--mint-text);background:var(--mint-bg);padding:5px 11px;border-radius:999px}
+  .scene-set{font-size:14.5px;color:var(--forest);line-height:1.5;margin-top:11px;font-weight:500}
+  .scene-goal{font-size:13px;color:var(--sage-hover);font-weight:700;margin-top:9px;line-height:1.45}
+  .scene-goal b{font-weight:800}
+  .bubble{max-width:86%;border-radius:var(--r-md);padding:12px 14px;box-shadow:var(--shadow-sm);animation:pop .28s ease}
+  @keyframes pop{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+  .bubble .brow{display:flex;align-items:flex-start;gap:10px}
+  .bubble .btext{flex:1;min-width:0}
+  .bubble .b-pl{font-size:16px;font-weight:700;line-height:1.4;letter-spacing:-.2px}
+  .bubble .b-en{font-size:12.5px;color:var(--muted);margin-top:3px;font-weight:500;line-height:1.4}
+  .bubble.npc{align-self:flex-start;background:var(--card);border:1px solid var(--border);border-bottom-left-radius:6px}
+  .bubble.you{align-self:flex-end;background:var(--mint-bg);border:1px solid #cdece0;border-bottom-right-radius:6px}
+  .bubble.you .b-pl{color:var(--sage-hover)}
+  .you-note{align-self:flex-end;max-width:86%;font-size:12px;color:var(--sage-hover);font-weight:600;line-height:1.45;padding:0 4px;margin-top:-6px}
+  .you-note::before{content:"\1F4A1";margin-right:5px}
+  .reply{padding:12px 0 22px;display:flex;flex-direction:column;gap:10px}
+  .reply-label{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:#9fb2ab;padding-left:2px}
+  .reply-opt{border:1.5px solid var(--border);background:#fff;border-radius:14px;padding:13px 15px;cursor:pointer;text-align:left;transition:.14s;font-family:inherit;display:flex;flex-direction:column;gap:2px}
+  .reply-opt:hover:not(:disabled){border-color:var(--emerald);transform:translateY(-1px)}
+  .reply-opt:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  .reply-opt .ro-pl{font-size:16px;font-weight:700;color:var(--forest)}
+  .reply-opt .ro-en{font-size:12.5px;color:var(--muted);font-weight:500}
+  .reply-opt.wrong{background:#fbeee8;border-color:var(--coral);cursor:default}
+  .reply-opt.wrong .ro-pl{color:var(--coral-hover)}
+  .reply-opt.shake{animation:shake .32s}
+  .reply-fix{display:none;font-size:13px;color:var(--coral-hover);font-weight:600;line-height:1.45;padding:2px 4px}
+  .reply-fix.show{display:block}
+  .cdone{display:flex;flex-direction:column;align-items:center;text-align:center;padding:8px 0 4px}
+  .cdone-badge{width:60px;height:60px;border-radius:50%;background:var(--mint-bg);color:var(--emerald);display:grid;place-items:center;margin-bottom:12px}
+  .cdone-badge svg{width:28px;height:28px}
+  .cdone-t{font-size:21px;font-weight:800;letter-spacing:-.4px;color:var(--forest)}
+  .cdone-s{font-size:14px;color:var(--muted);line-height:1.5;margin:7px 0 18px;max-width:340px}
+  .cdone-actions{display:flex;flex-direction:column;gap:11px;width:100%;max-width:320px}
+
+  @media (prefers-reduced-motion:reduce){ .flip,.screen,.done,.bubble{transition:none;animation:none} }
 </style>
 </head>
 <body>
@@ -306,10 +343,10 @@
 
     <div class="hero">
       <h1>Learn the Polish<br>you'll <em>actually</em> use.</h1>
-      <p class="hero-sub">Pick a level or grammar, then a topic. Tap to flip, tap to hear it. <span class="hero-free">Completely free. No account needed.</span></p>
+      <p class="hero-sub">Pick a level, grammar, or a conversation, then a topic. Tap to flip a card, tap to hear every line. <span class="hero-free">Completely free. No account needed.</span></p>
     </div>
 
-    <div class="seg-label">Levels &amp; grammar</div>
+    <div class="seg-label">Levels, grammar &amp; conversations</div>
     <div class="levels" id="levels"></div>
 
     <div class="seg-label">Topics</div>
@@ -467,6 +504,25 @@
         </div>
       </div>
     </div>
+  </section>
+
+  <!-- ============ CONVERSATION (ROZMOWY) ============ -->
+  <section class="screen" id="convo">
+    <div class="sbar">
+      <button class="back" id="cBack" aria-label="Back to topics">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="sbar-title"><b id="cTitle"></b><span id="cLevel"></span></div>
+      <button class="back home-btn" aria-label="Home page">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </button>
+    </div>
+    <div class="progress">
+      <div class="track"><div class="fill" id="cFill"></div></div>
+      <div class="p-count" id="cCount">0 / 0</div>
+    </div>
+    <div class="thread" id="cThread"></div>
+    <div class="reply" id="cReply"></div>
   </section>
 
   <!-- ============ PRIVACY NOTICE ============ -->
@@ -1081,6 +1137,144 @@ const LEVELS = [
     ]
   },
   {
+    level: "B1",
+    blurb: "Everyday life, opinions, work, and tech",
+    topics: [
+      {
+        name: "Załatwianie spraw",
+        emoji: "📋",
+        desc: "Adulting: errands, services, and solving problems",
+        cards: [
+          { pl:"załatwiać sprawy", en:"to run errands", hint:"Verb phrase.", ex:"Muszę dzisiaj załatwić kilka spraw na mieście.", exEn:"I have to run a few errands in town today." },
+          { pl:"awaria", en:"breakdown / malfunction", hint:"Feminine noun.", ex:"Mamy awarię prądu w całym budynku.", exEn:"We have a power outage in the whole building." },
+          { pl:"reklamacja", en:"complaint / return", hint:"'Złożyć reklamację' = to make a complaint.", ex:"Chciałbym złożyć reklamację, te buty są zepsute.", exEn:"I'd like to make a complaint, these shoes are broken." },
+          { pl:"dowód zakupu", en:"proof of purchase", hint:"Usually a receipt (paragon) or invoice (faktura).", ex:"Czy ma pan dowód zakupu?", exEn:"Do you have proof of purchase?" },
+          { pl:"gwarancja", en:"warranty", hint:"Feminine noun.", ex:"Ten telewizor jest jeszcze na gwarancji.", exEn:"This TV is still under warranty." },
+          { pl:"przegląd", en:"inspection / service", hint:"Often used for cars.", ex:"Muszę umówić się na przegląd samochodu.", exEn:"I need to book a car service." },
+          { pl:"mechanik", en:"mechanic", hint:"Masculine noun.", ex:"Samochód wydaje dziwne dźwięki, jadę do mechanika.", exEn:"The car is making weird noises, I'm going to the mechanic." },
+          { pl:"hydraulik", en:"plumber", hint:"Masculine noun.", ex:"Kran przecieka, musimy wezwać hydraulika.", exEn:"The tap is leaking, we need to call a plumber." },
+          { pl:"ubezpieczenie", en:"insurance", hint:"Neuter noun.", ex:"Czy to ubezpieczenie pokrywa koszty leczenia?", exEn:"Does this insurance cover medical costs?" },
+          { pl:"podpisać umowę", en:"to sign a contract", hint:"Verb phrase.", ex:"Zanim wynajmiesz mieszkanie, musisz podpisać umowę.", exEn:"Before you rent the flat, you must sign a contract." },
+          { pl:"obciąć włosy", en:"to get a haircut", hint:"Literally 'to cut hair'.", ex:"Idę do fryzjera obciąć włosy.", exEn:"I'm going to the hairdresser to get a haircut." },
+          { pl:"odebrać", en:"to pick up / collect", hint:"Verb. 'Odbieram' = I pick up.", ex:"Muszę odebrać paczkę z paczkomatu.", exEn:"I have to pick up a parcel from the locker." },
+          { pl:"termin ważności", en:"expiration date", hint:"Masculine phrase.", ex:"Sprawdź termin ważności na opakowaniu.", exEn:"Check the expiration date on the packaging." },
+          { pl:"opłata", en:"fee / charge", hint:"Feminine noun.", ex:"Czy jest jakaś dodatkowa opłata za dostawę?", exEn:"Is there any additional fee for delivery?" },
+          { pl:"odwołać wizytę", en:"to cancel an appointment", hint:"Verb phrase.", ex:"Niestety muszę odwołać naszą dzisiejszą wizytę.", exEn:"Unfortunately, I have to cancel our appointment today." }
+        ]
+      },
+      {
+        name: "Wyrażanie opinii",
+        emoji: "🗣️",
+        desc: "Debating, agreeing, and polite disagreement",
+        cards: [
+          { pl:"Moim zdaniem...", en:"In my opinion...", hint:"The standard way to introduce your view.", ex:"Moim zdaniem, to nie jest dobry pomysł.", exEn:"In my opinion, this is not a good idea." },
+          { pl:"Zgadzam się z tobą", en:"I agree with you", hint:"Verb: 'Zgadzać się'.", ex:"Zgadzam się z tobą w stu procentach.", exEn:"I agree with you one hundred percent." },
+          { pl:"Nie masz racji", en:"You are wrong", hint:"Literally: 'You do not have rightness'.", ex:"Przepraszam, ale zupełnie nie masz racji.", exEn:"Sorry, but you are completely wrong." },
+          { pl:"Szczerze mówiąc...", en:"To be honest...", hint:"Very common filler phrase.", ex:"Szczerze mówiąc, nie podoba mi się ten film.", exEn:"To be honest, I don't like this movie." },
+          { pl:"Z jednej strony...", en:"On one hand...", hint:"Usually followed by 'Z drugiej strony...'", ex:"Z jednej strony to fajne, ale z drugiej za drogie.", exEn:"On one hand it's cool, but on the other it's too expensive." },
+          { pl:"Uważam, że...", en:"I believe / consider that...", hint:"More formal than 'Myślę, że'.", ex:"Uważam, że powinniśmy poczekać.", exEn:"I believe that we should wait." },
+          { pl:"Dokładnie!", en:"Exactly!", hint:"Used to strongly agree with someone.", ex:"Dokładnie! O to mi właśnie chodziło.", exEn:"Exactly! That's exactly what I meant." },
+          { pl:"W żadnym wypadku", en:"No way / Under no circumstances", hint:"Strong disagreement.", ex:"W żadnym wypadku się na to nie zgodzę.", exEn:"Under no circumstances will I agree to this." },
+          { pl:"Co o tym myślisz?", en:"What do you think about it?", hint:"Asking for someone's opinion.", ex:"Mam nowy plan. Co o tym myślisz?", exEn:"I have a new plan. What do you think about it?" },
+          { pl:"Punkt widzenia", en:"Point of view", hint:"Masculine phrase.", ex:"Rozumiem twój punkt widzenia, ale się nie zgadzam.", exEn:"I understand your point of view, but I disagree." },
+          { pl:"Wątpię", en:"I doubt it", hint:"Verb: 'Wątpić'.", ex:"Wątpię, że zdążymy na czas.", exEn:"I doubt we will make it on time." },
+          { pl:"Przekonać", en:"To convince", hint:"Verb.", ex:"Spróbuję go do tego przekonać.", exEn:"I will try to convince him to do it." },
+          { pl:"Zależy", en:"It depends", hint:"Often 'To zależy'.", ex:"Czy pójdziemy na spacer? To zależy od pogody.", exEn:"Will we go for a walk? It depends on the weather." },
+          { pl:"Według mnie", en:"The way I see it", hint:"Alternative to 'Moim zdaniem'.", ex:"Według mnie ten projekt ma duży potencjał.", exEn:"The way I see it, this project has great potential." },
+          { pl:"Nie mam zdania", en:"I don't have an opinion", hint:"When you want to stay neutral.", ex:"Szczerze mówiąc, nie mam zdania na ten temat.", exEn:"To be honest, I don't have an opinion on this topic." }
+        ]
+      },
+      {
+        name: "Pieniądze i finanse",
+        emoji: "💰",
+        desc: "Budgets, banking, and managing your money",
+        cards: [
+          { pl:"konto bankowe", en:"bank account", hint:"Neuter phrase.", ex:"Chcę otworzyć nowe konto bankowe.", exEn:"I want to open a new bank account." },
+          { pl:"przelew", en:"bank transfer", hint:"Masculine noun.", ex:"Zrobię ci przelew blikiem na telefon.", exEn:"I'll send you a bank transfer via Blik to your phone." },
+          { pl:"kredyt hipoteczny", en:"mortgage", hint:"Masculine phrase.", ex:"Mamy kredyt hipoteczny na 30 lat.", exEn:"We have a 30-year mortgage." },
+          { pl:"oszczędzać", en:"to save money", hint:"Verb.", ex:"Staram się oszczędzać na wakacje.", exEn:"I'm trying to save up for a holiday." },
+          { pl:"budżet", en:"budget", hint:"Masculine noun.", ex:"Musimy zaplanować nasz miesięczny budżet.", exEn:"We need to plan our monthly budget." },
+          { pl:"zarabiać", en:"to earn", hint:"Verb. 'Zarabiam' = I earn.", ex:"Chciałbym zarabiać więcej pieniędzy.", exEn:"I would like to earn more money." },
+          { pl:"wydawać", en:"to spend (money)", hint:"Verb. 'Wydaję' = I spend.", ex:"Ona wydaje dużo na ubrania.", exEn:"She spends a lot on clothes." },
+          { pl:"dług", en:"debt", hint:"Masculine noun.", ex:"Spłaciłem wczoraj cały mój dług.", exEn:"I paid off my entire debt yesterday." },
+          { pl:"pożyczyć", en:"to borrow / to lend", hint:"Context determines which one it is.", ex:"Czy możesz mi pożyczyć stówę?", exEn:"Can you lend me a hundred (zlotys)?" },
+          { pl:"rata", en:"installment", hint:"Feminine noun.", ex:"Moja miesięczna rata za samochód jest wysoka.", exEn:"My monthly car installment is high." },
+          { pl:"wypłacić gotówkę", en:"to withdraw cash", hint:"Verb phrase.", ex:"Muszę wypłacić gotówkę z bankomatu.", exEn:"I need to withdraw cash from the ATM." },
+          { pl:"odsetki", en:"interest (financial)", hint:"Plural noun.", ex:"Kredyt ma bardzo wysokie odsetki.", exEn:"The loan has very high interest." },
+          { pl:"płacić rachunki", en:"to pay bills", hint:"Verb phrase.", ex:"Nienawidzę płacić rachunków na początku miesiąca.", exEn:"I hate paying bills at the beginning of the month." },
+          { pl:"inwestować", en:"to invest", hint:"Verb.", ex:"Zacząłem inwestować na giełdzie.", exEn:"I started investing in the stock market." },
+          { pl:"prowizja", en:"commission / fee", hint:"Feminine noun.", ex:"Bank pobiera prowizję za każdą transakcję.", exEn:"The bank charges a fee for every transaction." }
+        ]
+      },
+      {
+        name: "Życie zawodowe i kariera",
+        emoji: "💼",
+        desc: "Advanced corporate Polish and job interviews",
+        cards: [
+          { pl:"Przejdźmy do rzeczy", en:"Let's get to the point", hint:"Very useful for leading meetings.", ex:"Nie mamy dużo czasu, przejdźmy do rzeczy.", exEn:"We don't have much time, let's get to the point." },
+          { pl:"stanowisko", en:"position / role", hint:"Neuter noun.", ex:"Aplikuję na stanowisko menedżera.", exEn:"I am applying for a manager position." },
+          { pl:"wymagania", en:"requirements", hint:"Plural noun.", ex:"Spełniam wszystkie wymagania z ogłoszenia.", exEn:"I meet all the requirements from the job ad." },
+          { pl:"zakres obowiązków", en:"scope of duties", hint:"Masculine phrase.", ex:"Jaki jest dokładny zakres moich obowiązków?", exEn:"What is the exact scope of my duties?" },
+          { pl:"awans", en:"promotion", hint:"Masculine noun.", ex:"Pracowałem ciężko i dostałem awans.", exEn:"I worked hard and got a promotion." },
+          { pl:"podwyżka", en:"raise / pay rise", hint:"Feminine noun.", ex:"Będę prosić szefa o podwyżkę.", exEn:"I will ask my boss for a raise." },
+          { pl:"nadgodziny", en:"overtime", hint:"Plural noun.", ex:"W tym tygodniu robię nadgodziny.", exEn:"I'm doing overtime this week." },
+          { pl:"zatrudnić", en:"to hire", hint:"Verb.", ex:"Firma planuje zatrudnić nowe osoby.", exEn:"The company plans to hire new people." },
+          { pl:"zwolnić się", en:"to quit / resign", hint:"Reflexive verb.", ex:"Nie lubię tej pracy, chyba się zwolnię.", exEn:"I don't like this job, I think I'll quit." },
+          { pl:"bezrobocie", en:"unemployment", hint:"Neuter noun.", ex:"Bezrobocie w tym regionie jest niskie.", exEn:"Unemployment in this region is low." },
+          { pl:"CV / życiorys", en:"resume", hint:"CV is pronounced 'ce-fau'.", ex:"Wysłałem moje CV do trzech firm.", exEn:"I sent my resume to three companies." },
+          { pl:"list motywacyjny", en:"cover letter", hint:"Masculine phrase.", ex:"Czy muszę pisać list motywacyjny?", exEn:"Do I have to write a cover letter?" },
+          { pl:"negocjować", en:"to negotiate", hint:"Verb.", ex:"Chcę negocjować warunki umowy.", exEn:"I want to negotiate the terms of the contract." },
+          { pl:"cel zawodowy", en:"career goal", hint:"Masculine phrase.", ex:"Moim celem zawodowym jest bycie ekspertem.", exEn:"My career goal is to be an expert." },
+          { pl:"współpraca", en:"cooperation", hint:"Feminine noun.", ex:"Dziękuję wszystkim za owocną współpracę.", exEn:"Thank you all for the fruitful cooperation." }
+        ]
+      },
+      {
+        name: "Charakter i emocje",
+        emoji: "🎭",
+        desc: "Describing personality traits and complex feelings",
+        cards: [
+          { pl:"zmienić zdanie", en:"to change one's mind", hint:"Verb phrase.", ex:"Miałem tam iść, ale zmieniłem zdanie.", exEn:"I was going to go there, but I changed my mind." },
+          { pl:"mieć poczucie humoru", en:"to have a sense of humor", hint:"Verb phrase.", ex:"On ma świetne poczucie humoru.", exEn:"He has a great sense of humor." },
+          { pl:"uparty", en:"stubborn", hint:"Adjective.", ex:"Mój brat jest bardzo uparty i nigdy nie słucha.", exEn:"My brother is very stubborn and never listens." },
+          { pl:"szczery", en:"honest / sincere", hint:"Adjective.", ex:"Będę z tobą całkowicie szczery.", exEn:"I will be completely honest with you." },
+          { pl:"leniwy", en:"lazy", hint:"Adjective.", ex:"Dzisiaj czuję się bardzo leniwy.", exEn:"Today I feel very lazy." },
+          { pl:"pracowity", en:"hardworking", hint:"Adjective.", ex:"To jest nasz najbardziej pracowity pracownik.", exEn:"This is our most hardworking employee." },
+          { pl:"cierpliwy", en:"patient", hint:"Adjective.", ex:"Musisz być cierpliwy, to wymaga czasu.", exEn:"You must be patient, this requires time." },
+          { pl:"denerwować się", en:"to get nervous / angry", hint:"Reflexive verb.", ex:"Proszę się nie denerwować, wszystko naprawimy.", exEn:"Please don't get nervous, we will fix everything." },
+          { pl:"stres", en:"stress", hint:"Masculine noun.", ex:"Mam za dużo stresu w pracy.", exEn:"I have too much stress at work." },
+          { pl:"bać się", en:"to be afraid", hint:"Verb. Followed by Genitive case.", ex:"Boję się pająków i latania samolotem.", exEn:"I am afraid of spiders and flying in planes." },
+          { pl:"cieszyć się", en:"to be glad / happy", hint:"Reflexive verb.", ex:"Bardzo się cieszę, że cię widzę.", exEn:"I am very glad to see you." },
+          { pl:"być z siebie dumnym", en:"to be proud of oneself", hint:"Verb phrase.", ex:"Zdałem ten trudny egzamin, jestem z siebie dumny.", exEn:"I passed this difficult exam, I'm proud of myself." },
+          { pl:"zadowolony", en:"satisfied / pleased", hint:"Adjective.", ex:"Jestem bardzo zadowolony z wyników.", exEn:"I am very pleased with the results." },
+          { pl:"wrażliwy", en:"sensitive", hint:"Adjective.", ex:"Ona jest bardzo wrażliwa na krytykę.", exEn:"She is very sensitive to criticism." },
+          { pl:"pewny siebie", en:"self-confident", hint:"Adjective phrase.", ex:"Dobry lider powinien być pewny siebie.", exEn:"A good leader should be self-confident." }
+        ]
+      },
+      {
+        name: "Media i technologia",
+        emoji: "📱",
+        desc: "Digital life, internet, and social media",
+        cards: [
+          { pl:"aplikacja", en:"app / application", hint:"Feminine noun.", ex:"Używam tej aplikacji do nauki języków.", exEn:"I use this app for learning languages." },
+          { pl:"ściągnąć", en:"to download", hint:"Informal, very common.", ex:"Musisz ściągnąć nowy plik z internetu.", exEn:"You have to download a new file from the internet." },
+          { pl:"wyszukiwarka", en:"search engine", hint:"Feminine noun.", ex:"Najpopularniejsza wyszukiwarka to Google.", exEn:"The most popular search engine is Google." },
+          { pl:"źródło informacji", en:"source of information", hint:"Neuter phrase.", ex:"Internet to potężne źródło informacji.", exEn:"The internet is a powerful source of information." },
+          { pl:"hasło", en:"password", hint:"Neuter noun.", ex:"Zapomniałem hasła do mojego konta.", exEn:"I forgot the password to my account." },
+          { pl:"zalogować się", en:"to log in", hint:"Reflexive verb.", ex:"Musisz się zalogować, żeby zobaczyć zdjęcia.", exEn:"You must log in to see the photos." },
+          { pl:"wylogować się", en:"to log out", hint:"Reflexive verb.", ex:"Pamiętaj, żeby się wylogować z banku.", exEn:"Remember to log out from the bank." },
+          { pl:"udostępnić", en:"to share (online)", hint:"Verb.", ex:"Udostępnij ten artykuł na swoim profilu.", exEn:"Share this article on your profile." },
+          { pl:"ekran", en:"screen", hint:"Masculine noun.", ex:"Mój telefon ma pęknięty ekran.", exEn:"My phone has a cracked screen." },
+          { pl:"plik", en:"file", hint:"Masculine noun.", ex:"Wysłałem ci plik na maila.", exEn:"I sent you the file via email." },
+          { pl:"link", en:"link", hint:"Masculine noun.", ex:"Kliknij w ten link, żeby otworzyć stronę.", exEn:"Click this link to open the page." },
+          { pl:"wiadomość", en:"message", hint:"Feminine noun.", ex:"Dostałem od niej dziwną wiadomość.", exEn:"I received a weird message from her." },
+          { pl:"powiadomienie", en:"notification", hint:"Neuter noun.", ex:"Wyłączyłem powiadomienia w telefonie.", exEn:"I turned off notifications on my phone." },
+          { pl:"sieć", en:"network / the web", hint:"Feminine noun. 'W sieci' = on the web.", ex:"W sieci można znaleźć wszystko.", exEn:"You can find everything on the web." },
+          { pl:"urządzenie", en:"device", hint:"Neuter noun.", ex:"Możesz podłączyć dwa urządzenia na raz.", exEn:"You can connect two devices at once." }
+        ]
+      }
+    ]
+  },
+  {
     level: "Grammar",
     blurb: "The 7 cases",
     topics: [
@@ -1606,6 +1800,185 @@ const LEVELS = [
         ]
       }
     ]
+  },
+  {
+    level: "Scenarios",
+    blurb: "Real conversations",
+    topics: [
+      {
+        name: "W aptece", emoji: "\uD83D\uDC8A", kind: "convo",
+        desc: "Describe a symptom, choose a remedy, and pay at the counter",
+        role: "Farmaceutka",
+        setting: "You're not feeling your best, so you step into a pharmacy. The pharmacist looks up from the counter.",
+        goal: "Explain what you need, choose a remedy, and pay. Every reply is a valid path.",
+        start: "greet",
+        scenes: {
+          greet: {
+            npc:"Dzień dobry! W czym mogę pomóc?", npcEn:"Good morning! How can I help?",
+            options:[
+              { pl:"Poproszę coś na ból głowy.", en:"Something for a headache, please.",
+                note:"'na' + accusative names what a remedy is for: na ból głowy, na katar, na gardło.", goto:"headache" },
+              { pl:"Szukam czegoś na katar.", en:"I'm looking for something for a runny nose.",
+                note:"'szukać' + genitive: szukam czegoś, szukam apteki.", goto:"cold" }
+            ]
+          },
+          headache: {
+            npc:"Tabletki czy syrop?", npcEn:"Tablets or syrup?",
+            options:[
+              { pl:"Tabletki, proszę.", en:"Tablets, please.", goto:"strength" },
+              { pl:"A co pani poleca?", en:"And what do you recommend?",
+                note:"'polecać' = to recommend - a neat way to hand the choice back.", goto:"recommendH" }
+            ]
+          },
+          recommendH: {
+            npc:"Polecam tabletki - działają szybciej.", npcEn:"I recommend tablets - they work faster.",
+            options:[
+              { pl:"Dobrze, poproszę tabletki.", en:"Alright, tablets please.", goto:"strength" }
+            ]
+          },
+          strength: {
+            npc:"Mam paracetamol i ibuprofen. Co pan woli?", npcEn:"I have paracetamol and ibuprofen. Which do you prefer?",
+            options:[
+              { pl:"Paracetamol poproszę.", en:"Paracetamol, please.",
+                note:"'poproszę' is your polite go-to for asking for anything.", goto:"handover" },
+              { pl:"Wszystko jedno.", en:"Either one's fine.",
+                note:"'wszystko jedno' says you don't mind which.", goto:"handover" }
+            ]
+          },
+          cold: {
+            npc:"Krople do nosa czy tabletki?", npcEn:"Nose drops or tablets?",
+            options:[
+              { pl:"Krople, proszę.", en:"Drops, please.", goto:"coldExtra" },
+              { pl:"A co pani poleca?", en:"And what do you recommend?",
+                note:"'polecać' = to recommend.", goto:"recommendC" }
+            ]
+          },
+          recommendC: {
+            npc:"Polecam krople, są bardzo skuteczne.", npcEn:"I recommend the drops, they're very effective.",
+            options:[
+              { pl:"Świetnie, poproszę krople.", en:"Great, the drops please.", goto:"coldExtra" }
+            ]
+          },
+          coldExtra: {
+            npc:"Mam też syrop na gardło. Coś jeszcze?", npcEn:"I also have throat syrup. Anything else?",
+            options:[
+              { pl:"Nie, dziękuję. To wszystko.", en:"No thanks, that's all.", goto:"handover" },
+              { pl:"Tak, poproszę też syrop.", en:"Yes, the syrup too, please.",
+                note:"'też' = too / also - handy for adding to an order.", goto:"handover" }
+            ]
+          },
+          handover: {
+            npc:"Proszę bardzo. Coś jeszcze?", npcEn:"Here you go. Anything else?",
+            options:[
+              { pl:"Jak często mam to stosować?", en:"How often should I use it?",
+                note:"'mam' + infinitive = 'should I / am I to': mam stosować, mam czekać, mam zapłacić.", goto:"dose" },
+              { pl:"Nie, ile płacę?", en:"No, how much do I pay?", goto:"price" }
+            ]
+          },
+          dose: {
+            npc:"Dwa razy dziennie, po jedzeniu.", npcEn:"Twice a day, after food.",
+            options:[
+              { pl:"Rozumiem, dziękuję.", en:"I understand, thank you.", goto:"price" },
+              { pl:"A ile to kosztuje?", en:"And how much is it?",
+                note:"'Ile to kosztuje?' is your everyday how-much question.", goto:"price" }
+            ]
+          },
+          price: {
+            npc:"To będzie dwadzieścia złotych.", npcEn:"That'll be twenty zloty.",
+            options:[
+              { pl:"Proszę, karta.", en:"Here you go, card.",
+                note:"Card and phone payment work almost everywhere in Poland.", goto:"end" },
+              { pl:"Płacę gotówką.", en:"I'll pay cash.",
+                note:"'gotówka' = cash; 'gotówką' = in cash.", goto:"end" }
+            ]
+          },
+          end: {
+            npc:"Dziękuję. Życzę zdrowia i miłego dnia!", npcEn:"Thank you. Wishing you good health and a nice day!",
+            end:true
+          }
+        }
+      },
+      {
+        name: "U lekarza", emoji: "\uD83E\uDE7A", kind: "convo",
+        desc: "Tell the doctor what's wrong and get a prescription",
+        role: "Lekarka",
+        setting: "It's your turn at the clinic. The doctor calls you into the office.",
+        goal: "Describe your symptoms, get a prescription or a sick note, and find out what to do next. Every reply is a valid path.",
+        start: "greet",
+        scenes: {
+          greet: {
+            npc:"Dzień dobry. Prosz\u0119 usi\u0105\u015b\u0107. Co si\u0119 dzieje?", npcEn:"Good morning. Please have a seat. What's going on?",
+            options:[
+              { pl:"Od kilku dni boli mnie gard\u0142o.", en:"My throat has hurt for a few days.",
+                note:"'boli mnie...' = ... hurts (me): boli mnie gard\u0142o, boli mnie g\u0142owa, boli mnie brzuch.", goto:"throat" },
+              { pl:"Mam kaszel i gor\u0105czk\u0119.", en:"I have a cough and a fever.",
+                note:"'mam' + symptom: mam kaszel, mam katar, mam gor\u0105czk\u0119.", goto:"fever" }
+            ]
+          },
+          throat: {
+            npc:"Prosz\u0119 otworzy\u0107 usta... Gard\u0142o jest zaczerwienione. Czy jest gor\u0105czka?", npcEn:"Please open your mouth... Your throat is red. Is there a fever?",
+            options:[
+              { pl:"Tak, mam troch\u0119 gor\u0105czki.", en:"Yes, I have a slight fever.",
+                note:"'troch\u0119' + genitive: troch\u0119 gor\u0105czki, troch\u0119 czasu, troch\u0119 wody.", goto:"diagnosis" },
+              { pl:"Nie, gor\u0105czki nie ma.", en:"No, there's no fever.",
+                note:"'nie ma' + genitive for 'there isn't': nie ma gor\u0105czki, nie ma czasu.", goto:"diagnosis" }
+            ]
+          },
+          fever: {
+            npc:"Od jak dawna to trwa?", npcEn:"How long has this been going on?",
+            options:[
+              { pl:"Od trzech dni.", en:"For three days.",
+                note:"'od' + genitive for 'since / for': od trzech dni, od poniedzia\u0142ku, od rana.", goto:"diagnosis" },
+              { pl:"Od tygodnia.", en:"For a week.",
+                note:"'tydzie\u0144' becomes 'tygodnia' in the genitive after 'od'.", goto:"diagnosis" }
+            ]
+          },
+          diagnosis: {
+            npc:"To wygl\u0105da na infekcj\u0119. Przepisz\u0119 lekarstwo.", npcEn:"It looks like an infection. I'll prescribe some medicine.",
+            options:[
+              { pl:"Czy potrzebuj\u0119 recepty?", en:"Do I need a prescription?",
+                note:"'potrzebowa\u0107' + genitive: potrzebuj\u0119 recepty, potrzebuj\u0119 pomocy.", goto:"recepta" },
+              { pl:"Czy dostan\u0119 zwolnienie z pracy?", en:"Will I get a sick note for work?",
+                note:"'zwolnienie (lekarskie)' = a doctor's sick note.", goto:"zwolnienie" }
+            ]
+          },
+          recepta: {
+            npc:"Tak, oto recepta. Prosz\u0119 wykupi\u0107 lekarstwo w aptece.", npcEn:"Yes, here's the prescription. Please pick up the medicine at the pharmacy.",
+            options:[
+              { pl:"Dzi\u0119kuj\u0119. A czy mog\u0119 te\u017c dosta\u0107 zwolnienie?", en:"Thank you. Can I also get a sick note?", goto:"zwolnienie" },
+              { pl:"Dzi\u0119kuj\u0119. Jak cz\u0119sto mam bra\u0107 lekarstwo?", en:"Thank you. How often should I take the medicine?",
+                note:"'mam bra\u0107' = should I take; 'mam' + infinitive gives you instructions.", goto:"dosage" }
+            ]
+          },
+          zwolnienie: {
+            npc:"Oczywi\u015bcie. Wystawi\u0119 zwolnienie na pi\u0119\u0107 dni.", npcEn:"Of course. I'll issue a sick note for five days.",
+            options:[
+              { pl:"Bardzo dzi\u0119kuj\u0119. Jak cz\u0119sto mam bra\u0107 lekarstwo?", en:"Thank you very much. How often should I take the medicine?", goto:"dosage" },
+              { pl:"\u015awietnie, dzi\u0119kuj\u0119 za pomoc.", en:"Great, thank you for your help.",
+                note:"'dzi\u0119kuj\u0119 za' + accusative: dzi\u0119kuj\u0119 za pomoc, za informacj\u0119.", goto:"farewell" }
+            ]
+          },
+          dosage: {
+            npc:"Dwa razy dziennie, rano i wieczorem. Prosz\u0119 du\u017co odpoczywa\u0107.", npcEn:"Twice a day, morning and evening. Please rest a lot.",
+            options:[
+              { pl:"Dobrze, b\u0119d\u0119 odpoczywa\u0107. Dzi\u0119kuj\u0119.", en:"Alright, I'll rest. Thank you.", goto:"farewell" },
+              { pl:"Rozumiem. Czy mam wr\u00f3ci\u0107 na kontrol\u0119?", en:"I understand. Should I come back for a check-up?",
+                note:"'na kontrol\u0119' = for a check-up (accusative after 'na').", goto:"followup" }
+            ]
+          },
+          followup: {
+            npc:"Je\u015bli objawy nie min\u0105 w tydzie\u0144, prosz\u0119 wr\u00f3ci\u0107.", npcEn:"If the symptoms don't go away within a week, please come back.",
+            options:[
+              { pl:"Dobrze, dzi\u0119kuj\u0119 bardzo.", en:"Alright, thank you very much.", goto:"farewell" }
+            ]
+          },
+          farewell: {
+            npc:"Prosz\u0119 dba\u0107 o siebie. Do widzenia!", npcEn:"Take care of yourself. Goodbye!",
+            end:true
+          }
+        }
+      }
+    ]
   }
 ];
 
@@ -1655,7 +2028,12 @@ const ICONS = {
   "\uD83D\uDCE3":'<path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>',
   "\u26C5":'<path d="M12 2v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="M20 12h2"/><path d="m19.07 4.93-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/>',
   "\uD83D\uDE42":'<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/>',
-  "\uD83C\uDF3F":'<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>'
+  "\uD83C\uDF3F":'<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>',
+  "\uD83D\uDCCB":'<rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/>',
+  "\uD83D\uDDE3\uFE0F":'<path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/>',
+  "\uD83D\uDCB0":'<path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2V5z"/><path d="M2 9v1c0 1.1.9 2 2 2h1"/><path d="M16 11h.01"/>',
+  "\uD83D\uDCBC":'<path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/>',
+  "\uD83D\uDCF1":'<rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/>'
 };
 function topicIcon(t){ return ICONS[t.emoji] ? ICON_SVG(ICONS[t.emoji]) : (t.emoji||"\uD83D\uDCD8"); }
 
@@ -1670,12 +2048,12 @@ function renderTopics(){
       '<div class="t-body">'+
         '<div class="t-title"></div>'+
         '<div class="t-desc"></div>'+
-        '<div class="t-meta"><span class="chip">'+lv.level+'</span><span class="t-count">'+(t.kind==="grammar" ? (t.drills.length+' drills') : (t.cards.length+' cards'))+'</span></div>'+
+        '<div class="t-meta"><span class="chip">'+lv.level+'</span><span class="t-count">'+(t.kind==="grammar" ? (t.drills.length+' drills') : t.kind==="convo" ? ('~'+convoLen(t)+' turns') : (t.cards.length+' cards'))+'</span></div>'+
       '</div>'+
       '<div class="t-arrow">›</div>';
     b.querySelector(".t-title").textContent = t.name;
     b.querySelector(".t-desc").textContent = t.desc || "";
-    b.onclick = ()=> (t.kind==="grammar" ? startGrammar(S.levelIdx, i) : startTopic(S.levelIdx, i));
+    b.onclick = ()=> (t.kind==="grammar" ? startGrammar(S.levelIdx, i) : t.kind==="convo" ? startConvo(S.levelIdx, i) : startTopic(S.levelIdx, i));
     box.appendChild(b);
   });
 }
@@ -1923,6 +2301,98 @@ $("gHome").addEventListener("click", ()=>show("home"));
 document.addEventListener("click", e=>{ const b=e.target.closest("[data-say]"); if(b){ e.stopPropagation(); speakText(decodeURIComponent(b.getAttribute("data-say"))); } });
 /* home button - always return to landing page */
 document.addEventListener("click", e=>{ if(e.target.closest(".home-btn")) show("home"); });
+
+/* ---------------- conversation (Rozmowy) ---------------- */
+const C = { topic:null, li:0, tpi:0, node:null, transcript:[], dist:{}, maxDist:1 };
+const C_CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+
+/* shortest distance from every scene to an ending, via reverse BFS (cycle-safe) */
+function cComputeDist(tp){
+  const sc=tp.scenes, dist={}, q=[], preds={};
+  for(const id in sc){ if(sc[id].end){ dist[id]=0; q.push(id); } }
+  for(const id in sc){ (sc[id].options||[]).forEach(o=>{ (preds[o.goto]=preds[o.goto]||[]).push(id); }); }
+  while(q.length){
+    const cur=q.shift();
+    (preds[cur]||[]).forEach(p=>{ if(dist[p]===undefined){ dist[p]=dist[cur]+1; q.push(p); } });
+  }
+  return dist;
+}
+function convoLen(t){ const d=cComputeDist(t); return d[t.start] || Object.keys(t.scenes).length; }
+
+function startConvo(l,t){
+  C.li=l; C.tpi=t; C.topic=LEVELS[l].topics[t]; C.node=C.topic.start; C.transcript=[];
+  C.dist=cComputeDist(C.topic);
+  C.maxDist=Math.max(1, ...Object.values(C.dist));
+  $("cTitle").textContent = C.topic.name;
+  $("cLevel").textContent = LEVELS[l].level + " \u00b7 " + C.topic.role;
+  show("convo");
+  cRenderNode();
+}
+function cBubbleHTML(m){
+  const audio='<button class="mini-audio" data-say="'+encodeURIComponent(m.pl)+'" aria-label="Play">'+G_AUDIO+'</button>';
+  const inner='<div class="btext"><div class="b-pl">'+m.pl+'</div><div class="b-en">'+m.en+'</div></div>';
+  const row = m.who==="npc" ? '<div class="brow">'+inner+audio+'</div>' : '<div class="brow">'+audio+inner+'</div>';
+  let h='<div class="bubble '+m.who+'">'+row+'</div>';
+  if(m.who==="you" && m.note) h+='<div class="you-note">'+m.note+'</div>';
+  return h;
+}
+function cRenderThread(){
+  const el=$("cThread"), tp=C.topic;
+  let h='<div class="scene-card">'+
+    '<span class="scene-role">'+tp.role+'</span>'+
+    '<div class="scene-set">'+tp.setting+'</div>'+
+    '<div class="scene-goal"><b>Your goal:</b> '+tp.goal+'</div></div>';
+  C.transcript.forEach(m=> h+=cBubbleHTML(m));
+  el.innerHTML=h;
+  el.scrollTop=el.scrollHeight;
+}
+function cProgress(){
+  const d=C.dist[C.node];
+  const done=(d===undefined)?C.maxDist:(C.maxDist-d);
+  $("cFill").style.width=Math.max(0,Math.min(100, done/C.maxDist*100))+"%";
+  const turns=C.transcript.filter(m=>m.who==="you").length;
+  const atEnd=C.topic.scenes[C.node].end;
+  $("cCount").textContent="Turn "+(turns+(atEnd?0:1));
+}
+function cRenderNode(){
+  const node=C.topic.scenes[C.node];
+  C.transcript.push({ who:"npc", pl:node.npc, en:node.npcEn });
+  cRenderThread(); cProgress();
+  if(node.end || !node.options || !node.options.length){ cShowDone(); return; }
+  cRenderOptions(node.options);
+}
+function cRenderOptions(options){
+  const box=$("cReply");
+  let h='<div class="reply-label">Your reply</div>';
+  options.forEach((o,i)=>{
+    h+='<button class="reply-opt" data-i="'+i+'"><span class="ro-pl">'+o.pl+'</span><span class="ro-en">'+o.en+'</span></button>';
+  });
+  box.innerHTML=h;
+  box.querySelectorAll(".reply-opt").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const o=options[+btn.getAttribute("data-i")];
+      C.transcript.push({ who:"you", pl:o.pl, en:o.en, note:o.note });
+      box.innerHTML="";
+      C.node=o.goto;
+      cRenderNode();
+    });
+  });
+}
+function cShowDone(){
+  $("cFill").style.width="100%";
+  const box=$("cReply");
+  box.innerHTML='<div class="cdone">'+
+    '<div class="cdone-badge">'+C_CHECK+'</div>'+
+    '<div class="cdone-t">Rozmowa sko\u0144czona!</div>'+
+    '<div class="cdone-s">You handled the whole pharmacy visit in Polish. Replay it to lock the phrases in, or head back for another.</div>'+
+    '<div class="cdone-actions">'+
+      '<button class="btn-primary" id="cAgain">Try again</button>'+
+      '<button class="btn-ghost" id="cHome">Back to topics</button>'+
+    '</div></div>';
+  $("cAgain").addEventListener("click", ()=>startConvo(C.li,C.tpi));
+  $("cHome").addEventListener("click", ()=>show("home"));
+}
+$("cBack").addEventListener("click", ()=>show("home"));
 
 /* ---------------- installable: inline manifest with PL card-stack icon ---------------- */
 (function(){
