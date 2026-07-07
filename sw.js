@@ -3,7 +3,7 @@
    - Strategy: network-first for the page itself (fresh content when online,
      cached copy when offline), cache-first for everything else (fonts, icons). */
 
-const CACHE = "popolsku-v2";
+const CACHE = "popolsku-v5";
 const ASSETS = [
   "./",
   "./index.html",
@@ -11,7 +11,8 @@ const ASSETS = [
   "./favicon.svg",
   "./icon-192.png",
   "./icon-512.png",
-  "./apple-touch-icon.png"
+  "./apple-touch-icon.png",
+  "./og-image.png"
 ];
 
 self.addEventListener("install", e => {
