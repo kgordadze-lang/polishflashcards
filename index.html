@@ -10,22 +10,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
+    /* Indigo theme. Token names are historical (emerald / mint / forest) but now hold indigo + graphite values. Recolor here. */
     --bg:#f8fafc;
     --card:#ffffff;
-    --forest:#022c22;
-    --forest-hover:#064e3b;
-    --mint-bg:#ecfdf5;
-    --mint-text:#047857;
-    --emerald:#059669;
-    --cream:#eafff4;
-    --sage:#047857;
-    --sage-hover:#065f46;
-    --coral:#c97c5d;
+    --forest:#1e293b;        /* dark UI + primary text - graphite slate */
+    --forest-hover:#0f172a;
+    --mint-bg:#e0e7ff;       /* accent tint - icon tiles, chips */
+    --mint-text:#4338ca;     /* accent text on tint */
+    --emerald:#4f46e5;       /* accent - indigo */
+    --cream:#eef2ff;         /* light text on dark */
+    --sage:#4f46e5;
+    --sage-hover:#3730a3;
+    --coral:#c97c5d;         /* secondary warm accent - "still learning" / wrong */
     --coral-hover:#b56a4c;
     --muted:#64748b;
     --border:#e6ebf1;
-    --shadow:0 1px 2px rgba(2,44,34,.04), 0 12px 28px rgba(2,44,34,.06);
-    --shadow-sm:0 1px 2px rgba(2,44,34,.05), 0 4px 12px rgba(2,44,34,.05);
+    --shadow:0 1px 2px rgba(30,27,75,.04), 0 12px 28px rgba(30,27,75,.06);
+    --shadow-sm:0 1px 2px rgba(30,27,75,.05), 0 4px 12px rgba(30,27,75,.05);
     --r-lg:26px; --r-md:18px; --r-sm:13px;
   }
   *{box-sizing:border-box}
@@ -49,7 +50,7 @@
   .logo-mark{position:relative;width:38px;height:38px;flex:0 0 auto}
   .logo-mark .lm-back{position:absolute;inset:0;border-radius:11px;background:var(--mint-bg);transform:rotate(-9deg) translate(-2px,1px)}
   .logo-mark .lm-front{position:absolute;inset:0;border-radius:11px;background:var(--forest);color:var(--cream);
-    display:grid;place-items:center;font-weight:800;font-size:14px;letter-spacing:-.5px;box-shadow:0 4px 10px rgba(2,44,34,.18)}
+    display:grid;place-items:center;font-weight:800;font-size:14px;letter-spacing:-.5px;box-shadow:0 4px 10px rgba(30,27,75,.18)}
   .logo-mark .lm-kreska{position:absolute;top:6px;right:6px;width:9px;height:2.6px;border-radius:2px;background:var(--emerald);transform:rotate(-28deg);z-index:2}
   .logo b{font-size:17px;font-weight:700;letter-spacing:-.3px}
 
@@ -59,7 +60,7 @@
     will-change:transform,opacity,filter;
     animation:heroReveal .85s cubic-bezier(.2,.7,.2,1) both}
   .hero h1 em{font-style:normal;color:var(--emerald);
-    background:linear-gradient(100deg,var(--emerald) 0%,var(--emerald) 42%,#6ee7b7 50%,var(--emerald) 58%,var(--emerald) 100%);
+    background:linear-gradient(100deg,var(--emerald) 0%,var(--emerald) 42%,#a5b4fc 50%,var(--emerald) 58%,var(--emerald) 100%);
     background-size:220% 100%;background-position:165% 0;
     -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
     animation:heroShine 1.5s ease .5s both}
@@ -72,7 +73,14 @@
     to{background-position:-65% 0}
   }
   .hero-sub{margin:12px 0 0;font-size:14.5px;color:var(--muted);font-weight:500;line-height:1.5;max-width:34ch}
-  .hero-sub .hero-free{color:var(--emerald);font-weight:700}
+  .hero-badges{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}
+  .hero-badge{display:inline-flex;align-items:center;gap:7px;background:var(--forest);color:#e2e8f0;
+    border-radius:999px;padding:7px 14px 7px 12px;font-size:12.5px;font-weight:700;letter-spacing:.1px;
+    animation:heroBadgeIn .6s cubic-bezier(.2,.7,.2,1) both}
+  .hero-badge svg{width:15px;height:15px;flex:0 0 auto;color:#818cf8}
+  .hero-badge:nth-child(1){animation-delay:.55s}
+  .hero-badge:nth-child(2){animation-delay:.68s}
+  @keyframes heroBadgeIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
 
   .seg-label{font-size:12px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin:8px 0 12px}
   .levels{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:26px}
@@ -93,12 +101,12 @@
     border-radius:var(--r-md);padding:14px 44px;font:inherit;font-size:15px;font-weight:500;
     box-shadow:var(--shadow-sm);transition:.18s;-webkit-appearance:none;appearance:none}
   .search input::placeholder{color:#9aa8b4;font-weight:500}
-  .search input:focus{outline:none;border-color:var(--emerald);box-shadow:0 0 0 3px rgba(5,150,105,.13)}
+  .search input:focus{outline:none;border-color:var(--emerald);box-shadow:0 0 0 3px rgba(79,70,229,.13)}
   .search input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none}
   .search-clear{position:absolute;right:9px;top:50%;transform:translateY(-50%);width:28px;height:28px;
     border:none;background:var(--mint-bg);color:var(--mint-text);border-radius:50%;font-size:18px;line-height:1;
     cursor:pointer;display:grid;place-items:center;padding:0;transition:.15s}
-  .search-clear:hover{background:#d3f4e4}
+  .search-clear:hover{background:#c7d2fe}
   .search-clear:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
   .search-meta{font-size:12.5px;font-weight:600;color:var(--muted);margin:-4px 0 14px}
   .search-meta em{font-style:normal;color:var(--emerald);font-weight:700}
@@ -152,7 +160,7 @@
     box-shadow:var(--shadow);padding:30px 24px;overflow-y:auto;
     display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px}
   .eyebrow{position:absolute;top:20px;left:22px;font-size:11px;font-weight:700;letter-spacing:.7px;
-    text-transform:uppercase;color:#9fb2ab}
+    text-transform:uppercase;color:#94a3b8}
   .pl{font-size:36px;line-height:1.18;font-weight:800;letter-spacing:-.8px;color:var(--forest)}
   .en{font-size:27px;line-height:1.2;font-weight:700;letter-spacing:-.4px;color:var(--forest)}
   .hint{font-size:14px;color:var(--muted);line-height:1.5;max-width:34ch}
@@ -233,7 +241,7 @@
 
   /* ---------- footer ---------- */
   footer{display:flex;flex-direction:column;align-items:center;gap:11px;padding:8px 0 22px;text-align:center}
-  .foot-note{color:#9fb2ab;font-size:12px;font-weight:500;line-height:1.5;max-width:340px}
+  .foot-note{color:#94a3b8;font-size:12px;font-weight:500;line-height:1.5;max-width:340px}
   .foot-link{background:none;border:none;font-family:inherit;font-size:inherit;color:var(--emerald);
     font-weight:700;cursor:pointer;padding:0;vertical-align:baseline;
     text-decoration:underline;text-underline-offset:2px}
@@ -307,7 +315,7 @@
   /* ---------- grammar: drills ---------- */
   .drill{flex:1;display:flex;flex-direction:column;padding:10px 0 0}
   .drill-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:26px 22px;display:flex;flex-direction:column}
-  .d-type{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:#9fb2ab;margin-bottom:14px}
+  .d-type{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:#94a3b8;margin-bottom:14px}
   .q-prompt{font-size:22px;font-weight:800;line-height:1.35;letter-spacing:-.4px;color:var(--forest)}
   .q-prompt .blank{display:inline-block;min-width:56px;border-bottom:3px solid var(--emerald);margin:0 3px;vertical-align:middle;height:1.1em}
   .q-en{font-size:14px;color:var(--muted);font-weight:500;margin-top:8px}
@@ -361,7 +369,7 @@
   .you-note{align-self:flex-end;max-width:86%;font-size:12px;color:var(--sage-hover);font-weight:600;line-height:1.45;padding:0 4px;margin-top:-6px}
   .you-note::before{content:"\1F4A1";margin-right:5px}
   .reply{padding:12px 0 22px;display:flex;flex-direction:column;gap:10px}
-  .reply-label{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:#9fb2ab;padding-left:2px}
+  .reply-label{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:#94a3b8;padding-left:2px}
   .reply-opt{border:1.5px solid var(--border);background:#fff;border-radius:14px;padding:13px 15px;cursor:pointer;text-align:left;transition:.14s;font-family:inherit;display:flex;flex-direction:column;gap:2px}
   .reply-opt:hover:not(:disabled){border-color:var(--emerald);transform:translateY(-1px)}
   .reply-opt:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
@@ -380,7 +388,7 @@
   .cdone-actions{display:flex;flex-direction:column;gap:11px;width:100%;max-width:320px}
 
   @media (prefers-reduced-motion:reduce){
-    .flip,.screen,.done,.bubble,.hero h1,.hero h1 em{transition:none;animation:none}
+    .flip,.screen,.done,.bubble,.hero h1,.hero h1 em,.hero-badge{transition:none;animation:none}
     .hero h1 em{background:none;-webkit-text-fill-color:var(--emerald)}
   }
 </style>
@@ -403,7 +411,17 @@
 
     <div class="hero">
       <h1>Learn the Polish<br>you'll <em>actually</em> use.</h1>
-      <p class="hero-sub">Pick a level, grammar, or a conversation, then a topic. Tap to flip a card, tap to hear every line. <span class="hero-free">Completely free. No account needed.</span></p>
+      <p class="hero-sub">Pick a level, grammar, or a conversation, then a topic. Tap to flip a card, tap to hear every line.</p>
+      <div class="hero-badges">
+        <span class="hero-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+          Completely free
+        </span>
+        <span class="hero-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+          No account needed
+        </span>
+      </div>
     </div>
 
     <div class="seg-label">Levels, grammar &amp; conversations</div>
@@ -2553,10 +2571,10 @@ $("cBack").addEventListener("click", ()=>show("home"));
 /* ---------------- installable: inline manifest with PL card-stack icon ---------------- */
 (function(){
   const svg='<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512">'
-    +'<rect x="86" y="104" width="300" height="300" rx="64" fill="#ecfdf5" transform="rotate(-9 236 254)"/>'
-    +'<rect x="118" y="106" width="300" height="300" rx="64" fill="#022c22"/>'
-    +'<text x="268" y="304" font-size="132" text-anchor="middle" fill="#eafff4" font-family="sans-serif" font-weight="800" letter-spacing="-4">PL</text>'
-    +'<rect x="338" y="150" width="60" height="15" rx="7" fill="#059669" transform="rotate(-28 368 157)"/>'
+    +'<rect x="86" y="104" width="300" height="300" rx="64" fill="#e0e7ff" transform="rotate(-9 236 254)"/>'
+    +'<rect x="118" y="106" width="300" height="300" rx="64" fill="#1e293b"/>'
+    +'<text x="268" y="304" font-size="132" text-anchor="middle" fill="#eef2ff" font-family="sans-serif" font-weight="800" letter-spacing="-4">PL</text>'
+    +'<rect x="338" y="150" width="60" height="15" rx="7" fill="#4f46e5" transform="rotate(-28 368 157)"/>'
     +'</svg>';
   const icon="data:image/svg+xml;base64,"+btoa(svg);
   const m={name:"Po polsku",short_name:"Po polsku",display:"standalone",background_color:"#f8fafc",theme_color:"#f8fafc",start_url:".",icons:[{src:icon,sizes:"512x512",type:"image/svg+xml"}]};
