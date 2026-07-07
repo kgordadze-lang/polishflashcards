@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect x="86" y="104" width="300" height="300" rx="64" fill="#e0e7ff" transform="rotate(-9 236 254)"/>
+  <rect x="118" y="106" width="300" height="300" rx="64" fill="#1e293b"/>
+  <text x="268" y="252" font-size="132" text-anchor="middle" dominant-baseline="central" fill="#eef2ff" font-family="system-ui, sans-serif" font-weight="800" letter-spacing="-4">PL</text>
+  <rect x="338" y="150" width="60" height="15" rx="7" fill="#4f46e5" transform="rotate(-28 368 157)"/>
+</svg>

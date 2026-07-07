@@ -5,6 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#f8fafc">
 <title>Po polsku - learn the Polish you'll actually use</title>
+<meta name="description" content="Free Polish flashcards with audio for A1-B1: real everyday vocabulary, all seven grammar cases, and branching conversations. No account, no ads, works offline.">
+<link rel="canonical" href="https://popolsku.app/">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Po polsku">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://popolsku.app/">
+<meta property="og:title" content="Po polsku - learn the Polish you'll actually use">
+<meta property="og:description" content="Free Polish flashcards with audio for A1-B1: real everyday vocabulary, all seven grammar cases, and branching conversations. No account, no ads, works offline.">
+<meta property="og:image" content="https://popolsku.app/icon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Po polsku - learn the Polish you'll actually use">
+<meta name="twitter:description" content="Free Polish flashcards with audio for A1-B1. No account, no ads, works offline.">
+<meta name="twitter:image" content="https://popolsku.app/icon-512.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -386,6 +403,23 @@
   .cdone-t{font-size:21px;font-weight:800;letter-spacing:-.4px;color:var(--forest)}
   .cdone-s{font-size:14px;color:var(--muted);line-height:1.5;margin:7px 0 18px;max-width:340px}
   .cdone-actions{display:flex;flex-direction:column;gap:11px;width:100%;max-width:320px}
+
+  /* card exit when marked */
+  .flip.exit-know,.flip.exit-still{transition:transform .22s ease,opacity .22s ease;opacity:0}
+  .flip.exit-know{transform:rotateY(180deg) translateX(-46px)}
+  .flip.exit-still{transform:rotateY(180deg) translateX(46px)}
+
+  /* audio speaking state */
+  @keyframes speakPulse{50%{transform:scale(1.07)}}
+  .fab.speaking,.ex-audio.speaking,.mini-audio.speaking{background:var(--emerald);color:#fff;animation:speakPulse .9s ease infinite}
+
+  /* review count on topic cards */
+  .t-count .review-n{font-style:normal;color:var(--coral-hover);font-weight:700}
+
+  /* toast (voice hint) */
+  .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:60;background:var(--forest);color:var(--cream);
+    padding:12px 16px;border-radius:14px;font-size:13px;font-weight:500;line-height:1.45;max-width:min(92vw,420px);
+    box-shadow:var(--shadow);animation:fade .3s ease}
 
   @media (prefers-reduced-motion:reduce){
     .flip,.screen,.done,.bubble,.hero h1,.hero h1 em,.hero-badge{transition:none;animation:none}
@@ -2097,9 +2131,44 @@ const LEVELS = [
 ];
 
 /* ---------------- app state ---------------- */
-const S = { levelIdx:0, topicIdx:0, cards:[], queue:[], pos:0, still:new Set(), query:"" };
+const S = { levelIdx:0, topicIdx:0, cards:[], queue:[], pos:0, still:new Set(), known:new Set(), query:"" };
 const $ = id => document.getElementById(id);
-function show(scr){ document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active")); $(scr).classList.add("active"); window.scrollTo(0,0); }
+
+/* ---------------- progress persistence (localStorage) ---------------- */
+const STORE_KEY = "popolsku-progress-v1";
+function loadStore(){ try{ return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }catch(e){ return {}; } }
+function saveStore(st){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(st)); }catch(e){} }
+function topicKey(l,t){ return LEVELS[l].level + "|" + LEVELS[l].topics[t].name; }
+function persistProgress(){
+  const st = loadStore();
+  st[topicKey(S.levelIdx, S.topicIdx)] = {
+    still:[...S.still].map(i=>S.cards[i].pl),
+    known:[...S.known].map(i=>S.cards[i].pl)
+  };
+  saveStore(st);
+}
+function restoreProgress(l,t){
+  S.still = new Set(); S.known = new Set();
+  const rec = loadStore()[topicKey(l,t)];
+  if(!rec) return;
+  const idx = {}; S.cards.forEach((c,i)=>{ idx[c.pl]=i; });
+  (rec.still||[]).forEach(pl=>{ if(idx[pl]!==undefined) S.still.add(idx[pl]); });
+  (rec.known||[]).forEach(pl=>{ if(idx[pl]!==undefined) S.known.add(idx[pl]); });
+}
+function showScreen(scr){ document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active")); $(scr).classList.add("active"); window.scrollTo(0,0); }
+/* history-aware navigation: system back button pops to home instead of closing the app */
+function show(scr){
+  if($(scr).classList.contains("active")){ showScreen(scr); return; }   /* re-render same screen, no new entry */
+  if(scr==="home"){
+    if(history.state && history.state.scr && history.state.scr!=="home"){ history.back(); }
+    else showScreen("home");
+    return;
+  }
+  history.pushState({scr:scr}, "", "#"+scr);
+  showScreen(scr);
+}
+window.addEventListener("popstate", e=> showScreen((e.state && e.state.scr) || "home"));
+history.replaceState({scr:"home"}, "", location.pathname + location.search);
 
 /* ---------------- home ---------------- */
 function isModeLevel(lv){ return lv.topics.length>0 && lv.topics.every(t=> t.kind==="grammar" || t.kind==="convo"); }
@@ -2188,11 +2257,20 @@ const ICONS = {
 };
 function topicIcon(t){ return ICONS[t.emoji] ? ICON_SVG(ICONS[t.emoji]) : (t.emoji||"\uD83D\uDCD8"); }
 
+function tCount(t, lv, store){
+  if(t.kind==="grammar") return t.drills.length+' drills';
+  if(t.kind==="convo")   return '~'+convoLen(t)+' turns';
+  let s = t.cards.length+' cards';
+  const rec = store[lv.level+"|"+t.name];
+  if(rec && rec.still && rec.still.length) s += ' \u00b7 <span class="review-n">'+rec.still.length+' to review</span>';
+  return s;
+}
 function renderTopics(){
   const box = $("topics"); box.innerHTML = "";
   const meta = $("searchMeta");
   const q = S.query.trim();
   const list = getVisibleTopics();
+  const store = loadStore();
 
   if(meta){
     if(!q){ meta.textContent = ""; }
@@ -2220,7 +2298,7 @@ function renderTopics(){
       '<div class="t-body">'+
         '<div class="t-title"></div>'+
         '<div class="t-desc"></div>'+
-        '<div class="t-meta"><span class="chip">'+lv.level+'</span><span class="t-count">'+(t.kind==="grammar" ? (t.drills.length+' drills') : t.kind==="convo" ? ('~'+convoLen(t)+' turns') : (t.cards.length+' cards'))+'</span></div>'+
+        '<div class="t-meta"><span class="chip">'+lv.level+'</span><span class="t-count">'+tCount(t, lv, store)+'</span></div>'+
       '</div>'+
       '<div class="t-arrow">›</div>';
     b.querySelector(".t-title").textContent = t.name;
@@ -2235,7 +2313,7 @@ function startTopic(l,t){
   S.levelIdx=l; S.topicIdx=t;
   S.cards = LEVELS[l].topics[t].cards;
   S.queue = S.cards.map((_,k)=>k);
-  S.pos = 0; S.still = new Set();
+  S.pos = 0; restoreProgress(l,t);
   $("studyTitle").textContent = LEVELS[l].topics[t].name;
   $("studyLevel").textContent = LEVELS[l].level + " · " + S.cards.length + " cards";
   show("study"); render();
@@ -2245,7 +2323,13 @@ function render(){
   if(S.pos >= S.queue.length){ showDone(); return; }
   $("cardView").style.display="flex"; $("doneView").style.display="none";
   const c = currentCard();
-  $("flip").classList.remove("flipped");
+  const f = $("flip");
+  if(f.classList.contains("flipped")){          /* reset to front without replaying the flip */
+    f.style.transition = "none";
+    f.classList.remove("flipped");
+    void f.offsetWidth;
+    f.style.transition = "";
+  }
   $("plText").textContent = c.pl;
   $("frontHint").textContent = c.hint || "";
   $("enText").textContent = c.en;
@@ -2257,15 +2341,23 @@ function render(){
   } else {
     $("exampleBox").style.display = "none";
   }
-  const pct = (S.pos / S.queue.length) * 100;
+  const pct = ((S.pos + 1) / S.queue.length) * 100;   /* agrees with the "n / N" counter */
   $("fill").style.width = pct + "%";
   $("pcount").textContent = (S.pos+1) + " / " + S.queue.length;
 }
 function flip(){ $("flip").classList.toggle("flipped"); }
 function advance(){ S.pos++; render(); }
 function goPrev(){ if(S.pos>0){ S.pos--; render(); } }
-function markKnown(){ S.still.delete(S.queue[S.pos]); advance(); }
-function markStill(){ S.still.add(S.queue[S.pos]); advance(); }
+function markKnown(){ const i=S.queue[S.pos]; S.still.delete(i); S.known.add(i); persistProgress(); exitCard("exit-know"); }
+function markStill(){ const i=S.queue[S.pos]; S.still.add(i);  S.known.delete(i); persistProgress(); exitCard("exit-still"); }
+function exitCard(cls){
+  const el = $("flip");
+  if(el.dataset.leaving) return;
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches || !el.classList.contains("flipped")){ advance(); return; }
+  el.dataset.leaving = "1";
+  el.classList.add(cls);
+  setTimeout(()=>{ el.classList.remove(cls); delete el.dataset.leaving; advance(); }, 230);
+}
 function shuffle(){
   for(let i=S.queue.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [S.queue[i],S.queue[j]]=[S.queue[j],S.queue[i]]; }
   S.pos=0; render();
@@ -2275,18 +2367,28 @@ function shuffle(){
 function showDone(){
   $("cardView").style.display="none"; $("doneView").style.display="flex";
   $("fill").style.width="100%"; $("pcount").textContent = S.queue.length + " / " + S.queue.length;
-  const stillCount = S.still.size, knowCount = S.queue.length - stillCount;
+  /* count only cards the user actually judged - skipping is not knowing */
+  const stillCount = S.queue.filter(i=>S.still.has(i)).length;
+  const knowCount  = S.queue.filter(i=>S.known.has(i)).length;
+  const skipped    = S.queue.length - stillCount - knowCount;
   $("knowN").textContent = knowCount; $("stillN").textContent = stillCount;
   const ps = $("practiceStill");
-  if(stillCount>0){
+  const totalStill = S.still.size;   /* across the whole topic, not just this round */
+  if(totalStill>0){
     ps.disabled=false;
-    ps.textContent = "Practice still learning (" + stillCount + ")";
-    $("doneMsg").textContent = "You've got " + stillCount + " to firm up. Give those another pass.";
+    ps.textContent = "Practice still learning (" + totalStill + ")";
+    $("doneMsg").textContent = "You've got " + totalStill + " to firm up. Give those another pass."
+      + (skipped>0 ? " (" + skipped + " unmarked card" + (skipped===1?"":"s") + " not counted.)" : "");
+  } else if(skipped>0){
+    ps.disabled=true;
+    ps.textContent = "Nothing marked to review";
+    $("doneMsg").textContent = skipped + " card" + (skipped===1?" was":"s were") + " left unmarked - flip a card and tap a button to track it.";
   } else {
     ps.disabled=true;
     ps.textContent = "Nothing left to review";
     $("doneMsg").textContent = "You knew every card in this set. Świetnie!";
   }
+  persistProgress();
 }
 function practiceStill(){
   if(S.still.size===0) return;
@@ -2300,18 +2402,38 @@ function restart(){ startTopic(S.levelIdx, S.topicIdx); }
 let plVoice=null;
 function pickVoice(){ const v=speechSynthesis.getVoices(); plVoice=v.find(x=>x.lang&&x.lang.toLowerCase().startsWith("pl"))||null; }
 if("speechSynthesis" in window){ pickVoice(); speechSynthesis.onvoiceschanged=pickVoice; }
-function speakText(txt){
+let speakBtn=null;
+function clearSpeaking(){ if(speakBtn){ speakBtn.classList.remove("speaking"); speakBtn=null; } }
+function speakText(txt,btn){
   if(!txt || !("speechSynthesis" in window)) return;
-  speechSynthesis.cancel();
+  speechSynthesis.cancel(); clearSpeaking();
+  voiceHint();
   const u=new SpeechSynthesisUtterance(txt);
   u.lang="pl-PL"; if(plVoice) u.voice=plVoice; u.rate=.9;
+  if(btn){
+    speakBtn=btn; btn.classList.add("speaking");
+    u.onend=clearSpeaking; u.onerror=clearSpeaking;
+  }
   speechSynthesis.speak(u);
+}
+/* one-time heads-up when the device has no Polish TTS voice */
+function voiceHint(){
+  if(plVoice) return;
+  try{
+    if(localStorage.getItem("popolsku-voicehint")) return;
+    if(!speechSynthesis.getVoices().length) return;   /* voices not loaded yet - don't judge */
+    localStorage.setItem("popolsku-voicehint","1");
+  }catch(e){ return; }
+  const t=document.createElement("div"); t.className="toast";
+  t.textContent="No Polish voice found on this device, so audio may sound off. On iPhone: Settings > Accessibility > Spoken Content > Voices > Polish.";
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(), 8000);
 }
 
 /* ---------------- events ---------------- */
 $("flip").addEventListener("click", flip);
-$("speak").addEventListener("click", e=>{ e.stopPropagation(); speakText(currentCard().pl); });
-$("speakEx").addEventListener("click", e=>{ e.stopPropagation(); speakText(currentCard().ex); });
+$("speak").addEventListener("click", e=>{ e.stopPropagation(); speakText(currentCard().pl, e.currentTarget); });
+$("speakEx").addEventListener("click", e=>{ e.stopPropagation(); speakText(currentCard().ex, e.currentTarget); });
 $("markKnow").addEventListener("click", e=>{ e.stopPropagation(); markKnown(); });
 $("markStill").addEventListener("click", e=>{ e.stopPropagation(); markStill(); });
 $("prev").addEventListener("click", goPrev);
@@ -2472,7 +2594,7 @@ $("gReview").addEventListener("click", ()=>{ G.ti=0; gRenderTeach(); gPhaseView(
 $("gHome").addEventListener("click", ()=>show("home"));
 
 /* play any [data-say] Polish audio (grammar cards + feedback) */
-document.addEventListener("click", e=>{ const b=e.target.closest("[data-say]"); if(b){ e.stopPropagation(); speakText(decodeURIComponent(b.getAttribute("data-say"))); } });
+document.addEventListener("click", e=>{ const b=e.target.closest("[data-say]"); if(b){ e.stopPropagation(); speakText(decodeURIComponent(b.getAttribute("data-say")), b); } });
 /* home button - always return to landing page */
 document.addEventListener("click", e=>{ if(e.target.closest(".home-btn")) show("home"); });
 
@@ -2558,7 +2680,7 @@ function cShowDone(){
   box.innerHTML='<div class="cdone">'+
     '<div class="cdone-badge">'+C_CHECK+'</div>'+
     '<div class="cdone-t">Rozmowa sko\u0144czona!</div>'+
-    '<div class="cdone-s">You handled the whole pharmacy visit in Polish. Replay it to lock the phrases in, or head back for another.</div>'+
+    '<div class="cdone-s">You made it through \u201C'+C.topic.name+'\u201D in Polish. Replay it to lock the phrases in, or head back for another.</div>'+
     '<div class="cdone-actions">'+
       '<button class="btn-primary" id="cAgain">Try again</button>'+
       '<button class="btn-ghost" id="cHome">Back to topics</button>'+
@@ -2568,20 +2690,10 @@ function cShowDone(){
 }
 $("cBack").addEventListener("click", ()=>show("home"));
 
-/* ---------------- installable: inline manifest with PL card-stack icon ---------------- */
-(function(){
-  const svg='<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512">'
-    +'<rect x="86" y="104" width="300" height="300" rx="64" fill="#e0e7ff" transform="rotate(-9 236 254)"/>'
-    +'<rect x="118" y="106" width="300" height="300" rx="64" fill="#1e293b"/>'
-    +'<text x="268" y="304" font-size="132" text-anchor="middle" fill="#eef2ff" font-family="sans-serif" font-weight="800" letter-spacing="-4">PL</text>'
-    +'<rect x="338" y="150" width="60" height="15" rx="7" fill="#4f46e5" transform="rotate(-28 368 157)"/>'
-    +'</svg>';
-  const icon="data:image/svg+xml;base64,"+btoa(svg);
-  const m={name:"Po polsku",short_name:"Po polsku",display:"standalone",background_color:"#f8fafc",theme_color:"#f8fafc",start_url:".",icons:[{src:icon,sizes:"512x512",type:"image/svg+xml"}]};
-  const link=document.createElement("link"); link.rel="manifest";
-  link.href=URL.createObjectURL(new Blob([JSON.stringify(m)],{type:"application/json"}));
-  document.head.appendChild(link);
-})();
+/* ---------------- installable: real manifest is linked in <head>; register the service worker ---------------- */
+if("serviceWorker" in navigator){
+  window.addEventListener("load", ()=>{ navigator.serviceWorker.register("sw.js").catch(()=>{}); });
+}
 
 /* ---------------- search wiring ---------------- */
 $("search").addEventListener("input", e=>{
