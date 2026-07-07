@@ -239,6 +239,12 @@
     text-decoration:underline;text-underline-offset:2px}
   .foot-link:hover{color:var(--sage-hover)}
   .foot-link:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  .foot-links{display:flex;gap:10px;justify-content:center;margin-bottom:2px}
+  .foot-btn{border:1px solid var(--border);background:var(--card);color:var(--forest);
+    border-radius:999px;padding:8px 20px;font-family:inherit;font-size:13px;font-weight:600;
+    cursor:pointer;box-shadow:var(--shadow-sm);transition:.18s}
+  .foot-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow);border-color:#d7e0e8}
+  .foot-btn:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
 
   /* ---------- privacy notice ---------- */
   .privacy-wrap{flex:1;display:flex;flex-direction:column;padding:14px 0 24px}
@@ -254,6 +260,19 @@
   .privacy-list li::before{content:"";position:absolute;left:2px;top:8px;width:7px;height:7px;
     border-radius:50%;background:var(--emerald)}
   .privacy-list li b{color:var(--forest);font-weight:700}
+
+  /* ---------- about ---------- */
+  .about-p{margin:0 0 14px;font-size:14.5px;line-height:1.62;color:var(--muted);font-weight:500}
+  .about-p:last-child{margin-bottom:0}
+  .about-p b{color:var(--forest);font-weight:700}
+  .about-lead{margin:0 0 14px;font-size:16.5px;font-weight:700;line-height:1.45;
+    color:var(--forest);letter-spacing:-.2px}
+  .about-contact{margin-top:22px;padding-top:20px;border-top:1px solid var(--border)}
+  .about-contact-title{font-size:12px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;
+    color:var(--muted);margin-bottom:10px}
+  .about-link{color:var(--emerald);font-weight:700;text-decoration:underline;text-underline-offset:2px}
+  .about-link:hover{color:var(--sage-hover)}
+  .about-link:focus-visible{outline:2px solid var(--emerald);outline-offset:2px;border-radius:3px}
 
   /* ---------- grammar: teach card ---------- */
   .front-q{font-size:25px;line-height:1.22;font-weight:800;letter-spacing:-.5px;color:var(--forest)}
@@ -596,8 +615,38 @@
     </div>
   </section>
 
+  <!-- ============ ABOUT ============ -->
+  <section class="screen" id="about">
+    <div class="sbar">
+      <button class="back" id="backAbout" aria-label="Back to home">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="sbar-title"><b>About</b></div>
+      <button class="back home-btn" aria-label="Home page">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </button>
+    </div>
+
+    <div class="privacy-wrap">
+      <div class="privacy-card">
+        <p class="about-p">I'm a foreigner living in Poland, and somewhere between advancing a master's degree and trying to navigate seven consecutive Polish consonants, I decided to put my neuroplasticity to the test and learn the language properly.</p>
+        <p class="about-p">Flashcards were the thing that finally made vocabulary stick for me, so I built a small, mobile-first app around exactly that - every word paired with a sentence from real daily life (heavily inspired by situations where I gracefully panicked), plus built-in audio so you can hear the pronunciation. It's a bit robotic, but accurate, and unlike a real person it won't judge your accent when you repeat after it.</p>
+        <p class="about-p">It's completely free, needs no account, and collects zero data. I'll keep expanding the materials as I go.</p>
+
+        <div class="about-contact">
+          <div class="about-contact-title">Contact</div>
+          <p class="about-p">Learned Polish yourself and have a survival tactic that worked? Found a mistake, or want a topic added? I'd genuinely love to hear it - reach out on <a class="about-link" href="https://www.linkedin.com/in/kakhaber-gordadze/" target="_blank" rel="noopener noreferrer">LinkedIn</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <footer>
-    <div class="foot-note">We do not collect your data in any form. See more in <button class="foot-link" id="openPrivacy">Privacy Notice</button></div>
+    <div class="foot-links">
+      <button class="foot-btn" id="openAbout">About</button>
+      <button class="foot-btn" id="openPrivacy">Privacy</button>
+    </div>
+    <div class="foot-note">We do not collect your data in any form.</div>
   </footer>
 </div>
 
@@ -2256,6 +2305,8 @@ $("restart").addEventListener("click", restart);
 $("toTopics").addEventListener("click", ()=>show("home"));
 $("openPrivacy").addEventListener("click", ()=>show("privacy"));
 $("backPrivacy").addEventListener("click", ()=>show("home"));
+$("openAbout").addEventListener("click", ()=>show("about"));
+$("backAbout").addEventListener("click", ()=>show("home"));
 document.addEventListener("keydown", e=>{
   if(!$("study").classList.contains("active")) return;
   if($("doneView").style.display!=="none") return;
