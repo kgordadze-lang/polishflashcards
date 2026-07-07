@@ -67,6 +67,29 @@
     transition:.18s;box-shadow:var(--shadow-sm)}
   .lvl[aria-pressed="true"]{background:var(--forest);color:var(--cream);border-color:var(--forest)}
   .lvl:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  .levels.searching .lvl{opacity:.5}
+  .levels.searching .lvl[aria-pressed="true"]{background:var(--card);color:var(--forest);border-color:var(--border)}
+
+  /* ---------- topic search ---------- */
+  .search{position:relative;margin-bottom:14px}
+  .search-ic{position:absolute;left:15px;top:50%;transform:translateY(-50%);
+    width:18px;height:18px;color:var(--muted);pointer-events:none}
+  .search input{width:100%;border:1px solid var(--border);background:var(--card);color:var(--forest);
+    border-radius:var(--r-md);padding:14px 44px;font:inherit;font-size:15px;font-weight:500;
+    box-shadow:var(--shadow-sm);transition:.18s;-webkit-appearance:none;appearance:none}
+  .search input::placeholder{color:#9aa8b4;font-weight:500}
+  .search input:focus{outline:none;border-color:var(--emerald);box-shadow:0 0 0 3px rgba(5,150,105,.13)}
+  .search input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none}
+  .search-clear{position:absolute;right:9px;top:50%;transform:translateY(-50%);width:28px;height:28px;
+    border:none;background:var(--mint-bg);color:var(--mint-text);border-radius:50%;font-size:18px;line-height:1;
+    cursor:pointer;display:grid;place-items:center;padding:0;transition:.15s}
+  .search-clear:hover{background:#d3f4e4}
+  .search-clear:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  .search-meta{font-size:12.5px;font-weight:600;color:var(--muted);margin:-4px 0 14px}
+  .search-meta em{font-style:normal;color:var(--emerald);font-weight:700}
+  .no-results{border:1px dashed var(--border);border-radius:var(--r-md);padding:24px 18px;text-align:center;
+    color:var(--muted);font-size:14px;font-weight:500;line-height:1.55}
+  .no-results b{color:var(--forest)}
 
   .topics{display:flex;flex-direction:column;gap:13px;padding-bottom:26px}
   .topic{border:1px solid var(--border);background:var(--card);border-radius:var(--r-md);
@@ -350,6 +373,12 @@
     <div class="levels" id="levels"></div>
 
     <div class="seg-label">Topics</div>
+    <div class="search">
+      <svg class="search-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="search" type="search" inputmode="search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search topics - e.g. food, doctor, past tense" aria-label="Search topics across all levels">
+      <button class="search-clear" id="searchClear" type="button" aria-label="Clear search" hidden>&times;</button>
+    </div>
+    <div class="search-meta" id="searchMeta"></div>
     <div class="topics" id="topics"></div>
   </section>
 
@@ -1983,20 +2012,51 @@ const LEVELS = [
 ];
 
 /* ---------------- app state ---------------- */
-const S = { levelIdx:0, topicIdx:0, cards:[], queue:[], pos:0, still:new Set() };
+const S = { levelIdx:0, topicIdx:0, cards:[], queue:[], pos:0, still:new Set(), query:"" };
 const $ = id => document.getElementById(id);
 function show(scr){ document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active")); $(scr).classList.add("active"); window.scrollTo(0,0); }
 
 /* ---------------- home ---------------- */
 function renderLevels(){
   const box = $("levels"); box.innerHTML = "";
+  box.classList.toggle("searching", !!S.query.trim());
   LEVELS.forEach((lv,i)=>{
     const b = document.createElement("button");
     b.className = "lvl"; b.textContent = lv.level;
     b.setAttribute("aria-pressed", i===S.levelIdx ? "true":"false");
-    b.onclick = ()=>{ S.levelIdx = i; renderLevels(); renderTopics(); };
+    b.onclick = ()=>{ S.levelIdx = i; clearSearch(); renderLevels(); renderTopics(); };
     box.appendChild(b);
   });
+}
+
+/* ---------------- topic search ---------------- */
+const HAY = new WeakMap();               /* cache: topic -> searchable text */
+const HAY_SKIP = new Set(["emoji","kind","start","goto","type"]);
+function topicHaystack(t){
+  let h = HAY.get(t); if(h !== undefined) return h;
+  const parts = [];
+  (function walk(v,key){
+    if(v == null) return;
+    if(typeof v === "string"){ if(!HAY_SKIP.has(key)) parts.push(v); return; }
+    if(Array.isArray(v)){ v.forEach(x=>walk(x,key)); return; }
+    if(typeof v === "object"){ for(const k in v) walk(v[k],k); }
+  })(t,"");
+  h = parts.join(" ").toLowerCase();
+  HAY.set(t,h); return h;
+}
+function getVisibleTopics(){
+  const q = S.query.trim().toLowerCase();
+  if(!q) return LEVELS[S.levelIdx].topics.map((t,ti)=>({t, li:S.levelIdx, ti}));
+  const out = [];
+  LEVELS.forEach((lv,li)=> lv.topics.forEach((t,ti)=>{
+    if(topicHaystack(t).includes(q)) out.push({t, li, ti});
+  }));
+  return out;
+}
+function clearSearch(){
+  S.query = ""; const el = $("search");
+  if(el) el.value = "";
+  $("searchClear").hidden = true;
 }
 /* ---------------- topic icons (Lucide-style stroke SVGs) ---------------- */
 const ICON_SVG = p => '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg>';
@@ -2039,8 +2099,29 @@ function topicIcon(t){ return ICONS[t.emoji] ? ICON_SVG(ICONS[t.emoji]) : (t.emo
 
 function renderTopics(){
   const box = $("topics"); box.innerHTML = "";
-  const lv = LEVELS[S.levelIdx];
-  lv.topics.forEach((t,i)=>{
+  const meta = $("searchMeta");
+  const q = S.query.trim();
+  const list = getVisibleTopics();
+
+  if(meta){
+    if(!q){ meta.textContent = ""; }
+    else if(list.length){
+      meta.innerHTML = '<em></em> across all levels';
+      meta.querySelector("em").textContent = list.length + (list.length===1 ? " topic" : " topics");
+    } else { meta.textContent = ""; }
+  }
+
+  if(q && !list.length){
+    const d = document.createElement("div");
+    d.className = "no-results";
+    d.innerHTML = 'No topics match \u201C<b></b>\u201D.<br>Try another word - in Polish or English.';
+    d.querySelector("b").textContent = q;
+    box.appendChild(d);
+    return;
+  }
+
+  list.forEach(({t, li, ti})=>{
+    const lv = LEVELS[li];
     const b = document.createElement("button");
     b.className = "topic";
     b.innerHTML =
@@ -2053,7 +2134,7 @@ function renderTopics(){
       '<div class="t-arrow">›</div>';
     b.querySelector(".t-title").textContent = t.name;
     b.querySelector(".t-desc").textContent = t.desc || "";
-    b.onclick = ()=> (t.kind==="grammar" ? startGrammar(S.levelIdx, i) : t.kind==="convo" ? startConvo(S.levelIdx, i) : startTopic(S.levelIdx, i));
+    b.onclick = ()=> (t.kind==="grammar" ? startGrammar(li, ti) : t.kind==="convo" ? startConvo(li, ti) : startTopic(li, ti));
     box.appendChild(b);
   });
 }
@@ -2408,6 +2489,15 @@ $("cBack").addEventListener("click", ()=>show("home"));
   link.href=URL.createObjectURL(new Blob([JSON.stringify(m)],{type:"application/json"}));
   document.head.appendChild(link);
 })();
+
+/* ---------------- search wiring ---------------- */
+$("search").addEventListener("input", e=>{
+  S.query = e.target.value;
+  $("searchClear").hidden = !S.query.trim();
+  renderLevels(); renderTopics();
+});
+$("search").addEventListener("keydown", e=>{ if(e.key === "Escape" && S.query){ e.preventDefault(); clearSearch(); renderLevels(); renderTopics(); } });
+$("searchClear").addEventListener("click", ()=>{ clearSearch(); renderLevels(); renderTopics(); $("search").focus(); });
 
 /* ---------------- init ---------------- */
 renderLevels(); renderTopics();
