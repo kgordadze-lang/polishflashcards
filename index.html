@@ -55,13 +55,28 @@
 
   /* ---------- home hero ---------- */
   .hero{margin:26px 0 22px}
-  .hero h1{font-size:33px;line-height:1.06;font-weight:800;letter-spacing:-1.1px;margin:0}
-  .hero h1 em{font-style:normal;color:var(--emerald)}
+  .hero h1{font-size:33px;line-height:1.06;font-weight:800;letter-spacing:-1.1px;margin:0;
+    will-change:transform,opacity,filter;
+    animation:heroReveal .85s cubic-bezier(.2,.7,.2,1) both}
+  .hero h1 em{font-style:normal;color:var(--emerald);
+    background:linear-gradient(100deg,var(--emerald) 0%,var(--emerald) 42%,#6ee7b7 50%,var(--emerald) 58%,var(--emerald) 100%);
+    background-size:220% 100%;background-position:165% 0;
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+    animation:heroShine 1.5s ease .5s both}
+  @keyframes heroReveal{
+    from{opacity:0;transform:translateY(14px);filter:blur(8px)}
+    to{opacity:1;transform:translateY(0);filter:blur(0)}
+  }
+  @keyframes heroShine{
+    from{background-position:165% 0}
+    to{background-position:-65% 0}
+  }
   .hero-sub{margin:12px 0 0;font-size:14.5px;color:var(--muted);font-weight:500;line-height:1.5;max-width:34ch}
   .hero-sub .hero-free{color:var(--emerald);font-weight:700}
 
   .seg-label{font-size:12px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin:8px 0 12px}
-  .levels{display:flex;gap:9px;margin-bottom:26px}
+  .levels{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:26px}
+  .lvl-break{flex-basis:100%;height:0;margin:0;padding:0}
   .lvl{flex:0 0 auto;border:1px solid var(--border);background:var(--card);color:var(--forest);
     border-radius:999px;padding:9px 18px;font-size:14.5px;font-weight:600;cursor:pointer;
     transition:.18s;box-shadow:var(--shadow-sm)}
@@ -345,7 +360,10 @@
   .cdone-s{font-size:14px;color:var(--muted);line-height:1.5;margin:7px 0 18px;max-width:340px}
   .cdone-actions{display:flex;flex-direction:column;gap:11px;width:100%;max-width:320px}
 
-  @media (prefers-reduced-motion:reduce){ .flip,.screen,.done,.bubble{transition:none;animation:none} }
+  @media (prefers-reduced-motion:reduce){
+    .flip,.screen,.done,.bubble,.hero h1,.hero h1 em{transition:none;animation:none}
+    .hero h1 em{background:none;-webkit-text-fill-color:var(--emerald)}
+  }
 </style>
 </head>
 <body>
@@ -2017,10 +2035,16 @@ const $ = id => document.getElementById(id);
 function show(scr){ document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active")); $(scr).classList.add("active"); window.scrollTo(0,0); }
 
 /* ---------------- home ---------------- */
+function isModeLevel(lv){ return lv.topics.length>0 && lv.topics.every(t=> t.kind==="grammar" || t.kind==="convo"); }
 function renderLevels(){
   const box = $("levels"); box.innerHTML = "";
   box.classList.toggle("searching", !!S.query.trim());
+  let broke = false;
   LEVELS.forEach((lv,i)=>{
+    if(isModeLevel(lv) && !broke){                    /* start row 2 at the first mode (Grammar) */
+      box.appendChild(Object.assign(document.createElement("span"),{className:"lvl-break"}));
+      broke = true;
+    }
     const b = document.createElement("button");
     b.className = "lvl"; b.textContent = lv.level;
     b.setAttribute("aria-pressed", i===S.levelIdx ? "true":"false");
