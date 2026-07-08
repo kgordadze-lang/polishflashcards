@@ -529,6 +529,394 @@
               answer:["Dzień","dobry","panie","profesorze"],
               explain:"Addressing with a title uses the vocative: panie profesorze.", full:"Dzień dobry, panie profesorze!", fullEn:"Good morning, professor!" }
           ]
+        },
+        {
+          name: "Przymiotniki (Adjectives & Traits)", emoji: "\uD83C\uDFAD", kind: "grammar",
+          desc: "Describing people: The 'oni' plural for character traits",
+          teach: [
+            { front:"Adjectives for groups: One vs. Oni",
+              sub:"Adjectives must match the gender of the group they describe.",
+              points:[
+                "For <b>one</b> (women, objects, animals), just add <b>-e</b>: miły \u2192 miłe.",
+                "For <b>oni</b> (groups with men), the ending softens to <b>-i</b> or <b>-y</b>, often changing the consonant before it."
+              ],
+              examples:[
+                { pl:"Te kobiety są miłe.", en:"These women are nice." },
+                { pl:"Ci panowie są mili.", en:"These men are nice." }
+              ] },
+            { front:"Pattern 1: -t becomes -c",
+              sub:"When an adjective ends in -ty, it softens to -ci for 'oni'.",
+              table:[
+                { g:"stubborn", e:"uparty \u2192 uparci", ex:"Oni są bardzo <b>uparci</b>." },
+                { g:"hardworking", e:"pracowity \u2192 pracowici", ex:"Moi koledzy są <b>pracowici</b>." },
+                { g:"open", e:"otwarty \u2192 otwarci", ex:"Jesteśmy <b>otwarci</b> na pomysły." }
+              ],
+              examples:[
+                { pl:"Ci studenci są bardzo pracowici.", en:"These students are very hardworking." }
+              ] },
+            { front:"Pattern 2: -r becomes -rz",
+              sub:"When an adjective ends in -ry, it shifts to -rzy.",
+              table:[
+                { g:"honest", e:"szczery \u2192 szczerzy", ex:"Bądźmy ze sobą <b>szczerzy</b>." },
+                { g:"good", e:"dobry \u2192 dobrzy", ex:"To są <b>dobrzy</b> ludzie." },
+                { g:"smart", e:"mądry \u2192 mądrzy", ex:"Moi rodzice są <b>mądrzy</b>." }
+              ],
+              note:"'Dobry' and 'mądry' are extremely common and follow this exact same rule as 'szczery'.",
+              examples:[
+                { pl:"Zawsze byliśmy szczerzy.", en:"We have always been honest." }
+              ] },
+            { front:"Pattern 3: -ł becomes -l",
+              sub:"The hard 'ł' softens into a standard 'l'.",
+              table:[
+                { g:"nice", e:"miły \u2192 mili", ex:"Sąsiedzi są bardzo <b>mili</b>." },
+                { g:"shy", e:"nieśmiały \u2192 nieśmiali", ex:"Chłopcy byli <b>nieśmiali</b>." },
+                { g:"merry/cheerful", e:"wesoły \u2192 weseli", ex:"Jesteśmy dzisiaj <b>weseli</b>." }
+              ],
+              explain:"Notice that for 'wesoły \u2192 weseli', the 'o' also shifts to an 'e' to make pronunciation smoother.",
+              examples:[
+                { pl:"Nasi nowi sąsiedzi są bardzo mili.", en:"Our new neighbors are very nice." }
+              ] },
+            { front:"Pattern 4: -sk becomes -sc & -k becomes -c",
+              sub:"These are the trickiest transformations, but very common.",
+              table:[
+                { g:"sociable", e:"towarzyski \u2192 towarzyscy", ex:"Są bardzo <b>towarzyscy</b>." },
+                { g:"tall/high", e:"wysoki \u2192 wysocy", ex:"Koszykarze są <b>wysocy</b>." }
+              ],
+              examples:[
+                { pl:"Moi bracia są bardzo wysocy i towarzyscy.", en:"My brothers are very tall and sociable." }
+              ] },
+            { front:"The Easy Ones: Just add -i",
+              sub:"Many consonants don't change at all, they just take an 'i'.",
+              table:[
+                { g:"lazy", e:"leniwy \u2192 leniwi", ex:"W weekend jesteśmy <b>leniwi</b>." },
+                { g:"ambitious", e:"ambitny \u2192 ambitni", ex:"Młodzi ludzie są <b>ambitni</b>." },
+                { g:"serious", e:"poważny \u2192 poważni", ex:"Dlaczego jesteście <b>poważni</b>?" }
+              ],
+              examples:[
+                { pl:"Nasi pracownicy są bardzo ambitni.", en:"Our employees are very ambitious." }
+              ] }
+          ],
+          drills: [
+            { type:"choose", prompt:"Moi koledzy z zespołu są bardzo ___ .", promptEn:"My teammates are very hardworking.",
+              options:["pracowici","pracowity","pracowite"], answer:"pracowici",
+              explain:"'Koledzy' is a masculine personal group (oni), so '-ty' softens to '-ci'.", full:"Moi koledzy z zespołu są bardzo pracowici.", fullEn:"My teammates are very hardworking." },
+            { type:"choose", prompt:"Bądźmy ze sobą ___ .", promptEn:"Let's be honest with each other.",
+              options:["szczerzy","szczery","szczere"], answer:"szczerzy",
+              explain:"For a mixed/male group (we), '-ry' shifts to '-rzy'.", full:"Bądźmy ze sobą szczerzy.", fullEn:"Let's be honest with each other." },
+            { type:"build", promptEn:"Our new neighbors are very nice.",
+              answer:["Nasi","nowi","sąsiedzi","są","bardzo","mili"],
+              explain:"'Sąsiedzi' triggers the 'oni' forms, turning 'miły' into 'mili'.", full:"Nasi nowi sąsiedzi są bardzo mili.", fullEn:"Our new neighbors are very nice." },
+            { type:"choose", prompt:"Te dziewczyny są bardzo ___ .", promptEn:"These girls are very nice.",
+              options:["miłe","mili","miły"], answer:"miłe",
+              explain:"'Dziewczyny' forms a women-only group (one), which takes the simple '-e' ending.", full:"Te dziewczyny są bardzo miłe.", fullEn:"These girls are very nice." },
+            { type:"choose", prompt:"Moi dziadkowie są bardzo ___ .", promptEn:"My grandparents are very smart.",
+              options:["mądrzy","mądre","mądry"], answer:"mądrzy",
+              explain:"'Dziadkowie' (grandparents) includes a man, so '-ry' shifts to '-rzy'.", full:"Moi dziadkowie są bardzo mądrzy.", fullEn:"My grandparents are very smart." },
+            { type:"build", promptEn:"They (men) are very stubborn.",
+              answer:["Oni","są","bardzo","uparci"],
+              explain:"The '-ty' in 'uparty' changes to '-ci' for the 'oni' plural.", full:"Oni są bardzo uparci.", fullEn:"They (men) are very stubborn." },
+            { type:"choose", prompt:"Czy twoi przyjaciele są ___ ?", promptEn:"Are your friends sociable?",
+              options:["towarzyscy","towarzyski","towarzyskie"], answer:"towarzyscy",
+              explain:"The '-ski' ending transforms into '-scy' for masculine personal groups.", full:"Czy twoi przyjaciele są towarzyscy?", fullEn:"Are your friends sociable?" },
+            { type:"choose", prompt:"Wszyscy w biurze są dzisiaj ___ .", promptEn:"Everyone in the office is lazy today.",
+              options:["leniwi","leniwe","leniwy"], answer:"leniwi",
+              explain:"'Wszyscy' (everyone) is treated as an 'oni' group. Words ending in 'w' just add 'i'.", full:"Wszyscy w biurze są dzisiaj leniwi.", fullEn:"Everyone in the office is lazy today." },
+            { type:"build", promptEn:"These men are very tall.",
+              answer:["Ci","panowie","są","bardzo","wysocy"],
+              explain:"The '-ki' in 'wysoki' softens into '-cy' for 'oni'.", full:"Ci panowie są bardzo wysocy.", fullEn:"These men are very tall." },
+            { type:"choose", prompt:"Moje siostry są bardzo ___ .", promptEn:"My sisters are very ambitious.",
+              options:["ambitne","ambitni","ambitny"], answer:"ambitne",
+              explain:"'Siostry' is a female group (one), so it takes the simple '-e' ending, NOT '-i'.", full:"Moje siostry są bardzo ambitne.", fullEn:"My sisters are very ambitious." }
+          ]
+        },
+        {
+          name: "Zawody (Professions)", emoji: "\uD83D\uDCBC", kind: "grammar",
+          desc: "How professions change for groups of men (the 'oni' plural)",
+          teach: [
+            { front:"Professions in the 'Oni' Plural",
+              sub:"When a group of professionals includes at least one man, the noun takes a special ending.",
+              points:[
+                "Unlike adjectives (which just take -i or -y), professions have a few different endings: <b>-owie</b>, <b>-e</b>, <b>-cy</b>, and <b>-rzy</b>.",
+                "The ending you choose depends almost entirely on the last letter of the singular word.",
+                "For women-only groups (<b>one</b>), the rule is easy: usually just add <b>-ki</b> (nauczycielki, lekarki, kelnerki)."
+              ],
+              examples:[
+                { pl:"Gdzie są lekarze?", en:"Where are the doctors?" }
+              ] },
+            { front:"Pattern 1: The Prestigious '-owie'",
+              sub:"Many modern, technical, or 'boss' titles take the '-owie' ending.",
+              table:[
+                { g:"manager", e:"menedżer \u2192 menedżerowie", ex:"Nasi <b>menedżerowie</b> są na spotkaniu." },
+                { g:"engineer", e:"inżynier \u2192 inżynierowie", ex:"To są świetni <b>inżynierowie</b>." },
+                { g:"boss", e:"szef \u2192 szefowie", ex:"<b>Szefowie</b> mają dzisiaj wolne." },
+                { g:"professor", e:"profesor \u2192 profesorowie", ex:"Ci <b>profesorowie</b> uczą na uniwersytecie." }
+              ],
+              examples:[
+                { pl:"Inżynierowie i menedżerowie pracują razem.", en:"The engineers and managers work together." }
+              ] },
+            { front:"Pattern 2: The Soft '-e'",
+              sub:"Words ending in '-arz', '-erz', and '-iel' simply add an '-e'.",
+              table:[
+                { g:"doctor", e:"lekarz \u2192 lekarze", ex:"Ci <b>lekarze</b> są bardzo dobrzy." },
+                { g:"teacher", e:"nauczyciel \u2192 nauczyciele", ex:"Nasi <b>nauczyciele</b> są cierpliwi." },
+                { g:"journalist", e:"dziennikarz \u2192 dziennikarze", ex:"<b>Dziennikarze</b> zadają dużo pytań." }
+              ],
+              note:"Never say 'lekarzy' or 'nauczycieli' in the Nominative (subject) case!",
+              examples:[
+                { pl:"Lekarze mają dużo pracy.", en:"Doctors have a lot of work." }
+              ] },
+            { front:"Pattern 3: The '-ik' / '-yk' becomes '-icy' / '-ycy'",
+              sub:"A very strict rule for almost all nouns ending in -ik/-yk.",
+              table:[
+                { g:"worker", e:"pracownik \u2192 pracownicy", ex:"Wszyscy <b>pracownicy</b> są w biurze." },
+                { g:"lawyer", e:"prawnik \u2192 prawnicy", ex:"Ci <b>prawnicy</b> są drodzy." },
+                { g:"clerk", e:"urzędnik \u2192 urzędnicy", ex:"<b>Urzędnicy</b> pracują do szesnastej." }
+              ],
+              examples:[
+                { pl:"Moi pracownicy są bardzo zmotywowani.", en:"My employees are very motivated." }
+              ] },
+            { front:"Pattern 4: The '-sta' and '-t' to '-ści' / '-ci'",
+              sub:"Words ending in -sta or -t undergo a heavy softening.",
+              table:[
+                { g:"programmer", e:"programista \u2192 programiści", ex:"<b>Programiści</b> zarabiają dobrze." },
+                { g:"dentist", e:"dentysta \u2192 dentyści", ex:"<b>Dentyści</b> mają dzisiaj dużo pacjentów." },
+                { g:"student", e:"student \u2192 studenci", ex:"Ci <b>studenci</b> są z Polski." },
+                { g:"policeman", e:"policjant \u2192 policjanci", ex:"<b>Policjanci</b> kierują ruchem." }
+              ],
+              examples:[
+                { pl:"Nasi programiści to świetny zespół.", en:"Our programmers are a great team." }
+              ] },
+            { front:"Pattern 5: The '-r' and '-ca' to '-rzy' / '-cy'",
+              sub:"More consonant softening for everyday jobs.",
+              table:[
+                { g:"actor", e:"aktor \u2192 aktorzy", ex:"Ci <b>aktorzy</b> są sławni." },
+                { g:"waiter", e:"kelner \u2192 kelnerzy", ex:"<b>Kelnerzy</b> przynoszą rachunek." },
+                { g:"director", e:"dyrektor \u2192 dyrektorzy", ex:"<b>Dyrektorzy</b> mają spotkanie." },
+                { g:"driver", e:"kierowca \u2192 kierowcy", ex:"<b>Kierowcy</b> autobusów mają przerwę." },
+                { g:"seller", e:"sprzedawca \u2192 sprzedawcy", ex:"<b>Sprzedawcy</b> są w sklepie." }
+              ],
+              examples:[
+                { pl:"Kelnerzy i kierowcy pracują na zmiany.", en:"Waiters and drivers work in shifts." }
+              ] }
+          ],
+          drills: [
+            { type:"choose", prompt:"Wszyscy ___ są dzisiaj na spotkaniu.", promptEn:"All employees are at the meeting today.",
+              options:["pracownicy","pracowniki","pracownikowie"], answer:"pracownicy",
+              explain:"Words ending in '-ik' (pracownik) change to '-icy' in the plural.", full:"Wszyscy pracownicy są dzisiaj na spotkaniu.", fullEn:"All employees are at the meeting today." },
+            { type:"choose", prompt:"Nasi ___ mają dzisiaj wolne.", promptEn:"Our bosses have the day off today.",
+              options:["szefowie","szefy","szefzy"], answer:"szefowie",
+              explain:"'Szef' takes the prestigious '-owie' ending.", full:"Nasi szefowie mają dzisiaj wolne.", fullEn:"Our bosses have the day off today." },
+            { type:"build", promptEn:"These doctors are very good.",
+              answer:["Ci","lekarze","są","bardzo","dobrzy"],
+              explain:"'Lekarz' ends in '-arz', so it simply takes the '-e' ending.", full:"Ci lekarze są bardzo dobrzy.", fullEn:"These doctors are very good." },
+            { type:"choose", prompt:"Ci ___ pracują nad nową aplikacją.", promptEn:"These programmers are working on a new app.",
+              options:["programiści","programisty","programistowie"], answer:"programiści",
+              explain:"Words ending in '-sta' (programista) heavily soften to '-ści'.", full:"Ci programiści pracują nad nową aplikacją.", fullEn:"These programmers are working on a new app." },
+            { type:"choose", prompt:"Pytam, bo moi ___ nie wiedzą.", promptEn:"I ask because my managers don't know.",
+              options:["menedżerowie","menedżery","menedżerzy"], answer:"menedżerowie",
+              explain:"While 'menedżerzy' is sometimes used, 'menedżerowie' is the standard, safer plural form.", full:"Pytam, bo moi menedżerowie nie wiedzą.", fullEn:"I ask because my managers don't know." },
+            { type:"build", promptEn:"The lawyers are in the office.",
+              answer:["Prawnicy","są","w","biurze"],
+              explain:"'Prawnik' follows the '-ik' to '-icy' rule.", full:"Prawnicy są w biurze.", fullEn:"The lawyers are in the office." },
+            { type:"choose", prompt:"Nasi ___ zarabiają bardzo dobrze.", promptEn:"Our engineers earn very well.",
+              options:["inżynierowie","inżyniery","inżynierzy"], answer:"inżynierowie",
+              explain:"'Inżynier' is a title that takes the '-owie' ending.", full:"Nasi inżynierowie zarabiają bardzo dobrze.", fullEn:"Our engineers earn very well." },
+            { type:"choose", prompt:"Czy ci panowie to ___ ?", promptEn:"Are those men waiters?",
+              options:["kelnerzy","kelnerowie","kelnery"], answer:"kelnerzy",
+              explain:"'Kelner' ends in '-r', which softens to '-rzy'.", full:"Czy ci panowie to kelnerzy?", fullEn:"Are those men waiters?" },
+            { type:"build", promptEn:"The students and teachers are here.",
+              answer:["Studenci","i","nauczyciele","są","tutaj"],
+              explain:"'Student' becomes 'studenci', and 'nauczyciel' becomes 'nauczyciele'.", full:"Studenci i nauczyciele są tutaj.", fullEn:"The students and teachers are here." },
+            { type:"choose", prompt:"Wszyscy ___ stoją w korku.", promptEn:"All the drivers are stuck in a traffic jam.",
+              options:["kierowcy","kierowcowie","kierowce"], answer:"kierowcy",
+              explain:"'Kierowca' is a masculine word ending in '-a'. It shifts to '-cy'.", full:"Wszyscy kierowcy stoją w korku.", fullEn:"All the drivers are stuck in a traffic jam." }
+          ]
+        },
+        {
+          name: "Zaimki (Pronouns & Determiners)", emoji: "\uD83E\uDDED", kind: "grammar",
+          desc: "mój, ten, jaki - pointing and owning in the Nominative",
+          teach: [
+            { front:"On, ona, ono, one, oni - The 5 Genders",
+              sub:"Polish splits plurals based on exactly who is in the group.",
+              points:[
+                "Singular: <b>on</b> (masculine), <b>ona</b> (feminine), <b>ono</b> (neuter)",
+                "Plural <b>oni</b>: Groups with at least one man (masculine personal)",
+                "Plural <b>one</b>: Women, children, animals, and all objects"
+              ],
+              examples:[
+                { pl:"Gdzie oni są?", en:"Where are they? (men/mixed)" },
+                { pl:"Gdzie one są?", en:"Where are they? (women/objects)" }
+              ] },
+            { front:"Mój & Twój (My & Your)",
+              table:[
+                { g:"Masculine", e:"mój / twój", ex:"mój bilet" },
+                { g:"Feminine", e:"moja / twoja", ex:"twoja kawa" },
+                { g:"Neuter", e:"moje / twoje", ex:"moje biurko" }
+              ],
+              note:"In the plural, use <b>moi / twoi</b> for men (oni), and <b>moje / twoje</b> for everything else (one).",
+              examples:[ 
+                { pl:"To jest mój kot.", en:"This is my cat." } 
+              ] },
+            { front:"Ten & Tamten (This & That)",
+              sub:"Pointing at things nearby (ten) vs. further away (tamten).",
+              table:[
+                { g:"Masculine", e:"ten / tamten", ex:"ten pociąg" },
+                { g:"Feminine", e:"ta / tamta", ex:"ta ulica" },
+                { g:"Neuter", e:"to / tamto", ex:"to spotkanie" }
+              ],
+              examples:[
+                { pl:"Ten chleb jest bardzo dobry.", en:"This bread is very good." },
+                { pl:"Ta kawa jest moja.", en:"This coffee is mine." }
+              ] },
+            { front:"Jaki, Który, Czyj (What kind, Which, Whose)",
+              points:[
+                "<b>Jaki / Jaka / Jakie:</b> What kind? (Asking for descriptions)",
+                "<b>Który / Która / Które:</b> Which one? (Choosing from a set)",
+                "<b>Czyj / Czyja / Czyje:</b> Whose? (Asking about ownership)"
+              ],
+              note:"These change their endings exactly like adjectives to match the noun they describe.",
+              examples:[
+                { pl:"Jaka to jest ulica?", en:"What street is this?" },
+                { pl:"Który to twój samochód?", en:"Which one is your car?" }
+              ] },
+            { front:"The special 'ONI' plurals",
+              sub:"When talking about groups of men (or mixed groups), the endings soften.",
+              table:[
+                { g:"My / Your", e:"moi / twoi", ex:"moi koledzy" },
+                { g:"These / Those", e:"ci / tamci", ex:"ci panowie" },
+                { g:"Which / What", e:"którzy / jacy", ex:"jacy ludzie" }
+              ],
+              explain:"This is the trickiest column in the grammar table! Notice how <i>te</i> becomes <b>ci</b>, and <i>moje</i> becomes <b>moi</b> when referring to men.",
+              examples:[
+                { pl:"Ci ludzie to moi znajomi.", en:"These people are my friends." }
+              ] }
+          ],
+          drills: [
+            { type:"choose", prompt:"To jest ___ nowa praca.", promptEn:"This is my new job.",
+              options:["moja","mój","moje"], answer:"moja",
+              explain:"'Praca' is feminine, so we use 'moja'.", full:"To jest moja nowa praca.", fullEn:"This is my new job." },
+            { type:"choose", prompt:"___ to jest telefon?", promptEn:"Whose phone is this?",
+              options:["Czyj","Czyja","Czyje"], answer:"Czyj",
+              explain:"'Telefon' is masculine, so we use 'Czyj'.", full:"Czyj to jest telefon?", fullEn:"Whose phone is this?" },
+            { type:"choose", prompt:"___ studenci są z Polski.", promptEn:"These students are from Poland.",
+              options:["Ci","Te","Ta"], answer:"Ci",
+              explain:"'Studenci' is a masculine personal plural (oni), so 'te' softens to 'ci'.", full:"Ci studenci są z Polski.", fullEn:"These students are from Poland." },
+            { type:"choose", prompt:"___ to twój samochód?", promptEn:"Which one is your car?",
+              options:["Który","Która","Które"], answer:"Który",
+              explain:"'Samochód' is masculine, so we use 'Który'.", full:"Który to twój samochód?", fullEn:"Which one is your car?" },
+            { type:"build", promptEn:"Which coffee is yours?",
+              answer:["Która","kawa","jest","twoja"],
+              explain:"'Kawa' is feminine, so both 'która' and 'twoja' take the -a ending.", full:"Która kawa jest twoja?", fullEn:"Which coffee is yours?" },
+            { type:"choose", prompt:"___ koty są bardzo głodne.", promptEn:"These cats are very hungry.",
+              options:["Te","Ci","Ta"], answer:"Te",
+              explain:"Animals belong to the 'one' plural group, so we use 'Te', not 'Ci'.", full:"Te koty są bardzo głodne.", fullEn:"These cats are very hungry." },
+            { type:"choose", prompt:"___ chleb jest bardzo dobry.", promptEn:"This bread is very good.",
+              options:["Ten","Ta","To"], answer:"Ten",
+              explain:"'Chleb' is masculine, so we use 'Ten'.", full:"Ten chleb jest bardzo dobry.", fullEn:"This bread is very good." },
+            { type:"choose", prompt:"___ to jest ulica?", promptEn:"What street is this?",
+              options:["Jaka","Jaki","Jakie"], answer:"Jaka",
+              explain:"'Ulica' is feminine, so we ask 'Jaka'.", full:"Jaka to jest ulica?", fullEn:"What street is this?" },
+            { type:"build", promptEn:"These people are my friends.",
+              answer:["Ci","ludzie","to","moi","znajomi"],
+              explain:"'Ludzie' (people) includes men, triggering the 'oni' forms: 'ci' and 'moi'.", full:"Ci ludzie to moi znajomi.", fullEn:"These people are my friends." },
+            { type:"build", promptEn:"This is my cat.",
+              answer:["To","jest","mój","kot"],
+              explain:"'Kot' is masculine, so we use 'mój'.", full:"To jest mój kot.", fullEn:"This is my cat." }
+          ]
+        },
+        {
+          name: "Narodowości (Nationalities)", emoji: "\u2708\uFE0F", kind: "grammar",
+          desc: "The tricky 'oni' plurals for 15 common nationalities in Poland",
+          teach: [
+            { front:"Nationalities and the 'Oni' Plural",
+              sub:"Groups of men (or mixed groups) cause consonant mutations at the end of the word.",
+              points:[
+                "Feminine nationalities follow easy rules, usually ending in <b>-ki</b> (Polki, Ukrainki).",
+                "The masculine personal (<b>oni</b>) plural is where the heavy consonant changes happen.",
+                "Nationalities in Polish are always capitalized."
+              ],
+              examples:[
+                { pl:"To są Ukraińcy.", en:"These are Ukrainians." },
+                { pl:"Czy oni są z Polski?", en:"Are they from Poland?" }
+              ] },
+            { front:"Pattern 1: -k and -czyk become -cy",
+              sub:"The hard 'k' softens into a 'c'.",
+              table:[
+                { g:"Pole", e:"Polak \u2192 Polacy", ex:"Znamy się, to <b>Polacy</b>." },
+                { g:"Slovak", e:"Słowak \u2192 Słowacy", ex:"Ci <b>Słowacy</b> są mili." },
+                { g:"Brit", e:"Brytyjczyk \u2192 Brytyjczycy", ex:"To są <b>Brytyjczycy</b>." },
+                { g:"Vietnamese", e:"Wietnamczyk \u2192 Wietnamczycy", ex:"<b>Wietnamczycy</b> świetnie gotują." }
+              ],
+              examples:[
+                { pl:"Polacy i Słowacy to sąsiedzi.", en:"Poles and Slovaks are neighbors." }
+              ] },
+            { front:"Pattern 2: -iec becomes -cy",
+              sub:"The 'e' drops out completely, and the ending becomes -cy.",
+              table:[
+                { g:"Ukrainian", e:"Ukrainiec \u2192 Ukraińcy", ex:"Moi koledzy to <b>Ukraińcy</b>." },
+                { g:"German", e:"Niemiec \u2192 Niemcy", ex:"Ci <b>Niemcy</b> są turystami." }
+              ],
+              note:"This is one of the most frequent patterns you will hear in Warsaw.",
+              examples:[
+                { pl:"W moim biurze pracują Ukraińcy.", en:"Ukrainians work in my office." }
+              ] },
+            { front:"Pattern 3: -in and -an become -nie / -ni",
+              sub:"Watch out for the drop of 'in' in words ending with '-anin'!",
+              table:[
+                { g:"American", e:"Amerykanin \u2192 Amerykanie", ex:"To są <b>Amerykanie</b>." },
+                { g:"Spaniard", e:"Hiszpan \u2192 Hiszpanie", ex:"<b>Hiszpanie</b> lubią słońce." },
+                { g:"Belarusian", e:"Białorusin \u2192 Białorusini", ex:"Ci <b>Białorusini</b> to moi znajomi." },
+                { g:"Georgian", e:"Gruzin \u2192 Gruzini", ex:"<b>Gruzini</b> robią świetne wino." }
+              ],
+              examples:[
+                { pl:"Amerykanie często podróżują.", en:"Americans travel often." }
+              ] },
+            { front:"Pattern 4: The Heavy Softeners",
+              sub:"Some consonants change entirely to accommodate the 'i' sound.",
+              table:[
+                { g:"Italian", e:"Włoch \u2192 Włosi", ex:"<b>Włosi</b> robią pizzę." },
+                { g:"Czech", e:"Czech \u2192 Czesi", ex:"<b>Czesi</b> są blisko." },
+                { g:"French", e:"Francuz \u2192 Francuzi", ex:"To są <b>Francuzi</b>." },
+                { g:"Indian", e:"Hindus \u2192 Hindusi", ex:"<b>Hindusi</b> mówią po angielsku." },
+                { g:"Turk", e:"Turek \u2192 Turcy", ex:"<b>Turcy</b> piją dużo herbaty." }
+              ],
+              explain:"Notice how 'ch' softens to 'si' (Włosi, Czesi), and 'z' softens to 'zi' (Francuzi). 'Turek' drops the 'e' completely.",
+              examples:[
+                { pl:"Włosi i Francuzi to Europejczycy.", en:"Italians and French are Europeans." }
+              ] }
+          ],
+          drills: [
+            { type:"choose", prompt:"Moi sąsiedzi to ___ .", promptEn:"My neighbors are Ukrainians.",
+              options:["Ukraińcy","Ukrainiec","Ukraińce"], answer:"Ukraińcy",
+              explain:"'Ukrainiec' ends in -iec, which changes to -cy in the plural.", full:"Moi sąsiedzi to Ukraińcy.", fullEn:"My neighbors are Ukrainians." },
+            { type:"choose", prompt:"Czy ci panowie to ___ ?", promptEn:"Are those men Germans?",
+              options:["Niemcy","Niemiec","Niemce"], answer:"Niemcy",
+              explain:"'Niemiec' follows the -iec to -cy rule.", full:"Czy ci panowie to Niemcy?", fullEn:"Are those men Germans?" },
+            { type:"build", promptEn:"These Americans are my friends.",
+              answer:["Ci","Amerykanie","to","moi","znajomi"],
+              explain:"Words ending in -anin (Amerykanin) drop the 'in' to become -anie.", full:"Ci Amerykanie to moi znajomi.", fullEn:"These Americans are my friends." },
+            { type:"choose", prompt:"___ uwielbiają pizzę.", promptEn:"Italians love pizza.",
+              options:["Włosi","Włochy","Włosy"], answer:"Włosi",
+              explain:"'Włoch' (Italian man) changes to 'Włosi'. 'Włochy' means Italy (the country), and 'włosy' means hair!", full:"Włosi uwielbiają pizzę.", fullEn:"Italians love pizza." },
+            { type:"choose", prompt:"Moi koledzy z pracy to ___ .", promptEn:"My colleagues from work are Belarusians.",
+              options:["Białorusini","Białorusinie","Białorusin"], answer:"Białorusini",
+              explain:"'Białorusin' takes the simple -i ending.", full:"Moi koledzy z pracy to Białorusini.", fullEn:"My colleagues from work are Belarusians." },
+            { type:"choose", prompt:"Czy ci turyści to ___ ?", promptEn:"Are these tourists British?",
+              options:["Brytyjczycy","Brytyjczykowie","Brytyjczyki"], answer:"Brytyjczycy",
+              explain:"The -czyk ending always softens to -czycy.", full:"Czy ci turyści to Brytyjczycy?", fullEn:"Are these tourists British?" },
+            { type:"build", promptEn:"The Czechs and the Slovaks are here.",
+              answer:["Czesi","i","Słowacy","są","tutaj"],
+              explain:"'Czech' softens to 'Czesi', and 'Słowak' softens to 'Słowacy'.", full:"Czesi i Słowacy są tutaj.", fullEn:"The Czechs and the Slovaks are here." },
+            { type:"choose", prompt:"To są bardzo mili ___ .", promptEn:"These are very nice Frenchmen.",
+              options:["Francuzi","Francuzy","Francuzowie"], answer:"Francuzi",
+              explain:"The 'z' in 'Francuz' softens to 'zi'.", full:"To są bardzo mili Francuzi.", fullEn:"These are very nice Frenchmen." },
+            { type:"choose", prompt:"___ prowadzą tę świetną restaurację.", promptEn:"Vietnamese people run this great restaurant.",
+              options:["Wietnamczycy","Wietnamczyki","Wietnamczyk"], answer:"Wietnamczycy",
+              explain:"Like all -czyk words, it becomes -czycy.", full:"Wietnamczycy prowadzą tę świetną restaurację.", fullEn:"Vietnamese people run this great restaurant." },
+            { type:"build", promptEn:"The Georgians make great wine.",
+              answer:["Gruzini","robią","świetne","wino"],
+              explain:"'Gruzin' simply takes the -i ending to become 'Gruzini'.", full:"Gruzini robią świetne wino.", fullEn:"The Georgians make great wine." }
+          ]
         }
       ]
     }
