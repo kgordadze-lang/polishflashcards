@@ -3,7 +3,7 @@
    - Strategy: network-first for the page itself (fresh content when online,
      cached copy when offline), cache-first for everything else (fonts, icons). */
 
-const CACHE = "popolsku-v9";
+const CACHE = "popolsku-v10";
 const ASSETS = [
   "./",
   "./index.html",
@@ -38,10 +38,12 @@ self.addEventListener("activate", e => {
 self.addEventListener("fetch", e => {
   if (e.request.method !== "GET") return;
 
-  /* The app shell: try the network first so deploys reach users, fall back to cache offline. */
+  /* The app shell: try the network first so deploys reach users, fall back to cache offline.
+     cache:"no-store" skips the browser's regular HTTP cache too, so this always asks
+     the network for the real latest copy instead of a possibly-stale in-between one. */
   if (e.request.mode === "navigate") {
     e.respondWith(
-      fetch(e.request)
+      fetch(e.request, { cache: "no-store" })
         .then(res => {
           const copy = res.clone();
           caches.open(CACHE).then(c => c.put("./index.html", copy));
@@ -54,10 +56,11 @@ self.addEventListener("fetch", e => {
 
   /* Lesson data: network-first too, so editing a data-*.js file and re-uploading
      reaches users on their next online visit with no cache-version bump needed.
-     Falls back to the cached copy when offline. */
+     Falls back to the cached copy when offline. cache:"no-store" skips the browser's
+     regular HTTP cache too, so edits show up immediately instead of waiting on it. */
   if (/\/data-[a-z0-9-]+\.js(\?|$)/.test(e.request.url)) {
     e.respondWith(
-      fetch(e.request)
+      fetch(e.request, { cache: "no-store" })
         .then(res => {
           if (res.ok) {
             const copy = res.clone();
