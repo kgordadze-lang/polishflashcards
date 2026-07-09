@@ -926,7 +926,7 @@ function renderTopics(){
       '<div class="t-body">'+
         '<div class="t-title"></div>'+
         '<div class="t-desc"></div>'+
-        '<div class="t-meta"><span class="chip">'+lv.level+'</span><span class="t-count">'+tCount(t, lv, store)+'</span></div>'+
+        '<div class="t-meta"><span class="chip">'+(t.chip || lv.level)+'</span><span class="t-count">'+tCount(t, lv, store)+'</span></div>'+
       '</div>'+
       '<div class="t-arrow">›</div>';
     b.querySelector(".t-title").textContent = t.name;
