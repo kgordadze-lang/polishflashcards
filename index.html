@@ -157,6 +157,15 @@
 
   /* ---------- study top bar ---------- */
   .sbar{display:flex;align-items:center;gap:12px;padding:22px 0 8px}
+  .speed-toggle{flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;height:34px;padding:0 12px;
+    background:#fff;color:var(--muted);border:1px solid var(--border);border-radius:17px;
+    font-size:12px;font-weight:600;letter-spacing:.3px;cursor:pointer;transition:.15s;
+    -webkit-tap-highlight-color:transparent}
+  .speed-toggle:hover{border-color:var(--emerald);color:var(--emerald)}
+  .speed-toggle:active{transform:scale(.94)}
+  .speed-toggle:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  .speed-toggle svg{width:14px;height:14px}
+  .speed-toggle.on{background:var(--emerald);color:#fff;border-color:var(--emerald)}
   .back{border:1px solid var(--border);background:var(--card);border-radius:12px;width:40px;height:40px;
     flex:0 0 auto;display:grid;place-items:center;cursor:pointer;color:var(--forest);
     box-shadow:var(--shadow-sm);transition:.15s}
@@ -498,6 +507,10 @@
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
       <div class="sbar-title"><b id="studyTitle"></b><span id="studyLevel"></span></div>
+      <button class="speed-toggle" data-role="speed-toggle" aria-label="Toggle audio speed" title="Toggle audio speed">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
+        <span class="speed-label">Slow</span>
+      </button>
       <button class="back home-btn" aria-label="Home page">
         <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       </button>
@@ -589,6 +602,10 @@
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
       <div class="sbar-title"><b id="gTitle"></b><span id="gPhase"></span></div>
+      <button class="speed-toggle" data-role="speed-toggle" aria-label="Toggle audio speed" title="Toggle audio speed">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
+        <span class="speed-label">Slow</span>
+      </button>
       <button class="back home-btn" aria-label="Home page">
         <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       </button>
@@ -656,6 +673,10 @@
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
       <div class="sbar-title"><b id="cTitle"></b><span id="cLevel"></span></div>
+      <button class="speed-toggle" data-role="speed-toggle" aria-label="Toggle audio speed" title="Toggle audio speed">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
+        <span class="speed-label">Slow</span>
+      </button>
       <button class="back home-btn" aria-label="Home page">
         <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       </button>
@@ -707,7 +728,7 @@
     <div class="privacy-wrap">
       <div class="privacy-card">
         <p class="about-p">I'm a foreigner living in Poland, and somewhere between advancing a master's degree and trying to navigate seven consecutive Polish consonants, I decided to put my neuroplasticity to the test and learn the language properly.</p>
-        <p class="about-p">Flashcards were the thing that finally made vocabulary stick for me, so I built a small, mobile-first app around exactly that - every word paired with a sentence from real daily life (heavily inspired by situations where I gracefully panicked), plus built-in audio so you can hear the pronunciation. It's a bit robotic, but accurate, and unlike a real person it won't judge your accent when you repeat after it.</p>
+        <p class="about-p">Flashcards were the thing that finally made vocabulary stick for me, so I built a small, mobile-first app around exactly that - every word paired with a sentence from real daily life (heavily inspired by situations where I gracefully panicked), plus built-in audio so you can hear the pronunciation.</p>
         <p class="about-p">It's completely free, needs no account, and collects zero data. I'll keep expanding the materials as I go.</p>
 
         <div class="about-contact">
@@ -1077,25 +1098,121 @@ function practiceStill(){
 }
 function restart(){ startTopic(S.levelIdx, S.topicIdx); }
 
-/* ---------------- Polish audio (Web Speech API) ---------------- */
-let plVoice=null;
+/* ---------------- Polish audio (pre-generated Marek MP3s + fallback) ----------------
+   Playback strategy:
+     1. Fetch audio-manifest.json at startup. Build a lookup: normalized(pl) -> file path.
+     2. When speakText is called, normalize the input the same way generate_audio.py does
+        (strip HTML, collapse whitespace, trim) and look up the MP3.
+     3. If found, play the MP3 - consistent Marek voice on every device.
+     4. If not found (freshly added string not yet regenerated), fall back to
+        speechSynthesis so nothing breaks silently while you catch up on audio. */
+
+let audioMap = {};              /* normalized Polish text -> "audio/<hash>.mp3" */
+let currentAudio = null;        /* the <audio> element currently playing, if any */
+let speakBtn = null;
+let plVoice = null;             /* speechSynthesis fallback voice, if any */
+
+/* Audio speed preference: 'normal' (0.9x) or 'slow' (0.7x). Persisted across sessions. */
+const SPEED_KEY = "popolsku-speed";
+const SPEEDS = { normal: 1.0, slow: 0.7 };
+let currentSpeed = "normal";
+try { if(localStorage.getItem(SPEED_KEY) === "slow") currentSpeed = "slow"; } catch(e) {}
+function currentRate(){ return SPEEDS[currentSpeed]; }
+function updateSpeedUI(){
+  const on = currentSpeed === "slow";
+  document.querySelectorAll(".speed-toggle").forEach(btn => {
+    btn.classList.toggle("on", on);
+    btn.setAttribute("aria-pressed", on ? "true" : "false");
+    btn.setAttribute("aria-label", on ? "Audio speed: slow. Tap to switch to normal." : "Audio speed: normal. Tap to switch to slow.");
+  });
+}
+document.addEventListener("click", e => {
+  const btn = e.target.closest(".speed-toggle");
+  if(!btn) return;
+  e.stopPropagation();
+  currentSpeed = currentSpeed === "slow" ? "normal" : "slow";
+  try { localStorage.setItem(SPEED_KEY, currentSpeed); } catch(err) {}
+  updateSpeedUI();
+});
+updateSpeedUI();
+
 function pickVoice(){ const v=speechSynthesis.getVoices(); plVoice=v.find(x=>x.lang&&x.lang.toLowerCase().startsWith("pl"))||null; }
 if("speechSynthesis" in window){ pickVoice(); speechSynthesis.onvoiceschanged=pickVoice; }
-let speakBtn=null;
+
+/* MUST match generate_audio.py's normalize() exactly. Same order of operations. */
+function ppNormalize(text){
+  if(!text) return "";
+  return text.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+}
+
+/* Load the manifest once at startup. Failure is fine - we just fall back to speechSynthesis. */
+fetch("audio-manifest.json", { cache: "no-store" })
+  .then(r => r.ok ? r.json() : null)
+  .then(m => {
+    if(!m || !m.entries) return;
+    const map = {};
+    for(const entry of Object.values(m.entries)){
+      if(entry && entry.pl && entry.file) map[entry.pl] = entry.file;
+    }
+    audioMap = map;
+  })
+  .catch(()=>{ /* offline first-load or missing manifest - fallback handles it */ });
+
 function clearSpeaking(){ if(speakBtn){ speakBtn.classList.remove("speaking"); speakBtn=null; } }
-function speakText(txt,btn){
-  if(!txt || !("speechSynthesis" in window)) return;
-  speechSynthesis.cancel(); clearSpeaking();
-  voiceHint();
-  const u=new SpeechSynthesisUtterance(txt);
-  u.lang="pl-PL"; if(plVoice) u.voice=plVoice; u.rate=.9;
+
+function stopAllAudio(){
+  if(currentAudio){ try{ currentAudio.pause(); }catch(e){} currentAudio=null; }
+  if("speechSynthesis" in window) speechSynthesis.cancel();
+  clearSpeaking();
+}
+
+function speakText(txt, btn){
+  if(!txt) return;
+  stopAllAudio();
+  const key = ppNormalize(txt);
+  const file = audioMap[key];
+  if(file){
+    playPreGenerated(file, btn, txt);
+  } else {
+    speakFallback(txt, btn);
+  }
+}
+
+function playPreGenerated(file, btn, originalText){
+  const audio = new Audio(file);
+  audio.playbackRate = currentRate();   /* respects the Normal/Slow toggle */
+  audio.preservesPitch = true;          /* keep Marek's voice natural, no pitch shift */
+  currentAudio = audio;
   if(btn){
-    speakBtn=btn; btn.classList.add("speaking");
-    u.onend=clearSpeaking; u.onerror=clearSpeaking;
+    speakBtn = btn; btn.classList.add("speaking");
+  }
+  audio.onended = () => { if(currentAudio===audio){ currentAudio=null; } clearSpeaking(); };
+  audio.onerror = () => {
+    /* MP3 missing / network hiccup - fall back to speechSynthesis so playback still happens */
+    if(currentAudio===audio) currentAudio=null;
+    clearSpeaking();
+    speakFallback(originalText, btn);
+  };
+  audio.play().catch(()=>{
+    if(currentAudio===audio) currentAudio=null;
+    clearSpeaking();
+    speakFallback(originalText, btn);
+  });
+}
+
+function speakFallback(txt, btn){
+  if(!("speechSynthesis" in window)) return;
+  voiceHint();
+  const u = new SpeechSynthesisUtterance(txt);
+  u.lang = "pl-PL"; if(plVoice) u.voice = plVoice; u.rate = currentRate();
+  if(btn){
+    speakBtn = btn; btn.classList.add("speaking");
+    u.onend = clearSpeaking; u.onerror = clearSpeaking;
   }
   speechSynthesis.speak(u);
 }
-/* one-time heads-up when the device has no Polish TTS voice */
+
+/* one-time heads-up if the device falls back to speechSynthesis AND has no Polish voice */
 function voiceHint(){
   if(plVoice) return;
   try{
@@ -1104,10 +1221,11 @@ function voiceHint(){
     localStorage.setItem("popolsku-voicehint","1");
   }catch(e){ return; }
   const t=document.createElement("div"); t.className="toast";
-  t.textContent="No Polish voice found on this device, so audio may sound off. On iPhone: Settings > Accessibility > Spoken Content > Voices > Polish.";
+  t.textContent="Playing with your device's fallback voice - audio may sound off. On iPhone: Settings > Accessibility > Spoken Content > Voices > Polish.";
   document.body.appendChild(t);
   setTimeout(()=>t.remove(), 8000);
 }
+
 
 /* ---------------- events ---------------- */
 $("flip").addEventListener("click", flip);

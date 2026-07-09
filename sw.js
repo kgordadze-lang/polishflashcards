@@ -3,7 +3,7 @@
    - Strategy: network-first for the page itself (fresh content when online,
      cached copy when offline), cache-first for everything else (fonts, icons). */
 
-const CACHE = "popolsku-v10";
+const CACHE = "popolsku-v11";
 const ASSETS = [
   "./",
   "./index.html",
@@ -13,6 +13,7 @@ const ASSETS = [
   "./data-grammar.js",
   "./data-scenarios.js",
   "./data-podcasts.js",
+  "./audio-manifest.json",
   "./manifest.json",
   "./favicon.svg",
   "./icon-192.png",
@@ -69,6 +70,43 @@ self.addEventListener("fetch", e => {
           return res;
         })
         .catch(() => caches.match(e.request))
+    );
+    return;
+  }
+
+  /* The audio manifest: network-first, so when you regenerate audio and re-upload
+     the manifest, users pick up the new entries on their next online visit.
+     Falls back to the cached copy when offline. */
+  if (/\/audio-manifest\.json(\?|$)/.test(e.request.url)) {
+    e.respondWith(
+      fetch(e.request, { cache: "no-store" })
+        .then(res => {
+          if (res.ok) {
+            const copy = res.clone();
+            caches.open(CACHE).then(c => c.put(e.request, copy));
+          }
+          return res;
+        })
+        .catch(() => caches.match(e.request))
+    );
+    return;
+  }
+
+  /* Audio MP3 files: cache-first, because the filename IS the content hash -
+     if the URL is the same, the audio is the same. Never needs revalidation.
+     Populates the cache on first play, then serves from cache forever after. */
+  if (/\/audio\/[a-f0-9]+\.mp3(\?|$)/.test(e.request.url)) {
+    e.respondWith(
+      caches.match(e.request).then(hit =>
+        hit ||
+        fetch(e.request).then(res => {
+          if (res.ok) {
+            const copy = res.clone();
+            caches.open(CACHE).then(c => c.put(e.request, copy));
+          }
+          return res;
+        })
+      )
     );
     return;
   }
