@@ -3,7 +3,7 @@
    - Strategy: network-first for the page itself (fresh content when online,
      cached copy when offline), cache-first for everything else (fonts, icons). */
 
-const CACHE = "popolsku-v12";
+const CACHE = "popolsku-v13";
 const ASSETS = [
   "./",
   "./index.html",
@@ -43,6 +43,13 @@ self.addEventListener("activate", e => {
 
 self.addEventListener("fetch", e => {
   if (e.request.method !== "GET") return;
+
+  /* Ignore anything that isn't an http(s) request. Browser extensions inject
+     chrome-extension:// requests into every page, and the Cache API only supports
+     http/https - trying to cache them throws "Request scheme 'chrome-extension' is
+     unsupported". Skipping here lets the browser handle those requests normally. */
+  const url = new URL(e.request.url);
+  if (url.protocol !== "http:" && url.protocol !== "https:") return;
 
   /* The app shell: try the network first so deploys reach users, fall back to cache offline.
      cache:"no-store" skips the browser's regular HTTP cache too, so this always asks
