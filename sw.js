@@ -3,7 +3,7 @@
    - Strategy: network-first for the page itself (fresh content when online,
      cached copy when offline), cache-first for everything else (fonts, icons). */
 
-const CACHE = "popolsku-v13";
+const CACHE = "popolsku-v14";
 const ASSETS = [
   "./",
   "./index.html",
@@ -58,8 +58,10 @@ self.addEventListener("fetch", e => {
     e.respondWith(
       fetch(e.request, { cache: "no-store" })
         .then(res => {
-          const copy = res.clone();
-          caches.open(CACHE).then(c => c.put("./index.html", copy));
+          if (res.ok) {                     /* never cache an error page over the app shell */
+            const copy = res.clone();
+            caches.open(CACHE).then(c => c.put("./index.html", copy));
+          }
           return res;
         })
         .catch(() => caches.match("./index.html"))
@@ -128,7 +130,7 @@ self.addEventListener("fetch", e => {
     caches.match(e.request, { ignoreSearch: false }).then(hit =>
       hit ||
       fetch(e.request).then(res => {
-        if (res.ok || res.type === "opaque") {
+        if (res.ok) {
           const copy = res.clone();
           caches.open(CACHE).then(c => c.put(e.request, copy));
         }
