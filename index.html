@@ -27,9 +27,23 @@
 <meta name="twitter:description" content="Free Polish flashcards with audio for A1-B1. No account, no ads, works offline.">
 <meta name="twitter:image" content="https://popolsku.app/og-image.png">
 <meta name="twitter:image:alt" content="Po polsku - learn the Polish you'll actually use">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Content Security Policy: closes off common script-injection and data-leak vectors.
+     Everything the app needs is same-origin; no third-party scripts, images, or fetches are permitted.
+     'unsafe-inline' remains on script-src because the app uses a large inline <script> block;
+     stripping it would require a full script-externalization refactor, not covered here. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self'; connect-src 'self'; media-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
+<style>
+  /* Self-hosted Plus Jakarta Sans - no external font requests, tighter privacy, works offline.
+     If google-webfonts-helper gives you different filenames (e.g. v13 instead of v12), update these 5 lines. */
+  @font-face { font-family:"Plus Jakarta Sans"; font-style:normal; font-weight:400; font-display:swap; src:url("./fonts/plus-jakarta-sans-v12-latin-regular.woff2") format("woff2"); }
+  @font-face { font-family:"Plus Jakarta Sans"; font-style:normal; font-weight:500; font-display:swap; src:url("./fonts/plus-jakarta-sans-v12-latin-500.woff2") format("woff2"); }
+  @font-face { font-family:"Plus Jakarta Sans"; font-style:normal; font-weight:600; font-display:swap; src:url("./fonts/plus-jakarta-sans-v12-latin-600.woff2") format("woff2"); }
+  @font-face { font-family:"Plus Jakarta Sans"; font-style:normal; font-weight:700; font-display:swap; src:url("./fonts/plus-jakarta-sans-v12-latin-700.woff2") format("woff2"); }
+  @font-face { font-family:"Plus Jakarta Sans"; font-style:normal; font-weight:800; font-display:swap; src:url("./fonts/plus-jakarta-sans-v12-latin-800.woff2") format("woff2"); }
+</style>
 <style>
   :root{
     /* Indigo theme. Token names are historical (emerald / mint / forest) but now hold indigo + graphite values. Recolor here. */

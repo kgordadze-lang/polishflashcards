@@ -3,7 +3,7 @@
    - Strategy: network-first for the page itself (fresh content when online,
      cached copy when offline), cache-first for everything else (fonts, icons). */
 
-const CACHE = "popolsku-v11";
+const CACHE = "popolsku-v12";
 const ASSETS = [
   "./",
   "./index.html",
@@ -19,7 +19,12 @@ const ASSETS = [
   "./icon-192.png",
   "./icon-512.png",
   "./apple-touch-icon.png",
-  "./og-image.png"
+  "./og-image.png",
+  "./fonts/plus-jakarta-sans-v12-latin-regular.woff2",
+  "./fonts/plus-jakarta-sans-v12-latin-500.woff2",
+  "./fonts/plus-jakarta-sans-v12-latin-600.woff2",
+  "./fonts/plus-jakarta-sans-v12-latin-700.woff2",
+  "./fonts/plus-jakarta-sans-v12-latin-800.woff2"
 ];
 
 self.addEventListener("install", e => {
