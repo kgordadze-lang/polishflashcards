@@ -3,7 +3,7 @@
    - Strategy: network-first for the page itself (fresh content when online,
      cached copy when offline), cache-first for everything else (fonts, icons). */
 
-const CACHE = "popolsku-v14";
+const CACHE = "popolsku-v15";
 const ASSETS = [
   "./",
   "./index.html",
@@ -21,8 +21,6 @@ const ASSETS = [
   "./apple-touch-icon.png",
   "./og-image.png",
   "./fonts/plus-jakarta-sans-v12-latin-regular.woff2",
-  "./fonts/plus-jakarta-sans-v12-latin-500.woff2",
-  "./fonts/plus-jakarta-sans-v12-latin-600.woff2",
   "./fonts/plus-jakarta-sans-v12-latin-700.woff2",
   "./fonts/plus-jakarta-sans-v12-latin-800.woff2"
 ];
