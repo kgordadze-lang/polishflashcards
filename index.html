@@ -5,34 +5,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#f8fafc">
 <title>Po polsku - learn the Polish you'll actually use</title>
-<meta name="description" content="Free Polish flashcards with audio for A1-B1: real everyday vocabulary, all seven grammar cases, and branching conversations. No account, no ads, works offline.">
+<meta name="description" content="Polish flashcards with native audio - everyday vocabulary, useful grammar, conversation practice, and phrases from real podcasts.">
 <link rel="canonical" href="https://popolsku.app/">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Po polsku">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="Po polsku">
+<meta property="og:locale" content="en_US">
 <meta property="og:url" content="https://popolsku.app/">
 <meta property="og:title" content="Po polsku - learn the Polish you'll actually use">
-<meta property="og:description" content="Free Polish flashcards with audio for A1-B1: real everyday vocabulary, all seven grammar cases, and branching conversations. No account, no ads, works offline.">
-<meta property="og:image" content="https://popolsku.app/og-image.png">
+<meta property="og:description" content="Polish flashcards with native audio - everyday vocabulary, useful grammar, conversation practice, and phrases from real podcasts.">
+<meta property="og:image" content="https://popolsku.app/og-image.png?v=2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:alt" content="Po polsku - learn the Polish you'll actually use">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Po polsku - learn the Polish you'll actually use">
-<meta name="twitter:description" content="Free Polish flashcards with audio for A1-B1. No account, no ads, works offline.">
-<meta name="twitter:image" content="https://popolsku.app/og-image.png">
+<meta name="twitter:description" content="Polish flashcards with native audio - everyday vocabulary, useful grammar, conversation practice, and phrases from real podcasts.">
+<meta name="twitter:image" content="https://popolsku.app/og-image.png?v=2">
 <meta name="twitter:image:alt" content="Po polsku - learn the Polish you'll actually use">
 
 <!-- Content Security Policy: closes off common script-injection and data-leak vectors.
      Everything the app needs is same-origin; no third-party scripts, images, or fetches are permitted.
      'unsafe-inline' remains on script-src because the app uses a large inline <script> block;
      stripping it would require a full script-externalization refactor, not covered here. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self'; connect-src 'self'; media-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self'; connect-src 'self'; media-src 'self'; base-uri 'self'; form-action 'self'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 
 <style>
@@ -59,6 +62,9 @@
     --sage-hover:#3730a3;
     --coral:#c97c5d;         /* secondary warm accent - "still learning" / wrong */
     --coral-hover:#b56a4c;
+    /* correctness feedback (grammar drills): green = right, red = wrong position */
+    --ok-bg:#dcfce7;    --ok-border:#22c55e;   --ok-text:#15803d;
+    --bad-bg:#fee2e2;   --bad-border:#ef4444;  --bad-text:#b91c1c;
     --muted:#64748b;
     --border:#e6ebf1;
     --shadow:0 1px 2px rgba(30,27,75,.04), 0 12px 28px rgba(30,27,75,.06);
@@ -370,18 +376,20 @@
   .opt:hover:not(:disabled){border-color:var(--emerald);transform:translateY(-1px)}
   .opt:disabled{cursor:default}
   .opt:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
-  .opt.correct{background:var(--mint-bg);border-color:var(--emerald);color:var(--sage-hover)}
+  .opt.correct{background:var(--ok-bg);border-color:var(--ok-border);color:var(--ok-text)}
   .opt.wrong{background:#fbeee8;border-color:var(--coral);color:var(--coral-hover)}
   .build-row{min-height:56px;border:1.5px dashed #c7d3db;border-radius:14px;background:#fbfdfe;margin-top:20px;padding:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
   .build-row.empty::before{content:"Tap words below to build the sentence";color:#aebbc4;font-size:13px;font-weight:500;padding:4px 6px}
   .build-row.shake{animation:shake .32s}
   @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
-  .build-row.locked .wchip{background:var(--mint-bg);border-color:var(--emerald);color:var(--sage-hover);cursor:default}
+  .build-row.locked .wchip{background:var(--ok-bg);border-color:var(--ok-border);color:var(--ok-text);cursor:default}
   .build-pool{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
   .wchip{border:1.5px solid var(--border);background:#fff;color:var(--forest);border-radius:11px;padding:9px 14px;font-size:15px;font-weight:700;cursor:pointer;transition:.13s;font-family:inherit}
   .wchip:hover{border-color:var(--emerald);transform:translateY(-1px)}
   .wchip:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
-  .wchip.in-row{background:var(--mint-bg);border-color:#bfe6d5;color:var(--sage-hover)}
+  .wchip.in-row{background:var(--mint-bg);border-color:#c7d2fe;color:var(--sage-hover)}
+  .wchip.in-row.ok{background:var(--ok-bg);border-color:var(--ok-border);color:var(--ok-text)}
+  .wchip.bad{background:var(--bad-bg);border-color:var(--bad-border);color:var(--bad-text)}
   .fb-box{margin-top:18px;display:none}
   .fb-box.show{display:block;animation:fade .3s ease}
   .fb-good{background:var(--mint-bg);border-radius:14px;padding:13px 14px;display:flex;align-items:flex-start;gap:11px}
@@ -488,7 +496,7 @@
 
     <div class="hero">
       <h1>Learn the Polish<br>you'll <em>actually</em> use.</h1>
-      <p class="hero-sub">Pick a level, grammar, or a conversation, then a topic. Tap to flip a card, tap to hear every line.</p>
+      <p class="hero-sub">Polish flashcards with native audio - everyday vocabulary, useful grammar, conversation practice, and phrases from real podcasts.</p>
       <div class="hero-badges">
         <span class="hero-badge">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>
@@ -507,7 +515,7 @@
     <div class="seg-label">Topics</div>
     <div class="search">
       <svg class="search-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-      <input id="search" type="search" inputmode="search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search topics - e.g. food, doctor, past tense" aria-label="Search topics across all levels">
+      <input id="search" type="search" inputmode="search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search topics - e.g. food, home" aria-label="Search topics across all levels">
       <button class="search-clear" id="searchClear" type="button" aria-label="Clear search" hidden>&times;</button>
     </div>
     <div class="search-meta" id="searchMeta"></div>
@@ -747,7 +755,7 @@
 
         <div class="about-contact">
           <div class="about-contact-title">Contact</div>
-          <p class="about-p">Learned Polish yourself and have a survival tactic that worked? Found a mistake, or want a topic added? I'd genuinely love to hear it - reach out on <a class="about-link" href="https://www.linkedin.com/in/kakhaber-gordadze/" target="_blank" rel="noopener noreferrer">LinkedIn</a>.</p>
+          <p class="about-p">Learned Polish yourself and have a survival tactic that worked? Found a mistake, or want a topic added? I'd genuinely love to hear it - reach out at <a class="about-link" href="mailto:hello@popolsku.app">hello@popolsku.app</a>.</p>
         </div>
       </div>
     </div>
@@ -816,7 +824,12 @@ function restoreProgress(l,t){
   (rec.still||[]).forEach(pl=>{ if(idx[pl]!==undefined) S.still.add(idx[pl]); });
   (rec.known||[]).forEach(pl=>{ if(idx[pl]!==undefined) S.known.add(idx[pl]); });
 }
-function showScreen(scr){ document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active")); $(scr).classList.add("active"); window.scrollTo(0,0); }
+function showScreen(scr){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  $(scr).classList.add("active");
+  const ft=document.querySelector("footer"); if(ft) ft.hidden = (scr!=="home");   /* About/Privacy + data note live on home only */
+  window.scrollTo(0,0);
+}
 /* history-aware navigation: system back button pops to home instead of closing the app */
 function show(scr){
   if($(scr).classList.contains("active")){ showScreen(scr); return; }   /* re-render same screen, no new entry */
@@ -1306,7 +1319,21 @@ function gRenderTeach(){
   if(t.note)     b+='<div class="b-note">'+t.note+'</div>';
   if(t.examples) b+=t.examples.map(gExampleHTML).join('');
   $("gBackFace").innerHTML=b;
+  requestAnimationFrame(gFitCard);
 }
+/* Grammar teach cards hold variable content (tables, lists, examples). The flip card has a
+   fixed min-height, so tall cards used to crop. Grow the card to fit its tallest face instead.
+   Only affects #gFlip; the vocabulary study card keeps its fixed sizing. */
+function gFitCard(){
+  const flip=$("gFlip"); if(!flip) return;
+  flip.style.height="";                                   /* reset to CSS baseline first */
+  let needed=0;
+  flip.querySelectorAll(".face").forEach(f=>{ needed=Math.max(needed, f.scrollHeight); });
+  if(needed>flip.offsetHeight) flip.style.height=needed+"px";
+}
+window.addEventListener("resize", ()=>{
+  if($("grammar").classList.contains("active") && $("gLearn").style.display!=="none") gFitCard();
+});
 function gStartPractice(){ G.di=0; G.results=[]; gRenderDrill(); gPhaseView("practice"); }
 function gRenderDrill(){
   const c=G.topic.drills[G.di], last=G.di===G.topic.drills.length-1;
@@ -1347,6 +1374,7 @@ function gChooseFeedback(c){
 function gRenderBuild(c){
   G.build.pool=gShuffle(c.answer).map((w,i)=>({w:w,id:i+"-"+w}));
   G.build.row=[];
+  G.build.answer=c.answer;
   $("gDrillCard").innerHTML='<div class="d-type">Build the sentence</div><div class="q-prompt">'+c.promptEn+'</div>'+
     '<div class="q-en">Tap the words in the right order</div>'+
     '<div class="build-row" id="gBuildRow"></div><div class="build-pool" id="gBuildPool"></div>'+
@@ -1357,7 +1385,11 @@ function gRenderBuild(c){
 function gPaintBuild(){
   const row=$("gBuildRow"), pool=$("gBuildPool");
   row.className="build-row"+(G.build.row.length===0?" empty":"");
-  row.innerHTML=G.build.row.map(t=>'<button class="wchip in-row" data-id="'+t.id+'">'+t.w+'</button>').join('');
+  /* hybrid feedback: a word in its correct position greens live; red is only shown on Check */
+  row.innerHTML=G.build.row.map((t,i)=>{
+    const ok = G.build.answer && t.w===G.build.answer[i];
+    return '<button class="wchip in-row'+(ok?" ok":"")+'" data-id="'+t.id+'">'+t.w+'</button>';
+  }).join('');
   pool.innerHTML=G.build.pool.map(t=>'<button class="wchip" data-id="'+t.id+'">'+t.w+'</button>').join('');
   row.querySelectorAll(".wchip").forEach(ch=>ch.addEventListener("click",()=>{
     const id=ch.getAttribute("data-id"); const t=G.build.row.find(x=>x.id===id);
@@ -1382,7 +1414,11 @@ function gCheckBuild(c){
     fb.classList.add("show"); $("gDrillNext").disabled=false;
   } else {
     G.attempted=true; G.results[G.di]=false;
-    const r=$("gBuildRow"); r.classList.add("shake"); setTimeout(()=>r.classList.remove("shake"),340);
+    /* red-flag the words sitting in the wrong slot; correct ones keep their green.
+       These clear automatically on the next tap, since gPaintBuild re-renders the row. */
+    const r=$("gBuildRow");
+    r.querySelectorAll(".wchip").forEach((ch,i)=>{ if(G.build.row[i].w!==c.answer[i]) ch.classList.add("bad"); });
+    r.classList.add("shake"); setTimeout(()=>r.classList.remove("shake"),340);
   }
 }
 function gDrillAdvance(){ if(G.di<G.topic.drills.length-1){ G.di++; gRenderDrill(); } else gShowDone(); }
