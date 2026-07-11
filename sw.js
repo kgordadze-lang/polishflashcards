@@ -3,7 +3,7 @@
    - Strategy: network-first for the page itself (fresh content when online,
      cached copy when offline), cache-first for everything else (fonts, icons). */
 
-const CACHE = "popolsku-v12";
+const CACHE = "popolsku-v15";
 const ASSETS = [
   "./",
   "./index.html",
@@ -21,8 +21,6 @@ const ASSETS = [
   "./apple-touch-icon.png",
   "./og-image.png",
   "./fonts/plus-jakarta-sans-v12-latin-regular.woff2",
-  "./fonts/plus-jakarta-sans-v12-latin-500.woff2",
-  "./fonts/plus-jakarta-sans-v12-latin-600.woff2",
   "./fonts/plus-jakarta-sans-v12-latin-700.woff2",
   "./fonts/plus-jakarta-sans-v12-latin-800.woff2"
 ];
@@ -44,6 +42,13 @@ self.addEventListener("activate", e => {
 self.addEventListener("fetch", e => {
   if (e.request.method !== "GET") return;
 
+  /* Ignore anything that isn't an http(s) request. Browser extensions inject
+     chrome-extension:// requests into every page, and the Cache API only supports
+     http/https - trying to cache them throws "Request scheme 'chrome-extension' is
+     unsupported". Skipping here lets the browser handle those requests normally. */
+  const url = new URL(e.request.url);
+  if (url.protocol !== "http:" && url.protocol !== "https:") return;
+
   /* The app shell: try the network first so deploys reach users, fall back to cache offline.
      cache:"no-store" skips the browser's regular HTTP cache too, so this always asks
      the network for the real latest copy instead of a possibly-stale in-between one. */
@@ -51,8 +56,10 @@ self.addEventListener("fetch", e => {
     e.respondWith(
       fetch(e.request, { cache: "no-store" })
         .then(res => {
-          const copy = res.clone();
-          caches.open(CACHE).then(c => c.put("./index.html", copy));
+          if (res.ok) {                     /* never cache an error page over the app shell */
+            const copy = res.clone();
+            caches.open(CACHE).then(c => c.put("./index.html", copy));
+          }
           return res;
         })
         .catch(() => caches.match("./index.html"))
@@ -121,7 +128,7 @@ self.addEventListener("fetch", e => {
     caches.match(e.request, { ignoreSearch: false }).then(hit =>
       hit ||
       fetch(e.request).then(res => {
-        if (res.ok || res.type === "opaque") {
+        if (res.ok) {
           const copy = res.clone();
           caches.open(CACHE).then(c => c.put(e.request, copy));
         }
