@@ -126,15 +126,31 @@
   @keyframes heroBadgeIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
 
   .seg-label{font-size:12px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin:8px 0 12px}
-  .levels{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:26px}
-  .lvl-break{flex-basis:100%;height:0;margin:0;padding:0}
-  .lvl{flex:0 0 auto;border:1px solid var(--border);background:var(--card);color:var(--forest);
-    border-radius:999px;padding:9px 18px;font-size:14.5px;font-weight:600;cursor:pointer;
-    transition:.18s;box-shadow:var(--shadow-sm)}
-  .lvl[aria-pressed="true"]{background:var(--forest);color:var(--cream);border-color:var(--forest)}
-  .lvl:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
-  .levels.searching .lvl{opacity:.5}
-  .levels.searching .lvl[aria-pressed="true"]{background:var(--card);color:var(--forest);border-color:var(--border)}
+  /* vocabulary levels - three distinct buttons in a row (one axis: pick a level) */
+  .seg-levels{display:flex;gap:10px;margin-bottom:24px}
+  .seg-btn{flex:1;border:1px solid var(--border);background:var(--card);color:var(--forest);font-family:inherit;
+    font-size:15px;font-weight:700;padding:12px 0;border-radius:14px;cursor:pointer;box-shadow:var(--shadow-sm);transition:.16s}
+  .seg-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow);border-color:#d7e0e8}
+  .seg-btn[aria-pressed="true"]{background:var(--forest);color:var(--cream);border-color:var(--forest)}
+  .seg-btn:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  .seg-levels.searching .seg-btn{opacity:.5}
+  .seg-levels.searching .seg-btn[aria-pressed="true"]{background:var(--card);color:var(--forest);border-color:var(--border)}
+  /* practice modes - separate tiles (a different axis: open a section, not a level filter) */
+  .modes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:24px}
+  .mode-tile{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:10px 6px 9px;
+    display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;box-shadow:var(--shadow-sm);transition:.16s;font-family:inherit}
+  .mode-tile:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:#d7e0e8}
+  .mode-tile:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  .mode-ic{width:32px;height:32px;border-radius:11px;background:var(--mint-bg);color:var(--mint-text);display:grid;place-items:center}
+  .mode-ic svg{width:18px;height:18px}
+  .mode-label{font-size:12px;font-weight:700;color:var(--forest);text-align:center;line-height:1.2;overflow-wrap:break-word}
+  .mode-tile[aria-pressed="true"]{background:var(--forest);border-color:var(--forest)}
+  .mode-tile[aria-pressed="true"] .mode-label{color:var(--cream)}
+  .mode-tile[aria-pressed="true"] .mode-ic{background:rgba(255,255,255,.14);color:#c7d2fe}
+  .modes.searching .mode-tile{opacity:.5}
+  .modes.searching .mode-tile[aria-pressed="true"]{background:var(--card);border-color:var(--border)}
+  .modes.searching .mode-tile[aria-pressed="true"] .mode-label{color:var(--forest)}
+  .modes.searching .mode-tile[aria-pressed="true"] .mode-ic{background:var(--mint-bg);color:var(--mint-text)}
 
   /* ---------- topic search ---------- */
   .search{position:relative;margin-bottom:14px}
@@ -299,12 +315,25 @@
     text-decoration:underline;text-underline-offset:2px}
   .foot-link:hover{color:var(--sage-hover)}
   .foot-link:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
-  .foot-links{display:flex;gap:10px;justify-content:center;margin-bottom:2px}
+  .foot-links{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:2px}
   .foot-btn{border:1px solid var(--border);background:var(--card);color:var(--forest);
     border-radius:999px;padding:8px 20px;font-family:inherit;font-size:13px;font-weight:600;
     cursor:pointer;box-shadow:var(--shadow-sm);transition:.18s}
   .foot-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow);border-color:#d7e0e8}
   .foot-btn:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+
+  /* install / add-to-home instructions */
+  .install-plat{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:800;color:var(--forest);margin:22px 0 13px}
+  .install-plat:first-of-type{margin-top:4px}
+  .install-plat svg{width:20px;height:20px;color:var(--mint-text);flex:0 0 auto}
+  .install-steps{margin:0;padding:0;list-style:none;counter-reset:step;display:flex;flex-direction:column;gap:11px}
+  .install-steps li{position:relative;padding-left:34px;font-size:14px;line-height:1.5;color:var(--forest)}
+  .install-steps li b{font-weight:700}
+  .install-steps li::before{counter-increment:step;content:counter(step);position:absolute;left:0;top:-1px;
+    width:23px;height:23px;border-radius:50%;background:var(--mint-bg);color:var(--mint-text);
+    font-size:12.5px;font-weight:800;display:grid;place-items:center}
+  .install-share{display:inline-block;width:17px;height:17px;vertical-align:-3px;color:var(--mint-text)}
+  .install-note{margin-top:20px;font-size:13px;color:var(--muted);line-height:1.55}
 
   /* ---------- privacy notice ---------- */
   .privacy-wrap{flex:1;display:flex;flex-direction:column;padding:14px 0 24px}
@@ -509,8 +538,11 @@
       </div>
     </div>
 
-    <div class="seg-label">Levels, grammar &amp; conversations</div>
-    <div class="levels" id="levels"></div>
+    <div class="seg-label">Vocabulary by level</div>
+    <div class="seg-levels" id="levels"></div>
+
+    <div class="seg-label">More practice</div>
+    <div class="modes" id="modes"></div>
 
     <div class="seg-label">Topics</div>
     <div class="search">
@@ -761,10 +793,54 @@
     </div>
   </section>
 
+  <!-- ============ INSTALL ============ -->
+  <section class="screen" id="install">
+    <div class="sbar">
+      <button class="back" id="backInstall" aria-label="Back to home">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="sbar-title"><b>Install</b></div>
+      <button class="back home-btn" aria-label="Home page">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </button>
+    </div>
+
+    <div class="privacy-wrap">
+      <div class="privacy-card">
+        <p class="privacy-intro"><span class="brand-pill">Po polsku</span> installs straight from your browser - one tap to open, full screen, and it works offline. No app store, no account.</p>
+
+        <div class="install-plat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M12 18h.01"/></svg>
+          iPhone &amp; iPad (Safari)
+        </div>
+        <ol class="install-steps">
+          <li>Open <b>popolsku.app</b> in Safari.</li>
+          <li>Tap the Share icon <svg class="install-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></svg> - the square with an upward arrow.</li>
+          <li>Scroll down and tap <b>Add to Home Screen</b>.</li>
+          <li>Tap <b>Add</b> in the top-right corner.</li>
+        </ol>
+
+        <div class="install-plat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M12 18h.01"/></svg>
+          Android (Chrome)
+        </div>
+        <ol class="install-steps">
+          <li>Open <b>popolsku.app</b> in Chrome.</li>
+          <li>Tap the menu - three dots in the top-right.</li>
+          <li>Tap <b>Add to Home screen</b> (or <b>Install app</b>).</li>
+          <li>Tap <b>Add</b> or <b>Install</b> to confirm.</li>
+        </ol>
+
+        <p class="install-note">Once it's added, open Po polsku from your home screen like any other app - it launches full screen and runs offline.</p>
+      </div>
+    </div>
+  </section>
+
   <footer>
     <div class="foot-links">
       <button class="foot-btn" id="openAbout">About</button>
       <button class="foot-btn" id="openPrivacy">Privacy</button>
+      <button class="foot-btn" id="openInstall">Install</button>
     </div>
     <div class="foot-note">We do not collect your data in any form.</div>
   </footer>
@@ -845,21 +921,42 @@ window.addEventListener("popstate", e=> showScreen((e.state && e.state.scr) || "
 history.replaceState({scr:"home"}, "", location.pathname + location.search);
 
 /* ---------------- home ---------------- */
-function isModeLevel(lv){ return lv.topics.length>0 && lv.topics.every(t=> t.kind==="grammar" || t.kind==="convo"); }
+/* A level is "vocabulary" when all its topics are plain flashcard sets (no kind).
+   Grammar / Conversations / Podcasts each carry a kind, so they render as practice modes,
+   not as points on the level ladder - which is exactly why they never filter by level. */
+function isVocabLevel(lv){ return lv.topics.length>0 && lv.topics.every(t=> !t.kind); }
+/* Display-only labels for practice modes; the internal level key (e.g. "Scenarios") is untouched. */
+const MODE_LABELS = { "Scenarios":"Conversations" };
+function modeLabel(lv){ return MODE_LABELS[lv.level] || lv.level; }
+const MODE_ICONS = {
+  "Grammar":   '<path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>',
+  "Scenarios": '<path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/>',
+  "Podcasts":  '<path d="M16.85 18.58a9 9 0 1 0-9.7 0"/><path d="M8 14a5 5 0 1 1 8 0"/><circle cx="12" cy="11" r="1"/><path d="M13 17a1 1 0 1 0-2 0l.5 4.5a.5.5 0 1 0 1 0z"/>'
+};
+function modeIcon(lv){ return ICON_SVG(MODE_ICONS[lv.level] || ""); }
 function renderLevels(){
-  const box = $("levels"); box.innerHTML = "";
-  box.classList.toggle("searching", !!S.query.trim());
-  let broke = false;
+  const segBox = $("levels"), modeBox = $("modes");
+  segBox.innerHTML = ""; modeBox.innerHTML = "";
+  const searching = !!S.query.trim();
+  segBox.classList.toggle("searching", searching);
+  modeBox.classList.toggle("searching", searching);
   LEVELS.forEach((lv,i)=>{
-    if(isModeLevel(lv) && !broke){                    /* start row 2 at the first mode (Grammar) */
-      box.appendChild(Object.assign(document.createElement("span"),{className:"lvl-break"}));
-      broke = true;
+    const active = i===S.levelIdx ? "true":"false";
+    const pick = ()=>{ S.levelIdx = i; clearSearch(); renderLevels(); renderTopics(); };
+    if(isVocabLevel(lv)){
+      const b = document.createElement("button");
+      b.className = "seg-btn"; b.textContent = lv.level;
+      b.setAttribute("aria-pressed", active);
+      b.onclick = pick;
+      segBox.appendChild(b);
+    } else {
+      const b = document.createElement("button");
+      b.className = "mode-tile";
+      b.setAttribute("aria-pressed", active);
+      b.innerHTML = '<span class="mode-ic">'+modeIcon(lv)+'</span><span class="mode-label">'+modeLabel(lv)+'</span>';
+      b.onclick = pick;
+      modeBox.appendChild(b);
     }
-    const b = document.createElement("button");
-    b.className = "lvl"; b.textContent = lv.level;
-    b.setAttribute("aria-pressed", i===S.levelIdx ? "true":"false");
-    b.onclick = ()=>{ S.levelIdx = i; clearSearch(); renderLevels(); renderTopics(); };
-    box.appendChild(b);
   });
 }
 
@@ -974,7 +1071,7 @@ function renderTopics(){
       '<div class="t-body">'+
         '<div class="t-title"></div>'+
         '<div class="t-desc"></div>'+
-        '<div class="t-meta"><span class="chip">'+(t.chip || lv.level)+'</span><span class="t-count">'+tCount(t, lv, store)+'</span></div>'+
+        '<div class="t-meta"><span class="chip">'+(t.chip || modeLabel(lv))+'</span><span class="t-count">'+tCount(t, lv, store)+'</span></div>'+
       '</div>'+
       '<div class="t-arrow">›</div>';
     b.querySelector(".t-title").textContent = t.name;
@@ -1272,6 +1369,8 @@ $("openPrivacy").addEventListener("click", ()=>show("privacy"));
 $("backPrivacy").addEventListener("click", ()=>show("home"));
 $("openAbout").addEventListener("click", ()=>show("about"));
 $("backAbout").addEventListener("click", ()=>show("home"));
+$("openInstall").addEventListener("click", ()=>show("install"));
+$("backInstall").addEventListener("click", ()=>show("home"));
 document.addEventListener("keydown", e=>{
   if(!$("study").classList.contains("active")) return;
   if($("doneView").style.display!=="none") return;
@@ -1468,7 +1567,7 @@ function startConvo(l,t){
   C.dist=cComputeDist(C.topic);
   C.maxDist=Math.max(1, ...Object.values(C.dist));
   $("cTitle").textContent = C.topic.name;
-  $("cLevel").textContent = LEVELS[l].level + " \u00b7 " + C.topic.role;
+  $("cLevel").textContent = modeLabel(LEVELS[l]) + " \u00b7 " + C.topic.role;
   show("convo");
   cRenderNode();
 }
