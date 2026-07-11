@@ -1637,10 +1637,36 @@ function cShowDone(){
 }
 $("cBack").addEventListener("click", ()=>show("home"));
 
-/* ---------------- installable: real manifest is linked in <head>; register the service worker ---------------- */
+/* ---------------- installable: service worker + keep the installed app fresh ---------------- */
+const ppFresh = { tag:null, reg:null, reloading:false };
+
 if("serviceWorker" in navigator){
-  window.addEventListener("load", ()=>{ navigator.serviceWorker.register("sw.js").catch(()=>{}); });
+  window.addEventListener("load", ()=>{
+    navigator.serviceWorker.register("sw.js").then(reg=>{ ppFresh.reg = reg; }).catch(()=>{});
+  });
 }
+
+/* iOS usually resumes a frozen PWA instead of reloading it, so new deploys don't appear until a
+   manual force-quit. Whenever the app comes back to the foreground while online, ask the server for
+   the app-shell's content tag (ETag / Last-Modified). If the deploy changed, reload once to pick it
+   up. HEAD is a non-GET request, so the service worker ignores it and it always hits the network;
+   cache:"no-store" skips the browser's HTTP cache too. If no usable header comes back, we skip -
+   never a false reload. */
+async function ppCheckFresh(){
+  if(ppFresh.reloading || !navigator.onLine || document.visibilityState !== "visible") return;
+  if(ppFresh.reg){ try{ ppFresh.reg.update(); }catch(e){} }   /* also pulls a new sw.js if you bumped CACHE */
+  let tag = null;
+  try{
+    const r = await fetch("./", { method:"HEAD", cache:"no-store" });
+    if(r.ok) tag = r.headers.get("etag") || r.headers.get("last-modified");
+  }catch(e){ return; }
+  if(!tag) return;
+  if(ppFresh.tag === null){ ppFresh.tag = tag; return; }       /* first check establishes the baseline */
+  if(tag !== ppFresh.tag){ ppFresh.reloading = true; location.reload(); }
+}
+document.addEventListener("visibilitychange", ppCheckFresh);
+window.addEventListener("focus", ppCheckFresh);
+ppCheckFresh();
 
 /* ---------------- search wiring ---------------- */
 $("search").addEventListener("input", e=>{
