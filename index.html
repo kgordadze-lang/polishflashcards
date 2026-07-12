@@ -152,6 +152,32 @@
   .modes.searching .mode-tile[aria-pressed="true"] .mode-label{color:var(--forest)}
   .modes.searching .mode-tile[aria-pressed="true"] .mode-ic{background:var(--mint-bg);color:var(--mint-text)}
 
+  /* maturity gate modal (adult-language topics) */
+  .modal-overlay{position:fixed;inset:0;z-index:1000;background:rgba(15,23,42,.55);
+    display:flex;align-items:center;justify-content:center;padding:22px;animation:fade .2s}
+  .modal-overlay[hidden]{display:none}
+  .modal-card{background:var(--card);border-radius:var(--r-lg);padding:26px 24px 22px;max-width:400px;width:100%;
+    box-shadow:0 20px 50px rgba(15,23,42,.3);text-align:center}
+  .modal-ic{width:52px;height:52px;border-radius:15px;background:#fef3c7;color:#b45309;display:grid;place-items:center;margin:0 auto 15px}
+  .modal-ic svg{width:27px;height:27px}
+  .modal-card h3{font-size:19px;font-weight:800;color:var(--forest);margin:0 0 10px;letter-spacing:-.3px}
+  .modal-card p{font-size:14px;line-height:1.55;color:var(--muted);margin:0 0 20px}
+  .modal-actions{display:flex;gap:10px}
+  .modal-btn{flex:1;border-radius:13px;padding:13px 0;font-family:inherit;font-size:14.5px;font-weight:700;cursor:pointer;transition:.15s;border:1px solid transparent}
+  .modal-btn.ghost{background:var(--card);border-color:var(--border);color:var(--forest)}
+  .modal-btn.ghost:hover{border-color:#d7e0e8}
+  .modal-btn.solid{background:var(--forest);color:var(--cream)}
+  .modal-btn.solid:hover{background:var(--forest-hover)}
+  .modal-btn:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+
+  /* vulgarity/strength badge on swearing cards */
+  .strength-badge{display:inline-block;margin:9px 0 0;padding:3px 12px;border-radius:999px;font-size:10.5px;font-weight:800;letter-spacing:.7px;text-transform:uppercase}
+  .strength-badge[hidden]{display:none}
+  .strength-badge.s-mild{background:var(--ok-bg);color:var(--ok-text)}
+  .strength-badge.s-medium{background:#fef3c7;color:#b45309}
+  .strength-badge.s-strong{background:#ffedd5;color:#c2410c}
+  .strength-badge.s-vulgar{background:var(--bad-bg);color:var(--bad-text)}
+
   /* ---------- topic search ---------- */
   .search{position:relative;margin-bottom:14px}
   .search-ic{position:absolute;left:15px;top:50%;transform:translateY(-50%);
@@ -184,7 +210,8 @@
   .t-emoji svg{width:24px;height:24px}
   .t-body{flex:1;min-width:0}
   .t-title{font-size:16.5px;font-weight:700;letter-spacing:-.2px}
-  .t-desc{font-size:13.5px;color:var(--muted);margin-top:3px;line-height:1.4}
+  .t-desc{font-size:13.5px;color:var(--muted);margin-top:3px;line-height:1.4;
+    display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden}
   .t-meta{display:flex;align-items:center;gap:8px;margin-top:9px}
   .chip{font-size:11.5px;font-weight:700;letter-spacing:.3px;background:var(--mint-bg);
     color:var(--mint-text);padding:4px 9px;border-radius:999px}
@@ -586,6 +613,7 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>
               </button>
               <div class="pl" id="plText"></div>
+              <span class="strength-badge" id="strBadge" hidden></span>
               <div class="hint" id="frontHint"></div>
               <div class="cue" id="frontCue">tap to see meaning</div>
             </div>
@@ -844,6 +872,20 @@
     </div>
     <div class="foot-note">We do not collect your data in any form.</div>
   </footer>
+
+  <div class="modal-overlay" id="matureGate" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="matureTitle" aria-describedby="matureBody">
+      <div class="modal-ic">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+      </div>
+      <h3 id="matureTitle">Adult language ahead</h3>
+      <p id="matureBody">This topic teaches real Polish swearing and slang, including strong, vulgar words - each shown with what it means and how offensive it is. It's here to help you understand what you'll hear, not to encourage using it. Continue only if you're comfortable with explicit language.</p>
+      <div class="modal-actions">
+        <button class="modal-btn ghost" id="matureCancel">Not now</button>
+        <button class="modal-btn solid" id="matureContinue">I'm 18+, continue</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script src="data-a1.js"></script>
@@ -992,6 +1034,13 @@ function clearSearch(){
 /* ---------------- topic icons (Lucide-style stroke SVGs) ---------------- */
 const ICON_SVG = p => '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg>';
 const ICONS = {
+  "\uD83E\uDD89":'<path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1 2 2 0 0 0 2 2 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/><path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1 2 2 0 0 0 2 2 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/>',
+  "\uD83E\uDD2F":'<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>',
+  "\uD83C\uDFE2":'<path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/>',
+  "\uD83C\uDF89":'<path d="M5.8 11.3 2 22l10.7-3.79"/><path d="M4 3h.01"/><path d="M22 8h.01"/><path d="M15 2h.01"/><path d="M22 20h.01"/><path d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L15 10"/><path d="m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11c-.11.7-.72 1.22-1.43 1.22H17"/><path d="m11 2 .33.82c.34.86-.2 1.82-1.11 1.98C9.52 4.9 9 5.52 9 6.23V7"/><path d="M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z"/>',
+  "\uD83D\uDCAC":'<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/>',
+  "\uD83D\uDC8E":'<path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/>',
+  "\uD83E\uDD2C":'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M12 7v3"/><path d="M12 14h.01"/>',
   "\uD83D\uDC4B":'<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/>',
   "\uD83D\uDD22":'<rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/>',
   "\u2615":'<path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" x2="6" y1="2" y2="4"/><line x1="10" x2="10" y1="2" y2="4"/><line x1="14" x2="14" y1="2" y2="4"/>',
@@ -1076,7 +1125,7 @@ function renderTopics(){
       '<div class="t-arrow">›</div>';
     b.querySelector(".t-title").textContent = t.name;
     b.querySelector(".t-desc").textContent = t.desc || "";
-    b.onclick = ()=> (t.kind==="grammar" ? startGrammar(li, ti) : t.kind==="convo" ? startConvo(li, ti) : startTopic(li, ti)); /* podcast falls through to startTopic */
+    b.onclick = ()=> openTopic(li, ti, t);   /* mature topics show the adult-language gate first */
     box.appendChild(b);
   });
 }
@@ -1094,10 +1143,17 @@ function startTopic(l,t){
   show("study"); render();
 }
 function currentCard(){ return S.cards[S.queue[S.pos]]; }
+const STRENGTH_LABEL = { mild:["Mild","s-mild"], medium:["Medium","s-medium"], strong:["Strong","s-strong"], vulgar:["Vulgar","s-vulgar"] };
+function setStrengthBadge(level){
+  const el = $("strBadge"); const s = level && STRENGTH_LABEL[level];
+  if(s){ el.textContent = s[0]; el.className = "strength-badge " + s[1]; el.hidden = false; }
+  else { el.className = "strength-badge"; el.hidden = true; }
+}
 function render(){
   if(S.pos >= S.queue.length){ showDone(); return; }
   $("cardView").style.display="flex"; $("doneView").style.display="none";
   const c = currentCard();
+  setStrengthBadge(c.strength);                 /* shows a strength pill only on cards that carry one */
   const f = $("flip");
   if(f.classList.contains("flipped")){          /* reset to front without replaying the flip */
     f.style.transition = "none";
@@ -1371,6 +1427,26 @@ $("openAbout").addEventListener("click", ()=>show("about"));
 $("backAbout").addEventListener("click", ()=>show("home"));
 $("openInstall").addEventListener("click", ()=>show("install"));
 $("backInstall").addEventListener("click", ()=>show("home"));
+
+/* ---------------- topic routing + adult-language gate (shown on EVERY open) ---------------- */
+let pendingTopic = null;
+function routeTopic(li, ti, t){
+  if(t.kind === "grammar") startGrammar(li, ti);
+  else if(t.kind === "convo") startConvo(li, ti);
+  else startTopic(li, ti);                              /* vocab + podcast */
+}
+function openTopic(li, ti, t){
+  if(t.mature){ pendingTopic = {li, ti, t}; $("matureGate").hidden = false; return; }   /* re-prompt every time; never persisted */
+  routeTopic(li, ti, t);
+}
+function closeMatureGate(){ pendingTopic = null; $("matureGate").hidden = true; }
+$("matureContinue").addEventListener("click", ()=>{
+  const p = pendingTopic; pendingTopic = null; $("matureGate").hidden = true;
+  if(p) routeTopic(p.li, p.ti, p.t);
+});
+$("matureCancel").addEventListener("click", closeMatureGate);
+$("matureGate").addEventListener("click", e=>{ if(e.target === $("matureGate")) closeMatureGate(); });  /* tap backdrop */
+document.addEventListener("keydown", e=>{ if(e.key === "Escape" && !$("matureGate").hidden) closeMatureGate(); });
 document.addEventListener("keydown", e=>{
   if(!$("study").classList.contains("active")) return;
   if($("doneView").style.display!=="none") return;
