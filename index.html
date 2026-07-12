@@ -7,7 +7,7 @@
 <title>Po polsku - learn the Polish you'll actually use</title>
 <meta name="description" content="Polish flashcards with native audio - everyday vocabulary, useful grammar, conversation practice, and phrases from real podcasts.">
 <link rel="canonical" href="https://popolsku.app/">
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/svg+xml" href="favicon.svg?v=17">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -58,6 +58,7 @@
     --mint-text:#4338ca;     /* accent text on tint */
     --emerald:#4f46e5;       /* accent - indigo */
     --cream:#eef2ff;         /* light text on dark */
+    --logo-back:#a5b4fc;     /* header logo back card - matches app icon (indigo-300) */
     --sage:#4f46e5;
     --sage-hover:#3730a3;
     --coral:#c97c5d;         /* secondary warm accent - "still learning" / wrong */
@@ -91,7 +92,7 @@
   .logo{display:flex;align-items:center;gap:12px}
   /* PL card-stack mark */
   .logo-mark{position:relative;width:38px;height:38px;flex:0 0 auto}
-  .logo-mark .lm-back{position:absolute;inset:0;border-radius:11px;background:var(--mint-bg);transform:rotate(-9deg) translate(-2px,1px)}
+  .logo-mark .lm-back{position:absolute;inset:0;border-radius:11px;background:var(--logo-back);transform:rotate(-5deg) translate(-2px,1px)}
   .logo-mark .lm-front{position:absolute;inset:0;border-radius:11px;background:var(--forest);color:var(--cream);
     display:grid;place-items:center;font-weight:800;font-size:14px;letter-spacing:-.5px;box-shadow:0 4px 10px rgba(30,27,75,.18)}
   .logo-mark .lm-kreska{position:absolute;top:6px;right:6px;width:9px;height:2.6px;border-radius:2px;background:var(--emerald);transform:rotate(-28deg);z-index:2}
