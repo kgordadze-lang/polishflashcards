@@ -1,6 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
-  <rect x="86" y="104" width="300" height="300" rx="64" fill="#e0e7ff" transform="rotate(-9 236 254)"/>
-  <rect x="118" y="106" width="300" height="300" rx="64" fill="#1e293b"/>
-  <text x="268" y="252" font-size="132" text-anchor="middle" dominant-baseline="central" fill="#eef2ff" font-family="system-ui, sans-serif" font-weight="800" letter-spacing="-4">PL</text>
-  <rect x="338" y="150" width="60" height="15" rx="7" fill="#4f46e5" transform="rotate(-28 368 157)"/>
-</svg>
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+<g transform="translate(256 256) scale(1.14) translate(-256 -256)">
+<g transform="rotate(-5.2 236 250)">
+<rect x="86" y="100" width="300" height="300" rx="52" fill="#a5b4fc"/></g>
+<rect x="118" y="106" width="300" height="300" rx="52" fill="#1e293b"/>
+<path d="M147.947 372.0V206.9825H211.296Q228.3515 206.9825 241.53075 212.963Q254.71 218.9435 262.241 230.683Q269.772 242.42249999999999 269.772 259.6995Q269.772 276.5335 262.13025 288.273Q254.4885 300.0125 241.30925 306.10375Q228.13 312.195 211.296 312.195H182.2795V372.0ZM182.2795 282.2925H211.51749999999998Q222.371 282.2925 228.90525000000002 276.0905Q235.4395 269.8885 235.4395 259.6995Q235.4395 249.289 228.90525000000002 243.087Q222.371 236.885 211.51749999999998 236.885H182.2795Z" fill="#eef2ff"/><path d="M296.1305 372.0V206.9825H330.463V342.0975H400.2355V372.0Z" fill="#eef2ff"/>
+<path d="M341 176 L398 138" stroke="#4f46e5" stroke-width="20" stroke-linecap="round"/>
+</g></svg>
