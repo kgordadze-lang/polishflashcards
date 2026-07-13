@@ -1831,8 +1831,19 @@ const PP_A2HS = (function(){
   let deferred = null;                 /* stored beforeinstallprompt event, if any */
   let engagement = 0, engaged = false;
 
+  /* "Running as an installed app?" - no single signal is reliable across platforms, so
+     combine them. Chrome / Android / desktop expose display-mode; iOS Safari sets
+     navigator.standalone; macOS Safari "Add to Dock" apps report neither reliably (a
+     long-standing WebKit quirk where dock apps think they're in a tab), so we also flag
+     the ?pwa=1 marker that our manifest start_url launches with - it's present only when
+     the app is opened from its installed icon, never in a normal browser tab. */
   const standalone = () =>
-    matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+    matchMedia("(display-mode: standalone)").matches ||
+    matchMedia("(display-mode: minimal-ui)").matches ||
+    matchMedia("(display-mode: fullscreen)").matches ||
+    matchMedia("(display-mode: window-controls-overlay)").matches ||
+    window.navigator.standalone === true ||
+    new URLSearchParams(location.search).has("pwa");
   const iOS = () =>
     /iphone|ipad|ipod/i.test(navigator.userAgent) ||
     (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);   /* iPadOS reports as Mac */

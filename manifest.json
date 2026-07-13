@@ -4,7 +4,7 @@
   "short_name": "Po polsku",
   "description": "Free Polish flashcards with audio for A1-B1: real everyday vocabulary, grammar drills, and branching conversations. No account, works offline.",
   "categories": ["education"],
-  "start_url": "./",
+  "start_url": "./?pwa=1",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
