@@ -363,6 +363,49 @@
   .install-share{display:inline-block;width:17px;height:17px;vertical-align:-3px;color:var(--mint-text)}
   .install-note{margin-top:20px;font-size:13px;color:var(--muted);line-height:1.55}
 
+  /* ---------- add-to-home encouragement (chip / banner / post-win nudge) ----------
+     Three surfaces, one action (PP_A2HS.install): a passive header chip that's always
+     available when not installed, a proactive home banner shown after some engagement,
+     and an inline nudge on the completion screens. Banner + nudge respect a snooze;
+     the chip does not (it's an icon, not a nag). */
+  .pp-chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--border);background:var(--card);
+    color:var(--forest);font-family:inherit;font-size:12.5px;font-weight:700;letter-spacing:.1px;
+    padding:8px 13px 8px 11px;border-radius:999px;cursor:pointer;box-shadow:var(--shadow-sm);transition:.16s}
+  .pp-chip:hover{transform:translateY(-1px);box-shadow:var(--shadow);border-color:#d7e0e8}
+  .pp-chip:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  .pp-chip svg{width:15px;height:15px;color:var(--mint-text);flex:0 0 auto}
+
+  .pp-banner{display:flex;align-items:center;gap:13px;margin:10px 0 2px;padding:14px 15px;
+    background:var(--card);border:1px solid var(--border);border-radius:var(--r-md);
+    box-shadow:var(--shadow-sm);animation:fade .35s ease}
+  .pp-banner .pp-ic{flex:0 0 auto;width:38px;height:38px;border-radius:11px;background:var(--mint-bg);
+    color:var(--mint-text);display:grid;place-items:center}
+  .pp-banner .pp-ic svg{width:20px;height:20px}
+  .pp-tx{flex:1;min-width:0}
+  .pp-banner .pp-t{font-size:14px;font-weight:800;letter-spacing:-.2px;line-height:1.3}
+  .pp-banner .pp-s{font-size:12.5px;color:var(--muted);font-weight:500;line-height:1.4;margin-top:2px}
+  .pp-add{flex:0 0 auto;border:none;background:var(--forest);color:var(--cream);font-family:inherit;
+    font-size:13px;font-weight:700;padding:10px 15px;border-radius:12px;cursor:pointer;transition:.16s}
+  .pp-add:hover{background:var(--forest-hover)}
+  .pp-x{flex:0 0 auto;border:none;background:none;color:var(--muted);cursor:pointer;padding:6px;
+    border-radius:9px;line-height:0;transition:.15s}
+  .pp-x:hover{background:var(--mint-bg);color:var(--forest)}
+  .pp-x svg{width:16px;height:16px}
+  .pp-add:focus-visible,.pp-x:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+
+  /* inline post-win nudge (completion screens) */
+  .pp-nudge{width:100%;max-width:340px;margin:20px auto 0;padding:15px 16px;background:var(--mint-bg);
+    border-radius:var(--r-md);text-align:left;display:flex;align-items:center;gap:12px;animation:fade .35s ease}
+  .pp-nudge .pp-t{font-size:13.5px;font-weight:800;color:var(--sage-hover);letter-spacing:-.1px}
+  .pp-nudge .pp-s{font-size:12px;color:var(--mint-text);font-weight:600;line-height:1.4;margin-top:2px}
+  .pp-nudge .pp-add{font-size:12.5px;padding:9px 13px;border-radius:11px}
+
+  /* native one-tap install shortcut on the instructions screen (Android / desktop Chromium) */
+  .pp-native{display:flex;align-items:center;gap:13px;margin:0 0 20px;padding:14px 15px;
+    background:var(--mint-bg);border-radius:var(--r-md)}
+  .pp-native .pp-t{font-size:13.5px;font-weight:800;color:var(--sage-hover)}
+  .pp-native .pp-s{font-size:12px;color:var(--mint-text);font-weight:600;margin-top:2px;line-height:1.4}
+
   /* ---------- privacy notice ---------- */
   .privacy-wrap{flex:1;display:flex;flex-direction:column;padding:14px 0 24px}
   .privacy-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);
@@ -549,6 +592,10 @@
         </div>
         <b>Po polsku</b>
       </div>
+      <button class="pp-chip" id="ppChip" hidden data-a2hs-add aria-label="Add Po polsku to your home screen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m8 11 4 4 4-4"/><path d="M4 21h16"/></svg>
+        Add app
+      </button>
     </div>
 
     <div class="hero">
@@ -580,6 +627,20 @@
     </div>
     <div class="search-meta" id="searchMeta"></div>
     <div class="topics" id="topics"></div>
+
+    <div class="pp-banner" id="ppBanner" hidden>
+      <div class="pp-ic">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M12 18h.01"/></svg>
+      </div>
+      <div class="pp-tx">
+        <div class="pp-t">Add Po polsku to your home screen</div>
+        <div class="pp-s">One tap to open, works offline.</div>
+      </div>
+      <button class="pp-add" data-a2hs-add>Add</button>
+      <button class="pp-x" data-a2hs-dismiss aria-label="Not now">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
   </section>
 
   <!-- ============ STUDY ============ -->
@@ -675,6 +736,7 @@
         <button class="btn-ghost" id="restart">Restart this set</button>
         <button class="btn-ghost" id="toTopics">Back to topics</button>
       </div>
+      <div id="doneNudge"></div>
     </div>
   </section>
 
@@ -836,6 +898,13 @@
 
     <div class="privacy-wrap">
       <div class="privacy-card">
+        <div class="pp-native" id="ppNative" hidden>
+          <div class="pp-tx">
+            <div class="pp-t">Install in one tap</div>
+            <div class="pp-s">Your browser can add Po polsku for you - no steps needed.</div>
+          </div>
+          <button class="pp-add" data-a2hs-add>Install now</button>
+        </div>
         <p class="privacy-intro"><span class="brand-pill">Po polsku</span> installs straight from your browser - one tap to open, full screen, and it works offline. No app store, no account.</p>
 
         <div class="install-plat">
@@ -947,6 +1016,7 @@ function showScreen(scr){
   document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
   $(scr).classList.add("active");
   const ft=document.querySelector("footer"); if(ft) ft.hidden = (scr!=="home");   /* About/Privacy + data note live on home only */
+  if(scr==="home" && window.PP_A2HS) window.PP_A2HS.onHome();
   window.scrollTo(0,0);
 }
 /* history-aware navigation: system back button pops to home instead of closing the app */
@@ -1222,7 +1292,7 @@ function render(){
   $("fill").style.width = pct + "%";
   $("pcount").textContent = (S.pos+1) + " / " + S.queue.length;
 }
-function flip(){ $("flip").classList.toggle("flipped"); }
+function flip(){ $("flip").classList.toggle("flipped"); if(window.PP_A2HS && $("flip").classList.contains("flipped")) window.PP_A2HS.bump(); }
 function advance(){ if($("flip").dataset.leaving) return; S.pos++; render(); }
 function goPrev(){ if($("flip").dataset.leaving) return; if(S.pos>0){ S.pos--; render(); } }
 function markKnown(){ const i=S.queue[S.pos]; S.still.delete(i); S.known.add(i); persistProgress(); exitCard("exit-know"); }
@@ -1270,6 +1340,7 @@ function showDone(){
     $("doneMsg").textContent = "You knew every card in this set. Świetnie!";
   }
   persistProgress();
+  if(window.PP_A2HS){ window.PP_A2HS.bump(3); $("doneNudge").innerHTML = window.PP_A2HS.nudgeHTML(); }
 }
 function practiceStill(){
   if(S.still.size===0) return;
@@ -1711,6 +1782,7 @@ function cShowDone(){
     '</div></div>';
   $("cAgain").addEventListener("click", ()=>startConvo(C.li,C.tpi));
   $("cHome").addEventListener("click", ()=>show("home"));
+  if(window.PP_A2HS){ window.PP_A2HS.bump(3); const n=window.PP_A2HS.nudgeHTML(); if(n) box.insertAdjacentHTML("beforeend", n); }
 }
 $("cBack").addEventListener("click", ()=>show("home"));
 
@@ -1744,6 +1816,108 @@ async function ppCheckFresh(){
 document.addEventListener("visibilitychange", ppCheckFresh);
 window.addEventListener("focus", ppCheckFresh);
 ppCheckFresh();
+
+/* ---------------- add-to-home-screen encouragement ----------------
+   One action (install) behind three surfaces: the header chip, the home banner,
+   and the completion-screen nudge. On Android/desktop Chromium we capture
+   beforeinstallprompt and install in one tap; on iOS (no such event) we open the
+   existing step-by-step instructions screen. Proactive surfaces (banner + nudge)
+   respect a snooze stored in localStorage; the chip is a passive icon and always
+   shows while the app isn't installed. */
+const PP_A2HS = (function(){
+  const KEY = "popolsku-a2hs";
+  const THRESHOLD = 5;                 /* card reveals before the home banner may appear */
+  const COOLDOWN = 10*24*60*60*1000;   /* 10 days between asks after a dismissal */
+  let deferred = null;                 /* stored beforeinstallprompt event, if any */
+  let engagement = 0, engaged = false;
+
+  const standalone = () =>
+    matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+  const iOS = () =>
+    /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);   /* iPadOS reports as Mac */
+
+  const read  = () => { try{ return JSON.parse(localStorage.getItem(KEY)) || {}; }catch(e){ return {}; } };
+  const write = s  => { try{ localStorage.setItem(KEY, JSON.stringify(s)); }catch(e){} };
+
+  /* whether we're allowed to *proactively* ask (banner + post-win nudge) */
+  function suppressed(){
+    if(standalone()) return true;
+    const s = read();
+    if(s.installed) return true;
+    if((s.dismissed||0) >= 2) return true;              /* asked twice, dismissed twice - stop */
+    if(s.until && Date.now() < s.until) return true;    /* still in cooldown */
+    return false;
+  }
+
+  const el = id => document.getElementById(id);
+  const showChip   = () => { const c=el("ppChip");   if(c && !standalone()) c.hidden=false; };
+  const hideChip   = () => { const c=el("ppChip");   if(c) c.hidden=true; };
+  const hideBanner = () => { const b=el("ppBanner"); if(b) b.hidden=true; };
+  function revealBanner(){ const b=el("ppBanner"); if(b) b.hidden = !(engaged && !suppressed()); }
+
+  function snooze(){
+    const s = read();
+    s.dismissed = (s.dismissed||0) + 1;
+    s.until = Date.now() + COOLDOWN;
+    write(s);
+    hideBanner();
+    document.querySelectorAll(".pp-nudge").forEach(n=>n.remove());
+  }
+  function markInstalled(){ const s = read(); s.installed = true; write(s); hideChip(); hideBanner(); }
+
+  async function install(){
+    if(deferred){                       /* Android / desktop Chromium: real one-tap install */
+      hideBanner();
+      deferred.prompt();
+      try{ const { outcome } = await deferred.userChoice; if(outcome === "accepted") markInstalled(); }catch(e){}
+      deferred = null;
+      const n=el("ppNative"); if(n) n.hidden=true;
+      return;
+    }
+    show("install");                    /* iOS + anything else: show the instructions screen */
+  }
+
+  /* markup for the inline completion-screen nudge ("" when we shouldn't ask) */
+  function nudgeHTML(){
+    if(suppressed()) return "";
+    const how = deferred ? "Add it in one tap" : "Add it to your home screen";
+    return '<div class="pp-nudge">'
+      + '<div class="pp-tx"><div class="pp-t">Keep Po polsku one tap away</div>'
+      + '<div class="pp-s">'+how+' - works offline.</div></div>'
+      + '<button class="pp-add" data-a2hs-add>Add</button></div>';
+  }
+
+  function bump(n){ engagement += (n||1); if(engagement >= THRESHOLD) engaged = true; }
+  function onHome(){ revealBanner(); }
+
+  function init(){
+    if(standalone()){ hideChip(); hideBanner(); return; }
+    showChip();
+
+    window.addEventListener("beforeinstallprompt", e=>{
+      e.preventDefault();               /* suppress Chrome's default infobar; we drive install ourselves */
+      deferred = e;
+      showChip();
+      const n=el("ppNative"); if(n && !suppressed()) n.hidden=false;
+    });
+    window.addEventListener("appinstalled", ()=>{
+      markInstalled(); deferred=null;
+      const t=document.createElement("div"); t.className="toast";
+      t.textContent="Gotowe! Open Po polsku from your home screen any time.";
+      document.body.appendChild(t); setTimeout(()=>t.remove(), 6000);
+    });
+
+    document.addEventListener("click", e=>{
+      if(e.target.closest("[data-a2hs-add]"))     { install(); return; }
+      if(e.target.closest("[data-a2hs-dismiss]")) { snooze();  return; }
+    });
+  }
+
+  return { init, install, snooze, bump, onHome, nudgeHTML };
+})();
+window.PP_A2HS = PP_A2HS;
+PP_A2HS.init();
 
 /* ---------------- search wiring ---------------- */
 $("search").addEventListener("input", e=>{
