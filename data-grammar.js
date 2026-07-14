@@ -6,8 +6,9 @@
   window.PP_LEVELS = window.PP_LEVELS || [];
   window.PP_LEVELS.push(
     {
-      level: "Grammar",
-      blurb: "Cases & rules",
+      level: "Grammar Cases",
+      blurb: "The seven cases",
+      group: "grammar",
       topics: [
         {
           name: "Mianownik (Nominative)", emoji: "\uD83C\uDFC1", kind: "grammar", chip: "Grammar A1",
@@ -950,7 +951,16 @@
               answer:["Kochani","dziękuję"],
               explain:"Plural doesn't change in Vocative. 'Kochani' (dear ones) is the same as in Nominative.", full:"Kochani, dziękuję!", fullEn:"Dear friends, thank you!" }
           ]
-        },
+        }
+      ]
+    }
+  );
+  window.PP_LEVELS.push(
+    {
+      level: "Describing People",
+      blurb: "Adjectives, pronouns, jobs, nationalities",
+      group: "grammar",
+      topics: [
         {
           name: "Przymiotniki (Adjectives & Traits)", emoji: "\uD83C\uDFAD", kind: "grammar", chip: "Grammar A2",
           desc: "Describing people: the 'oni' plural for character traits",

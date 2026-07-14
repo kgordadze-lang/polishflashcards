@@ -3,7 +3,7 @@
    - Strategy: network-first for the page itself (fresh content when online,
      cached copy when offline), cache-first for everything else (fonts, icons). */
 
-const CACHE = "popolsku-v18";
+const CACHE = "popolsku-v19";
 const ASSETS = [
   "./",
   "./index.html",
@@ -11,6 +11,7 @@ const ASSETS = [
   "./data-a2.js",
   "./data-b1.js",
   "./data-grammar.js",
+  "./data-verbs.js",
   "./data-scenarios.js",
   "./data-podcasts.js",
   "./audio-manifest.json",

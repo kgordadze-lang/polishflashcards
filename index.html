@@ -129,8 +129,9 @@
   .seg-label{font-size:12px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin:8px 0 12px}
   /* vocabulary levels - three distinct buttons in a row (one axis: pick a level) */
   .seg-levels{display:flex;gap:10px;margin-bottom:24px}
-  .seg-btn{flex:1;border:1px solid var(--border);background:var(--card);color:var(--forest);font-family:inherit;
-    font-size:15px;font-weight:700;padding:12px 0;border-radius:14px;cursor:pointer;box-shadow:var(--shadow-sm);transition:.16s}
+  .seg-btn{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.2;
+    border:1px solid var(--border);background:var(--card);color:var(--forest);font-family:inherit;
+    font-size:15px;font-weight:700;padding:13px 8px;border-radius:14px;cursor:pointer;box-shadow:var(--shadow-sm);transition:.16s}
   .seg-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow);border-color:#d7e0e8}
   .seg-btn[aria-pressed="true"]{background:var(--forest);color:var(--cream);border-color:var(--forest)}
   .seg-btn:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
@@ -152,6 +153,21 @@
   .modes.searching .mode-tile[aria-pressed="true"]{background:var(--card);border-color:var(--border)}
   .modes.searching .mode-tile[aria-pressed="true"] .mode-label{color:var(--forest)}
   .modes.searching .mode-tile[aria-pressed="true"] .mode-ic{background:var(--mint-bg);color:var(--mint-text)}
+  /* category tabs (top-level nav): an inset segmented control on an accent-tinted track */
+  .cat-seg{display:flex;gap:4px;background:var(--mint-bg);border-radius:15px;padding:4px;margin:0 0 20px}
+  .cat-btn{flex:1;text-align:center;font-family:inherit;font-size:14px;font-weight:700;color:var(--mint-text);
+    background:transparent;border:none;padding:10px 0;border-radius:12px;cursor:pointer;transition:.18s}
+  .cat-btn[aria-selected="true"]{background:var(--card);color:var(--forest);box-shadow:var(--shadow-sm)}
+  .cat-btn:hover{color:var(--forest)}
+  .cat-btn:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  .cat-seg.searching{opacity:.5}
+  /* dynamic header: names the active level right above its topics */
+  .topics-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+    border-top:1px solid var(--border);padding-top:15px;margin-bottom:14px}
+  .topics-head[hidden]{display:none}
+  .th-main{font-size:15.5px;color:var(--forest);font-weight:800;letter-spacing:-.2px;line-height:1.3}
+  .th-main .th-blurb{font-weight:500;color:var(--muted)}
+  .th-count{font-size:12.5px;color:var(--muted);font-weight:600;white-space:nowrap;flex:0 0 auto}
 
   /* maturity gate modal (adult-language topics) */
   .modal-overlay{position:fixed;inset:0;z-index:1000;background:rgba(15,23,42,.55);
@@ -338,6 +354,7 @@
   /* ---------- footer ---------- */
   footer{display:flex;flex-direction:column;align-items:center;gap:11px;padding:8px 0 22px;text-align:center}
   .foot-note{color:#94a3b8;font-size:12px;font-weight:500;line-height:1.5;max-width:340px}
+  .foot-version{color:#b3bfcc;font-size:11px;font-weight:600;letter-spacing:.3px}
   .foot-link{background:none;border:none;font-family:inherit;font-size:inherit;color:var(--emerald);
     font-weight:700;cursor:pointer;padding:0;vertical-align:baseline;
     text-decoration:underline;text-underline-offset:2px}
@@ -448,13 +465,13 @@
   .rule-list li{position:relative;padding-left:20px;font-size:13.5px;line-height:1.5;color:var(--muted)}
   .rule-list li::before{content:"";position:absolute;left:2px;top:7px;width:6px;height:6px;border-radius:50%;background:var(--emerald)}
   .rule-list li b{color:var(--forest);font-weight:700}
-  .end-table{width:100%;max-width:400px;border:1px solid var(--border);border-radius:14px;overflow:hidden}
-  .end-row{display:grid;grid-template-columns:1fr auto 1.5fr;gap:8px;align-items:center;padding:9px 12px;font-size:12.5px;text-align:left}
-  .end-row+.end-row{border-top:1px solid var(--border)}
-  .end-row .g{color:var(--muted);font-weight:600}
-  .end-row .e{color:var(--emerald);font-weight:800;font-size:14px;text-align:center}
-  .end-row .ex{color:var(--forest);font-weight:600}
-  .end-row .ex b{color:var(--emerald)}
+  .end-table{width:100%;max-width:420px;table-layout:fixed;border:1px solid var(--border);border-radius:14px;border-collapse:separate;border-spacing:0;overflow:hidden;font-size:12.5px}
+  .end-table td{padding:11px 12px;vertical-align:middle;line-height:1.35}
+  .end-table tr:not(:first-child) td{border-top:1px solid var(--border)}
+  .end-table .g{width:30%;color:var(--muted);font-weight:600}
+  .end-table .e{width:34%;color:var(--emerald);font-weight:800;font-size:14px;text-align:center}
+  .end-table .ex{width:36%;color:var(--forest);font-weight:600}
+  .end-table .ex b{color:var(--emerald)}
   .ex-line{width:100%;max-width:400px;background:var(--mint-bg);border-radius:14px;padding:11px 13px;text-align:left;display:flex;align-items:flex-start;gap:10px}
   .ex-line .t{flex:1;min-width:0}
   .ex-line .p{font-size:14.5px;font-weight:700;color:var(--forest);line-height:1.35}
@@ -613,18 +630,15 @@
       </div>
     </div>
 
-    <div class="seg-label">Vocabulary by level</div>
-    <div class="seg-levels" id="levels"></div>
-
-    <div class="seg-label">More practice</div>
-    <div class="modes" id="modes"></div>
-
-    <div class="seg-label">Topics</div>
     <div class="search">
       <svg class="search-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
       <input id="search" type="search" inputmode="search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search topics - e.g. food, home" aria-label="Search topics across all levels">
       <button class="search-clear" id="searchClear" type="button" aria-label="Clear search" hidden>&times;</button>
     </div>
+
+    <div class="cat-seg" id="catSeg" role="tablist" aria-label="Browse category"></div>
+    <div id="subFilter"></div>
+    <div class="topics-head" id="topicsHead"></div>
     <div class="search-meta" id="searchMeta"></div>
     <div class="topics" id="topics"></div>
 
@@ -941,6 +955,7 @@
       <button class="foot-btn" id="openInstall">Install</button>
     </div>
     <div class="foot-note">We do not collect your data in any form.</div>
+    <div class="foot-version">v7.14</div>
   </footer>
 
   <div class="modal-overlay" id="matureGate" hidden>
@@ -962,6 +977,7 @@
 <script src="data-a2.js"></script>
 <script src="data-b1.js"></script>
 <script src="data-grammar.js"></script>
+<script src="data-verbs.js"></script>
 <script src="data-scenarios.js"></script>
 <script src="data-podcasts.js"></script>
 <script>
@@ -1042,35 +1058,88 @@ function isVocabLevel(lv){ return lv.topics.length>0 && lv.topics.every(t=> !t.k
 const MODE_LABELS = { "Scenarios":"Conversations" };
 function modeLabel(lv){ return MODE_LABELS[lv.level] || lv.level; }
 const MODE_ICONS = {
-  "Grammar":   '<path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>',
-  "Scenarios": '<path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/>',
-  "Podcasts":  '<path d="M16.85 18.58a9 9 0 1 0-9.7 0"/><path d="M8 14a5 5 0 1 1 8 0"/><circle cx="12" cy="11" r="1"/><path d="M13 17a1 1 0 1 0-2 0l.5 4.5a.5.5 0 1 0 1 0z"/>'
+  "Grammar Cases":     '<path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>',
+  "Describing People": '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  "Verbs":             '<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>',
+  "Scenarios":         '<path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/>',
+  "Podcasts":          '<path d="M16.85 18.58a9 9 0 1 0-9.7 0"/><path d="M8 14a5 5 0 1 1 8 0"/><circle cx="12" cy="11" r="1"/><path d="M13 17a1 1 0 1 0-2 0l.5 4.5a.5.5 0 1 0 1 0z"/>'
 };
 function modeIcon(lv){ return ICON_SVG(MODE_ICONS[lv.level] || ""); }
+/* Three browse categories. A level's category is derived from its shape, never
+   stored: vocab = plain flashcard levels, grammar = group:"grammar" levels,
+   practice = everything else. Add a new grammar level (group:"grammar") and it
+   shows up under the Grammar tab automatically - no engine edit. */
+function categoryOf(lv){
+  if(isVocabLevel(lv)) return "vocab";
+  if(lv.group === "grammar") return "grammar";
+  return "practice";
+}
+const CATEGORIES = [
+  { key:"vocab",    label:"Vocabulary", sub:"Choose the level" },
+  { key:"grammar",  label:"Grammar",    sub:"Choose a set" },
+  { key:"practice", label:"Practice",   sub:"Choose an activity" }
+];
+function levelsInCategory(cat){ return LEVELS.map((lv,i)=>({lv,i})).filter(x=>categoryOf(x.lv)===cat); }
+
+/* renderLevels now renders the whole home nav: the category tab bar, the active
+   category's sub-filter (level pills or mode tiles), and the dynamic topics header.
+   Exactly one level is active (S.levelIdx); its category is derived, not stored, so
+   the page is fully stateless - it opens on Vocabulary -> A1 every time. */
 function renderLevels(){
-  const segBox = $("levels"), modeBox = $("modes");
-  segBox.innerHTML = ""; modeBox.innerHTML = "";
   const searching = !!S.query.trim();
-  segBox.classList.toggle("searching", searching);
-  modeBox.classList.toggle("searching", searching);
-  LEVELS.forEach((lv,i)=>{
-    const active = i===S.levelIdx ? "true":"false";
-    const pick = ()=>{ S.levelIdx = i; clearSearch(); renderLevels(); renderTopics(); };
-    if(isVocabLevel(lv)){
-      const b = document.createElement("button");
-      b.className = "seg-btn"; b.textContent = lv.level;
-      b.setAttribute("aria-pressed", active);
-      b.onclick = pick;
-      segBox.appendChild(b);
-    } else {
-      const b = document.createElement("button");
-      b.className = "mode-tile";
-      b.setAttribute("aria-pressed", active);
-      b.innerHTML = '<span class="mode-ic">'+modeIcon(lv)+'</span><span class="mode-label">'+modeLabel(lv)+'</span>';
-      b.onclick = pick;
-      modeBox.appendChild(b);
-    }
+  const activeCat = categoryOf(LEVELS[S.levelIdx]);
+
+  /* top-level category tabs */
+  const catSeg = $("catSeg"); catSeg.innerHTML = "";
+  CATEGORIES.forEach(c=>{
+    const b = document.createElement("button");
+    b.className = "cat-btn"; b.type = "button"; b.textContent = c.label;
+    b.setAttribute("role","tab");
+    b.setAttribute("aria-selected", (!searching && c.key===activeCat) ? "true":"false");
+    b.onclick = ()=>{
+      const first = levelsInCategory(c.key)[0];
+      if(first){ S.levelIdx = first.i; clearSearch(); renderLevels(); renderTopics(); }
+    };
+    catSeg.appendChild(b);
   });
+  catSeg.classList.toggle("searching", searching);
+
+  /* sub-filter for the active category only */
+  const sub = $("subFilter"); sub.innerHTML = "";
+  const catDef = CATEGORIES.find(c=>c.key===activeCat);
+  const label = document.createElement("div");
+  label.className = "seg-label"; label.textContent = catDef.sub;
+  sub.appendChild(label);
+  const wrap = document.createElement("div");
+  wrap.className = "seg-levels";
+  wrap.classList.toggle("searching", searching);
+  levelsInCategory(activeCat).forEach(({lv,i})=>{
+    const b = document.createElement("button");
+    b.className = "seg-btn"; b.type = "button";
+    b.textContent = modeLabel(lv);
+    b.setAttribute("aria-pressed", i===S.levelIdx ? "true":"false");
+    b.onclick = ()=>{ S.levelIdx = i; clearSearch(); renderLevels(); renderTopics(); };
+    wrap.appendChild(b);
+  });
+  sub.appendChild(wrap);
+
+  renderTopicsHead(searching);
+}
+
+/* dynamic header above the topics list: names the active level so tapping a
+   filter has a visible result. Hidden while searching (results span all levels). */
+function renderTopicsHead(searching){
+  const head = $("topicsHead"); if(!head) return;
+  if(searching){ head.setAttribute("hidden",""); return; }
+  head.removeAttribute("hidden");
+  const lv = LEVELS[S.levelIdx];
+  const n = lv.topics.length;
+  head.innerHTML =
+    '<div class="th-main"><b></b><span class="th-blurb"></span></div>'+
+    '<span class="th-count"></span>';
+  head.querySelector("b").textContent = modeLabel(lv);
+  head.querySelector(".th-blurb").textContent = lv.blurb ? (" \u00b7 "+lv.blurb) : "";
+  head.querySelector(".th-count").textContent = n + (n===1 ? " topic" : " topics");
 }
 
 /* ---------------- topic search ---------------- */
@@ -1105,6 +1174,10 @@ function clearSearch(){
 /* ---------------- topic icons (Lucide-style stroke SVGs) ---------------- */
 const ICON_SVG = p => '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg>';
 const ICONS = {
+  "\u23EA":'<polygon points="11 19 2 12 11 5 11 19"/><polygon points="22 19 13 12 22 5 22 19"/>',
+  "\u23E9":'<polygon points="13 19 22 12 13 5 13 19"/><polygon points="2 19 11 12 2 5 2 19"/>',
+  "\uD83D\uDCAD":'<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/>',
+  "\uD83D\uDEB6":'<path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"/><path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"/><path d="M16 17h4"/><path d="M4 13h4"/>',
   "\uD83E\uDD89":'<path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1 2 2 0 0 0 2 2 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/><path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1 2 2 0 0 0 2 2 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/>',
   "\uD83E\uDD2F":'<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>',
   "\uD83C\uDFE2":'<path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/>',
@@ -1561,7 +1634,7 @@ function gRenderTeach(){
   if(t.answer)   b+='<div class="b-answer">'+t.answer+'</div>';
   if(t.sub)      b+='<div class="b-sub">'+t.sub+'</div>';
   if(t.points)   b+='<ul class="rule-list">'+t.points.map(p=>'<li>'+p+'</li>').join('')+'</ul>';
-  if(t.table)    b+='<div class="end-table">'+t.table.map(r=>'<div class="end-row"><span class="g">'+r.g+'</span><span class="e">'+r.e+'</span><span class="ex">'+r.ex+'</span></div>').join('')+'</div>';
+  if(t.table)    b+='<table class="end-table"><tbody>'+t.table.map(r=>'<tr><td class="g">'+r.g+'</td><td class="e">'+r.e+'</td><td class="ex">'+r.ex+'</td></tr>').join('')+'</tbody></table>';
   if(t.explain)  b+='<div class="b-explain">'+t.explain+'</div>';
   if(t.note)     b+='<div class="b-note">'+t.note+'</div>';
   if(t.examples) b+=t.examples.map(gExampleHTML).join('');

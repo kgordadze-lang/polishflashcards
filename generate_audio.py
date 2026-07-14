@@ -1,0 +1,115 @@
+#!/usr/bin/env python3
+"""
+Po polsku - pre-generate native pronunciation audio (Marek Neural) and update the manifest.
+
+How it works:
+  - Scans every data-*.js file for the strings the app actually plays: each card's `pl`
+    (the word/phrase), `ex` (the example sentence), `full` (the drill feedback sentence),
+    and `npc` (the conversation partner's line).
+  - Normalizes each string EXACTLY like ppNormalize() in index.html (strip HTML tags,
+    collapse whitespace, trim) so the app's runtime lookup matches.
+  - Names each clip  audio/<first-12-hex-of-sha256(normalized)>.mp3  - the same scheme
+    your existing clips use, so nothing gets duplicated.
+  - Incremental: only missing clips are synthesized. Existing ones are left untouched.
+  - Writes/updates audio-manifest.json (map of normalized pl -> file).
+
+Run it from the project root (where index.html and the data-*.js files live):
+
+    pip install edge-tts
+    python3 generate_audio.py
+
+Then re-upload the new files in  audio/  plus the updated  audio-manifest.json.
+Bump CACHE in sw.js (e.g. v15 -> v16) so returning users pick everything up cleanly.
+"""
+
+import asyncio
+import datetime
+import glob
+import hashlib
+import json
+import os
+import re
+
+import edge_tts
+
+VOICE = "pl-PL-MarekNeural"   # Marek
+AUDIO_DIR = "audio"
+MANIFEST = "audio-manifest.json"
+DATA_GLOB = "data-*.js"
+
+# Every pl / ex / full / npc string literal, escape-aware. These are the four
+# fields the app actually speaks: pl (word/front), ex (card example),
+# full (drill feedback sentence), npc (conversation partner's line).
+STR_RE = re.compile(r'\b(?:pl|ex|full|npc)\s*:\s*"((?:[^"\\]|\\.)*)"')
+
+
+def normalize(text: str) -> str:
+    """MUST match ppNormalize() in index.html - same operations, same order."""
+    text = re.sub(r"<[^>]+>", "", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    return text
+
+
+def phrase_hash(normalized: str) -> str:
+    return hashlib.sha256(normalized.encode("utf-8")).hexdigest()[:12]
+
+
+def collect_phrases() -> list:
+    """Ordered, de-duplicated list of every normalized pl/ex phrase in the data files."""
+    seen = {}
+    for path in sorted(glob.glob(DATA_GLOB)):
+        with open(path, encoding="utf-8") as fh:
+            src = fh.read()
+        for m in STR_RE.finditer(src):
+            raw = json.loads('"' + m.group(1) + '"')   # JSON-unescape the literal
+            n = normalize(raw)
+            if n:
+                seen.setdefault(n, True)
+    return list(seen.keys())
+
+
+async def synth(text: str, out_path: str):
+    await edge_tts.Communicate(text, VOICE).save(out_path)
+
+
+async def main():
+    os.makedirs(AUDIO_DIR, exist_ok=True)
+
+    manifest = {"voice": VOICE, "generatedAt": None, "audioDir": AUDIO_DIR, "entries": {}}
+    if os.path.exists(MANIFEST):
+        try:
+            with open(MANIFEST, encoding="utf-8") as fh:
+                manifest = json.load(fh)
+        except Exception:
+            pass
+    entries = manifest.setdefault("entries", {})
+
+    phrases = collect_phrases()
+    made = failed = 0
+    for n in phrases:
+        h = phrase_hash(n)
+        rel = f"{AUDIO_DIR}/{h}.mp3"
+        entries[h] = {"pl": n, "file": rel}          # keep the manifest in sync
+        if os.path.exists(rel):                       # incremental - skip existing clips
+            continue
+        try:
+            await synth(n, rel)
+            made += 1
+            print(f"  + {h}  {n[:52]}")
+        except Exception as e:
+            failed += 1
+            print(f"  ! failed: {n[:52]}  ({e})")
+        await asyncio.sleep(0.15)                      # be gentle on the TTS endpoint
+
+    manifest["voice"] = VOICE
+    manifest["audioDir"] = AUDIO_DIR
+    manifest["generatedAt"] = datetime.datetime.utcnow().isoformat() + "Z"
+    with open(MANIFEST, "w", encoding="utf-8") as fh:
+        json.dump(manifest, fh, ensure_ascii=False, indent=0)
+
+    print(f"\nDone. {made} new clip(s), {failed} failed. "
+          f"Manifest now has {len(entries)} entries.")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())

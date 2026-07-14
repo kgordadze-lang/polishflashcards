@@ -1,6 +1,6 @@
 {
 "voice": "pl-PL-MarekNeural",
-"generatedAt": "2026-07-12T14:03:48.055517Z",
+"generatedAt": "2026-07-14T08:10:31.487514Z",
 "audioDir": "audio",
 "entries": {
 "000311d1288f": {
@@ -9422,6 +9422,666 @@
 "6a2f5d0ee515": {
 "pl": "dziecko → dziecko!",
 "file": "audio/6a2f5d0ee515.mp3"
+},
+"898fc4e77c3d": {
+"pl": "Co robisz?",
+"file": "audio/898fc4e77c3d.mp3"
+},
+"684656bdd40b": {
+"pl": "Jestem z Gruzji.",
+"file": "audio/684656bdd40b.mp3"
+},
+"95153b5b4682": {
+"pl": "Jesteś gotowy?",
+"file": "audio/95153b5b4682.mp3"
+},
+"192aeb60b611": {
+"pl": "Jesteśmy w domu.",
+"file": "audio/192aeb60b611.mp3"
+},
+"b142f4dc6065": {
+"pl": "Jesteście razem?",
+"file": "audio/b142f4dc6065.mp3"
+},
+"4816b9e280cf": {
+"pl": "Oni są z Polski.",
+"file": "audio/4816b9e280cf.mp3"
+},
+"2b106d88bcc3": {
+"pl": "Jestem głodny.",
+"file": "audio/2b106d88bcc3.mp3"
+},
+"4d5220feaad2": {
+"pl": "Mieszkam tutaj.",
+"file": "audio/4d5220feaad2.mp3"
+},
+"3c9885a8d91c": {
+"pl": "Gdzie mieszkasz?",
+"file": "audio/3c9885a8d91c.mp3"
+},
+"545964dd153c": {
+"pl": "On mieszka sam.",
+"file": "audio/545964dd153c.mp3"
+},
+"40f43133bccf": {
+"pl": "Mieszkamy w centrum.",
+"file": "audio/40f43133bccf.mp3"
+},
+"ea5c860bf2f7": {
+"pl": "Mieszkacie blisko?",
+"file": "audio/ea5c860bf2f7.mp3"
+},
+"6d6af945eb64": {
+"pl": "Oni mieszkają razem.",
+"file": "audio/6d6af945eb64.mp3"
+},
+"01424b620d80": {
+"pl": "Czytam książkę.",
+"file": "audio/01424b620d80.mp3"
+},
+"bcb4f8f067b8": {
+"pl": "Co robię źle?",
+"file": "audio/bcb4f8f067b8.mp3"
+},
+"2afc45d9f66d": {
+"pl": "Ona robi kawę.",
+"file": "audio/2afc45d9f66d.mp3"
+},
+"7ae8c6262a71": {
+"pl": "Robimy projekt.",
+"file": "audio/7ae8c6262a71.mp3"
+},
+"739ef9636c14": {
+"pl": "Co robicie?",
+"file": "audio/739ef9636c14.mp3"
+},
+"3e6dace795c9": {
+"pl": "Oni robią hałas.",
+"file": "audio/3e6dace795c9.mp3"
+},
+"9c80db9b7aea": {
+"pl": "Piszę wiadomość.",
+"file": "audio/9c80db9b7aea.mp3"
+},
+"b71033163755": {
+"pl": "Do kogo piszesz?",
+"file": "audio/b71033163755.mp3"
+},
+"53641ce8bff8": {
+"pl": "On pisze list.",
+"file": "audio/53641ce8bff8.mp3"
+},
+"0f7f94a78da9": {
+"pl": "Piszemy test.",
+"file": "audio/0f7f94a78da9.mp3"
+},
+"896d2493c7da": {
+"pl": "Piszecie po polsku?",
+"file": "audio/896d2493c7da.mp3"
+},
+"fa8d6a75f12e": {
+"pl": "Oni piszą książkę.",
+"file": "audio/fa8d6a75f12e.mp3"
+},
+"c65ea7ae1354": {
+"pl": "Piszę e-mail do szefa.",
+"file": "audio/c65ea7ae1354.mp3"
+},
+"cd09132aec65": {
+"pl": "Jem śniadanie.",
+"file": "audio/cd09132aec65.mp3"
+},
+"4ed204c9925f": {
+"pl": "Co jesz?",
+"file": "audio/4ed204c9925f.mp3"
+},
+"858214e39616": {
+"pl": "On je zupę.",
+"file": "audio/858214e39616.mp3"
+},
+"ce2b9eb48397": {
+"pl": "Jemy razem.",
+"file": "audio/ce2b9eb48397.mp3"
+},
+"cf5ebe4292c5": {
+"pl": "Co jecie?",
+"file": "audio/cf5ebe4292c5.mp3"
+},
+"3a1d19de1c22": {
+"pl": "Oni jedzą obiad.",
+"file": "audio/3a1d19de1c22.mp3"
+},
+"587f4a654122": {
+"pl": "Jak się nazywasz?",
+"file": "audio/587f4a654122.mp3"
+},
+"4f08f9d48acf": {
+"pl": "Uczę się polskiego.",
+"file": "audio/4f08f9d48acf.mp3"
+},
+"ab336e2aa4d7": {
+"pl": "Nazywam się Kai.",
+"file": "audio/ab336e2aa4d7.mp3"
+},
+"efe57493f562": {
+"pl": "Ona nazywa się Ada.",
+"file": "audio/efe57493f562.mp3"
+},
+"685d6cc30229": {
+"pl": "Nazywamy się Kowalscy.",
+"file": "audio/685d6cc30229.mp3"
+},
+"178e31736386": {
+"pl": "Jak się nazywacie?",
+"file": "audio/178e31736386.mp3"
+},
+"d88dc58cee2b": {
+"pl": "Oni nazywają się Nowak.",
+"file": "audio/d88dc58cee2b.mp3"
+},
+"0695651d6564": {
+"pl": "Nazywam się Anna.",
+"file": "audio/0695651d6564.mp3"
+},
+"53ba26faf845": {
+"pl": "Jak się czujesz?",
+"file": "audio/53ba26faf845.mp3"
+},
+"46f993e9ad86": {
+"pl": "Czuję się dobrze.",
+"file": "audio/46f993e9ad86.mp3"
+},
+"f5079bfd014a": {
+"pl": "Czuję się zmęczony.",
+"file": "audio/f5079bfd014a.mp3"
+},
+"6d8f48c8cd31": {
+"pl": "Spotykamy się o piątej.",
+"file": "audio/6d8f48c8cd31.mp3"
+},
+"acd0717c7516": {
+"pl": "Cieszę się!",
+"file": "audio/acd0717c7516.mp3"
+},
+"706022706b8c": {
+"pl": "Spieszę się.",
+"file": "audio/706022706b8c.mp3"
+},
+"6f0a58e52532": {
+"pl": "Codziennie robię zakupy.",
+"file": "audio/6f0a58e52532.mp3"
+},
+"81a426a3dd9c": {
+"pl": "Właśnie zrobiłem zakupy.",
+"file": "audio/81a426a3dd9c.mp3"
+},
+"852e05784e1d": {
+"pl": "Zrobię to jutro.",
+"file": "audio/852e05784e1d.mp3"
+},
+"cb0ddeccbf13": {
+"pl": "Napisałem list.",
+"file": "audio/cb0ddeccbf13.mp3"
+},
+"edff950f8083": {
+"pl": "Przeczytam to.",
+"file": "audio/edff950f8083.mp3"
+},
+"98403a7655cc": {
+"pl": "Zjadłem obiad.",
+"file": "audio/98403a7655cc.mp3"
+},
+"0e2c43e062ea": {
+"pl": "Kupiłem chleb.",
+"file": "audio/0e2c43e062ea.mp3"
+},
+"d9965bd3e2e1": {
+"pl": "Powiedz mi.",
+"file": "audio/d9965bd3e2e1.mp3"
+},
+"8f883e88f1ab": {
+"pl": "Zwykle piszę rano.",
+"file": "audio/8f883e88f1ab.mp3"
+},
+"ebc62a98026f": {
+"pl": "Już napisałem raport.",
+"file": "audio/ebc62a98026f.mp3"
+},
+"59f74799facf": {
+"pl": "Teraz robię zadanie.",
+"file": "audio/59f74799facf.mp3"
+},
+"c6708384bcee": {
+"pl": "Jutro zrobię zadanie.",
+"file": "audio/c6708384bcee.mp3"
+},
+"413dd2872c4c": {
+"pl": "Wczoraj byłam w kinie.",
+"file": "audio/413dd2872c4c.mp3"
+},
+"0b6999295ba9": {
+"pl": "Byłem w domu.",
+"file": "audio/0b6999295ba9.mp3"
+},
+"23c771c85053": {
+"pl": "Gdzie byłeś?",
+"file": "audio/23c771c85053.mp3"
+},
+"75f77f4b177a": {
+"pl": "Ona była chora.",
+"file": "audio/75f77f4b177a.mp3"
+},
+"042e2856fb8b": {
+"pl": "Byliśmy razem.",
+"file": "audio/042e2856fb8b.mp3"
+},
+"f32ae7784cf5": {
+"pl": "Byliście tam?",
+"file": "audio/f32ae7784cf5.mp3"
+},
+"c2c70cf55f4d": {
+"pl": "Oni byli w pracy.",
+"file": "audio/c2c70cf55f4d.mp3"
+},
+"5c0248e482b0": {
+"pl": "Robiłem obiad.",
+"file": "audio/5c0248e482b0.mp3"
+},
+"f703a5d2b779": {
+"pl": "Co robiłeś?",
+"file": "audio/f703a5d2b779.mp3"
+},
+"5d5df3bc55f9": {
+"pl": "Ona robiła kawę.",
+"file": "audio/5d5df3bc55f9.mp3"
+},
+"52fc8e63b4bf": {
+"pl": "Robiliśmy projekt.",
+"file": "audio/52fc8e63b4bf.mp3"
+},
+"c6d5295979e3": {
+"pl": "Co robiliście?",
+"file": "audio/c6d5295979e3.mp3"
+},
+"d08711b58d64": {
+"pl": "Oni robili hałas.",
+"file": "audio/d08711b58d64.mp3"
+},
+"3ad43ecac3ba": {
+"pl": "Czytałem tę książkę.",
+"file": "audio/3ad43ecac3ba.mp3"
+},
+"602e1a575540": {
+"pl": "Przeczytałem tę książkę.",
+"file": "audio/602e1a575540.mp3"
+},
+"27500220d730": {
+"pl": "Szedłem do domu.",
+"file": "audio/27500220d730.mp3"
+},
+"67d8146bc70e": {
+"pl": "Miałem czas.",
+"file": "audio/67d8146bc70e.mp3"
+},
+"98df8c41f0cf": {
+"pl": "Jadłem obiad.",
+"file": "audio/98df8c41f0cf.mp3"
+},
+"490cea590efa": {
+"pl": "Będę w domu.",
+"file": "audio/490cea590efa.mp3"
+},
+"e8599c68f9fb": {
+"pl": "Będziesz tam?",
+"file": "audio/e8599c68f9fb.mp3"
+},
+"f1ffa2356d15": {
+"pl": "Ona będzie później.",
+"file": "audio/f1ffa2356d15.mp3"
+},
+"38a8cea59751": {
+"pl": "Będziemy razem.",
+"file": "audio/38a8cea59751.mp3"
+},
+"c5ef5b292e79": {
+"pl": "Będziecie gotowi?",
+"file": "audio/c5ef5b292e79.mp3"
+},
+"a40b08a84c5d": {
+"pl": "Oni będą jutro.",
+"file": "audio/a40b08a84c5d.mp3"
+},
+"0c0bcb21d666": {
+"pl": "Jutro będę w pracy.",
+"file": "audio/0c0bcb21d666.mp3"
+},
+"4073f69c0b74": {
+"pl": "Jutro będę pracować.",
+"file": "audio/4073f69c0b74.mp3"
+},
+"242efb61b2f0": {
+"pl": "Będę się uczyć polskiego.",
+"file": "audio/242efb61b2f0.mp3"
+},
+"c0db7d1b8474": {
+"pl": "Jutro zrobię to zadanie.",
+"file": "audio/c0db7d1b8474.mp3"
+},
+"3416c939cc52": {
+"pl": "Napiszę do ciebie wieczorem.",
+"file": "audio/3416c939cc52.mp3"
+},
+"6bd2e7b16ca2": {
+"pl": "Będę czytać wieczorem.",
+"file": "audio/6bd2e7b16ca2.mp3"
+},
+"162a42eb08a8": {
+"pl": "Przeczytam to dziś.",
+"file": "audio/162a42eb08a8.mp3"
+},
+"ae47ec4fc598": {
+"pl": "Muszę już iść.",
+"file": "audio/ae47ec4fc598.mp3"
+},
+"c4f952203355": {
+"pl": "Chcę odpocząć.",
+"file": "audio/c4f952203355.mp3"
+},
+"ed85d77d64ff": {
+"pl": "Mogę ci pomóc.",
+"file": "audio/ed85d77d64ff.mp3"
+},
+"79dea765d05b": {
+"pl": "Możesz mi pomóc?",
+"file": "audio/79dea765d05b.mp3"
+},
+"19a8abef08c5": {
+"pl": "On może przyjść.",
+"file": "audio/19a8abef08c5.mp3"
+},
+"7e98d0f4466a": {
+"pl": "Możemy iść.",
+"file": "audio/7e98d0f4466a.mp3"
+},
+"690ce086edef": {
+"pl": "Możecie poczekać?",
+"file": "audio/690ce086edef.mp3"
+},
+"ec7dd984076f": {
+"pl": "Oni mogą zostać.",
+"file": "audio/ec7dd984076f.mp3"
+},
+"1818ed669765": {
+"pl": "Muszę iść. Chcę spać.",
+"file": "audio/1818ed669765.mp3"
+},
+"2fa670154e3d": {
+"pl": "Musisz odpocząć.",
+"file": "audio/2fa670154e3d.mp3"
+},
+"53680b76d2f1": {
+"pl": "Ona chce kawę.",
+"file": "audio/53680b76d2f1.mp3"
+},
+"f2250b0b5801": {
+"pl": "Musimy się spieszyć.",
+"file": "audio/f2250b0b5801.mp3"
+},
+"6158da6034a0": {
+"pl": "Chcecie zostać?",
+"file": "audio/6158da6034a0.mp3"
+},
+"8a86f1cf5664": {
+"pl": "Oni chcą pomóc.",
+"file": "audio/8a86f1cf5664.mp3"
+},
+"8cebeab07830": {
+"pl": "Powinieneś odpocząć.",
+"file": "audio/8cebeab07830.mp3"
+},
+"eec44e844797": {
+"pl": "Trzeba kupić bilet.",
+"file": "audio/eec44e844797.mp3"
+},
+"626ebdc25d59": {
+"pl": "Chodź tutaj!",
+"file": "audio/626ebdc25d59.mp3"
+},
+"1baca28c5630": {
+"pl": "Poczekaj chwilę.",
+"file": "audio/1baca28c5630.mp3"
+},
+"f05b94ff48be": {
+"pl": "Rób to powoli.",
+"file": "audio/f05b94ff48be.mp3"
+},
+"c94170008e0d": {
+"pl": "Pisz wyraźnie.",
+"file": "audio/c94170008e0d.mp3"
+},
+"bf10c81b3508": {
+"pl": "Idź prosto.",
+"file": "audio/bf10c81b3508.mp3"
+},
+"cfc6c8dbf99a": {
+"pl": "Czekaj tutaj.",
+"file": "audio/cfc6c8dbf99a.mp3"
+},
+"906c3dce09a0": {
+"pl": "Bądź cierpliwy.",
+"file": "audio/906c3dce09a0.mp3"
+},
+"3106e9efd10a": {
+"pl": "Zrób to teraz.",
+"file": "audio/3106e9efd10a.mp3"
+},
+"29370da22b97": {
+"pl": "Zróbmy przerwę.",
+"file": "audio/29370da22b97.mp3"
+},
+"a2fe737d0a44": {
+"pl": "Zróbcie to razem.",
+"file": "audio/a2fe737d0a44.mp3"
+},
+"d90eaeaf7c7a": {
+"pl": "Chodźmy do domu.",
+"file": "audio/d90eaeaf7c7a.mp3"
+},
+"2de443f40347": {
+"pl": "Nie martw się.",
+"file": "audio/2de443f40347.mp3"
+},
+"c485929cc98d": {
+"pl": "Zadzwoń do mnie.",
+"file": "audio/c485929cc98d.mp3"
+},
+"f259b43e06a4": {
+"pl": "Proszę wejść.",
+"file": "audio/f259b43e06a4.mp3"
+},
+"a1b8dfd2f642": {
+"pl": "Idę do sklepu.",
+"file": "audio/a1b8dfd2f642.mp3"
+},
+"d660707918ce": {
+"pl": "Codziennie chodzę do pracy.",
+"file": "audio/d660707918ce.mp3"
+},
+"ec04e9fb40ca": {
+"pl": "Idę do domu.",
+"file": "audio/ec04e9fb40ca.mp3"
+},
+"8cdf909af697": {
+"pl": "Gdzie idziesz?",
+"file": "audio/8cdf909af697.mp3"
+},
+"99eb12596ae6": {
+"pl": "Ona idzie do pracy.",
+"file": "audio/99eb12596ae6.mp3"
+},
+"3cf4a3a9a3c0": {
+"pl": "Idziemy na kawę.",
+"file": "audio/3cf4a3a9a3c0.mp3"
+},
+"1e940eefa5aa": {
+"pl": "Idziecie z nami?",
+"file": "audio/1e940eefa5aa.mp3"
+},
+"23c53adc16dd": {
+"pl": "Oni idą do parku.",
+"file": "audio/23c53adc16dd.mp3"
+},
+"6ededea3351f": {
+"pl": "Jadę do Krakowa.",
+"file": "audio/6ededea3351f.mp3"
+},
+"1e60c290b5e9": {
+"pl": "Czym jedziesz?",
+"file": "audio/1e60c290b5e9.mp3"
+},
+"c155739c558c": {
+"pl": "On jedzie autobusem.",
+"file": "audio/c155739c558c.mp3"
+},
+"af614df3d63d": {
+"pl": "Jedziemy nad morze.",
+"file": "audio/af614df3d63d.mp3"
+},
+"ce4b23899abb": {
+"pl": "Dokąd jedziecie?",
+"file": "audio/ce4b23899abb.mp3"
+},
+"667b15f52865": {
+"pl": "Oni jadą pociągiem.",
+"file": "audio/667b15f52865.mp3"
+},
+"3cfbf3e53bc4": {
+"pl": "Chodzę na siłownię.",
+"file": "audio/3cfbf3e53bc4.mp3"
+},
+"54f55eb0812c": {
+"pl": "Jeżdżę do pracy tramwajem.",
+"file": "audio/54f55eb0812c.mp3"
+},
+"f74621f58fa8": {
+"pl": "Często jeżdżę do Krakowa.",
+"file": "audio/f74621f58fa8.mp3"
+},
+"5770e16ea78d": {
+"pl": "Dzieci chodzą do szkoły.",
+"file": "audio/5770e16ea78d.mp3"
+},
+"47432e87f6cf": {
+"pl": "Muszę już pójść.",
+"file": "audio/47432e87f6cf.mp3"
+},
+"dd67fed3ee17": {
+"pl": "Przyjdę o piątej.",
+"file": "audio/dd67fed3ee17.mp3"
+},
+"115b8436bdc0": {
+"pl": "Wyszedłem z domu.",
+"file": "audio/115b8436bdc0.mp3"
+},
+"e890a216f5ba": {
+"pl": "Wejdź, proszę.",
+"file": "audio/e890a216f5ba.mp3"
+},
+"d3800d2e0ec8": {
+"pl": "Mówię po polsku.",
+"file": "audio/d3800d2e0ec8.mp3"
+},
+"5d96d72e0371": {
+"pl": "Oni mieszkają w centrum.",
+"file": "audio/5d96d72e0371.mp3"
+},
+"a749ae242ba0": {
+"pl": "Mieszkamy w Warszawie.",
+"file": "audio/a749ae242ba0.mp3"
+},
+"341361a4d9b0": {
+"pl": "Codziennie robię kawę rano.",
+"file": "audio/341361a4d9b0.mp3"
+},
+"65da35853e18": {
+"pl": "Wreszcie napisałem ten raport.",
+"file": "audio/65da35853e18.mp3"
+},
+"fc33fc86a14e": {
+"pl": "Jutro zrobię zakupy.",
+"file": "audio/fc33fc86a14e.mp3"
+},
+"b465ec2e218e": {
+"pl": "Zwykle czytam książki wieczorem.",
+"file": "audio/b465ec2e218e.mp3"
+},
+"1bc4bfedfe0a": {
+"pl": "Właśnie zjadłem obiad.",
+"file": "audio/1bc4bfedfe0a.mp3"
+},
+"f2ad30e8f355": {
+"pl": "Teraz piszę e-mail.",
+"file": "audio/f2ad30e8f355.mp3"
+},
+"45217e09e639": {
+"pl": "Wczoraj byłem w pracy.",
+"file": "audio/45217e09e639.mp3"
+},
+"aa830e73dc0c": {
+"pl": "Wczoraj byłam w pracy.",
+"file": "audio/aa830e73dc0c.mp3"
+},
+"604e0d68924e": {
+"pl": "Przeczytałem całą książkę.",
+"file": "audio/604e0d68924e.mp3"
+},
+"df4a4f6783a0": {
+"pl": "Oni byli w kinie.",
+"file": "audio/df4a4f6783a0.mp3"
+},
+"0b20e9bd09db": {
+"pl": "Wczoraj szedłem do domu pieszo.",
+"file": "audio/0b20e9bd09db.mp3"
+},
+"7a896884973d": {
+"pl": "Jutro będę w domu.",
+"file": "audio/7a896884973d.mp3"
+},
+"984b40cb5176": {
+"pl": "Wieczorem będę pracować.",
+"file": "audio/984b40cb5176.mp3"
+},
+"ea8cbe827a73": {
+"pl": "Cały weekend będę się uczyć.",
+"file": "audio/ea8cbe827a73.mp3"
+},
+"b930fa60e173": {
+"pl": "Będziemy jutro gotowi.",
+"file": "audio/b930fa60e173.mp3"
+},
+"bc6fdc65f3e7": {
+"pl": "Mogę ci pomóc?",
+"file": "audio/bc6fdc65f3e7.mp3"
+},
+"efe5f526cfd2": {
+"pl": "Ona chce odpocząć.",
+"file": "audio/efe5f526cfd2.mp3"
+},
+"e649b8a2a725": {
+"pl": "Proszę usiąść.",
+"file": "audio/e649b8a2a725.mp3"
+},
+"d6d2f49f39d6": {
+"pl": "Zadzwoń do mnie wieczorem.",
+"file": "audio/d6d2f49f39d6.mp3"
+},
+"829295997e86": {
+"pl": "Jutro jadę do Krakowa pociągiem.",
+"file": "audio/829295997e86.mp3"
+},
+"1b73edcc7e1e": {
+"pl": "Często jeżdżę do rodziny na weekend.",
+"file": "audio/1b73edcc7e1e.mp3"
 }
 }
 }
