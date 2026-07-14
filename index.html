@@ -540,6 +540,8 @@
   .you-note{align-self:flex-end;max-width:86%;font-size:12px;color:var(--sage-hover);font-weight:600;line-height:1.45;padding:0 4px;margin-top:-6px}
   .you-note::before{content:"\1F4A1";margin-right:5px}
   .reply{padding:12px 0 22px;display:flex;flex-direction:column;gap:10px}
+  .reply-tip{font-size:12.5px;color:var(--forest);background:var(--mint-bg);border-radius:13px;padding:10px 13px;margin-bottom:14px;line-height:1.5;font-weight:600}
+  .reply-tip b{color:var(--emerald)}
   .reply-label{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:#94a3b8;padding-left:2px}
   .reply-opt{border:1.5px solid var(--border);background:#fff;border-radius:14px;padding:13px 15px;cursor:pointer;text-align:left;transition:.14s;font-family:inherit;display:flex;flex-direction:column;gap:2px}
   .reply-opt:hover:not(:disabled){border-color:var(--emerald);transform:translateY(-1px)}
@@ -556,6 +558,11 @@
   .cdone-badge svg{width:28px;height:28px}
   .cdone-t{font-size:21px;font-weight:800;letter-spacing:-.4px;color:var(--forest)}
   .cdone-s{font-size:14px;color:var(--muted);line-height:1.5;margin:7px 0 18px;max-width:340px}
+  .cdone-recap{text-align:left;width:100%;max-width:340px;background:var(--mint-bg);border-radius:14px;padding:14px 16px;margin:0 0 18px}
+  .cdone-recap-h{font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--emerald);margin-bottom:9px}
+  .cdone-recap ul{margin:0;padding-left:17px;display:flex;flex-direction:column;gap:7px}
+  .cdone-recap li{font-size:13px;color:var(--forest);line-height:1.4}
+  .cdone-recap li b{color:var(--emerald)}
   .cdone-actions{display:flex;flex-direction:column;gap:11px;width:100%;max-width:320px}
 
   /* podcast intro card */
@@ -954,8 +961,7 @@
       <button class="foot-btn" id="openPrivacy">Privacy</button>
       <button class="foot-btn" id="openInstall">Install</button>
     </div>
-    <div class="foot-note">We do not collect your data in any form.</div>
-    <div class="foot-version">v7.14</div>
+    <div class="foot-version">v7.14-2</div>
   </footer>
 
   <div class="modal-overlay" id="matureGate" hidden>
@@ -1827,7 +1833,9 @@ function cRenderNode(){
 }
 function cRenderOptions(options){
   const box=$("cReply");
-  let h='<div class="reply-label">Your reply</div>';
+  const node=C.topic.scenes[C.node];
+  let h = node && node.tip ? '<div class="reply-tip">'+node.tip+'</div>' : '';
+  h+='<div class="reply-label">Your reply</div>';
   options.forEach((o,i)=>{
     h+='<button class="reply-opt" data-i="'+i+'"><span class="ro-pl">'+o.pl+'</span><span class="ro-en">'+o.en+'</span></button>';
   });
@@ -1849,6 +1857,9 @@ function cShowDone(){
     '<div class="cdone-badge">'+C_CHECK+'</div>'+
     '<div class="cdone-t">Rozmowa sko\u0144czona!</div>'+
     '<div class="cdone-s">You made it through \u201C'+C.topic.name+'\u201D in Polish. Replay it to lock the phrases in, or head back for another.</div>'+
+    ((C.topic.recap && C.topic.recap.length) ?
+      '<div class="cdone-recap"><div class="cdone-recap-h">Key phrases to remember</div><ul>'+
+      C.topic.recap.map(r=>'<li>'+r+'</li>').join('')+'</ul></div>' : '')+
     '<div class="cdone-actions">'+
       '<button class="btn-primary" id="cAgain">Try again</button>'+
       '<button class="btn-ghost" id="cHome">Back to topics</button>'+

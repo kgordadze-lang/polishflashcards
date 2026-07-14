@@ -1,6 +1,6 @@
 {
 "voice": "pl-PL-MarekNeural",
-"generatedAt": "2026-07-14T08:10:31.487514Z",
+"generatedAt": "2026-07-14T19:54:59.299853Z",
 "audioDir": "audio",
 "entries": {
 "000311d1288f": {
@@ -10082,6 +10082,306 @@
 "1b73edcc7e1e": {
 "pl": "Często jeżdżę do rodziny na weekend.",
 "file": "audio/1b73edcc7e1e.mp3"
+},
+"e9e4e87d5857": {
+"pl": "Boli mnie głowa od rana.",
+"file": "audio/e9e4e87d5857.mp3"
+},
+"3bcca78da188": {
+"pl": "Mam katar i trochę kaszlu.",
+"file": "audio/3bcca78da188.mp3"
+},
+"9a3f3d20d818": {
+"pl": "Boli mnie gardło.",
+"file": "audio/9a3f3d20d818.mp3"
+},
+"9bb3c5c18387": {
+"pl": "Nie mogę spać od kilku dni.",
+"file": "audio/9bb3c5c18387.mp3"
+},
+"36dfd72961df": {
+"pl": "Rozumiem. Tabletki czy syrop?",
+"file": "audio/36dfd72961df.mp3"
+},
+"b1baa08fc224": {
+"pl": "Wolę syrop.",
+"file": "audio/b1baa08fc224.mp3"
+},
+"21ead05bacaf": {
+"pl": "Mam paracetamol i ibuprofen. Co pani woli?",
+"file": "audio/21ead05bacaf.mp3"
+},
+"9bf60f7d5d3b": {
+"pl": "Ibuprofen, jeśli można.",
+"file": "audio/9bf60f7d5d3b.mp3"
+},
+"367bd5b3147d": {
+"pl": "Wolę tabletki.",
+"file": "audio/367bd5b3147d.mp3"
+},
+"4d32e86b530f": {
+"pl": "Na gardło mam pastylki do ssania i syrop. Co pani woli?",
+"file": "audio/4d32e86b530f.mp3"
+},
+"e8809215e32d": {
+"pl": "Poproszę pastylki.",
+"file": "audio/e8809215e32d.mp3"
+},
+"6d19b39d0fb7": {
+"pl": "Czy to jest bez recepty?",
+"file": "audio/6d19b39d0fb7.mp3"
+},
+"794ef333b291": {
+"pl": "Na sen mogę polecić melatoninę. Jest bez recepty.",
+"file": "audio/794ef333b291.mp3"
+},
+"0d531222c317": {
+"pl": "Dobrze, poproszę.",
+"file": "audio/0d531222c317.mp3"
+},
+"919439be5ff9": {
+"pl": "Czy mogę ją brać codziennie?",
+"file": "audio/919439be5ff9.mp3"
+},
+"cfc03fcf92e3": {
+"pl": "Czy mogę to brać na czczo?",
+"file": "audio/cfc03fcf92e3.mp3"
+},
+"2cc8a850016f": {
+"pl": "Czy potrzebuję na to recepty?",
+"file": "audio/2cc8a850016f.mp3"
+},
+"e8ba08749b79": {
+"pl": "Nie, dziękuję. Ile płacę?",
+"file": "audio/e8ba08749b79.mp3"
+},
+"21806ead3ae3": {
+"pl": "A jak długo mam to brać?",
+"file": "audio/21806ead3ae3.mp3"
+},
+"a15ed8175173": {
+"pl": "Nie, to jest bez recepty.",
+"file": "audio/a15ed8175173.mp3"
+},
+"9053680c267c": {
+"pl": "Świetnie, to poproszę.",
+"file": "audio/9053680c267c.mp3"
+},
+"34140d06b4ab": {
+"pl": "Dziękuję za informację.",
+"file": "audio/34140d06b4ab.mp3"
+},
+"ca91ee5018cb": {
+"pl": "Płacę kartą.",
+"file": "audio/ca91ee5018cb.mp3"
+},
+"6068392fdda8": {
+"pl": "Mam katar i boli mnie głowa.",
+"file": "audio/6068392fdda8.mp3"
+},
+"0f5cb769982a": {
+"pl": "Boli mnie brzuch i mam mdłości.",
+"file": "audio/0f5cb769982a.mp3"
+},
+"fc76ed947537": {
+"pl": "Czuję się słabo i nie mam apetytu.",
+"file": "audio/fc76ed947537.mp3"
+},
+"e1f058126934": {
+"pl": "Chyba tak, jest mi gorąco.",
+"file": "audio/e1f058126934.mp3"
+},
+"6da1982ea34e": {
+"pl": "Zaczęło się wczoraj.",
+"file": "audio/6da1982ea34e.mp3"
+},
+"8a7a54e4184f": {
+"pl": "Rozumiem. Czy to zaczęło się nagle?",
+"file": "audio/8a7a54e4184f.mp3"
+},
+"300213887150": {
+"pl": "Tak, nagle. Chyba coś mi zaszkodziło.",
+"file": "audio/300213887150.mp3"
+},
+"cdf7b956553e": {
+"pl": "Nie, boli mnie już od kilku dni.",
+"file": "audio/cdf7b956553e.mp3"
+},
+"f45719d64bfd": {
+"pl": "Czy muszę brać antybiotyk?",
+"file": "audio/f45719d64bfd.mp3"
+},
+"d6fd623aa5d5": {
+"pl": "Czy mogę brać to z jedzeniem?",
+"file": "audio/d6fd623aa5d5.mp3"
+},
+"0b14bee82626": {
+"pl": "Poproszę herbatę i sernik.",
+"file": "audio/0b14bee82626.mp3"
+},
+"5f03925521d8": {
+"pl": "Czy mogę prosić o sok pomarańczowy?",
+"file": "audio/5f03925521d8.mp3"
+},
+"e186a7000cc3": {
+"pl": "Poproszę to samo co zwykle.",
+"file": "audio/e186a7000cc3.mp3"
+},
+"0613872eefc2": {
+"pl": "Przepraszam, gdzie jest najbliższa stacja metra?",
+"file": "audio/0613872eefc2.mp3"
+},
+"94e10b7d4a41": {
+"pl": "Jak najlepiej dojechać do centrum?",
+"file": "audio/94e10b7d4a41.mp3"
+},
+"b3ee938c2a75": {
+"pl": "Przepraszam, dojadę tym autobusem do centrum?",
+"file": "audio/b3ee938c2a75.mp3"
+},
+"a59908195f83": {
+"pl": "Przepraszam, czy mogę usiąść?",
+"file": "audio/a59908195f83.mp3"
+},
+"b57923ab6763": {
+"pl": "Gdzie mogę kupić bilet?",
+"file": "audio/b57923ab6763.mp3"
+},
+"d883736b6c70": {
+"pl": "Przepraszam, kiedy jest następny pociąg?",
+"file": "audio/d883736b6c70.mp3"
+},
+"c79db0e30942": {
+"pl": "Ile czasu zajmie dojście na dworzec?",
+"file": "audio/c79db0e30942.mp3"
+},
+"9aa330105edd": {
+"pl": "Czy mogę wziąć tę sztangę?",
+"file": "audio/9aa330105edd.mp3"
+},
+"fe8c72f7ec44": {
+"pl": "Jasne, możemy się zmieniać.",
+"file": "audio/fe8c72f7ec44.mp3"
+},
+"b291e2fbb205": {
+"pl": "Czy mogę wziąć te hantle?",
+"file": "audio/b291e2fbb205.mp3"
+},
+"0cadb8656001": {
+"pl": "Już kończę, zaraz będzie wolna.",
+"file": "audio/0cadb8656001.mp3"
+},
+"537c1f494713": {
+"pl": "Czy ta szafka jest wolna?",
+"file": "audio/537c1f494713.mp3"
+},
+"adbb36d5b240": {
+"pl": "Gdzie zostawia się kurtki?",
+"file": "audio/adbb36d5b240.mp3"
+},
+"c309a847a143": {
+"pl": "Jasne, chodźmy.",
+"file": "audio/c309a847a143.mp3"
+},
+"c69cd8182f90": {
+"pl": "Za chwilę, muszę coś dokończyć.",
+"file": "audio/c69cd8182f90.mp3"
+},
+"ad891da492a2": {
+"pl": "Nie mam jutro zajęć.",
+"file": "audio/ad891da492a2.mp3"
+},
+"1ae732b539a2": {
+"pl": "Tak, możesz mi pomóc z tym raportem?",
+"file": "audio/1ae732b539a2.mp3"
+},
+"eb50023e2569": {
+"pl": "Nie mam ich, zapytaj Kasię.",
+"file": "audio/eb50023e2569.mp3"
+},
+"bfad05c922d7": {
+"pl": "Tak, będę do siedemnastej.",
+"file": "audio/bfad05c922d7.mp3"
+},
+"a87a91978f65": {
+"pl": "Muszę to skończyć do piątku.",
+"file": "audio/a87a91978f65.mp3"
+},
+"c0f907f17d5f": {
+"pl": "Jasne, umieram z głodu.",
+"file": "audio/c0f907f17d5f.mp3"
+},
+"3e1916bad475": {
+"pl": "Nie teraz, muszę skończyć zadanie.",
+"file": "audio/3e1916bad475.mp3"
+},
+"dcf50324413f": {
+"pl": "Jadę do rodziny za miasto.",
+"file": "audio/dcf50324413f.mp3"
+},
+"fc999b4114a1": {
+"pl": "Będę się uczyć do egzaminu.",
+"file": "audio/fc999b4114a1.mp3"
+},
+"01be98e8e130": {
+"pl": "W sobotę idę na siłownię, a w niedzielę odpoczywam.",
+"file": "audio/01be98e8e130.mp3"
+},
+"afc236bae075": {
+"pl": "Jeszcze nie wiem, zobaczymy.",
+"file": "audio/afc236bae075.mp3"
+},
+"22f25638e498": {
+"pl": "Tak, wszystko działa.",
+"file": "audio/22f25638e498.mp3"
+},
+"4b9872fdbeac": {
+"pl": "Całkiem ładnie, słonecznie.",
+"file": "audio/4b9872fdbeac.mp3"
+},
+"4254cf6e1e0c": {
+"pl": "Strasznie wieje.",
+"file": "audio/4254cf6e1e0c.mp3"
+},
+"98d9d0764d27": {
+"pl": "Ciepło, ale pochmurno.",
+"file": "audio/98d9d0764d27.mp3"
+},
+"5160e792455f": {
+"pl": "Zrobiło się zimno.",
+"file": "audio/5160e792455f.mp3"
+},
+"63b23cb0d012": {
+"pl": "Wszystko po staremu.",
+"file": "audio/63b23cb0d012.mp3"
+},
+"a3b8c739ee6f": {
+"pl": "Mam psa i dwa koty.",
+"file": "audio/a3b8c739ee6f.mp3"
+},
+"f1cd3b53e642": {
+"pl": "Nie, nie mam zwierząt.",
+"file": "audio/f1cd3b53e642.mp3"
+},
+"0aab0e59c938": {
+"pl": "Jeszcze nie, może kiedyś.",
+"file": "audio/0aab0e59c938.mp3"
+},
+"1fe85325e750": {
+"pl": "Mieszkam tu od roku.",
+"file": "audio/1fe85325e750.mp3"
+},
+"bbd33fe16119": {
+"pl": "Tak, na szczęście działa.",
+"file": "audio/bbd33fe16119.mp3"
+},
+"7264607b1976": {
+"pl": "Jasne, już ściszam.",
+"file": "audio/7264607b1976.mp3"
+},
+"cb29e02f0167": {
+"pl": "Dziękuję, wzajemnie!",
+"file": "audio/cb29e02f0167.mp3"
 }
 }
 }
