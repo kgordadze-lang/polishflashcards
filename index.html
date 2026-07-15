@@ -983,7 +983,7 @@
       <button class="foot-btn" id="openPrivacy">Privacy</button>
       <button class="foot-btn" id="openInstall">Install</button>
     </div>
-    <div class="foot-version">v7.15</div>
+    <div class="foot-version" id="footVersion"></div>
   </footer>
 
   <div class="modal-overlay" id="matureGate" hidden>
@@ -1009,6 +1009,16 @@
 <script src="data-scenarios.js"></script>
 <script src="data-podcasts.js"></script>
 <script>
+/* =========================================================================
+   APP_VERSION - the ONLY place the human-facing version lives.
+   Format: month.day of the deploy (7.15 = July 15); add -1, -2, ... for
+   further deploys on the same day (7.15-1). The footer reads it from here.
+   Unrelated to CACHE in sw.js, which is a machine counter - bump both when
+   you deploy, but they don't need to match.
+   ========================================================================= */
+const APP_VERSION = "7.15-1";
+document.getElementById("footVersion").textContent = "v" + APP_VERSION;
+
 /* =========================================================================
    LEVELS - the ONLY thing you edit to grow the app.
    -------------------------------------------------------------------------
