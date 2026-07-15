@@ -617,7 +617,7 @@
             { front:"Being someone: profession & role",
               sub:"After <b>być</b>, Polish always uses Instrumental for profession, nationality, role.",
               points:[
-                "<b>Jestem studentem.</b> - I am a student.",
+                "<b>Jestem studentem.</b> - I am a student. [Feminine Ex.] Jestem studentką.",
                 "<b>Ona jest lekarką.</b> - She is a doctor.",
                 "<b>Chcę być inżynierem.</b> - I want to be an engineer."
               ],
@@ -648,7 +648,7 @@
               explain:"'Z' meaning 'with' takes Instrumental. Neuter 'mleko' \u2192 'mlekiem'.", full:"Piję kawę z mlekiem.", fullEn:"I drink coffee with milk." },
             { type:"choose", prompt:"Jestem ___ .", promptEn:"I am a student.",
               options:["studentem","student","studenta"], answer:"studentem",
-              explain:"'Być' + profession takes Instrumental. Masculine \u2192 -em.", full:"Jestem studentem.", fullEn:"I am a student." },
+              explain:"'Być' + profession takes Instrumental. Masculine \u2192 -em. [Feminine Ex.] Jestem studentką (fem. \u2192 -ą).", full:"Jestem studentem.", fullEn:"I am a student." },
             { type:"build", promptEn:"I'm going by train.",
               answer:["Jadę","pociągiem"],
               explain:"Transport + Instrumental. Note: after 'g' we insert 'i' \u2192 'pociągiem', not 'pociągem'.", full:"Jadę pociągiem.", fullEn:"I'm going by train." },
@@ -958,7 +958,7 @@
   window.PP_LEVELS.push(
     {
       level: "Describing People",
-      blurb: "Adjectives, pronouns, jobs, nationalities",
+      blurb: "Adjectives, pronouns, quantifiers, jobs",
       group: "grammar",
       topics: [
         {
@@ -1451,6 +1451,588 @@
             { type:"build", promptEn:"These Poles are my colleagues.",
               answer:["Ci","Polacy","to","moi","koledzy"],
               explain:"Masculine personal ('oni'): 'Polacy' + 'ci' + 'moi' + 'koledzy'.", full:"Ci Polacy to moi koledzy.", fullEn:"These Poles are my colleagues." }
+          ]        },
+
+        /* 5 ------------------------------------- EVERY vs ALL (quantifiers) */
+        {
+          name: "Każdy i Wszyscy (Every vs All)", emoji: "\u2705", kind: "grammar", chip: "Grammar A2",
+          desc: "każdy takes a singular verb, wszyscy a plural - plus the wszystko trap",
+          teach: [
+            { front:"Every vs all - the core split",
+              sub:"English blurs these. Polish makes you choose, and the verb follows your choice.",
+              points:[
+                "<b>każdy</b> = every / each. Always <b>singular</b>: każdy student <b>ma</b>...",
+                "<b>wszyscy / wszystkie</b> = all. Always <b>plural</b>: wszyscy studenci <b>mają</b>...",
+                "Same people, different lens: <b>każdy</b> zooms in on one at a time, <b>wszyscy</b> takes them together.",
+                "So the mistake to avoid is <i>każdy studenci mają</i> - mixing a singular word with a plural verb."
+              ],
+              examples:[
+                { pl:"Każdy student ma indeks.", en:"Every student has an ID card." },
+                { pl:"Wszyscy studenci mają indeksy.", en:"All the students have ID cards." }
+              ] },
+
+            { front:"każdy changes for gender",
+              sub:"It behaves like an adjective - match it to the noun it sits in front of.",
+              table:[
+                { g:"masculine", e:"każdy", ex:"Każdy dzień jest inny." },
+                { g:"feminine", e:"każda", ex:"Każda godzina się liczy." },
+                { g:"neuter", e:"każde", ex:"Każde dziecko to wie." }
+              ],
+              note:"There is no plural of <b>każdy</b> in this meaning. When you need a plural, you switch words entirely - to <b>wszyscy</b> or <b>wszystkie</b>." },
+
+            { front:"wszyscy or wszystkie? The oni / one rule again",
+              sub:"You already know this split - it's exactly the same one as oni / one, and panowie / panie.",
+              points:[
+                "<b>wszyscy</b> - groups with at least one man (like <b>oni</b>): wszyscy koledzy, wszyscy ludzie.",
+                "<b>wszystkie</b> - women, things, animals, children (like <b>one</b>): wszystkie koleżanki, wszystkie bilety.",
+                "One man in the group is enough to tip it to wszyscy."
+              ],
+              table:[
+                { g:"men / mixed", e:"wszyscy", ex:"Wszyscy koledzy przyszli." },
+                { g:"women", e:"wszystkie", ex:"Wszystkie koleżanki przyszły." },
+                { g:"things", e:"wszystkie", ex:"Wszystkie bilety są sprzedane." }
+              ],
+              note:"The past tense follows too: wszyscy <b>przyszli</b> vs wszystkie <b>przyszły</b> - the same -li / -ły split you met with panowie byli / panie były." },
+
+            { front:"The wszystko trap",
+              sub:"wszystko and wszystkie look like twins. They are not.",
+              points:[
+                "<b>wszystko</b> = <i>everything</i>. It stands alone, with no noun after it: <i>Wszystko jest dobrze.</i>",
+                "<b>wszystkie</b> = <i>all the...</i> and needs a plural noun after it: <i>Wszystkie rzeczy są tutaj.</i>",
+                "Quick test: if English says 'everything', use <b>wszystko</b>. If English says 'all the [things]', use <b>wszystkie</b>."
+              ],
+              examples:[
+                { pl:"Wszystko w porządku?", en:"Is everything alright?" },
+                { pl:"Wszystkie rzeczy są w torbie.", en:"All the things are in the bag." }
+              ] },
+
+            { front:"Set phrases you'll use daily",
+              sub:"These are frozen - learn them whole rather than building them.",
+              table:[
+                { g:"every day", e:"każdego dnia", ex:"Każdego dnia uczę się polskiego." },
+                { g:"every time", e:"za każdym razem", ex:"Za każdym razem to samo." },
+                { g:"in any case", e:"w każdym razie", ex:"W każdym razie dziękuję." },
+                { g:"all the best", e:"wszystkiego najlepszego", ex:"Wszystkiego najlepszego!" },
+                { g:"thanks everyone", e:"dziękuję wszystkim", ex:"Dziękuję wszystkim za pomoc." },
+                { g:"for everything", e:"za wszystko", ex:"Dziękuję za wszystko." }
+              ],
+              note:"Look at the cases hiding inside: <b>każdego dnia</b> is dopełniacz, <b>za każdym razem</b> is narzędnik, and <b>wszystkiego najlepszego</b> is dopełniacz too - it's short for 'życzę ci wszystkiego najlepszego'." }
+          ],
+          drills: [
+            { type:"choose", prompt:"Każdy student ___ indeks.", promptEn:"Every student has an ID card.",
+              options:["ma","mają","mieć"], answer:"ma",
+              explain:"każdy is singular, so the verb is singular: ma.", full:"Każdy student ma indeks.", fullEn:"Every student has an ID card." },
+            { type:"choose", prompt:"Wszyscy studenci ___ indeksy.", promptEn:"All the students have ID cards.",
+              options:["ma","mają","miały"], answer:"mają",
+              explain:"wszyscy is plural, so the verb is plural: mają.", full:"Wszyscy studenci mają indeksy.", fullEn:"All the students have ID cards." },
+            { type:"choose", prompt:"___ koledzy przyszli.", promptEn:"All the colleagues came. (men)",
+              options:["Wszyscy","Wszystkie","Każdy"], answer:"Wszyscy",
+              explain:"A group of men → wszyscy (like oni).", full:"Wszyscy koledzy przyszli.", fullEn:"All the colleagues came." },
+            { type:"choose", prompt:"___ koleżanki przyszły.", promptEn:"All the colleagues came. (women)",
+              options:["Wszyscy","Wszystkie","Każda"], answer:"Wszystkie",
+              explain:"All women → wszystkie (like one), and the past is przyszły.", full:"Wszystkie koleżanki przyszły.", fullEn:"All the colleagues came." },
+            { type:"choose", prompt:"___ bilety są sprzedane.", promptEn:"All the tickets are sold out.",
+              options:["Wszyscy","Wszystkie","Każde"], answer:"Wszystkie",
+              explain:"Things are never wszyscy - only people-with-a-man are.", full:"Wszystkie bilety są sprzedane.", fullEn:"All the tickets are sold out." },
+            { type:"choose", prompt:"___ w porządku?", promptEn:"Is everything alright?",
+              options:["Wszystko","Wszystkie","Wszyscy"], answer:"Wszystko",
+              explain:"'everything' standing alone → wszystko.", full:"Wszystko w porządku?", fullEn:"Is everything alright?" },
+            { type:"choose", prompt:"___ rzeczy są w torbie.", promptEn:"All the things are in the bag.",
+              options:["Wszystko","Wszystkie","Wszyscy"], answer:"Wszystkie",
+              explain:"There's a plural noun after it (rzeczy), so it's wszystkie - not wszystko.", full:"Wszystkie rzeczy są w torbie.", fullEn:"All the things are in the bag." },
+            { type:"choose", prompt:"___ dnia uczę się polskiego.", promptEn:"Every day I study Polish.",
+              options:["Każdy","Każdego","Każdym"], answer:"Każdego",
+              explain:"'każdego dnia' = every day - a frozen dopełniacz phrase.", full:"Każdego dnia uczę się polskiego.", fullEn:"Every day I study Polish." },
+            { type:"choose", prompt:"Za ___ razem to samo.", promptEn:"The same thing every time.",
+              options:["każdy","każdego","każdym"], answer:"każdym",
+              explain:"'za każdym razem' = every time - narzędnik after za.", full:"Za każdym razem to samo.", fullEn:"The same thing every time." },
+            { type:"choose", prompt:"___ najlepszego!", promptEn:"All the best! (a birthday wish)",
+              options:["Wszystko","Wszystkiego","Wszystkim"], answer:"Wszystkiego",
+              explain:"Short for 'życzę ci wszystkiego najlepszego' - życzyć takes dopełniacz.", full:"Wszystkiego najlepszego!", fullEn:"All the best!" },
+            { type:"build", promptEn:"Thank you everyone for your help.",
+              answer:["Dziękuję","wszystkim","za","pomoc"],
+              explain:"dziękować + celownik: wszystkim.", full:"Dziękuję wszystkim za pomoc.", fullEn:"Thank you everyone for your help." },
+            { type:"build", promptEn:"Every hour counts.",
+              answer:["Każda","godzina","się","liczy"],
+              explain:"'godzina' is feminine → każda; the verb stays singular.", full:"Każda godzina się liczy.", fullEn:"Every hour counts." }
+          ]
+        }
+      ]
+    }
+  );
+  window.PP_LEVELS.push(
+    {
+      level: "Politeness",
+      blurb: "Pan, pani and formal address",
+      group: "grammar",
+      topics: [
+        {
+          name: "Pan i Pani (Formal address)", emoji: "\uD83D\uDE4B", kind: "grammar", chip: "Grammar A2",
+          desc: "When to use pan/pani instead of ty - and the third-person rule that trips everyone up",
+          teach: [
+            { front:"Two ways to say 'you'",
+              sub:"Polish makes you choose a register before you open your mouth.",
+              points:[
+                "<b>ty</b> - friends, family, children, people your own age you already know.",
+                "<b>pan</b> (to a man) / <b>pani</b> (to a woman) - strangers, shops, offices, doctors, older people. This is the safe default with any adult you don't know.",
+                "Getting this wrong isn't a grammar slip, it's a social one. When unsure, use pan/pani and let the other person offer ty."
+              ],
+              examples:[
+                { pl:"Przepraszam, czy pan wie, gdzie jest apteka?", en:"Excuse me, do you know where the pharmacy is? (to a man)" },
+                { pl:"Cześć, wiesz, gdzie jest apteka?", en:"Hi, do you know where the pharmacy is? (to a friend)" }
+              ] },
+
+            { front:"The golden rule: pan and pani take 'he/she' forms",
+              sub:"This is the one thing to get right. Think of it as talking about someone who happens to be standing in front of you.",
+              table:[
+                { g:"ty", e:"wiesz", ex:"Wiesz, gdzie to jest?" },
+                { g:"pan / pani", e:"wie", ex:"Czy pan wie, gdzie to jest?" },
+                { g:"ty", e:"masz", ex:"Masz chwilę?" },
+                { g:"pan / pani", e:"ma", ex:"Czy pani ma chwilę?" },
+                { g:"ty", e:"chcesz", ex:"Chcesz kawę?" },
+                { g:"pan / pani", e:"chce", ex:"Czy pani chce kawę?" }
+              ],
+              note:"So it's <b>Czy pan wie?</b> - never <i>czy pan wiesz</i>. Starting with <b>czy</b> also makes a formal question sound softer." },
+
+            { front:"pan and pani in the cases",
+              sub:"pan declines like a normal noun. pani barely moves - one form does nearly all the work.",
+              table:[
+                { g:"Mianownik", e:"pan / pani", ex:"Czy pan wie?" },
+                { g:"Dopełniacz", e:"pana / pani", ex:"Nie ma pana w biurze." },
+                { g:"Celownik", e:"panu / pani", ex:"Dziękuję panu." },
+                { g:"Biernik", e:"pana / panią", ex:"Przepraszam panią." },
+                { g:"Narzędnik", e:"panem / panią", ex:"Rozmawiam z panią." },
+                { g:"Miejscownik", e:"panu / pani", ex:"Mówiliśmy o panu." }
+              ],
+              note:"Good news: <b>pani</b> only really changes to <b>panią</b> (biernik and narzędnik). Everywhere else it stays <i>pani</i>." },
+
+            { front:"Talking to more than one person",
+              sub:"Three plural forms, depending on who is in the group.",
+              table:[
+                { g:"panowie", e:"a group of men", ex:"Czy panowie są gotowi?" },
+                { g:"panie", e:"a group of women", ex:"Czy panie mają bilety?" },
+                { g:"państwo", e:"a mixed group / a couple", ex:"Czy państwo chcą stolik?" }
+              ],
+              note:"The verb goes to third person <b>plural</b>: państwo <b>chcą</b>, panowie <b>są</b>. In shops and restaurants you'll also hear the second-person plural - <i>Płacicie państwo razem czy osobno?</i> Strictly it should be <i>Czy państwo płacą...</i>, but the 'płacicie' version is everywhere in service Polish." },
+
+            { front:"Softening, and switching to ty",
+              sub:"Two everyday moves that make formal Polish feel natural rather than stiff.",
+              points:[
+                "<b>Proszę</b> + infinitive is the polite command: <i>Proszę usiąść.</i> You never need a bare imperative with a stranger.",
+                "To get someone's attention: <b>proszę pana</b> / <b>proszę pani</b>.",
+                "With a first name you get a middle register, common at work: <b>pan Marek → panie Marku</b>, <b>pani Anna → pani Anno</b>.",
+                "Moving to ty is offered, not taken: <b>Czy możemy przejść na ty?</b> - usually proposed by the older or more senior person. In startups and many offices, ty is the default from day one."
+              ],
+              examples:[
+                { pl:"Proszę pana, zgubił pan portfel.", en:"Excuse me sir, you dropped your wallet." },
+                { pl:"Czy możemy przejść na ty?", en:"Shall we switch to first names?" }
+              ] }
+          ],
+          drills: [
+            { type:"choose", prompt:"Czy pan ___, gdzie jest dworzec?", promptEn:"Do you know where the station is? (to a man)",
+              options:["wiesz","wie","wiem"], answer:"wie",
+              explain:"pan takes the on/ona form: wie, never wiesz.", full:"Czy pan wie, gdzie jest dworzec?", fullEn:"Do you know where the station is?" },
+            { type:"choose", prompt:"Czy pani ___ chwilę?", promptEn:"Do you have a moment? (to a woman)",
+              options:["masz","ma","mam"], answer:"ma",
+              explain:"pani takes the on/ona form: ma.", full:"Czy pani ma chwilę?", fullEn:"Do you have a moment?" },
+            { type:"choose", prompt:"Dziękuję ___ za pomoc.", promptEn:"Thank you for your help. (to a man)",
+              options:["pan","pana","panu"], answer:"panu",
+              explain:"dziękować + celownik (dative): panu.", full:"Dziękuję panu za pomoc.", fullEn:"Thank you for your help." },
+            { type:"choose", prompt:"Przepraszam ___.", promptEn:"Excuse me. (to a woman)",
+              options:["pani","panią","panu"], answer:"panią",
+              explain:"przepraszać + biernik (accusative): panią - one of the two forms where pani changes.", full:"Przepraszam panią.", fullEn:"Excuse me." },
+            { type:"choose", prompt:"Czy państwo ___ stolik?", promptEn:"Would you like a table? (to a couple)",
+              options:["chce","chcą","chcecie"], answer:"chcą",
+              explain:"państwo takes third person plural: chcą.", full:"Czy państwo chcą stolik?", fullEn:"Would you like a table?" },
+            { type:"choose", prompt:"Czy panowie ___ gotowi?", promptEn:"Are you ready? (to a group of men)",
+              options:["jest","są","jesteście"], answer:"są",
+              explain:"panowie → third person plural of być: są.", full:"Czy panowie są gotowi?", fullEn:"Are you ready?" },
+            { type:"choose", prompt:"___ usiąść.", promptEn:"Please sit down. (politely, to a stranger)",
+              options:["Siądź","Proszę","Siadaj"], answer:"Proszę",
+              explain:"Proszę + infinitive is the polite command; siądź / siadaj are for friends.", full:"Proszę usiąść.", fullEn:"Please sit down." },
+            { type:"choose", prompt:"Rozmawiałam wczoraj z ___.", promptEn:"I spoke with you yesterday. (to a woman)",
+              options:["pani","panią","panie"], answer:"panią",
+              explain:"z + narzędnik (instrumental): z panią.", full:"Rozmawiałam wczoraj z panią.", fullEn:"I spoke with you yesterday." },
+            { type:"choose", prompt:"Proszę ___, gdzie jest wyjście?", promptEn:"Excuse me sir, where's the exit?",
+              options:["pan","pana","panu"], answer:"pana",
+              explain:"'Proszę pana' gets a man's attention; 'proszę pani' for a woman.", full:"Proszę pana, gdzie jest wyjście?", fullEn:"Excuse me sir, where's the exit?" },
+            { type:"build", promptEn:"Shall we switch to first names?",
+              answer:["Czy","możemy","przejść","na","ty?"],
+              explain:"'przejść na ty' = to move to first-name terms.", full:"Czy możemy przejść na ty?", fullEn:"Shall we switch to first names?" },
+            { type:"build", promptEn:"Can I help you? (to a man)",
+              answer:["Czy","mogę","panu","pomóc?"],
+              explain:"pomóc + celownik (dative): pomóc panu.", full:"Czy mogę panu pomóc?", fullEn:"Can I help you?" }
+          ]
+        },
+
+        /* 2 -------------------------------------- PLURAL FORMAL ADDRESS */
+        {
+          name: "Panowie, Panie, Państwo (Plural formal address)", emoji: "\uD83D\uDC65", kind: "grammar", chip: "Grammar A2",
+          desc: "Addressing a group formally - and the past tense where the three forms split",
+          teach: [
+            { front:"Three ways to say 'you' to a group",
+              sub:"Which one you pick depends entirely on who is standing in front of you.",
+              points:[
+                "<b>panowie</b> - two or more men.",
+                "<b>panie</b> - two or more women.",
+                "<b>państwo</b> - a mixed group, or a couple. One man and one woman is already państwo.",
+                "This is the same logic as oni / one: one man in the group tips it to the 'men' form."
+              ],
+              examples:[
+                { pl:"Czy panowie czekają na stolik?", en:"Are you waiting for a table? (to two men)" },
+                { pl:"Czy panie mają rezerwację?", en:"Do you have a reservation? (to two women)" },
+                { pl:"Czy państwo są razem?", en:"Are you together? (to a mixed couple)" }
+              ] },
+
+            { front:"The verb goes to 'they'",
+              sub:"Just as pan / pani take the he-she form, all three plurals take the oni / one form.",
+              table:[
+                { g:"wy (informal)", e:"wiecie", ex:"Wiecie, gdzie to jest?" },
+                { g:"panowie", e:"wiedzą", ex:"Czy panowie wiedzą, gdzie to jest?" },
+                { g:"panie", e:"wiedzą", ex:"Czy panie wiedzą, gdzie to jest?" },
+                { g:"państwo", e:"wiedzą", ex:"Czy państwo wiedzą, gdzie to jest?" },
+                { g:"państwo", e:"są / mają", ex:"Czy państwo mają bilety?" },
+                { g:"państwo", e:"chcą / płacą", ex:"Czy państwo płacą razem?" }
+              ],
+              note:"Good news: all three take the <b>same</b> verb form in the present. Pick the right noun and the verb takes care of itself - <b>są, mają, chcą, wiedzą, płacą</b>." },
+
+            { front:"In the past tense, the group's gender shows",
+              sub:"This is where the three forms finally split - and it catches everyone.",
+              table:[
+                { g:"panowie", e:"byli / mieli", ex:"Czy panowie byli zadowoleni?" },
+                { g:"panie", e:"były / miały", ex:"Czy panie były zadowolone?" },
+                { g:"państwo", e:"byli / mieli", ex:"Czy państwo byli zadowoleni?" }
+              ],
+              note:"<b>Państwo</b> counts as a mixed group, so it takes the men's form: <b>byli</b>, not <i>były</i>. The adjective follows too: <b>zadowoleni</b> (panowie, państwo) vs <b>zadowolone</b> (panie)." },
+
+            { front:"państwo - the one you'll use most",
+              sub:"In shops, restaurants, trains and emails, państwo is everywhere. These five forms cover it.",
+              table:[
+                { g:"Mianownik", e:"państwo", ex:"Czy państwo czekają?" },
+                { g:"Dopełniacz", e:"państwa", ex:"To jest dla państwa." },
+                { g:"Celownik", e:"państwu", ex:"Dziękuję państwu za spotkanie." },
+                { g:"Biernik", e:"państwa", ex:"Przepraszam państwa!" },
+                { g:"Narzędnik", e:"państwem", ex:"Miło mi z państwem współpracować." }
+              ],
+              note:"Written with a capital letter, <b>Szanowni Państwo</b> opens a formal email or announcement. With a small letter, <i>państwo</i> also means 'a state / country' - context makes it obvious." },
+
+            { front:"What you'll actually hear",
+              sub:"Real lines from real days out.",
+              table:[
+                { g:"w sklepie", e:"płacą", ex:"Czy państwo płacą razem czy osobno?" },
+                { g:"w restauracji", e:"dla państwa", ex:"Co dla państwa?" },
+                { g:"w pociągu", e:"proszę państwa", ex:"Proszę państwa, następna stacja: Centrum." },
+                { g:"w mailu", e:"Szanowni Państwo", ex:"Szanowni Państwo, piszę w sprawie rezerwacji." }
+              ],
+              note:"You'll also hear the second-person plural in service Polish - <i>Płacicie państwo razem?</i> Strictly it should be <i>Czy państwo płacą...</i>, but the 'płacicie' version is everywhere." }
+          ],
+          drills: [
+            { type:"choose", prompt:"Czy panowie ___ na stolik?", promptEn:"Are you waiting for a table? (to two men)",
+              options:["czeka","czekają","czekacie"], answer:"czekają",
+              explain:"panowie → third person plural: czekają.", full:"Czy panowie czekają na stolik?", fullEn:"Are you waiting for a table?" },
+            { type:"choose", prompt:"Czy panie ___ rezerwację?", promptEn:"Do you have a reservation? (to two women)",
+              options:["ma","mają","macie"], answer:"mają",
+              explain:"panie → third person plural: mają.", full:"Czy panie mają rezerwację?", fullEn:"Do you have a reservation?" },
+            { type:"choose", prompt:"Czy ___ są razem?", promptEn:"Are you together? (to a man and a woman)",
+              options:["panowie","panie","państwo"], answer:"państwo",
+              explain:"A mixed group → państwo. One man and one woman is enough.", full:"Czy państwo są razem?", fullEn:"Are you together?" },
+            { type:"choose", prompt:"Dziękuję ___ za spotkanie.", promptEn:"Thank you for the meeting. (to a mixed group)",
+              options:["państwo","państwa","państwu"], answer:"państwu",
+              explain:"dziękować + celownik (dative): państwu.", full:"Dziękuję państwu za spotkanie.", fullEn:"Thank you for the meeting." },
+            { type:"choose", prompt:"Przepraszam ___!", promptEn:"Excuse me! (to a mixed group)",
+              options:["państwo","państwa","państwem"], answer:"państwa",
+              explain:"przepraszać + biernik (accusative): państwa.", full:"Przepraszam państwa!", fullEn:"Excuse me!" },
+            { type:"choose", prompt:"To jest dla ___.", promptEn:"This is for you. (to a couple)",
+              options:["państwo","państwa","państwem"], answer:"państwa",
+              explain:"dla + dopełniacz (genitive): dla państwa.", full:"To jest dla państwa.", fullEn:"This is for you." },
+            { type:"choose", prompt:"Czy panowie ___ zadowoleni?", promptEn:"Were you satisfied? (to two men)",
+              options:["były","byli","byliście"], answer:"byli",
+              explain:"panowie (men) → byli, the -li form.", full:"Czy panowie byli zadowoleni?", fullEn:"Were you satisfied?" },
+            { type:"choose", prompt:"Czy panie ___ zadowolone?", promptEn:"Were you satisfied? (to two women)",
+              options:["byli","były","byłyście"], answer:"były",
+              explain:"panie (all women) → były, the -ły form.", full:"Czy panie były zadowolone?", fullEn:"Were you satisfied?" },
+            { type:"choose", prompt:"Czy państwo ___ zadowoleni z pokoju?", promptEn:"Were you satisfied with the room? (to a couple)",
+              options:["były","byli","byliście"], answer:"byli",
+              explain:"państwo is a mixed group → it takes the men's form: byli.", full:"Czy państwo byli zadowoleni z pokoju?", fullEn:"Were you satisfied with the room?" },
+            { type:"build", promptEn:"Are you paying together or separately? (to a couple)",
+              answer:["Czy","państwo","płacą","razem","czy","osobno?"],
+              explain:"państwo + third person plural: płacą.", full:"Czy państwo płacą razem czy osobno?", fullEn:"Are you paying together or separately?" },
+            { type:"build", promptEn:"What can I get you? (waiter, to a table)",
+              answer:["Co","dla","państwa?"],
+              explain:"dla + dopełniacz: dla państwa.", full:"Co dla państwa?", fullEn:"What can I get you?" }
+          ]
+        },
+
+        /* 3 ---------------------------------------------- CONDITIONAL */
+        {
+          name: "Tryb przypuszczający (Conditional)", emoji: "\u2728", kind: "grammar", chip: "Grammar B1",
+          desc: "Chciałbym, czy mógłby pan - the -bym ending that turns blunt into polite",
+          teach: [
+            { front:"What -bym does",
+              sub:"It turns a blunt statement into a polite, soft, or hypothetical one. This is the politeness engine of Polish.",
+              points:[
+                "<b>Chcę kawę.</b> = I want a coffee. Correct, but blunt.",
+                "<b>Chciałbym kawę.</b> = I'd like a coffee. This is what people actually say.",
+                "It also carries English 'would': <i>Zrobiłbym to inaczej.</i> = I'd do it differently.",
+                "Use it for requests, offers, suggestions, and soft refusals."
+              ],
+              examples:[
+                { pl:"Chciałbym zamówić kawę.", en:"I'd like to order a coffee. (man speaking)" },
+                { pl:"Chciałabym zamówić kawę.", en:"I'd like to order a coffee. (woman speaking)" }
+              ] },
+
+            { front:"How to build it",
+              sub:"You already know every piece: it's the past tense stem + -by- + a person ending.",
+              points:[
+                "Take the past form: <b>chciał-</b> (m) / <b>chciała-</b> (f).",
+                "Add <b>-by</b> plus the ending: chciał<b>bym</b>, chciał<b>byś</b>, chciał<b>by</b>.",
+                "Because it sits on the past stem, it is <b>gendered</b> exactly like the past tense."
+              ],
+              table:[
+                { g:"ja", e:"chciałbym / chciałabym", ex:"Chciałbym kawę." },
+                { g:"ty", e:"chciałbyś / chciałabyś", ex:"Chciałabyś kawę?" },
+                { g:"on / ona", e:"chciałby / chciałaby", ex:"Ona chciałaby zostać." },
+                { g:"my", e:"chcielibyśmy / chciałybyśmy", ex:"Chcielibyśmy stolik." },
+                { g:"wy", e:"chcielibyście / chciałybyście", ex:"Chcielibyście zostać?" },
+                { g:"oni / one", e:"chcieliby / chciałyby", ex:"Oni chcieliby pomóc." }
+              ] },
+
+            { front:"The polite request toolkit",
+              sub:"Four patterns cover almost every everyday situation.",
+              table:[
+                { g:"I'd like...", e:"Chciałbym / Chciałabym", ex:"Chciałbym zarezerwować stolik." },
+                { g:"Could you...?", e:"Czy mógłby pan...?", ex:"Czy mógłby pan powtórzyć?" },
+                { g:"Could I...?", e:"Czy mogłabym...?", ex:"Czy mogłabym prosić o rachunek?" },
+                { g:"I'd prefer...", e:"Wolałbym / Wolałabym", ex:"Wolałbym jutro." }
+              ],
+              note:"Notice <b>Czy mógłby pan...?</b> - pan takes the he-form, so it's mógłby, not mógłbyś. Formal address and the conditional stack neatly." },
+
+            { front:"Where the -bym jumps to",
+              sub:"One quirk worth knowing, because it's how 'if' sentences work.",
+              points:[
+                "Normally the ending sits on the verb: <i>Chciał<b>bym</b> to zrobić.</i>",
+                "After <b>gdyby</b> and <b>żeby</b>, it hops onto that word instead: <i>Chciałbym, <b>żebyś</b> przyszedł.</i>",
+                "<b>Gdybym miał czas...</b> = If I had time... - this is the standard 'if' opener.",
+                "The verb after it goes to the past form: gdybym <b>miał</b>, żebyś <b>przyszedł</b>."
+              ],
+              examples:[
+                { pl:"Gdybym miał czas, poszedłbym z tobą.", en:"If I had time, I'd go with you." },
+                { pl:"Chciałbym, żebyś przyszedł.", en:"I'd like you to come." }
+              ] },
+
+            { front:"Saying no, gently",
+              sub:"The conditional is also how you decline without slamming a door.",
+              points:[
+                "<b>Wolałbym nie.</b> = I'd rather not.",
+                "<b>Nie chciałbym przeszkadzać.</b> = I wouldn't want to intrude.",
+                "<b>Mogłoby być lepiej.</b> = It could be better. (a soft complaint)",
+                "Compare the register: <i>Powtórz!</i> (Repeat!) → <i>Czy mógłby pan powtórzyć?</i> (Could you repeat?)"
+              ],
+              examples:[
+                { pl:"Wolałabym nie, dziękuję.", en:"I'd rather not, thank you." },
+                { pl:"Czy mógłby pan mówić wolniej?", en:"Could you speak more slowly?" }
+              ] }
+          ],
+          drills: [
+            { type:"choose", prompt:"___ zamówić kawę.", promptEn:"I'd like to order a coffee. (man speaking)",
+              options:["Chciałabym","Chciałbym","Chcę"], answer:"Chciałbym",
+              explain:"A man says chciałbym; chcę would be blunt here.", full:"Chciałbym zamówić kawę.", fullEn:"I'd like to order a coffee." },
+            { type:"choose", prompt:"___ zamówić kawę.", promptEn:"I'd like to order a coffee. (woman speaking)",
+              options:["Chciałbym","Chciałabym","Chciałaby"], answer:"Chciałabym",
+              explain:"A woman uses the -abym ending: chciałabym.", full:"Chciałabym zamówić kawę.", fullEn:"I'd like to order a coffee." },
+            { type:"choose", prompt:"Czy ___ pan powtórzyć?", promptEn:"Could you repeat that? (to a man)",
+              options:["mógłbyś","mógłby","mógłbym"], answer:"mógłby",
+              explain:"pan takes the he-form, so it's mógłby - not mógłbyś.", full:"Czy mógłby pan powtórzyć?", fullEn:"Could you repeat that?" },
+            { type:"choose", prompt:"Czy ___ prosić o rachunek?", promptEn:"Could I have the bill? (woman speaking)",
+              options:["mógłbym","mogłabym","mogłaby"], answer:"mogłabym",
+              explain:"A woman asking about herself: mogłabym.", full:"Czy mogłabym prosić o rachunek?", fullEn:"Could I have the bill?" },
+            { type:"choose", prompt:"Ona ___ zostać dłużej.", promptEn:"She'd like to stay longer.",
+              options:["chciałby","chciałaby","chciałabym"], answer:"chciałaby",
+              explain:"'ona' → chciałaby.", full:"Ona chciałaby zostać dłużej.", fullEn:"She'd like to stay longer." },
+            { type:"choose", prompt:"My ___ stolik przy oknie.", promptEn:"We'd like a table by the window.",
+              options:["chciałbym","chcielibyśmy","chcieliby"], answer:"chcielibyśmy",
+              explain:"'my' (mixed or male group) → chcielibyśmy.", full:"Chcielibyśmy stolik przy oknie.", fullEn:"We'd like a table by the window." },
+            { type:"choose", prompt:"___ miał czas, poszedłbym z tobą.", promptEn:"If I had time, I'd go with you.",
+              options:["Gdyby","Gdybym","Żebym"], answer:"Gdybym",
+              explain:"'if I' → gdybym; the -bym hops onto gdyby.", full:"Gdybym miał czas, poszedłbym z tobą.", fullEn:"If I had time, I'd go with you." },
+            { type:"choose", prompt:"Chciałbym, ___ przyszedł.", promptEn:"I'd like you to come.",
+              options:["żeby","żebyś","gdybyś"], answer:"żebyś",
+              explain:"'that you' → żebyś; the ending jumps onto żeby.", full:"Chciałbym, żebyś przyszedł.", fullEn:"I'd like you to come." },
+            { type:"choose", prompt:"___ nie, dziękuję.", promptEn:"I'd rather not, thank you. (woman speaking)",
+              options:["Wolałbym","Wolałabym","Wolę"], answer:"Wolałabym",
+              explain:"A woman: wolałabym - softer than the blunt 'nie chcę'.", full:"Wolałabym nie, dziękuję.", fullEn:"I'd rather not, thank you." },
+            { type:"build", promptEn:"Could you speak more slowly? (to a man)",
+              answer:["Czy","mógłby","pan","mówić","wolniej?"],
+              explain:"pan + mógłby + infinitive.", full:"Czy mógłby pan mówić wolniej?", fullEn:"Could you speak more slowly?" },
+            { type:"build", promptEn:"I'd like to book a table. (woman speaking)",
+              answer:["Chciałabym","zarezerwować","stolik"],
+              explain:"chciałabym + infinitive.", full:"Chciałabym zarezerwować stolik.", fullEn:"I'd like to book a table." }
+          ]
+        },
+
+        /* 4 ---------------------------------------------- DIMINUTIVES */
+        {
+          name: "Zdrobnienia (Diminutives)", emoji: "\uD83D\uDE42", kind: "grammar", chip: "Grammar B1",
+          desc: "Kawka, chwileczkę, piwko - how Polish shrinks words to sound warm",
+          teach: [
+            { front:"Polish shrinks words to be nice",
+              sub:"A diminutive is not mainly about size. It's warmth, politeness, and softening.",
+              points:[
+                "<b>kawa → kawka</b> isn't a smaller coffee. It's a friendlier one.",
+                "<b>chwila → chwileczkę</b> makes 'wait a moment' sound gentle instead of curt.",
+                "Poles use them constantly - with food, drinks, time, money, and names.",
+                "Recognising them matters more than building them: you'll hear far more than you'll make."
+              ],
+              examples:[
+                { pl:"Chwileczkę, zaraz sprawdzę.", en:"Just a moment, I'll check right away." },
+                { pl:"Masz ochotę na kawkę?", en:"Fancy a coffee?" }
+              ] },
+
+            { front:"How they're formed",
+              sub:"Most take a predictable suffix, matched to the word's gender.",
+              table:[
+                { g:"-ek (masc)", e:"dom → domek", ex:"Mamy mały domek pod Warszawą." },
+                { g:"-ka (fem)", e:"kawa → kawka", ex:"Skoczymy na kawkę?" },
+                { g:"-ko (neut)", e:"piwo → piwko", ex:"Idziemy na piwko?" },
+                { g:"-eczka", e:"chwila → chwileczka", ex:"Chwileczkę, proszę." },
+                { g:"-usia (extra warm)", e:"kawa → kawusia", ex:"Zrobić ci kawusię?" }
+              ],
+              note:"The stem often shifts a little (kot → kot<b>ek</b>, chleb → chleb<b>ek</b>). Note the two coffees: <b>kawka</b> is the everyday default you'll hear constantly, while <b>kawusia</b> is a notch warmer and much rarer - affectionate, a bit sweet, often from older speakers. Learn the common ones as whole words rather than deriving them on the fly." },
+
+            { front:"The ones you'll hear every day",
+              sub:"These four will come at you within your first week.",
+              table:[
+                { g:"chwila", e:"chwileczkę", ex:"Chwileczkę, zaraz będę." },
+                { g:"sekunda", e:"sekundkę", ex:"Sekundkę, szukam klucza." },
+                { g:"moment", e:"momencik", ex:"Momencik, już idę." },
+                { g:"pieniądze", e:"pieniążki", ex:"Nie mam pieniążków." }
+              ],
+              note:"<b>Chwileczkę</b> and <b>sekundkę</b> are in the accusative because they answer 'for how long?' - they're frozen as set phrases, so just learn the form." },
+
+            { front:"Names - and when NOT to use diminutives",
+              sub:"There is a line here, and crossing it is awkward.",
+              points:[
+                "Names shrink too: <b>Anna → Ania</b>, <b>Katarzyna → Kasia</b>, <b>Piotr → Piotrek</b>, <b>Tomasz → Tomek</b>.",
+                "Using someone's diminutive name means you're on <b>ty</b> terms. Don't use it with a stranger or your boss's boss.",
+                "In the wrong mouth they sound patronising: a clerk saying <i>pieniążki</i> to an adult can grate.",
+                "Safe zone: food, drinks, time (<i>chwileczkę</i>), and friends."
+              ],
+              examples:[
+                { pl:"Cześć, jestem Kasia.", en:"Hi, I'm Kasia. (from Katarzyna)" },
+                { pl:"Momencik, zaraz będę.", en:"One moment, I'll be right there." }
+              ] }
+          ],
+          drills: [
+            { type:"choose", prompt:"___, zaraz sprawdzę.", promptEn:"Just a moment, I'll check right away.",
+              options:["Chwila","Chwileczkę","Chwilę"], answer:"Chwileczkę",
+              explain:"The set phrase is chwileczkę - softer than the bare 'chwila'.", full:"Chwileczkę, zaraz sprawdzę.", fullEn:"Just a moment, I'll check right away." },
+            { type:"choose", prompt:"Idziemy na ___?", promptEn:"Shall we go for a beer? (casually)",
+              options:["piwo","piwko","piwek"], answer:"piwko",
+              explain:"piwo → piwko (-ko for neuter). Friendlier than 'piwo'.", full:"Idziemy na piwko?", fullEn:"Shall we go for a beer?" },
+            { type:"choose", prompt:"Masz ochotę na ___?", promptEn:"Fancy a coffee?",
+              options:["kawka","kawkę","kawki"], answer:"kawkę",
+              explain:"'na' + biernik: kawka → kawkę. This is the everyday diminutive of kawa.", full:"Masz ochotę na kawkę?", fullEn:"Fancy a coffee?" },
+            { type:"choose", prompt:"Mamy mały ___ pod Warszawą.", promptEn:"We have a little house near Warsaw.",
+              options:["dom","domek","domku"], answer:"domek",
+              explain:"dom → domek (-ek for masculine).", full:"Mamy mały domek pod Warszawą.", fullEn:"We have a little house near Warsaw." },
+            { type:"choose", prompt:"Katarzyna \u2192 ___", promptEn:"Katarzyna's everyday short form",
+              options:["Kasia","Katka","Karolina"], answer:"Kasia",
+              explain:"Katarzyna → Kasia. Using it means you're on ty terms.", full:"Cześć, jestem Kasia.", fullEn:"Hi, I'm Kasia." },
+            { type:"choose", prompt:"___, już idę!", promptEn:"One moment, I'm coming!",
+              options:["Moment","Momencik","Momentu"], answer:"Momencik",
+              explain:"moment → momencik - warmer and very common.", full:"Momencik, już idę!", fullEn:"One moment, I'm coming!" },
+            { type:"choose", prompt:"Nie mam ___.", promptEn:"I don't have any money. (diminutive)",
+              options:["pieniążki","pieniążków","pieniądze"], answer:"pieniążków",
+              explain:"nie mam + dopełniacz: pieniążki → pieniążków.", full:"Nie mam pieniążków.", fullEn:"I don't have any money." },
+            { type:"build", promptEn:"Shall we pop out for a coffee?",
+              answer:["Skoczymy","na","kawkę?"],
+              explain:"kawa → kawka → na kawkę (biernik).", full:"Skoczymy na kawkę?", fullEn:"Shall we pop out for a coffee?" },
+            { type:"build", promptEn:"Just a second, I'm looking for the key.",
+              answer:["Sekundkę,","szukam","klucza"],
+              explain:"sekundkę = the set phrase; szukać + dopełniacz: klucza.", full:"Sekundkę, szukam klucza.", fullEn:"Just a second, I'm looking for the key." }
+          ]
+        },
+
+        /* 5 ------------------------------------------- FORMAL WRITING */
+        {
+          name: "Korespondencja (Formal writing)", emoji: "\u2709\uFE0F", kind: "grammar", chip: "Grammar B1",
+          desc: "Emails, cover letters, and the Witam trap",
+          teach: [
+            { front:"Opening a formal message",
+              sub:"Get the first line right and the rest follows.",
+              table:[
+                { g:"group / unknown", e:"Szanowni Państwo,", ex:"Szanowni Państwo, piszę w sprawie oferty." },
+                { g:"to a woman", e:"Szanowna Pani,", ex:"Szanowna Pani, dziękuję za wiadomość." },
+                { g:"to a man", e:"Szanowny Panie,", ex:"Szanowny Panie, w nawiązaniu do rozmowy..." },
+                { g:"neutral / modern", e:"Dzień dobry,", ex:"Dzień dobry, mam pytanie o rezerwację." }
+              ],
+              note:"<b>Dzień dobry</b> at the top of an email is now completely normal - it's the safe modern default when Szanowni Państwo feels too stiff." },
+
+            { front:"The Witam trap",
+              sub:"The single most common opener mistake - and it's invisible to learners.",
+              points:[
+                "<b>Witam</b> looks like a friendly 'hello'. It actually means 'I welcome you', spoken from the position of a host.",
+                "Opening an email to a stranger or someone senior with <i>Witam</i> reads as presumptuous or over-familiar to many Poles.",
+                "It's fine downward or among equals you know - a boss to their team, a host to guests. It is <b>not</b> a neutral hello.",
+                "Safe every time: <b>Szanowni Państwo</b> (formal) or <b>Dzień dobry</b> (neutral)."
+              ],
+              examples:[
+                { pl:"Szanowni Państwo, piszę w sprawie oferty pracy.", en:"Dear Sir or Madam, I'm writing regarding the job offer." },
+                { pl:"Dzień dobry, mam pytanie o rezerwację.", en:"Hello, I have a question about a reservation." }
+              ] },
+
+            { front:"Closing",
+              sub:"Pick by distance, not by mood.",
+              table:[
+                { g:"most formal", e:"Z poważaniem", ex:"Z poważaniem, Anna Kowalska" },
+                { g:"formal", e:"Z wyrazami szacunku", ex:"Z wyrazami szacunku, Jan Nowak" },
+                { g:"everyday work", e:"Pozdrawiam", ex:"Pozdrawiam, Kasia" },
+                { g:"warm", e:"Pozdrawiam serdecznie", ex:"Pozdrawiam serdecznie, Tomek" }
+              ],
+              note:"<b>Z poważaniem</b> is the CV and cover-letter default. <b>Pozdrawiam</b> is the everyday work default - after a couple of exchanges most people drop to it." },
+
+            { front:"Phrases for the body",
+              sub:"These five do most of the work in a normal email.",
+              table:[
+                { g:"I'm writing about", e:"Piszę w sprawie...", ex:"Piszę w sprawie oferty pracy." },
+                { g:"with reference to", e:"W nawiązaniu do...", ex:"W nawiązaniu do naszej rozmowy telefonicznej." },
+                { g:"I attach", e:"W załączeniu przesyłam...", ex:"W załączeniu przesyłam moje CV." },
+                { g:"I'd be grateful", e:"Będę wdzięczny / wdzięczna", ex:"Będę wdzięczna za szybką odpowiedź." },
+                { g:"thanks in advance", e:"Z góry dziękuję", ex:"Z góry dziękuję za pomoc." }
+              ],
+              note:"<b>Będę wdzięczny / wdzięczna</b> is gendered: a man writes wdzięczny, a woman wdzięczna. <b>Piszę w sprawie</b> + dopełniacz: w sprawie ofert<b>y</b>." }
+          ],
+          drills: [
+            { type:"choose", prompt:"___ Państwo, piszę w sprawie oferty.", promptEn:"Dear Sir or Madam, I'm writing regarding the offer.",
+              options:["Szanowni","Drodzy","Witam"], answer:"Szanowni",
+              explain:"The standard formal opener is Szanowni Państwo.", full:"Szanowni Państwo, piszę w sprawie oferty.", fullEn:"Dear Sir or Madam, I'm writing regarding the offer." },
+            { type:"choose", prompt:"Mail do nieznajomej osoby zaczynasz: ___", promptEn:"Opening an email to someone you don't know",
+              options:["Witam,","Dzień dobry,","Cześć,"], answer:"Dzień dobry,",
+              explain:"'Witam' sounds presumptuous to a stranger; 'Dzień dobry' is the safe neutral opener.", full:"Dzień dobry, mam pytanie o rezerwację.", fullEn:"Hello, I have a question about a reservation." },
+            { type:"choose", prompt:"___ Pani, dziękuję za wiadomość.", promptEn:"Dear Madam, thank you for your message.",
+              options:["Szanowny","Szanowna","Szanowni"], answer:"Szanowna",
+              explain:"To a woman: Szanowna Pani.", full:"Szanowna Pani, dziękuję za wiadomość.", fullEn:"Dear Madam, thank you for your message." },
+            { type:"choose", prompt:"List motywacyjny kończysz: ___", promptEn:"Closing a cover letter",
+              options:["Cześć","Z poważaniem","Trzymaj się"], answer:"Z poważaniem",
+              explain:"Z poważaniem is the CV and cover-letter default.", full:"Z poważaniem, Anna Kowalska", fullEn:"Yours faithfully, Anna Kowalska" },
+            { type:"choose", prompt:"Mail do kolegi z zespołu kończysz: ___", promptEn:"Closing an email to a teammate",
+              options:["Z poważaniem","Pozdrawiam","Z wyrazami szacunku"], answer:"Pozdrawiam",
+              explain:"Pozdrawiam is the everyday work default - Z poważaniem would be stiff here.", full:"Pozdrawiam, Kasia", fullEn:"Best regards, Kasia" },
+            { type:"choose", prompt:"W ___ przesyłam moje CV.", promptEn:"I'm attaching my CV.",
+              options:["załączeniu","nawiązaniu","sprawie"], answer:"załączeniu",
+              explain:"W załączeniu przesyłam... = please find attached.", full:"W załączeniu przesyłam moje CV.", fullEn:"I'm attaching my CV." },
+            { type:"choose", prompt:"Piszę w ___ rezerwacji.", promptEn:"I'm writing regarding a reservation.",
+              options:["sprawie","sprawa","sprawę"], answer:"sprawie",
+              explain:"'w sprawie' + dopełniacz: w sprawie rezerwacji.", full:"Piszę w sprawie rezerwacji.", fullEn:"I'm writing regarding a reservation." },
+            { type:"choose", prompt:"Będę ___ za szybką odpowiedź.", promptEn:"I'd be grateful for a quick reply. (woman writing)",
+              options:["wdzięczny","wdzięczna","wdzięczni"], answer:"wdzięczna",
+              explain:"A woman writes wdzięczna; a man wdzięczny.", full:"Będę wdzięczna za szybką odpowiedź.", fullEn:"I'd be grateful for a quick reply." },
+            { type:"build", promptEn:"Thanks in advance for your help.",
+              answer:["Z","góry","dziękuję","za","pomoc"],
+              explain:"'Z góry dziękuję za' + biernik: za pomoc.", full:"Z góry dziękuję za pomoc.", fullEn:"Thanks in advance for your help." },
+            { type:"build", promptEn:"With reference to our phone conversation.",
+              answer:["W","nawiązaniu","do","naszej","rozmowy","telefonicznej"],
+              explain:"'W nawiązaniu do' + dopełniacz: do rozmowy.", full:"W nawiązaniu do naszej rozmowy telefonicznej.", fullEn:"With reference to our phone conversation." }
           ]
         }
       ]

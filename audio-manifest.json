@@ -1,6 +1,6 @@
 {
 "voice": "pl-PL-MarekNeural",
-"generatedAt": "2026-07-14T19:54:59.299853Z",
+"generatedAt": "2026-07-15T12:13:15.499315Z",
 "audioDir": "audio",
 "entries": {
 "000311d1288f": {
@@ -10382,6 +10382,442 @@
 "cb29e02f0167": {
 "pl": "Dziękuję, wzajemnie!",
 "file": "audio/cb29e02f0167.mp3"
+},
+"284c8495379f": {
+"pl": "Każdy student ma indeks.",
+"file": "audio/284c8495379f.mp3"
+},
+"40e196be3215": {
+"pl": "Wszyscy studenci mają indeksy.",
+"file": "audio/40e196be3215.mp3"
+},
+"58e08a7c8084": {
+"pl": "Każdy dzień jest inny.",
+"file": "audio/58e08a7c8084.mp3"
+},
+"a5fad52dd29a": {
+"pl": "Każda godzina się liczy.",
+"file": "audio/a5fad52dd29a.mp3"
+},
+"3e55f41d7905": {
+"pl": "Każde dziecko to wie.",
+"file": "audio/3e55f41d7905.mp3"
+},
+"866a6f2437f6": {
+"pl": "Wszyscy koledzy przyszli.",
+"file": "audio/866a6f2437f6.mp3"
+},
+"3209da46e460": {
+"pl": "Wszystkie koleżanki przyszły.",
+"file": "audio/3209da46e460.mp3"
+},
+"55207d400436": {
+"pl": "Wszystkie bilety są sprzedane.",
+"file": "audio/55207d400436.mp3"
+},
+"cfb9edc02838": {
+"pl": "Wszystko w porządku?",
+"file": "audio/cfb9edc02838.mp3"
+},
+"73bb9da7e51a": {
+"pl": "Wszystkie rzeczy są w torbie.",
+"file": "audio/73bb9da7e51a.mp3"
+},
+"5a9585adc62e": {
+"pl": "Każdego dnia uczę się polskiego.",
+"file": "audio/5a9585adc62e.mp3"
+},
+"7059ba79d942": {
+"pl": "Za każdym razem to samo.",
+"file": "audio/7059ba79d942.mp3"
+},
+"8d49a582e970": {
+"pl": "W każdym razie dziękuję.",
+"file": "audio/8d49a582e970.mp3"
+},
+"0f1bd2d55c4c": {
+"pl": "Wszystkiego najlepszego!",
+"file": "audio/0f1bd2d55c4c.mp3"
+},
+"414de572a7cd": {
+"pl": "Dziękuję wszystkim za pomoc.",
+"file": "audio/414de572a7cd.mp3"
+},
+"ff0fbef84b9b": {
+"pl": "Dziękuję za wszystko.",
+"file": "audio/ff0fbef84b9b.mp3"
+},
+"f76c13496bfc": {
+"pl": "Przepraszam, czy pan wie, gdzie jest apteka?",
+"file": "audio/f76c13496bfc.mp3"
+},
+"a53e216ce46b": {
+"pl": "Cześć, wiesz, gdzie jest apteka?",
+"file": "audio/a53e216ce46b.mp3"
+},
+"36055d7e6004": {
+"pl": "Wiesz, gdzie to jest?",
+"file": "audio/36055d7e6004.mp3"
+},
+"3d0b9f93e047": {
+"pl": "Czy pan wie, gdzie to jest?",
+"file": "audio/3d0b9f93e047.mp3"
+},
+"94e371fd1a5a": {
+"pl": "Czy pani ma chwilę?",
+"file": "audio/94e371fd1a5a.mp3"
+},
+"9e05b59eb798": {
+"pl": "Chcesz kawę?",
+"file": "audio/9e05b59eb798.mp3"
+},
+"5a123713c510": {
+"pl": "Czy pani chce kawę?",
+"file": "audio/5a123713c510.mp3"
+},
+"90e52da23a49": {
+"pl": "Czy pan wie?",
+"file": "audio/90e52da23a49.mp3"
+},
+"ed9fecddaf7a": {
+"pl": "Nie ma pana w biurze.",
+"file": "audio/ed9fecddaf7a.mp3"
+},
+"5206dc74dbc2": {
+"pl": "Dziękuję panu.",
+"file": "audio/5206dc74dbc2.mp3"
+},
+"080e77863ae0": {
+"pl": "Przepraszam panią.",
+"file": "audio/080e77863ae0.mp3"
+},
+"9811a5ce6e4d": {
+"pl": "Rozmawiam z panią.",
+"file": "audio/9811a5ce6e4d.mp3"
+},
+"b781079e24a0": {
+"pl": "Mówiliśmy o panu.",
+"file": "audio/b781079e24a0.mp3"
+},
+"f864ba6f1836": {
+"pl": "Czy panowie są gotowi?",
+"file": "audio/f864ba6f1836.mp3"
+},
+"83c197002b35": {
+"pl": "Czy panie mają bilety?",
+"file": "audio/83c197002b35.mp3"
+},
+"a4cd2743b124": {
+"pl": "Czy państwo chcą stolik?",
+"file": "audio/a4cd2743b124.mp3"
+},
+"85aca64f51de": {
+"pl": "Proszę pana, zgubił pan portfel.",
+"file": "audio/85aca64f51de.mp3"
+},
+"bcbb6872ff50": {
+"pl": "Czy możemy przejść na ty?",
+"file": "audio/bcbb6872ff50.mp3"
+},
+"265b7f6f008a": {
+"pl": "Czy pan wie, gdzie jest dworzec?",
+"file": "audio/265b7f6f008a.mp3"
+},
+"b63a2831521c": {
+"pl": "Dziękuję panu za pomoc.",
+"file": "audio/b63a2831521c.mp3"
+},
+"cdb30f0a34d5": {
+"pl": "Rozmawiałam wczoraj z panią.",
+"file": "audio/cdb30f0a34d5.mp3"
+},
+"5f092584df16": {
+"pl": "Proszę pana, gdzie jest wyjście?",
+"file": "audio/5f092584df16.mp3"
+},
+"92885bb0e992": {
+"pl": "Czy mogę panu pomóc?",
+"file": "audio/92885bb0e992.mp3"
+},
+"071ee1a16a37": {
+"pl": "Czy panowie czekają na stolik?",
+"file": "audio/071ee1a16a37.mp3"
+},
+"a8e1f4a51e59": {
+"pl": "Czy panie mają rezerwację?",
+"file": "audio/a8e1f4a51e59.mp3"
+},
+"1a18d8ff406e": {
+"pl": "Czy państwo są razem?",
+"file": "audio/1a18d8ff406e.mp3"
+},
+"34d28dd171b2": {
+"pl": "Wiecie, gdzie to jest?",
+"file": "audio/34d28dd171b2.mp3"
+},
+"cde7eb2c4786": {
+"pl": "Czy panowie wiedzą, gdzie to jest?",
+"file": "audio/cde7eb2c4786.mp3"
+},
+"b9f4aab61540": {
+"pl": "Czy panie wiedzą, gdzie to jest?",
+"file": "audio/b9f4aab61540.mp3"
+},
+"44e9123fbde8": {
+"pl": "Czy państwo wiedzą, gdzie to jest?",
+"file": "audio/44e9123fbde8.mp3"
+},
+"8885f647aeaa": {
+"pl": "Czy państwo mają bilety?",
+"file": "audio/8885f647aeaa.mp3"
+},
+"6e797b0b0587": {
+"pl": "Czy państwo płacą razem?",
+"file": "audio/6e797b0b0587.mp3"
+},
+"3e913c5bf7a6": {
+"pl": "Czy panowie byli zadowoleni?",
+"file": "audio/3e913c5bf7a6.mp3"
+},
+"f8fccecdb026": {
+"pl": "Czy panie były zadowolone?",
+"file": "audio/f8fccecdb026.mp3"
+},
+"fc5221070eb6": {
+"pl": "Czy państwo byli zadowoleni?",
+"file": "audio/fc5221070eb6.mp3"
+},
+"88735c79b350": {
+"pl": "Czy państwo czekają?",
+"file": "audio/88735c79b350.mp3"
+},
+"ff0eae3ab4cc": {
+"pl": "To jest dla państwa.",
+"file": "audio/ff0eae3ab4cc.mp3"
+},
+"2aa5be5f2a91": {
+"pl": "Dziękuję państwu za spotkanie.",
+"file": "audio/2aa5be5f2a91.mp3"
+},
+"f5e80d550c79": {
+"pl": "Przepraszam państwa!",
+"file": "audio/f5e80d550c79.mp3"
+},
+"8324c2dd4853": {
+"pl": "Miło mi z państwem współpracować.",
+"file": "audio/8324c2dd4853.mp3"
+},
+"000dea80b8b4": {
+"pl": "Czy państwo płacą razem czy osobno?",
+"file": "audio/000dea80b8b4.mp3"
+},
+"b0d0c2884f43": {
+"pl": "Co dla państwa?",
+"file": "audio/b0d0c2884f43.mp3"
+},
+"29bf69a1cdbf": {
+"pl": "Proszę państwa, następna stacja: Centrum.",
+"file": "audio/29bf69a1cdbf.mp3"
+},
+"5e74ad50a440": {
+"pl": "Szanowni Państwo, piszę w sprawie rezerwacji.",
+"file": "audio/5e74ad50a440.mp3"
+},
+"0eb2f3154921": {
+"pl": "Czy państwo byli zadowoleni z pokoju?",
+"file": "audio/0eb2f3154921.mp3"
+},
+"22c0c6c1ed2f": {
+"pl": "Chciałbym zamówić kawę.",
+"file": "audio/22c0c6c1ed2f.mp3"
+},
+"cf637a649a5c": {
+"pl": "Chciałabym zamówić kawę.",
+"file": "audio/cf637a649a5c.mp3"
+},
+"c8e5ec8ad744": {
+"pl": "Chciałbym kawę.",
+"file": "audio/c8e5ec8ad744.mp3"
+},
+"8c7532474756": {
+"pl": "Chciałabyś kawę?",
+"file": "audio/8c7532474756.mp3"
+},
+"8a6b5fdd7b71": {
+"pl": "Ona chciałaby zostać.",
+"file": "audio/8a6b5fdd7b71.mp3"
+},
+"a7b9b82ba513": {
+"pl": "Chcielibyśmy stolik.",
+"file": "audio/a7b9b82ba513.mp3"
+},
+"b921200026ac": {
+"pl": "Chcielibyście zostać?",
+"file": "audio/b921200026ac.mp3"
+},
+"0b1970ed4200": {
+"pl": "Oni chcieliby pomóc.",
+"file": "audio/0b1970ed4200.mp3"
+},
+"da8cc5187330": {
+"pl": "Chciałbym zarezerwować stolik.",
+"file": "audio/da8cc5187330.mp3"
+},
+"0e702a87126d": {
+"pl": "Czy mógłby pan powtórzyć?",
+"file": "audio/0e702a87126d.mp3"
+},
+"e538bb658a19": {
+"pl": "Czy mogłabym prosić o rachunek?",
+"file": "audio/e538bb658a19.mp3"
+},
+"a340b60dedac": {
+"pl": "Wolałbym jutro.",
+"file": "audio/a340b60dedac.mp3"
+},
+"322ba7f4cf8a": {
+"pl": "Gdybym miał czas, poszedłbym z tobą.",
+"file": "audio/322ba7f4cf8a.mp3"
+},
+"3284ef55103e": {
+"pl": "Chciałbym, żebyś przyszedł.",
+"file": "audio/3284ef55103e.mp3"
+},
+"4abf585dc34d": {
+"pl": "Wolałabym nie, dziękuję.",
+"file": "audio/4abf585dc34d.mp3"
+},
+"ef6d51b174f0": {
+"pl": "Czy mógłby pan mówić wolniej?",
+"file": "audio/ef6d51b174f0.mp3"
+},
+"49d6224f4aa3": {
+"pl": "Ona chciałaby zostać dłużej.",
+"file": "audio/49d6224f4aa3.mp3"
+},
+"692a3e777be0": {
+"pl": "Chcielibyśmy stolik przy oknie.",
+"file": "audio/692a3e777be0.mp3"
+},
+"5fc8accaf4bd": {
+"pl": "Chciałabym zarezerwować stolik.",
+"file": "audio/5fc8accaf4bd.mp3"
+},
+"960485c8da1c": {
+"pl": "Chwileczkę, zaraz sprawdzę.",
+"file": "audio/960485c8da1c.mp3"
+},
+"daf2dc090fff": {
+"pl": "Masz ochotę na kawkę?",
+"file": "audio/daf2dc090fff.mp3"
+},
+"e009ab7932e3": {
+"pl": "Mamy mały domek pod Warszawą.",
+"file": "audio/e009ab7932e3.mp3"
+},
+"2e5b67f950a4": {
+"pl": "Skoczymy na kawkę?",
+"file": "audio/2e5b67f950a4.mp3"
+},
+"296173c15617": {
+"pl": "Idziemy na piwko?",
+"file": "audio/296173c15617.mp3"
+},
+"49197c371be3": {
+"pl": "Chwileczkę, proszę.",
+"file": "audio/49197c371be3.mp3"
+},
+"3fa9c6e00b45": {
+"pl": "Zrobić ci kawusię?",
+"file": "audio/3fa9c6e00b45.mp3"
+},
+"9a3e01cd4cf5": {
+"pl": "Chwileczkę, zaraz będę.",
+"file": "audio/9a3e01cd4cf5.mp3"
+},
+"d94956828307": {
+"pl": "Sekundkę, szukam klucza.",
+"file": "audio/d94956828307.mp3"
+},
+"16290997089e": {
+"pl": "Momencik, już idę.",
+"file": "audio/16290997089e.mp3"
+},
+"14bbd0bcd9e9": {
+"pl": "Nie mam pieniążków.",
+"file": "audio/14bbd0bcd9e9.mp3"
+},
+"c45fa499fa49": {
+"pl": "Cześć, jestem Kasia.",
+"file": "audio/c45fa499fa49.mp3"
+},
+"325072c9e242": {
+"pl": "Momencik, zaraz będę.",
+"file": "audio/325072c9e242.mp3"
+},
+"1fe5603bc320": {
+"pl": "Momencik, już idę!",
+"file": "audio/1fe5603bc320.mp3"
+},
+"60d3ceedfdf3": {
+"pl": "Szanowni Państwo, piszę w sprawie oferty.",
+"file": "audio/60d3ceedfdf3.mp3"
+},
+"b95a2e13272e": {
+"pl": "Szanowna Pani, dziękuję za wiadomość.",
+"file": "audio/b95a2e13272e.mp3"
+},
+"d7e9b23730e2": {
+"pl": "Szanowny Panie, w nawiązaniu do rozmowy...",
+"file": "audio/d7e9b23730e2.mp3"
+},
+"ca1b0e35e967": {
+"pl": "Dzień dobry, mam pytanie o rezerwację.",
+"file": "audio/ca1b0e35e967.mp3"
+},
+"b5ea4aab700f": {
+"pl": "Szanowni Państwo, piszę w sprawie oferty pracy.",
+"file": "audio/b5ea4aab700f.mp3"
+},
+"7c943a54f55d": {
+"pl": "Z poważaniem, Anna Kowalska",
+"file": "audio/7c943a54f55d.mp3"
+},
+"d32b3364249a": {
+"pl": "Z wyrazami szacunku, Jan Nowak",
+"file": "audio/d32b3364249a.mp3"
+},
+"2dd2d431e2b3": {
+"pl": "Pozdrawiam, Kasia",
+"file": "audio/2dd2d431e2b3.mp3"
+},
+"286f5aefac0d": {
+"pl": "Pozdrawiam serdecznie, Tomek",
+"file": "audio/286f5aefac0d.mp3"
+},
+"bb1affd64b0c": {
+"pl": "Piszę w sprawie oferty pracy.",
+"file": "audio/bb1affd64b0c.mp3"
+},
+"4a3757e8ddea": {
+"pl": "W nawiązaniu do naszej rozmowy telefonicznej.",
+"file": "audio/4a3757e8ddea.mp3"
+},
+"4304dc055541": {
+"pl": "W załączeniu przesyłam moje CV.",
+"file": "audio/4304dc055541.mp3"
+},
+"9b183210c11a": {
+"pl": "Będę wdzięczna za szybką odpowiedź.",
+"file": "audio/9b183210c11a.mp3"
+},
+"3b4166da5605": {
+"pl": "Z góry dziękuję za pomoc.",
+"file": "audio/3b4166da5605.mp3"
+},
+"34dd300d9f22": {
+"pl": "Piszę w sprawie rezerwacji.",
+"file": "audio/34dd300d9f22.mp3"
 }
 }
 }
