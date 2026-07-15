@@ -86,29 +86,47 @@ async def main():
 
     phrases = collect_phrases()
     made = failed = 0
+    failures = []
     for n in phrases:
         h = phrase_hash(n)
         rel = f"{AUDIO_DIR}/{h}.mp3"
-        entries[h] = {"pl": n, "file": rel}          # keep the manifest in sync
-        if os.path.exists(rel):                       # incremental - skip existing clips
+        # Incremental - a clip counts as existing only if it's non-empty.
+        # (edge-tts can leave a zero-byte file behind on a partial failure;
+        # treat those as missing and re-synthesize.)
+        if os.path.exists(rel) and os.path.getsize(rel) > 0:
+            entries[h] = {"pl": n, "file": rel}       # keep the manifest in sync
             continue
         try:
             await synth(n, rel)
+            if not (os.path.exists(rel) and os.path.getsize(rel) > 0):
+                raise RuntimeError("saved file is empty")
+            entries[h] = {"pl": n, "file": rel}       # only enter the manifest once the clip verifiably exists
             made += 1
             print(f"  + {h}  {n[:52]}")
         except Exception as e:
             failed += 1
+            failures.append(n)
+            if os.path.exists(rel) and os.path.getsize(rel) == 0:
+                os.remove(rel)                        # don't leave an empty file that would block a retry
             print(f"  ! failed: {n[:52]}  ({e})")
         await asyncio.sleep(0.15)                      # be gentle on the TTS endpoint
 
     manifest["voice"] = VOICE
     manifest["audioDir"] = AUDIO_DIR
-    manifest["generatedAt"] = datetime.datetime.utcnow().isoformat() + "Z"
+    manifest["generatedAt"] = (
+        datetime.datetime.now(datetime.timezone.utc)
+        .isoformat(timespec="microseconds")
+        .replace("+00:00", "Z")
+    )
     with open(MANIFEST, "w", encoding="utf-8") as fh:
         json.dump(manifest, fh, ensure_ascii=False, indent=0)
 
     print(f"\nDone. {made} new clip(s), {failed} failed. "
           f"Manifest now has {len(entries)} entries.")
+    if failures:
+        print("\nThese phrases have NO audio yet - re-run the script to retry them:")
+        for n in failures:
+            print(f"  - {n}")
 
 
 if __name__ == "__main__":

@@ -38,6 +38,27 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self'; connect-src 'self'; media-src 'self'; base-uri 'self'; form-action 'self'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 
+<!-- Structured data: tells search engines this is a free educational web app.
+     Inline script is fine here - the CSP's script-src already allows 'unsafe-inline'. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Po polsku",
+  "alternateName": "Po polsku - learn the Polish you'll actually use",
+  "url": "https://popolsku.app/",
+  "description": "Free Polish flashcards with native audio for A1-B1: real everyday vocabulary, grammar drills, and branching conversations. No account, works offline.",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript",
+  "inLanguage": "en",
+  "teaches": "Polish language",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "image": "https://popolsku.app/og-image.png"
+}
+</script>
+
 <style>
   /* Self-hosted Plus Jakarta Sans - no external font requests, tighter privacy, works offline.
      If google-webfonts-helper gives you different filenames (e.g. v13 instead of v12), update these 5 lines. */
@@ -200,7 +221,7 @@
   .search-ic{position:absolute;left:15px;top:50%;transform:translateY(-50%);
     width:18px;height:18px;color:var(--muted);pointer-events:none}
   .search input{width:100%;border:1px solid var(--border);background:var(--card);color:var(--forest);
-    border-radius:var(--r-md);padding:14px 44px;font:inherit;font-size:15px;font-weight:500;
+    border-radius:var(--r-md);padding:14px 44px;font:inherit;font-size:16px;font-weight:500;  /* 16px min: Safari auto-zooms the viewport on focus of any input below 16px */
     box-shadow:var(--shadow-sm);transition:.18s;-webkit-appearance:none;appearance:none}
   .search input::placeholder{color:#9aa8b4;font-weight:500}
   .search input:focus{outline:none;border-color:var(--emerald);box-shadow:0 0 0 3px rgba(79,70,229,.13)}
