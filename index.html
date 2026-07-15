@@ -2013,11 +2013,34 @@ const PP_A2HS = (function(){
       + '<button class="pp-add" data-a2hs-add>Add</button></div>';
   }
 
-  function bump(n){ engagement += (n||1); if(engagement >= THRESHOLD) engaged = true; }
+  /* Ask the browser to protect this origin's storage (caches + localStorage) from
+     automatic eviction - iOS in particular purges PWA storage after long inactivity,
+     which would wipe cached audio and progress. Requested once, only after real
+     engagement (same threshold as the install banner), so the signal is meaningful.
+     Chromium grants silently based on engagement heuristics; Safari grants for
+     installed apps; a denial is harmless and we never re-ask within a session. */
+  let persistAsked = false;
+  function requestPersist(){
+    if(persistAsked) return;
+    persistAsked = true;
+    try{
+      if(navigator.storage && navigator.storage.persist){
+        navigator.storage.persisted().then(already => {
+          if(!already) navigator.storage.persist().catch(()=>{});
+        }).catch(()=>{});
+      }
+    }catch(e){}
+  }
+
+  function bump(n){
+    engagement += (n||1);
+    if(engagement >= THRESHOLD && !engaged){ engaged = true; requestPersist(); }
+    else if(engagement >= THRESHOLD){ engaged = true; }
+  }
   function onHome(){ revealBanner(); }
 
   function init(){
-    if(standalone()){ hideChip(); hideBanner(); return; }
+    if(standalone()){ hideChip(); hideBanner(); requestPersist(); return; }   /* installed = clear intent; protect their storage now */
     showChip();
 
     window.addEventListener("beforeinstallprompt", e=>{

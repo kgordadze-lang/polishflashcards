@@ -1,9 +1,14 @@
 /* Po polsku service worker
    - Bump CACHE version whenever you deploy a change you want pushed to everyone.
    - Strategy: network-first for the page itself (fresh content when online,
-     cached copy when offline), cache-first for everything else (fonts, icons). */
+     cached copy when offline), cache-first for everything else (fonts, icons).
+   - AUDIO_CACHE is deliberately versionless: MP3 filenames are content hashes,
+     so a clip can never go stale. Keeping audio out of the versioned cache means
+     users' accumulated clips (up to ~34MB) survive every deploy instead of being
+     deleted and re-downloaded on mobile data. */
 
-const CACHE = "popolsku-v20";
+const CACHE = "popolsku-v21";
+const AUDIO_CACHE = "popolsku-audio";
 const ASSETS = [
   "./",
   "./index.html",
@@ -38,7 +43,10 @@ self.addEventListener("install", e => {
 self.addEventListener("activate", e => {
   e.waitUntil(
     caches.keys()
-      .then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
+      .then(keys => Promise.all(
+        keys.filter(k => k !== CACHE && k !== AUDIO_CACHE)   /* audio survives version bumps */
+            .map(k => caches.delete(k))
+      ))
       .then(() => self.clients.claim())
   );
 });
@@ -110,6 +118,7 @@ self.addEventListener("fetch", e => {
 
   /* Audio MP3 files: cache-first, because the filename IS the content hash -
      if the URL is the same, the audio is the same. Never needs revalidation.
+     Stored in the versionless AUDIO_CACHE so clips survive version bumps.
      Populates the cache on first play, then serves from cache forever after. */
   if (/\/audio\/[a-f0-9]+\.mp3(\?|$)/.test(e.request.url)) {
     e.respondWith(
@@ -118,7 +127,7 @@ self.addEventListener("fetch", e => {
         fetch(e.request).then(res => {
           if (res.ok) {
             const copy = res.clone();
-            caches.open(CACHE).then(c => c.put(e.request, copy));
+            caches.open(AUDIO_CACHE).then(c => c.put(e.request, copy));
           }
           return res;
         })
