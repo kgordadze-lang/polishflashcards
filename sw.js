@@ -7,7 +7,7 @@
      users' accumulated clips (up to ~34MB) survive every deploy instead of being
      deleted and re-downloaded on mobile data. */
 
-const CACHE = "popolsku-v21";
+const CACHE = "popolsku-v22";
 const AUDIO_CACHE = "popolsku-audio";
 const ASSETS = [
   "./",

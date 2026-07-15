@@ -156,6 +156,7 @@
   .seg-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow);border-color:#d7e0e8}
   .seg-btn[aria-pressed="true"]{background:var(--forest);color:var(--cream);border-color:var(--forest)}
   .seg-btn:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  .flip:focus-visible{outline:2px solid var(--emerald);outline-offset:4px}
   .seg-levels.searching .seg-btn{opacity:.5}
   .seg-levels.searching .seg-btn[aria-pressed="true"]{background:var(--card);color:var(--forest);border-color:var(--border)}
   /* practice modes - separate tiles (a different axis: open a section, not a level filter) */
@@ -703,20 +704,20 @@
 
     <div class="progress">
       <div class="track"><div class="fill" id="fill"></div></div>
-      <div class="p-count" id="pcount">0 / 0</div>
+      <div class="p-count" id="pcount" aria-live="polite">0 / 0</div>
     </div>
 
     <!-- card view -->
     <div id="cardView" style="display:flex;flex-direction:column;flex:1">
       <div class="stage">
         <div class="scene">
-          <div class="flip" id="flip">
+          <div class="flip" id="flip" role="button" tabindex="0" aria-label="Show meaning">
             <div class="face">
               <span class="eyebrow" id="eyebrow">Polish</span>
               <button class="fab" id="speak" aria-label="Play pronunciation">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>
               </button>
-              <div class="pl" id="plText"></div>
+              <div class="pl" id="plText" lang="pl"></div>
               <span class="strength-badge" id="strBadge" hidden></span>
               <div class="hint" id="frontHint"></div>
               <div class="cue" id="frontCue">tap to see meaning</div>
@@ -732,7 +733,7 @@
               <div class="example" id="exampleBox">
                 <div class="ex-text">
                   <div class="ex-label" id="exLabel">In everyday use</div>
-                  <div class="ex-pl" id="exPl"></div>
+                  <div class="ex-pl" id="exPl" lang="pl"></div>
                   <div class="ex-en" id="exEn"></div>
                 </div>
                 <button class="ex-audio" id="speakEx" aria-label="Play example sentence">
@@ -799,13 +800,13 @@
     </div>
     <div class="progress" id="gProgress">
       <div class="track"><div class="fill" id="gFill"></div></div>
-      <div class="p-count" id="gCount">0 / 0</div>
+      <div class="p-count" id="gCount" aria-live="polite">0 / 0</div>
     </div>
 
     <!-- learn -->
     <div id="gLearn" style="display:none;flex-direction:column;flex:1">
       <div class="stage"><div class="scene">
-        <div class="flip" id="gFlip">
+        <div class="flip" id="gFlip" role="button" tabindex="0" aria-label="Reveal explanation">
           <div class="face">
             <span class="eyebrow">Concept</span>
             <div class="front-q" id="gFront"></div>
@@ -1341,6 +1342,7 @@ function render(){
     void f.offsetWidth;
     f.style.transition = "";
   }
+  flipLabel();                                  /* card is front-side up again - label follows */
   const isPodcast = LEVELS[S.levelIdx].topics[S.topicIdx].kind === "podcast";
   const front = $("flip").querySelector(".face");
   const back  = $("flip").querySelector(".back-face");
@@ -1401,7 +1403,8 @@ function render(){
   $("fill").style.width = pct + "%";
   $("pcount").textContent = (S.pos+1) + " / " + S.queue.length;
 }
-function flip(){ $("flip").classList.toggle("flipped"); if(window.PP_A2HS && $("flip").classList.contains("flipped")) window.PP_A2HS.bump(); }
+function flipLabel(){ $("flip").setAttribute("aria-label", $("flip").classList.contains("flipped") ? "Show Polish" : "Show meaning"); }
+function flip(){ $("flip").classList.toggle("flipped"); flipLabel(); if(window.PP_A2HS && $("flip").classList.contains("flipped")) window.PP_A2HS.bump(); }
 function advance(){ if($("flip").dataset.leaving) return; S.pos++; render(); }
 function goPrev(){ if($("flip").dataset.leaving) return; if(S.pos>0){ S.pos--; render(); } }
 function markKnown(){ const i=S.queue[S.pos]; S.still.delete(i); S.known.add(i); persistProgress(); exitCard("exit-know"); }
@@ -1590,6 +1593,14 @@ function voiceHint(){
 
 /* ---------------- events ---------------- */
 $("flip").addEventListener("click", flip);
+/* Keyboard activation for the focused card. stopPropagation keeps the global
+   study-screen Space handler (document-level) from firing a second flip. */
+$("flip").addEventListener("keydown", e=>{
+  if(e.key === "Enter" || e.key === " "){
+    if(e.target !== e.currentTarget) return;    /* let inner buttons (audio, feedback) keep native behavior */
+    e.preventDefault(); e.stopPropagation(); flip();
+  }
+});
 $("speak").addEventListener("click", e=>{ e.stopPropagation(); if(currentCard().intro) return; speakText(currentCard().pl, e.currentTarget); });
 $("speakEx").addEventListener("click", e=>{ e.stopPropagation(); speakText(currentCard().ex, e.currentTarget); });
 $("markKnow").addEventListener("click", e=>{ e.stopPropagation(); markKnown(); });
@@ -1611,22 +1622,42 @@ $("backInstall").addEventListener("click", ()=>show("home"));
 
 /* ---------------- topic routing + adult-language gate (shown on EVERY open) ---------------- */
 let pendingTopic = null;
+let matureReturnFocus = null;   /* element to restore focus to when the gate closes */
 function routeTopic(li, ti, t){
   if(t.kind === "grammar") startGrammar(li, ti);
   else if(t.kind === "convo") startConvo(li, ti);
   else startTopic(li, ti);                              /* vocab + podcast */
 }
 function openTopic(li, ti, t){
-  if(t.mature){ pendingTopic = {li, ti, t}; $("matureGate").hidden = false; return; }   /* re-prompt every time; never persisted */
+  if(t.mature){
+    pendingTopic = {li, ti, t};
+    matureReturnFocus = document.activeElement;         /* usually the topic tile */
+    $("matureGate").hidden = false;
+    $("matureCancel").focus();                          /* safe default lands on "Not now" */
+    return;
+  }   /* re-prompt every time; never persisted */
   routeTopic(li, ti, t);
 }
-function closeMatureGate(){ pendingTopic = null; $("matureGate").hidden = true; }
+function restoreMatureFocus(){
+  if(matureReturnFocus && document.contains(matureReturnFocus)){ try{ matureReturnFocus.focus(); }catch(e){} }
+  matureReturnFocus = null;
+}
+function closeMatureGate(){ pendingTopic = null; $("matureGate").hidden = true; restoreMatureFocus(); }
 $("matureContinue").addEventListener("click", ()=>{
   const p = pendingTopic; pendingTopic = null; $("matureGate").hidden = true;
+  matureReturnFocus = null;                             /* continuing navigates away - nothing to restore */
   if(p) routeTopic(p.li, p.ti, p.t);
 });
 $("matureCancel").addEventListener("click", closeMatureGate);
 $("matureGate").addEventListener("click", e=>{ if(e.target === $("matureGate")) closeMatureGate(); });  /* tap backdrop */
+/* Focus trap: while the gate is open, Tab cycles between its two buttons. */
+$("matureGate").addEventListener("keydown", e=>{
+  if(e.key !== "Tab") return;
+  const first = $("matureCancel"), last = $("matureContinue");
+  if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+  else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+  else if(document.activeElement !== first && document.activeElement !== last){ e.preventDefault(); first.focus(); }
+});
 document.addEventListener("keydown", e=>{ if(e.key === "Escape" && !$("matureGate").hidden) closeMatureGate(); });
 document.addEventListener("keydown", e=>{
   if(!$("study").classList.contains("active")) return;
@@ -1641,7 +1672,7 @@ const G = { topic:null, li:0, tpi:0, ti:0, di:0, results:[], attempted:false, bu
 const G_AUDIO='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>';
 
 function gExampleHTML(ex){
-  return '<div class="ex-line"><div class="t"><div class="p">'+ex.pl+'</div><div class="e">'+ex.en+'</div></div>'+
+  return '<div class="ex-line"><div class="t"><div class="p" lang="pl">'+ex.pl+'</div><div class="e">'+ex.en+'</div></div>'+
          '<button class="mini-audio" data-say="'+encodeURIComponent(ex.pl)+'" aria-label="Play">'+G_AUDIO+'</button></div>';
 }
 function gPhaseView(v){
@@ -1660,6 +1691,7 @@ function gShuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.f
 function gRenderTeach(){
   const t=G.topic.teach[G.ti], last=G.ti===G.topic.teach.length-1;
   $("gFlip").classList.remove("flipped");
+  gFlipLabel();
   $("gFront").innerHTML=t.front;
   $("gPhase").textContent="Learn \u00b7 card "+(G.ti+1)+" of "+G.topic.teach.length;
   $("gCount").textContent=(G.ti+1)+" / "+G.topic.teach.length;
@@ -1703,9 +1735,9 @@ function gRenderDrill(){
 }
 function gRenderChoose(c){
   const p=c.prompt.replace("___",'<span class="blank"></span>');
-  let h='<div class="d-type">Choose the right form</div><div class="q-prompt">'+p+'</div><div class="q-en">'+c.promptEn+'</div><div class="opts">';
-  gShuffle(c.options).forEach(o=>{ h+='<button class="opt" data-val="'+o+'">'+o+'</button>'; });
-  h+='</div><div class="fb-box" id="gFbBox"></div>';
+  let h='<div class="d-type">Choose the right form</div><div class="q-prompt" lang="pl">'+p+'</div><div class="q-en">'+c.promptEn+'</div><div class="opts">';
+  gShuffle(c.options).forEach(o=>{ h+='<button class="opt" lang="pl" data-val="'+o+'">'+o+'</button>'; });
+  h+='</div><div class="fb-box" id="gFbBox" aria-live="polite"></div>';
   $("gDrillCard").innerHTML=h;
   $("gDrillCard").querySelectorAll(".opt").forEach(btn=>{
     btn.addEventListener("click",()=>{
@@ -1722,7 +1754,7 @@ function gRenderChoose(c){
 }
 function gChooseFeedback(c){
   const fb=$("gFbBox");
-  fb.innerHTML='<div class="fb-good"><div class="t"><div class="p">'+c.full+'</div><div class="e">'+c.fullEn+'</div></div>'+
+  fb.innerHTML='<div class="fb-good"><div class="t"><div class="p" lang="pl">'+c.full+'</div><div class="e">'+c.fullEn+'</div></div>'+
     '<button class="mini-audio" data-say="'+encodeURIComponent(c.full)+'" aria-label="Play">'+G_AUDIO+'</button></div>'+
     '<div class="fb-explain">'+c.explain+'</div>';
   fb.classList.add("show");
@@ -1734,7 +1766,7 @@ function gRenderBuild(c){
   $("gDrillCard").innerHTML='<div class="d-type">Build the sentence</div><div class="q-prompt">'+c.promptEn+'</div>'+
     '<div class="q-en">Tap the words in the right order</div>'+
     '<div class="build-row" id="gBuildRow"></div><div class="build-pool" id="gBuildPool"></div>'+
-    '<button class="check-btn" id="gCheckBtn" disabled>Check</button><div class="fb-box" id="gFbBox"></div>';
+    '<button class="check-btn" id="gCheckBtn" disabled>Check</button><div class="fb-box" id="gFbBox" aria-live="polite"></div>';
   gPaintBuild();
   $("gCheckBtn").addEventListener("click",()=>gCheckBuild(c));
 }
@@ -1744,9 +1776,9 @@ function gPaintBuild(){
   /* hybrid feedback: a word in its correct position greens live; red is only shown on Check */
   row.innerHTML=G.build.row.map((t,i)=>{
     const ok = G.build.answer && t.w===G.build.answer[i];
-    return '<button class="wchip in-row'+(ok?" ok":"")+'" data-id="'+t.id+'">'+t.w+'</button>';
+    return '<button class="wchip in-row'+(ok?" ok":"")+'" lang="pl" data-id="'+t.id+'">'+t.w+'</button>';
   }).join('');
-  pool.innerHTML=G.build.pool.map(t=>'<button class="wchip" data-id="'+t.id+'">'+t.w+'</button>').join('');
+  pool.innerHTML=G.build.pool.map(t=>'<button class="wchip" lang="pl" data-id="'+t.id+'">'+t.w+'</button>').join('');
   row.querySelectorAll(".wchip").forEach(ch=>ch.addEventListener("click",()=>{
     const id=ch.getAttribute("data-id"); const t=G.build.row.find(x=>x.id===id);
     G.build.row=G.build.row.filter(x=>x.id!==id); G.build.pool.push(t); gPaintBuild();
@@ -1764,7 +1796,7 @@ function gCheckBuild(c){
     $("gBuildRow").classList.add("locked");
     $("gBuildPool").style.display="none"; $("gCheckBtn").style.display="none";
     const fb=$("gFbBox");
-    fb.innerHTML='<div class="fb-good"><div class="t"><div class="p">'+c.full+'</div><div class="e">'+c.fullEn+'</div></div>'+
+    fb.innerHTML='<div class="fb-good"><div class="t"><div class="p" lang="pl">'+c.full+'</div><div class="e">'+c.fullEn+'</div></div>'+
       '<button class="mini-audio" data-say="'+encodeURIComponent(c.full)+'" aria-label="Play">'+G_AUDIO+'</button></div>'+
       '<div class="fb-explain">'+c.explain+'</div>';
     fb.classList.add("show"); $("gDrillNext").disabled=false;
@@ -1791,7 +1823,15 @@ function gShowDone(){
 $("gBack").addEventListener("click", ()=>{ if($("gPractice").style.display!=="none"){ gRenderTeach(); gPhaseView("learn"); } else show("home"); });
 $("gPrev").addEventListener("click", ()=>{ if(G.ti>0){ G.ti--; gRenderTeach(); } });
 $("gNext").addEventListener("click", ()=>{ if(G.ti<G.topic.teach.length-1){ G.ti++; gRenderTeach(); } else gStartPractice(); });
-$("gFlip").addEventListener("click", e=>{ if(e.target.closest("[data-say]")) return; $("gFlip").classList.toggle("flipped"); });
+function gFlipLabel(){ $("gFlip").setAttribute("aria-label", $("gFlip").classList.contains("flipped") ? "Show concept" : "Reveal explanation"); }
+function gFlipToggle(){ $("gFlip").classList.toggle("flipped"); gFlipLabel(); }
+$("gFlip").addEventListener("click", e=>{ if(e.target.closest("[data-say]")) return; gFlipToggle(); });
+$("gFlip").addEventListener("keydown", e=>{
+  if(e.key === "Enter" || e.key === " "){
+    if(e.target !== e.currentTarget) return;    /* inner audio buttons keep native behavior */
+    e.preventDefault(); e.stopPropagation(); gFlipToggle();
+  }
+});
 $("gDrillNext").addEventListener("click", gDrillAdvance);
 $("gAgain").addEventListener("click", gStartPractice);
 $("gReview").addEventListener("click", ()=>{ G.ti=0; gRenderTeach(); gPhaseView("learn"); });
@@ -1830,7 +1870,7 @@ function startConvo(l,t){
 }
 function cBubbleHTML(m){
   const audio='<button class="mini-audio" data-say="'+encodeURIComponent(m.pl)+'" aria-label="Play">'+G_AUDIO+'</button>';
-  const inner='<div class="btext"><div class="b-pl">'+m.pl+'</div><div class="b-en">'+m.en+'</div></div>';
+  const inner='<div class="btext"><div class="b-pl" lang="pl">'+m.pl+'</div><div class="b-en">'+m.en+'</div></div>';
   const row = m.who==="npc" ? '<div class="brow">'+inner+audio+'</div>' : '<div class="brow">'+audio+inner+'</div>';
   let h='<div class="bubble '+m.who+'">'+row+'</div>';
   if(m.who==="you" && m.note) h+='<div class="you-note">'+m.note+'</div>';
