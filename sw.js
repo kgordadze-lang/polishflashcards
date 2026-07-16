@@ -7,7 +7,7 @@
      users' accumulated clips (up to ~34MB) survive every deploy instead of being
      deleted and re-downloaded on mobile data. */
 
-const CACHE = "popolsku-v23";        /* machine counter - also bump APP_VERSION in index.html (human-facing, date format) */
+const CACHE = "popolsku-v25";        /* machine counter - also bump APP_VERSION in index.html (human-facing, date format) */
 const AUDIO_CACHE = "popolsku-audio";
 const ASSETS = [
   "./",
@@ -61,20 +61,28 @@ self.addEventListener("fetch", e => {
   const url = new URL(e.request.url);
   if (url.protocol !== "http:" && url.protocol !== "https:") return;
 
-  /* The app shell: try the network first so deploys reach users, fall back to cache offline.
+  /* Page navigations: network-first so deploys reach users, cache fallback offline.
+     Only the app shell itself ("/" or "/index.html") may overwrite the cached shell -
+     other pages (e.g. /grammar/...) are cached under their own URL. Without this
+     split, visiting a grammar page would replace the cached shell, and the next
+     offline launch of the installed app would open that page instead of the app.
      cache:"no-store" skips the browser's regular HTTP cache too, so this always asks
      the network for the real latest copy instead of a possibly-stale in-between one. */
   if (e.request.mode === "navigate") {
+    const isShell = url.pathname === "/" || url.pathname === "/index.html";
     e.respondWith(
       fetch(e.request, { cache: "no-store" })
         .then(res => {
-          if (res.ok) {                     /* never cache an error page over the app shell */
+          if (res.ok) {                     /* never cache an error page */
             const copy = res.clone();
-            caches.open(CACHE).then(c => c.put("./index.html", copy));
+            caches.open(CACHE).then(c => c.put(isShell ? "./index.html" : e.request, copy));
           }
           return res;
         })
-        .catch(() => caches.match("./index.html"))
+        .catch(() =>
+          caches.match(isShell ? "./index.html" : e.request)
+            .then(hit => hit || caches.match("./index.html"))   /* unvisited page offline -> open the app */
+        )
     );
     return;
   }
