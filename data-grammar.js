@@ -94,7 +94,7 @@
               explain:"Compare with <i>On jest lekarzem</i> (He is a doctor) - here <b>być</b> takes Instrumental. But <i>To jest lekarz</i> uses Nominative. The little word <b>to</b> makes the difference.",
               examples:[
                 { pl:"To nie jest moja książka.", en:"This is not my book." },
-                { pl:"To są bardzo dobre studenci.", en:"These are very good students." }
+                { pl:"To są bardzo dobrzy studenci.", en:"These are very good students." }
               ] }
           ],
           drills: [
@@ -284,7 +284,7 @@
             { front:"What the Dative does",
               sub:"The Dative marks the <b>recipient</b> - the person you give, tell, or show something to. It answers <b>komu? czemu?</b> (to whom?).",
               points:[
-                "Giving: <b>Daję Ani prezent.</b> - I'm giving Anna a gift.",
+                "Giving: <b>Daję Ani prezent.</b> - I'm giving Ania a gift.",
                 "Telling: <b>Mówię koledze prawdę.</b> - I'm telling my colleague the truth.",
                 "Helping: <b>Pomagam mamie.</b> - I'm helping mom."
               ],
@@ -371,9 +371,9 @@
               ] }
           ],
           drills: [
-            { type:"choose", prompt:"Daję ___ prezent.", promptEn:"I'm giving Anna a gift.",
-              options:["Ani","Anna","Annie"], answer:"Ani",
-              explain:"'Anna' takes the same Dative form 'Ani' in colloquial speech - soft ending drops to -i.", full:"Daję Ani prezent.", fullEn:"I'm giving Anna a gift." },
+            { type:"choose", prompt:"Daję ___ prezent.", promptEn:"I'm giving Ania a gift.",
+              options:["Ani","Ania","Anią"], answer:"Ani",
+              explain:"Diminutive 'Ania' has a soft ending, so its Dative is 'Ani'. The full name 'Anna' would be 'Annie'.", full:"Daję Ani prezent.", fullEn:"I'm giving Ania a gift." },
             { type:"choose", prompt:"Jest ___ zimno.", promptEn:"I'm cold.",
               options:["mi","ja","mnie"], answer:"mi",
               explain:"Feelings use 'jest' + Dative pronoun. 'Mi' is the Dative of 'ja' (I).", full:"Jest mi zimno.", fullEn:"I'm cold." },
@@ -617,7 +617,7 @@
             { front:"Being someone: profession & role",
               sub:"After <b>być</b>, Polish always uses Instrumental for profession, nationality, role.",
               points:[
-                "<b>Jestem studentem.</b> - I am a student. [Feminine Ex.] Jestem studentką.",
+                "<b>Jestem studentem.</b> - I am a student. Feminine form: Jestem studentką.",
                 "<b>Ona jest lekarką.</b> - She is a doctor.",
                 "<b>Chcę być inżynierem.</b> - I want to be an engineer."
               ],
@@ -648,7 +648,7 @@
               explain:"'Z' meaning 'with' takes Instrumental. Neuter 'mleko' \u2192 'mlekiem'.", full:"Piję kawę z mlekiem.", fullEn:"I drink coffee with milk." },
             { type:"choose", prompt:"Jestem ___ .", promptEn:"I am a student.",
               options:["studentem","student","studenta"], answer:"studentem",
-              explain:"'Być' + profession takes Instrumental. Masculine \u2192 -em. [Feminine Ex.] Jestem studentką (fem. \u2192 -ą).", full:"Jestem studentem.", fullEn:"I am a student." },
+              explain:"'Być' + profession takes Instrumental. Masculine \u2192 -em. Feminine form: Jestem studentką (fem. \u2192 -ą).", full:"Jestem studentem.", fullEn:"I am a student." },
             { type:"build", promptEn:"I'm going by train.",
               answer:["Jadę","pociągiem"],
               explain:"Transport + Instrumental. Note: after 'g' we insert 'i' \u2192 'pociągiem', not 'pociągem'.", full:"Jadę pociągiem.", fullEn:"I'm going by train." },

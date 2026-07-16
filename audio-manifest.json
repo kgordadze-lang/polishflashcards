@@ -1,6 +1,6 @@
 {
 "voice": "pl-PL-MarekNeural",
-"generatedAt": "2026-07-15T12:13:15.499315Z",
+"generatedAt": "2026-07-16T19:17:00.235679Z",
 "audioDir": "audio",
 "entries": {
 "000311d1288f": {
@@ -10818,6 +10818,898 @@
 "34dd300d9f22": {
 "pl": "Piszę w sprawie rezerwacji.",
 "file": "audio/34dd300d9f22.mp3"
+},
+"8d04310ae7da": {
+"pl": "rodzina",
+"file": "audio/8d04310ae7da.mp3"
+},
+"7e4d8c9e5b01": {
+"pl": "Moja rodzina mieszka daleko.",
+"file": "audio/7e4d8c9e5b01.mp3"
+},
+"b496312991e7": {
+"pl": "Moja mama świetnie gotuje.",
+"file": "audio/b496312991e7.mp3"
+},
+"d1c7c99c6e2e": {
+"pl": "tata",
+"file": "audio/d1c7c99c6e2e.mp3"
+},
+"dbe9f45ad199": {
+"pl": "Mój tata pracuje w banku.",
+"file": "audio/dbe9f45ad199.mp3"
+},
+"e9efb9e5b33a": {
+"pl": "Mam starszego brata.",
+"file": "audio/e9efb9e5b33a.mp3"
+},
+"d804d9ee0815": {
+"pl": "Moja siostra ma na imię Ewa.",
+"file": "audio/d804d9ee0815.mp3"
+},
+"e481a55753aa": {
+"pl": "syn / córka",
+"file": "audio/e481a55753aa.mp3"
+},
+"62af7de3b6d6": {
+"pl": "Mam syna i córkę.",
+"file": "audio/62af7de3b6d6.mp3"
+},
+"84b39ec58a66": {
+"pl": "mąż / żona",
+"file": "audio/84b39ec58a66.mp3"
+},
+"664a50dc3556": {
+"pl": "To jest moja żona, Anna.",
+"file": "audio/664a50dc3556.mp3"
+},
+"72bafa411c80": {
+"pl": "dziecko / dzieci",
+"file": "audio/72bafa411c80.mp3"
+},
+"858c8f8ff30b": {
+"pl": "Czy masz dzieci?",
+"file": "audio/858c8f8ff30b.mp3"
+},
+"b509390e867e": {
+"pl": "babcia",
+"file": "audio/b509390e867e.mp3"
+},
+"2cc3b2a00877": {
+"pl": "Moja babcia mieszka w Krakowie.",
+"file": "audio/2cc3b2a00877.mp3"
+},
+"1f28b84d52ed": {
+"pl": "dziadek",
+"file": "audio/1f28b84d52ed.mp3"
+},
+"ce6fe35969c4": {
+"pl": "Mój dziadek ma osiemdziesiąt lat.",
+"file": "audio/ce6fe35969c4.mp3"
+},
+"ae9b33d2dc09": {
+"pl": "przyjaciel / przyjaciółka",
+"file": "audio/ae9b33d2dc09.mp3"
+},
+"a9862d03cf5d": {
+"pl": "To jest mój przyjaciel Marek.",
+"file": "audio/a9862d03cf5d.mp3"
+},
+"f784664bc468": {
+"pl": "znajomy / znajoma",
+"file": "audio/f784664bc468.mp3"
+},
+"30c2382b1279": {
+"pl": "To jest moja znajoma z pracy.",
+"file": "audio/30c2382b1279.mp3"
+},
+"c53d862bc511": {
+"pl": "kolega / koleżanka",
+"file": "audio/c53d862bc511.mp3"
+},
+"d0a0266076d0": {
+"pl": "Mój kolega z pracy jest z Ukrainy.",
+"file": "audio/d0a0266076d0.mp3"
+},
+"01e081d542ec": {
+"pl": "chłopak / dziewczyna",
+"file": "audio/01e081d542ec.mp3"
+},
+"584623b18820": {
+"pl": "Moja dziewczyna uczy się polskiego.",
+"file": "audio/584623b18820.mp3"
+},
+"928fac4519e7": {
+"pl": "To jest mój... / moja...",
+"file": "audio/928fac4519e7.mp3"
+},
+"3c0122b476c9": {
+"pl": "To jest mój brat, a to moja siostra.",
+"file": "audio/3c0122b476c9.mp3"
+},
+"fea810f8709c": {
+"pl": "ludzie",
+"file": "audio/fea810f8709c.mp3"
+},
+"53e468d02813": {
+"pl": "W parku jest dużo ludzi.",
+"file": "audio/53e468d02813.mp3"
+},
+"3fd4229ace98": {
+"pl": "pan / pani",
+"file": "audio/3fd4229ace98.mp3"
+},
+"0bf70a2e67c9": {
+"pl": "Ten pan czeka na autobus.",
+"file": "audio/0bf70a2e67c9.mp3"
+},
+"3bdcbbc53d07": {
+"pl": "poniedziałek",
+"file": "audio/3bdcbbc53d07.mp3"
+},
+"b051291f67ee": {
+"pl": "W poniedziałek zaczynam pracę.",
+"file": "audio/b051291f67ee.mp3"
+},
+"c5cf78470b99": {
+"pl": "wtorek",
+"file": "audio/c5cf78470b99.mp3"
+},
+"4103a8a4481d": {
+"pl": "We wtorek mam lekcję polskiego.",
+"file": "audio/4103a8a4481d.mp3"
+},
+"6009b7c52206": {
+"pl": "środa",
+"file": "audio/6009b7c52206.mp3"
+},
+"7d8331a53788": {
+"pl": "W środę idę na siłownię.",
+"file": "audio/7d8331a53788.mp3"
+},
+"f70ae3292e29": {
+"pl": "czwartek",
+"file": "audio/f70ae3292e29.mp3"
+},
+"d282031ed2fd": {
+"pl": "W czwartek mam spotkanie.",
+"file": "audio/d282031ed2fd.mp3"
+},
+"1048082b5ccb": {
+"pl": "piątek",
+"file": "audio/1048082b5ccb.mp3"
+},
+"b242e1e683d5": {
+"pl": "W piątek wieczorem spotykam się ze znajomymi.",
+"file": "audio/b242e1e683d5.mp3"
+},
+"1cdc04539764": {
+"pl": "sobota",
+"file": "audio/1cdc04539764.mp3"
+},
+"1f7897ef074f": {
+"pl": "W sobotę długo śpię.",
+"file": "audio/1f7897ef074f.mp3"
+},
+"27c37df0fe13": {
+"pl": "niedziela",
+"file": "audio/27c37df0fe13.mp3"
+},
+"b3678c111bd1": {
+"pl": "W niedzielę sklepy są zamknięte.",
+"file": "audio/b3678c111bd1.mp3"
+},
+"4ecc35c8f42d": {
+"pl": "dzień / tydzień",
+"file": "audio/4ecc35c8f42d.mp3"
+},
+"c1df483a60a3": {
+"pl": "Mam wolny dzień w tym tygodniu.",
+"file": "audio/c1df483a60a3.mp3"
+},
+"1197a20df1b4": {
+"pl": "weekend",
+"file": "audio/1197a20df1b4.mp3"
+},
+"3e094ebefa2f": {
+"pl": "Co robisz w weekend?",
+"file": "audio/3e094ebefa2f.mp3"
+},
+"11372d1fad7a": {
+"pl": "dziś / dzisiaj",
+"file": "audio/11372d1fad7a.mp3"
+},
+"1789bb15c37f": {
+"pl": "Dzisiaj jest piątek.",
+"file": "audio/1789bb15c37f.mp3"
+},
+"5a1574ac89f5": {
+"pl": "jutro",
+"file": "audio/5a1574ac89f5.mp3"
+},
+"59d5e9ef7266": {
+"pl": "Jutro mam egzamin.",
+"file": "audio/59d5e9ef7266.mp3"
+},
+"8faac9a708e7": {
+"pl": "rano",
+"file": "audio/8faac9a708e7.mp3"
+},
+"4b30488f9e5c": {
+"pl": "Rano piję kawę.",
+"file": "audio/4b30488f9e5c.mp3"
+},
+"3a23310fa21a": {
+"pl": "po południu",
+"file": "audio/3a23310fa21a.mp3"
+},
+"2d6da4171fb7": {
+"pl": "Po południu mam czas.",
+"file": "audio/2d6da4171fb7.mp3"
+},
+"05b909662659": {
+"pl": "wieczorem",
+"file": "audio/05b909662659.mp3"
+},
+"61a23fb05c13": {
+"pl": "Wieczorem oglądam serial.",
+"file": "audio/61a23fb05c13.mp3"
+},
+"720ec0bf6e31": {
+"pl": "w nocy",
+"file": "audio/720ec0bf6e31.mp3"
+},
+"34ac7fcc9e0c": {
+"pl": "W nocy dobrze śpię.",
+"file": "audio/34ac7fcc9e0c.mp3"
+},
+"3eebd18fc60b": {
+"pl": "godzina",
+"file": "audio/3eebd18fc60b.mp3"
+},
+"b87194100894": {
+"pl": "Lekcja trwa jedną godzinę.",
+"file": "audio/b87194100894.mp3"
+},
+"ea1d41518a2c": {
+"pl": "O której godzinie?",
+"file": "audio/ea1d41518a2c.mp3"
+},
+"0b59519cc7d7": {
+"pl": "O której godzinie zaczynamy?",
+"file": "audio/0b59519cc7d7.mp3"
+},
+"e9eb61d95301": {
+"pl": "o siódmej / o ósmej",
+"file": "audio/e9eb61d95301.mp3"
+},
+"efa2694489f5": {
+"pl": "Wstaję o siódmej rano.",
+"file": "audio/efa2694489f5.mp3"
+},
+"45c95e0dffa6": {
+"pl": "Która jest godzina?",
+"file": "audio/45c95e0dffa6.mp3"
+},
+"6d2c8fda0014": {
+"pl": "Przepraszam, która jest godzina?",
+"file": "audio/6d2c8fda0014.mp3"
+},
+"8919a427d4d5": {
+"pl": "teraz / później",
+"file": "audio/8919a427d4d5.mp3"
+},
+"216b9f105b27": {
+"pl": "Teraz pracuję, porozmawiamy później.",
+"file": "audio/216b9f105b27.mp3"
+},
+"51988628751d": {
+"pl": "zawsze / nigdy",
+"file": "audio/51988628751d.mp3"
+},
+"f5fb378bbdbc": {
+"pl": "Zawsze jem śniadanie, ale nigdy nie jem kolacji.",
+"file": "audio/f5fb378bbdbc.mp3"
+},
+"5a6e97cd05b5": {
+"pl": "styczeń",
+"file": "audio/5a6e97cd05b5.mp3"
+},
+"3caed9228437": {
+"pl": "W styczniu jest bardzo zimno.",
+"file": "audio/3caed9228437.mp3"
+},
+"9abab0fefead": {
+"pl": "luty",
+"file": "audio/9abab0fefead.mp3"
+},
+"9af4c15bba29": {
+"pl": "W lutym często pada śnieg.",
+"file": "audio/9af4c15bba29.mp3"
+},
+"40f14639a675": {
+"pl": "marzec",
+"file": "audio/40f14639a675.mp3"
+},
+"a5733f0ddb4c": {
+"pl": "W marcu zaczyna się wiosna.",
+"file": "audio/a5733f0ddb4c.mp3"
+},
+"ca55eee9781c": {
+"pl": "kwiecień",
+"file": "audio/ca55eee9781c.mp3"
+},
+"b022b3917bba": {
+"pl": "W kwietniu wszystko kwitnie.",
+"file": "audio/b022b3917bba.mp3"
+},
+"d682efc4ae9e": {
+"pl": "maj",
+"file": "audio/d682efc4ae9e.mp3"
+},
+"89adc0352410": {
+"pl": "W maju jest piękna pogoda.",
+"file": "audio/89adc0352410.mp3"
+},
+"09e1853479aa": {
+"pl": "czerwiec",
+"file": "audio/09e1853479aa.mp3"
+},
+"13024b304a70": {
+"pl": "W czerwcu kończy się szkoła.",
+"file": "audio/13024b304a70.mp3"
+},
+"59039c5de8f7": {
+"pl": "lipiec",
+"file": "audio/59039c5de8f7.mp3"
+},
+"3a13c2276e44": {
+"pl": "W lipcu mam urlop.",
+"file": "audio/3a13c2276e44.mp3"
+},
+"8c61b5259d98": {
+"pl": "sierpień",
+"file": "audio/8c61b5259d98.mp3"
+},
+"4cec97a2e0ea": {
+"pl": "W sierpniu jadę nad morze.",
+"file": "audio/4cec97a2e0ea.mp3"
+},
+"6635b4b3b0db": {
+"pl": "wrzesień",
+"file": "audio/6635b4b3b0db.mp3"
+},
+"b75396f0fe11": {
+"pl": "We wrześniu dzieci wracają do szkoły.",
+"file": "audio/b75396f0fe11.mp3"
+},
+"83642266f552": {
+"pl": "październik",
+"file": "audio/83642266f552.mp3"
+},
+"59de1a123002": {
+"pl": "W październiku zaczynają się zajęcia na uczelni.",
+"file": "audio/59de1a123002.mp3"
+},
+"0fc9775f67bb": {
+"pl": "listopad",
+"file": "audio/0fc9775f67bb.mp3"
+},
+"765ec5d3d3a4": {
+"pl": "W listopadzie jest szaro i zimno.",
+"file": "audio/765ec5d3d3a4.mp3"
+},
+"f38f711f0f91": {
+"pl": "grudzień",
+"file": "audio/f38f711f0f91.mp3"
+},
+"2b85aec63121": {
+"pl": "W grudniu są święta.",
+"file": "audio/2b85aec63121.mp3"
+},
+"6e69f1a15546": {
+"pl": "miesiąc",
+"file": "audio/6e69f1a15546.mp3"
+},
+"677f775e0cf1": {
+"pl": "Mieszkam tu od trzech miesięcy.",
+"file": "audio/677f775e0cf1.mp3"
+},
+"c928aebc1635": {
+"pl": "rok",
+"file": "audio/c928aebc1635.mp3"
+},
+"05e572213835": {
+"pl": "wiosna",
+"file": "audio/05e572213835.mp3"
+},
+"fe3c6836e370": {
+"pl": "Wiosną dni są coraz dłuższe.",
+"file": "audio/fe3c6836e370.mp3"
+},
+"4acb5d021cd5": {
+"pl": "lato",
+"file": "audio/4acb5d021cd5.mp3"
+},
+"2941f08c1474": {
+"pl": "Latem jeżdżę nad jezioro.",
+"file": "audio/2941f08c1474.mp3"
+},
+"39ed241895a4": {
+"pl": "jesień",
+"file": "audio/39ed241895a4.mp3"
+},
+"5ddee0dfcaaf": {
+"pl": "Jesienią często pada deszcz.",
+"file": "audio/5ddee0dfcaaf.mp3"
+},
+"a2882062c4a7": {
+"pl": "zima",
+"file": "audio/a2882062c4a7.mp3"
+},
+"01851cd64850": {
+"pl": "Zimą wcześnie robi się ciemno.",
+"file": "audio/01851cd64850.mp3"
+},
+"935a31c5f780": {
+"pl": "Kiedy?",
+"file": "audio/935a31c5f780.mp3"
+},
+"c1d6cd665bab": {
+"pl": "Kiedy masz urodziny?",
+"file": "audio/c1d6cd665bab.mp3"
+},
+"74ce30eeb0be": {
+"pl": "urodziny",
+"file": "audio/74ce30eeb0be.mp3"
+},
+"3e8bb7535095": {
+"pl": "Moje urodziny są w maju.",
+"file": "audio/3e8bb7535095.mp3"
+},
+"9db7f5e74990": {
+"pl": "chleb",
+"file": "audio/9db7f5e74990.mp3"
+},
+"d91f9ea5135c": {
+"pl": "Kupuję świeży chleb w piekarni.",
+"file": "audio/d91f9ea5135c.mp3"
+},
+"6868867644d8": {
+"pl": "bułka",
+"file": "audio/6868867644d8.mp3"
+},
+"814d0a749d4b": {
+"pl": "Na śniadanie jem bułkę z masłem.",
+"file": "audio/814d0a749d4b.mp3"
+},
+"4c774c7d1d75": {
+"pl": "masło",
+"file": "audio/4c774c7d1d75.mp3"
+},
+"ccdf8b9bca81": {
+"pl": "Poproszę chleb i masło.",
+"file": "audio/ccdf8b9bca81.mp3"
+},
+"f0e948db590c": {
+"pl": "ser",
+"file": "audio/f0e948db590c.mp3"
+},
+"63c350dff305": {
+"pl": "Lubię kanapki z serem.",
+"file": "audio/63c350dff305.mp3"
+},
+"96c7695d4744": {
+"pl": "jajko",
+"file": "audio/96c7695d4744.mp3"
+},
+"73774ddf00df": {
+"pl": "Na śniadanie jem dwa jajka.",
+"file": "audio/73774ddf00df.mp3"
+},
+"1f90e40ec935": {
+"pl": "szynka",
+"file": "audio/1f90e40ec935.mp3"
+},
+"b7eea5440a10": {
+"pl": "Poproszę kanapkę z szynką.",
+"file": "audio/b7eea5440a10.mp3"
+},
+"481b99f24d91": {
+"pl": "mięso",
+"file": "audio/481b99f24d91.mp3"
+},
+"46c4605df1b7": {
+"pl": "Nie jem mięsa.",
+"file": "audio/46c4605df1b7.mp3"
+},
+"a4a72071c3c0": {
+"pl": "kurczak",
+"file": "audio/a4a72071c3c0.mp3"
+},
+"4334397ce783": {
+"pl": "Na obiad jest kurczak z ryżem.",
+"file": "audio/4334397ce783.mp3"
+},
+"9e81fe1091e2": {
+"pl": "ryba",
+"file": "audio/9e81fe1091e2.mp3"
+},
+"44d45f65d988": {
+"pl": "W piątek często jem rybę.",
+"file": "audio/44d45f65d988.mp3"
+},
+"d9bbe8037049": {
+"pl": "warzywa",
+"file": "audio/d9bbe8037049.mp3"
+},
+"ee93ed91a7f7": {
+"pl": "owoce",
+"file": "audio/ee93ed91a7f7.mp3"
+},
+"d2afff845f45": {
+"pl": "Jem dużo owoców latem.",
+"file": "audio/d2afff845f45.mp3"
+},
+"52c367a453e0": {
+"pl": "jabłko",
+"file": "audio/52c367a453e0.mp3"
+},
+"b7dc980d4da6": {
+"pl": "Codziennie jem jedno jabłko.",
+"file": "audio/b7dc980d4da6.mp3"
+},
+"2c99436e7dbb": {
+"pl": "pomidor",
+"file": "audio/2c99436e7dbb.mp3"
+},
+"1359b4e27758": {
+"pl": "Do kanapki dodaję pomidora.",
+"file": "audio/1359b4e27758.mp3"
+},
+"fc79874b3f5d": {
+"pl": "ziemniaki",
+"file": "audio/fc79874b3f5d.mp3"
+},
+"92f3e2715d5a": {
+"pl": "Na obiad są ziemniaki i kotlet.",
+"file": "audio/92f3e2715d5a.mp3"
+},
+"57193e211833": {
+"pl": "ryż / makaron",
+"file": "audio/57193e211833.mp3"
+},
+"b5b858b77526": {
+"pl": "Wolę makaron niż ryż.",
+"file": "audio/b5b858b77526.mp3"
+},
+"aa24d61a5800": {
+"pl": "Na początek poproszę zupę.",
+"file": "audio/aa24d61a5800.mp3"
+},
+"169bb9e1ce4a": {
+"pl": "obiad",
+"file": "audio/169bb9e1ce4a.mp3"
+},
+"3aa40b7eefa1": {
+"pl": "Obiad jem zazwyczaj o czternastej.",
+"file": "audio/3aa40b7eefa1.mp3"
+},
+"26db06696a0e": {
+"pl": "kolacja",
+"file": "audio/26db06696a0e.mp3"
+},
+"f253561da205": {
+"pl": "Na kolację jem kanapki.",
+"file": "audio/f253561da205.mp3"
+},
+"78167d5545cc": {
+"pl": "lubię / nie lubię",
+"file": "audio/78167d5545cc.mp3"
+},
+"c7af7b3ad033": {
+"pl": "Lubię pierogi, ale nie lubię ryb.",
+"file": "audio/c7af7b3ad033.mp3"
+},
+"b02beaf8056b": {
+"pl": "smaczny",
+"file": "audio/b02beaf8056b.mp3"
+},
+"77b4b7259952": {
+"pl": "Ta zupa jest bardzo smaczna.",
+"file": "audio/77b4b7259952.mp3"
+},
+"4a5b5f8881b9": {
+"pl": "głodny / spragniony",
+"file": "audio/4a5b5f8881b9.mp3"
+},
+"80436881c88f": {
+"pl": "Jestem głodny i spragniony.",
+"file": "audio/80436881c88f.mp3"
+},
+"c2c313fc8d4f": {
+"pl": "Jaka jest pogoda?",
+"file": "audio/c2c313fc8d4f.mp3"
+},
+"cd2701f22f75": {
+"pl": "Jaka dzisiaj jest pogoda?",
+"file": "audio/cd2701f22f75.mp3"
+},
+"bab3da0c6fb6": {
+"pl": "Pada deszcz",
+"file": "audio/bab3da0c6fb6.mp3"
+},
+"917944281f33": {
+"pl": "Weź parasol, pada deszcz.",
+"file": "audio/917944281f33.mp3"
+},
+"5ddd3c3533c9": {
+"pl": "Pada śnieg",
+"file": "audio/5ddd3c3533c9.mp3"
+},
+"d5602c1c016e": {
+"pl": "Zimą często pada śnieg.",
+"file": "audio/d5602c1c016e.mp3"
+},
+"51f7a75ca532": {
+"pl": "Świeci słońce",
+"file": "audio/51f7a75ca532.mp3"
+},
+"27713cc73203": {
+"pl": "Dzisiaj świeci słońce.",
+"file": "audio/27713cc73203.mp3"
+},
+"6caa18e3cef9": {
+"pl": "Jest zimno",
+"file": "audio/6caa18e3cef9.mp3"
+},
+"36c6f44f963b": {
+"pl": "Dzisiaj jest bardzo zimno.",
+"file": "audio/36c6f44f963b.mp3"
+},
+"e3c329f1db2e": {
+"pl": "Jest ciepło",
+"file": "audio/e3c329f1db2e.mp3"
+},
+"b59e8654fdaa": {
+"pl": "Na dworze jest ciepło.",
+"file": "audio/b59e8654fdaa.mp3"
+},
+"b06df2a24d6b": {
+"pl": "Jest gorąco",
+"file": "audio/b06df2a24d6b.mp3"
+},
+"24b5c2d0eb9c": {
+"pl": "W lipcu jest bardzo gorąco.",
+"file": "audio/24b5c2d0eb9c.mp3"
+},
+"38c282686ef4": {
+"pl": "Wieje wiatr",
+"file": "audio/38c282686ef4.mp3"
+},
+"9721d2545b78": {
+"pl": "Nad morzem zawsze wieje wiatr.",
+"file": "audio/9721d2545b78.mp3"
+},
+"500f27c72fbe": {
+"pl": "Jest pochmurno",
+"file": "audio/500f27c72fbe.mp3"
+},
+"eb6405fe592d": {
+"pl": "Dzisiaj jest pochmurno i szaro.",
+"file": "audio/eb6405fe592d.mp3"
+},
+"34561fa78da2": {
+"pl": "mgła",
+"file": "audio/34561fa78da2.mp3"
+},
+"48125a069704": {
+"pl": "Rano była gęsta mgła.",
+"file": "audio/48125a069704.mp3"
+},
+"09248fd0a2f2": {
+"pl": "stopnie",
+"file": "audio/09248fd0a2f2.mp3"
+},
+"5bf27b8c4452": {
+"pl": "Dzisiaj jest dziesięć stopni.",
+"file": "audio/5bf27b8c4452.mp3"
+},
+"fbc5e2a3f2b8": {
+"pl": "prognoza pogody",
+"file": "audio/fbc5e2a3f2b8.mp3"
+},
+"278a38fd08fa": {
+"pl": "Sprawdzam prognozę pogody na jutro.",
+"file": "audio/278a38fd08fa.mp3"
+},
+"6e07719f9c2e": {
+"pl": "parasol",
+"file": "audio/6e07719f9c2e.mp3"
+},
+"09e57569cd21": {
+"pl": "Zapomniałem parasola.",
+"file": "audio/09e57569cd21.mp3"
+},
+"fd07816d848d": {
+"pl": "Ale ładna pogoda!",
+"file": "audio/fd07816d848d.mp3"
+},
+"aec2321a85e9": {
+"pl": "Ale ładna dzisiaj pogoda!",
+"file": "audio/aec2321a85e9.mp3"
+},
+"91b031c769b1": {
+"pl": "Ale brzydka pogoda!",
+"file": "audio/91b031c769b1.mp3"
+},
+"9c913fda7f9a": {
+"pl": "Ale brzydka pogoda, cały dzień pada.",
+"file": "audio/9c913fda7f9a.mp3"
+},
+"1ddfda9d98d4": {
+"pl": "Zimno dzisiaj, prawda?",
+"file": "audio/1ddfda9d98d4.mp3"
+},
+"9ae5a2d052c6": {
+"pl": "Podobno będzie padać",
+"file": "audio/9ae5a2d052c6.mp3"
+},
+"699b39ff9452": {
+"pl": "Podobno jutro będzie padać.",
+"file": "audio/699b39ff9452.mp3"
+},
+"400687081679": {
+"pl": "być",
+"file": "audio/400687081679.mp3"
+},
+"fb44b666612b": {
+"pl": "mieć",
+"file": "audio/fb44b666612b.mp3"
+},
+"041cec21894c": {
+"pl": "Mam dwa koty i psa.",
+"file": "audio/041cec21894c.mp3"
+},
+"5b54d00c2504": {
+"pl": "chcieć",
+"file": "audio/5b54d00c2504.mp3"
+},
+"8624ff8f2ae6": {
+"pl": "Chcę mówić po polsku.",
+"file": "audio/8624ff8f2ae6.mp3"
+},
+"7556c0b14972": {
+"pl": "móc",
+"file": "audio/7556c0b14972.mp3"
+},
+"f37dec258ec6": {
+"pl": "Czy mogę tu usiąść?",
+"file": "audio/f37dec258ec6.mp3"
+},
+"8e0551b99dc2": {
+"pl": "musieć",
+"file": "audio/8e0551b99dc2.mp3"
+},
+"9b125fe04b80": {
+"pl": "iść",
+"file": "audio/9b125fe04b80.mp3"
+},
+"68e041223d0e": {
+"pl": "jechać",
+"file": "audio/68e041223d0e.mp3"
+},
+"402db9dceee9": {
+"pl": "Jadę tramwajem do centrum.",
+"file": "audio/402db9dceee9.mp3"
+},
+"5324127156ca": {
+"pl": "robić",
+"file": "audio/5324127156ca.mp3"
+},
+"f4e91c45fde1": {
+"pl": "mówić",
+"file": "audio/f4e91c45fde1.mp3"
+},
+"701239133325": {
+"pl": "rozumieć",
+"file": "audio/701239133325.mp3"
+},
+"c86a72a0ed1f": {
+"pl": "Rozumiem, ale proszę mówić wolniej.",
+"file": "audio/c86a72a0ed1f.mp3"
+},
+"cde008d5d587": {
+"pl": "wiedzieć",
+"file": "audio/cde008d5d587.mp3"
+},
+"0e75dd780bfd": {
+"pl": "znać",
+"file": "audio/0e75dd780bfd.mp3"
+},
+"bbbbd3a2d4ff": {
+"pl": "Czy znasz tę restaurację?",
+"file": "audio/bbbbd3a2d4ff.mp3"
+},
+"9ca5319c4fa8": {
+"pl": "jeść",
+"file": "audio/9ca5319c4fa8.mp3"
+},
+"5312dfcd8a6f": {
+"pl": "pić",
+"file": "audio/5312dfcd8a6f.mp3"
+},
+"8639b256e104": {
+"pl": "Piję dużo wody.",
+"file": "audio/8639b256e104.mp3"
+},
+"7a6ab80c789f": {
+"pl": "kupować",
+"file": "audio/7a6ab80c789f.mp3"
+},
+"854449aa1061": {
+"pl": "Kupuję bilet w aplikacji.",
+"file": "audio/854449aa1061.mp3"
+},
+"12a240307f74": {
+"pl": "mieszkać",
+"file": "audio/12a240307f74.mp3"
+},
+"0a9561105763": {
+"pl": "Mieszkam w Warszawie od roku.",
+"file": "audio/0a9561105763.mp3"
+},
+"45927f9688cb": {
+"pl": "pracować",
+"file": "audio/45927f9688cb.mp3"
+},
+"ff7deb3d8e7f": {
+"pl": "Pracuję w biurze w centrum.",
+"file": "audio/ff7deb3d8e7f.mp3"
+},
+"ca2a872ea657": {
+"pl": "lubić",
+"file": "audio/ca2a872ea657.mp3"
+},
+"b6974d036e75": {
+"pl": "Lubię polskie jedzenie.",
+"file": "audio/b6974d036e75.mp3"
+},
+"cecb18b1257b": {
+"pl": "kochać",
+"file": "audio/cecb18b1257b.mp3"
+},
+"f7873481426b": {
+"pl": "Kocham to miasto.",
+"file": "audio/f7873481426b.mp3"
+},
+"7eca8dae4477": {
+"pl": "szukać",
+"file": "audio/7eca8dae4477.mp3"
+},
+"0f240d86c0b9": {
+"pl": "Szukam dobrej kawiarni.",
+"file": "audio/0f240d86c0b9.mp3"
+},
+"c29b56d92cd8": {
+"pl": "czekać",
+"file": "audio/c29b56d92cd8.mp3"
+},
+"f1a0ad1d59c4": {
+"pl": "Czekam na autobus.",
+"file": "audio/f1a0ad1d59c4.mp3"
+},
+"bbba7ce087cf": {
+"pl": "pomagać",
+"file": "audio/bbba7ce087cf.mp3"
+},
+"bf8f78384a5c": {
+"pl": "Czy mogę ci pomóc?",
+"file": "audio/bf8f78384a5c.mp3"
+},
+"0a53f1aa28f7": {
+"pl": "To są bardzo dobrzy studenci.",
+"file": "audio/0a53f1aa28f7.mp3"
 }
 }
 }
