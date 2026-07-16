@@ -184,10 +184,59 @@ padding:15px 20px;border-radius:var(--r-md);margin:26px 0 10px}
 .hub-list a{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);
 border-radius:var(--r-md);box-shadow:var(--shadow-sm);padding:14px 16px;text-decoration:none;color:var(--forest)}
 .hub-list .t{font-weight:700}.hub-list .d{color:var(--muted);font-size:13.5px}
-.hub-list .em{font-size:22px;flex:0 0 auto}
+.hub-list .ic{flex:0 0 auto;width:38px;height:38px;border-radius:12px;background:var(--cream);
+color:var(--emerald);display:grid;place-items:center}
+.hub-list .ic svg{width:19px;height:19px}
 footer{color:var(--muted);font-size:13px;text-align:center;padding:26px 0 0}
 footer a{text-decoration:none}
 """
+
+def _icon(paths):
+    return ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
+            'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + paths + '</svg>')
+
+ICONS = {
+    "flag":     _icon('<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>'),
+    "box":      _icon('<path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.3 7 12 12 20.7 7"/><line x1="12" y1="22" x2="12" y2="12"/>'),
+    "gift":     _icon('<polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>'),
+    "target":   _icon('<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>'),
+    "tool":     _icon('<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>'),
+    "pin":      _icon('<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>'),
+    "megaphone":_icon('<path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>'),
+    "smile":    _icon('<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>'),
+    "briefcase":_icon('<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>'),
+    "compass":  _icon('<circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>'),
+    "plane":    _icon('<path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>'),
+    "check":    _icon('<polyline points="20 6 9 17 4 12"/>'),
+    "users":    _icon('<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>'),
+    "hand":     _icon('<path d="M18 11V6a2 2 0 0 0-4 0v5"/><path d="M14 10V4a2 2 0 0 0-4 0v6"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>'),
+    "sparkles": _icon('<path d="M12 3l1.9 5.8a2 2 0 0 0 1.3 1.3L21 12l-5.8 1.9a2 2 0 0 0-1.3 1.3L12 21l-1.9-5.8a2 2 0 0 0-1.3-1.3L3 12l5.8-1.9a2 2 0 0 0 1.3-1.3z"/>'),
+    "mail":     _icon('<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>'),
+    "quote":    _icon('<path d="M3 21c3 0 7-1 7-8V5c0-1.25-.76-2-2-2H4c-1.25 0-2 .75-2 2v6c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.76-2-2-2h-4c-1.25 0-2 .75-2 2v6c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2z"/>'),
+    "scroll":   _icon('<path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/>'),
+    "chat":     _icon('<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'),
+    "zap":      _icon('<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>'),
+    "music":    _icon('<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>'),
+    "book":     _icon('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>'),
+}
+
+ICON_MAP = [
+    ("mianownik","flag"),("dopelniacz","box"),("celownik","gift"),("biernik","target"),
+    ("narzednik","tool"),("miejscownik","pin"),("wolacz","megaphone"),
+    ("przymiotniki","smile"),("zawody","briefcase"),("zaimki","compass"),
+    ("narodowosci","plane"),("kazdy","check"),
+    ("pan-i-pani","hand"),("panowie","users"),("tryb","sparkles"),
+    ("zdrobnienia","smile"),("korespondencja","mail"),
+    ("polish-idioms","quote"),("polish-proverbs","scroll"),("everyday","chat"),
+    ("exclamations","zap"),("corporate","briefcase"),("party","music"),
+]
+
+def pick_icon(slug):
+    for key, name in ICON_MAP:
+        if key in slug:
+            return ICONS[name]
+    return ICONS["book"]
+
 
 AUDIO_SVG = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
              'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
@@ -312,7 +361,7 @@ def topic_page(level, topic, slug, audio_idx):
     drills = len(topic.get("drills", []))
     body = [head(title, meta_desc, canon, ld)]
     body.append('<nav class="crumbs" aria-label="Breadcrumb">'
-                '<a href="/">Home</a> &rsaquo; <a href="/grammar/">Grammar guide</a> '
+                '<a href="/">Home</a> &rsaquo; <a href="/guide/">Guide</a> '
                 f'&rsaquo; {esc(name)}</nav>')
     body.append(f'<h1>{esc(name)}</h1>')
     body.append(f'<p class="lede">{esc(desc)}</p>')
@@ -367,7 +416,7 @@ def vocab_page(topic, slug, page_title, audio_idx):
     }
     body = [head(title, meta_desc, canon, ld)]
     body.append('<nav class="crumbs" aria-label="Breadcrumb">'
-                '<a href="/">Home</a> &rsaquo; <a href="/vocabulary/">Slang &amp; idioms</a> '
+                '<a href="/">Home</a> &rsaquo; <a href="/guide/">Guide</a> '
                 f'&rsaquo; {esc(page_title)}</nav>')
     body.append(f'<h1>{esc(page_title)}</h1>')
     body.append(f'<p class="lede">{esc(desc)}</p>')
@@ -380,76 +429,67 @@ def vocab_page(topic, slug, page_title, audio_idx):
     return "".join(body)
 
 
-def vocab_hub(items):
-    canon = f"{SITE}/vocabulary/"
-    title = "Polish slang, idioms and proverbs - what Poles actually say | Po polsku"
-    meta_desc = ("Real Polish beyond the textbook: everyday slang, idioms, proverbs, "
-                 "office slang, and exclamations - all with native audio and examples.")
+def guide_page(topics_by_level, vocab_items):
+    canon = f"{SITE}/guide/"
+    title = "Polish guide - grammar, slang and idioms explained simply | Po polsku"
+    meta_desc = ("Free Polish for learners: all seven cases, formal address, adjectives - plus real "
+                 "slang, idioms and proverbs. Tables, usage notes, and native-audio examples.")
     ld = {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
-        "name": "Polish slang and idioms",
+        "name": "Polish guide",
         "description": meta_desc,
         "url": canon,
         "inLanguage": "en",
         "provider": {"@type": "Organization", "name": "Po polsku", "url": SITE + "/"},
     }
     body = [head(title, meta_desc, canon, ld)]
-    body.append('<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> &rsaquo; Slang &amp; idioms</nav>')
-    body.append('<h1>The Polish they don\'t teach in class</h1>')
-    body.append('<p class="lede">Slang, idioms, and proverbs collected by a foreigner living in Poland - '
-                'each with a literal translation, when to use it, and native audio.</p>')
-    body.append('<ul class="hub-list">')
-    for page_title, desc, slug, emoji, n in items:
-        body.append(f'<li><a href="/vocabulary/{slug}/"><span class="em">{emoji}</span>'
-                    f'<span><span class="t">{esc(page_title)}</span><br>'
-                    f'<span class="d">{esc(desc)} ({n} expressions)</span></span></a></li>')
-    body.append('</ul>')
-    body.append('<p class="cta-sub">Also on Po polsku: <a href="/grammar/">the full grammar guide</a> - '
-                'all seven cases and more, explained simply.</p>')
-    body.append('<a class="cta" href="/">Open the app - flashcards, drills, conversations</a>')
-    body.append(FOOT.replace("{js}", ""))
-    return "".join(body)
-
-
-def hub_page(topics_by_level):
-    canon = f"{SITE}/grammar/"
-    title = "Polish grammar guide - the cases and more, explained simply | Po polsku"
-    meta_desc = ("Free Polish grammar explained for learners: all seven cases, formal address, "
-                 "adjectives, pronouns, and more - with tables and native-audio examples.")
-    ld = {
-        "@context": "https://schema.org",
-        "@type": "CollectionPage",
-        "name": "Polish grammar guide",
-        "description": meta_desc,
-        "url": canon,
-        "inLanguage": "en",
-        "provider": {"@type": "Organization", "name": "Po polsku", "url": SITE + "/"},
-    }
-    body = [head(title, meta_desc, canon, ld)]
-    body.append('<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> &rsaquo; Grammar guide</nav>')
-    body.append('<h1>Polish grammar, explained simply</h1>')
+    body.append('<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> &rsaquo; Guide</nav>')
+    body.append('<h1>Polish, explained simply</h1>')
     body.append('<p class="lede">Written by a foreigner who learned it the hard way - short cards, '
                 'real tables, native audio. Each topic has interactive practice in the free app.</p>')
     for level_name, items in topics_by_level:
         body.append(f'<span class="chip">{esc(level_name)}</span>')
         body.append('<ul class="hub-list">')
         for name, desc, slug, emoji in items:
-            body.append(f'<li><a href="/grammar/{slug}/"><span class="em">{emoji}</span>'
+            body.append(f'<li><a href="/grammar/{slug}/"><span class="ic">{pick_icon(slug)}</span>'
                         f'<span><span class="t">{esc(name)}</span><br>'
                         f'<span class="d">{esc(desc)}</span></span></a></li>')
         body.append('</ul>')
-    body.append('<p class="cta-sub">Also on Po polsku: <a href="/vocabulary/">slang, idioms &amp; proverbs</a> - '
-                'the Polish they don\'t teach in class.</p>')
+    body.append('<span class="chip">Slang &amp; idioms</span>')
+    body.append('<ul class="hub-list">')
+    for page_title, desc, slug, emoji, n in vocab_items:
+        body.append(f'<li><a href="/vocabulary/{slug}/"><span class="ic">{pick_icon(slug)}</span>'
+                    f'<span><span class="t">{esc(page_title)}</span><br>'
+                    f'<span class="d">{esc(desc)} ({n} expressions)</span></span></a></li>')
+    body.append('</ul>')
     body.append('<a class="cta" href="/">Open the app - flashcards, drills, conversations</a>')
     body.append(FOOT.replace("{js}", ""))
     return "".join(body)
 
 
+def redirect_stub(target):
+    """Old hub URLs point to the merged guide. GitHub Pages can't do server
+    redirects, so: instant meta refresh + canonical (search engines follow
+    the canonical, so no duplicate-content issue) + a visible link fallback."""
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Po polsku guide</title>
+<meta http-equiv="refresh" content="0; url={target}">
+<link rel="canonical" href="{SITE}{target}">
+<meta name="robots" content="noindex">
+</head>
+<body><p>Moved to <a href="{target}">the Po polsku guide</a>.</p></body>
+</html>
+"""
+
+
 def write_sitemap(slugs, vslugs=()):
     today = datetime.date.today().isoformat()
-    urls = ([f"{SITE}/", f"{SITE}/grammar/"] + [f"{SITE}/grammar/{s}/" for s in slugs]
-            + [f"{SITE}/vocabulary/"] + [f"{SITE}/vocabulary/{s}/" for s in vslugs])
+    urls = ([f"{SITE}/", f"{SITE}/guide/"] + [f"{SITE}/grammar/{s}/" for s in slugs]
+            + [f"{SITE}/vocabulary/{s}/" for s in vslugs])
     items = "".join(
         f"  <url>\n    <loc>{u}</loc>\n    <lastmod>{today}</lastmod>\n  </url>\n" for u in urls)
     xml = ('<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -489,7 +529,6 @@ def main():
         if items:
             hub.append((level.get("level", ""), items))
 
-    open(f"{OUT_DIR}/index.html", "w", encoding="utf-8").write(hub_page(hub))
 
     # ---- vocabulary pages (slang / idioms / proverbs) ----
     if os.path.isdir("vocabulary"):
@@ -513,10 +552,16 @@ def main():
             vitems.append((page_title, topic.get("desc", ""), slug, topic.get("emoji", ""),
                            len(topic.get("cards", []))))
             print(f"  + /vocabulary/{slug}/  ({len(topic.get('cards',[]))} expressions, {n_audio} audio clips)")
-    open("vocabulary/index.html", "w", encoding="utf-8").write(vocab_hub(vitems))
+    # merged hub + redirect stubs for the old hub URLs
+    if os.path.isdir("guide"):
+        shutil.rmtree("guide")
+    os.makedirs("guide")
+    open("guide/index.html", "w", encoding="utf-8").write(guide_page(hub, vitems))
+    open(f"{OUT_DIR}/index.html", "w", encoding="utf-8").write(redirect_stub("/guide/"))
+    open("vocabulary/index.html", "w", encoding="utf-8").write(redirect_stub("/guide/"))
 
     n = write_sitemap(slugs, vslugs)
-    print(f"\nDone. {len(slugs)} grammar pages + {len(vslugs)} vocabulary pages + 2 hubs. "
+    print(f"\nDone. {len(slugs)} grammar pages + {len(vslugs)} vocabulary pages + /guide/ hub. "
           f"sitemap.xml now lists {n} URLs. {with_audio} sentences/words carry native audio.")
 
 

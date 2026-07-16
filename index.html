@@ -376,7 +376,12 @@
   /* ---------- footer ---------- */
   footer{display:flex;flex-direction:column;align-items:center;gap:11px;padding:8px 0 22px;text-align:center}
   .foot-note{color:#94a3b8;font-size:12px;font-weight:500;line-height:1.5;max-width:340px}
+  .foot-guides{margin:2px 0 4px;font-size:12px}
+  .foot-guides a{color:#9aa8b8;text-decoration:none;font-weight:600;padding:4px 2px}
+  .foot-guides a:hover{color:var(--emerald)}
+  .foot-guides a:focus-visible{outline:2px solid var(--emerald);outline-offset:2px;border-radius:4px}
   .foot-version{color:#b3bfcc;font-size:11px;font-weight:600;letter-spacing:.3px}
+  .foot-guides .foot-version{font-size:12px}
   .foot-link{background:none;border:none;font-family:inherit;font-size:inherit;color:var(--emerald);
     font-weight:700;cursor:pointer;padding:0;vertical-align:baseline;
     text-decoration:underline;text-underline-offset:2px}
@@ -979,13 +984,11 @@
 
   <footer>
     <div class="foot-links">
-      <a class="foot-btn" href="grammar/" style="text-decoration:none">Grammar guide</a>
-      <a class="foot-btn" href="vocabulary/" style="text-decoration:none">Slang &amp; idioms</a>
       <button class="foot-btn" id="openAbout">About</button>
       <button class="foot-btn" id="openPrivacy">Privacy</button>
       <button class="foot-btn" id="openInstall">Install</button>
     </div>
-    <div class="foot-version" id="footVersion"></div>
+    <div class="foot-guides"><a href="guide/">Guide</a> <span class="foot-version">&middot; <span id="footVersion"></span></span></div>
   </footer>
 
   <div class="modal-overlay" id="matureGate" hidden>
@@ -1018,7 +1021,7 @@
    Unrelated to CACHE in sw.js, which is a machine counter - bump both when
    you deploy, but they don't need to match.
    ========================================================================= */
-const APP_VERSION = "7.16";
+const APP_VERSION = "7.16-1";
 document.getElementById("footVersion").textContent = "v" + APP_VERSION;
 
 /* =========================================================================
