@@ -630,6 +630,15 @@
 </style>
 </head>
 <body>
+<noscript>
+  <div style="max-width:520px;margin:40px auto;padding:20px;font-family:system-ui,sans-serif;
+              background:#eef2ff;border-radius:16px;color:#1e293b;text-align:center">
+    <b>Po polsku needs JavaScript.</b><br>
+    The flashcards, audio, and drills are interactive - please enable JavaScript in your
+    browser to use the app. The <a href="guide/" style="color:#4f46e5">grammar &amp; vocabulary guide</a>
+    works without it.
+  </div>
+</noscript>
 <div class="wrap">
 
   <!-- ============ HOME ============ -->
@@ -900,7 +909,7 @@
         <ul class="privacy-list">
           <li><b>No Data Collection:</b> We do not ask for your email, we do not track your behavior, and we do not use marketing or analytics cookies.</li>
           <li><b>Local Storage Only:</b> Any progress you make (like your flashcard scores) is saved locally on your own device. It is never transmitted to or stored on our servers.</li>
-          <li><b>Standard Server Logs:</b> Like almost all websites, our hosting provider temporarily logs basic technical requests (such as IP addresses) strictly to ensure the website functions securely and reliably. We do not access or use this information to identify anyone.</li>
+          <li><b>Standard Server Logs:</b> Like almost all websites, our hosting and delivery providers - GitHub Pages (hosting) and Cloudflare (CDN and security) - temporarily log basic technical requests (such as IP addresses) strictly to ensure the website functions securely and reliably. We do not access or use this information to identify anyone.</li>
         </ul>
       </div>
     </div>
@@ -1021,7 +1030,7 @@
    Unrelated to CACHE in sw.js, which is a machine counter - bump both when
    you deploy, but they don't need to match.
    ========================================================================= */
-const APP_VERSION = "7.16-1";
+const APP_VERSION = "7.16-2";
 document.getElementById("footVersion").textContent = "v" + APP_VERSION;
 
 /* =========================================================================
