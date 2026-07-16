@@ -370,7 +370,8 @@ def topic_page(level, topic, slug, audio_idx):
         body.append(render_teach_card(item, audio_idx))
     body.append(f'<a class="cta" href="/">Practice this in the app - free, no account</a>')
     if drills:
-        body.append(f'<p class="cta-sub">{drills} interactive drills for this topic, plus flashcards with native audio.</p>')
+        body.append(f'<p class="cta-sub">This page is a sample - the app has the full topic, '
+                     f'{drills} interactive drills, and native audio throughout.</p>')
     body.append(FOOT.replace("{js}", PLAYER_JS))
     return "".join(body)
 
@@ -424,7 +425,8 @@ def vocab_page(topic, slug, page_title, audio_idx):
     for c in topic.get("cards", []):
         body.append(vocab_card(c, audio_idx))
     body.append('<a class="cta" href="/">Learn these as flashcards in the app - free, no account</a>')
-    body.append('<p class="cta-sub">Spaced practice, progress tracking, and full offline mode.</p>')
+    body.append('<p class="cta-sub">The full set of expressions for this topic, plus flashcard practice '
+                'and full offline mode.</p>')
     body.append(FOOT.replace("{js}", PLAYER_JS))
     return "".join(body)
 
@@ -446,8 +448,10 @@ def guide_page(topics_by_level, vocab_items):
     body = [head(title, meta_desc, canon, ld)]
     body.append('<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> &rsaquo; Guide</nav>')
     body.append('<h1>Polish, explained simply</h1>')
-    body.append('<p class="lede">Written by a foreigner who learned it the hard way - short cards, '
-                'real tables, native audio. Each topic has interactive practice in the free app.</p>')
+    body.append('<p class="lede">Created by a foreigner who learned it the hard way - flashcards, '
+                'explanations, native audio. Each topic has interactive practice in the free app.</p>')
+    body.append('<div class="note" style="margin:16px 0 22px">These pages are a sample - a taste of each '
+                'topic. The full library, with every card, drill, and conversation, lives in the free app.</div>')
     for level_name, items in topics_by_level:
         body.append(f'<span class="chip">{esc(level_name)}</span>')
         body.append('<ul class="hub-list">')
