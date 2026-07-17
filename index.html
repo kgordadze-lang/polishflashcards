@@ -184,8 +184,8 @@
   .cat-btn:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
   .cat-seg.searching{opacity:.5}
   /* dynamic header: names the active level right above its topics */
-  .topics-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
-    border-top:1px solid var(--border);padding-top:15px;margin-bottom:14px}
+  .topics-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;
+    column-gap:12px;row-gap:0;border-top:1px solid var(--border);padding-top:15px;margin-bottom:14px}
   .topics-head[hidden]{display:none}
   .th-main{font-size:15.5px;color:var(--forest);font-weight:800;letter-spacing:-.2px;line-height:1.3}
   .th-main .th-blurb{font-weight:500;color:var(--muted)}
@@ -252,6 +252,15 @@
   .t-desc{font-size:13.5px;color:var(--muted);margin-top:3px;line-height:1.4;
     display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden}
   .t-meta{display:flex;align-items:center;gap:8px;margin-top:9px}
+  .th-hint{flex-basis:100%;width:100%;font-size:12.5px;color:var(--muted);margin-top:7px;line-height:1.45}
+  .topic-main{display:flex;flex:1;min-width:0;align-items:center;gap:15px;background:none;border:none;
+    padding:0;margin:0;text-align:left;cursor:pointer;font-family:inherit;color:inherit;font-size:inherit}
+  .topic-main:focus-visible{outline:2px solid var(--emerald);outline-offset:2px;border-radius:8px}
+  .pill-practice{flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;border:1.5px solid var(--border);background:#fff;color:var(--emerald);
+    border-radius:999px;padding:7px 13px;font-size:12.5px;font-weight:700;cursor:pointer;
+    font-family:inherit;transition:.15s;white-space:nowrap}
+  .pill-practice:hover{border-color:var(--emerald);background:var(--mint-bg)}
+  .pill-practice:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
   .chip{font-size:11.5px;font-weight:700;letter-spacing:.3px;background:var(--mint-bg);
     color:var(--mint-text);padding:4px 9px;border-radius:999px}
   .t-count{font-size:12.5px;color:var(--muted);font-weight:500}
@@ -844,7 +853,8 @@
         <div class="stat"><b class="still-n" id="stillN">0</b><span>STILL LEARNING</span></div>
       </div>
       <div class="done-actions">
-        <button class="btn-primary" id="practiceStill">Practice still learning</button>
+        <button class="btn-primary" id="practiceSet">Quiz this set</button>
+        <button class="btn-ghost" id="practiceStill">Practice still learning</button>
         <button class="btn-ghost" id="restart">Restart this set</button>
         <button class="btn-ghost" id="toTopics">Back to topics</button>
       </div>
@@ -1064,6 +1074,76 @@
     </div>
   </section>
 
+  <!-- ============ PRACTICE THIS SET (mixed round) ============ -->
+  <section class="screen" id="round">
+    <div class="sbar">
+      <button class="back" id="rBack" aria-label="Back">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="sbar-title"><b id="rTitle">Practice</b><span id="rSub"></span></div>
+      <button class="speed-toggle" data-role="speed-toggle" aria-label="Toggle audio speed" title="Toggle audio speed">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
+        <span class="speed-label">Slow</span>
+      </button>
+      <button class="back home-btn" aria-label="Home page">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </button>
+    </div>
+    <div class="progress">
+      <div class="track"><div class="fill" id="rFill"></div></div>
+      <div class="p-count" id="rCountLbl" aria-live="polite">0 / 0</div>
+    </div>
+    <div id="rMain" style="display:flex;flex-direction:column;flex:1">
+      <div class="drill">
+        <div class="drill-card">
+          <div class="d-type" id="rType"></div>
+          <div id="rMcq">
+            <button class="l-play" id="rPlay" aria-label="Play the Polish audio">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>
+            </button>
+            <div class="q-prompt" id="rPl" lang="pl" hidden></div>
+            <div class="l-reveal" id="rReveal" lang="pl"></div>
+            <div class="opts" id="rOpts"></div>
+            <div class="fb-box" id="rFb" aria-live="polite"></div>
+          </div>
+          <div id="rTyped" hidden>
+            <div class="q-prompt" id="rEn"></div>
+            <div class="t-ctx" id="rCtx"></div>
+            <input class="t-input" id="rInput" type="text" lang="pl" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" placeholder="Wpisz po polsku...">
+            <div class="t-hintline" id="rHintLine" hidden></div>
+            <div class="t-actions">
+              <button class="check-btn" id="rCheck">Check</button>
+              <button class="hint-reveal" id="rHint">Reveal a letter</button>
+            </div>
+            <div class="verdict" id="rVerdict" aria-live="polite"></div>
+          </div>
+        </div>
+        <div class="controls">
+          <button class="ctrl" id="rNext" disabled>
+            <span id="rNextLabel">Next</span>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="done" id="rDone" style="display:none">
+      <div class="done-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <h2>Brawo!</h2>
+      <p id="rDoneMsg"></p>
+      <div class="stat-row">
+        <div class="stat"><b class="know-n" id="rScoreN">0</b><span>FIRST TRY</span></div>
+        <div class="stat"><b class="still-n" id="rMissN">0</b><span>TO REVIEW</span></div>
+      </div>
+      <div class="done-actions">
+        <button class="btn-primary" id="rAgain">Practice again</button>
+        <button class="btn-ghost" id="rBackBtn">Back to topics</button>
+      </div>
+      <div id="rNudge"></div>
+    </div>
+  </section>
+
   <!-- ============ PRIVACY NOTICE ============ -->
   <section class="screen" id="privacy">
     <div class="sbar">
@@ -1203,7 +1283,7 @@
    Unrelated to CACHE in sw.js, which is a machine counter - bump both when
    you deploy, but they don't need to match.
    ========================================================================= */
-const APP_VERSION = "7.17";
+const APP_VERSION = "7.17-6";
 document.getElementById("footVersion").textContent = "v" + APP_VERSION;
 
 /* =========================================================================
@@ -1418,6 +1498,12 @@ function renderTopicsHead(searching){
   head.querySelector("b").textContent = modeLabel(lv);
   head.querySelector(".th-blurb").textContent = lv.blurb ? (" \u00b7 "+lv.blurb) : "";
   head.querySelector(".th-count").textContent = n + (n===1 ? " topic" : " topics");
+  if(categoryOf(lv)==="vocab"){
+    const hint = document.createElement("div");
+    hint.className = "th-hint";
+    hint.textContent = "Open a set to study its flashcards \u00b7 tap Quiz for a quick mixed test";
+    head.appendChild(hint);
+  }
 }
 
 /* ---------------- topic search ---------------- */
@@ -1550,19 +1636,24 @@ function renderTopics(){
 
   list.forEach(({t, li, ti})=>{
     const lv = LEVELS[li];
-    const b = document.createElement("button");
+    const showPill = !t.kind && t.cards && !t.mature;   /* every vocab topic - the adult-language set still needs its gate first */
+    const b = document.createElement("div");
     b.className = "topic";
     b.innerHTML =
-      '<div class="t-emoji">'+topicIcon(t)+'</div>'+
-      '<div class="t-body">'+
-        '<div class="t-title"></div>'+
-        '<div class="t-desc"></div>'+
-        '<div class="t-meta"><span class="chip">'+(t.chip || modeLabel(lv))+'</span><span class="t-count">'+tCount(t, lv, store)+'</span></div>'+
-      '</div>'+
+      '<button class="topic-main">'+
+        '<div class="t-emoji">'+topicIcon(t)+'</div>'+
+        '<div class="t-body">'+
+          '<div class="t-title"></div>'+
+          '<div class="t-desc"></div>'+
+          '<div class="t-meta"><span class="chip">'+(t.chip || modeLabel(lv))+'</span><span class="t-count">'+tCount(t, lv, store)+'</span></div>'+
+        '</div>'+
+      '</button>'+
+      (showPill ? '<button class="pill-practice" title="A quick mixed quiz on this set"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Quiz</button>' : '')+
       '<div class="t-arrow">›</div>';
     b.querySelector(".t-title").textContent = t.name;
     b.querySelector(".t-desc").textContent = t.desc || "";
-    b.onclick = ()=> openTopic(li, ti, t);   /* mature topics show the adult-language gate first */
+    b.querySelector(".topic-main").onclick = ()=> openTopic(li, ti, t);   /* mature topics show the adult-language gate first */
+    if(showPill) b.querySelector(".pill-practice").onclick = ()=> startRound(li, ti);
     box.appendChild(b);
   });
 }
@@ -1694,6 +1785,8 @@ function showDone(){
   const knowCount  = gradable.filter(i=>S.known.has(i)).length;
   const skipped    = gradable.length - stillCount - knowCount;
   $("knowN").textContent = knowCount; $("stillN").textContent = stillCount;
+  const pset = $("practiceSet");
+  pset.hidden = !!LEVELS[S.levelIdx].topics[S.topicIdx].kind;   /* vocab sets only */
   const ps = $("practiceStill");
   const totalStill = S.still.size;   /* across the whole topic, not just this round */
   if(totalStill>0){
@@ -1870,6 +1963,7 @@ $("next").addEventListener("click", advance);
 $("shuffle").addEventListener("click", shuffle);
 $("back").addEventListener("click", ()=>show("home"));
 $("practiceStill").addEventListener("click", practiceStill);
+$("practiceSet").addEventListener("click", ()=>startRound(S.levelIdx, S.topicIdx));
 $("restart").addEventListener("click", restart);
 $("toTopics").addEventListener("click", ()=>show("home"));
 $("openPrivacy").addEventListener("click", ()=>show("privacy"));
@@ -2435,6 +2529,173 @@ $("lPlay").addEventListener("click", lPlayCurrent);
 $("lNext").addEventListener("click", ()=>{ L.i++; lRender(); });
 $("lAgain").addEventListener("click", ()=>startListen(L.li, L.ti));
 $("lHome").addEventListener("click", ()=>show("home"));
+
+
+/* ---------------- Practice this set: a mixed round over one topic's cards ----------------
+   Three formats interleaved - hear it & pick the meaning, see the meaning & type the Polish,
+   see the Polish & pick the meaning. A question missed on the first try returns once at the
+   end of the round (requeued copies never count toward the score). Results flow back into
+   the topic's still/known progress, so the topic list's "to review" count stays honest. */
+const R = { li:0, ti:0, qs:[], i:0, state:"ask", revealed:0, attempted:false };
+
+function rBuildOptions(card, pool){
+  const wrong = gShuffle(pool.filter(c => c !== card && c.en !== card.en)).slice(0,3).map(c=>c.en);
+  return gShuffle(wrong.concat([card.en]));
+}
+function startRound(l, t){
+  R.li=l; R.ti=t;
+  const topic = LEVELS[l].topics[t];
+  const cards = topic.cards.filter(c => !c.intro && c.pl && c.en);
+  let dPool = cards;
+  if(dPool.length < 4) dPool = dPool.concat(poolFor([LEVELS[l].level]).map(x=>x.c));
+  const sample = gShuffle(cards).slice(0,15);
+  const fmts = ["listen","type","mc"];
+  R.qs = gShuffle(sample.map((c,k) => ({
+    c, fmt: fmts[k % fmts.length],
+    options: rBuildOptions(c, dPool),
+    requeued:false, result:null
+  })));
+  R.i=0; R.state="ask"; R.revealed=0; R.attempted=false;
+  $("rTitle").textContent = topic.name;
+  $("rSub").textContent = "Mixed quiz";
+  show("round"); rRender();
+}
+function rSetBlocks(fmt){
+  $("rMcq").hidden   = fmt==="type";
+  $("rTyped").hidden = fmt!=="type";
+  $("rPlay").hidden  = fmt!=="listen";
+  $("rPl").hidden    = fmt!=="mc";
+}
+function rRender(){
+  if(R.i >= R.qs.length){ rShowDone(); return; }
+  $("rMain").style.display="flex"; $("rDone").style.display="none";
+  const q=R.qs[R.i], c=q.c;
+  R.state="ask"; R.revealed=0; R.attempted=false;
+  $("rCountLbl").textContent=(R.i+1)+" / "+R.qs.length;
+  $("rFill").style.width=(R.i/R.qs.length*100)+"%";
+  $("rNext").disabled=true;
+  $("rNextLabel").textContent = R.i===R.qs.length-1 ? "See results" : "Next";
+  $("rType").textContent = q.fmt==="listen" ? "What did you hear?"
+                         : q.fmt==="type"   ? "Type the Polish"
+                         : "What does it mean?";
+  rSetBlocks(q.fmt);
+  if(q.fmt==="type"){
+    $("rEn").textContent=c.en;
+    $("rCtx").textContent=c.exEn ? "Context: "+c.exEn : "";
+    const inp=$("rInput");
+    inp.value=""; inp.disabled=false;
+    $("rHintLine").hidden=true; $("rHintLine").textContent="";
+    $("rHint").disabled=false; $("rCheck").disabled=false;
+    const v=$("rVerdict"); v.className="verdict"; v.innerHTML="";
+    inp.focus();
+  } else {
+    $("rPl").textContent = q.fmt==="mc" ? c.pl : "";
+    const rv=$("rReveal"); rv.classList.remove("show"); rv.textContent="";
+    const fb=$("rFb"); fb.classList.remove("show"); fb.innerHTML="";
+    const box=$("rOpts"); box.innerHTML="";
+    q.options.forEach(o=>{
+      const b=document.createElement("button");
+      b.className="opt"; b.textContent=o;
+      b.addEventListener("click", ()=> rPickOption(b, o, q, box));
+      box.appendChild(b);
+    });
+  }
+}
+function rPickOption(btn, o, q, box){
+  if(R.state!=="ask") return;
+  if(o===q.c.en){
+    btn.classList.add("correct");
+    box.querySelectorAll(".opt").forEach(x=>x.disabled=true);
+    R.state="done";
+    rRecord(q, R.attempted ? "miss" : "right");
+    if(q.fmt==="listen"){ $("rReveal").textContent=q.c.pl; $("rReveal").classList.add("show"); }
+    const fb=$("rFb");
+    const exHtml=q.c.ex ? '<div class="fb-good"><div class="t"><div class="p" lang="pl">'+q.c.ex+'</div><div class="e">'+(q.c.exEn||"")+'</div></div>'+
+      '<button class="mini-audio" data-say="'+encodeURIComponent(q.c.ex)+'" aria-label="Play">'+G_AUDIO+'</button></div>' : "";
+    if(exHtml){ fb.innerHTML=exHtml; fb.classList.add("show"); }
+    $("rNext").disabled=false;
+  } else {
+    btn.classList.add("wrong"); btn.disabled=true;
+    R.attempted=true;
+  }
+}
+function rRevealLetter(){
+  const c=R.qs[R.i].c;
+  const canon=tAccepted(c.pl)[0];
+  if(R.revealed < canon.length-1) R.revealed++;
+  $("rHintLine").hidden=false;
+  $("rHintLine").textContent="Starts with: "+canon.slice(0,R.revealed)+"\u2026";
+  $("rInput").focus();
+}
+function rCheckAnswer(){
+  if(R.state!=="ask") return;
+  const q=R.qs[R.i], c=q.c, val=$("rInput").value;
+  if(!tNormAns(val)) { $("rInput").focus(); return; }
+  const acc=tAccepted(c.pl);
+  let verdict="wrong";
+  if(acc.some(a=>tNormAns(a)===tNormAns(val))) verdict="right";
+  else if(acc.some(a=>tFold(a)===tFold(val))) verdict="almost";
+  R.state="done";
+  rRecord(q, verdict==="wrong" ? "miss" : verdict);
+  $("rInput").disabled=true; $("rCheck").disabled=true; $("rHint").disabled=true;
+  const v=$("rVerdict");
+  const audioBtn='<button class="mini-audio" data-say="'+encodeURIComponent(c.pl)+'" aria-label="Play">'+G_AUDIO+'</button>';
+  const exHtml=c.ex ? '<div class="v-ex" lang="pl">'+c.ex+'</div><div class="v-exen">'+(c.exEn||"")+'</div>' : "";
+  const head = verdict==="right" ? "Dobrze!"
+             : verdict==="almost" ? "Almost - watch the \u0105, \u0119, \u00f3, \u017c\u2026"
+             : "Not this time";
+  v.innerHTML='<div class="v-head">'+head+'</div>'+
+    '<div class="v-row"><span class="v-pl" lang="pl"></span>'+audioBtn+'</div>'+exHtml;
+  v.querySelector(".v-pl").textContent=c.pl;
+  v.className="verdict show v-"+verdict;
+  $("rNext").disabled=false; $("rNext").focus();
+}
+function rRecord(q, result){
+  if(q.requeued) return;                     /* second passes never score or re-requeue */
+  q.result = result;
+  if(result==="miss"){
+    R.qs.push({ c:q.c, fmt:q.fmt, options:gShuffle(q.options.slice()), requeued:true, result:null });
+  }
+}
+function rShowDone(){
+  $("rMain").style.display="none"; $("rDone").style.display="flex";
+  $("rFill").style.width="100%"; $("rCountLbl").textContent=R.qs.length+" / "+R.qs.length;
+  const scored = R.qs.filter(q=>!q.requeued);
+  const right  = scored.filter(q=>q.result==="right").length;
+  const almost = scored.filter(q=>q.result==="almost").length;
+  const missed = scored.filter(q=>q.result==="miss").length;
+  $("rScoreN").textContent = right+almost;
+  $("rMissN").textContent  = missed;
+  $("rDoneMsg").textContent =
+    (missed===0 ? "Every question right on the first try. \u015awietnie!"
+                : "You got "+(right+almost)+" of "+scored.length+" on the first try.")
+    + (almost>0 ? " ("+almost+" with diacritic slips.)" : "");
+  /* feed results back into the topic's progress: a first-try miss goes to "still
+     learning", a first-try right is solid evidence the word is known */
+  const st = loadStore(), key = topicKey(R.li, R.ti);
+  const rec = st[key] || { still:[], known:[] };
+  const still = new Set(rec.still||[]), known = new Set(rec.known||[]);
+  scored.forEach(q=>{
+    if(q.result==="miss"){ still.add(q.c.pl); known.delete(q.c.pl); }
+    else if(q.result==="right"){ known.add(q.c.pl); still.delete(q.c.pl); }
+    /* "almost" leaves progress untouched - the word is known, the spelling isn't */
+  });
+  st[key] = { still:[...still], known:[...known] };
+  saveStore(st);
+  if(window.PP_A2HS){ window.PP_A2HS.bump(3); $("rNudge").innerHTML = window.PP_A2HS.nudgeHTML(); }
+}
+$("rBack").addEventListener("click", ()=>show("home"));
+$("rPlay").addEventListener("click", ()=>{ if(R.i<R.qs.length) speakText(R.qs[R.i].c.pl, $("rPlay")); });
+$("rCheck").addEventListener("click", rCheckAnswer);
+$("rHint").addEventListener("click", rRevealLetter);
+$("rNext").addEventListener("click", ()=>{ R.i++; rRender(); });
+$("rInput").addEventListener("keydown", e=>{
+  if(e.key!=="Enter") return;
+  e.preventDefault();
+  if(R.state==="ask") rCheckAnswer(); else { R.i++; rRender(); }
+});
+$("rAgain").addEventListener("click", ()=>startRound(R.li, R.ti));
+$("rBackBtn").addEventListener("click", ()=>show("home"));
 
 /* ---------------- installable: service worker + keep the installed app fresh ---------------- */
 const ppFresh = { tag:null, reg:null, reloading:false };
