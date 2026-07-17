@@ -386,6 +386,10 @@ def vocab_card(c, audio_idx):
     h.append(f'<div class="ex" style="border-top:0;padding-top:0">{btn}'
              f'<div><h2 lang="pl" style="margin:0">{esc(pl)}</h2>'
              f'<div class="en" style="font-size:15px">{esc(en)}</div></div></div>')
+    if c.get("pair"):
+        h.append(f'<div class="note"><b>Aspect pair:</b> <span lang="pl">{esc(c["pair"])}</span></div>')
+    if c.get("pair"):
+        h.append(f'<div class="note"><b>Aspect pair:</b> <span lang="pl">{esc(c["pair"])}</span></div>')
     if c.get("hint"):
         h.append(f'<div class="note">{c["hint"]}</div>')
     if c.get("ex"):
