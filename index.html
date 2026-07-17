@@ -1283,7 +1283,7 @@
    Unrelated to CACHE in sw.js, which is a machine counter - bump both when
    you deploy, but they don't need to match.
    ========================================================================= */
-const APP_VERSION = "7.17-6";
+const APP_VERSION = "7.17-8";
 document.getElementById("footVersion").textContent = "v" + APP_VERSION;
 
 /* =========================================================================
@@ -1498,10 +1498,13 @@ function renderTopicsHead(searching){
   head.querySelector("b").textContent = modeLabel(lv);
   head.querySelector(".th-blurb").textContent = lv.blurb ? (" \u00b7 "+lv.blurb) : "";
   head.querySelector(".th-count").textContent = n + (n===1 ? " topic" : " topics");
-  if(categoryOf(lv)==="vocab"){
+  const isPodcastLv = lv.topics.length && lv.topics.every(t=>t.kind==="podcast");
+  if(categoryOf(lv)==="vocab" || isPodcastLv){
     const hint = document.createElement("div");
     hint.className = "th-hint";
-    hint.textContent = "Open a set to study its flashcards \u00b7 tap Quiz for a quick mixed test";
+    hint.textContent = isPodcastLv
+      ? "Open an episode to study its phrases \u00b7 tap Quiz for a quick mixed test"
+      : "Open a set to study its flashcards \u00b7 tap Quiz for a quick mixed test";
     head.appendChild(hint);
   }
 }
@@ -1636,7 +1639,7 @@ function renderTopics(){
 
   list.forEach(({t, li, ti})=>{
     const lv = LEVELS[li];
-    const showPill = !t.kind && t.cards && !t.mature;   /* every vocab topic - the adult-language set still needs its gate first */
+    const showPill = (!t.kind || t.kind==="podcast") && t.cards && !t.mature;   /* vocab + podcast sets - the adult-language set still needs its gate first */
     const b = document.createElement("div");
     b.className = "topic";
     b.innerHTML =
@@ -1786,7 +1789,8 @@ function showDone(){
   const skipped    = gradable.length - stillCount - knowCount;
   $("knowN").textContent = knowCount; $("stillN").textContent = stillCount;
   const pset = $("practiceSet");
-  pset.hidden = !!LEVELS[S.levelIdx].topics[S.topicIdx].kind;   /* vocab sets only */
+  const kind = LEVELS[S.levelIdx].topics[S.topicIdx].kind;
+  pset.hidden = !!(kind && kind!=="podcast");   /* vocab and podcast sets */
   const ps = $("practiceStill");
   const totalStill = S.still.size;   /* across the whole topic, not just this round */
   if(totalStill>0){
@@ -2549,7 +2553,8 @@ function startRound(l, t){
   let dPool = cards;
   if(dPool.length < 4) dPool = dPool.concat(poolFor([LEVELS[l].level]).map(x=>x.c));
   const sample = gShuffle(cards).slice(0,15);
-  const fmts = ["listen","type","mc"];
+  /* podcast phrases are long - recognition formats only, no typing */
+  const fmts = topic.kind==="podcast" ? ["listen","mc"] : ["listen","type","mc"];
   R.qs = gShuffle(sample.map((c,k) => ({
     c, fmt: fmts[k % fmts.length],
     options: rBuildOptions(c, dPool),
