@@ -278,7 +278,7 @@
   .speed-toggle svg{width:14px;height:14px}
   .speed-toggle.on{background:var(--emerald);color:#fff;border-color:var(--emerald)}
   /* challenge toggle (Conversations) - same visual family as the speed toggle */
-  .chal-toggle{flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;height:34px;padding:0 12px;
+  .chal-toggle{flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 11px;
     background:#fff;color:var(--muted);border:1px solid var(--border);border-radius:17px;
     font-size:12px;font-weight:600;letter-spacing:.3px;cursor:pointer;transition:.15s;
     -webkit-tap-highlight-color:transparent}
@@ -539,6 +539,14 @@
     color:var(--muted);margin-bottom:10px}
   .about-link{color:var(--emerald);font-weight:700;text-decoration:underline;text-underline-offset:2px}
   .about-link:hover{color:var(--sage-hover)}
+  .data-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .data-btn{border:1.5px solid var(--border);background:#fff;color:var(--forest);border-radius:12px;
+    padding:11px 16px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s}
+  .data-btn:hover{border-color:var(--emerald);color:var(--emerald);background:var(--mint-bg)}
+  .data-btn:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  .data-status{margin-top:11px;font-size:13px;line-height:1.5;color:var(--muted)}
+  .data-status.ok{color:var(--emerald);font-weight:600}
+  .data-status.err{color:#b3423a;font-weight:600}
   .about-link:focus-visible{outline:2px solid var(--emerald);outline-offset:2px;border-radius:3px}
 
   /* ---------- grammar: teach card ---------- */
@@ -940,10 +948,6 @@
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
       <div class="sbar-title"><b id="cTitle"></b><span id="cLevel"></span></div>
-      <button class="chal-toggle" id="cChallenge" aria-pressed="false" title="Challenge: hide translations - listen before revealing">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.7 5.1A9.6 9.6 0 0 1 12 5c7 0 10 7 10 7a13.2 13.2 0 0 1-1.7 2.7"/><path d="M6.6 6.6A13.5 13.5 0 0 0 2 12s3 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="m2 2 20 20"/></svg>
-        <span>Challenge</span>
-      </button>
       <button class="speed-toggle" data-role="speed-toggle" aria-label="Toggle audio speed" title="Toggle audio speed">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
         <span class="speed-label">Slow</span>
@@ -955,6 +959,10 @@
     <div class="progress">
       <div class="track"><div class="fill" id="cFill"></div></div>
       <div class="p-count" id="cCount">0 / 0</div>
+      <button class="chal-toggle" id="cChallenge" aria-pressed="false" title="Challenge: hide translations - listen before revealing">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.7 5.1A9.6 9.6 0 0 1 12 5c7 0 10 7 10 7a13.2 13.2 0 0 1-1.7 2.7"/><path d="M6.6 6.6A13.5 13.5 0 0 0 2 12s3 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="m2 2 20 20"/></svg>
+        <span>Challenge</span>
+      </button>
     </div>
     <div class="thread" id="cThread"></div>
     <div class="reply" id="cReply"></div>
@@ -1187,6 +1195,19 @@
         <p class="about-p">It's completely free, needs no account, and collects zero data. I'll keep expanding the materials as I go.</p>
 
         <div class="about-contact">
+          <div class="about-contact-title">Your data stays yours</div>
+          <p class="about-p">Everything you do here - progress, known words, settings - is stored only on your device. Nothing is sent anywhere (no servers, no account).</p>
+          <p class="about-p">The app asks your browser to treat this data as important so it isn't cleared automatically when storage runs low. Most browsers agree silently; some may ask you to confirm.</p>
+          <p class="about-p">Browsers can still remove it - if you clear browsing data, or on iPhone when the site sits unopened in Safari for a week. <a class="about-link" id="dataInstallLink" href="#" role="button">Installing the app</a> to your home screen protects against that, and a backup puts a copy safely in your hands:</p>
+          <div class="data-actions">
+            <button class="data-btn" id="dataBackup">Back up my progress</button>
+            <button class="data-btn" id="dataRestore">Restore from backup</button>
+            <input type="file" id="dataFile" accept=".json,application/json" hidden>
+          </div>
+          <div class="data-status" id="dataStatus" aria-live="polite"></div>
+        </div>
+
+        <div class="about-contact">
           <div class="about-contact-title">Contact</div>
           <p class="about-p">Learned Polish yourself and have a survival tactic that worked? Found a mistake, or want a topic added? I'd genuinely love to hear it - reach out at <a class="about-link" href="mailto:hello@popolsku.app">hello@popolsku.app</a>.</p>
         </div>
@@ -1283,7 +1304,7 @@
    Unrelated to CACHE in sw.js, which is a machine counter - bump both when
    you deploy, but they don't need to match.
    ========================================================================= */
-const APP_VERSION = "7.17-8";
+const APP_VERSION = "7.17-10";
 document.getElementById("footVersion").textContent = "v" + APP_VERSION;
 
 /* =========================================================================
@@ -2702,6 +2723,79 @@ $("rInput").addEventListener("keydown", e=>{
 $("rAgain").addEventListener("click", ()=>startRound(R.li, R.ti));
 $("rBackBtn").addEventListener("click", ()=>show("home"));
 
+/* ---------------- your data: backup & restore ----------------
+   A backup is a plain JSON file of every popolsku-* localStorage key. Restore
+   validates the file, shows what it contains, and replaces this device's data
+   after the learner confirms - then reloads so every screen reflects it. */
+function ppBackupData(){
+  const data = {};
+  for(let i=0;i<localStorage.length;i++){
+    const k = localStorage.key(i);
+    if(k && k.indexOf("popolsku-")===0) data[k] = localStorage.getItem(k);
+  }
+  return { app:"popolsku.app", version:APP_VERSION, exported:new Date().toISOString(), data };
+}
+function ppProgressCounts(data){
+  let known=0, still=0;
+  try{
+    const st = JSON.parse(data[STORE_KEY] || "{}");
+    Object.keys(st).forEach(k=>{
+      known += (st[k].known||[]).length;
+      still += (st[k].still||[]).length;
+    });
+  }catch(e){}
+  return {known, still};
+}
+function ppDownloadBackup(){
+  const payload = ppBackupData();
+  const n = ppProgressCounts(payload.data);
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "popolsku-backup-" + payload.exported.slice(0,10) + ".json";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
+  const s = $("dataStatus");
+  s.className = "data-status ok";
+  s.textContent = "Saved (" + n.known + " known words, " + n.still + " to review). Keep the file somewhere safe - it's the only copy besides this device.";
+}
+function ppApplyBackup(obj){
+  const s = $("dataStatus");
+  if(!obj || obj.app!=="popolsku.app" || typeof obj.data!=="object" || obj.data===null){
+    s.className = "data-status err";
+    s.textContent = "That file doesn't look like a Po polsku backup.";
+    return false;
+  }
+  const n = ppProgressCounts(obj.data);
+  const when = obj.exported ? obj.exported.slice(0,10) : "an unknown date";
+  const msg = "This backup from " + when + " contains " + n.known + " known words and " + n.still +
+              " to review.\n\nReplace the progress on this device with it?";
+  if(!window.confirm(msg)) { s.className="data-status"; s.textContent="Restore cancelled - nothing was changed."; return false; }
+  for(let i=localStorage.length-1;i>=0;i--){
+    const k = localStorage.key(i);
+    if(k && k.indexOf("popolsku-")===0) localStorage.removeItem(k);
+  }
+  Object.keys(obj.data).forEach(k=>{
+    if(k.indexOf("popolsku-")===0 && typeof obj.data[k]==="string") localStorage.setItem(k, obj.data[k]);
+  });
+  s.className = "data-status ok";
+  s.textContent = "Restored. Reloading\u2026";
+  setTimeout(()=>location.reload(), 400);
+  return true;
+}
+$("dataBackup").addEventListener("click", ppDownloadBackup);
+$("dataRestore").addEventListener("click", ()=>$("dataFile").click());
+$("dataFile").addEventListener("change", e=>{
+  const f = e.target.files && e.target.files[0];
+  e.target.value = "";
+  if(!f) return;
+  const rd = new FileReader();
+  rd.onload = ()=>{ let obj=null; try{ obj=JSON.parse(rd.result); }catch(err){} ppApplyBackup(obj); };
+  rd.onerror = ()=>{ const s=$("dataStatus"); s.className="data-status err"; s.textContent="Couldn't read that file."; };
+  rd.readAsText(f);
+});
+$("dataInstallLink").addEventListener("click", e=>{ e.preventDefault(); show("install"); });
+
 /* ---------------- installable: service worker + keep the installed app fresh ---------------- */
 const ppFresh = { tag:null, reg:null, reloading:false };
 
@@ -2811,7 +2905,7 @@ const PP_A2HS = (function(){
     const how = deferred ? "Add it in one tap" : "Add it to your home screen";
     return '<div class="pp-nudge">'
       + '<div class="pp-tx"><div class="pp-t">Keep Po polsku one tap away</div>'
-      + '<div class="pp-s">'+how+' - works offline.</div></div>'
+      + '<div class="pp-s">'+how+' - works offline and protects your progress.</div></div>'
       + '<button class="pp-add" data-a2hs-add>Add</button></div>';
   }
 
