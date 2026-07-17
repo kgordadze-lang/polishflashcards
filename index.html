@@ -297,6 +297,7 @@
   .t-input:focus{outline:2px solid var(--emerald);outline-offset:1px;border-color:var(--emerald)}
   .t-input:disabled{background:var(--bg);color:var(--muted)}
   .t-actions{display:flex;gap:10px;margin-top:14px;align-items:center}
+  .t-actions .check-btn{margin-top:0}   /* the 18px top margin belongs to the grammar drills, not this row */
   .hint-reveal{border:1.5px solid var(--border);background:#fff;color:var(--muted);border-radius:13px;
     padding:11px 16px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s}
   .hint-reveal:hover{border-color:var(--emerald);color:var(--emerald)}
@@ -929,7 +930,7 @@
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
       <div class="sbar-title"><b id="cTitle"></b><span id="cLevel"></span></div>
-      <button class="chal-toggle" id="cChallenge" aria-pressed="false" title="Challenge: hide translations, listen first">
+      <button class="chal-toggle" id="cChallenge" aria-pressed="false" title="Challenge: hide translations - listen before revealing">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.7 5.1A9.6 9.6 0 0 1 12 5c7 0 10 7 10 7a13.2 13.2 0 0 1-1.7 2.7"/><path d="M6.6 6.6A13.5 13.5 0 0 0 2 12s3 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="m2 2 20 20"/></svg>
         <span>Challenge</span>
       </button>
@@ -1202,7 +1203,7 @@
    Unrelated to CACHE in sw.js, which is a machine counter - bump both when
    you deploy, but they don't need to match.
    ========================================================================= */
-const APP_VERSION = "7.16-3";
+const APP_VERSION = "7.17";
 document.getElementById("footVersion").textContent = "v" + APP_VERSION;
 
 /* =========================================================================
@@ -2168,7 +2169,7 @@ function cBubbleHTML(m, idx){
      Once revealed, a bubble stays revealed for the rest of the conversation. */
   const veiled = C.challenge && m.who==="npc" && !m.revealed;
   const audio='<button class="mini-audio" data-say="'+encodeURIComponent(m.pl)+'" aria-label="Play">'+G_AUDIO+'</button>';
-  const cue = veiled ? '<div class="veil-cue">tap to reveal</div>' : '';
+  const cue = veiled ? '<div class="veil-cue">\u25b6 listen first \u00b7 tap to reveal</div>' : '';
   const inner='<div class="btext'+(veiled?' veiled':'')+'" data-mi="'+idx+'"><div class="b-pl" lang="pl">'+m.pl+'</div><div class="b-en">'+m.en+'</div>'+cue+'</div>';
   const row = m.who==="npc" ? '<div class="brow">'+inner+audio+'</div>' : '<div class="brow">'+audio+inner+'</div>';
   let h='<div class="bubble '+m.who+'">'+row+'</div>';
@@ -2203,7 +2204,7 @@ function cRenderNode(){
   const node=C.topic.scenes[C.node];
   C.transcript.push({ who:"npc", pl:node.npc, en:node.npcEn });
   cRenderThread(); cProgress();
-  if(C.challenge) setTimeout(()=>speakText(node.npc, null), 250);   /* listen-first: hear it before you see it */
+  /* no autoplay in challenge mode - the bubble's play button lets the learner listen before revealing */
   if(node.end || !node.options || !node.options.length){ C.curOptions=null; cShowDone(); return; }
   C.curOptions=node.options;
   cRenderOptions(node.options);
@@ -2340,7 +2341,6 @@ function tCheckAnswer(){
     '<div class="v-row"><span class="v-pl" lang="pl"></span>'+audioBtn+'</div>'+exHtml;
   v.querySelector(".v-pl").textContent=c.pl;
   v.className="verdict show v-"+verdict;
-  speakText(c.pl, null);
   $("tNext").disabled=false; $("tNext").focus();
 }
 function tShowDone(){
@@ -2417,7 +2417,7 @@ function lRender(){
     });
     box.appendChild(b);
   });
-  setTimeout(()=>lPlayCurrent(), 250);
+  /* no autoplay - the learner starts each clip with the play button */
 }
 function lPlayCurrent(){ if(L.i < L.qs.length) speakText(L.qs[L.i].c.pl, $("lPlay")); }
 function lShowDone(){
