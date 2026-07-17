@@ -268,6 +268,59 @@
   .speed-toggle:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
   .speed-toggle svg{width:14px;height:14px}
   .speed-toggle.on{background:var(--emerald);color:#fff;border-color:var(--emerald)}
+  /* challenge toggle (Conversations) - same visual family as the speed toggle */
+  .chal-toggle{flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;height:34px;padding:0 12px;
+    background:#fff;color:var(--muted);border:1px solid var(--border);border-radius:17px;
+    font-size:12px;font-weight:600;letter-spacing:.3px;cursor:pointer;transition:.15s;
+    -webkit-tap-highlight-color:transparent}
+  .chal-toggle:hover{border-color:var(--emerald);color:var(--emerald)}
+  .chal-toggle:active{transform:scale(.94)}
+  .chal-toggle:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  .chal-toggle svg{width:14px;height:14px}
+  .chal-toggle.on{background:var(--forest);color:var(--cream);border-color:var(--forest)}
+  /* veiled NPC bubbles in challenge mode */
+  .btext.veiled{cursor:pointer}
+  .btext.veiled .b-pl{filter:blur(6px);user-select:none;-webkit-user-select:none}
+  .btext.veiled .b-en{display:none}
+  .veil-cue{font-size:11px;color:var(--muted);margin-top:4px}
+  #cReply.challenge .ro-en{display:none}
+  .peek-en{border:none;background:none;color:var(--emerald);font-size:12.5px;font-weight:700;cursor:pointer;
+    font-family:inherit;padding:8px 2px 0;text-align:left}
+  .peek-en:hover{color:var(--sage-hover)}
+  /* aspect pair line on card backs */
+  .pair-line{margin-top:10px;display:flex;align-items:baseline;justify-content:center;gap:8px;flex-wrap:wrap}
+  .pair-k{font-size:10.5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted)}
+  .pair-v{font-size:14px;font-weight:700;color:var(--forest)}
+  /* Type it */
+  .t-input{width:100%;margin-top:18px;padding:14px 16px;font-size:17px;font-weight:600;font-family:inherit;
+    border:1.5px solid var(--border);border-radius:14px;color:var(--forest);background:#fff;box-sizing:border-box}
+  .t-input:focus{outline:2px solid var(--emerald);outline-offset:1px;border-color:var(--emerald)}
+  .t-input:disabled{background:var(--bg);color:var(--muted)}
+  .t-actions{display:flex;gap:10px;margin-top:14px;align-items:center}
+  .hint-reveal{border:1.5px solid var(--border);background:#fff;color:var(--muted);border-radius:13px;
+    padding:11px 16px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s}
+  .hint-reveal:hover{border-color:var(--emerald);color:var(--emerald)}
+  .t-hintline{margin-top:12px;font-size:15px;font-weight:700;letter-spacing:2px;color:var(--muted)}
+  .t-ctx{margin-top:10px;font-size:14px;color:var(--muted);font-style:italic}
+  .t-from{margin-top:6px;font-size:12px;color:var(--muted)}
+  .verdict{margin-top:16px;border-radius:14px;padding:14px 16px;font-size:14.5px;display:none}
+  .verdict.show{display:block;animation:fade .3s ease}
+  .verdict.v-right{background:var(--ok-bg);border:1px solid var(--ok-border);color:var(--ok-text)}
+  .verdict.v-almost{background:#fef9c3;border:1px solid #eab308;color:#854d0e}
+  .verdict.v-wrong{background:#fbeee8;border:1px solid var(--coral);color:var(--coral-hover)}
+  .verdict .v-head{font-weight:800;margin-bottom:6px}
+  .verdict .v-pl{font-size:18px;font-weight:800;color:var(--forest)}
+  .verdict .v-row{display:flex;align-items:center;gap:10px}
+  .verdict .v-ex{margin-top:8px;font-size:13.5px;color:var(--forest)}
+  .verdict .v-exen{font-size:12.5px;color:var(--muted)}
+  /* Listening */
+  .l-play{margin:6px auto 0;width:86px;height:86px;border-radius:50%;border:none;background:var(--forest);
+    color:var(--cream);cursor:pointer;display:grid;place-items:center;box-shadow:var(--shadow-sm);transition:.15s}
+  .l-play:hover{transform:scale(1.04)}
+  .l-play:active{transform:scale(.96)}
+  .l-play svg{width:34px;height:34px}
+  .l-reveal{margin-top:14px;text-align:center;font-size:19px;font-weight:800;color:var(--forest);display:none}
+  .l-reveal.show{display:block;animation:fade .3s ease}
   .back{border:1px solid var(--border);background:var(--card);border-radius:12px;width:40px;height:40px;
     flex:0 0 auto;display:grid;place-items:center;cursor:pointer;color:var(--forest);
     box-shadow:var(--shadow-sm);transition:.15s}
@@ -740,6 +793,7 @@
               <span class="eyebrow" id="backEyebrow">Meaning</span>
               <div class="en" id="enText"></div>
               <div class="hint" id="backHint"></div>
+              <div class="pair-line" id="pairLine" hidden><span class="pair-k">Aspect pair</span><span class="pair-v" id="pairV" lang="pl"></span></div>
               <a class="yt-link" id="ytLink" href="#" target="_blank" rel="noopener noreferrer" hidden>
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8zM9.6 15.6V8.4l6.2 3.6z"/></svg>
                 Watch on YouTube
@@ -875,6 +929,10 @@
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
       <div class="sbar-title"><b id="cTitle"></b><span id="cLevel"></span></div>
+      <button class="chal-toggle" id="cChallenge" aria-pressed="false" title="Challenge: hide translations, listen first">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.7 5.1A9.6 9.6 0 0 1 12 5c7 0 10 7 10 7a13.2 13.2 0 0 1-1.7 2.7"/><path d="M6.6 6.6A13.5 13.5 0 0 0 2 12s3 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="m2 2 20 20"/></svg>
+        <span>Challenge</span>
+      </button>
       <button class="speed-toggle" data-role="speed-toggle" aria-label="Toggle audio speed" title="Toggle audio speed">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
         <span class="speed-label">Slow</span>
@@ -889,6 +947,120 @@
     </div>
     <div class="thread" id="cThread"></div>
     <div class="reply" id="cReply"></div>
+  </section>
+
+  <!-- ============ TYPE IT ============ -->
+  <section class="screen" id="typeit">
+    <div class="sbar">
+      <button class="back" id="tBack" aria-label="Back to topics">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="sbar-title"><b id="tTitle">Type it</b><span id="tLevelLbl"></span></div>
+      <button class="speed-toggle" data-role="speed-toggle" aria-label="Toggle audio speed" title="Toggle audio speed">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
+        <span class="speed-label">Slow</span>
+      </button>
+      <button class="back home-btn" aria-label="Home page">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </button>
+    </div>
+    <div class="progress">
+      <div class="track"><div class="fill" id="tFill"></div></div>
+      <div class="p-count" id="tCountLbl" aria-live="polite">0 / 0</div>
+    </div>
+    <div id="tMain" style="display:flex;flex-direction:column;flex:1">
+      <div class="drill">
+        <div class="drill-card">
+          <div class="d-type">Type the Polish</div>
+          <div class="q-prompt" id="tEn"></div>
+          <div class="t-ctx" id="tCtx"></div>
+          <div class="t-from" id="tFrom"></div>
+          <input class="t-input" id="tInput" type="text" lang="pl" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" placeholder="Wpisz po polsku...">
+          <div class="t-hintline" id="tHintLine" hidden></div>
+          <div class="t-actions">
+            <button class="check-btn" id="tCheck">Check</button>
+            <button class="hint-reveal" id="tHint">Reveal a letter</button>
+          </div>
+          <div class="verdict" id="tVerdict" aria-live="polite"></div>
+        </div>
+        <div class="controls">
+          <button class="ctrl" id="tNext" disabled>
+            <span id="tNextLabel">Next</span>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="done" id="tDone" style="display:none">
+      <div class="done-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <h2>Brawo!</h2>
+      <p id="tDoneMsg"></p>
+      <div class="stat-row">
+        <div class="stat"><b class="know-n" id="tScoreN">0</b><span>CORRECT</span></div>
+        <div class="stat"><b class="still-n" id="tMissN">0</b><span>TO REVISIT</span></div>
+      </div>
+      <div class="done-actions">
+        <button class="btn-primary" id="tAgain">New round</button>
+        <button class="btn-ghost" id="tHome">Back to topics</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LISTENING ============ -->
+  <section class="screen" id="listen">
+    <div class="sbar">
+      <button class="back" id="lBack" aria-label="Back to topics">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="sbar-title"><b id="lTitle">Listening</b><span id="lLevelLbl"></span></div>
+      <button class="speed-toggle" data-role="speed-toggle" aria-label="Toggle audio speed" title="Toggle audio speed">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
+        <span class="speed-label">Slow</span>
+      </button>
+      <button class="back home-btn" aria-label="Home page">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </button>
+    </div>
+    <div class="progress">
+      <div class="track"><div class="fill" id="lFill"></div></div>
+      <div class="p-count" id="lCountLbl" aria-live="polite">0 / 0</div>
+    </div>
+    <div id="lMain" style="display:flex;flex-direction:column;flex:1">
+      <div class="drill">
+        <div class="drill-card">
+          <div class="d-type">What did you hear?</div>
+          <button class="l-play" id="lPlay" aria-label="Play the Polish audio">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>
+          </button>
+          <div class="l-reveal" id="lReveal" lang="pl"></div>
+          <div class="opts" id="lOpts"></div>
+          <div class="fb-box" id="lFbBox" aria-live="polite"></div>
+        </div>
+        <div class="controls">
+          <button class="ctrl" id="lNext" disabled>
+            <span id="lNextLabel">Next</span>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="done" id="lDone" style="display:none">
+      <div class="done-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <h2>Brawo!</h2>
+      <p id="lDoneMsg"></p>
+      <div class="stat-row">
+        <div class="stat"><b class="know-n" id="lScoreN">0</b><span>FIRST TRY</span></div>
+        <div class="stat"><b class="still-n" id="lMissN">0</b><span>RETRIED</span></div>
+      </div>
+      <div class="done-actions">
+        <button class="btn-primary" id="lAgain">New round</button>
+        <button class="btn-ghost" id="lHome">Back to topics</button>
+      </div>
+    </div>
   </section>
 
   <!-- ============ PRIVACY NOTICE ============ -->
@@ -1055,6 +1227,52 @@ if(!LEVELS){
   throw new Error('PP_LEVELS not loaded');
 }
 
+/* ---------------- synthetic practice content (built from existing data) ----------------
+   "Type it" and "Listening" are activities over the vocabulary cards, not new content;
+   the case Mix is a resampled drill set over Grammar Cases. All three are appended
+   here as ordinary levels/topics so the home nav, search, and routing pick them up
+   through the normal paths. Nothing is persisted for them (sessions are ephemeral). */
+const VOCAB_SRC = LEVELS.filter(lv => lv.topics.length>0 && lv.topics.every(t=> !t.kind));
+function poolFor(srcLevels){
+  const out=[];
+  VOCAB_SRC.filter(lv => !srcLevels || srcLevels.includes(lv.level)).forEach(lv =>
+    lv.topics.forEach(t => {
+      if(t.mature) return;                       /* the adult-language gate stays a gate */
+      t.cards.forEach(c => { if(!c.intro && c.pl && c.en) out.push({ c, topic: t.name }); });
+    }));
+  return out;
+}
+function practiceTopics(kind, emoji){
+  const tops = VOCAB_SRC.map(lv => ({
+    name: lv.level, emoji, kind, src: [lv.level], chip: lv.level,
+    desc: lv.blurb || ""
+  }));
+  tops.push({ name:"All levels", emoji, kind, src: null, chip:"Mix",
+    desc:"A random mix drawn from every level" });
+  return tops;
+}
+LEVELS.push(
+  { level:"Type it",   blurb:"See the meaning, type the Polish", topics: practiceTopics("typeit","\u2328\uFE0F") },
+  { level:"Listening", blurb:"Hear the Polish, pick the meaning", topics: practiceTopics("listen","\uD83C\uDFA7") }
+);
+(function(){
+  const gc = LEVELS.find(lv => lv.level === "Grammar Cases");
+  if(!gc) return;
+  gc.topics.unshift({
+    name:"Wszystkie przypadki (Mix)", emoji:"\uD83C\uDFB2", kind:"grammar", chip:"Mix",
+    mixOf:"Grammar Cases",
+    desc:"15 random drills across all seven cases - the real skill is choosing",
+    teach:[{ front:"The real test: which case?",
+      sub:"Inside a single case topic, half the answer is already given. Here the drills arrive shuffled across all seven cases, so you have to spot the trigger first - exactly like real speech.",
+      points:[
+        "Look for the <b>signal</b>: the verb, the preposition, a negation, a quantity.",
+        "A drill you miss comes back once at the end of the round for a second pass.",
+        "Each drill names its case after you answer - predict it before you peek."
+      ]}],
+    drills:[]        /* resampled from the case topics every time practice starts */
+  });
+})();
+
 /* ---------------- app state ---------------- */
 const S = { levelIdx:0, topicIdx:0, cards:[], queue:[], pos:0, still:new Set(), known:new Set(), query:"" };
 const $ = id => document.getElementById(id);
@@ -1114,7 +1332,9 @@ const MODE_ICONS = {
   "Describing People": '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
   "Verbs":             '<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>',
   "Scenarios":         '<path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/>',
-  "Podcasts":          '<path d="M16.85 18.58a9 9 0 1 0-9.7 0"/><path d="M8 14a5 5 0 1 1 8 0"/><circle cx="12" cy="11" r="1"/><path d="M13 17a1 1 0 1 0-2 0l.5 4.5a.5.5 0 1 0 1 0z"/>'
+  "Podcasts":          '<path d="M16.85 18.58a9 9 0 1 0-9.7 0"/><path d="M8 14a5 5 0 1 1 8 0"/><circle cx="12" cy="11" r="1"/><path d="M13 17a1 1 0 1 0-2 0l.5 4.5a.5.5 0 1 0 1 0z"/>',
+  "Type it":           '<path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/>',
+  "Listening":         '<path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/>'
 };
 function modeIcon(lv){ return ICON_SVG(MODE_ICONS[lv.level] || ""); }
 /* Three browse categories. A level's category is derived from its shape, never
@@ -1286,11 +1506,16 @@ const ICONS = {
   "\uD83C\uDF5E":'<path d="M12 22c6.23-.05 7.87-5.57 7.5-10-.36-4.34-3.95-9.96-7.5-10-3.55.04-7.14 5.66-7.5 10-.37 4.43 1.27 9.95 7.5 10z"/>',
   "\uD83C\uDF24\uFE0F":'<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>',
   "\uD83C\uDFC3":'<path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>',
+  "\u2328\uFE0F":'<path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/>',
+  "\uD83C\uDFA7":'<path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/>',
+  "\uD83C\uDFB2":'<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M8 8h.01"/><path d="M16 8h.01"/><path d="M8 16h.01"/><path d="M16 16h.01"/><path d="M12 12h.01"/>',
   "\uD83D\uDC55":'<path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>'
 };
 function topicIcon(t){ return ICONS[t.emoji] ? ICON_SVG(ICONS[t.emoji]) : (t.emoji||"\uD83D\uDCD8"); }
 
 function tCount(t, lv, store){
+  if(t.mixOf) return '15 mixed drills';
+  if(t.kind==="typeit"||t.kind==="listen") return poolFor(t.src).length+' cards \u00b7 15 per round';
   if(t.kind==="grammar") return t.drills.length+' drills';
   if(t.kind==="convo")   return '~'+convoLen(t)+' turns';
   let s = t.kind==="podcast" ? (t.cards.length-1)+' phrases' : t.cards.length+' cards';
@@ -1400,6 +1625,7 @@ function render(){
     const yl = $("ytLink");
     if(c.link){ yl.hidden = false; yl.href = c.link; } else { yl.hidden = true; }
     document.querySelector(".feedback").hidden = true;
+    $("pairLine").hidden = true;
     $("introStart").hidden = false;
     $("exampleBox").style.display = "none";
     $("fill").style.width = ((S.pos + 1) / S.queue.length) * 100 + "%";
@@ -1421,6 +1647,8 @@ function render(){
   $("frontHint").textContent = c.hint || "";
   $("enText").textContent = c.en;
   $("backHint").textContent = c.hint || "";
+  if(c.pair){ $("pairV").textContent = c.pair; $("pairLine").hidden = false; }
+  else $("pairLine").hidden = true;
   if(c.ex){
     $("exampleBox").style.display = "flex";
     $("exLabel").textContent = isPodcast ? "As the speaker put it" : "In everyday use";
@@ -1656,6 +1884,8 @@ let matureReturnFocus = null;   /* element to restore focus to when the gate clo
 function routeTopic(li, ti, t){
   if(t.kind === "grammar") startGrammar(li, ti);
   else if(t.kind === "convo") startConvo(li, ti);
+  else if(t.kind === "typeit") startTypeit(li, ti);
+  else if(t.kind === "listen") startListen(li, ti);
   else startTopic(li, ti);                              /* vocab + podcast */
 }
 function openTopic(li, ti, t){
@@ -1752,20 +1982,45 @@ function gFitCard(){
 window.addEventListener("resize", ()=>{
   if($("grammar").classList.contains("active") && $("gLearn").style.display!=="none") gFitCard();
 });
-function gStartPractice(){ G.di=0; G.results=[]; gRenderDrill(); gPhaseView("practice"); }
+/* The mix topic resamples its drills from every case topic on each round, tagging
+   each drill with the case it came from so the practice card can show it. */
+function gSampleMix(topic){
+  const srcLv = LEVELS.find(lv => lv.level === topic.mixOf);
+  if(!srcLv) return;
+  const all = [];
+  srcLv.topics.forEach(t => {
+    if(t === topic || !t.drills || !t.drills.length) return;
+    t.drills.forEach(d => all.push(Object.assign({}, d, { _case: t.name })));
+  });
+  topic.drills = gShuffle(all).slice(0, 15);
+}
+/* Drills run off a queue (G.queue) rather than the raw topic array: a drill answered
+   wrong on the first try is appended once to the end of the queue, so every miss gets
+   re-practiced before the round ends. Requeued copies never count toward the score. */
+function gStartPractice(){
+  if(G.topic.mixOf) gSampleMix(G.topic);
+  G.queue=G.topic.drills.slice(); G.di=0; G.results=[]; gRenderDrill(); gPhaseView("practice");
+}
+function gUpdateNextLabel(){
+  const willRequeue = G.results[G.di]===false && !G.queue[G.di]._requeue;
+  const last = G.di===G.queue.length-1 && !willRequeue;
+  $("gDrillNextLabel").textContent = last ? "See results" : "Next";
+}
 function gRenderDrill(){
-  const c=G.topic.drills[G.di], last=G.di===G.topic.drills.length-1;
+  const c=G.queue[G.di];
   G.attempted=false;
-  $("gPhase").textContent="Practice \u00b7 "+(G.di+1)+" of "+G.topic.drills.length;
-  $("gCount").textContent=(G.di+1)+" / "+G.topic.drills.length;
-  $("gFill").style.width=(G.di/G.topic.drills.length*100)+"%";
+  const tag = c._requeue ? " \u00b7 retry" : "";
+  $("gPhase").textContent="Practice \u00b7 "+(G.di+1)+" of "+G.queue.length+tag;
+  $("gCount").textContent=(G.di+1)+" / "+G.queue.length;
+  $("gFill").style.width=(G.di/G.queue.length*100)+"%";
   $("gDrillNext").disabled=true;
-  $("gDrillNextLabel").textContent=last?"See results":"Next";
+  gUpdateNextLabel();
   if(c.type==="choose") gRenderChoose(c); else gRenderBuild(c);
 }
 function gRenderChoose(c){
   const p=c.prompt.replace("___",'<span class="blank"></span>');
-  let h='<div class="d-type">Choose the right form</div><div class="q-prompt" lang="pl">'+p+'</div><div class="q-en">'+c.promptEn+'</div><div class="opts">';
+  const dt = c._case ? "Choose the right form \u00b7 <b>"+c._case+"</b>" : "Choose the right form";
+  let h='<div class="d-type">'+dt+'</div><div class="q-prompt" lang="pl">'+p+'</div><div class="q-en">'+c.promptEn+'</div><div class="opts">';
   gShuffle(c.options).forEach(o=>{ h+='<button class="opt" lang="pl" data-val="'+o+'">'+o+'</button>'; });
   h+='</div><div class="fb-box" id="gFbBox" aria-live="polite"></div>';
   $("gDrillCard").innerHTML=h;
@@ -1775,8 +2030,9 @@ function gRenderChoose(c){
       if(val===c.answer){
         btn.classList.add("correct");
         $("gDrillCard").querySelectorAll(".opt").forEach(b=>b.disabled=true);
-        if(!G.attempted) G.results[G.di]=true;
+        if(!G.attempted) G.results[G.di]=true; else G.results[G.di]=false;
         gChooseFeedback(c);
+        gUpdateNextLabel();
         $("gDrillNext").disabled=false;
       } else { btn.classList.add("wrong"); btn.disabled=true; G.attempted=true; G.results[G.di]=false; }
     });
@@ -1793,7 +2049,8 @@ function gRenderBuild(c){
   G.build.pool=gShuffle(c.answer).map((w,i)=>({w:w,id:i+"-"+w}));
   G.build.row=[];
   G.build.answer=c.answer;
-  $("gDrillCard").innerHTML='<div class="d-type">Build the sentence</div><div class="q-prompt">'+c.promptEn+'</div>'+
+  const dtb = c._case ? "Build the sentence \u00b7 <b>"+c._case+"</b>" : "Build the sentence";
+  $("gDrillCard").innerHTML='<div class="d-type">'+dtb+'</div><div class="q-prompt">'+c.promptEn+'</div>'+
     '<div class="q-en">Tap the words in the right order</div>'+
     '<div class="build-row" id="gBuildRow"></div><div class="build-pool" id="gBuildPool"></div>'+
     '<button class="check-btn" id="gCheckBtn" disabled>Check</button><div class="fb-box" id="gFbBox" aria-live="polite"></div>';
@@ -1829,7 +2086,7 @@ function gCheckBuild(c){
     fb.innerHTML='<div class="fb-good"><div class="t"><div class="p" lang="pl">'+c.full+'</div><div class="e">'+c.fullEn+'</div></div>'+
       '<button class="mini-audio" data-say="'+encodeURIComponent(c.full)+'" aria-label="Play">'+G_AUDIO+'</button></div>'+
       '<div class="fb-explain">'+c.explain+'</div>';
-    fb.classList.add("show"); $("gDrillNext").disabled=false;
+    fb.classList.add("show"); gUpdateNextLabel(); $("gDrillNext").disabled=false;
   } else {
     G.attempted=true; G.results[G.di]=false;
     /* red-flag the words sitting in the wrong slot; correct ones keep their green.
@@ -1839,13 +2096,21 @@ function gCheckBuild(c){
     r.classList.add("shake"); setTimeout(()=>r.classList.remove("shake"),340);
   }
 }
-function gDrillAdvance(){ if(G.di<G.topic.drills.length-1){ G.di++; gRenderDrill(); } else gShowDone(); }
+function gDrillAdvance(){
+  const c=G.queue[G.di];
+  if(G.results[G.di]===false && !c._requeue){
+    G.queue.push(Object.assign({}, c, { _requeue:true }));   /* a miss comes back at the end */
+  }
+  if(G.di<G.queue.length-1){ G.di++; gRenderDrill(); } else gShowDone();
+}
 function gShowDone(){
-  const total=G.topic.drills.length, score=G.results.filter(Boolean).length;
+  const total=G.queue.filter(d=>!d._requeue).length;
+  const score=G.queue.reduce((n,d,i)=> n + ((!d._requeue && G.results[i]===true) ? 1 : 0), 0);
+  const retried=G.queue.length-total;
   $("gScore").textContent=score; $("gTotal").textContent=total;
   $("gDoneMsg").textContent = score===total
-    ? "Every answer right on the first try. This case is clicking."
-    : "Nice work through the set. The ones you retried are worth another pass.";
+    ? "Every answer right on the first try. This is clicking."
+    : "Nice work through the set - "+retried+" drill"+(retried===1?"":"s")+" came back for a second pass and you cleared "+(retried===1?"it":"them")+".";
   gPhaseView("done");
 }
 
@@ -1873,7 +2138,7 @@ document.addEventListener("click", e=>{ const b=e.target.closest("[data-say]"); 
 document.addEventListener("click", e=>{ if(e.target.closest(".home-btn")) show("home"); });
 
 /* ---------------- conversation (Rozmowy) ---------------- */
-const C = { topic:null, li:0, tpi:0, node:null, transcript:[], dist:{}, maxDist:1 };
+const C = { topic:null, li:0, tpi:0, node:null, transcript:[], dist:{}, maxDist:1, challenge:false, curOptions:null };
 const C_CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
 
 /* shortest distance from every scene to an ending, via reverse BFS (cycle-safe) */
@@ -1898,9 +2163,13 @@ function startConvo(l,t){
   show("convo");
   cRenderNode();
 }
-function cBubbleHTML(m){
+function cBubbleHTML(m, idx){
+  /* Challenge mode: NPC lines arrive blurred (audio still plays) until tapped.
+     Once revealed, a bubble stays revealed for the rest of the conversation. */
+  const veiled = C.challenge && m.who==="npc" && !m.revealed;
   const audio='<button class="mini-audio" data-say="'+encodeURIComponent(m.pl)+'" aria-label="Play">'+G_AUDIO+'</button>';
-  const inner='<div class="btext"><div class="b-pl" lang="pl">'+m.pl+'</div><div class="b-en">'+m.en+'</div></div>';
+  const cue = veiled ? '<div class="veil-cue">tap to reveal</div>' : '';
+  const inner='<div class="btext'+(veiled?' veiled':'')+'" data-mi="'+idx+'"><div class="b-pl" lang="pl">'+m.pl+'</div><div class="b-en">'+m.en+'</div>'+cue+'</div>';
   const row = m.who==="npc" ? '<div class="brow">'+inner+audio+'</div>' : '<div class="brow">'+audio+inner+'</div>';
   let h='<div class="bubble '+m.who+'">'+row+'</div>';
   if(m.who==="you" && m.note) h+='<div class="you-note">'+m.note+'</div>';
@@ -1912,10 +2181,16 @@ function cRenderThread(){
     '<span class="scene-role">'+tp.role+'</span>'+
     '<div class="scene-set">'+tp.setting+'</div>'+
     '<div class="scene-goal"><b>Your goal:</b> '+tp.goal+'</div></div>';
-  C.transcript.forEach(m=> h+=cBubbleHTML(m));
+  C.transcript.forEach((m,i)=> h+=cBubbleHTML(m,i));
   el.innerHTML=h;
   el.scrollTop=el.scrollHeight;
 }
+/* tap a veiled bubble to reveal it (stays revealed from then on) */
+$("cThread").addEventListener("click", e=>{
+  const b=e.target.closest(".btext.veiled"); if(!b) return;
+  const m=C.transcript[+b.getAttribute("data-mi")]; if(m) m.revealed=true;
+  cRenderThread();
+});
 function cProgress(){
   const d=C.dist[C.node];
   const done=(d===undefined)?C.maxDist:(C.maxDist-d);
@@ -1928,18 +2203,24 @@ function cRenderNode(){
   const node=C.topic.scenes[C.node];
   C.transcript.push({ who:"npc", pl:node.npc, en:node.npcEn });
   cRenderThread(); cProgress();
-  if(node.end || !node.options || !node.options.length){ cShowDone(); return; }
+  if(C.challenge) setTimeout(()=>speakText(node.npc, null), 250);   /* listen-first: hear it before you see it */
+  if(node.end || !node.options || !node.options.length){ C.curOptions=null; cShowDone(); return; }
+  C.curOptions=node.options;
   cRenderOptions(node.options);
 }
 function cRenderOptions(options){
   const box=$("cReply");
+  box.classList.toggle("challenge", C.challenge);
   const node=C.topic.scenes[C.node];
-  let h = node && node.tip ? '<div class="reply-tip">'+node.tip+'</div>' : '';
+  let h = (node && node.tip && !C.challenge) ? '<div class="reply-tip">'+node.tip+'</div>' : '';
   h+='<div class="reply-label">Your reply</div>';
   options.forEach((o,i)=>{
     h+='<button class="reply-opt" data-i="'+i+'"><span class="ro-pl">'+o.pl+'</span><span class="ro-en">'+o.en+'</span></button>';
   });
+  if(C.challenge) h+='<button class="peek-en" id="cPeek">Show translations for this turn</button>';
   box.innerHTML=h;
+  const pk=$("cPeek");
+  if(pk) pk.addEventListener("click", ()=>{ box.classList.remove("challenge"); pk.remove(); });
   box.querySelectorAll(".reply-opt").forEach(btn=>{
     btn.addEventListener("click",()=>{
       const o=options[+btn.getAttribute("data-i")];
@@ -1969,6 +2250,191 @@ function cShowDone(){
   if(window.PP_A2HS){ window.PP_A2HS.bump(3); const n=window.PP_A2HS.nudgeHTML(); if(n) box.insertAdjacentHTML("beforeend", n); }
 }
 $("cBack").addEventListener("click", ()=>show("home"));
+$("cChallenge").addEventListener("click", ()=>{
+  C.challenge=!C.challenge;
+  $("cChallenge").classList.toggle("on", C.challenge);
+  $("cChallenge").setAttribute("aria-pressed", C.challenge?"true":"false");
+  if(C.topic){
+    cRenderThread();
+    if(C.curOptions) cRenderOptions(C.curOptions);
+  }
+});
+
+/* ---------------- Type it (EN -> typed PL recall) ----------------
+   15 cards per round, drawn from the chosen level(s), shortest answers first so
+   sessions warm up. Matching is two-tier: exact (after case/punctuation folding)
+   is correct; correct-except-diacritics scores as correct but gets an amber
+   "watch the ogonki" flag. Cards whose front lists variants ("duzy / maly")
+   accept any single variant or the full string. */
+const T = { topicRef:null, li:0, ti:0, qs:[], i:0, right:0, almost:0, revealed:0, state:"ask" };
+
+function tNormAns(s){
+  return s.toLowerCase()
+    .replace(/\.\.\.|\u2026/g, " ")
+    .replace(/[?!.,;:\u201c\u201d"']/g, " ")
+    .replace(/\s+/g, " ").trim();
+}
+function tFold(s){
+  return tNormAns(s).normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/\u0142/g, "l");                                    /* ł doesn't decompose */
+}
+function tAccepted(pl){
+  const parts = pl.split("/").map(x => x.trim()).filter(Boolean);
+  const set = new Set(parts.length > 1 ? parts.concat([pl]) : [pl]);
+  return [...set];
+}
+function startTypeit(l, t){
+  T.li=l; T.ti=t; T.topicRef=LEVELS[l].topics[t];
+  const pool=poolFor(T.topicRef.src);
+  T.qs=gShuffle(pool).slice(0,15).sort((a,b)=>a.c.pl.length-b.c.pl.length);
+  T.i=0; T.right=0; T.almost=0;
+  $("tLevelLbl").textContent = T.topicRef.name + " \u00b7 " + T.qs.length + " words";
+  show("typeit"); tRender();
+}
+function tRender(){
+  if(T.i >= T.qs.length){ tShowDone(); return; }
+  $("tMain").style.display="flex"; $("tDone").style.display="none";
+  const q=T.qs[T.i], c=q.c;
+  T.state="ask"; T.revealed=0;
+  $("tCountLbl").textContent=(T.i+1)+" / "+T.qs.length;
+  $("tFill").style.width=(T.i/T.qs.length*100)+"%";
+  $("tEn").textContent=c.en;
+  $("tCtx").textContent=c.exEn ? "Context: "+c.exEn : "";
+  $("tFrom").textContent="From: "+q.topic;
+  const inp=$("tInput");
+  inp.value=""; inp.disabled=false;
+  $("tHintLine").hidden=true; $("tHintLine").textContent="";
+  $("tHint").disabled=false;
+  $("tCheck").disabled=false;
+  const v=$("tVerdict"); v.className="verdict"; v.innerHTML="";
+  $("tNext").disabled=true;
+  $("tNextLabel").textContent = T.i===T.qs.length-1 ? "See results" : "Next";
+  inp.focus();
+}
+function tRevealLetter(){
+  const c=T.qs[T.i].c;
+  const canon=tAccepted(c.pl)[0];
+  if(T.revealed < canon.length-1) T.revealed++;
+  $("tHintLine").hidden=false;
+  $("tHintLine").textContent="Starts with: "+canon.slice(0,T.revealed)+"\u2026";
+  $("tInput").focus();
+}
+function tCheckAnswer(){
+  if(T.state!=="ask") return;
+  const c=T.qs[T.i].c, val=$("tInput").value;
+  if(!tNormAns(val)) { $("tInput").focus(); return; }
+  const acc=tAccepted(c.pl);
+  let verdict="wrong";
+  if(acc.some(a=>tNormAns(a)===tNormAns(val))) verdict="right";
+  else if(acc.some(a=>tFold(a)===tFold(val))) verdict="almost";
+  T.state="done";
+  if(verdict==="right") T.right++; else if(verdict==="almost") T.almost++;
+  $("tInput").disabled=true; $("tCheck").disabled=true; $("tHint").disabled=true;
+  const v=$("tVerdict");
+  const audioBtn='<button class="mini-audio" data-say="'+encodeURIComponent(c.pl)+'" aria-label="Play">'+G_AUDIO+'</button>';
+  const exHtml=c.ex ? '<div class="v-ex" lang="pl">'+c.ex+'</div><div class="v-exen">'+(c.exEn||"")+'</div>' : "";
+  const head = verdict==="right" ? "Dobrze!"
+             : verdict==="almost" ? "Almost - watch the \u0105, \u0119, \u00f3, \u017c\u2026"
+             : "Not this time";
+  v.innerHTML='<div class="v-head">'+head+'</div>'+
+    '<div class="v-row"><span class="v-pl" lang="pl"></span>'+audioBtn+'</div>'+exHtml;
+  v.querySelector(".v-pl").textContent=c.pl;
+  v.className="verdict show v-"+verdict;
+  speakText(c.pl, null);
+  $("tNext").disabled=false; $("tNext").focus();
+}
+function tShowDone(){
+  $("tMain").style.display="none"; $("tDone").style.display="flex";
+  $("tFill").style.width="100%"; $("tCountLbl").textContent=T.qs.length+" / "+T.qs.length;
+  const good=T.right+T.almost, miss=T.qs.length-good;
+  $("tScoreN").textContent=good; $("tMissN").textContent=miss;
+  $("tDoneMsg").textContent =
+    (good===T.qs.length ? "You typed every one correctly." : "You produced "+good+" of "+T.qs.length+" from memory.")
+    + (T.almost>0 ? " ("+T.almost+" with diacritic slips - the \u0105 and \u0119 will come.)" : "");
+  if(window.PP_A2HS) window.PP_A2HS.bump(3);
+}
+$("tBack").addEventListener("click", ()=>show("home"));
+$("tCheck").addEventListener("click", tCheckAnswer);
+$("tHint").addEventListener("click", tRevealLetter);
+$("tNext").addEventListener("click", ()=>{ T.i++; tRender(); });
+$("tAgain").addEventListener("click", ()=>startTypeit(T.li, T.ti));
+$("tHome").addEventListener("click", ()=>show("home"));
+$("tInput").addEventListener("keydown", e=>{
+  if(e.key!=="Enter") return;
+  e.preventDefault();
+  if(T.state==="ask") tCheckAnswer(); else { T.i++; tRender(); }
+});
+
+/* ---------------- Listening (hear PL -> pick the meaning) ----------------
+   15 questions per round. Distractors are drawn from the same topic first, so
+   the options are plausible neighbours, then padded from the rest of the pool.
+   Scoring mirrors the drills: first try counts, retries don't. */
+const L = { topicRef:null, li:0, ti:0, qs:[], i:0, results:[], attempted:false };
+
+function startListen(l, t){
+  L.li=l; L.ti=t; L.topicRef=LEVELS[l].topics[t];
+  const pool=poolFor(L.topicRef.src);
+  L.qs=gShuffle(pool).slice(0,15).map(item=>{
+    const seen=new Set([item.c.en]); const opts=[];
+    gShuffle(pool.filter(x=>x.topic===item.topic))
+      .concat(gShuffle(pool.filter(x=>x.topic!==item.topic)))
+      .forEach(x=>{ if(opts.length<3 && !seen.has(x.c.en)){ opts.push(x.c.en); seen.add(x.c.en); } });
+    return { c:item.c, topic:item.topic, options:gShuffle(opts.concat([item.c.en])) };
+  });
+  L.i=0; L.results=[];
+  $("lLevelLbl").textContent = L.topicRef.name + " \u00b7 " + L.qs.length + " questions";
+  show("listen"); lRender();
+}
+function lRender(){
+  if(L.i >= L.qs.length){ lShowDone(); return; }
+  $("lMain").style.display="flex"; $("lDone").style.display="none";
+  const q=L.qs[L.i];
+  L.attempted=false;
+  $("lCountLbl").textContent=(L.i+1)+" / "+L.qs.length;
+  $("lFill").style.width=(L.i/L.qs.length*100)+"%";
+  const rv=$("lReveal"); rv.classList.remove("show"); rv.textContent="";
+  const fb=$("lFbBox"); fb.classList.remove("show"); fb.innerHTML="";
+  $("lNext").disabled=true;
+  $("lNextLabel").textContent = L.i===L.qs.length-1 ? "See results" : "Next";
+  const box=$("lOpts"); box.innerHTML="";
+  q.options.forEach(o=>{
+    const b=document.createElement("button");
+    b.className="opt"; b.textContent=o;
+    b.addEventListener("click", ()=>{
+      if(o===q.c.en){
+        b.classList.add("correct");
+        box.querySelectorAll(".opt").forEach(x=>x.disabled=true);
+        if(!L.attempted) L.results[L.i]=true;
+        rv.textContent=q.c.pl; rv.classList.add("show");
+        const exHtml=q.c.ex ? '<div class="fb-good"><div class="t"><div class="p" lang="pl">'+q.c.ex+'</div><div class="e">'+(q.c.exEn||"")+'</div></div>'+
+          '<button class="mini-audio" data-say="'+encodeURIComponent(q.c.ex)+'" aria-label="Play">'+G_AUDIO+'</button></div>' : "";
+        if(exHtml){ fb.innerHTML=exHtml; fb.classList.add("show"); }
+        $("lNext").disabled=false;
+      } else {
+        b.classList.add("wrong"); b.disabled=true;
+        L.attempted=true; L.results[L.i]=false;
+      }
+    });
+    box.appendChild(b);
+  });
+  setTimeout(()=>lPlayCurrent(), 250);
+}
+function lPlayCurrent(){ if(L.i < L.qs.length) speakText(L.qs[L.i].c.pl, $("lPlay")); }
+function lShowDone(){
+  $("lMain").style.display="none"; $("lDone").style.display="flex";
+  $("lFill").style.width="100%"; $("lCountLbl").textContent=L.qs.length+" / "+L.qs.length;
+  const score=L.results.filter(Boolean).length, missed=L.qs.length-score;
+  $("lScoreN").textContent=score; $("lMissN").textContent=missed;
+  $("lDoneMsg").textContent = score===L.qs.length
+    ? "Every one recognised on the first listen. \u015awietnie!"
+    : "You recognised "+score+" of "+L.qs.length+" on the first listen.";
+  if(window.PP_A2HS) window.PP_A2HS.bump(3);
+}
+$("lBack").addEventListener("click", ()=>show("home"));
+$("lPlay").addEventListener("click", lPlayCurrent);
+$("lNext").addEventListener("click", ()=>{ L.i++; lRender(); });
+$("lAgain").addEventListener("click", ()=>startListen(L.li, L.ti));
+$("lHome").addEventListener("click", ()=>show("home"));
 
 /* ---------------- installable: service worker + keep the installed app fresh ---------------- */
 const ppFresh = { tag:null, reg:null, reloading:false };
