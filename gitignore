@@ -1,0 +1,8 @@
+# macOS Finder metadata - auto-created just by browsing folders, no content
+.DS_Store
+**/.DS_Store
+
+# Common editor/OS noise, harmless to ignore preemptively
+Thumbs.db
+*.swp
+.vscode/
