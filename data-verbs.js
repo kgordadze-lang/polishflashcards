@@ -181,7 +181,7 @@
               note:"After <b>uczyć się</b> the thing you learn takes the genitive: uczę się <b>polskiego</b>, uczę się <b>gramatyki</b>." }
           ],
           drills: [
-            { type:"choose", prompt:"Jak ty ___ nazywasz?", promptEn:"What's your name?",
+            { type:"choose", prompt:"Jak ___ nazywasz?", promptEn:"What's your name?",
               options:["się","sobie","siebie"], answer:"się",
               explain:"The reflexive marker is 'się'.", full:"Jak się nazywasz?", fullEn:"What's your name?" },
             { type:"choose", prompt:"Ja ___ polskiego.", promptEn:"I'm learning Polish.",
@@ -478,12 +478,12 @@
               table:[
                 { g:"muszę / chcę", e:"I must / want", ex:"Muszę iść. Chcę spać." },
                 { g:"musisz / chcesz", e:"you must / want", ex:"Musisz odpocząć." },
-                { g:"musi / chce", e:"he-she must / wants", ex:"Ona chce kawę." },
+                { g:"musi / chce", e:"he-she must / wants", ex:"Ona chce kawy." },
                 { g:"musimy / chcemy", e:"we must / want", ex:"Musimy się spieszyć." },
                 { g:"musicie / chcecie", e:"you must / want", ex:"Chcecie zostać?" },
                 { g:"muszą / chcą", e:"they must / want", ex:"Oni chcą pomóc." }
               ],
-              note:"<b>chcieć</b> can also take a noun object: <i>Chcę kawę.</i> (I want a coffee.)" },
+              note:"<b>chcieć</b> can also take a noun object, in the genitive: <i>Chcę kawy.</i> In everyday speech you'll also hear the accusative (<i>chcę kawę</i>)." },
 
             { front:"powinien (should) and impersonal modals",
               sub:"'Should' changes for gender; a few handy impersonals need no subject.",
@@ -663,7 +663,7 @@
             { front:"Prefixes add direction (and finish the action)",
               sub:"Stick a prefix on iść to say exactly where the movement goes - these are perfective.",
               table:[
-                { g:"pójść", e:"to set off", ex:"Muszę już pójść." },
+                { g:"pójść", e:"to go (once, complete)", ex:"Pójdę tam jutro." },
                 { g:"przyjść", e:"to arrive", ex:"Przyjdę o piątej." },
                 { g:"wyjść", e:"to go out", ex:"Wyszedłem z domu." },
                 { g:"wejść", e:"to go in", ex:"Wejdź, proszę." }

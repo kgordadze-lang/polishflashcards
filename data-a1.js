@@ -38,7 +38,7 @@
             { pl:"Gdzie jest toaleta?", en:"Where is the toilet?", hint:"'Gdzie jest...' = where is... for anything.", ex:"Przepraszam, gdzie jest toaleta?", exEn:"Excuse me, where is the toilet?" },
             { pl:"Nie ma za co", en:"You're welcome / Don't mention it", hint:"The natural reply when someone thanks you.", ex:"Dziękuję! - Nie ma za co.", exEn:"Thank you! - You're welcome." },
             { pl:"Smacznego!", en:"Enjoy your meal!", hint:"Said before eating - by staff, hosts, or anyone at the table.", ex:"Proszę bardzo, smacznego!", exEn:"Here you are, enjoy your meal!" },
-            { pl:"Na zdrowie!", en:"Cheers! / Bless you!", hint:"A toast when drinking - and also what you say when someone sneezes.", ex:"Na zdrowie! Za spotkanie!", exEn:"Cheers! To our meeting!" },
+            { pl:"Na zdrowie!", en:"Cheers! / Bless you!", hint:"A toast when drinking - and also what you say when someone sneezes.", ex:"Na zdrowie! Za nasze spotkanie!", exEn:"Cheers! To our meeting!" },
             { pl:"Powodzenia!", en:"Good luck!", hint:"For an exam, a trip, anything ahead.", ex:"Powodzenia na egzaminie!", exEn:"Good luck on the exam!" },
             { pl:"Do zobaczenia", en:"See you (soon)", hint:"Warmer than 'do widzenia'; you expect to meet again.", ex:"Dziękuję za dziś, do zobaczenia!", exEn:"Thanks for today, see you!" }
           ]
@@ -57,7 +57,7 @@
             { pl:"siedem", en:"seven", hint:"The number 7.", ex:"Autobus numer siedem.", exEn:"Bus number seven." },
             { pl:"osiem", en:"eight", hint:"The number 8.", ex:"Pracuję osiem godzin.", exEn:"I work eight hours." },
             { pl:"dziewięć", en:"nine", hint:"The number 9.", ex:"Dziewięć złotych za bilet.", exEn:"Nine zloty for a ticket." },
-            { pl:"dziesięć", en:"ten", hint:"The number 10.", ex:"Dziesięć minut do tramwaju.", exEn:"Ten minutes until the tram." },
+            { pl:"dziesięć", en:"ten", hint:"The number 10.", ex:"Tramwaj przyjedzie za dziesięć minut.", exEn:"The tram arrives in ten minutes." },
             { pl:"dwadzieścia", en:"twenty", hint:"The number 20.", ex:"To kosztuje dwadzieścia złotych.", exEn:"It costs twenty zloty." },
             { pl:"sto", en:"a hundred", hint:"The number 100.", ex:"Sto złotych, proszę.", exEn:"A hundred zloty, please." },
             { pl:"złoty", en:"zloty (the currency)", hint:"PLN. Plural forms: złote / złotych.", ex:"Płacę pięćdziesiąt złotych.", exEn:"I'm paying fifty zloty." },
@@ -66,8 +66,8 @@
             { pl:"Czy mogę zapłacić kartą?", en:"Can I pay by card?", hint:"Card is accepted almost everywhere.", ex:"Czy mogę zapłacić kartą?", exEn:"Can I pay by card?" },
             { pl:"gotówka", en:"cash", hint:"'gotówką' = in cash.", ex:"Płacę gotówką.", exEn:"I'm paying in cash." },
             { pl:"razem", en:"together / in total", hint:"Useful when splitting or totalling.", ex:"Ile razem?", exEn:"How much in total?" },
-            { pl:"reszta", en:"change (money back)", hint:"Feminine noun.", ex:"Proszę zatrzymać resztę.", exEn:"Keep the change." },
-            { pl:"drogo / tanio", en:"expensive / cheap", hint:"Adverb forms you'll hear a lot.", ex:"To jest za drogo.", exEn:"That's too expensive." }
+            { pl:"reszta", en:"change (money back)", hint:"Feminine noun. 'Reszty nie trzeba' uses the genitive of negation.", ex:"Reszty nie trzeba.", exEn:"Keep the change." },
+            { pl:"drogo / tanio", en:"expensive / cheap", hint:"Adverb forms you'll hear a lot.", ex:"To za drogo!", exEn:"That's too expensive!" }
           ]
         },
         {
@@ -93,7 +93,7 @@
             { pl:"Czy jest wi-fi?", en:"Is there wi-fi?", hint:"Ask for the 'hasło' - password.", ex:"Przepraszam, czy jest tu wi-fi?", exEn:"Excuse me, is there wi-fi here?" },
             { pl:"gorący / zimny", en:"hot / cold", hint:"Adjectives - endings change by gender.", ex:"Poproszę zimną wodę.", exEn:"Cold water, please." },
             { pl:"duży / mały", en:"big / small", hint:"For sizes.", ex:"Dużą kawę poproszę.", exEn:"A large coffee, please." },
-            { pl:"Coś jeszcze?", en:"Anything else?", hint:"What staff often ask you. 'Coś jeszcze?' sounds more natural than 'Jeszcze coś?'.", ex:"Coś jeszcze do picia?", exEn:"Anything else to drink?" },
+            { pl:"Coś jeszcze?", en:"Anything else?", hint:"What staff often ask you. You'll hear both 'Coś jeszcze?' and 'Jeszcze coś?'.", ex:"Coś jeszcze do picia?", exEn:"Anything else to drink?" },
             { pl:"To wszystko", en:"That's all", hint:"To close your order.", ex:"Nie, dziękuję, to wszystko.", exEn:"No thanks, that's all." }
           ]
         },
@@ -103,7 +103,7 @@
           desc: "Finding your way and asking directions",
           cards: [
             { pl:"Gdzie jest...?", en:"Where is...?", hint:"The key question for anything.", ex:"Gdzie jest apteka?", exEn:"Where is the pharmacy?" },
-            { pl:"na lewo", en:"to the left", hint:"Also 'w lewo'.", ex:"Proszę skręcić na lewo.", exEn:"Turn left, please." },
+            { pl:"na lewo", en:"to the left", hint:"For turning use 'w lewo': skręcić w lewo.", ex:"Toaleta jest na lewo.", exEn:"The toilet is to the left." },
             { pl:"na prawo", en:"to the right", hint:"Also 'w prawo'.", ex:"Sklep jest na prawo.", exEn:"The shop is on the right." },
             { pl:"prosto", en:"straight ahead", hint:"Direction, not 'simple' here.", ex:"Proszę iść prosto.", exEn:"Go straight ahead." },
             { pl:"blisko", en:"near / close", hint:"Opposite of daleko.", ex:"To jest bardzo blisko.", exEn:"It's very close." },
@@ -143,7 +143,7 @@
             { pl:"Jak się to pisze?", en:"How do you spell it?", hint:"For names and addresses.", ex:"Jak się pisze pana nazwisko?", exEn:"How do you spell your surname?" },
             { pl:"Mam pytanie", en:"I have a question", hint:"Polite way to start.", ex:"Przepraszam, mam pytanie.", exEn:"Excuse me, I have a question." },
             { pl:"Rozumiem", en:"I understand", hint:"'Nie rozumiem' = I don't.", ex:"Tak, teraz rozumiem.", exEn:"Yes, now I understand." },
-            { pl:"Może pan mi pomóc?", en:"Can you help me?", hint:"To a woman: 'Może pani...'", ex:"Przepraszam, może pan mi pomóc?", exEn:"Excuse me, can you help me?" },
+            { pl:"Czy może mi pan pomóc?", en:"Can you help me?", hint:"To a woman: 'Czy może mi pani...'", ex:"Przepraszam, czy może mi pan pomóc?", exEn:"Excuse me, can you help me?" },
             { pl:"Skąd pan jest?", en:"Where are you from?", hint:"To a woman: 'Skąd pani jest?'", ex:"A skąd pan jest?", exEn:"And where are you from?" },
             { pl:"mój / moja", en:"my (m / f)", hint:"Agrees with the noun's gender.", ex:"To jest mój telefon.", exEn:"This is my phone." },
             { pl:"Miłego dnia!", en:"Have a nice day!", hint:"Warm way to end a chat.", ex:"Dziękuję, miłego dnia!", exEn:"Thanks, have a nice day!" },
@@ -281,7 +281,7 @@
             { pl:"kolacja", en:"supper / evening meal", hint:"A lighter evening meal.", ex:"Na kolację jem kanapki.", exEn:"For supper I eat sandwiches." },
             { pl:"lubię / nie lubię", en:"I like / I don't like", hint:"'lubić' + accusative: lubię kawę, nie lubię herbaty.", ex:"Lubię pierogi, ale nie lubię ryb.", exEn:"I like pierogi, but I don't like fish." },
             { pl:"smaczny", en:"tasty", hint:"'To jest bardzo smaczne!' = this is very tasty!", ex:"Ta zupa jest bardzo smaczna.", exEn:"This soup is very tasty." },
-            { pl:"głodny / spragniony", en:"hungry / thirsty", hint:"A woman says 'głodna / spragniona'.", ex:"Jestem głodny i spragniony.", exEn:"I am hungry and thirsty." }
+            { pl:"głodny / chce mi się pić", en:"hungry / I'm thirsty", hint:"A woman says 'głodna'. For thirst Polish uses 'chce mi się pić' - the adjective 'spragniony' is bookish.", ex:"Jestem głodny i chce mi się pić.", exEn:"I am hungry and thirsty." }
           ]
         },
         {

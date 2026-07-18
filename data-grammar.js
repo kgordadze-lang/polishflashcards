@@ -435,11 +435,11 @@
               points:[
                 "<b>Mam, lubię, chcę, widzę, znam, kupuję, jem, piję</b> - all take Accusative objects",
                 "Prepositions of movement: <b>na, w, przez, o</b>: <i>jadę na wakacje</i>",
-                "Time: <b>w</b> + day of week, <b>o</b> + hour, <b>za</b> + time from now"
+                "Time: <b>w</b> + day of week (w środę), <b>za</b> + time from now (za godzinę). Clock time (<i>o drugiej</i>) is Locative - see Miejscownik."
               ],
               note:"When you negate these verbs, the object flips to Genitive: <b>Mam kawę</b> \u2192 <b>Nie mam kawy</b>.",
               examples:[
-                { pl:"Jem obiad o drugiej.", en:"I'm eating lunch at two." },
+                { pl:"Wrócę za godzinę.", en:"I'll be back in an hour." },
                 { pl:"Jadę na spotkanie.", en:"I'm going to a meeting." }
               ] },
             { front:"Feminine singular: -\u0119",
@@ -491,13 +491,13 @@
             { front:"Personal pronouns in Accusative",
               sub:"You need these constantly. Short and long forms exist for emphasis.",
               table:[
-                { g:"me", e:"mnie / mi\u0119", ex:"Kocham cię." },
+                { g:"me", e:"mnie", ex:"Kocham cię." },
                 { g:"you (sg)", e:"ciebie / cię", ex:"Widzę cię!" },
                 { g:"him", e:"jego / go", ex:"Znam go." },
                 { g:"her", e:"ją", ex:"Lubię ją." },
                 { g:"us / them (m) / them (rest)", e:"nas / ich / je", ex:"Widzę ich." }
               ],
-              note:"The short forms (mię, cię, go) can never start a sentence and are unstressed. The long forms (mnie, ciebie, jego) go at the start or when emphasized.",
+              note:"The short forms (cię, go) can never start a sentence and are unstressed. The long forms (mnie, ciebie, jego) go at the start or when emphasized.",
               examples:[
                 { pl:"Kocham cię.", en:"I love you." },
                 { pl:"Ciebie kocham, nie jego!", en:"It's you I love, not him!" }
@@ -539,7 +539,7 @@
               explain:"'Znać' + Accusative. 'Go' is the unstressed Accusative of 'on' - the everyday form.", full:"Znam go.", fullEn:"I know him." },
             { type:"choose", prompt:"Jadę na ___ .", promptEn:"I'm going on vacation.",
               options:["wakacje","wakacji","wakacjach"], answer:"wakacje",
-              explain:"'Na' + Accusative for direction/purpose. 'Wakacje' is plural neuter-form (only used in plural), Nominative = Accusative.", full:"Jadę na wakacje.", fullEn:"I'm going on vacation." },
+              explain:"'Na' + Accusative for direction/purpose. 'Wakacje' is a plural-only noun (non-masculine-personal), so Accusative = Nominative.", full:"Jadę na wakacje.", fullEn:"I'm going on vacation." },
             { type:"build", promptEn:"I'm buying new books.",
               answer:["Kupuję","nowe","książki"],
               explain:"Feminine plural things \u2192 Accusative = Nominative plural 'książki'.", full:"Kupuję nowe książki.", fullEn:"I'm buying new books." },
@@ -610,7 +610,7 @@
                 { g:"Feminine", e:"-ami", ex:"kobietami, książkami" },
                 { g:"Neuter", e:"-ami", ex:"oknami, dziećmi (!)" }
               ],
-              note:"A few very common words take <b>-mi</b> instead: <b>dziećmi</b> (children), <b>ludźmi</b> (people), <b>braćmi</b> (brothers). Memorize these three.",
+              note:"A few very common words take <b>-mi</b> instead: <b>dziećmi</b> (children), <b>ludźmi</b> (people), <b>braćmi</b> (brothers), <b>przyjaciółmi</b> (friends), <b>pieniędzmi</b> (money). Memorize this short list.",
               examples:[
                 { pl:"Idę z przyjaciółmi.", en:"I'm going with friends." }
               ] },
@@ -730,9 +730,10 @@
             { front:"Feminine singular: -e or -i",
               sub:"Same rules as feminine Dative - the two cases share a form.",
               table:[
-                { g:"Default", e:"-e (with softening)", ex:"kobieta \u2192 kobiecie, praca \u2192 pracy" },
+                { g:"Default", e:"-e (with softening)", ex:"kobieta \u2192 kobiecie, szkoła \u2192 szkole" },
                 { g:"After k, g", e:"-ce, -dze", ex:"Polka \u2192 Polce, książka \u2192 książce" },
-                { g:"Soft ending", e:"-i", ex:"kuchnia \u2192 kuchni, ulica \u2192 ulicy" }
+                { g:"After c, cz, rz, ż", e:"-y", ex:"praca \u2192 pracy, ulica \u2192 ulicy" },
+                { g:"Soft ending", e:"-i", ex:"kuchnia \u2192 kuchni, pani \u2192 pani" }
               ],
               explain:"Feminine Locative = feminine Dative. If you learned one, you know the other.",
               examples:[
@@ -760,7 +761,7 @@
               explain:"Plural Locative is unmissable: <b>-ach</b> everywhere. If a word ends in -ach after a preposition, you're almost certainly in Locative.",
               examples:[
                 { pl:"Myślę o wakacjach.", en:"I'm thinking about vacation." },
-                { pl:"Kot bawi się w książkach.", en:"The cat plays in the books." }
+                { pl:"Rozmawiamy o książkach.", en:"We're talking about the books." }
               ] },
             { front:"'W' vs 'na': in or on?",
               sub:"The eternal question. There's a pattern - not a rule.",
@@ -863,11 +864,11 @@
               sub:"Masculine also splits, based on the type of noun.",
               table:[
                 { g:"Default (formal)", e:"-e (with softening)", ex:"pan \u2192 panie, Piotr \u2192 Piotrze" },
-                { g:"After k, g, ch", e:"-u", ex:"Marek \u2192 Marku, syn \u2192 synu" },
-                { g:"Soft / diminutive", e:"-u", ex:"nauczyciel \u2192 nauczycielu, tato \u2192 tato" }
+                { g:"After k, g, ch (and syn)", e:"-u", ex:"Marek \u2192 Marku, syn \u2192 synu" },
+                { g:"Soft / diminutive", e:"-u", ex:"nauczyciel \u2192 nauczycielu, Tomek \u2192 Tomku" }
               ],
               explain:"Same softening rules as Locative: <b>t\u2192ci, d\u2192dzi, r\u2192rz</b>. So 'brat' \u2192 'bracie', 'Piotr' \u2192 'Piotrze'.",
-              note:"'Bóg' becomes 'Boże' in the famous exclamation <b>O Boże!</b> (Oh my God!).",
+              note:"'Bóg' becomes 'Boże' in the famous exclamation <b>O Boże!</b> (Oh my God!). And 'tata' \u2192 <b>tato</b> - like the feminine -o pattern.",
               examples:[
                 { pl:"Piotrze, gdzie jesteś?", en:"Piotr, where are you?" },
                 { pl:"Panie profesorze, dziękuję.", en:"Professor, thank you." }

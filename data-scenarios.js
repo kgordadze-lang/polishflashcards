@@ -254,7 +254,7 @@
               ]
             },
             followup: {
-              npc:"Jeśli objawy nie miną w tydzień, proszę wrócić.", npcEn:"If the symptoms don't go away within a week, please come back.",
+              npc:"Jeśli objawy nie miną w ciągu tygodnia, proszę wrócić.", npcEn:"If the symptoms don't go away within a week, please come back.",
               options:[
                 { pl:"Dobrze, dziękuję bardzo.", en:"Alright, thank you very much.", goto:"farewell" }
               ]
@@ -299,14 +299,14 @@
               ]
             },
             s3: {
-              npc:"Potrzebuje pan/pani paragon?", npcEn:"(Cashier) Do you need a receipt?",
+              npc:"Potrzebuje pan/pani paragonu?", npcEn:"(Cashier) Do you need a receipt?",
               options:[
                 { pl:"Nie, dziękuję.", en:"No, thanks.", goto:"s4" },
                 { pl:"Tak, poproszę.", en:"Yes, please.", goto:"s4" }
               ]
             },
             s4: {
-              npc:"Czy może być dłużna grosika?", npcEn:"(Cashier, short of small change) Would you mind if I owe you a few grosze?",
+              npc:"Czy mogę być dłużna grosika?", npcEn:"(Cashier, short of small change) Would you mind if I owe you a few grosze?",
               options:[
                 { pl:"Jasne, nie ma problemu.", en:"Sure, no problem.",
                   note:"A very Polish small-talk moment - cashiers sometimes round to the nearest few groszy when they're out of coins.", goto:"s5" }
@@ -586,7 +586,7 @@
               npc:"Potrzebujesz asekuracji?", npcEn:"(Someone nearby) Need a spot?",
               options:[
                 { pl:"Tak, przydałaby się.", en:"Yes, that would be helpful.",
-                  note:"'Przydałoby się' = 'would come in handy' - a soft, polite accept.", goto:"s6" },
+                  note:"'Przydałaby się' = 'it would come in handy' - agrees with 'asekuracja' (fem.).", goto:"s6" },
                 { pl:"Nie, dzięki, dam radę.", en:"No thanks, I got it.",
                   note:"'Dam radę' = 'I can manage' - a very common confidence phrase.", goto:"s6" }
               ]
@@ -878,7 +878,7 @@
               ]
             },
             s8: {
-              npc:"Masz ogień?", npcEn:"(A stranger) Do you have a light?",
+              npc:"Masz ognia?", npcEn:"(A stranger) Do you have a light?",
               options:[
                 { pl:"Nie palę, przykro mi.", en:"I don't smoke, sorry.",
                   note:"'przykro mi' = I'm sorry (I feel bad) - dative construction.", goto:"s9" }

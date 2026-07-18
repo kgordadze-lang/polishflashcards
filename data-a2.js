@@ -19,7 +19,7 @@
             { pl:"Poproszę bilet 20-minutowy", en:"A 20-minute ticket, please", hint:"Many Polish cities sell time-based tickets, not per-ride.", ex:"Dzień dobry, poproszę bilet 20-minutowy.", exEn:"Hello, a 20-minute ticket, please." },
             { pl:"Czy ten tramwaj jedzie do centrum?", en:"Does this tram go to the centre?", hint:"Swap 'tramwaj' for 'autobus' for a bus.", ex:"Przepraszam, czy ten tramwaj jedzie do centrum?", exEn:"Excuse me, does this tram go to the centre?" },
             { pl:"Który autobus jedzie na dworzec?", en:"Which bus goes to the station?", hint:"Swap 'dworzec' for any destination.", ex:"Przepraszam, który autobus jedzie na dworzec?", exEn:"Excuse me, which bus goes to the station?" },
-            { pl:"Gdzie mam wysiąść?", en:"Where should I get off?", hint:"Ask the driver or a fellow passenger.", ex:"Gdzie mam wysiąść na dworzec?", exEn:"Where should I get off for the station?" },
+            { pl:"Gdzie mam wysiąść?", en:"Where should I get off?", hint:"Ask the driver or a fellow passenger.", ex:"Gdzie mam wysiąść, żeby dojechać na dworzec?", exEn:"Where should I get off to reach the station?" },
             { pl:"Następny przystanek", en:"Next stop", hint:"You'll hear this announced on board.", ex:"Następny przystanek: Rynek.", exEn:"Next stop: the Main Square." },
             { pl:"Przepraszam, wysiadam", en:"Excuse me, I'm getting off", hint:"Say it to move toward the door.", ex:"Przepraszam, wysiadam na następnym.", exEn:"Excuse me, I'm getting off at the next one." },
             { pl:"Czy mogę przejść?", en:"Can I get through?", hint:"For a crowded tram or bus.", ex:"Przepraszam, czy mogę przejść?", exEn:"Excuse me, can I get through?" },
@@ -34,7 +34,7 @@
             { pl:"peron", en:"platform", hint:"For the metro and rail stations.", ex:"Pociąg odjeżdża z peronu drugiego.", exEn:"The train leaves from platform two." },
             { pl:"Czy to jest dobry kierunek?", en:"Is this the right direction?", hint:"Handy when you're unsure which way.", ex:"Przepraszam, czy to jest dobry kierunek na centrum?", exEn:"Excuse me, is this the right direction for the centre?" },
             { pl:"Zgubiłem się", en:"I'm lost", hint:"A woman says 'zgubiłam się'.", ex:"Chyba się zgubiłem, gdzie jest przystanek?", exEn:"I think I'm lost, where's the stop?" },
-            { pl:"przystanek na żądanie", en:"request stop", hint:"The bus/tram stops only if you signal - press the button inside, or wave it down from the stop.", ex:"To przystanek na żądanie, naciśnij guzik.", exEn:"It's a request stop, press the button." },
+            { pl:"przystanek na żądanie", en:"request stop", hint:"The bus/tram stops only if you signal - press the button inside, or wave it down from the stop.", ex:"To przystanek na żądanie, naciśnij przycisk.", exEn:"It's a request stop, press the button." },
             { pl:"Uwaga, zmiana trasy", en:"Attention, the route has changed", hint:"You'll hear this during roadworks or events. 'objazd' = a detour.", ex:"Uwaga, zmiana trasy z powodu remontu.", exEn:"Attention, route change due to roadworks." },
             { pl:"przystanek końcowy", en:"the last stop / terminus", hint:"Everyone gets off here. Also announced as 'stacja końcowa' on the metro.", ex:"Przystanek końcowy, proszę wysiadać.", exEn:"Last stop, everyone please get off." }
           ]
@@ -64,7 +64,7 @@
             { pl:"dawka", en:"dose", hint:"Feminine noun.", ex:"Jaka jest dawka dla dorosłych?", exEn:"What's the dose for adults?" },
             { pl:"Czy to jest bezpieczne?", en:"Is it safe?", hint:"Good to ask about side effects.", ex:"Czy to jest bezpieczne dla dzieci?", exEn:"Is it safe for children?" },
             { pl:"antybiotyk", en:"antibiotic", hint:"Always prescription-only in Poland.", ex:"Czy potrzebuję antybiotyku?", exEn:"Do I need an antibiotic?" },
-            { pl:"Poproszę o paragon", en:"A receipt, please", hint:"Useful for insurance claims.", ex:"Poproszę o paragon.", exEn:"A receipt, please." }
+            { pl:"Poproszę paragon", en:"A receipt, please", hint:"Useful for insurance claims.", ex:"Poproszę paragon.", exEn:"A receipt, please." }
           ]
         },
         {
@@ -127,7 +127,7 @@
           desc: "Renting a flat and dealing with problems",
           cards: [
             { pl:"mieszkanie", en:"flat / apartment", hint:"'wynajmować mieszkanie' = to rent a flat.", ex:"Wynajmuję mieszkanie w centrum.", exEn:"I rent a flat in the centre." },
-            { pl:"wynajem", en:"rent / rental", hint:"The rent amount / the renting.", ex:"Ile wynosi wynajem?", exEn:"How much is the rent?" },
+            { pl:"wynajem", en:"rent / rental", hint:"The rent amount / the renting.", ex:"Ile kosztuje wynajem?", exEn:"How much is the rent?" },
             { pl:"czynsz", en:"building service charge", hint:"Monthly building fee, often on top of rent.", ex:"Czynsz jest osobno.", exEn:"The service charge is separate." },
             { pl:"kaucja", en:"deposit", hint:"Usually one month's rent.", ex:"Ile wynosi kaucja?", exEn:"How much is the deposit?" },
             { pl:"umowa", en:"contract", hint:"'podpisać umowę' = to sign a contract.", ex:"Muszę podpisać umowę.", exEn:"I have to sign the contract." },
@@ -146,7 +146,7 @@
             { pl:"sypialnia", en:"bedroom", hint:"'dwie sypialnie' = two bedrooms.", ex:"Mieszkanie ma dwie sypialnie.", exEn:"The flat has two bedrooms." },
             { pl:"sąsiad", en:"neighbour", hint:"A woman is 'sąsiadka'.", ex:"Mój sąsiad jest miły.", exEn:"My neighbour is nice." },
             { pl:"umeblowane", en:"furnished", hint:"'nieumeblowane' = unfurnished.", ex:"Czy mieszkanie jest umeblowane?", exEn:"Is the flat furnished?" },
-            { pl:"pokój", en:"room", hint:"'pokój dzienny' = living room; 'kawalerka' = a studio flat.", ex:"Szukam mieszkania z dwoma pokojami.", exEn:"I'm looking for a two-room flat." },
+            { pl:"pokój", en:"room", hint:"'pokój dzienny' = living room; 'kawalerka' = a studio flat.", ex:"Szukam mieszkania dwupokojowego.", exEn:"I'm looking for a two-room flat." },
             { pl:"salon", en:"living room", hint:"Where you relax and host guests. Also 'pokój dzienny'.", ex:"Wieczorem oglądamy film w salonie.", exEn:"In the evening we watch a film in the living room." },
             { pl:"przedpokój", en:"hallway / entrance hall", hint:"The area just inside the front door where you leave shoes and coats.", ex:"Zostaw buty w przedpokoju.", exEn:"Leave your shoes in the hallway." },
             { pl:"balkon", en:"balcony", hint:"'z balkonem' = with a balcony - a selling point in listings.", ex:"Latem jem śniadanie na balkonie.", exEn:"In summer I eat breakfast on the balcony." },
@@ -161,7 +161,7 @@
             { pl:"pralka", en:"washing machine", hint:"A key question when renting: 'Czy jest pralka?'.", ex:"Pralka jest w łazience.", exEn:"The washing machine is in the bathroom." },
             { pl:"zmywarka", en:"dishwasher", hint:"Not in every flat - worth asking about.", ex:"Włożę talerze do zmywarki.", exEn:"I'll put the plates in the dishwasher." },
             { pl:"okno", en:"window", hint:"Neuter. 'parapet' = windowsill.", ex:"Otwórz okno, jest duszno.", exEn:"Open the window, it's stuffy." },
-            { pl:"lampa", en:"lamp / light", hint:"'żarówka' = light bulb.", ex:"Lampa w sypialni się przepaliła.", exEn:"The lamp in the bedroom has burnt out." }
+            { pl:"lampa", en:"lamp / light", hint:"'żarówka' = light bulb; 'żarówka się przepaliła' = the bulb burnt out.", ex:"Kupiłam nową lampę do salonu.", exEn:"I bought a new lamp for the living room." }
           ]
         },
         {
@@ -176,7 +176,7 @@
             { pl:"sprzątać", en:"to clean", pair:"sprz\u0105ta\u0107 / posprz\u0105ta\u0107", hint:"Verb. 'Sprzątam' = I clean.", ex:"W sobotę sprzątam całe mieszkanie.", exEn:"On Saturday I clean the whole flat." },
             { pl:"prać", en:"to do laundry", pair:"pra\u0107 / wypra\u0107", hint:"Verb. 'Piorę' = I wash (clothes).", ex:"Muszę dzisiaj wyprać ubrania.", exEn:"I have to wash clothes today." },
             { pl:"odpoczywać", en:"to rest", pair:"odpoczywa\u0107 / odpocz\u0105\u0107", hint:"Verb. 'Odpoczywam' = I rest.", ex:"Wieczorem wreszcie mogę odpocząć.", exEn:"In the evening I can finally rest." },
-            { pl:"kłaść się spać", en:"to go to sleep", pair:"k\u0142a\u015b\u0107 si\u0119 / po\u0142o\u017cy\u0107 si\u0119 spa\u0107", hint:"Reflexive verb. 'Kładę się' = I lay down.", ex:"Kładę się spać około północy.", exEn:"I go to sleep around midnight." },
+            { pl:"kłaść się spać", en:"to go to sleep", pair:"k\u0142a\u015b\u0107 si\u0119 / po\u0142o\u017cy\u0107 si\u0119 spa\u0107", hint:"Reflexive verb. 'Kładę się' = I lie down.", ex:"Kładę się spać około północy.", exEn:"I go to sleep around midnight." },
             { pl:"zasypiać", en:"to fall asleep", pair:"zasypia\u0107 / zasn\u0105\u0107", hint:"Verb.", ex:"Zasypiam bardzo szybko.", exEn:"I fall asleep very fast." },
             { pl:"w dni robocze", en:"on weekdays", hint:"Monday to Friday.", ex:"W dni robocze jestem bardzo zajęty.", exEn:"On weekdays I am very busy." },
             { pl:"harmonogram", en:"schedule", hint:"Masculine noun.", ex:"Mój harmonogram jest bardzo napięty.", exEn:"My schedule is very tight." },
@@ -210,7 +210,7 @@
           desc: "Body parts, well-being, and doctor visits",
           cards: [
             { pl:"lekarz", en:"doctor", hint:"Masculine noun. 'Lekarka' for a woman.", ex:"Muszę umówić się do lekarza.", exEn:"I need to make an appointment with a doctor." },
-            { pl:"dentysta", en:"dentist", hint:"Masculine/Feminine noun.", ex:"Boli mnie ząb, idę do dentysty.", exEn:"My tooth hurts, I'm going to the dentist." },
+            { pl:"dentysta", en:"dentist", hint:"Masculine noun. A woman is 'dentystka'.", ex:"Boli mnie ząb, idę do dentysty.", exEn:"My tooth hurts, I'm going to the dentist." },
             { pl:"przychodnia", en:"clinic / health centre", hint:"Feminine noun.", ex:"Przychodnia jest otwarta do osiemnastej.", exEn:"The clinic is open until 6 PM." },
             { pl:"badanie", en:"examination / test", hint:"Neuter noun. E.g., badanie krwi (blood test).", ex:"Lekarz zlecił dodatkowe badania.", exEn:"The doctor ordered additional tests." },
             { pl:"skierowanie", en:"referral", hint:"Neuter noun. Needed for specialists.", ex:"Mam skierowanie do specjalisty.", exEn:"I have a referral to a specialist." },
@@ -244,7 +244,7 @@
           emoji: "🥟",
           desc: "Polish dishes, recipes, and shopping for food",
           cards: [
-            { pl:"pierogi", en:"dumplings", hint:"Plural noun. Polish classic.", ex:"Pierogi ruskie to moje ulubione danie.", exEn:"Russian dumplings are my favorite dish." },
+            { pl:"pierogi", en:"dumplings", hint:"Plural noun. Polish classic. 'Pierogi ruskie' are Ruthenian (not Russian) - potato-and-cheese dumplings.", ex:"Pierogi ruskie to moje ulubione danie.", exEn:"Pierogi ruskie (potato-and-cheese dumplings) are my favorite dish." },
             { pl:"schabowy", en:"breaded pork cutlet", hint:"Short for 'kotlet schabowy'.", ex:"Na obiad jest schabowy z ziemniakami.", exEn:"For dinner there is pork cutlet with potatoes." },
             { pl:"przepis", en:"recipe", hint:"Masculine noun.", ex:"Masz świetny przepis na to ciasto.", exEn:"You have a great recipe for this cake." },
             { pl:"składniki", en:"ingredients", hint:"Plural noun.", ex:"Muszę kupić wszystkie składniki na zupę.", exEn:"I need to buy all the ingredients for the soup." },
@@ -333,7 +333,7 @@
             { pl:"huragan", en:"hurricane", hint:"rzecz. m. · lm. huragany", ex:"Nadchodzi huragan.", exEn:"A hurricane is coming." },
             { pl:"burza", en:"(thunder)storm", hint:"rzecz. ż.", ex:"Wieczorem będzie burza.", exEn:"In the evening there will be a storm." },
             { pl:"grad", en:"hail", hint:"rzecz. m.", ex:"Podczas burzy padał grad.", exEn:"During the storm it was hailing." },
-            { pl:"tornado", en:"tornado", hint:"rzecz. n. · nieodm. · Borrowed word; doesn't decline.", ex:"W USA często są tornada.", exEn:"In the USA there are often tornadoes." },
+            { pl:"tornado", en:"tornado", hint:"rzecz. n. · Declines like other -o neuters: lm. tornada.", ex:"W USA często są tornada.", exEn:"In the USA there are often tornadoes." },
             { pl:"pogoda", en:"weather", hint:"rzecz. ż.", ex:"Jaka jest dzisiaj pogoda?", exEn:"What's the weather like today?" },
             { pl:"klimat", en:"climate", hint:"rzecz. m.", ex:"Klimat się zmienia.", exEn:"The climate is changing." },
             { pl:"pora roku", en:"season (of the year)", hint:"rzecz. ż. · lm. pory roku · “dwie pory roku” = two seasons.", ex:"Jaka jest twoja ulubiona pora roku?", exEn:"What's your favourite season?" },
@@ -382,7 +382,7 @@
             { pl:"opiekuńczy", en:"caring, protective", hint:"Looks after and cares for others. Feminine form: opiekuńcza.", ex:"Jest opiekuńczym ojcem.", exEn:"He's a caring father." },
             { pl:"miły", en:"nice, kind, pleasant", hint:"One of the most-used compliments in Polish. Feminine form: miła.", ex:"Nasz nowy sąsiad jest bardzo miły.", exEn:"Our new neighbour is very nice." },
             { pl:"spokojny", en:"calm", hint:"≠ nerwowy. Feminine form: spokojna.", ex:"Po jodze jestem spokojny.", exEn:"After yoga I'm calm." },
-            { pl:"nerwowy", en:"nervous, edgy", hint:"≠ spokojny. Easily stressed. Feminine form: nerwowa.", ex:"Przed egzaminem jestem nerwowa.", exEn:"Before an exam I'm nervous." },
+            { pl:"nerwowy", en:"nervous, edgy", hint:"≠ spokojny. A personality trait. For feeling nervous right now say 'zdenerwowany / zdenerwowana'.", ex:"Mój brat jest bardzo nerwowy.", exEn:"My brother is very high-strung." },
             { pl:"pogodny", en:"cheerful", hint:"≈ wesoły; ≠ smutny. Feminine form: pogodna.", ex:"Ma pogodne usposobienie.", exEn:"She has a cheerful disposition." },
             { pl:"wesoły", en:"merry, happy", hint:"≈ pogodny; ≠ poważny. Feminine form: wesoła.", ex:"Jest zawsze wesoły.", exEn:"He's always cheerful." },
             { pl:"poważny", en:"serious", hint:"≠ wesoły. Feminine form: poważna.", ex:"Dlaczego jesteś taki poważny?", exEn:"Why are you so serious?" },
@@ -477,7 +477,7 @@
             { pl:"by\u0142em / by\u0142am", en:"I was", hint:"czas przesz\u0142y od 'by\u0107' \u00b7 m: by\u0142em, \u017c: by\u0142am. The most important past form.", ex:"Wczoraj by\u0142em w kinie.", exEn:"Yesterday I was at the cinema." },
             { pl:"mia\u0142em / mia\u0142am", en:"I had", hint:"czas przesz\u0142y od 'mie\u0107' \u00b7 mia\u0142em czas = I had time.", ex:"Nie mia\u0142am wczoraj czasu.", exEn:"I didn't have time yesterday." },
             { pl:"robi\u0142em / zrobi\u0142em", en:"I was doing / I did", hint:"niedok. (proces) vs dok. (wynik) \u00b7 the core aspect pair.", ex:"Robi\u0142em zadanie dwie godziny i w ko\u0144cu je zrobi\u0142em.", exEn:"I was doing the task for two hours and finally finished it." },
-            { pl:"poszed\u0142em / posz\u0142am", en:"I went (on foot)", hint:"dok. od 'p\u00f3j\u015b\u0107' \u00b7 m: poszed\u0142em (careful: 'posz\u0142em' is colloquial), \u017c: posz\u0142am.", ex:"Rano poszed\u0142em do sklepu.", exEn:"In the morning I went to the shop." },
+            { pl:"poszed\u0142em / posz\u0142am", en:"I went (on foot)", hint:"dok. od 'p\u00f3j\u015b\u0107' \u00b7 m: poszed\u0142em (careful: 'posz\u0142em' is a common mistake - avoid it), \u017c: posz\u0142am.", ex:"Rano poszed\u0142em do sklepu.", exEn:"In the morning I went to the shop." },
             { pl:"widzia\u0142em / widzia\u0142am", en:"I saw", hint:"czas przesz\u0142y od 'widzie\u0107'.", ex:"Widzia\u0142am wczoraj twoj\u0105 siostr\u0119.", exEn:"I saw your sister yesterday." },
             { pl:"m\u00f3wi\u0142em / powiedzia\u0142em", en:"I was saying / I said", hint:"niedok. vs dok. \u00b7 different roots, same meaning pair.", ex:"Ju\u017c ci powiedzia\u0142em, \u017ce nie mog\u0119.", exEn:"I already told you I can't." },
             { pl:"chcia\u0142em / chcia\u0142am", en:"I wanted", hint:"czas. modalny \u00b7 chcia\u0142em zapyta\u0107 = I wanted to ask.", ex:"Chcia\u0142am ci\u0119 o co\u015b zapyta\u0107.", exEn:"I wanted to ask you something." },
@@ -552,7 +552,7 @@
             { pl:"skrzy\u017cowanie", en:"intersection, crossroads", hint:"rzecz. n. \u00b7 na skrzy\u017cowaniu = at the intersection.", ex:"Na skrzy\u017cowaniu prosz\u0119 skr\u0119ci\u0107 w lewo.", exEn:"At the intersection, turn left." },
             { pl:"\u015bwiat\u0142a", en:"traffic lights", hint:"rzecz., l. mnoga \u00b7 na \u015bwiat\u0142ach = at the lights.", ex:"Prosz\u0119 skr\u0119ci\u0107 na drugich \u015bwiat\u0142ach.", exEn:"Turn at the second set of lights." },
             { pl:"przej\u015bcie dla pieszych", en:"pedestrian crossing", hint:"rzecz. \u00b7 pieszy = pedestrian.", ex:"Przejd\u017a przez przej\u015bcie dla pieszych.", exEn:"Cross at the pedestrian crossing." },
-            { pl:"blisko / daleko", en:"near / far", hint:"oba + dope\u0142niacz \u00b7 blisko centrum, daleko st\u0105d.", ex:"To bardzo blisko, pi\u0119\u0107 minut st\u0105d.", exEn:"It's very close, five minutes from here." },
+            { pl:"blisko / daleko", en:"near / far", hint:"blisko + dope\u0142niacz (blisko centrum); daleko od + dope\u0142niacz (daleko od centrum).", ex:"To bardzo blisko, pi\u0119\u0107 minut st\u0105d.", exEn:"It's very close, five minutes from here." },
             { pl:"po lewej / prawej stronie", en:"on the left / right side", hint:"miejscownik \u00b7 sklep b\u0119dzie po prawej stronie.", ex:"Restauracja jest po lewej stronie.", exEn:"The restaurant is on the left side." },
             { pl:"st\u0105d", en:"from here", hint:"okolicznik \u00b7 \u2260 dot\u0105d (up to here), tam (there).", ex:"Jak daleko st\u0105d do centrum?", exEn:"How far is it from here to the centre?" },
             { pl:"zab\u0142\u0105dzi\u0107", en:"to get lost", hint:"dok. \u00b7 zab\u0142\u0105dzi\u0142em = I've got lost.", ex:"Chyba zab\u0142\u0105dzi\u0142em, gdzie jestem?", exEn:"I think I'm lost - where am I?" },

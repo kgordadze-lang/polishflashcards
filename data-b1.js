@@ -7,7 +7,7 @@
   window.PP_LEVELS.push(
   {
       level: "B1",
-      blurb: "Everyday life",
+      blurb: "Everyday life, opinions, work, and tech",
       topics: [
         {
           name: "Załatwianie spraw",
@@ -16,7 +16,7 @@
           cards: [
             { pl:"załatwiać sprawy", en:"to run errands", pair:"za\u0142atwia\u0107 / za\u0142atwi\u0107 sprawy", hint:"Verb phrase.", ex:"Muszę dzisiaj załatwić kilka spraw na mieście.", exEn:"I have to run a few errands in town today." },
             { pl:"awaria", en:"breakdown / malfunction", hint:"Feminine noun.", ex:"Mamy awarię prądu w całym budynku.", exEn:"We have a power outage in the whole building." },
-            { pl:"reklamacja", en:"complaint / return", hint:"'Złożyć reklamację' = to make a complaint. Feminine form: Chciałabym.", ex:"Chciałbym złożyć reklamację, te buty są zepsute.", exEn:"I'd like to make a complaint, these shoes are broken." },
+            { pl:"reklamacja", en:"complaint / return", hint:"'Złożyć reklamację' = to make a complaint. Feminine form: Chciałabym.", ex:"Chciałbym złożyć reklamację, te buty są wadliwe.", exEn:"I'd like to make a complaint, these shoes are faulty." },
             { pl:"dowód zakupu", en:"proof of purchase", hint:"Usually a receipt (paragon) or invoice (faktura).", ex:"Czy ma pan dowód zakupu?", exEn:"Do you have proof of purchase?" },
             { pl:"gwarancja", en:"warranty", hint:"Feminine noun.", ex:"Ten telewizor jest jeszcze na gwarancji.", exEn:"This TV is still under warranty." },
             { pl:"przegląd", en:"inspection / service", hint:"Often used for cars.", ex:"Muszę umówić się na przegląd samochodu.", exEn:"I need to book a car service." },
@@ -36,7 +36,7 @@
           emoji: "🗣️",
           desc: "Debating, agreeing, and polite disagreement",
           cards: [
-            { pl:"Moim zdaniem...", en:"In my opinion...", hint:"The standard way to introduce your view.", ex:"Moim zdaniem, to nie jest dobry pomysł.", exEn:"In my opinion, this is not a good idea." },
+            { pl:"Moim zdaniem...", en:"In my opinion...", hint:"The standard way to introduce your view.", ex:"Moim zdaniem to nie jest dobry pomysł.", exEn:"In my opinion, this is not a good idea." },
             { pl:"Zgadzam się z tobą", en:"I agree with you", pair:"zgadza\u0107 si\u0119 / zgodzi\u0107 si\u0119", hint:"Verb: 'Zgadzać się'.", ex:"Zgadzam się z tobą w stu procentach.", exEn:"I agree with you one hundred percent." },
             { pl:"Nie masz racji", en:"You are wrong", hint:"Literally: 'You do not have rightness'.", ex:"Przepraszam, ale zupełnie nie masz racji.", exEn:"Sorry, but you are completely wrong." },
             { pl:"Szczerze mówiąc...", en:"To be honest...", hint:"Very common filler phrase.", ex:"Szczerze mówiąc, nie podoba mi się ten film.", exEn:"To be honest, I don't like this movie." },
@@ -46,7 +46,7 @@
             { pl:"W żadnym wypadku", en:"No way / Under no circumstances", hint:"Strong disagreement.", ex:"W żadnym wypadku się na to nie zgodzę.", exEn:"Under no circumstances will I agree to this." },
             { pl:"Co o tym myślisz?", en:"What do you think about it?", hint:"Asking for someone's opinion.", ex:"Mam nowy plan. Co o tym myślisz?", exEn:"I have a new plan. What do you think about it?" },
             { pl:"Punkt widzenia", en:"Point of view", hint:"Masculine phrase.", ex:"Rozumiem twój punkt widzenia, ale się nie zgadzam.", exEn:"I understand your point of view, but I disagree." },
-            { pl:"Wątpię", en:"I doubt it", hint:"Verb: 'Wątpić'.", ex:"Wątpię, że zdążymy na czas.", exEn:"I doubt we will make it on time." },
+            { pl:"Wątpię", en:"I doubt it", hint:"Verb: 'Wątpić'.", ex:"Wątpię, czy zdążymy na czas.", exEn:"I doubt we will make it on time." },
             { pl:"Przekonać", en:"To convince", pair:"przekonywa\u0107 / przekona\u0107", hint:"Verb.", ex:"Spróbuję go do tego przekonać.", exEn:"I will try to convince him to do it." },
             { pl:"Zależy", en:"It depends", hint:"Often 'To zależy'.", ex:"Czy pójdziemy na spacer? To zależy od pogody.", exEn:"Will we go for a walk? It depends on the weather." },
             { pl:"Według mnie", en:"The way I see it", hint:"Alternative to 'Moim zdaniem'.", ex:"Według mnie ten projekt ma duży potencjał.", exEn:"The way I see it, this project has great potential." },
@@ -69,7 +69,7 @@
             { pl:"pożyczyć", en:"to borrow / to lend", pair:"po\u017cycza\u0107 / po\u017cyczy\u0107", hint:"Context determines which one it is.", ex:"Czy możesz mi pożyczyć stówę?", exEn:"Can you lend me a hundred (zlotys)?" },
             { pl:"rata", en:"installment", hint:"Feminine noun.", ex:"Moja miesięczna rata za samochód jest wysoka.", exEn:"My monthly car installment is high." },
             { pl:"wypłacić gotówkę", en:"to withdraw cash", pair:"wyp\u0142aca\u0107 / wyp\u0142aci\u0107 got\u00f3wk\u0119", hint:"Verb phrase.", ex:"Muszę wypłacić gotówkę z bankomatu.", exEn:"I need to withdraw cash from the ATM." },
-            { pl:"odsetki", en:"interest (financial)", hint:"Plural noun.", ex:"Kredyt ma bardzo wysokie odsetki.", exEn:"The loan has very high interest." },
+            { pl:"odsetki", en:"interest (financial)", hint:"Plural noun. For a loan's rate the precise word is 'oprocentowanie'.", ex:"Kredyt ma bardzo wysokie odsetki.", exEn:"The loan has very high interest." },
             { pl:"płacić rachunki", en:"to pay bills", pair:"p\u0142aci\u0107 / zap\u0142aci\u0107 rachunki", hint:"Verb phrase.", ex:"Nienawidzę płacić rachunków na początku miesiąca.", exEn:"I hate paying bills at the beginning of the month." },
             { pl:"inwestować", en:"to invest", pair:"inwestowa\u0107 / zainwestowa\u0107", hint:"Verb. Feminine form: Zaczęłam.", ex:"Zacząłem inwestować na giełdzie.", exEn:"I started investing in the stock market." },
             { pl:"prowizja", en:"commission / fee", hint:"Feminine noun.", ex:"Bank pobiera prowizję za każdą transakcję.", exEn:"The bank charges a fee for every transaction." }
@@ -90,10 +90,10 @@
             { pl:"zatrudnić", en:"to hire", pair:"zatrudnia\u0107 / zatrudni\u0107", hint:"Verb.", ex:"Firma planuje zatrudnić nowe osoby.", exEn:"The company plans to hire new people." },
             { pl:"zwolnić się", en:"to quit / resign", pair:"zwalnia\u0107 si\u0119 / zwolni\u0107 si\u0119", hint:"Reflexive verb.", ex:"Nie lubię tej pracy, chyba się zwolnię.", exEn:"I don't like this job, I think I'll quit." },
             { pl:"bezrobocie", en:"unemployment", hint:"Neuter noun.", ex:"Bezrobocie w tym regionie jest niskie.", exEn:"Unemployment in this region is low." },
-            { pl:"CV / życiorys", en:"resume", hint:"CV is pronounced 'ce-fau'. Feminine form: Wysłałam.", ex:"Wysłałem moje CV do trzech firm.", exEn:"I sent my resume to three companies." },
+            { pl:"CV / życiorys", en:"resume", hint:"CV is usually pronounced the English way: 'si-wi'. Feminine form: Wysłałam.", ex:"Wysłałem moje CV do trzech firm.", exEn:"I sent my resume to three companies." },
             { pl:"list motywacyjny", en:"cover letter", hint:"Masculine phrase.", ex:"Czy muszę pisać list motywacyjny?", exEn:"Do I have to write a cover letter?" },
             { pl:"negocjować", en:"to negotiate", pair:"negocjowa\u0107 / wynegocjowa\u0107", hint:"Verb.", ex:"Chcę negocjować warunki umowy.", exEn:"I want to negotiate the terms of the contract." },
-            { pl:"cel zawodowy", en:"career goal", hint:"Masculine phrase.", ex:"Moim celem zawodowym jest bycie ekspertem.", exEn:"My career goal is to be an expert." },
+            { pl:"cel zawodowy", en:"career goal", hint:"Masculine phrase.", ex:"Moim celem zawodowym jest zostać ekspertem w swojej dziedzinie.", exEn:"My career goal is to become an expert in my field." },
             { pl:"współpraca", en:"cooperation", hint:"Feminine noun.", ex:"Dziękuję wszystkim za owocną współpracę.", exEn:"Thank you all for the fruitful cooperation." }
           ]
         },
@@ -138,7 +138,7 @@
             { pl:"wiadomość", en:"message", hint:"Feminine noun. Feminine form: Dostałam.", ex:"Dostałem od niej dziwną wiadomość.", exEn:"I received a weird message from her." },
             { pl:"powiadomienie", en:"notification", hint:"Neuter noun. Feminine form: Wyłączyłam.", ex:"Wyłączyłem powiadomienia w telefonie.", exEn:"I turned off notifications on my phone." },
             { pl:"sieć", en:"network / the web", hint:"Feminine noun. 'W sieci' = on the web.", ex:"W sieci można znaleźć wszystko.", exEn:"You can find everything on the web." },
-            { pl:"urządzenie", en:"device", hint:"Neuter noun.", ex:"Możesz podłączyć dwa urządzenia na raz.", exEn:"You can connect two devices at once." }
+            { pl:"urządzenie", en:"device", hint:"Neuter noun.", ex:"Możesz podłączyć dwa urządzenia naraz.", exEn:"You can connect two devices at once." }
           ]
         },
         {
@@ -148,19 +148,19 @@
           cards: [
             { pl:"bułka z masłem", en:"a piece of cake / dead easy", hint:"Literally: a roll with butter.", ex:"Ten egzamin to była bułka z masłem.", exEn:"That exam was a piece of cake." },
             { pl:"nie mój cyrk, nie moje małpy", en:"not my problem", hint:"Literally: not my circus, not my monkeys.", ex:"Sami sobie narobili kłopotów - nie mój cyrk, nie moje małpy.", exEn:"They made trouble for themselves - not my circus, not my monkeys." },
-            { pl:"robić z igły widły", en:"to make a mountain out of a molehill", hint:"Literally: to make a pitchfork out of a needle.", ex:"Nie rób z igły widły, to naprawdę drobiazg.", exEn:"Don't make a mountain out of a molehill, it's really nothing." },
+            { pl:"robić z igły widły", en:"to make a mountain out of a molehill", hint:"Literally: to make a pitchfork out of a needle. Under negation the object takes the genitive: nie rób wideł.", ex:"Nie rób z igły wideł, to naprawdę drobiazg.", exEn:"Don't make a mountain out of a molehill, it's really nothing." },
             { pl:"musztarda po obiedzie", en:"too little, too late", hint:"Literally: mustard after dinner.", ex:"Teraz przeprosiny? Musztarda po obiedzie.", exEn:"An apology now? Too little, too late." },
             { pl:"co ma piernik do wiatraka", en:"what does that have to do with anything?", hint:"Literally: what does gingerbread have to do with a windmill.", ex:"Co ma piernik do wiatraka? Mówiliśmy o czymś innym.", exEn:"What does that have to do with anything? We were talking about something else." },
             { pl:"czuć do kogoś miętę", en:"to have a crush on someone", hint:"Literally: to feel mint towards someone.", ex:"Chyba czuje do niej miętę.", exEn:"I think he has a crush on her." },
             { pl:"rzucać grochem o ścianę", en:"to talk to a brick wall", hint:"Literally: to throw peas against a wall.", ex:"Tłumaczę mu to od godziny, ale to jak rzucanie grochem o ścianę.", exEn:"I've been explaining it for an hour, but it's like talking to a brick wall." },
-            { pl:"wiercić komuś dziurę w brzuchu", en:"to nag someone relentlessly", hint:"Literally: to drill a hole in someone's belly.", ex:"Dzieci wierciły mi dziurę w brzuchu, żeby kupić psa.", exEn:"The kids kept nagging me to buy a dog." },
+            { pl:"wiercić komuś dziurę w brzuchu", en:"to nag someone relentlessly", hint:"Literally: to drill a hole in someone's belly.", ex:"Dzieci wierciły mi dziurę w brzuchu, żebym kupił im psa.", exEn:"The kids kept nagging me to buy a dog." },
             { pl:"pierwsze koty za płoty", en:"the hardest part is over", hint:"Literally: the first cats over the fence.", ex:"Pierwszy dzień w nowej pracy minął - pierwsze koty za płoty.", exEn:"The first day at the new job is over - the hardest part is behind us." },
             { pl:"mieć muchy w nosie", en:"to be grumpy / in a huff", hint:"Literally: to have flies in one's nose.", ex:"Nie zaczepiaj go, ma dziś muchy w nosie.", exEn:"Don't bother him, he's in a huff today." },
             { pl:"rzucać słowa na wiatr", en:"to make empty promises", hint:"Literally: to throw words to the wind.", ex:"On nie rzuca słów na wiatr - jak coś obieca, to zrobi.", exEn:"He doesn't make empty promises - if he promises something, he does it." },
             { pl:"być nie w sosie", en:"to be out of sorts", hint:"Literally: to be not in the sauce.", ex:"Coś jesteś dzisiaj nie w sosie.", exEn:"You seem a bit out of sorts today." },
             { pl:"urwać się z choinki", en:"to be clueless / out of touch", hint:"Literally: to have fallen off the Christmas tree. Feminine form: urwałaś.", ex:"Ty chyba urwałeś się z choinki - to już dawno nieaktualne.", exEn:"You must be out of touch - that's long out of date." },
             { pl:"wpaść jak śliwka w kompot", en:"to land in a fine mess", hint:"Literally: to fall in like a plum into compote. Feminine form: Wpadłam.", ex:"Wpadłem jak śliwka w kompot z tym projektem.", exEn:"I landed myself in a fine mess with this project." },
-            { pl:"trzymać kciuki", en:"to keep one's fingers crossed", hint:"Literally: to hold thumbs.", ex:"Trzymam za ciebie kciuki na jutrzejszy egzamin.", exEn:"I'm keeping my fingers crossed for your exam tomorrow." },
+            { pl:"trzymać kciuki", en:"to keep one's fingers crossed", hint:"Literally: to hold thumbs.", ex:"Trzymam kciuki za twój jutrzejszy egzamin.", exEn:"I'm keeping my fingers crossed for your exam tomorrow." },
             { pl:"wypisz wymaluj", en:"the spitting image", hint:"A perfect likeness or exact match.", ex:"Twoja córka to wypisz wymaluj ty z młodości.", exEn:"Your daughter is the spitting image of you when you were young." },
             { pl:"siedzieć jak na szpilkach", en:"to be on pins and needles", hint:"To wait in nervous anticipation.", ex:"Czekam na wyniki i siedzę jak na szpilkach.", exEn:"I'm waiting for the results, on pins and needles." },
             { pl:"odwracać kota ogonem", en:"to twist the facts", hint:"Literally: to turn the cat around by its tail. Feminine form: powiedziałaś.", ex:"Nie odwracaj kota ogonem, wiesz, co powiedziałeś.", exEn:"Don't twist the facts, you know what you said." },
@@ -234,7 +234,7 @@
             { pl:"beka", en:"a laugh / hilarious", hint:"When something is genuinely funny. 'Ale beka!'", ex:"Ale była beka na wczorajszej imprezie.", exEn:"It was such a laugh at yesterday's party." },
             { pl:"sztos", en:"awesome / fire", hint:"Pure excitement about news, plans or things.", ex:"Nowa płyta tego zespołu to sztos.", exEn:"This band's new album is fire." },
             { pl:"lipa", en:"lame / rubbish", hint:"Something weak, disappointing or low quality.", ex:"Ten film to totalna lipa.", exEn:"That movie is total rubbish." },
-            { pl:"kicha", en:"a bummer / flop", hint:"When plans fall through. Literally also a flat tyre.", ex:"Plany się zmieniły, kicha.", exEn:"Plans changed, what a bummer." },
+            { pl:"kicha", en:"a bummer / flop", hint:"When plans fall through. Literally 'an intestine'; cyclists also use it for a flat tyre.", ex:"Plany się zmieniły, kicha.", exEn:"Plans changed, what a bummer." },
             { pl:"porażka", en:"epic fail", hint:"Slang for a fail or an embarrassing mishap. Feminine form: Zapomniałam.", ex:"Zapomniałem kluczy w domu, porażka.", exEn:"Left my keys at home, epic fail." },
             { pl:"kurczę", en:"shoot / darn", hint:"A soft, polite stand-in for stronger words. Totally family-friendly.", ex:"Kurczę, znowu pada.", exEn:"Darn, it's raining again." },
             { pl:"kurde", en:"dang / darn", hint:"Mild minced oath - a socially safe substitute for a harder curse. Feminine form: zapomniałam.", ex:"Kurde, zapomniałem parasola.", exEn:"Dang, I forgot my umbrella." },
@@ -310,12 +310,12 @@
             { pl:"odpierdalać", en:"to act up / to mess around", strength:"strong", hint:"'Co ty odpierdalasz?' = 'what the hell are you doing?!'.", ex:"Co ci dzisiaj odpierdala?", exEn:"What's gotten into you today?" },
             { pl:"wpierdol", en:"a beating / a hiding", strength:"strong", hint:"'Dostać wpierdol' = to get beaten up.", ex:"Uważaj, bo zaraz dostaniesz wpierdol.", exEn:"Watch it, or you'll get a hiding." },
             { pl:"przypierdolić się", en:"to pick on / to nitpick", strength:"strong", hint:"To nag or provoke unfairly. 'Przypierdolić się do kogoś' = to pick on someone.", ex:"Szef znowu się do mnie przypierdolił.", exEn:"The boss picked on me again." },
-            { pl:"jebać", en:"to f*** (very vulgar, all-purpose)", strength:"vulgar", hint:"The most vulgar all-purpose verb. 'Jebać to' = 'f*** it'. Avoid in polite company.", ex:"Jebać, robimy po swojemu.", exEn:"F*** it, we'll do it our own way." },
+            { pl:"jebać", en:"to f*** (very vulgar, all-purpose)", strength:"vulgar", hint:"The most vulgar all-purpose verb. 'Jebać to' = 'f*** it'. Avoid in polite company.", ex:"Jebać to, robimy po swojemu.", exEn:"F*** it, we'll do it our own way." },
             { pl:"wkurwić się", en:"to get pissed off", strength:"strong", hint:"The vulgar form of 'wkurzać się' - seriously angry. Feminine form: wkurwiłam / usłyszałam.", ex:"Strasznie się wkurwiłem, kiedy to usłyszałem.", exEn:"I got seriously pissed off when I heard that." },
             { pl:"zjebać", en:"to mess up / to f*** up", strength:"strong", hint:"To botch something badly. 'Zjebałem to' = 'I f***ed it up'. Feminine form: zjebałam.", ex:"Całkowicie zjebałem ten egzamin.", exEn:"I completely f***ed up that exam." },
             { pl:"mieć wyjebane", en:"to not give a f***", strength:"strong", hint:"Total indifference. 'Mam to wyjebane' = 'I couldn't care less'.", ex:"Mam na to wyjebane, róbcie co chcecie.", exEn:"I don't give a f*** about it, do what you want." },
             { pl:"pojebany", en:"crazy / f***ed up", strength:"strong", hint:"Adjective for a wild situation or an unstable person.", ex:"Ten pomysł jest całkowicie pojebany.", exEn:"This idea is completely f***ed up." },
-            { pl:"zajebiście", en:"awesome / bloody brilliant", strength:"strong", hint:"Positive! Strong root, but means 'fantastic'. Adjective form: 'zajebisty'.", ex:"Koncert był zajebiście, najlepszy w życiu.", exEn:"The concert was bloody brilliant, the best ever." }
+            { pl:"zajebiście", en:"awesome / bloody brilliant", strength:"strong", hint:"Positive! Strong root, but means 'fantastic'. Adjective form: 'zajebisty'.", ex:"Na koncercie było zajebiście, najlepszy w życiu.", exEn:"The concert was bloody brilliant, the best ever." }
           ]
         }
       ]

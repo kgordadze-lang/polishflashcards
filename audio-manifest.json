@@ -1,6 +1,6 @@
 {
 "voice": "pl-PL-MarekNeural",
-"generatedAt": "2026-07-16T19:17:00.235679Z",
+"generatedAt": "2026-07-18T12:56:39.118783Z",
 "audioDir": "audio",
 "entries": {
 "000311d1288f": {
@@ -11710,6 +11710,170 @@
 "0a53f1aa28f7": {
 "pl": "To są bardzo dobrzy studenci.",
 "file": "audio/0a53f1aa28f7.mp3"
+},
+"82432cd07b93": {
+"pl": "Na zdrowie! Za nasze spotkanie!",
+"file": "audio/82432cd07b93.mp3"
+},
+"2db60a89eb67": {
+"pl": "Tramwaj przyjedzie za dziesięć minut.",
+"file": "audio/2db60a89eb67.mp3"
+},
+"b51d6ca14554": {
+"pl": "Reszty nie trzeba.",
+"file": "audio/b51d6ca14554.mp3"
+},
+"8bd74cd4b018": {
+"pl": "To za drogo!",
+"file": "audio/8bd74cd4b018.mp3"
+},
+"331c1973e3b5": {
+"pl": "Toaleta jest na lewo.",
+"file": "audio/331c1973e3b5.mp3"
+},
+"6890e9527ad1": {
+"pl": "Czy może mi pan pomóc?",
+"file": "audio/6890e9527ad1.mp3"
+},
+"aa5565bbb3ba": {
+"pl": "Przepraszam, czy może mi pan pomóc?",
+"file": "audio/aa5565bbb3ba.mp3"
+},
+"251650dfa7db": {
+"pl": "głodny / chce mi się pić",
+"file": "audio/251650dfa7db.mp3"
+},
+"e67da489f6b6": {
+"pl": "Jestem głodny i chce mi się pić.",
+"file": "audio/e67da489f6b6.mp3"
+},
+"4d5a60f7c084": {
+"pl": "Gdzie mam wysiąść, żeby dojechać na dworzec?",
+"file": "audio/4d5a60f7c084.mp3"
+},
+"830694b1713f": {
+"pl": "To przystanek na żądanie, naciśnij przycisk.",
+"file": "audio/830694b1713f.mp3"
+},
+"317926592e0e": {
+"pl": "Poproszę paragon",
+"file": "audio/317926592e0e.mp3"
+},
+"b44a02d87d6e": {
+"pl": "Poproszę paragon.",
+"file": "audio/b44a02d87d6e.mp3"
+},
+"13beff60cc2c": {
+"pl": "Ile kosztuje wynajem?",
+"file": "audio/13beff60cc2c.mp3"
+},
+"118e4693b3cc": {
+"pl": "Szukam mieszkania dwupokojowego.",
+"file": "audio/118e4693b3cc.mp3"
+},
+"f0c98726b4d0": {
+"pl": "Kupiłam nową lampę do salonu.",
+"file": "audio/f0c98726b4d0.mp3"
+},
+"18b2fdc42901": {
+"pl": "Mój brat jest bardzo nerwowy.",
+"file": "audio/18b2fdc42901.mp3"
+},
+"8bf376db4a80": {
+"pl": "Chciałbym złożyć reklamację, te buty są wadliwe.",
+"file": "audio/8bf376db4a80.mp3"
+},
+"ac211f7b91f4": {
+"pl": "Moim zdaniem to nie jest dobry pomysł.",
+"file": "audio/ac211f7b91f4.mp3"
+},
+"cc4125a9f6b6": {
+"pl": "Wątpię, czy zdążymy na czas.",
+"file": "audio/cc4125a9f6b6.mp3"
+},
+"c0cfb35dc3c9": {
+"pl": "Moim celem zawodowym jest zostać ekspertem w swojej dziedzinie.",
+"file": "audio/c0cfb35dc3c9.mp3"
+},
+"6b49599574fc": {
+"pl": "Możesz podłączyć dwa urządzenia naraz.",
+"file": "audio/6b49599574fc.mp3"
+},
+"d223df075fa5": {
+"pl": "Nie rób z igły wideł, to naprawdę drobiazg.",
+"file": "audio/d223df075fa5.mp3"
+},
+"c005117af859": {
+"pl": "Dzieci wierciły mi dziurę w brzuchu, żebym kupił im psa.",
+"file": "audio/c005117af859.mp3"
+},
+"bea1f5c99dcb": {
+"pl": "Trzymam kciuki za twój jutrzejszy egzamin.",
+"file": "audio/bea1f5c99dcb.mp3"
+},
+"d3b87e8d267b": {
+"pl": "Jebać to, robimy po swojemu.",
+"file": "audio/d3b87e8d267b.mp3"
+},
+"fe0833e5b527": {
+"pl": "Na koncercie było zajebiście, najlepszy w życiu.",
+"file": "audio/fe0833e5b527.mp3"
+},
+"0b40fd866b28": {
+"pl": "Wrócę za godzinę.",
+"file": "audio/0b40fd866b28.mp3"
+},
+"df999032cfb8": {
+"pl": "kobieta → kobiecie, szkoła → szkole",
+"file": "audio/df999032cfb8.mp3"
+},
+"7bebe79704d9": {
+"pl": "praca → pracy, ulica → ulicy",
+"file": "audio/7bebe79704d9.mp3"
+},
+"910dc45f60ef": {
+"pl": "Rozmawiamy o książkach.",
+"file": "audio/910dc45f60ef.mp3"
+},
+"1b6a7fe3d478": {
+"pl": "nauczyciel → nauczycielu, Tomek → Tomku",
+"file": "audio/1b6a7fe3d478.mp3"
+},
+"cd53636b96a6": {
+"pl": "masło maślane",
+"file": "audio/cd53636b96a6.mp3"
+},
+"39c64ead8141": {
+"pl": "wytyczać sobie własny szlak",
+"file": "audio/39c64ead8141.mp3"
+},
+"3c9490eb04f4": {
+"pl": "Mogę sam wytyczać sobie szlak mojego życia.",
+"file": "audio/3c9490eb04f4.mp3"
+},
+"0148f2d71ef4": {
+"pl": "Jeśli objawy nie miną w ciągu tygodnia, proszę wrócić.",
+"file": "audio/0148f2d71ef4.mp3"
+},
+"a282d3ab2666": {
+"pl": "Potrzebuje pan/pani paragonu?",
+"file": "audio/a282d3ab2666.mp3"
+},
+"8976df3e5f06": {
+"pl": "Czy mogę być dłużna grosika?",
+"file": "audio/8976df3e5f06.mp3"
+},
+"07b9d549a097": {
+"pl": "Masz ognia?",
+"file": "audio/07b9d549a097.mp3"
+},
+"10167450d9c0": {
+"pl": "Ona chce kawy.",
+"file": "audio/10167450d9c0.mp3"
+},
+"844438f3268b": {
+"pl": "Pójdę tam jutro.",
+"file": "audio/844438f3268b.mp3"
 }
 }
 }
