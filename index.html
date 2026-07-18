@@ -1305,7 +1305,7 @@
    Unrelated to CACHE in sw.js, which is a machine counter - bump both when
    you deploy, but they don't need to match.
    ========================================================================= */
-const APP_VERSION = "7.17-11";
+const APP_VERSION = "7.17-12";
 document.getElementById("footVersion").textContent = "v" + APP_VERSION;
 
 /* =========================================================================
@@ -1520,7 +1520,7 @@ function renderTopicsHead(searching){
       '<span class="th-count"></span>'+
     '</div>';
   head.querySelector("b").textContent = modeLabel(lv);
-  head.querySelector(".th-blurb").textContent = lv.blurb ? (" \u00b7 "+lv.blurb) : "";
+  head.querySelector(".th-blurb").textContent = (categoryOf(lv)==="vocab" && lv.blurb) ? (" \u00b7 "+lv.blurb) : "";
   head.querySelector(".th-count").textContent = n + (n===1 ? " topic" : " topics");
   const isPodcastLv = lv.topics.length && lv.topics.every(t=>t.kind==="podcast");
   if(categoryOf(lv)==="vocab" || isPodcastLv){
