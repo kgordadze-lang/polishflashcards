@@ -363,6 +363,10 @@
   .en{font-size:27px;line-height:1.2;font-weight:700;letter-spacing:-.4px;color:var(--forest)}
   .hint{font-size:14px;color:var(--muted);line-height:1.5;max-width:34ch}
   .cue{position:absolute;bottom:20px;left:0;right:0;font-size:12px;color:#aebbc4;font-weight:500}
+  /* direction toggle: when the front shows English, borrow the .en scale; when the
+     back shows Polish, borrow the .pl scale - so the swapped text keeps its weight. */
+  .pl.dir-en{font-size:27px;font-weight:700;letter-spacing:-.4px}
+  .en.dir-pl{font-size:36px;font-weight:800;letter-spacing:-.8px}
   .back-face{transform:rotateY(180deg);justify-content:center;gap:13px}
 
   /* example sentence block */
@@ -619,7 +623,7 @@
   .score-ring{margin:20px 0 22px;font-size:40px;font-weight:800;letter-spacing:-1px;color:var(--forest)}
   .score-ring span.lbl{color:var(--muted);font-size:20px;font-weight:700}
 
-  @media (max-width:400px){ .pl{font-size:31px} .en{font-size:24px} .flip,.stage{min-height:430px} .hero h1{font-size:29px;letter-spacing:-.9px} }
+  @media (max-width:400px){ .pl{font-size:31px} .en{font-size:24px} .pl.dir-en{font-size:24px} .en.dir-pl{font-size:31px} .flip,.stage{min-height:430px} .hero h1{font-size:29px;letter-spacing:-.9px} }
   /* ---------- conversation (Rozmowy) ---------- */
   .thread{flex:1;overflow-y:auto;padding:10px 2px 8px;display:flex;flex-direction:column;gap:13px}
   .scene-card{background:linear-gradient(180deg,var(--cream),#fff);border:1px solid var(--border);border-radius:var(--r-md);padding:16px 17px;box-shadow:var(--shadow-sm)}
@@ -779,6 +783,10 @@
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
       <div class="sbar-title"><b id="studyTitle"></b><span id="studyLevel"></span></div>
+      <button class="speed-toggle dir-toggle" id="dirToggle" type="button" aria-pressed="false" aria-label="Card direction" title="Switch card direction" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3l4 4-4 4"/><path d="M21 7H7"/><path d="M7 21l-4-4 4-4"/><path d="M3 17h14"/></svg>
+        <span class="dir-label">PL &#8594; EN</span>
+      </button>
       <button class="speed-toggle" data-role="speed-toggle" aria-label="Toggle audio speed" title="Toggle audio speed">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
         <span class="speed-label">Slow</span>
@@ -810,6 +818,9 @@
             </div>
             <div class="face back-face">
               <span class="eyebrow" id="backEyebrow">Meaning</span>
+              <button class="fab" id="speakBack" aria-label="Play pronunciation" hidden>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>
+              </button>
               <div class="en" id="enText"></div>
               <div class="hint" id="backHint"></div>
               <div class="pair-line" id="pairLine" hidden><span class="pair-k">Aspect pair</span><span class="pair-v" id="pairV" lang="pl"></span></div>
@@ -1378,6 +1389,22 @@ LEVELS.push(
 
 /* ---------------- app state ---------------- */
 const S = { levelIdx:0, topicIdx:0, cards:[], queue:[], pos:0, still:new Set(), known:new Set(), query:"" };
+
+/* Card direction (flashcards only). "pl" = Polish front, reveal meaning (default);
+   "en" = English front, recall the Polish. Offered on vocabulary levels (A1/A2/B1)
+   only - grammar, podcasts, scenarios and practice modes always stay PL-front.
+   The preference persists but is ignored on non-vocab levels via dirEnabled(). */
+let cardDir = (localStorage.getItem("pp-card-dir") === "en") ? "en" : "pl";
+function dirEnabled(){ return isVocabLevel(LEVELS[S.levelIdx]); }   /* toggle applies here */
+function enFront(){ return cardDir === "en" && dirEnabled(); }       /* English-front now? */
+function updateDirToggle(){
+  const btn = $("dirToggle"); if(!btn) return;
+  const on = enFront();
+  btn.hidden = !dirEnabled();
+  btn.classList.toggle("on", on);
+  btn.setAttribute("aria-pressed", on ? "true" : "false");
+  btn.querySelector(".dir-label").innerHTML = on ? "EN &#8594; PL" : "PL &#8594; EN";
+}
 const $ = id => document.getElementById(id);
 
 /* ---------------- progress persistence (localStorage) ---------------- */
@@ -1707,6 +1734,7 @@ function setStrengthBadge(level){
 function render(){
   if(S.pos >= S.queue.length){ showDone(); return; }
   $("cardView").style.display="flex"; $("doneView").style.display="none";
+  updateDirToggle();                            /* show/hide + label the direction toggle */
   const c = currentCard();
   setStrengthBadge(c.strength);                 /* shows a strength pill only on cards that carry one */
   const f = $("flip");
@@ -1724,7 +1752,7 @@ function render(){
   if(c.intro){
     /* intro card: podcast title, host, topic and a YouTube link on the back */
     front.classList.add("intro-face"); back.classList.add("intro-face");
-    $("speak").hidden = true;
+    $("speak").hidden = true; $("speakBack").hidden = true;
     $("eyebrow").textContent = "Podcast";
     $("plText").textContent = c.pl;
     $("frontHint").textContent = "Tap to open the episode";
@@ -1753,19 +1781,43 @@ function render(){
   }
 
   /* normal vocab / podcast-phrase card */
-  $("speak").hidden = false;
   front.classList.remove("intro-face");
   back.classList.remove("intro-face");
-  $("eyebrow").textContent = "Polish";
-  $("backEyebrow").textContent = "Meaning";
   $("ytLink").hidden = true;
   $("introStart").hidden = true;
   document.querySelector(".feedback").hidden = false;
-  $("frontCue").textContent = "tap to see meaning";
-  $("plText").textContent = c.pl;
-  $("frontHint").textContent = c.hint || "";
-  $("enText").textContent = c.en;
-  $("backHint").textContent = c.hint || "";
+  if(enFront()){
+    /* English front, recall the Polish. Audio and hint move to the back so the
+       front never gives the answer away. */
+    $("speak").hidden = true;
+    $("speakBack").hidden = false;
+    $("eyebrow").textContent = "English";
+    $("backEyebrow").textContent = "Polish";
+    $("frontCue").textContent = "tap to see Polish";
+    $("plText").textContent = c.en;
+    $("plText").removeAttribute("lang");
+    $("plText").classList.add("dir-en");
+    $("frontHint").textContent = "";
+    $("enText").textContent = c.pl;
+    $("enText").setAttribute("lang", "pl");
+    $("enText").classList.add("dir-pl");
+    $("backHint").textContent = c.hint || "";
+  } else {
+    /* default: Polish front, reveal the meaning */
+    $("speak").hidden = false;
+    $("speakBack").hidden = true;
+    $("eyebrow").textContent = "Polish";
+    $("backEyebrow").textContent = "Meaning";
+    $("frontCue").textContent = "tap to see meaning";
+    $("plText").textContent = c.pl;
+    $("plText").setAttribute("lang", "pl");
+    $("plText").classList.remove("dir-en");
+    $("frontHint").textContent = c.hint || "";
+    $("enText").textContent = c.en;
+    $("enText").removeAttribute("lang");
+    $("enText").classList.remove("dir-pl");
+    $("backHint").textContent = c.hint || "";
+  }
   if(c.pair){ $("pairV").textContent = c.pair; $("pairLine").hidden = false; }
   else $("pairLine").hidden = true;
   if(c.ex){
@@ -1780,7 +1832,12 @@ function render(){
   $("fill").style.width = pct + "%";
   $("pcount").textContent = (S.pos+1) + " / " + S.queue.length;
 }
-function flipLabel(){ $("flip").setAttribute("aria-label", $("flip").classList.contains("flipped") ? "Show Polish" : "Show meaning"); }
+function flipLabel(){
+  const flipped = $("flip").classList.contains("flipped");
+  const label = enFront() ? (flipped ? "Show English" : "Show Polish")
+                          : (flipped ? "Show Polish"  : "Show meaning");
+  $("flip").setAttribute("aria-label", label);
+}
 function flip(){ $("flip").classList.toggle("flipped"); flipLabel(); if(window.PP_A2HS && $("flip").classList.contains("flipped")) window.PP_A2HS.bump(); }
 function advance(){ if($("flip").dataset.leaving) return; S.pos++; render(); }
 function goPrev(){ if($("flip").dataset.leaving) return; if(S.pos>0){ S.pos--; render(); } }
@@ -1982,6 +2039,13 @@ $("flip").addEventListener("keydown", e=>{
   }
 });
 $("speak").addEventListener("click", e=>{ e.stopPropagation(); if(currentCard().intro) return; speakText(currentCard().pl, e.currentTarget); });
+$("speakBack").addEventListener("click", e=>{ e.stopPropagation(); if(currentCard().intro) return; speakText(currentCard().pl, e.currentTarget); });
+$("dirToggle").addEventListener("click", e=>{
+  e.stopPropagation();
+  cardDir = (cardDir === "en") ? "pl" : "en";
+  localStorage.setItem("pp-card-dir", cardDir);
+  render();                                     /* re-renders front-side up in the new direction */
+});
 $("speakEx").addEventListener("click", e=>{ e.stopPropagation(); speakText(currentCard().ex, e.currentTarget); });
 $("markKnow").addEventListener("click", e=>{ e.stopPropagation(); markKnown(); });
 $("markStill").addEventListener("click", e=>{ e.stopPropagation(); markStill(); });
