@@ -7,7 +7,7 @@
   window.PP_LEVELS.push(
   {
       level: "B1",
-      blurb: "Everyday life, opinions, work, and tech",
+      blurb: "Everyday life",
       topics: [
         {
           name: "Załatwianie spraw",
