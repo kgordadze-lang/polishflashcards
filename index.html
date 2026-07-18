@@ -278,6 +278,10 @@
   .speed-toggle:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
   .speed-toggle svg{width:14px;height:14px}
   .speed-toggle.on{background:var(--emerald);color:#fff;border-color:var(--emerald)}
+  /* direction toggle sits on its own slim row under the study bar so the topic
+     title and level keep full width. Right-aligned to line up under the controls. */
+  .dir-row{display:flex;justify-content:flex-end;padding:0 0 6px}
+  .dir-toggle{height:32px}
   /* challenge toggle (Conversations) - same visual family as the speed toggle */
   .chal-toggle{flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 11px;
     background:#fff;color:var(--muted);border:1px solid var(--border);border-radius:17px;
@@ -783,16 +787,19 @@
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
       <div class="sbar-title"><b id="studyTitle"></b><span id="studyLevel"></span></div>
-      <button class="speed-toggle dir-toggle" id="dirToggle" type="button" aria-pressed="false" aria-label="Card direction" title="Switch card direction" hidden>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3l4 4-4 4"/><path d="M21 7H7"/><path d="M7 21l-4-4 4-4"/><path d="M3 17h14"/></svg>
-        <span class="dir-label">PL &#8594; EN</span>
-      </button>
       <button class="speed-toggle" data-role="speed-toggle" aria-label="Toggle audio speed" title="Toggle audio speed">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
         <span class="speed-label">Slow</span>
       </button>
       <button class="back home-btn" aria-label="Home page">
         <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </button>
+    </div>
+
+    <div class="dir-row" id="dirRow" hidden>
+      <button class="speed-toggle dir-toggle" id="dirToggle" type="button" aria-pressed="false" title="Switch card direction">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3l4 4-4 4"/><path d="M21 7H7"/><path d="M7 21l-4-4 4-4"/><path d="M3 17h14"/></svg>
+        <span class="dir-label">PL &#8594; EN</span>
       </button>
     </div>
 
@@ -1400,7 +1407,7 @@ function enFront(){ return cardDir === "en" && dirEnabled(); }       /* English-
 function updateDirToggle(){
   const btn = $("dirToggle"); if(!btn) return;
   const on = enFront();
-  btn.hidden = !dirEnabled();
+  $("dirRow").hidden = !dirEnabled();           /* whole row hides on non-vocab levels */
   btn.classList.toggle("on", on);
   btn.setAttribute("aria-pressed", on ? "true" : "false");
   btn.querySelector(".dir-label").innerHTML = on ? "EN &#8594; PL" : "PL &#8594; EN";
