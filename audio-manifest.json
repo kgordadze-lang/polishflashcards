@@ -1,6 +1,6 @@
 {
 "voice": "pl-PL-MarekNeural",
-"generatedAt": "2026-07-18T12:56:39.118783Z",
+"generatedAt": "2026-07-19T07:09:32.248543Z",
 "audioDir": "audio",
 "entries": {
 "000311d1288f": {
@@ -11874,6 +11874,1554 @@
 "844438f3268b": {
 "pl": "Pójdę tam jutro.",
 "file": "audio/844438f3268b.mp3"
+},
+"0b335e17c5b8": {
+"pl": "numer telefonu",
+"file": "audio/0b335e17c5b8.mp3"
+},
+"34103bc2db34": {
+"pl": "Zapiszę twój numer telefonu.",
+"file": "audio/34103bc2db34.mp3"
+},
+"8ee350af9167": {
+"pl": "adres e-mail",
+"file": "audio/8ee350af9167.mp3"
+},
+"fc1a8d7408a5": {
+"pl": "Podaj mi swój adres e-mail.",
+"file": "audio/fc1a8d7408a5.mp3"
+},
+"a00bea543a70": {
+"pl": "adres",
+"file": "audio/a00bea543a70.mp3"
+},
+"116f5e811abb": {
+"pl": "Jaki jest twój adres?",
+"file": "audio/116f5e811abb.mp3"
+},
+"03c390eee3f0": {
+"pl": "żonaty / mężatka",
+"file": "audio/03c390eee3f0.mp3"
+},
+"df7ae1c329f1": {
+"pl": "Jestem żonaty od pięciu lat.",
+"file": "audio/df7ae1c329f1.mp3"
+},
+"4eb8fd7c07e4": {
+"pl": "kawaler / panna",
+"file": "audio/4eb8fd7c07e4.mp3"
+},
+"6f647eba888a": {
+"pl": "Nie, jestem kawalerem.",
+"file": "audio/6f647eba888a.mp3"
+},
+"6ec3b16278fe": {
+"pl": "Moja mama jest nauczycielką.",
+"file": "audio/6ec3b16278fe.mp3"
+},
+"56fa61ce3ee6": {
+"pl": "lekarz / lekarka",
+"file": "audio/56fa61ce3ee6.mp3"
+},
+"52bb8e0b397c": {
+"pl": "On jest lekarzem w szpitalu.",
+"file": "audio/52bb8e0b397c.mp3"
+},
+"83cd118f98b1": {
+"pl": "Mój brat jest kierowcą autobusu.",
+"file": "audio/83cd118f98b1.mp3"
+},
+"bbe1ab0d5ba5": {
+"pl": "kolor",
+"file": "audio/bbe1ab0d5ba5.mp3"
+},
+"a33947831620": {
+"pl": "Jaki kolor lubisz najbardziej?",
+"file": "audio/a33947831620.mp3"
+},
+"74b62e088ba2": {
+"pl": "czerwony",
+"file": "audio/74b62e088ba2.mp3"
+},
+"b9934321cb9d": {
+"pl": "Lubię czerwone jabłka.",
+"file": "audio/b9934321cb9d.mp3"
+},
+"e5c7d325cc13": {
+"pl": "niebieski",
+"file": "audio/e5c7d325cc13.mp3"
+},
+"d1e6fada0aec": {
+"pl": "Niebo jest dziś niebieskie.",
+"file": "audio/d1e6fada0aec.mp3"
+},
+"e6f3760a673d": {
+"pl": "zielony",
+"file": "audio/e6f3760a673d.mp3"
+},
+"b0300beaacb7": {
+"pl": "Lubię zieloną herbatę.",
+"file": "audio/b0300beaacb7.mp3"
+},
+"54aa72278c0e": {
+"pl": "żółty",
+"file": "audio/54aa72278c0e.mp3"
+},
+"72b7559e0194": {
+"pl": "Mam żółty parasol.",
+"file": "audio/72b7559e0194.mp3"
+},
+"a1ed59c90329": {
+"pl": "czarny",
+"file": "audio/a1ed59c90329.mp3"
+},
+"93244d1c0224": {
+"pl": "Poproszę czarną kawę.",
+"file": "audio/93244d1c0224.mp3"
+},
+"ee3b3d821a4e": {
+"pl": "biały",
+"file": "audio/ee3b3d821a4e.mp3"
+},
+"3598fd97cb50": {
+"pl": "On nosi białą koszulę.",
+"file": "audio/3598fd97cb50.mp3"
+},
+"6e3470e557a5": {
+"pl": "szary",
+"file": "audio/6e3470e557a5.mp3"
+},
+"aff82657a436": {
+"pl": "Listopad jest zawsze szary.",
+"file": "audio/aff82657a436.mp3"
+},
+"77b9486fc133": {
+"pl": "brązowy",
+"file": "audio/77b9486fc133.mp3"
+},
+"293ca1693c45": {
+"pl": "Mam brązowe oczy.",
+"file": "audio/293ca1693c45.mp3"
+},
+"4fce8203ecee": {
+"pl": "różowy",
+"file": "audio/4fce8203ecee.mp3"
+},
+"a2564bdaa603": {
+"pl": "Ona ma różową sukienkę.",
+"file": "audio/a2564bdaa603.mp3"
+},
+"47399d8ab046": {
+"pl": "pomarańczowy",
+"file": "audio/47399d8ab046.mp3"
+},
+"780e8a1169bb": {
+"pl": "Lubię sok pomarańczowy.",
+"file": "audio/780e8a1169bb.mp3"
+},
+"111ed3ab1bf2": {
+"pl": "Muszę kupić nowe ubrania.",
+"file": "audio/111ed3ab1bf2.mp3"
+},
+"31c2a5777dd7": {
+"pl": "koszulka",
+"file": "audio/31c2a5777dd7.mp3"
+},
+"b84f98b454f7": {
+"pl": "Noszę koszulkę i dżinsy.",
+"file": "audio/b84f98b454f7.mp3"
+},
+"2fd377a30cea": {
+"pl": "Gdzie są moje buty?",
+"file": "audio/2fd377a30cea.mp3"
+},
+"278c80af4ef8": {
+"pl": "Weź kurtkę, jest zimno.",
+"file": "audio/278c80af4ef8.mp3"
+},
+"f2dc8cf811f5": {
+"pl": "Zimą zawsze noszę czapkę.",
+"file": "audio/f2dc8cf811f5.mp3"
+},
+"f4578dc18b59": {
+"pl": "Nie noszę sukienek.",
+"file": "audio/f4578dc18b59.mp3"
+},
+"1809c948aabf": {
+"pl": "Jaki masz rozmiar?",
+"file": "audio/1809c948aabf.mp3"
+},
+"27b45a4c444a": {
+"pl": "pasować",
+"file": "audio/27b45a4c444a.mp3"
+},
+"206ff1bf5667": {
+"pl": "Ta kurtka do ciebie pasuje.",
+"file": "audio/206ff1bf5667.mp3"
+},
+"8453ca134645": {
+"pl": "czas wolny",
+"file": "audio/8453ca134645.mp3"
+},
+"0316850ea5ca": {
+"pl": "W wolnym czasie czytam książki.",
+"file": "audio/0316850ea5ca.mp3"
+},
+"b2d528722603": {
+"pl": "Moje hobby to gotowanie.",
+"file": "audio/b2d528722603.mp3"
+},
+"bc2a20412b85": {
+"pl": "czytać",
+"file": "audio/bc2a20412b85.mp3"
+},
+"b88a201a7fce": {
+"pl": "Lubię czytać przed snem.",
+"file": "audio/b88a201a7fce.mp3"
+},
+"25d042645663": {
+"pl": "oglądać",
+"file": "audio/25d042645663.mp3"
+},
+"677211897e6b": {
+"pl": "Wieczorem oglądam seriale.",
+"file": "audio/677211897e6b.mp3"
+},
+"a488b4bc9376": {
+"pl": "słuchać muzyki",
+"file": "audio/a488b4bc9376.mp3"
+},
+"175f92e0a287": {
+"pl": "Słucham muzyki w drodze do pracy.",
+"file": "audio/175f92e0a287.mp3"
+},
+"1f034f79e89e": {
+"pl": "grać",
+"file": "audio/1f034f79e89e.mp3"
+},
+"85d001e791a3": {
+"pl": "Gram w piłkę w każdą sobotę.",
+"file": "audio/85d001e791a3.mp3"
+},
+"f0e9c037abfd": {
+"pl": "grać na gitarze",
+"file": "audio/f0e9c037abfd.mp3"
+},
+"579583c55712": {
+"pl": "Uczę się grać na gitarze.",
+"file": "audio/579583c55712.mp3"
+},
+"a6bad2bf34c9": {
+"pl": "śpiewać",
+"file": "audio/a6bad2bf34c9.mp3"
+},
+"1295b04d39c6": {
+"pl": "Lubię śpiewać pod prysznicem.",
+"file": "audio/1295b04d39c6.mp3"
+},
+"32e74ae7dcab": {
+"pl": "tańczyć",
+"file": "audio/32e74ae7dcab.mp3"
+},
+"7c1b9878a435": {
+"pl": "Czy lubisz tańczyć?",
+"file": "audio/7c1b9878a435.mp3"
+},
+"a52bd8d3abc4": {
+"pl": "W weekend lubię gotować dla znajomych.",
+"file": "audio/a52bd8d3abc4.mp3"
+},
+"6ffb97a94b32": {
+"pl": "malować",
+"file": "audio/6ffb97a94b32.mp3"
+},
+"b93591759f9b": {
+"pl": "Moja córka lubi malować.",
+"file": "audio/b93591759f9b.mp3"
+},
+"70d32c0d9104": {
+"pl": "pływać",
+"file": "audio/70d32c0d9104.mp3"
+},
+"f452523bf21c": {
+"pl": "Latem często pływam w jeziorze.",
+"file": "audio/f452523bf21c.mp3"
+},
+"82cee2aa3013": {
+"pl": "jeździć na rowerze",
+"file": "audio/82cee2aa3013.mp3"
+},
+"a445f7d21458": {
+"pl": "W weekend jeździmy na rowerach.",
+"file": "audio/a445f7d21458.mp3"
+},
+"aa04eca8d740": {
+"pl": "grać w gry",
+"file": "audio/aa04eca8d740.mp3"
+},
+"bd2084cb8c3b": {
+"pl": "Wieczorami gram w gry na komputerze.",
+"file": "audio/bd2084cb8c3b.mp3"
+},
+"319d771b745e": {
+"pl": "spotykać się ze znajomymi",
+"file": "audio/319d771b745e.mp3"
+},
+"a02125a59ce6": {
+"pl": "W piątki spotykam się ze znajomymi.",
+"file": "audio/a02125a59ce6.mp3"
+},
+"16b9c1d37f71": {
+"pl": "podróżować",
+"file": "audio/16b9c1d37f71.mp3"
+},
+"8128d63ba6b8": {
+"pl": "Uwielbiam podróżować po Europie.",
+"file": "audio/8128d63ba6b8.mp3"
+},
+"b1405691a1fc": {
+"pl": "robić zdjęcia",
+"file": "audio/b1405691a1fc.mp3"
+},
+"2f11a935cfee": {
+"pl": "Lubię robić zdjęcia w podróży.",
+"file": "audio/2f11a935cfee.mp3"
+},
+"ec450786e26a": {
+"pl": "sport",
+"file": "audio/ec450786e26a.mp3"
+},
+"0ed8823c4fe0": {
+"pl": "Sport to moja pasja.",
+"file": "audio/0ed8823c4fe0.mp3"
+},
+"d0607f7ad262": {
+"pl": "film",
+"file": "audio/d0607f7ad262.mp3"
+},
+"9c9990a0c987": {
+"pl": "Idziemy dziś na film?",
+"file": "audio/9c9990a0c987.mp3"
+},
+"646816e40bf5": {
+"pl": "Czytam teraz ciekawą książkę.",
+"file": "audio/646816e40bf5.mp3"
+},
+"d444920aa5f9": {
+"pl": "Co lubisz robić?",
+"file": "audio/d444920aa5f9.mp3"
+},
+"264bc08d614c": {
+"pl": "Co lubisz robić w wolnym czasie?",
+"file": "audio/264bc08d614c.mp3"
+},
+"24a9bd5ca256": {
+"pl": "Jem owoce codziennie.",
+"file": "audio/24a9bd5ca256.mp3"
+},
+"de98594352a0": {
+"pl": "Warzywa są zdrowe.",
+"file": "audio/de98594352a0.mp3"
+},
+"3c68755c1ad4": {
+"pl": "Poproszę kilo jabłek.",
+"file": "audio/3c68755c1ad4.mp3"
+},
+"668c222e4a59": {
+"pl": "banan",
+"file": "audio/668c222e4a59.mp3"
+},
+"fa3357dada9c": {
+"pl": "Na śniadanie jem banana.",
+"file": "audio/fa3357dada9c.mp3"
+},
+"5c18a5a2f2bb": {
+"pl": "gruszka",
+"file": "audio/5c18a5a2f2bb.mp3"
+},
+"52b7277ae1b7": {
+"pl": "Te gruszki są bardzo słodkie.",
+"file": "audio/52b7277ae1b7.mp3"
+},
+"788824f58d1f": {
+"pl": "truskawki",
+"file": "audio/788824f58d1f.mp3"
+},
+"04a07408205c": {
+"pl": "Latem kupuję truskawki na targu.",
+"file": "audio/04a07408205c.mp3"
+},
+"0377352d8157": {
+"pl": "winogrona",
+"file": "audio/0377352d8157.mp3"
+},
+"aa248e03f8ab": {
+"pl": "Kupiłem zielone winogrona.",
+"file": "audio/aa248e03f8ab.mp3"
+},
+"b99297d740be": {
+"pl": "pomarańcza",
+"file": "audio/b99297d740be.mp3"
+},
+"fa327686538a": {
+"pl": "Wyciskam sok z pomarańczy.",
+"file": "audio/fa327686538a.mp3"
+},
+"cd6d399248b1": {
+"pl": "cytryna",
+"file": "audio/cd6d399248b1.mp3"
+},
+"98a544941e3c": {
+"pl": "Poproszę herbatę z cytryną.",
+"file": "audio/98a544941e3c.mp3"
+},
+"5c7df072728c": {
+"pl": "śliwka",
+"file": "audio/5c7df072728c.mp3"
+},
+"2fdcd94a416e": {
+"pl": "Jesienią jem dużo śliwek.",
+"file": "audio/2fdcd94a416e.mp3"
+},
+"6b8f7e2ce3d0": {
+"pl": "arbuz",
+"file": "audio/6b8f7e2ce3d0.mp3"
+},
+"d300e60dca04": {
+"pl": "W upał nie ma nic lepszego niż arbuz.",
+"file": "audio/d300e60dca04.mp3"
+},
+"1a26e5b57717": {
+"pl": "maliny",
+"file": "audio/1a26e5b57717.mp3"
+},
+"46befd38a2a4": {
+"pl": "Maliny są moimi ulubionymi owocami.",
+"file": "audio/46befd38a2a4.mp3"
+},
+"ea337bbe5f3d": {
+"pl": "Do sałatki dodaję pomidory.",
+"file": "audio/ea337bbe5f3d.mp3"
+},
+"906c543a3285": {
+"pl": "ogórek",
+"file": "audio/906c543a3285.mp3"
+},
+"d811b3dbf50e": {
+"pl": "Uwielbiam ogórki kiszone.",
+"file": "audio/d811b3dbf50e.mp3"
+},
+"7df33a669e7a": {
+"pl": "marchewka",
+"file": "audio/7df33a669e7a.mp3"
+},
+"3ed1d4cf8ecd": {
+"pl": "Zupa z marchewki jest pyszna.",
+"file": "audio/3ed1d4cf8ecd.mp3"
+},
+"73c684c201ef": {
+"pl": "Na obiad są ziemniaki.",
+"file": "audio/73c684c201ef.mp3"
+},
+"bc7111872d63": {
+"pl": "cebula",
+"file": "audio/bc7111872d63.mp3"
+},
+"45ec42f444fb": {
+"pl": "Ta zupa potrzebuje cebuli.",
+"file": "audio/45ec42f444fb.mp3"
+},
+"856fa4527035": {
+"pl": "czosnek",
+"file": "audio/856fa4527035.mp3"
+},
+"9081f274d023": {
+"pl": "Dodaję czosnek do prawie wszystkiego.",
+"file": "audio/9081f274d023.mp3"
+},
+"8bbf4ba9647b": {
+"pl": "papryka",
+"file": "audio/8bbf4ba9647b.mp3"
+},
+"03e1237e6700": {
+"pl": "Czerwona papryka jest słodka.",
+"file": "audio/03e1237e6700.mp3"
+},
+"340c4ebafe02": {
+"pl": "sałata",
+"file": "audio/340c4ebafe02.mp3"
+},
+"4ae9a0e5f445": {
+"pl": "Kupię sałatę na kanapki.",
+"file": "audio/4ae9a0e5f445.mp3"
+},
+"7958af911d10": {
+"pl": "kilo / pół kilo",
+"file": "audio/7958af911d10.mp3"
+},
+"c34fea760a3c": {
+"pl": "Poproszę pół kilo pomidorów.",
+"file": "audio/c34fea760a3c.mp3"
+},
+"707ce09802de": {
+"pl": "świeży / dojrzały",
+"file": "audio/707ce09802de.mp3"
+},
+"024ba4d3a3f8": {
+"pl": "Czy te banany są dojrzałe?",
+"file": "audio/024ba4d3a3f8.mp3"
+},
+"9524ae7b0628": {
+"pl": "Poproszę kilo...",
+"file": "audio/9524ae7b0628.mp3"
+},
+"1311fdad061e": {
+"pl": "Poproszę kilo jabłek i dwie cytryny.",
+"file": "audio/1311fdad061e.mp3"
+},
+"b04b5e1552fa": {
+"pl": "zaprosić",
+"file": "audio/b04b5e1552fa.mp3"
+},
+"3496e12a3539": {
+"pl": "Zaprosiłem znajomych na kolację.",
+"file": "audio/3496e12a3539.mp3"
+},
+"11778b1e2ba4": {
+"pl": "zaproszenie",
+"file": "audio/11778b1e2ba4.mp3"
+},
+"f477248edf56": {
+"pl": "Dziękuję za zaproszenie!",
+"file": "audio/f477248edf56.mp3"
+},
+"299a1216a1b6": {
+"pl": "planować",
+"file": "audio/299a1216a1b6.mp3"
+},
+"2e4a095513e6": {
+"pl": "Planujemy wakacje nad morzem.",
+"file": "audio/2e4a095513e6.mp3"
+},
+"c3279fdc2049": {
+"pl": "Masz ochotę...?",
+"file": "audio/c3279fdc2049.mp3"
+},
+"98bfc1cf4a3c": {
+"pl": "Masz ochotę na kawę?",
+"file": "audio/98bfc1cf4a3c.mp3"
+},
+"c5171ade9bc6": {
+"pl": "Może pójdziemy...?",
+"file": "audio/c5171ade9bc6.mp3"
+},
+"2c621a5ca05d": {
+"pl": "Może pójdziemy do kina w piątek?",
+"file": "audio/2c621a5ca05d.mp3"
+},
+"349e992da834": {
+"pl": "za mały / za duży",
+"file": "audio/349e992da834.mp3"
+},
+"8178d9d8963f": {
+"pl": "Te buty są za małe.",
+"file": "audio/8178d9d8963f.mp3"
+},
+"1c6325c8f13b": {
+"pl": "materiał",
+"file": "audio/1c6325c8f13b.mp3"
+},
+"d86fb0446428": {
+"pl": "Z jakiego materiału jest ta bluzka?",
+"file": "audio/d86fb0446428.mp3"
+},
+"a1e4148fe0e5": {
+"pl": "bawełna",
+"file": "audio/a1e4148fe0e5.mp3"
+},
+"1625c2cbb065": {
+"pl": "Wolę koszulki z bawełny.",
+"file": "audio/1625c2cbb065.mp3"
+},
+"b8c1790f38c7": {
+"pl": "wełna",
+"file": "audio/b8c1790f38c7.mp3"
+},
+"36303b34b182": {
+"pl": "Ten sweter jest z wełny.",
+"file": "audio/36303b34b182.mp3"
+},
+"bad1614e0715": {
+"pl": "Kupiłem skórzaną kurtkę.",
+"file": "audio/bad1614e0715.mp3"
+},
+"091800af7c71": {
+"pl": "przymierzalnia",
+"file": "audio/091800af7c71.mp3"
+},
+"8530a1f32ee5": {
+"pl": "Gdzie jest przymierzalnia?",
+"file": "audio/8530a1f32ee5.mp3"
+},
+"87d9de72ba4d": {
+"pl": "zwierzę",
+"file": "audio/87d9de72ba4d.mp3"
+},
+"89467d648f11": {
+"pl": "W tym lesie żyje wiele zwierząt.",
+"file": "audio/89467d648f11.mp3"
+},
+"0f2907ce9dfc": {
+"pl": "pies",
+"file": "audio/0f2907ce9dfc.mp3"
+},
+"6c77ed4e6582": {
+"pl": "Mój pies uwielbia spacery.",
+"file": "audio/6c77ed4e6582.mp3"
+},
+"71fdc0a6c5f1": {
+"pl": "Mam dwa koty w domu.",
+"file": "audio/71fdc0a6c5f1.mp3"
+},
+"f4900166dd91": {
+"pl": "ptak",
+"file": "audio/f4900166dd91.mp3"
+},
+"630e5e450ba7": {
+"pl": "Wiosną ptaki wracają do Polski.",
+"file": "audio/630e5e450ba7.mp3"
+},
+"cbb6456b93a3": {
+"pl": "W tym jeziorze jest dużo ryb.",
+"file": "audio/cbb6456b93a3.mp3"
+},
+"60af65e7a5b0": {
+"pl": "koń",
+"file": "audio/60af65e7a5b0.mp3"
+},
+"dd74637d2df6": {
+"pl": "Na wsi widzieliśmy konie.",
+"file": "audio/dd74637d2df6.mp3"
+},
+"f910d7dd8c0e": {
+"pl": "krowa",
+"file": "audio/f910d7dd8c0e.mp3"
+},
+"eb4fcf7a68e3": {
+"pl": "Krowy pasą się na łące.",
+"file": "audio/eb4fcf7a68e3.mp3"
+},
+"b77ccda88322": {
+"pl": "niedźwiedź",
+"file": "audio/b77ccda88322.mp3"
+},
+"f7b37735a248": {
+"pl": "W Tatrach żyją niedźwiedzie.",
+"file": "audio/f7b37735a248.mp3"
+},
+"02d5d0522a76": {
+"pl": "las",
+"file": "audio/02d5d0522a76.mp3"
+},
+"a90608757a2d": {
+"pl": "Idziemy na spacer do lasu.",
+"file": "audio/a90608757a2d.mp3"
+},
+"f76d4c31a106": {
+"pl": "W zimie jeżdżę w góry.",
+"file": "audio/f76d4c31a106.mp3"
+},
+"3a9ba1295def": {
+"pl": "Latem jedziemy nad morze.",
+"file": "audio/3a9ba1295def.mp3"
+},
+"b4ddaba0b576": {
+"pl": "jezioro",
+"file": "audio/b4ddaba0b576.mp3"
+},
+"18bd32ad30b4": {
+"pl": "Nasze jezioro jest bardzo czyste.",
+"file": "audio/18bd32ad30b4.mp3"
+},
+"19cd8e28c533": {
+"pl": "rzeka",
+"file": "audio/19cd8e28c533.mp3"
+},
+"33a31162d0ea": {
+"pl": "Wisła to najdłuższa rzeka w Polsce.",
+"file": "audio/33a31162d0ea.mp3"
+},
+"b9425afde1f5": {
+"pl": "pole",
+"file": "audio/b9425afde1f5.mp3"
+},
+"9e3712fc03bd": {
+"pl": "Za wsią są pola i łąki.",
+"file": "audio/9e3712fc03bd.mp3"
+},
+"99008888e734": {
+"pl": "drzewo",
+"file": "audio/99008888e734.mp3"
+},
+"7cad66f670bb": {
+"pl": "To drzewo ma sto lat.",
+"file": "audio/7cad66f670bb.mp3"
+},
+"2a3cd0b07cc0": {
+"pl": "Kupiłem jej kwiaty.",
+"file": "audio/2a3cd0b07cc0.mp3"
+},
+"9df1e37ddff6": {
+"pl": "trawa",
+"file": "audio/9df1e37ddff6.mp3"
+},
+"6d0a8845a5a0": {
+"pl": "Dzieci bawią się na trawie.",
+"file": "audio/6d0a8845a5a0.mp3"
+},
+"603ff5228643": {
+"pl": "wieś",
+"file": "audio/603ff5228643.mp3"
+},
+"8ca8ae6d6137": {
+"pl": "Moi dziadkowie mieszkają na wsi.",
+"file": "audio/8ca8ae6d6137.mp3"
+},
+"275d939f3bfe": {
+"pl": "przyroda",
+"file": "audio/275d939f3bfe.mp3"
+},
+"beb95573b185": {
+"pl": "Kocham polską przyrodę.",
+"file": "audio/beb95573b185.mp3"
+},
+"337e35983046": {
+"pl": "świeże powietrze",
+"file": "audio/337e35983046.mp3"
+},
+"9a003966ac03": {
+"pl": "Na wsi jest świeże powietrze.",
+"file": "audio/9a003966ac03.mp3"
+},
+"86225d90d5f7": {
+"pl": "iść na spacer",
+"file": "audio/86225d90d5f7.mp3"
+},
+"087ae654ad49": {
+"pl": "Po pracy idę na spacer do parku.",
+"file": "audio/087ae654ad49.mp3"
+},
+"6768cb81f69a": {
+"pl": "grzyby",
+"file": "audio/6768cb81f69a.mp3"
+},
+"81509cde904e": {
+"pl": "Jesienią zbieramy grzyby w lesie.",
+"file": "audio/81509cde904e.mp3"
+},
+"6d79d3a3bc95": {
+"pl": "święto",
+"file": "audio/6d79d3a3bc95.mp3"
+},
+"c2baf2389e5d": {
+"pl": "Pierwszego maja jest święto.",
+"file": "audio/c2baf2389e5d.mp3"
+},
+"68fc0304ab9d": {
+"pl": "tradycja",
+"file": "audio/68fc0304ab9d.mp3"
+},
+"2806b09919f0": {
+"pl": "To stara polska tradycja.",
+"file": "audio/2806b09919f0.mp3"
+},
+"934db16d20a2": {
+"pl": "Boże Narodzenie",
+"file": "audio/934db16d20a2.mp3"
+},
+"a1dea60417ca": {
+"pl": "Boże Narodzenie spędzam z rodziną.",
+"file": "audio/a1dea60417ca.mp3"
+},
+"688620839aae": {
+"pl": "Wigilia",
+"file": "audio/688620839aae.mp3"
+},
+"6e6d4f0df435": {
+"pl": "Wigilia zaczyna się od pierwszej gwiazdki.",
+"file": "audio/6e6d4f0df435.mp3"
+},
+"43a68dbdac61": {
+"pl": "Wesołych Świąt!",
+"file": "audio/43a68dbdac61.mp3"
+},
+"d4e81ef1a8a0": {
+"pl": "Wesołych Świąt i szczęśliwego Nowego Roku!",
+"file": "audio/d4e81ef1a8a0.mp3"
+},
+"80408497ca1b": {
+"pl": "choinka",
+"file": "audio/80408497ca1b.mp3"
+},
+"f9ccc57b7396": {
+"pl": "W grudniu ubieramy choinkę.",
+"file": "audio/f9ccc57b7396.mp3"
+},
+"79b85e0ff3b3": {
+"pl": "prezent",
+"file": "audio/79b85e0ff3b3.mp3"
+},
+"69322b0b5b7c": {
+"pl": "Kupiłem prezenty dla całej rodziny.",
+"file": "audio/69322b0b5b7c.mp3"
+},
+"027ee77f9854": {
+"pl": "Wielkanoc",
+"file": "audio/027ee77f9854.mp3"
+},
+"736a66343148": {
+"pl": "Na Wielkanoc jemy jajka i żurek.",
+"file": "audio/736a66343148.mp3"
+},
+"7b083b03a4cc": {
+"pl": "Nowy Rok",
+"file": "audio/7b083b03a4cc.mp3"
+},
+"372f052885bb": {
+"pl": "Nowy Rok witamy z przyjaciółmi.",
+"file": "audio/372f052885bb.mp3"
+},
+"05431c5a4725": {
+"pl": "Sylwester",
+"file": "audio/05431c5a4725.mp3"
+},
+"530bf6023ed0": {
+"pl": "Gdzie spędzasz Sylwestra?",
+"file": "audio/530bf6023ed0.mp3"
+},
+"7d8f12157e91": {
+"pl": "Na urodziny zapraszam znajomych.",
+"file": "audio/7d8f12157e91.mp3"
+},
+"a3acca79d652": {
+"pl": "imieniny",
+"file": "audio/a3acca79d652.mp3"
+},
+"fb08827f2423": {
+"pl": "W Polsce imieniny są czasem ważniejsze niż urodziny.",
+"file": "audio/fb08827f2423.mp3"
+},
+"2156cd231dfa": {
+"pl": "Wszystkich Świętych",
+"file": "audio/2156cd231dfa.mp3"
+},
+"63a7f51e7d6f": {
+"pl": "Pierwszego listopada zapalamy znicze na grobach.",
+"file": "audio/63a7f51e7d6f.mp3"
+},
+"129896f7ca1b": {
+"pl": "tłusty czwartek",
+"file": "audio/129896f7ca1b.mp3"
+},
+"c6f0ecda1bd1": {
+"pl": "W tłusty czwartek jem trzy pączki.",
+"file": "audio/c6f0ecda1bd1.mp3"
+},
+"0b3b3ad177fb": {
+"pl": "życzenia",
+"file": "audio/0b3b3ad177fb.mp3"
+},
+"13e077c3f0e5": {
+"pl": "Składam ci najlepsze życzenia.",
+"file": "audio/13e077c3f0e5.mp3"
+},
+"d8d5bb9c7d39": {
+"pl": "Sto lat!",
+"file": "audio/d8d5bb9c7d39.mp3"
+},
+"218371e3714b": {
+"pl": "Zaśpiewajmy jej Sto lat!",
+"file": "audio/218371e3714b.mp3"
+},
+"f3c37ee9a0e2": {
+"pl": "gość",
+"file": "audio/f3c37ee9a0e2.mp3"
+},
+"6e3548eb287e": {
+"pl": "Dziś wieczorem mamy gości.",
+"file": "audio/6e3548eb287e.mp3"
+},
+"2461df9e07b3": {
+"pl": "świętować",
+"file": "audio/2461df9e07b3.mp3"
+},
+"4ae14f4531ce": {
+"pl": "Świętujemy dziś rocznicę ślubu.",
+"file": "audio/4ae14f4531ce.mp3"
+},
+"337f23248b9b": {
+"pl": "zapraszać",
+"file": "audio/337f23248b9b.mp3"
+},
+"e0dfe8390b67": {
+"pl": "Zapraszam cię na moje urodziny.",
+"file": "audio/e0dfe8390b67.mp3"
+},
+"6cddac596839": {
+"pl": "niespodzianka",
+"file": "audio/6cddac596839.mp3"
+},
+"56cccaacca27": {
+"pl": "Przygotowałam dla niego niespodziankę.",
+"file": "audio/56cccaacca27.mp3"
+},
+"a60ec1cf58f4": {
+"pl": "toast",
+"file": "audio/a60ec1cf58f4.mp3"
+},
+"c020061d343b": {
+"pl": "Wznieśmy toast za młodą parę!",
+"file": "audio/c020061d343b.mp3"
+},
+"81a7e19fb5da": {
+"pl": "frustracja",
+"file": "audio/81a7e19fb5da.mp3"
+},
+"226a2a057fd0": {
+"pl": "Czuję ogromną frustrację w tej pracy.",
+"file": "audio/226a2a057fd0.mp3"
+},
+"640c37385301": {
+"pl": "rozczarowanie",
+"file": "audio/640c37385301.mp3"
+},
+"f66143d1c4bf": {
+"pl": "Nie kryła rozczarowania wynikiem.",
+"file": "audio/f66143d1c4bf.mp3"
+},
+"8d8b1e1dc0ae": {
+"pl": "podekscytowany",
+"file": "audio/8d8b1e1dc0ae.mp3"
+},
+"a2027713f809": {
+"pl": "Jestem podekscytowany nową pracą.",
+"file": "audio/a2027713f809.mp3"
+},
+"99b48a10538c": {
+"pl": "zazdrość",
+"file": "audio/99b48a10538c.mp3"
+},
+"a50f3feac310": {
+"pl": "Zazdrość niszczy wiele związków.",
+"file": "audio/a50f3feac310.mp3"
+},
+"5eaa0810212b": {
+"pl": "ulga",
+"file": "audio/5eaa0810212b.mp3"
+},
+"d5ff3b824383": {
+"pl": "Odetchnąłem z ulgą, gdy to się skończyło.",
+"file": "audio/d5ff3b824383.mp3"
+},
+"288cb686a627": {
+"pl": "wzruszony",
+"file": "audio/288cb686a627.mp3"
+},
+"0078d8849cab": {
+"pl": "Byłam wzruszona jego przemową.",
+"file": "audio/0078d8849cab.mp3"
+},
+"f4a65e283b22": {
+"pl": "zdenerwowany",
+"file": "audio/f4a65e283b22.mp3"
+},
+"3f759ff4add3": {
+"pl": "Wyglądasz na zdenerwowanego, co się stało?",
+"file": "audio/3f759ff4add3.mp3"
+},
+"177a98b07278": {
+"pl": "tęsknota",
+"file": "audio/177a98b07278.mp3"
+},
+"29cc1181b4cf": {
+"pl": "Poczułem tęsknotę za domem.",
+"file": "audio/29cc1181b4cf.mp3"
+},
+"7b6fe31c336d": {
+"pl": "zdrowy styl życia",
+"file": "audio/7b6fe31c336d.mp3"
+},
+"1cd50f2d65ce": {
+"pl": "Coraz więcej osób prowadzi zdrowy styl życia.",
+"file": "audio/1cd50f2d65ce.mp3"
+},
+"39450f1e7bdf": {
+"pl": "dieta",
+"file": "audio/39450f1e7bdf.mp3"
+},
+"ac1c66047944": {
+"pl": "Jestem na diecie od miesiąca.",
+"file": "audio/ac1c66047944.mp3"
+},
+"9203f989f8a8": {
+"pl": "odżywiać się",
+"file": "audio/9203f989f8a8.mp3"
+},
+"0e8601526a5f": {
+"pl": "Staram się zdrowo odżywiać.",
+"file": "audio/0e8601526a5f.mp3"
+},
+"c3cebb0e5fa1": {
+"pl": "zdrowe jedzenie",
+"file": "audio/c3cebb0e5fa1.mp3"
+},
+"9ea6d00ae4b5": {
+"pl": "Zdrowe jedzenie nie musi być drogie.",
+"file": "audio/9ea6d00ae4b5.mp3"
+},
+"816de5a3fb70": {
+"pl": "kalorie",
+"file": "audio/816de5a3fb70.mp3"
+},
+"a9d962f450d2": {
+"pl": "Nie liczę kalorii, ale uważam, co jem.",
+"file": "audio/a9d962f450d2.mp3"
+},
+"b4c7e53398f5": {
+"pl": "schudnąć",
+"file": "audio/b4c7e53398f5.mp3"
+},
+"bd2a08e67fd1": {
+"pl": "Chcę schudnąć pięć kilogramów.",
+"file": "audio/bd2a08e67fd1.mp3"
+},
+"bd0629309c5e": {
+"pl": "ćwiczyć",
+"file": "audio/bd0629309c5e.mp3"
+},
+"987c9327748f": {
+"pl": "Ćwiczę trzy razy w tygodniu.",
+"file": "audio/987c9327748f.mp3"
+},
+"6ec81ce99f5d": {
+"pl": "trening",
+"file": "audio/6ec81ce99f5d.mp3"
+},
+"6df39c3c7078": {
+"pl": "Po treningu jestem wykończony.",
+"file": "audio/6df39c3c7078.mp3"
+},
+"bcf6d9314d80": {
+"pl": "Zapisałem się na siłownię.",
+"file": "audio/bcf6d9314d80.mp3"
+},
+"732cbb3e48bb": {
+"pl": "kondycja",
+"file": "audio/732cbb3e48bb.mp3"
+},
+"3fd0e46a9274": {
+"pl": "Bieganie poprawiło moją kondycję.",
+"file": "audio/3fd0e46a9274.mp3"
+},
+"01461d8851fd": {
+"pl": "zdrowie",
+"file": "audio/01461d8851fd.mp3"
+},
+"845e5a97fa7b": {
+"pl": "Zdrowie jest najważniejsze.",
+"file": "audio/845e5a97fa7b.mp3"
+},
+"32b279a5087f": {
+"pl": "dbać o siebie",
+"file": "audio/32b279a5087f.mp3"
+},
+"7212fe3fd2c1": {
+"pl": "Warto dbać o siebie każdego dnia.",
+"file": "audio/7212fe3fd2c1.mp3"
+},
+"64fd299554bf": {
+"pl": "sen",
+"file": "audio/64fd299554bf.mp3"
+},
+"8059bfd2cf28": {
+"pl": "Dobry sen jest podstawą zdrowia.",
+"file": "audio/8059bfd2cf28.mp3"
+},
+"7970466d6476": {
+"pl": "Muszę nauczyć się radzić sobie ze stresem.",
+"file": "audio/7970466d6476.mp3"
+},
+"78544917c5ae": {
+"pl": "zdrowie psychiczne",
+"file": "audio/78544917c5ae.mp3"
+},
+"638cb3401444": {
+"pl": "Zdrowie psychiczne jest równie ważne jak fizyczne.",
+"file": "audio/638cb3401444.mp3"
+},
+"579d0d2aaa79": {
+"pl": "Musisz czasem odpocząć.",
+"file": "audio/579d0d2aaa79.mp3"
+},
+"e4a1ae12d0d9": {
+"pl": "relaksować się",
+"file": "audio/e4a1ae12d0d9.mp3"
+},
+"5652bf85aeeb": {
+"pl": "Relaksuję się, słuchając muzyki.",
+"file": "audio/5652bf85aeeb.mp3"
+},
+"d84a287cce95": {
+"pl": "nałóg",
+"file": "audio/d84a287cce95.mp3"
+},
+"fbc7754f365d": {
+"pl": "Rzucenie nałogu wymaga silnej woli.",
+"file": "audio/fbc7754f365d.mp3"
+},
+"443230381aad": {
+"pl": "równowaga",
+"file": "audio/443230381aad.mp3"
+},
+"ceceb6460e55": {
+"pl": "Szukam równowagi między pracą a odpoczynkiem.",
+"file": "audio/ceceb6460e55.mp3"
+},
+"bf706f5f8946": {
+"pl": "nawyk",
+"file": "audio/bf706f5f8946.mp3"
+},
+"2756f65e64e8": {
+"pl": "Picie wody to dobry nawyk.",
+"file": "audio/2756f65e64e8.mp3"
+},
+"32b59242987e": {
+"pl": "związek",
+"file": "audio/32b59242987e.mp3"
+},
+"0fd5672c1ff0": {
+"pl": "Jesteśmy w związku od dwóch lat.",
+"file": "audio/0fd5672c1ff0.mp3"
+},
+"6a4301818a85": {
+"pl": "randka",
+"file": "audio/6a4301818a85.mp3"
+},
+"4dfb59cfe3e5": {
+"pl": "Idę dziś na pierwszą randkę.",
+"file": "audio/4dfb59cfe3e5.mp3"
+},
+"7ea3eb36e906": {
+"pl": "umówić się na randkę",
+"file": "audio/7ea3eb36e906.mp3"
+},
+"2674d8d42277": {
+"pl": "Umówiłem się z nią na kawę.",
+"file": "audio/2674d8d42277.mp3"
+},
+"39d582ba0113": {
+"pl": "zakochać się",
+"file": "audio/39d582ba0113.mp3"
+},
+"8b879f1ccb9e": {
+"pl": "Zakochałem się w niej od pierwszego wejrzenia.",
+"file": "audio/8b879f1ccb9e.mp3"
+},
+"9777bee8fcbf": {
+"pl": "kochać / lubić",
+"file": "audio/9777bee8fcbf.mp3"
+},
+"a7df09d0e5bd": {
+"pl": "Kocham cię, ale czasem mnie denerwujesz.",
+"file": "audio/a7df09d0e5bd.mp3"
+},
+"8982d35a0671": {
+"pl": "Jesteśmy razem, jesteśmy parą.",
+"file": "audio/8982d35a0671.mp3"
+},
+"95c10e527f3f": {
+"pl": "Poznaj mojego chłopaka.",
+"file": "audio/95c10e527f3f.mp3"
+},
+"adb9d174fac9": {
+"pl": "narzeczony / narzeczona",
+"file": "audio/adb9d174fac9.mp3"
+},
+"09be5a0e98b3": {
+"pl": "To jest moja narzeczona, bierzemy ślub latem.",
+"file": "audio/09be5a0e98b3.mp3"
+},
+"16f6d65cc21b": {
+"pl": "ślub",
+"file": "audio/16f6d65cc21b.mp3"
+},
+"6a83c584aef5": {
+"pl": "Bierzemy ślub we wrześniu.",
+"file": "audio/6a83c584aef5.mp3"
+},
+"2e06c0620485": {
+"pl": "Ich małżeństwo jest bardzo szczęśliwe.",
+"file": "audio/2e06c0620485.mp3"
+},
+"4b6d9ef411cb": {
+"pl": "rozstać się",
+"file": "audio/4b6d9ef411cb.mp3"
+},
+"82edaf5fafad": {
+"pl": "Rozstali się po pięciu latach.",
+"file": "audio/82edaf5fafad.mp3"
+},
+"06ab5c0fb93e": {
+"pl": "tęsknić",
+"file": "audio/06ab5c0fb93e.mp3"
+},
+"f175bee41549": {
+"pl": "Tęsknię za tobą, kiedy wyjeżdżasz.",
+"file": "audio/f175bee41549.mp3"
+},
+"40e184966b3f": {
+"pl": "kłótnia",
+"file": "audio/40e184966b3f.mp3"
+},
+"fe8dd0091351": {
+"pl": "Mieliśmy wczoraj poważną kłótnię.",
+"file": "audio/fe8dd0091351.mp3"
+},
+"21147c20d8c1": {
+"pl": "pokłócić się",
+"file": "audio/21147c20d8c1.mp3"
+},
+"533879ea6c1b": {
+"pl": "Pokłóciliśmy się o pieniądze.",
+"file": "audio/533879ea6c1b.mp3"
+},
+"7c73565a7e7a": {
+"pl": "pogodzić się",
+"file": "audio/7c73565a7e7a.mp3"
+},
+"9b1cfd93d7c3": {
+"pl": "Na szczęście szybko się pogodziliśmy.",
+"file": "audio/9b1cfd93d7c3.mp3"
+},
+"68ba2c3cadf7": {
+"pl": "przepraszać",
+"file": "audio/68ba2c3cadf7.mp3"
+},
+"cede1b51470a": {
+"pl": "Przepraszam, że tak powiedziałem.",
+"file": "audio/cede1b51470a.mp3"
+},
+"c614b9ded649": {
+"pl": "wybaczyć",
+"file": "audio/c614b9ded649.mp3"
+},
+"ad0a4ef37175": {
+"pl": "Czy możesz mi wybaczyć?",
+"file": "audio/ad0a4ef37175.mp3"
+},
+"3424820c4c14": {
+"pl": "zaufanie",
+"file": "audio/3424820c4c14.mp3"
+},
+"10376e30e8e9": {
+"pl": "Zaufanie to podstawa każdego związku.",
+"file": "audio/10376e30e8e9.mp3"
+},
+"69d91a89ed9f": {
+"pl": "zdradzić",
+"file": "audio/69d91a89ed9f.mp3"
+},
+"df64bfb89176": {
+"pl": "Nie mógł jej wybaczyć, że go zdradziła.",
+"file": "audio/df64bfb89176.mp3"
+},
+"0f22ce40bbaa": {
+"pl": "komplement",
+"file": "audio/0f22ce40bbaa.mp3"
+},
+"c08919119a54": {
+"pl": "Zrobił mi miły komplement.",
+"file": "audio/c08919119a54.mp3"
+},
+"9e0817d3eeb8": {
+"pl": "zgadzać się",
+"file": "audio/9e0817d3eeb8.mp3"
+},
+"12b7ec924d1b": {
+"pl": "Zgadzam się z tobą w tej sprawie.",
+"file": "audio/12b7ec924d1b.mp3"
+},
+"a4156c2ca879": {
+"pl": "rozrywka",
+"file": "audio/a4156c2ca879.mp3"
+},
+"fec0414ba888": {
+"pl": "Kino to moja ulubiona rozrywka.",
+"file": "audio/fec0414ba888.mp3"
+},
+"b4fde7b9810d": {
+"pl": "Ten film dostał wiele nagród.",
+"file": "audio/b4fde7b9810d.mp3"
+},
+"0144b1defcf7": {
+"pl": "serial",
+"file": "audio/0144b1defcf7.mp3"
+},
+"97ce03a9e39c": {
+"pl": "Oglądam teraz świetny serial.",
+"file": "audio/97ce03a9e39c.mp3"
+},
+"8e39bd2691da": {
+"pl": "komedia",
+"file": "audio/8e39bd2691da.mp3"
+},
+"679a211473ee": {
+"pl": "Wolę komedie od horrorów.",
+"file": "audio/679a211473ee.mp3"
+},
+"46a7ea7fb99f": {
+"pl": "To poruszający dramat o wojnie.",
+"file": "audio/46a7ea7fb99f.mp3"
+},
+"9e96274abcf3": {
+"pl": "horror",
+"file": "audio/9e96274abcf3.mp3"
+},
+"d86d36761c6b": {
+"pl": "Nie lubię horrorów, za bardzo się boję.",
+"file": "audio/d86d36761c6b.mp3"
+},
+"a69be4e58c1b": {
+"pl": "muzyka",
+"file": "audio/a69be4e58c1b.mp3"
+},
+"b82766165ba7": {
+"pl": "Słucham różnej muzyki.",
+"file": "audio/b82766165ba7.mp3"
+},
+"9ba5ba893ac6": {
+"pl": "Byłem wczoraj na świetnym koncercie.",
+"file": "audio/9ba5ba893ac6.mp3"
+},
+"6ff40be2d946": {
+"pl": "zespół",
+"file": "audio/6ff40be2d946.mp3"
+},
+"ba127eadf8bb": {
+"pl": "Mój ulubiony zespół gra dziś w Warszawie.",
+"file": "audio/ba127eadf8bb.mp3"
+},
+"9c0c1951ff34": {
+"pl": "Ta książka jest oparta na faktach.",
+"file": "audio/9c0c1951ff34.mp3"
+},
+"e0cdf303a37c": {
+"pl": "autor / autorka",
+"file": "audio/e0cdf303a37c.mp3"
+},
+"6c2218122f13": {
+"pl": "Kto jest autorem tej książki?",
+"file": "audio/6c2218122f13.mp3"
+},
+"cac730ebc36f": {
+"pl": "Raz w miesiącu chodzimy do teatru.",
+"file": "audio/cac730ebc36f.mp3"
+},
+"2fcd42b1e19c": {
+"pl": "W muzeum jest ciekawa wystawa.",
+"file": "audio/2fcd42b1e19c.mp3"
+},
+"0ba6b0dce965": {
+"pl": "Kupiłem dwa bilety na film.",
+"file": "audio/0ba6b0dce965.mp3"
+},
+"0c68b71e4130": {
+"pl": "widz",
+"file": "audio/0c68b71e4130.mp3"
+},
+"0f7339c81340": {
+"pl": "Film spodobał się widzom.",
+"file": "audio/0f7339c81340.mp3"
+},
+"741b11cc5d45": {
+"pl": "recenzja",
+"file": "audio/741b11cc5d45.mp3"
+},
+"8e299f9fa525": {
+"pl": "Przeczytałem recenzję przed seansem.",
+"file": "audio/8e299f9fa525.mp3"
+},
+"6be445ab50a7": {
+"pl": "polecać",
+"file": "audio/6be445ab50a7.mp3"
+},
+"3aa19ae42d50": {
+"pl": "Gorąco polecam tę książkę.",
+"file": "audio/3aa19ae42d50.mp3"
+},
+"fb5e7d08a605": {
+"pl": "Warto obejrzeć",
+"file": "audio/fb5e7d08a605.mp3"
+},
+"a3aa3cdcc1c7": {
+"pl": "Ten serial naprawdę warto obejrzeć.",
+"file": "audio/a3aa3cdcc1c7.mp3"
+},
+"d084769bb89b": {
+"pl": "nudny / wciągający",
+"file": "audio/d084769bb89b.mp3"
+},
+"be8d9a0c2837": {
+"pl": "Początek był nudny, ale potem film mnie wciągnął.",
+"file": "audio/be8d9a0c2837.mp3"
+},
+"5ca9905e69c9": {
+"pl": "Jak ci się podobało?",
+"file": "audio/5ca9905e69c9.mp3"
+},
+"ead07159b59c": {
+"pl": "Byłeś w kinie? Jak ci się podobało?",
+"file": "audio/ead07159b59c.mp3"
+},
+"628212b4b9dc": {
+"pl": "opóźnienie",
+"file": "audio/628212b4b9dc.mp3"
+},
+"17b73af0a166": {
+"pl": "Nasz lot ma dwie godziny opóźnienia.",
+"file": "audio/17b73af0a166.mp3"
+},
+"bda7362d9448": {
+"pl": "odwołany",
+"file": "audio/bda7362d9448.mp3"
+},
+"b62abb79ad1e": {
+"pl": "Pociąg został odwołany.",
+"file": "audio/b62abb79ad1e.mp3"
+},
+"6f460583e119": {
+"pl": "zgubić",
+"file": "audio/6f460583e119.mp3"
+},
+"e24244071d71": {
+"pl": "Zgubiłem paszport na lotnisku.",
+"file": "audio/e24244071d71.mp3"
+},
+"bf7932d0bfa9": {
+"pl": "zgubiony bagaż",
+"file": "audio/bf7932d0bfa9.mp3"
+},
+"421b7e8f7e36": {
+"pl": "Linia lotnicza zgubiła mój bagaż.",
+"file": "audio/421b7e8f7e36.mp3"
+},
+"b002c3c8c66a": {
+"pl": "Moja walizka nie dotarła.",
+"file": "audio/b002c3c8c66a.mp3"
+},
+"f97c71288f77": {
+"pl": "ukraść",
+"file": "audio/f97c71288f77.mp3"
+},
+"8b13c9328cbd": {
+"pl": "Ktoś ukradł mi portfel w metrze.",
+"file": "audio/8b13c9328cbd.mp3"
+},
+"b9c5f67d8885": {
+"pl": "okradziony",
+"file": "audio/b9c5f67d8885.mp3"
+},
+"d3a748d53a13": {
+"pl": "Zostałam okradziona na dworcu.",
+"file": "audio/d3a748d53a13.mp3"
+},
+"7f1ef8dc5c0c": {
+"pl": "zgłosić",
+"file": "audio/7f1ef8dc5c0c.mp3"
+},
+"5430797cd883": {
+"pl": "Muszę zgłosić kradzież na policji.",
+"file": "audio/5430797cd883.mp3"
+},
+"64d4e3026445": {
+"pl": "policja",
+"file": "audio/64d4e3026445.mp3"
+},
+"b5f2bc0ac44d": {
+"pl": "Proszę zadzwonić na policję!",
+"file": "audio/b5f2bc0ac44d.mp3"
+},
+"85d7de7379cc": {
+"pl": "pogotowie",
+"file": "audio/85d7de7379cc.mp3"
+},
+"ab2448fd58b9": {
+"pl": "Wezwałem pogotowie, bo zasłabła.",
+"file": "audio/ab2448fd58b9.mp3"
+},
+"dc322761e68d": {
+"pl": "wypadek",
+"file": "audio/dc322761e68d.mp3"
+},
+"96b87a530009": {
+"pl": "Na drodze był wypadek.",
+"file": "audio/96b87a530009.mp3"
+},
+"8664b3d65607": {
+"pl": "pomocy!",
+"file": "audio/8664b3d65607.mp3"
+},
+"8830259f4b61": {
+"pl": "Pomocy! Ktoś ukradł mi torbę!",
+"file": "audio/8830259f4b61.mp3"
+},
+"f30f521c14c8": {
+"pl": "ambasada",
+"file": "audio/f30f521c14c8.mp3"
+},
+"15dc793e8702": {
+"pl": "Muszę iść do ambasady po nowy paszport.",
+"file": "audio/15dc793e8702.mp3"
+},
+"3b0ea0b16af8": {
+"pl": "Na szczęście mam ubezpieczenie podróżne.",
+"file": "audio/3b0ea0b16af8.mp3"
+},
+"7d356f9b841f": {
+"pl": "Złożyłem reklamację za zgubiony bagaż.",
+"file": "audio/7d356f9b841f.mp3"
+},
+"3f126a94259a": {
+"pl": "zwrot pieniędzy",
+"file": "audio/3f126a94259a.mp3"
+},
+"79ed2d9312b2": {
+"pl": "Chcę zwrot pieniędzy za odwołany lot.",
+"file": "audio/79ed2d9312b2.mp3"
+},
+"5c29b1d85b1f": {
+"pl": "utknąć",
+"file": "audio/5c29b1d85b1f.mp3"
+},
+"a4778f925374": {
+"pl": "Utknęliśmy na lotnisku na całą noc.",
+"file": "audio/a4778f925374.mp3"
+},
+"3a5ff8f3fb7c": {
+"pl": "Mieliśmy awarię samochodu na autostradzie.",
+"file": "audio/3a5ff8f3fb7c.mp3"
+},
+"07d5d7dd49dd": {
+"pl": "Przepraszam, czy może mi pani pomóc? Zgubiłem się.",
+"file": "audio/07d5d7dd49dd.mp3"
+},
+"dd4bd9bb6eec": {
+"pl": "Co się stało?",
+"file": "audio/dd4bd9bb6eec.mp3"
+},
+"8ff6fb0dd464": {
+"pl": "Wyglądasz na zdenerwowanego. Co się stało?",
+"file": "audio/8ff6fb0dd464.mp3"
 }
 }
 }

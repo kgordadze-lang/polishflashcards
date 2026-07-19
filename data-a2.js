@@ -317,7 +317,12 @@
             { pl:"basen", en:"swimming pool", hint:"Masculine noun.", ex:"W niedzielę rano chodzę na basen.", exEn:"I go to the swimming pool on Sunday morning." },
             { pl:"spotykać się", en:"to meet up", pair:"spotyka\u0107 si\u0119 / spotka\u0107 si\u0119", hint:"Reflexive verb.", ex:"Często spotykam się z przyjaciółmi w pubie.", exEn:"I often meet with friends at the pub." },
             { pl:"znajomi", en:"acquaintances / friends", hint:"Plural noun. Less intimate than 'przyjaciele'. Feminine form: Zaprosiłam.", ex:"Zaprosiłem kilku znajomych z pracy.", exEn:"I invited a few friends from work." },
-            { pl:"spacer", en:"walk / stroll", hint:"Masculine noun. 'Iść na spacer' = go for a walk.", ex:"Chodźmy na długi spacer do lasu.", exEn:"Let's go for a long walk to the forest." }
+            { pl:"spacer", en:"walk / stroll", hint:"Masculine noun. 'Iść na spacer' = go for a walk.", ex:"Chodźmy na długi spacer do lasu.", exEn:"Let's go for a long walk to the forest." },
+            { pl:"zaprosić", en:"to invite", pair:"zapraszać / zaprosić", hint:"'zaprosić kogoś na coś'.", ex:"Zaprosiłem znajomych na kolację.", exEn:"I invited friends over for dinner. A woman: zaprosiłam." },
+            { pl:"zaproszenie", en:"invitation", hint:"Neuter noun. 'przyjąć zaproszenie' = to accept an invitation.", ex:"Dziękuję za zaproszenie!", exEn:"Thank you for the invitation!" },
+            { pl:"planować", en:"to plan", pair:"planować / zaplanować", hint:"planuję, planujesz.", ex:"Planujemy wakacje nad morzem.", exEn:"We're planning a holiday at the seaside." },
+            { pl:"Masz ochotę...?", en:"Do you feel like...?", hint:"'mieć ochotę na coś' = to fancy something.", ex:"Masz ochotę na kawę?", exEn:"Do you feel like a coffee?" },
+            { pl:"Może pójdziemy...?", en:"Shall we go...?", hint:"A friendly way to suggest plans.", ex:"Może pójdziemy do kina w piątek?", exEn:"Shall we go to the cinema on Friday?" }
           ]
         },
         {
@@ -466,7 +471,13 @@
             { pl:"w kratk\u0119", en:"checked / plaid", hint:"wzory: w kropki (polka dots), w paski (striped), g\u0142adki (plain).", ex:"Lubi\u0119 koszule w kratk\u0119.", exEn:"I like checked shirts." },
             { pl:"rozmiar", en:"size", hint:"rzecz. m. \u00b7 Jaki rozmiar? = What size?", ex:"Jaki rozmiar pan nosi?", exEn:"What size do you wear, sir?" },
             { pl:"Do twarzy ci w tym", en:"That suits you", hint:"idiom \u00b7 lit. 'it's to your face'. A classic compliment.", ex:"Do twarzy ci w tym kolorze!", exEn:"That colour really suits you!" },
-            { pl:"elegancki", en:"elegant, smart", hint:"przym. \u00b7 \u2260 sportowy/codzienny (casual).", ex:"Na rozmow\u0119 o prac\u0119 ubra\u0142em si\u0119 elegancko.", exEn:"I dressed smartly for the job interview." }
+            { pl:"elegancki", en:"elegant, smart", hint:"przym. \u00b7 \u2260 sportowy/codzienny (casual).", ex:"Na rozmow\u0119 o prac\u0119 ubra\u0142em si\u0119 elegancko.", exEn:"I dressed smartly for the job interview." },
+            { pl:"za mały / za duży", en:"too small / too big", hint:"'za' + adjective = too...", ex:"Te buty są za małe.", exEn:"These shoes are too small." },
+            { pl:"materiał", en:"material / fabric", hint:"Masculine noun. 'Z jakiego materiału?' = what's it made of?", ex:"Z jakiego materiału jest ta bluzka?", exEn:"What material is this blouse?" },
+            { pl:"bawełna", en:"cotton", hint:"Feminine noun. 'bawełniany' = made of cotton.", ex:"Wolę koszulki z bawełny.", exEn:"I prefer cotton T-shirts." },
+            { pl:"wełna", en:"wool", hint:"Feminine noun. 'wełniany sweter' = a wool jumper.", ex:"Ten sweter jest z wełny.", exEn:"This jumper is made of wool." },
+            { pl:"skóra", en:"leather / skin", hint:"Feminine noun. Both leather and skin.", ex:"Kupiłem skórzaną kurtkę.", exEn:"I bought a leather jacket. A woman: kupiłam." },
+            { pl:"przymierzalnia", en:"fitting room", hint:"Feminine noun. Where you try clothes on.", ex:"Gdzie jest przymierzalnia?", exEn:"Where is the fitting room?" }
           ]
         },
         {
@@ -558,6 +569,63 @@
             { pl:"zab\u0142\u0105dzi\u0107", en:"to get lost", hint:"dok. \u00b7 zab\u0142\u0105dzi\u0142em = I've got lost.", ex:"Chyba zab\u0142\u0105dzi\u0142em, gdzie jestem?", exEn:"I think I'm lost - where am I?" },
             { pl:"pieszo / na piechot\u0119", en:"on foot", hint:"i\u015b\u0107 pieszo \u00b7 both mean 'walking'.", ex:"Wol\u0119 i\u015b\u0107 pieszo ni\u017c jecha\u0107 autobusem.", exEn:"I prefer to walk than take the bus." },
             { pl:"mapa / nawigacja", en:"map / (GPS) navigation", hint:"rzecz. \u017c. \u00b7 w\u0142\u0105czy\u0107 nawigacj\u0119 = turn on the GPS. Feminine form: bym zab\u0142\u0105dzi\u0142a.", ex:"Bez nawigacji na pewno bym zab\u0142\u0105dzi\u0142.", exEn:"Without the GPS I'd definitely get lost." }
+          ]
+        },
+        {
+          name: "Przyroda i zwierzęta",
+          emoji: "🐾",
+          desc: "Animals, landscapes, and the natural world",
+          cards: [
+            { pl:"zwierzę", en:"animal", hint:"Neuter noun. Plural: 'zwierzęta'.", ex:"W tym lesie żyje wiele zwierząt.", exEn:"Many animals live in this forest." },
+            { pl:"pies", en:"dog", hint:"Masculine noun. Plural: 'psy'.", ex:"Mój pies uwielbia spacery.", exEn:"My dog loves walks." },
+            { pl:"kot", en:"cat", hint:"Masculine noun. Plural: 'koty'.", ex:"Mam dwa koty w domu.", exEn:"I have two cats at home." },
+            { pl:"ptak", en:"bird", hint:"Masculine noun. Plural: 'ptaki'.", ex:"Wiosną ptaki wracają do Polski.", exEn:"In spring the birds return to Poland." },
+            { pl:"ryba", en:"fish", hint:"Feminine noun. Both the animal and the food.", ex:"W tym jeziorze jest dużo ryb.", exEn:"There are a lot of fish in this lake." },
+            { pl:"koń", en:"horse", hint:"Masculine noun. Plural: 'konie'.", ex:"Na wsi widzieliśmy konie.", exEn:"In the countryside we saw horses." },
+            { pl:"krowa", en:"cow", hint:"Feminine noun.", ex:"Krowy pasą się na łące.", exEn:"The cows are grazing in the meadow." },
+            { pl:"niedźwiedź", en:"bear", hint:"Masculine noun. Lives in the Polish mountains.", ex:"W Tatrach żyją niedźwiedzie.", exEn:"Bears live in the Tatra mountains." },
+            { pl:"las", en:"forest", hint:"Masculine noun. 'iść do lasu' = to go into the forest.", ex:"Idziemy na spacer do lasu.", exEn:"We're going for a walk in the forest." },
+            { pl:"góry", en:"mountains", hint:"Plural. Singular 'góra' = a mountain, or 'up/top'.", ex:"W zimie jeżdżę w góry.", exEn:"In winter I go to the mountains." },
+            { pl:"morze", en:"sea", hint:"Neuter noun. 'nad morze' = to the seaside.", ex:"Latem jedziemy nad morze.", exEn:"In summer we go to the seaside." },
+            { pl:"jezioro", en:"lake", hint:"Neuter noun. Poland has thousands of them.", ex:"Nasze jezioro jest bardzo czyste.", exEn:"Our lake is very clean." },
+            { pl:"rzeka", en:"river", hint:"Feminine noun. The Wisła is Poland's longest.", ex:"Wisła to najdłuższa rzeka w Polsce.", exEn:"The Vistula is the longest river in Poland." },
+            { pl:"pole", en:"field", hint:"Neuter noun.", ex:"Za wsią są pola i łąki.", exEn:"Beyond the village there are fields and meadows." },
+            { pl:"drzewo", en:"tree", hint:"Neuter noun. Plural: 'drzewa'.", ex:"To drzewo ma sto lat.", exEn:"This tree is a hundred years old." },
+            { pl:"kwiat", en:"flower", hint:"Masculine noun. Plural: 'kwiaty'.", ex:"Kupiłem jej kwiaty.", exEn:"I bought her flowers. A woman: kupiłam." },
+            { pl:"trawa", en:"grass", hint:"Feminine noun.", ex:"Dzieci bawią się na trawie.", exEn:"The children are playing on the grass." },
+            { pl:"wieś", en:"countryside / village", hint:"Feminine noun. 'na wsi' = in the countryside.", ex:"Moi dziadkowie mieszkają na wsi.", exEn:"My grandparents live in the countryside." },
+            { pl:"przyroda", en:"nature", hint:"Feminine noun. 'na łonie przyrody' = out in nature.", ex:"Kocham polską przyrodę.", exEn:"I love Polish nature." },
+            { pl:"świeże powietrze", en:"fresh air", hint:"Neuter phrase. A reason Poles head out of the city.", ex:"Na wsi jest świeże powietrze.", exEn:"In the countryside there's fresh air." },
+            { pl:"iść na spacer", en:"to go for a walk", pair:"iść / pójść", hint:"'spacer' = a walk for pleasure.", ex:"Po pracy idę na spacer do parku.", exEn:"After work I go for a walk in the park." },
+            { pl:"grzyby", en:"mushrooms", hint:"Plural. Picking them ('grzybobranie') is a Polish autumn ritual.", ex:"Jesienią zbieramy grzyby w lesie.", exEn:"In autumn we pick mushrooms in the forest." }
+          ]
+        },
+        {
+          name: "Święta i tradycje",
+          emoji: "🎄",
+          desc: "Polish holidays, celebrations, and their customs",
+          cards: [
+            { pl:"święto", en:"holiday / feast day", hint:"Neuter noun. Plural 'święta' often means Christmas.", ex:"Pierwszego maja jest święto.", exEn:"The first of May is a holiday." },
+            { pl:"tradycja", en:"tradition", hint:"Feminine noun.", ex:"To stara polska tradycja.", exEn:"It's an old Polish tradition." },
+            { pl:"Boże Narodzenie", en:"Christmas", hint:"Neuter. Everyday word for the season is 'święta'.", ex:"Boże Narodzenie spędzam z rodziną.", exEn:"I spend Christmas with my family." },
+            { pl:"Wigilia", en:"Christmas Eve", hint:"Feminine. The main celebration in Poland, on 24 December.", ex:"Wigilia zaczyna się od pierwszej gwiazdki.", exEn:"Christmas Eve begins with the first star." },
+            { pl:"Wesołych Świąt!", en:"Merry Christmas! / Happy holidays!", hint:"The standard festive greeting.", ex:"Wesołych Świąt i szczęśliwego Nowego Roku!", exEn:"Merry Christmas and a happy New Year!" },
+            { pl:"choinka", en:"Christmas tree", hint:"Feminine noun. Literally 'a little spruce'.", ex:"W grudniu ubieramy choinkę.", exEn:"In December we decorate the Christmas tree." },
+            { pl:"prezent", en:"gift / present", hint:"Masculine noun. 'dawać prezenty' = to give gifts.", ex:"Kupiłem prezenty dla całej rodziny.", exEn:"I bought presents for the whole family. A woman: kupiłam." },
+            { pl:"Wielkanoc", en:"Easter", hint:"Feminine noun. 'Wesołych Świąt' works for Easter too.", ex:"Na Wielkanoc jemy jajka i żurek.", exEn:"At Easter we eat eggs and sour rye soup." },
+            { pl:"Nowy Rok", en:"New Year", hint:"Masculine. 'Sylwester' = New Year's Eve.", ex:"Nowy Rok witamy z przyjaciółmi.", exEn:"We welcome the New Year with friends." },
+            { pl:"Sylwester", en:"New Year's Eve", hint:"Masculine. Named after Saint Sylvester (31 Dec).", ex:"Gdzie spędzasz Sylwestra?", exEn:"Where are you spending New Year's Eve?" },
+            { pl:"urodziny", en:"birthday", hint:"Plural only. 'Wszystkiego najlepszego!' = happy birthday.", ex:"Na urodziny zapraszam znajomych.", exEn:"For my birthday I invite friends over." },
+            { pl:"imieniny", en:"name day", hint:"Plural. The feast day of your namesake saint - still widely celebrated.", ex:"W Polsce imieniny są czasem ważniejsze niż urodziny.", exEn:"In Poland name days are sometimes more important than birthdays." },
+            { pl:"Wszystkich Świętych", en:"All Saints' Day", hint:"1 November. Families visit and light candles at graves. 'Zaduszki' (2 Nov) = All Souls' Day.", ex:"Pierwszego listopada zapalamy znicze na grobach.", exEn:"On the first of November we light candles on the graves." },
+            { pl:"tłusty czwartek", en:"Fat Thursday", hint:"Masculine. The day everyone eats pączki (doughnuts).", ex:"W tłusty czwartek jem trzy pączki.", exEn:"On Fat Thursday I eat three doughnuts." },
+            { pl:"życzenia", en:"wishes / greetings", hint:"Plural. 'składać życzenia' = to give one's good wishes.", ex:"Składam ci najlepsze życzenia.", exEn:"I give you my best wishes." },
+            { pl:"Sto lat!", en:"Happy birthday! (the song)", hint:"Literally 'a hundred years'. Sung at every celebration.", ex:"Zaśpiewajmy jej Sto lat!", exEn:"Let's sing her Happy Birthday!" },
+            { pl:"gość", en:"guest", hint:"Masculine noun. Plural: 'goście'. 'Gość w dom, Bóg w dom' - a guest brings blessing.", ex:"Dziś wieczorem mamy gości.", exEn:"This evening we have guests." },
+            { pl:"świętować", en:"to celebrate", pair:"świętować (impf only)", hint:"świętuję, świętujesz. 'obchodzić' also = to celebrate.", ex:"Świętujemy dziś rocznicę ślubu.", exEn:"Today we're celebrating our wedding anniversary." },
+            { pl:"zapraszać", en:"to invite", pair:"zapraszać / zaprosić", hint:"zapraszam, zapraszasz. 'Zapraszam!' also = come in / help yourself.", ex:"Zapraszam cię na moje urodziny.", exEn:"I'm inviting you to my birthday." },
+            { pl:"niespodzianka", en:"surprise", hint:"Feminine noun. 'prezent-niespodzianka' = a surprise gift.", ex:"Przygotowałam dla niego niespodziankę.", exEn:"I prepared a surprise for him. A man: przygotowałem." },
+            { pl:"toast", en:"a toast", hint:"Masculine noun. 'wznieść toast' = to raise a toast.", ex:"Wznieśmy toast za młodą parę!", exEn:"Let's raise a toast to the newlyweds!" }
           ]
         }
       ]

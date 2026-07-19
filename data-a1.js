@@ -148,7 +148,15 @@
             { pl:"mój / moja", en:"my (m / f)", hint:"Agrees with the noun's gender.", ex:"To jest mój telefon.", exEn:"This is my phone." },
             { pl:"Miłego dnia!", en:"Have a nice day!", hint:"Warm way to end a chat.", ex:"Dziękuję, miłego dnia!", exEn:"Thanks, have a nice day!" },
             { pl:"Do zobaczenia", en:"See you (later)", hint:"Friendlier than 'do widzenia'.", ex:"Do zobaczenia jutro.", exEn:"See you tomorrow." },
-            { pl:"Nie ma problemu", en:"No problem", hint:"Very common reassurance.", ex:"Nie ma problemu!", exEn:"No problem!" }
+            { pl:"Nie ma problemu", en:"No problem", hint:"Very common reassurance.", ex:"Nie ma problemu!", exEn:"No problem!" },
+            { pl:"numer telefonu", en:"phone number", hint:"Masculine phrase. 'Jaki masz numer?' = what's your number?", ex:"Zapiszę twój numer telefonu.", exEn:"I'll save your phone number." },
+            { pl:"adres e-mail", en:"e-mail address", hint:"'małpa' (@) = the at sign, literally 'monkey'.", ex:"Podaj mi swój adres e-mail.", exEn:"Give me your e-mail address." },
+            { pl:"adres", en:"address", hint:"Masculine noun. 'Pod jakim adresem?' = at what address?", ex:"Jaki jest twój adres?", exEn:"What's your address?" },
+            { pl:"żonaty / mężatka", en:"married (man / woman)", hint:"A man is 'żonaty', a woman is 'mężatka'.", ex:"Jestem żonaty od pięciu lat.", exEn:"I've been married for five years. A woman: Jestem mężatką." },
+            { pl:"kawaler / panna", en:"single (man / woman)", hint:"Traditional terms; on forms means unmarried.", ex:"Nie, jestem kawalerem.", exEn:"No, I'm single. A woman: jestem panną." },
+            { pl:"nauczyciel / nauczycielka", en:"teacher (m / f)", hint:"'Pracuję jako nauczyciel'.", ex:"Moja mama jest nauczycielką.", exEn:"My mum is a teacher." },
+            { pl:"lekarz / lekarka", en:"doctor (m / f)", hint:"'iść do lekarza' = to go to the doctor.", ex:"On jest lekarzem w szpitalu.", exEn:"He is a doctor at the hospital." },
+            { pl:"kierowca", en:"driver", hint:"Masculine, but ends in -a. Same form for a woman.", ex:"Mój brat jest kierowcą autobusu.", exEn:"My brother is a bus driver." }
           ]
         },
         {
@@ -335,6 +343,93 @@
             { pl:"szukać", en:"to look for", pair:"szukać / poszukać", hint:"szukam, szukasz. Takes genitive: szukam pracy.", ex:"Szukam dobrej kawiarni.", exEn:"I am looking for a good café." },
             { pl:"czekać", en:"to wait", pair:"czekać / poczekać", hint:"czekam, czekasz. 'Czekam na...' + accusative.", ex:"Czekam na autobus.", exEn:"I am waiting for the bus." },
             { pl:"pomagać", en:"to help", pair:"pomagać / pomóc", hint:"pomagam, pomagasz. Takes dative: pomagam mamie.", ex:"Czy mogę ci pomóc?", exEn:"Can I help you?" }
+          ]
+        },
+        {
+          name: "Kolory i ubrania",
+          emoji: "🎨",
+          desc: "Colours and the clothes you wear every day",
+          cards: [
+            { pl:"kolor", en:"colour", hint:"Masculine noun. 'Jaki kolor?' = what colour?", ex:"Jaki kolor lubisz najbardziej?", exEn:"What colour do you like most?" },
+            { pl:"czerwony", en:"red", hint:"Adjective. Feminine: czerwona, neuter: czerwone.", ex:"Lubię czerwone jabłka.", exEn:"I like red apples." },
+            { pl:"niebieski", en:"blue", hint:"Adjective. 'granatowy' = navy blue.", ex:"Niebo jest dziś niebieskie.", exEn:"The sky is blue today." },
+            { pl:"zielony", en:"green", hint:"Adjective. Also means 'inexperienced', like in English.", ex:"Lubię zieloną herbatę.", exEn:"I like green tea." },
+            { pl:"żółty", en:"yellow", hint:"Adjective.", ex:"Mam żółty parasol.", exEn:"I have a yellow umbrella." },
+            { pl:"czarny", en:"black", hint:"Adjective. 'czarna kawa' = black coffee.", ex:"Poproszę czarną kawę.", exEn:"A black coffee, please." },
+            { pl:"biały", en:"white", hint:"Adjective. 'białe wino' = white wine.", ex:"On nosi białą koszulę.", exEn:"He wears a white shirt." },
+            { pl:"szary", en:"grey", hint:"Adjective. 'szary' also means dull or drab.", ex:"Listopad jest zawsze szary.", exEn:"November is always grey." },
+            { pl:"brązowy", en:"brown", hint:"Adjective. From 'brąz' (bronze).", ex:"Mam brązowe oczy.", exEn:"I have brown eyes." },
+            { pl:"różowy", en:"pink", hint:"Adjective. From 'róża' (rose).", ex:"Ona ma różową sukienkę.", exEn:"She has a pink dress." },
+            { pl:"pomarańczowy", en:"orange", hint:"Adjective. Same root as 'pomarańcza' (the fruit).", ex:"Lubię sok pomarańczowy.", exEn:"I like orange juice." },
+            { pl:"ubranie", en:"clothing / clothes", hint:"Neuter noun. Often used in plural: 'ubrania'.", ex:"Muszę kupić nowe ubrania.", exEn:"I need to buy new clothes." },
+            { pl:"koszulka", en:"T-shirt", hint:"Feminine noun. 'koszula' is a formal shirt.", ex:"Noszę koszulkę i dżinsy.", exEn:"I'm wearing a T-shirt and jeans." },
+            { pl:"spodnie", en:"trousers", hint:"Plural only, like in English.", ex:"Te spodnie są za długie.", exEn:"These trousers are too long." },
+            { pl:"sukienka", en:"dress", hint:"Feminine noun.", ex:"Kupiłam nową sukienkę na wesele.", exEn:"I bought a new dress for the wedding. A man: kupiłem." },
+            { pl:"buty", en:"shoes", hint:"Plural. Singular 'but' is rare.", ex:"Gdzie są moje buty?", exEn:"Where are my shoes?" },
+            { pl:"kurtka", en:"jacket", hint:"Feminine noun. 'płaszcz' = a longer coat.", ex:"Weź kurtkę, jest zimno.", exEn:"Take a jacket, it's cold." },
+            { pl:"czapka", en:"hat / beanie", hint:"Feminine noun. Essential for a Polish winter.", ex:"Zimą zawsze noszę czapkę.", exEn:"In winter I always wear a hat." },
+            { pl:"nosić", en:"to wear", pair:"nosić (impf, habitual)", hint:"noszę, nosisz. For what you wear regularly.", ex:"Nie noszę sukienek.", exEn:"I don't wear dresses." },
+            { pl:"Jaki masz rozmiar?", en:"What size are you?", hint:"Informal. A shop assistant will ask: 'Jaki rozmiar pan/pani nosi?'", ex:"Jaki masz rozmiar?", exEn:"What size are you?" },
+            { pl:"pasować", en:"to fit / to suit", pair:"pasować (impf only)", hint:"'To mi pasuje' = that suits me / works for me.", ex:"Ta kurtka do ciebie pasuje.", exEn:"This jacket suits you." }
+          ]
+        },
+        {
+          name: "Czas wolny",
+          emoji: "🎸",
+          desc: "Hobbies and what you like doing in your free time",
+          cards: [
+            { pl:"czas wolny", en:"free time", hint:"Masculine phrase. 'W wolnym czasie' = in my free time.", ex:"W wolnym czasie czytam książki.", exEn:"In my free time I read books." },
+            { pl:"hobby", en:"hobby", hint:"Neuter, does not change form. Plural also 'hobby'.", ex:"Moje hobby to gotowanie.", exEn:"My hobby is cooking." },
+            { pl:"czytać", en:"to read", pair:"czytać / przeczytać", hint:"czytam, czytasz. 'lubię czytać' = I like reading.", ex:"Lubię czytać przed snem.", exEn:"I like reading before sleep." },
+            { pl:"oglądać", en:"to watch", pair:"oglądać / obejrzeć", hint:"oglądam, oglądasz. For TV, films, matches.", ex:"Wieczorem oglądam seriale.", exEn:"In the evening I watch series." },
+            { pl:"słuchać muzyki", en:"to listen to music", pair:"słuchać / posłuchać", hint:"'słuchać' takes the genitive: słucham muzyki.", ex:"Słucham muzyki w drodze do pracy.", exEn:"I listen to music on the way to work." },
+            { pl:"grać", en:"to play", pair:"grać / zagrać", hint:"gram, grasz. 'grać w' + sport/game, 'grać na' + instrument.", ex:"Gram w piłkę w każdą sobotę.", exEn:"I play football every Saturday." },
+            { pl:"grać na gitarze", en:"to play the guitar", pair:"grać / zagrać", hint:"'grać na' + instrument in the locative: na gitarze, na pianinie.", ex:"Uczę się grać na gitarze.", exEn:"I'm learning to play the guitar." },
+            { pl:"śpiewać", en:"to sing", pair:"śpiewać / zaśpiewać", hint:"śpiewam, śpiewasz.", ex:"Lubię śpiewać pod prysznicem.", exEn:"I like singing in the shower." },
+            { pl:"tańczyć", en:"to dance", pair:"tańczyć / zatańczyć", hint:"tańczę, tańczysz.", ex:"Czy lubisz tańczyć?", exEn:"Do you like dancing?" },
+            { pl:"gotować", en:"to cook", pair:"gotować / ugotować", hint:"gotuję, gotujesz.", ex:"W weekend lubię gotować dla znajomych.", exEn:"At the weekend I like cooking for friends." },
+            { pl:"malować", en:"to paint / to draw", pair:"malować / namalować", hint:"maluję, malujesz. 'rysować' = to draw with a pencil.", ex:"Moja córka lubi malować.", exEn:"My daughter likes painting." },
+            { pl:"pływać", en:"to swim", pair:"pływać (impf, habitual)", hint:"pływam, pływasz.", ex:"Latem często pływam w jeziorze.", exEn:"In summer I often swim in the lake." },
+            { pl:"biegać", en:"to run / to jog", pair:"biegać (impf, habitual)", hint:"biegam, biegasz. As regular exercise.", ex:"Biegam w parku trzy razy w tygodniu.", exEn:"I run in the park three times a week." },
+            { pl:"jeździć na rowerze", en:"to ride a bike", pair:"jeździć (impf, habitual)", hint:"'jeździć na' + locative.", ex:"W weekend jeździmy na rowerach.", exEn:"At the weekend we ride bikes." },
+            { pl:"grać w gry", en:"to play games", pair:"grać / zagrać", hint:"Video or board games. 'gra planszowa' = board game.", ex:"Wieczorami gram w gry na komputerze.", exEn:"In the evenings I play games on the computer." },
+            { pl:"spotykać się ze znajomymi", en:"to meet up with friends", pair:"spotykać się / spotkać się", hint:"'spotykać się z' + instrumental.", ex:"W piątki spotykam się ze znajomymi.", exEn:"On Fridays I meet up with friends." },
+            { pl:"podróżować", en:"to travel", pair:"podróżować (impf only)", hint:"podróżuję, podróżujesz.", ex:"Uwielbiam podróżować po Europie.", exEn:"I love travelling around Europe." },
+            { pl:"robić zdjęcia", en:"to take photos", pair:"robić / zrobić", hint:"Literally 'to make photos'.", ex:"Lubię robić zdjęcia w podróży.", exEn:"I like taking photos when travelling." },
+            { pl:"sport", en:"sport", hint:"Masculine noun. 'uprawiać sport' = to do sport.", ex:"Sport to moja pasja.", exEn:"Sport is my passion." },
+            { pl:"film", en:"film / movie", hint:"Masculine noun. 'iść na film' = to go to a film.", ex:"Idziemy dziś na film?", exEn:"Shall we go to a film today?" },
+            { pl:"książka", en:"book", hint:"Feminine noun.", ex:"Czytam teraz ciekawą książkę.", exEn:"I'm reading an interesting book right now." },
+            { pl:"Co lubisz robić?", en:"What do you like doing?", hint:"The key question for small talk about hobbies.", ex:"Co lubisz robić w wolnym czasie?", exEn:"What do you like doing in your free time?" }
+          ]
+        },
+        {
+          name: "Owoce i warzywa",
+          emoji: "🍎",
+          desc: "Fruit and vegetables, and buying them at the market",
+          cards: [
+            { pl:"owoce", en:"fruit", hint:"Plural noun. Singular 'owoc' is rare in speech.", ex:"Jem owoce codziennie.", exEn:"I eat fruit every day." },
+            { pl:"warzywa", en:"vegetables", hint:"Plural noun. Singular: 'warzywo'.", ex:"Warzywa są zdrowe.", exEn:"Vegetables are healthy." },
+            { pl:"jabłko", en:"apple", hint:"Neuter noun. Poland grows a lot of apples.", ex:"Poproszę kilo jabłek.", exEn:"A kilo of apples, please." },
+            { pl:"banan", en:"banana", hint:"Masculine noun.", ex:"Na śniadanie jem banana.", exEn:"For breakfast I eat a banana." },
+            { pl:"gruszka", en:"pear", hint:"Feminine noun.", ex:"Te gruszki są bardzo słodkie.", exEn:"These pears are very sweet." },
+            { pl:"truskawki", en:"strawberries", hint:"Plural. Singular: 'truskawka'. Best in June.", ex:"Latem kupuję truskawki na targu.", exEn:"In summer I buy strawberries at the market." },
+            { pl:"winogrona", en:"grapes", hint:"Plural noun.", ex:"Kupiłem zielone winogrona.", exEn:"I bought green grapes. A woman: kupiłam." },
+            { pl:"pomarańcza", en:"orange", hint:"Feminine noun. The fruit; the colour is 'pomarańczowy'.", ex:"Wyciskam sok z pomarańczy.", exEn:"I'm squeezing juice from an orange." },
+            { pl:"cytryna", en:"lemon", hint:"Feminine noun. 'herbata z cytryną' = tea with lemon.", ex:"Poproszę herbatę z cytryną.", exEn:"Tea with lemon, please." },
+            { pl:"śliwka", en:"plum", hint:"Feminine noun. 'śliwka' also means a black eye.", ex:"Jesienią jem dużo śliwek.", exEn:"In autumn I eat a lot of plums." },
+            { pl:"arbuz", en:"watermelon", hint:"Masculine noun. A summer favourite.", ex:"W upał nie ma nic lepszego niż arbuz.", exEn:"In the heat there's nothing better than watermelon." },
+            { pl:"maliny", en:"raspberries", hint:"Plural. Singular: 'malina'.", ex:"Maliny są moimi ulubionymi owocami.", exEn:"Raspberries are my favourite fruit." },
+            { pl:"pomidor", en:"tomato", hint:"Masculine noun. 'zupa pomidorowa' = tomato soup.", ex:"Do sałatki dodaję pomidory.", exEn:"I add tomatoes to the salad." },
+            { pl:"ogórek", en:"cucumber", hint:"Masculine noun. 'ogórek kiszony' = a Polish sour pickle.", ex:"Uwielbiam ogórki kiszone.", exEn:"I love sour pickled cucumbers." },
+            { pl:"marchewka", en:"carrot", hint:"Feminine noun. Formal form: 'marchew'.", ex:"Zupa z marchewki jest pyszna.", exEn:"Carrot soup is delicious." },
+            { pl:"ziemniaki", en:"potatoes", hint:"Plural of 'ziemniak'. A dinner staple.", ex:"Na obiad są ziemniaki.", exEn:"For lunch there are potatoes." },
+            { pl:"cebula", en:"onion", hint:"Feminine noun.", ex:"Ta zupa potrzebuje cebuli.", exEn:"This soup needs onion." },
+            { pl:"czosnek", en:"garlic", hint:"Masculine noun. A remedy Poles swear by for colds.", ex:"Dodaję czosnek do prawie wszystkiego.", exEn:"I add garlic to almost everything." },
+            { pl:"papryka", en:"pepper (bell) / paprika", hint:"Feminine noun. Both the vegetable and the spice.", ex:"Czerwona papryka jest słodka.", exEn:"Red pepper is sweet." },
+            { pl:"sałata", en:"lettuce", hint:"Feminine noun. 'sałatka' (with -ka) is a made salad.", ex:"Kupię sałatę na kanapki.", exEn:"I'll buy lettuce for sandwiches." },
+            { pl:"kilo / pół kilo", en:"a kilo / half a kilo", hint:"'kilo' doesn't change form. 'kilogram jabłek' also works.", ex:"Poproszę pół kilo pomidorów.", exEn:"Half a kilo of tomatoes, please." },
+            { pl:"świeży / dojrzały", en:"fresh / ripe", hint:"'dojrzały' = ripe; 'zepsuty' = gone off.", ex:"Czy te banany są dojrzałe?", exEn:"Are these bananas ripe?" },
+            { pl:"Poproszę kilo...", en:"A kilo of..., please", hint:"The core market phrase. The fruit follows in the genitive.", ex:"Poproszę kilo jabłek i dwie cytryny.", exEn:"A kilo of apples and two lemons, please." }
           ]
         }
       ]
