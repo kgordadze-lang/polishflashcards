@@ -1,6 +1,6 @@
 {
 "voice": "pl-PL-MarekNeural",
-"generatedAt": "2026-07-19T07:09:32.248543Z",
+"generatedAt": "2026-07-19T13:16:54.545889Z",
 "audioDir": "audio",
 "entries": {
 "000311d1288f": {
@@ -13422,6 +13422,750 @@
 "8ff6fb0dd464": {
 "pl": "Wyglądasz na zdenerwowanego. Co się stało?",
 "file": "audio/8ff6fb0dd464.mp3"
+},
+"2d47d25c6c05": {
+"pl": "Mój brat jest starszy.",
+"file": "audio/2d47d25c6c05.mp3"
+},
+"0464fd7053e3": {
+"pl": "Ta książka jest bardziej interesująca.",
+"file": "audio/0464fd7053e3.mp3"
+},
+"b67b123e8b4d": {
+"pl": "Jestem starszy od brata.",
+"file": "audio/b67b123e8b4d.mp3"
+},
+"a84a14402acd": {
+"pl": "Ona jest młodsza ode mnie.",
+"file": "audio/a84a14402acd.mp3"
+},
+"fd0d3a80b8f0": {
+"pl": "Ten sklep jest tańszy.",
+"file": "audio/fd0d3a80b8f0.mp3"
+},
+"16c7138a874f": {
+"pl": "Taksówka jest droższa.",
+"file": "audio/16c7138a874f.mp3"
+},
+"e1ef0ed12e7f": {
+"pl": "On jest wyższy niż ja.",
+"file": "audio/e1ef0ed12e7f.mp3"
+},
+"4fa4c4790087": {
+"pl": "Dni są coraz dłuższe.",
+"file": "audio/4fa4c4790087.mp3"
+},
+"1197d292bc3c": {
+"pl": "Polski jest łatwiejszy, niż myślisz.",
+"file": "audio/1197d292bc3c.mp3"
+},
+"1d4f28a898ef": {
+"pl": "Egzamin był trudniejszy niż rok temu.",
+"file": "audio/1d4f28a898ef.mp3"
+},
+"74410ce1cdd9": {
+"pl": "Ta kawa jest lepsza.",
+"file": "audio/74410ce1cdd9.mp3"
+},
+"6e54793e4eea": {
+"pl": "Pogoda jest dziś gorsza.",
+"file": "audio/6e54793e4eea.mp3"
+},
+"c32405a2069b": {
+"pl": "Potrzebuję większego mieszkania.",
+"file": "audio/c32405a2069b.mp3"
+},
+"b78b7f02ccc7": {
+"pl": "Wolę mniejsze miasto.",
+"file": "audio/b78b7f02ccc7.mp3"
+},
+"428cac98c060": {
+"pl": "Ta torba jest lżejsza.",
+"file": "audio/428cac98c060.mp3"
+},
+"ac772475e68d": {
+"pl": "To najlepsza kawiarnia w Warszawie.",
+"file": "audio/ac772475e68d.mp3"
+},
+"392e346f8049": {
+"pl": "Zima to najgorsza pora roku.",
+"file": "audio/392e346f8049.mp3"
+},
+"7d6ab94c632a": {
+"pl": "Kawa jest tańsza niż herbata.",
+"file": "audio/7d6ab94c632a.mp3"
+},
+"bbe0e7bd19de": {
+"pl": "Kawa jest tańsza od herbaty.",
+"file": "audio/bbe0e7bd19de.mp3"
+},
+"0b12cce1c1e9": {
+"pl": "Mów wolniej, nie szybciej!",
+"file": "audio/0b12cce1c1e9.mp3"
+},
+"d80d48ea31d0": {
+"pl": "Dziś czuję się lepiej.",
+"file": "audio/d80d48ea31d0.mp3"
+},
+"e17dd4dc2def": {
+"pl": "Wczoraj było gorzej.",
+"file": "audio/e17dd4dc2def.mp3"
+},
+"bc9806ca8262": {
+"pl": "Potrzebuję więcej czasu.",
+"file": "audio/bc9806ca8262.mp3"
+},
+"f28be086d4a5": {
+"pl": "Mam mniej pracy niż wczoraj.",
+"file": "audio/f28be086d4a5.mp3"
+},
+"458979dad9c5": {
+"pl": "Powinienem częściej ćwiczyć.",
+"file": "audio/458979dad9c5.mp3"
+},
+"e6c3fa3ed124": {
+"pl": "Mówisz coraz lepiej po polsku!",
+"file": "audio/e6c3fa3ed124.mp3"
+},
+"06a848f680df": {
+"pl": "Im więcej ćwiczysz, tym lepiej mówisz.",
+"file": "audio/06a848f680df.mp3"
+},
+"d8a6e2a75a6a": {
+"pl": "Przyjdź jak najszybciej.",
+"file": "audio/d8a6e2a75a6a.mp3"
+},
+"e4add3f54b02": {
+"pl": "Pogoda jest coraz gorsza.",
+"file": "audio/e4add3f54b02.mp3"
+},
+"41d35d17d1fb": {
+"pl": "Mój brat jest starszy ode mnie.",
+"file": "audio/41d35d17d1fb.mp3"
+},
+"3aafcde5e3f0": {
+"pl": "Ta kawa jest lepsza niż tamta.",
+"file": "audio/3aafcde5e3f0.mp3"
+},
+"0ba4053933cf": {
+"pl": "On jest wyższy od brata.",
+"file": "audio/0ba4053933cf.mp3"
+},
+"85e01186c169": {
+"pl": "To najlepsza restauracja w mieście.",
+"file": "audio/85e01186c169.mp3"
+},
+"fbc60b64eb70": {
+"pl": "Dziś czuję się lepiej niż wczoraj.",
+"file": "audio/fbc60b64eb70.mp3"
+},
+"2772bc7292c2": {
+"pl": "Dwa piwa poproszę.",
+"file": "audio/2772bc7292c2.mp3"
+},
+"d093eed8b628": {
+"pl": "Pięć piw poproszę.",
+"file": "audio/d093eed8b628.mp3"
+},
+"6d79445ea09a": {
+"pl": "Jedno piwo poproszę.",
+"file": "audio/6d79445ea09a.mp3"
+},
+"9a78b6b4f734": {
+"pl": "Dwie kawy i trzy piwa.",
+"file": "audio/9a78b6b4f734.mp3"
+},
+"e6a6a2194ca2": {
+"pl": "Pięć piw dla nas!",
+"file": "audio/e6a6a2194ca2.mp3"
+},
+"42009e753783": {
+"pl": "Mam dwadzieścia trzy lata.",
+"file": "audio/42009e753783.mp3"
+},
+"675256dbef2d": {
+"pl": "Ona ma dwadzieścia jeden lat.",
+"file": "audio/675256dbef2d.mp3"
+},
+"896fc055c766": {
+"pl": "Mieszkam tu rok.",
+"file": "audio/896fc055c766.mp3"
+},
+"ac7d72910e93": {
+"pl": "On ma cztery lata.",
+"file": "audio/ac7d72910e93.mp3"
+},
+"d16937e24f8d": {
+"pl": "To kosztuje jeden złoty.",
+"file": "audio/d16937e24f8d.mp3"
+},
+"ca150678aa3f": {
+"pl": "Dwa złote i trzy grosze.",
+"file": "audio/ca150678aa3f.mp3"
+},
+"a371b08a529a": {
+"pl": "Pięć złotych poproszę.",
+"file": "audio/a371b08a529a.mp3"
+},
+"bb0179c53e63": {
+"pl": "To kosztuje dwadzieścia dwa złote.",
+"file": "audio/bb0179c53e63.mp3"
+},
+"0db4a588673a": {
+"pl": "Bilet kosztuje czternaście złotych.",
+"file": "audio/0db4a588673a.mp3"
+},
+"3e7a95268eb7": {
+"pl": "Dwóch kolegów czekało na mnie.",
+"file": "audio/3e7a95268eb7.mp3"
+},
+"b048ae627f15": {
+"pl": "W firmie pracuje pięciu programistów.",
+"file": "audio/b048ae627f15.mp3"
+},
+"7995bd145446": {
+"pl": "Byłem tam dwa razy.",
+"file": "audio/7995bd145446.mp3"
+},
+"3138db9d204b": {
+"pl": "Dzwoniłem pięć razy!",
+"file": "audio/3138db9d204b.mp3"
+},
+"47018085742d": {
+"pl": "Przyszło tylko kilka osób.",
+"file": "audio/47018085742d.mp3"
+},
+"6e412a7935fc": {
+"pl": "Będę za pięć minut.",
+"file": "audio/6e412a7935fc.mp3"
+},
+"e98e0a32168c": {
+"pl": "Wracam za parę dni.",
+"file": "audio/e98e0a32168c.mp3"
+},
+"c39ac5068b91": {
+"pl": "Poproszę dwa piwa.",
+"file": "audio/c39ac5068b91.mp3"
+},
+"80774a02256c": {
+"pl": "Poproszę pięć piw.",
+"file": "audio/80774a02256c.mp3"
+},
+"f0e3b55d0ac8": {
+"pl": "Poproszę dwie kawy.",
+"file": "audio/f0e3b55d0ac8.mp3"
+},
+"6e6885f0977a": {
+"pl": "Moja córka ma trzy lata.",
+"file": "audio/6e6885f0977a.mp3"
+},
+"6a2f37051dad": {
+"pl": "Ile masz lat?",
+"file": "audio/6a2f37051dad.mp3"
+},
+"2c8d9a453927": {
+"pl": "Pięć osób czeka na przystanku.",
+"file": "audio/2c8d9a453927.mp3"
+},
+"223b44c12726": {
+"pl": "Człowiek, który tam stoi, to mój sąsiad.",
+"file": "audio/223b44c12726.mp3"
+},
+"d47b00a78f47": {
+"pl": "Film, który oglądaliśmy, był świetny.",
+"file": "audio/d47b00a78f47.mp3"
+},
+"f5db1513036f": {
+"pl": "chłopak, który...",
+"file": "audio/f5db1513036f.mp3"
+},
+"fbc89127ad29": {
+"pl": "kobieta, która...",
+"file": "audio/fbc89127ad29.mp3"
+},
+"055c95dae2b0": {
+"pl": "dziecko, które...",
+"file": "audio/055c95dae2b0.mp3"
+},
+"9bc707a48441": {
+"pl": "ludzie, którzy...",
+"file": "audio/9bc707a48441.mp3"
+},
+"42fb8e1c3d0b": {
+"pl": "książki, które...",
+"file": "audio/42fb8e1c3d0b.mp3"
+},
+"0647eee9fd6f": {
+"pl": "Kobieta, która tu pracuje, jest z Krakowa.",
+"file": "audio/0647eee9fd6f.mp3"
+},
+"84eaef6b7d8f": {
+"pl": "Kobieta, którą wczoraj poznałem, jest z Krakowa.",
+"file": "audio/84eaef6b7d8f.mp3"
+},
+"476d926e8670": {
+"pl": "kolega, z którym pracuję",
+"file": "audio/476d926e8670.mp3"
+},
+"1d64262ded8c": {
+"pl": "mieszkanie, w którym mieszkam",
+"file": "audio/1d64262ded8c.mp3"
+},
+"ded3f3944cdf": {
+"pl": "film, o którym mówiłem",
+"file": "audio/ded3f3944cdf.mp3"
+},
+"b633d6e44a27": {
+"pl": "autobus, na który czekam",
+"file": "audio/b633d6e44a27.mp3"
+},
+"f9ec4ab178a3": {
+"pl": "sklep, do którego chodzę",
+"file": "audio/f9ec4ab178a3.mp3"
+},
+"9167f938b5eb": {
+"pl": "To wszystko, co mam.",
+"file": "audio/9167f938b5eb.mp3"
+},
+"7408978208d3": {
+"pl": "Nie rozumiem tego, co mówisz.",
+"file": "audio/7408978208d3.mp3"
+},
+"25afacc54a27": {
+"pl": "Ludzie, którzy tu pracują, są bardzo mili.",
+"file": "audio/25afacc54a27.mp3"
+},
+"b168b21d4d03": {
+"pl": "Książki, które czytam, są po polsku.",
+"file": "audio/b168b21d4d03.mp3"
+},
+"07cda5c9c321": {
+"pl": "Kolega, z którym pracuję, jest z Ukrainy.",
+"file": "audio/07cda5c9c321.mp3"
+},
+"365ba63f8fd7": {
+"pl": "Mieszkanie, w którym mieszkam, jest małe.",
+"file": "audio/365ba63f8fd7.mp3"
+},
+"e8bebcc6d155": {
+"pl": "Dziewczyna, której dałem kwiaty, ma na imię Ola.",
+"file": "audio/e8bebcc6d155.mp3"
+},
+"db3c5e43c060": {
+"pl": "Autobus, na który czekam, ma opóźnienie.",
+"file": "audio/db3c5e43c060.mp3"
+},
+"7f29c7f20cdd": {
+"pl": "Film, o którym mówiłem, jest w kinie.",
+"file": "audio/7f29c7f20cdd.mp3"
+},
+"9f9ef64873e9": {
+"pl": "Rób to, co lubisz.",
+"file": "audio/9f9ef64873e9.mp3"
+},
+"83a58d3664d4": {
+"pl": "Sklep, do którego chodzę, jest za rogiem.",
+"file": "audio/83a58d3664d4.mp3"
+},
+"995e97050c03": {
+"pl": "Jeśli masz czas, chodź z nami.",
+"file": "audio/995e97050c03.mp3"
+},
+"e1693bb745d4": {
+"pl": "Gdybym miał czas, poszedłbym z wami.",
+"file": "audio/e1693bb745d4.mp3"
+},
+"cc452227c256": {
+"pl": "Jeśli będzie ładna pogoda, pojedziemy nad jezioro.",
+"file": "audio/cc452227c256.mp3"
+},
+"8f1914e59a4f": {
+"pl": "Jeśli będziesz miał pytania, napisz do mnie.",
+"file": "audio/8f1914e59a4f.mp3"
+},
+"c32a17359e74": {
+"pl": "Gdybym wiedział...",
+"file": "audio/c32a17359e74.mp3"
+},
+"7d879971cb7c": {
+"pl": "Gdybyś chciał...",
+"file": "audio/7d879971cb7c.mp3"
+},
+"dec6a7625639": {
+"pl": "Gdyby mogła...",
+"file": "audio/dec6a7625639.mp3"
+},
+"439814e5fdc9": {
+"pl": "Gdybyśmy mieli czas...",
+"file": "audio/439814e5fdc9.mp3"
+},
+"1d3d568b7338": {
+"pl": "Gdybyście byli głodni...",
+"file": "audio/1d3d568b7338.mp3"
+},
+"533de0677da2": {
+"pl": "Gdybym miał pieniądze, kupiłbym samochód.",
+"file": "audio/533de0677da2.mp3"
+},
+"a289d668b32d": {
+"pl": "Co byś zrobił, gdybyś wygrał milion?",
+"file": "audio/a289d668b32d.mp3"
+},
+"8a3f0c03b07c": {
+"pl": "Na twoim miejscu bym zadzwonił.",
+"file": "audio/8a3f0c03b07c.mp3"
+},
+"4d7ed1da4e8f": {
+"pl": "W razie czego dzwoń.",
+"file": "audio/4d7ed1da4e8f.mp3"
+},
+"7d81dd7a0ba6": {
+"pl": "Jak coś, jestem u siebie.",
+"file": "audio/7d81dd7a0ba6.mp3"
+},
+"34e7e3c71cd8": {
+"pl": "Jeśli to możliwe, wolę rano.",
+"file": "audio/34e7e3c71cd8.mp3"
+},
+"5e0717c1e276": {
+"pl": "Jeśli będzie padać, zostanę w domu.",
+"file": "audio/5e0717c1e276.mp3"
+},
+"b06a43fc6e80": {
+"pl": "Jeśli jutro będę miał czas, przyjdę.",
+"file": "audio/b06a43fc6e80.mp3"
+},
+"c1dd7be469d3": {
+"pl": "Gdybym miał milion, kupiłbym mieszkanie.",
+"file": "audio/c1dd7be469d3.mp3"
+},
+"577fea208f15": {
+"pl": "Gdybym wiedział, powiedziałbym ci.",
+"file": "audio/577fea208f15.mp3"
+},
+"b4b72a870339": {
+"pl": "Gdybyśmy mieli czas, pojechalibyśmy nad morze.",
+"file": "audio/b4b72a870339.mp3"
+},
+"0da826fbf010": {
+"pl": "Jeśli będziesz w Warszawie, zadzwoń do mnie.",
+"file": "audio/0da826fbf010.mp3"
+},
+"1d5752d8f8d3": {
+"pl": "Gdyby ona mogła, na pewno by przyszła.",
+"file": "audio/1d5752d8f8d3.mp3"
+},
+"9be6cc77404e": {
+"pl": "Uczę się polskiego, żeby rozmawiać z sąsiadami.",
+"file": "audio/9be6cc77404e.mp3"
+},
+"77e76d0f700d": {
+"pl": "Chcę, żebyś przyszedł na moje urodziny.",
+"file": "audio/77e76d0f700d.mp3"
+},
+"6750aa4a0600": {
+"pl": "Wyszedłem wcześniej, żeby zdążyć na pociąg.",
+"file": "audio/6750aa4a0600.mp3"
+},
+"166c2658e2e5": {
+"pl": "Mówię cicho, żeby nie obudzić dziecka.",
+"file": "audio/166c2658e2e5.mp3"
+},
+"42fc2a11e274": {
+"pl": "Szef chce, żebym został.",
+"file": "audio/42fc2a11e274.mp3"
+},
+"23a3fe2a78ea": {
+"pl": "Chcę, żebyś wiedział.",
+"file": "audio/23a3fe2a78ea.mp3"
+},
+"e1fb6bd3fa57": {
+"pl": "Proszę, żeby zaczekał.",
+"file": "audio/e1fb6bd3fa57.mp3"
+},
+"e9027b6cd4c8": {
+"pl": "Chcą, żebyśmy przyszli.",
+"file": "audio/e9027b6cd4c8.mp3"
+},
+"f5f9e5e9387e": {
+"pl": "Chcemy, żebyście wiedzieli.",
+"file": "audio/f5f9e5e9387e.mp3"
+},
+"e84ae590f0d9": {
+"pl": "Chcę, żebyś to zobaczył.",
+"file": "audio/e84ae590f0d9.mp3"
+},
+"f99476c0bb5a": {
+"pl": "Proszę, żebyś był punktualny.",
+"file": "audio/f99476c0bb5a.mp3"
+},
+"5962d7ff74d3": {
+"pl": "Powiedz mu, żeby zadzwonił.",
+"file": "audio/5962d7ff74d3.mp3"
+},
+"a2ca4fc5a2c6": {
+"pl": "Zależy mi, żeby wszystko było gotowe.",
+"file": "audio/a2ca4fc5a2c6.mp3"
+},
+"a2754621ff6c": {
+"pl": "Wolę, żebyśmy zostali w domu.",
+"file": "audio/a2754621ff6c.mp3"
+},
+"43553bd2642d": {
+"pl": "Prosiłem go, żeby pomógł.",
+"file": "audio/43553bd2642d.mp3"
+},
+"8afaaf5ede16": {
+"pl": "Powiedz jej, żeby zadzwoniła do mnie.",
+"file": "audio/8afaaf5ede16.mp3"
+},
+"a4fa49303b6b": {
+"pl": "Chcą, żebyśmy przyszli na spotkanie.",
+"file": "audio/a4fa49303b6b.mp3"
+},
+"1b24cad56658": {
+"pl": "Chcę, żebyś znał prawdę.",
+"file": "audio/1b24cad56658.mp3"
+},
+"2c47b14f4b5d": {
+"pl": "Nie rozumiem tego pytania.",
+"file": "audio/2c47b14f4b5d.mp3"
+},
+"cd8997a186bb": {
+"pl": "Ona nie pracuje w piątki.",
+"file": "audio/cd8997a186bb.mp3"
+},
+"2021e857b20f": {
+"pl": "Nikt nic nie powiedział.",
+"file": "audio/2021e857b20f.mp3"
+},
+"7085b6cd3625": {
+"pl": "Nigdy nigdzie nie wychodzę wieczorem.",
+"file": "audio/7085b6cd3625.mp3"
+},
+"dae07dd3fd01": {
+"pl": "Nie znam tu nikogo.",
+"file": "audio/dae07dd3fd01.mp3"
+},
+"7f96853adb21": {
+"pl": "Nic nie widzę.",
+"file": "audio/7f96853adb21.mp3"
+},
+"7316754247e6": {
+"pl": "Nigdy tam nie byłem.",
+"file": "audio/7316754247e6.mp3"
+},
+"f16e9fad8d54": {
+"pl": "Nigdzie nie mogę znaleźć kluczy.",
+"file": "audio/f16e9fad8d54.mp3"
+},
+"5b9c0e33e889": {
+"pl": "Nie mam żadnych pytań.",
+"file": "audio/5b9c0e33e889.mp3"
+},
+"d2a5ac44625b": {
+"pl": "Nie mam dzisiaj czasu.",
+"file": "audio/d2a5ac44625b.mp3"
+},
+"4325b8a4dc10": {
+"pl": "Nie lubię ani kawy, ani herbaty.",
+"file": "audio/4325b8a4dc10.mp3"
+},
+"c8de183a4f62": {
+"pl": "Jeszcze nie jadłem.",
+"file": "audio/c8de183a4f62.mp3"
+},
+"ecafba801ce7": {
+"pl": "Już tam nie pracuję.",
+"file": "audio/ecafba801ce7.mp3"
+},
+"a118d059cb4c": {
+"pl": "W ogóle nie rozumiem.",
+"file": "audio/a118d059cb4c.mp3"
+},
+"0f0edcaa6f18": {
+"pl": "Prawie nigdy nie choruję.",
+"file": "audio/0f0edcaa6f18.mp3"
+},
+"7ebc979bf31d": {
+"pl": "Nigdy nie palę.",
+"file": "audio/7ebc979bf31d.mp3"
+},
+"4b2a91bc1593": {
+"pl": "Nikogo nie było w domu.",
+"file": "audio/4b2a91bc1593.mp3"
+},
+"67f098d013d1": {
+"pl": "Jadłeś już obiad? - Jeszcze nie.",
+"file": "audio/67f098d013d1.mp3"
+},
+"99af9571bbda": {
+"pl": "Warto obejrzeć ten film.",
+"file": "audio/99af9571bbda.mp3"
+},
+"0254d8a48fc1": {
+"pl": "Nie warto się denerwować.",
+"file": "audio/0254d8a48fc1.mp3"
+},
+"a50a476b58c0": {
+"pl": "Tu nie wolno palić.",
+"file": "audio/a50a476b58c0.mp3"
+},
+"9e7237197662": {
+"pl": "Da się to naprawić.",
+"file": "audio/9e7237197662.mp3"
+},
+"80a15c61849e": {
+"pl": "Nie da się tego zrobić w jeden dzień.",
+"file": "audio/80a15c61849e.mp3"
+},
+"499b1949ea94": {
+"pl": "Tego nie da się zrobić w jeden dzień.",
+"file": "audio/499b1949ea94.mp3"
+},
+"51ecf0d9cd66": {
+"pl": "Wyjechał z Polski dwa lata temu.",
+"file": "audio/51ecf0d9cd66.mp3"
+},
+"a795eb497d28": {
+"pl": "Przyjdę wieczorem.",
+"file": "audio/a795eb497d28.mp3"
+},
+"50c398904efa": {
+"pl": "Wyszedłem z biura o piątej.",
+"file": "audio/50c398904efa.mp3"
+},
+"3fce3015f21a": {
+"pl": "Wejdź do środka!",
+"file": "audio/3fce3015f21a.mp3"
+},
+"0096914fa6c0": {
+"pl": "Jak dojść do dworca?",
+"file": "audio/0096914fa6c0.mp3"
+},
+"2b4144ebd7d4": {
+"pl": "Odszedł bez słowa.",
+"file": "audio/2b4144ebd7d4.mp3"
+},
+"97def995cddc": {
+"pl": "Przejdźmy przez ulicę.",
+"file": "audio/97def995cddc.mp3"
+},
+"68dc9ae41dca": {
+"pl": "Pójdziemy jutro do kina.",
+"file": "audio/68dc9ae41dca.mp3"
+},
+"d19ba6ef8139": {
+"pl": "Kiedy przyjechałeś do Polski?",
+"file": "audio/d19ba6ef8139.mp3"
+},
+"33f2805d532b": {
+"pl": "Wyjeżdżam na weekend.",
+"file": "audio/33f2805d532b.mp3"
+},
+"649ae2b0a426": {
+"pl": "Wjechaliśmy do garażu.",
+"file": "audio/649ae2b0a426.mp3"
+},
+"1cd9c0b24c00": {
+"pl": "Dojechałem do pracy w kwadrans.",
+"file": "audio/1cd9c0b24c00.mp3"
+},
+"03fe78857587": {
+"pl": "Pociąg odjechał punktualnie.",
+"file": "audio/03fe78857587.mp3"
+},
+"004363602321": {
+"pl": "Przejechaliśmy całą Polskę.",
+"file": "audio/004363602321.mp3"
+},
+"f138062f8d0c": {
+"pl": "Pojedziemy tam w sobotę.",
+"file": "audio/f138062f8d0c.mp3"
+},
+"17d2a9600b83": {
+"pl": "Wchodzę do budynku.",
+"file": "audio/17d2a9600b83.mp3"
+},
+"1ec7b9a2b24a": {
+"pl": "Wychodzę z domu o ósmej.",
+"file": "audio/1ec7b9a2b24a.mp3"
+},
+"531436115fa3": {
+"pl": "Jak dojechać do centrum?",
+"file": "audio/531436115fa3.mp3"
+},
+"5e35e4ffb2fc": {
+"pl": "Odszedł od okna.",
+"file": "audio/5e35e4ffb2fc.mp3"
+},
+"f980f924bc6b": {
+"pl": "Przechodzę przez most.",
+"file": "audio/f980f924bc6b.mp3"
+},
+"768f93b65c36": {
+"pl": "Przyszedłem na spotkanie.",
+"file": "audio/768f93b65c36.mp3"
+},
+"c3fc658b9414": {
+"pl": "Autobus przyjeżdża co dziesięć minut.",
+"file": "audio/c3fc658b9414.mp3"
+},
+"e0cee2d5b702": {
+"pl": "O której odjeżdża ostatni tramwaj?",
+"file": "audio/e0cee2d5b702.mp3"
+},
+"51c0ec2a6ba1": {
+"pl": "Zaraz przyjdę, daj mi minutę.",
+"file": "audio/51c0ec2a6ba1.mp3"
+},
+"8f8edacb248e": {
+"pl": "Muszę już wyjść, spóźnię się.",
+"file": "audio/8f8edacb248e.mp3"
+},
+"c1d0def55ec2": {
+"pl": "Jak dojechać na lotnisko?",
+"file": "audio/c1d0def55ec2.mp3"
+},
+"1804a83a72b0": {
+"pl": "Przepraszam, przechodzę!",
+"file": "audio/1804a83a72b0.mp3"
+},
+"9da7e1a9cbce": {
+"pl": "Pociąg odjeżdża o ósmej z toru drugiego.",
+"file": "audio/9da7e1a9cbce.mp3"
+},
+"183438bddcf9": {
+"pl": "Przyjdę o piątej, obiecuję.",
+"file": "audio/183438bddcf9.mp3"
+},
+"78f625e06c41": {
+"pl": "Muszę już wyjść z biura.",
+"file": "audio/78f625e06c41.mp3"
+},
+"e5faa9f875a4": {
+"pl": "Wejdź do środka, zimno na dworze!",
+"file": "audio/e5faa9f875a4.mp3"
+},
+"3b89b292c7d0": {
+"pl": "Przepraszam, jak dojść do dworca?",
+"file": "audio/3b89b292c7d0.mp3"
+},
+"e22c69ea2ab3": {
+"pl": "Przechodzę przez ulicę na zielonym świetle.",
+"file": "audio/e22c69ea2ab3.mp3"
+},
+"d6a8c49a5b67": {
+"pl": "Autobus już odjechał, spóźniliśmy się.",
+"file": "audio/d6a8c49a5b67.mp3"
+},
+"47e7b255ba72": {
+"pl": "Wychodzę z domu o ósmej rano.",
+"file": "audio/47e7b255ba72.mp3"
+},
+"eb066db0c351": {
+"pl": "On wyjechał z Polski dwa lata temu.",
+"file": "audio/eb066db0c351.mp3"
 }
 }
 }

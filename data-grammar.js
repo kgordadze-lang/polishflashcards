@@ -958,7 +958,7 @@
   );
   window.PP_LEVELS.push(
     {
-      level: "Describing People",
+      level: "People & Numbers",
       blurb: "Adjectives, pronouns, quantifiers, jobs",
       group: "grammar",
       topics: [
@@ -1557,6 +1557,262 @@
               answer:["Każda","godzina","się","liczy"],
               explain:"'godzina' is feminine → każda; the verb stays singular.", full:"Każda godzina się liczy.", fullEn:"Every hour counts." }
           ]
+        },
+        {
+          name: "Stopniowanie (Comparison)", emoji: "📈", kind: "grammar", chip: "Grammar A2",
+          desc: "Bigger, better, cheapest - comparing with -szy, bardziej, and naj-",
+          teach: [
+            { front:"Two ways to compare",
+              sub:"Polish has a short road and a long road - the adjective decides which one you take.",
+              points:[
+                "Short, common adjectives add <b>-szy</b>: stary → star<b>szy</b> (older), młody → młod<b>szy</b> (younger).",
+                "Long adjectives and participle-like ones use <b>bardziej</b>: bardziej interesujący, bardziej zmęczony.",
+                "Rule of thumb: if the adjective feels basic and everyday, try -szy first. If it's three-plus syllables or ends in -ony / -ący, reach for bardziej.",
+                "Never both at once: <i>bardziej starszy</i> is the classic learner error."
+              ],
+              examples:[
+                { pl:"Mój brat jest starszy.", en:"My brother is older." },
+                { pl:"Ta książka jest bardziej interesująca.", en:"This book is more interesting." }
+              ] },
+
+            { front:"The regular -szy family",
+              sub:"The ending often softens or swaps the last consonant - patterns you'll start hearing everywhere.",
+              table:[
+                { g:"stary → starszy", e:"older", ex:"Jestem starszy od brata." },
+                { g:"młody → młodszy", e:"younger", ex:"Ona jest młodsza ode mnie." },
+                { g:"tani → tańszy", e:"cheaper", ex:"Ten sklep jest tańszy." },
+                { g:"drogi → droższy", e:"more expensive", ex:"Taksówka jest droższa." },
+                { g:"wysoki → wyższy", e:"taller / higher", ex:"On jest wyższy niż ja." },
+                { g:"długi → dłuższy", e:"longer", ex:"Dni są coraz dłuższe." },
+                { g:"łatwy → łatwiejszy", e:"easier", ex:"Polski jest łatwiejszy, niż myślisz." },
+                { g:"trudny → trudniejszy", e:"harder", ex:"Egzamin był trudniejszy niż rok temu." }
+              ],
+              note:"Notice <b>-ki / -oki</b> drop before the ending: wyso<b>ki</b> → wyż-szy, not <i>wysokiszy</i>. The comparative still declines like a normal adjective: starsz<b>a</b> siostra, starsz<b>e</b> miasto." },
+
+            { front:"The five irregulars you can't skip",
+              sub:"The most common adjectives are also the most irregular - exactly like English good → better.",
+              table:[
+                { g:"dobry → lepszy", e:"good → better", ex:"Ta kawa jest lepsza." },
+                { g:"zły → gorszy", e:"bad → worse", ex:"Pogoda jest dziś gorsza." },
+                { g:"duży → większy", e:"big → bigger", ex:"Potrzebuję większego mieszkania." },
+                { g:"mały → mniejszy", e:"small → smaller", ex:"Wolę mniejsze miasto." },
+                { g:"lekki → lżejszy", e:"light → lighter", ex:"Ta torba jest lżejsza." }
+              ],
+              note:"These five carry half of daily conversation. If you memorise nothing else from this lesson, memorise <b>lepszy / gorszy / większy / mniejszy</b>." },
+
+            { front:"The superlative: just add naj-",
+              sub:"Take the comparative you already built and glue naj- on the front. Done.",
+              points:[
+                "starszy → <b>naj</b>starszy (the oldest), lepszy → <b>naj</b>lepszy (the best), gorszy → <b>naj</b>gorszy (the worst).",
+                "With bardziej the naj- lands on bardziej: <b>najbardziej</b> interesujący.",
+                "Superlatives decline too: najlepsz<b>a</b> kawa w mieście, najstarsz<b>e</b> miasto w Polsce."
+              ],
+              examples:[
+                { pl:"To najlepsza kawiarnia w Warszawie.", en:"This is the best café in Warsaw." },
+                { pl:"Zima to najgorsza pora roku.", en:"Winter is the worst season." }
+              ] },
+
+            { front:"Than: niż or od?",
+              sub:"Both mean 'than'. They just demand different grammar afterwards - pick whichever you can build fastest.",
+              points:[
+                "<b>niż</b> + Nominative - simply continue the sentence: On jest wyższy <b>niż ja</b>.",
+                "<b>od</b> + Genitive - the noun changes case: On jest wyższy <b>od brata</b>.",
+                "With 'me' the od-version has a special form: wyższy <b>ode mnie</b>.",
+                "Both are equally natural - Poles switch between them freely."
+              ],
+              examples:[
+                { pl:"Kawa jest tańsza niż herbata.", en:"Coffee is cheaper than tea." },
+                { pl:"Kawa jest tańsza od herbaty.", en:"Coffee is cheaper than tea." }
+              ] },
+
+            { front:"Comparing adverbs: szybciej, lepiej",
+              sub:"How you do something compares too - and the most common ones are irregular.",
+              table:[
+                { g:"szybko → szybciej", e:"faster", ex:"Mów wolniej, nie szybciej!" },
+                { g:"dobrze → lepiej", e:"better", ex:"Dziś czuję się lepiej." },
+                { g:"źle → gorzej", e:"worse", ex:"Wczoraj było gorzej." },
+                { g:"dużo → więcej", e:"more", ex:"Potrzebuję więcej czasu." },
+                { g:"mało → mniej", e:"less", ex:"Mam mniej pracy niż wczoraj." },
+                { g:"często → częściej", e:"more often", ex:"Powinienem częściej ćwiczyć." }
+              ],
+              note:"Superlative works the same way: naj + comparative = <b>najlepiej</b>, <b>najszybciej</b>, <b>najczęściej</b>." },
+
+            { front:"Set phrases built on comparison",
+              sub:"These frozen patterns show up constantly - learn them as whole chunks.",
+              table:[
+                { g:"coraz + comparative", e:"more and more", ex:"Mówisz coraz lepiej po polsku!" },
+                { g:"im..., tym...", e:"the..., the...", ex:"Im więcej ćwiczysz, tym lepiej mówisz." },
+                { g:"jak naj + superlative", e:"as ... as possible", ex:"Przyjdź jak najszybciej." },
+                { g:"coś jest coraz gorsze", e:"getting worse", ex:"Pogoda jest coraz gorsza." }
+              ],
+              note:"<b>coraz lepiej</b> is what Poles will start telling you about your Polish - now you'll know exactly what it means and how it's built." }
+          ],
+          drills: [
+            { type:"choose", prompt:"Mój brat jest ___ ode mnie.", promptEn:"My brother is older than me.",
+              options:["starszy","bardziej stary","najstarszy"], answer:"starszy",
+              explain:"Short everyday adjective → -szy form. 'bardziej stary' is the classic error.", full:"Mój brat jest starszy ode mnie.", fullEn:"My brother is older than me." },
+            { type:"choose", prompt:"Ta kawa jest ___ niż tamta.", promptEn:"This coffee is better than that one.",
+              options:["lepsza","dobrzejsza","bardziej dobra"], answer:"lepsza",
+              explain:"dobry is irregular: dobry → lepszy, here feminine lepsza.", full:"Ta kawa jest lepsza niż tamta.", fullEn:"This coffee is better than that one." },
+            { type:"choose", prompt:"Potrzebuję ___ mieszkania.", promptEn:"I need a bigger flat.",
+              options:["większego","dużejszego","bardziej dużego"], answer:"większego",
+              explain:"duży → większy (irregular), here Genitive after potrzebować: większego.", full:"Potrzebuję większego mieszkania.", fullEn:"I need a bigger flat." },
+            { type:"choose", prompt:"On jest wyższy ___ brata.", promptEn:"He is taller than his brother.",
+              options:["od","niż","z"], answer:"od",
+              explain:"Before Genitive 'brata' the word for 'than' is od. With niż it would stay Nominative: niż brat.", full:"On jest wyższy od brata.", fullEn:"He is taller than his brother." },
+            { type:"choose", prompt:"Kawa jest tańsza ___ herbata.", promptEn:"Coffee is cheaper than tea.",
+              options:["niż","od","do"], answer:"niż",
+              explain:"'herbata' is Nominative, so 'than' must be niż. With od it would be: od herbaty.", full:"Kawa jest tańsza niż herbata.", fullEn:"Coffee is cheaper than tea." },
+            { type:"choose", prompt:"To ___ restauracja w mieście.", promptEn:"This is the best restaurant in town.",
+              options:["najlepsza","lepsza","najbardziej dobra"], answer:"najlepsza",
+              explain:"Superlative = naj + comparative: naj + lepsza. 'The best' needs naj-.", full:"To najlepsza restauracja w mieście.", fullEn:"This is the best restaurant in town." },
+            { type:"choose", prompt:"Ta książka jest ___ interesująca.", promptEn:"This book is more interesting.",
+              options:["bardziej","więcej","najbardziej"], answer:"bardziej",
+              explain:"Long adjectives compare with bardziej. 'więcej' is for amounts, not qualities.", full:"Ta książka jest bardziej interesująca.", fullEn:"This book is more interesting." },
+            { type:"choose", prompt:"Dziś czuję się ___ niż wczoraj.", promptEn:"Today I feel better than yesterday.",
+              options:["lepiej","lepszy","dobrzej"], answer:"lepiej",
+              explain:"Feeling is an adverb situation: dobrze → lepiej. 'lepszy' would describe a noun.", full:"Dziś czuję się lepiej niż wczoraj.", fullEn:"Today I feel better than yesterday." },
+            { type:"choose", prompt:"Mówisz ___ lepiej po polsku!", promptEn:"You speak Polish better and better!",
+              options:["coraz","bardzo","więcej"], answer:"coraz",
+              explain:"coraz + comparative = more and more: coraz lepiej.", full:"Mówisz coraz lepiej po polsku!", fullEn:"You speak Polish better and better!" },
+            { type:"choose", prompt:"Przyjdź jak ___.", promptEn:"Come as soon as possible.",
+              options:["najszybciej","szybciej","najszybszy"], answer:"najszybciej",
+              explain:"jak naj + superlative adverb = as ... as possible: jak najszybciej.", full:"Przyjdź jak najszybciej.", fullEn:"Come as soon as possible." },
+            { type:"choose", prompt:"Im więcej ćwiczysz, ___ lepiej mówisz.", promptEn:"The more you practise, the better you speak.",
+              options:["tym","to","tam"], answer:"tym",
+              explain:"The pair is fixed: im..., tym... - the..., the...", full:"Im więcej ćwiczysz, tym lepiej mówisz.", fullEn:"The more you practise, the better you speak." },
+            { type:"choose", prompt:"Potrzebuję ___ czasu.", promptEn:"I need more time.",
+              options:["więcej","bardziej","najwięcej"], answer:"więcej",
+              explain:"An amount of time → więcej (dużo → więcej). 'bardziej' compares qualities.", full:"Potrzebuję więcej czasu.", fullEn:"I need more time." }
+          ]
+        },
+        {
+          name: "Liczebniki (Numbers meet cases)", emoji: "🔢", kind: "grammar", chip: "Grammar A2",
+          desc: "dwa piwa but pięć piw - the number rules Polish is infamous for",
+          teach: [
+            { front:"The big three-way split",
+              sub:"Every Polish number belongs to one of three teams, and the team decides what happens to the noun.",
+              points:[
+                "<b>1</b> - singular, agreeing in gender: jeden bilet, jedna kawa, jedno piwo.",
+                "<b>2, 3, 4</b> - plural Nominative, like English: dwa bilety, trzy kawy, cztery piwa.",
+                "<b>5 and up</b> - Genitive plural, and the verb goes singular: pięć biletów, sześć kaw, dziesięć piw.",
+                "This is the single most famous rule in Polish. Once it clicks, ordering 'pięć piw' correctly feels like a superpower."
+              ],
+              examples:[
+                { pl:"Dwa piwa poproszę.", en:"Two beers, please." },
+                { pl:"Pięć piw poproszę.", en:"Five beers, please." }
+              ] },
+
+            { front:"The pattern side by side",
+              sub:"Watch one word travel through all three teams.",
+              table:[
+                { g:"1", e:"jedno piwo / jedna kawa", ex:"Jedno piwo poproszę." },
+                { g:"2-4", e:"dwa piwa / dwie kawy", ex:"Dwie kawy i trzy piwa." },
+                { g:"5+", e:"pięć piw / pięć kaw", ex:"Pięć piw dla nas!" }
+              ],
+              note:"Feminine nouns take <b>dwie</b>, not dwa: <b>dwie</b> kawy, <b>dwie</b> godziny. Masculine and neuter share <b>dwa</b>: dwa bilety, dwa okna." },
+
+            { front:"Compound numbers: the last word decides",
+              sub:"22, 34, 95 - only the final digit-word matters. With two famous traps.",
+              points:[
+                "22 ends in 'dwa' → 2-4 team: dwadzieścia <b>dwa piwa</b>.",
+                "25 ends in 'pięć' → 5+ team: dwadzieścia <b>pięć piw</b>.",
+                "Trap 1: the teens <b>12, 13, 14</b> are single words, not compounds - they follow the 5+ rule: dwanaście <b>piw</b>.",
+                "Trap 2: numbers ending in <b>jeden</b> (21, 31...) also take the 5+ rule, and jeden never changes: dwadzieścia jeden <b>piw</b>."
+              ],
+              examples:[
+                { pl:"Mam dwadzieścia trzy lata.", en:"I am twenty-three years old." },
+                { pl:"Ona ma dwadzieścia jeden lat.", en:"She is twenty-one years old." }
+              ] },
+
+            { front:"Years of age: rok, lata, lat",
+              sub:"The word for 'year' follows the same three teams - and it's how everyone asks your age.",
+              table:[
+                { g:"1", e:"rok", ex:"Mieszkam tu rok." },
+                { g:"2-4", e:"lata", ex:"On ma cztery lata." },
+                { g:"5+", e:"lat", ex:"Mam trzydzieści lat." }
+              ],
+              note:"<b>Ile masz lat?</b> (how old are you?) uses lat because <b>ile</b> behaves like a 5+ number. So do <b>kilka</b> (a few), <b>wiele</b> (many), and <b>dużo</b>: kilka lat, dużo osób." },
+
+            { front:"Money: złote czy złotych?",
+              sub:"Prices are the rule's daily workout - you'll hear this at every till in Poland.",
+              table:[
+                { g:"1", e:"jeden złoty / jeden grosz", ex:"To kosztuje jeden złoty." },
+                { g:"2-4", e:"dwa złote / dwa grosze", ex:"Dwa złote i trzy grosze." },
+                { g:"5+", e:"pięć złotych / pięć groszy", ex:"Pięć złotych poproszę." },
+                { g:"compound", e:"dwadzieścia dwa złote", ex:"To kosztuje dwadzieścia dwa złote." },
+                { g:"teens trap", e:"czternaście złotych", ex:"Bilet kosztuje czternaście złotych." }
+              ],
+              note:"Cashiers speak fast, but they always follow the rule: 24,50 = 'dwadzieścia cztery złote pięćdziesiąt'. Listen for złote vs złotych - it tells you which team the number is on." },
+
+            { front:"Counting men: the special forms",
+              sub:"Groups that include men get their own number forms - the same masculine-personal theme as oni and wszyscy.",
+              points:[
+                "Everyday way: <b>dwóch panów</b> czekało, <b>trzech studentów</b> przyszło, <b>pięciu mężczyzn</b> pracuje - Genitive plural and a singular verb.",
+                "Formal alternative for 2-4: <b>dwaj panowie</b> czekali, <b>trzej studenci</b> przyszli - Nominative with a plural verb. Both are correct.",
+                "From 5 up there's only one option: <b>pięciu</b> panów, <b>sześciu</b> kolegów.",
+                "Women and things never do this: dwie panie czekały, dwa autobusy przyjechały."
+              ],
+              examples:[
+                { pl:"Dwóch kolegów czekało na mnie.", en:"Two friends were waiting for me." },
+                { pl:"W firmie pracuje pięciu programistów.", en:"Five programmers work at the company." }
+              ] },
+
+            { front:"Survival chunks with numbers",
+              sub:"Frozen phrases that hide the rule inside - use them whole from day one.",
+              table:[
+                { g:"twice / three times", e:"dwa razy / trzy razy", ex:"Byłem tam dwa razy." },
+                { g:"5+ times", e:"pięć razy", ex:"Dzwoniłem pięć razy!" },
+                { g:"a few people", e:"kilka osób", ex:"Przyszło tylko kilka osób." },
+                { g:"in five minutes", e:"za pięć minut", ex:"Będę za pięć minut." },
+                { g:"a couple of days", e:"parę dni", ex:"Wracam za parę dni." }
+              ],
+              note:"<b>raz / razy / razy</b>: jeden raz, dwa razy, pięć razy - 'razy' happens to look the same for both teams, one less thing to worry about." }
+          ],
+          drills: [
+            { type:"choose", prompt:"Poproszę dwa ___.", promptEn:"Two beers, please.",
+              options:["piwa","piw","piwo"], answer:"piwa",
+              explain:"2-4 team → plural Nominative: dwa piwa.", full:"Poproszę dwa piwa.", fullEn:"Two beers, please." },
+            { type:"choose", prompt:"Poproszę pięć ___.", promptEn:"Five beers, please.",
+              options:["piw","piwa","piwo"], answer:"piw",
+              explain:"5+ team → Genitive plural: pięć piw.", full:"Poproszę pięć piw.", fullEn:"Five beers, please." },
+            { type:"choose", prompt:"Poproszę ___ kawy.", promptEn:"Two coffees, please.",
+              options:["dwie","dwa","dwóch"], answer:"dwie",
+              explain:"kawa is feminine → dwie, not dwa.", full:"Poproszę dwie kawy.", fullEn:"Two coffees, please." },
+            { type:"choose", prompt:"To kosztuje dwadzieścia dwa ___.", promptEn:"It costs twenty-two zlotys.",
+              options:["złote","złotych","złoty"], answer:"złote",
+              explain:"Compound number ending in dwa → 2-4 team: złote.", full:"To kosztuje dwadzieścia dwa złote.", fullEn:"It costs twenty-two zlotys." },
+            { type:"choose", prompt:"Bilet kosztuje czternaście ___.", promptEn:"The ticket costs fourteen zlotys.",
+              options:["złotych","złote","złoty"], answer:"złotych",
+              explain:"Teens trap: 12-14 are single words and follow the 5+ rule → złotych.", full:"Bilet kosztuje czternaście złotych.", fullEn:"The ticket costs fourteen zlotys." },
+            { type:"choose", prompt:"Mam trzydzieści ___.", promptEn:"I am thirty years old.",
+              options:["lat","lata","rok"], answer:"lat",
+              explain:"30 ends the 5+ way → Genitive plural: lat.", full:"Mam trzydzieści lat.", fullEn:"I am thirty years old." },
+            { type:"choose", prompt:"Moja córka ma trzy ___.", promptEn:"My daughter is three years old.",
+              options:["lata","lat","roki"], answer:"lata",
+              explain:"2-4 team → lata. ('roki' doesn't exist - rok goes rok / lata / lat.)", full:"Moja córka ma trzy lata.", fullEn:"My daughter is three years old." },
+            { type:"choose", prompt:"Ona ma dwadzieścia jeden ___.", promptEn:"She is twenty-one years old.",
+              options:["lat","lata","rok"], answer:"lat",
+              explain:"Numbers ending in jeden take the 5+ rule, and jeden stays frozen: dwadzieścia jeden lat.", full:"Ona ma dwadzieścia jeden lat.", fullEn:"She is twenty-one years old." },
+            { type:"choose", prompt:"Ile masz ___?", promptEn:"How old are you?",
+              options:["lat","lata","roku"], answer:"lat",
+              explain:"ile behaves like a 5+ number → Genitive plural: Ile masz lat?", full:"Ile masz lat?", fullEn:"How old are you?" },
+            { type:"choose", prompt:"Pięć osób ___ na przystanku.", promptEn:"Five people are waiting at the stop.",
+              options:["czeka","czekają","czekacie"], answer:"czeka",
+              explain:"With 5+ numbers the verb goes singular: pięć osób czeka.", full:"Pięć osób czeka na przystanku.", fullEn:"Five people are waiting at the stop." },
+            { type:"choose", prompt:"___ kolegów czekało na mnie.", promptEn:"Two friends (men) were waiting for me.",
+              options:["Dwóch","Dwa","Dwie"], answer:"Dwóch",
+              explain:"Counting men → the masculine-personal form dwóch + Genitive: dwóch kolegów.", full:"Dwóch kolegów czekało na mnie.", fullEn:"Two friends were waiting for me." },
+            { type:"choose", prompt:"W firmie pracuje ___ programistów.", promptEn:"Five programmers work at the company.",
+              options:["pięciu","pięć","pięcioro"], answer:"pięciu",
+              explain:"Men from 5 up → pięciu + Genitive, singular verb: pracuje pięciu programistów.", full:"W firmie pracuje pięciu programistów.", fullEn:"Five programmers work at the company." },
+            { type:"choose", prompt:"Byłem tam dwa ___.", promptEn:"I was there twice.",
+              options:["razy","raz","razów"], answer:"razy",
+              explain:"raz → dwa razy. Handy: razy also serves the 5+ team (pięć razy).", full:"Byłem tam dwa razy.", fullEn:"I was there twice." },
+            { type:"choose", prompt:"Przyszło tylko kilka ___.", promptEn:"Only a few people came.",
+              options:["osób","osoby","osobów"], answer:"osób",
+              explain:"kilka behaves like 5+ → Genitive plural: kilka osób. ('osobów' doesn't exist.)", full:"Przyszło tylko kilka osób.", fullEn:"Only a few people came." }
+          ]
         }
       ]
     }
@@ -2039,4 +2295,399 @@
       ]
     }
   );
+
+  window.PP_LEVELS.push(
+    {
+      level: "Building Sentences",
+      blurb: "który, jeśli, żeby - joining ideas together",
+      group: "grammar",
+      topics: [
+        {
+          name: "Który (Relative clauses)", emoji: "🔗", kind: "grammar", chip: "Grammar B1",
+          desc: "The man who..., the film that... - który declines like an adjective",
+          teach: [
+            { front:"What który does",
+              sub:"It glues a description onto a noun - the man <b>who</b> lives here, the film <b>that</b> we watched.",
+              points:[
+                "który stands in for the noun inside the added clause: Człowiek, <b>który</b> tu mieszka... (the man who lives here).",
+                "It's one word for who / which / that - Polish doesn't split them the way English does.",
+                "A comma always comes before it. Polish commas are grammar, not style: <i>Człowiek<b>,</b> który...</i>",
+                "The good news: który declines exactly like an adjective - everything from the case lessons transfers."
+              ],
+              examples:[
+                { pl:"Człowiek, który tam stoi, to mój sąsiad.", en:"The man who is standing there is my neighbour." },
+                { pl:"Film, który oglądaliśmy, był świetny.", en:"The film that we watched was great." }
+              ] },
+
+            { front:"Gender and number come from the noun",
+              sub:"Look left at the noun being described - który copies its gender and number.",
+              table:[
+                { g:"masculine", e:"który", ex:"chłopak, który..." },
+                { g:"feminine", e:"która", ex:"kobieta, która..." },
+                { g:"neuter", e:"które", ex:"dziecko, które..." },
+                { g:"men / mixed group", e:"którzy", ex:"ludzie, którzy..." },
+                { g:"other plurals", e:"które", ex:"książki, które..." }
+              ],
+              note:"<b>którzy</b> is the same masculine-personal club as oni and wszyscy - people-with-a-man get their own form, everything else takes które." },
+
+            { front:"The case comes from the clause",
+              sub:"Gender from the left, case from the right: whatever job który does inside its own clause sets the case.",
+              points:[
+                "Subject of the clause → Nominative: Kobieta, <b>która</b> tu pracuje...",
+                "Object of the clause → Accusative: Kobieta, <b>którą</b> poznałem... (I met <i>her</i> → object).",
+                "Receiving something → Dative: Dziewczyna, <b>której</b> dałem kwiaty...",
+                "This is why the same noun can be followed by different forms - the clause decides."
+              ],
+              examples:[
+                { pl:"Kobieta, która tu pracuje, jest z Krakowa.", en:"The woman who works here is from Krakow." },
+                { pl:"Kobieta, którą wczoraj poznałem, jest z Krakowa.", en:"The woman I met yesterday is from Krakow." }
+              ] },
+
+            { front:"With prepositions: z którym, w którym",
+              sub:"The preposition moves to the front of który and brings its case along - no dangling prepositions like in English.",
+              table:[
+                { g:"z + Instrumental", e:"z którym / z którą", ex:"kolega, z którym pracuję" },
+                { g:"w + Locative", e:"w którym / w której", ex:"mieszkanie, w którym mieszkam" },
+                { g:"o + Locative", e:"o którym / o której", ex:"film, o którym mówiłem" },
+                { g:"na + Accusative", e:"na który / na którą", ex:"autobus, na który czekam" },
+                { g:"do + Genitive", e:"do którego / do której", ex:"sklep, do którego chodzę" }
+              ],
+              note:"English says 'the flat I live <b>in</b>'. Polish never leaves the preposition at the end: <i>mieszkanie, <b>w którym</b> mieszkam</i>." },
+
+            { front:"co - when there's no noun",
+              sub:"For 'that which / what / everything that', Polish switches from który to co.",
+              points:[
+                "After to, wszystko, nic: <i>wszystko, <b>co</b> mam</i> - everything (that) I have.",
+                "<b>to, co</b> = 'what' as a thing: <i>Rób <b>to, co</b> lubisz</i> - do what you like.",
+                "który needs a concrete noun to lean on; co covers the abstract leftovers."
+              ],
+              examples:[
+                { pl:"To wszystko, co mam.", en:"That's everything I have." },
+                { pl:"Nie rozumiem tego, co mówisz.", en:"I don't understand what you're saying." }
+              ] }
+          ],
+          drills: [
+            { type:"choose", prompt:"Człowiek, ___ tam stoi, to mój sąsiad.", promptEn:"The man who is standing there is my neighbour.",
+              options:["który","którego","którym"], answer:"który",
+              explain:"He is the subject of 'stoi' → Nominative: który.", full:"Człowiek, który tam stoi, to mój sąsiad.", fullEn:"The man who is standing there is my neighbour." },
+            { type:"choose", prompt:"Kobieta, ___ wczoraj poznałem, jest z Krakowa.", promptEn:"The woman I met yesterday is from Krakow.",
+              options:["którą","która","której"], answer:"którą",
+              explain:"I met HER - object of poznać → Accusative feminine: którą.", full:"Kobieta, którą wczoraj poznałem, jest z Krakowa.", fullEn:"The woman I met yesterday is from Krakow." },
+            { type:"choose", prompt:"Ludzie, ___ tu pracują, są bardzo mili.", promptEn:"The people who work here are very nice.",
+              options:["którzy","które","który"], answer:"którzy",
+              explain:"ludzie = people with men → masculine-personal plural: którzy.", full:"Ludzie, którzy tu pracują, są bardzo mili.", fullEn:"The people who work here are very nice." },
+            { type:"choose", prompt:"Książki, ___ czytam, są po polsku.", promptEn:"The books I read are in Polish.",
+              options:["które","którzy","których"], answer:"które",
+              explain:"Books are things → które (never którzy), and inanimate Accusative looks like Nominative.", full:"Książki, które czytam, są po polsku.", fullEn:"The books I read are in Polish." },
+            { type:"choose", prompt:"Kolega, z ___ pracuję, jest z Ukrainy.", promptEn:"The colleague I work with is from Ukraine.",
+              options:["którym","który","którego"], answer:"którym",
+              explain:"z + Instrumental → z którym.", full:"Kolega, z którym pracuję, jest z Ukrainy.", fullEn:"The colleague I work with is from Ukraine." },
+            { type:"choose", prompt:"Mieszkanie, w ___ mieszkam, jest małe.", promptEn:"The flat I live in is small.",
+              options:["którym","które","którego"], answer:"którym",
+              explain:"w + Locative → w którym. Polish never leaves 'in' at the end of the sentence.", full:"Mieszkanie, w którym mieszkam, jest małe.", fullEn:"The flat I live in is small." },
+            { type:"choose", prompt:"Dziewczyna, ___ dałem kwiaty, ma na imię Ola.", promptEn:"The girl I gave flowers to is called Ola.",
+              options:["której","którą","która"], answer:"której",
+              explain:"Giving TO her → Dative feminine: której.", full:"Dziewczyna, której dałem kwiaty, ma na imię Ola.", fullEn:"The girl I gave flowers to is called Ola." },
+            { type:"choose", prompt:"Autobus, na ___ czekam, ma opóźnienie.", promptEn:"The bus I'm waiting for is delayed.",
+              options:["który","którym","którego"], answer:"który",
+              explain:"czekać na + Accusative; bus is inanimate, so Accusative = Nominative: na który.", full:"Autobus, na który czekam, ma opóźnienie.", fullEn:"The bus I'm waiting for is delayed." },
+            { type:"choose", prompt:"Film, o ___ mówiłem, jest w kinie.", promptEn:"The film I was talking about is in the cinema.",
+              options:["którym","który","którego"], answer:"którym",
+              explain:"mówić o + Locative → o którym.", full:"Film, o którym mówiłem, jest w kinie.", fullEn:"The film I was talking about is in the cinema." },
+            { type:"choose", prompt:"Rób to, ___ lubisz.", promptEn:"Do what you like.",
+              options:["co","które","który"], answer:"co",
+              explain:"After 'to' with no concrete noun → co, not który.", full:"Rób to, co lubisz.", fullEn:"Do what you like." },
+            { type:"choose", prompt:"To wszystko, ___ mam.", promptEn:"That's everything I have.",
+              options:["co","które","czego"], answer:"co",
+              explain:"After wszystko → co.", full:"To wszystko, co mam.", fullEn:"That's everything I have." },
+            { type:"choose", prompt:"Sklep, do ___ chodzę, jest za rogiem.", promptEn:"The shop I go to is around the corner.",
+              options:["którego","którym","który"], answer:"którego",
+              explain:"do + Genitive → do którego.", full:"Sklep, do którego chodzę, jest za rogiem.", fullEn:"The shop I go to is around the corner." }
+          ]
+        },
+        {
+          name: "Jeśli i gdyby (Conditions)", emoji: "🔀", kind: "grammar", chip: "Grammar B1",
+          desc: "Real ifs vs what-ifs - and the future tense English hides",
+          teach: [
+            { front:"Two kinds of if",
+              sub:"Polish splits 'if' by how real the situation is.",
+              points:[
+                "<b>jeśli</b> - real, possible, might well happen: <i>Jeśli będzie padać, zostanę w domu.</i>",
+                "<b>gdyby</b> - hypothetical, imagined, probably not: <i>Gdybym miał milion, kupiłbym dom.</i>",
+                "Quick test: can you sensibly add 'and we'll see'? Then it's jeśli. Is it daydreaming? Then gdyby.",
+                "<b>jeżeli</b> = jeśli, just slightly more formal. <b>jak</b> = jeśli in casual speech: <i>Jak będziesz w Warszawie, zadzwoń.</i>"
+              ],
+              examples:[
+                { pl:"Jeśli masz czas, chodź z nami.", en:"If you have time, come with us." },
+                { pl:"Gdybym miał czas, poszedłbym z wami.", en:"If I had time, I would go with you." }
+              ] },
+
+            { front:"The future English hides",
+              sub:"The number-one error zone: English says 'if it rains' in the present. Polish says the future out loud.",
+              points:[
+                "English: If it <b>rains</b> tomorrow... Polish: Jeśli jutro <b>będzie padać</b>...",
+                "Both halves can be future: Jeśli <b>będę miał</b> czas, <b>przyjdę</b>.",
+                "Saying <i>jeśli pada jutro</i> is the direct-translation trap - if the condition is about the future, use the future."
+              ],
+              examples:[
+                { pl:"Jeśli będzie ładna pogoda, pojedziemy nad jezioro.", en:"If the weather is nice, we'll go to the lake." },
+                { pl:"Jeśli będziesz miał pytania, napisz do mnie.", en:"If you have questions, write to me." }
+              ] },
+
+            { front:"gdyby carries personal endings",
+              sub:"gdyby conjugates like a verb - the ending tells you who, and the verb after it takes the past form.",
+              table:[
+                { g:"ja", e:"gdybym", ex:"Gdybym wiedział..." },
+                { g:"ty", e:"gdybyś", ex:"Gdybyś chciał..." },
+                { g:"on / ona", e:"gdyby", ex:"Gdyby mogła..." },
+                { g:"my", e:"gdybyśmy", ex:"Gdybyśmy mieli czas..." },
+                { g:"wy", e:"gdybyście", ex:"Gdybyście byli głodni..." }
+              ],
+              note:"The verb after gdyby- is in the past form and agrees with your gender: gdybym <b>miał</b> (a man) / gdybym <b>miała</b> (a woman) - the same -ł/-ła split as the normal past tense." },
+
+            { front:"The other half: -bym in the result",
+              sub:"A gdyby sentence usually answers with the conditional you know from Politeness: kupiłbym, poszłabym.",
+              points:[
+                "Pattern: <b>Gdybym</b> miał pieniądze, <b>kupiłbym</b> samochód.",
+                "Optional <b>to</b> can open the second half: Gdybym mógł, <b>to</b> bym pomógł.",
+                "The 'by' is mobile - <i>kupiłbym</i> and <i>bym kupił</i> both work; the meaning doesn't change.",
+                "You've already met this machinery in <i>Tryb przypuszczający</i> - here it's just doing what-if work instead of politeness work."
+              ],
+              examples:[
+                { pl:"Gdybym miał pieniądze, kupiłbym samochód.", en:"If I had money, I would buy a car." },
+                { pl:"Co byś zrobił, gdybyś wygrał milion?", en:"What would you do if you won a million?" }
+              ] },
+
+            { front:"Everyday if-phrases",
+              sub:"Chunks you'll hear daily - each one quietly follows the rules above.",
+              table:[
+                { g:"if I were you", e:"na twoim miejscu", ex:"Na twoim miejscu bym zadzwonił." },
+                { g:"if necessary", e:"jeśli trzeba / w razie czego", ex:"W razie czego dzwoń." },
+                { g:"casual if", e:"jak", ex:"Jak coś, jestem u siebie." },
+                { g:"if possible", e:"jeśli to możliwe", ex:"Jeśli to możliwe, wolę rano." }
+              ],
+              note:"<b>Jak coś...</b> (literally 'if something...') is the Polish 'if anything comes up' - vague, friendly, and everywhere." }
+          ],
+          drills: [
+            { type:"choose", prompt:"___ będzie padać, zostanę w domu.", promptEn:"If it rains, I'll stay home.",
+              options:["Jeśli","Gdyby","Żeby"], answer:"Jeśli",
+              explain:"Real, possible situation → jeśli. Gdyby would make it a daydream.", full:"Jeśli będzie padać, zostanę w domu.", fullEn:"If it rains, I'll stay home." },
+            { type:"choose", prompt:"Jeśli jutro ___ czas, przyjdę.", promptEn:"If I have time tomorrow, I'll come.",
+              options:["będę miał","mam","miałbym"], answer:"będę miał",
+              explain:"The condition is about tomorrow → future tense, even though English says 'have'.", full:"Jeśli jutro będę miał czas, przyjdę.", fullEn:"If I have time tomorrow, I'll come." },
+            { type:"choose", prompt:"___ miał milion, kupiłbym mieszkanie.", promptEn:"If I had a million, I would buy a flat.",
+              options:["Gdybym","Jeśli","Gdyby"], answer:"Gdybym",
+              explain:"Hypothetical + 'I' → gdyby with the -m ending: gdybym.", full:"Gdybym miał milion, kupiłbym mieszkanie.", fullEn:"If I had a million, I would buy a flat." },
+            { type:"choose", prompt:"Gdybym wiedział, ___ ci.", promptEn:"If I had known, I would have told you.",
+              options:["powiedziałbym","powiem","powiedziałem"], answer:"powiedziałbym",
+              explain:"The result half of a gdyby sentence takes -by: powiedziałbym.", full:"Gdybym wiedział, powiedziałbym ci.", fullEn:"If I had known, I would have told you." },
+            { type:"choose", prompt:"Co byś zrobił, ___ wygrał milion?", promptEn:"What would you do if you won a million?",
+              options:["gdybyś","jeśli","gdybym"], answer:"gdybyś",
+              explain:"Hypothetical + 'you' → gdybyś. The -ś ending marks ty.", full:"Co byś zrobił, gdybyś wygrał milion?", fullEn:"What would you do if you won a million?" },
+            { type:"choose", prompt:"___ mieli czas, pojechalibyśmy nad morze.", promptEn:"If we had time, we would go to the seaside.",
+              options:["Gdybyśmy","Gdybym","Jeśli"], answer:"Gdybyśmy",
+              explain:"Hypothetical + 'we' → gdybyśmy.", full:"Gdybyśmy mieli czas, pojechalibyśmy nad morze.", fullEn:"If we had time, we would go to the seaside." },
+            { type:"choose", prompt:"Jeśli będziesz w Warszawie, ___ do mnie.", promptEn:"If you're in Warsaw, call me.",
+              options:["zadzwoń","zadzwoniłbyś","dzwoniłeś"], answer:"zadzwoń",
+              explain:"Real condition → the result can simply be an imperative: zadzwoń.", full:"Jeśli będziesz w Warszawie, zadzwoń do mnie.", fullEn:"If you're in Warsaw, call me." },
+            { type:"choose", prompt:"Na twoim miejscu ___ zadzwonił.", promptEn:"If I were you, I would call.",
+              options:["bym","by","będę"], answer:"bym",
+              explain:"na twoim miejscu + conditional; 'by' takes the -m for ja: bym zadzwonił.", full:"Na twoim miejscu bym zadzwonił.", fullEn:"If I were you, I would call." },
+            { type:"choose", prompt:"Gdyby ona ___, na pewno by przyszła.", promptEn:"If she could, she would definitely come.",
+              options:["mogła","mógł","może"], answer:"mogła",
+              explain:"After gdyby the verb is a past form agreeing with gender: ona → mogła.", full:"Gdyby ona mogła, na pewno by przyszła.", fullEn:"If she could, she would definitely come." },
+            { type:"choose", prompt:"___ coś, jestem u siebie.", promptEn:"If anything comes up, I'm at my place.",
+              options:["Jak","Gdyby","Który"], answer:"Jak",
+              explain:"Casual speech uses jak for jeśli: Jak coś... - the everyday 'if anything'.", full:"Jak coś, jestem u siebie.", fullEn:"If anything comes up, I'm at my place." }
+          ]
+        },
+        {
+          name: "Żeby (So that / want to)", emoji: "🎯", kind: "grammar", chip: "Grammar B1",
+          desc: "Chcę, żebyś przyszedł - wanting, asking, and doing things for a purpose",
+          teach: [
+            { front:"What żeby does",
+              sub:"One little word covers 'in order to', 'so that', and 'want someone to' - three things English builds differently.",
+              points:[
+                "Purpose: Uczę się, <b>żeby</b> zdać egzamin - I study (in order) to pass.",
+                "Wanting someone else to act: Chcę, <b>żebyś</b> przyszedł - I want you to come.",
+                "English has no direct equivalent of that second one - 'I want that you come' is exactly how Polish thinks.",
+                "<b>aby</b> = żeby, one notch more formal. You'll see it in emails and official texts."
+              ],
+              examples:[
+                { pl:"Uczę się polskiego, żeby rozmawiać z sąsiadami.", en:"I'm learning Polish to talk with my neighbours." },
+                { pl:"Chcę, żebyś przyszedł na moje urodziny.", en:"I want you to come to my birthday." }
+              ] },
+
+            { front:"Same subject: żeby + infinitive",
+              sub:"When the same person does both halves, keep it simple - infinitive.",
+              points:[
+                "Pracuję dużo, <b>żeby zarobić</b> na wakacje - I work a lot to earn for holidays. (I work, I earn.)",
+                "Dzwonię, <b>żeby zapytać</b> o godziny otwarcia - I'm calling to ask about opening hours.",
+                "Negative purpose works the same way: Mówię cicho, <b>żeby nie obudzić</b> dziecka - so as not to wake the child."
+              ],
+              examples:[
+                { pl:"Wyszedłem wcześniej, żeby zdążyć na pociąg.", en:"I left earlier to make the train." },
+                { pl:"Mówię cicho, żeby nie obudzić dziecka.", en:"I'm speaking quietly so as not to wake the child." }
+              ] },
+
+            { front:"Different subjects: żeby grows endings",
+              sub:"When someone else should do it, żeby conjugates - the same endings as gdyby.",
+              table:[
+                { g:"ja", e:"żebym", ex:"Szef chce, żebym został." },
+                { g:"ty", e:"żebyś", ex:"Chcę, żebyś wiedział." },
+                { g:"on / ona", e:"żeby", ex:"Proszę, żeby zaczekał." },
+                { g:"my", e:"żebyśmy", ex:"Chcą, żebyśmy przyszli." },
+                { g:"wy", e:"żebyście", ex:"Chcemy, żebyście wiedzieli." }
+              ],
+              note:"And just like gdyby, the verb after it takes the <b>past form</b>: żebyś przyszed<b>ł</b> (to a man) / przysz<b>ła</b> (to a woman) - even though nothing past is happening." },
+
+            { front:"The verbs that trigger it",
+              sub:"A small club of verbs almost always hands off to żeby when another person is involved.",
+              table:[
+                { g:"chcieć", e:"to want", ex:"Chcę, żebyś to zobaczył." },
+                { g:"prosić", e:"to ask / request", ex:"Proszę, żebyś był punktualny." },
+                { g:"powiedzieć / mówić", e:"to tell (someone to do)", ex:"Powiedz mu, żeby zadzwonił." },
+                { g:"zależeć (mi na tym)", e:"to care / matter", ex:"Zależy mi, żeby wszystko było gotowe." },
+                { g:"woleć", e:"to prefer", ex:"Wolę, żebyśmy zostali w domu." }
+              ],
+              note:"Telling someone to do something = powiedzieć + żeby: <i>Powiedz jej, żeby przyszła</i> - literally 'tell her that she should come'." }
+          ],
+          drills: [
+            { type:"choose", prompt:"Chcę, ___ przyszedł na moje urodziny.", promptEn:"I want you to come to my birthday.",
+              options:["żebyś","żeby","jeśli"], answer:"żebyś",
+              explain:"You should come → żeby + the -ś ending for ty: żebyś.", full:"Chcę, żebyś przyszedł na moje urodziny.", fullEn:"I want you to come to my birthday." },
+            { type:"choose", prompt:"Uczę się polskiego, ___ rozmawiać z sąsiadami.", promptEn:"I'm learning Polish to talk with my neighbours.",
+              options:["żeby","żebym","który"], answer:"żeby",
+              explain:"Same person learns and talks → plain żeby + infinitive.", full:"Uczę się polskiego, żeby rozmawiać z sąsiadami.", fullEn:"I'm learning Polish to talk with my neighbours." },
+            { type:"choose", prompt:"Prosiłem go, żeby ___.", promptEn:"I asked him to help.",
+              options:["pomógł","pomóc","pomoże"], answer:"pomógł",
+              explain:"Different subject after żeby → past form: żeby pomógł, not the infinitive.", full:"Prosiłem go, żeby pomógł.", fullEn:"I asked him to help." },
+            { type:"choose", prompt:"Powiedz jej, ___ zadzwoniła do mnie.", promptEn:"Tell her to call me.",
+              options:["żeby","żebyś","żebym"], answer:"żeby",
+              explain:"She should call - third person → plain żeby (the ending stays empty for on/ona).", full:"Powiedz jej, żeby zadzwoniła do mnie.", fullEn:"Tell her to call me." },
+            { type:"choose", prompt:"Mówię cicho, żeby nie ___ dziecka.", promptEn:"I'm speaking quietly so as not to wake the child.",
+              options:["obudzić","obudził","obudzę"], answer:"obudzić",
+              explain:"Same subject (I speak, I would wake) → infinitive after żeby nie.", full:"Mówię cicho, żeby nie obudzić dziecka.", fullEn:"I'm speaking quietly so as not to wake the child." },
+            { type:"choose", prompt:"Chcą, ___ przyszli na spotkanie.", promptEn:"They want us to come to the meeting.",
+              options:["żebyśmy","żebyście","żeby"], answer:"żebyśmy",
+              explain:"We should come → żebyśmy.", full:"Chcą, żebyśmy przyszli na spotkanie.", fullEn:"They want us to come to the meeting." },
+            { type:"choose", prompt:"Zależy mi, ___ wszystko było gotowe.", promptEn:"I care that everything is ready.",
+              options:["żeby","jeśli","które"], answer:"żeby",
+              explain:"zależeć mi hands off to żeby: zależy mi, żeby...", full:"Zależy mi, żeby wszystko było gotowe.", fullEn:"I care that everything is ready." },
+            { type:"choose", prompt:"Wyszedłem wcześniej, żeby ___ na pociąg.", promptEn:"I left earlier to make the train.",
+              options:["zdążyć","zdążył","zdążę"], answer:"zdążyć",
+              explain:"Same subject → infinitive: żeby zdążyć.", full:"Wyszedłem wcześniej, żeby zdążyć na pociąg.", fullEn:"I left earlier to make the train." },
+            { type:"choose", prompt:"Chcę, żebyś ___ prawdę.", promptEn:"I want you to know the truth. (to a man)",
+              options:["znał","znać","znasz"], answer:"znał",
+              explain:"After żebyś → past form agreeing with gender: znał (to a woman: znała). Truth pairs with znać, not wiedzieć.", full:"Chcę, żebyś znał prawdę.", fullEn:"I want you to know the truth." },
+            { type:"choose", prompt:"Wolę, ___ zostali w domu.", promptEn:"I prefer that we stay home.",
+              options:["żebyśmy","żebym","żeby"], answer:"żebyśmy",
+              explain:"woleć + żeby; 'we' → żebyśmy zostali.", full:"Wolę, żebyśmy zostali w domu.", fullEn:"I prefer that we stay home." }
+          ]
+        },
+        {
+          name: "Przeczenie (Negation)", emoji: "🚫", kind: "grammar", chip: "Grammar B1",
+          desc: "Nigdy nic nikomu nie mówię - why Polish stacks its negatives",
+          teach: [
+            { front:"nie goes before the verb. Always.",
+              sub:"One position, no exceptions, no contractions to memorise.",
+              points:[
+                "<b>Nie</b> mam czasu. <b>Nie</b> wiem. <b>Nie</b> lubię poniedziałków.",
+                "It stays glued to the verb even in questions: Czy ty <b>nie widzisz</b>?",
+                "Compare English's don't / doesn't / didn't / won't - Polish has one word for all of it."
+              ],
+              examples:[
+                { pl:"Nie rozumiem tego pytania.", en:"I don't understand this question." },
+                { pl:"Ona nie pracuje w piątki.", en:"She doesn't work on Fridays." }
+              ] },
+
+            { front:"Negatives stack - and they must",
+              sub:"In English two negatives cancel. In Polish they team up, and skipping one is an error.",
+              points:[
+                "Nigdy <b>nie</b> palę - I never smoke. The nie is not optional.",
+                "They pile up freely: <b>Nigdy nikomu nic nie</b> mówię - I never tell anyone anything. Four negatives, one meaning.",
+                "The trap runs in reverse for English speakers: <i>Nigdy palę</i> (missing nie) sounds as wrong to Poles as 'I never don't smoke' does to you."
+              ],
+              examples:[
+                { pl:"Nikt nic nie powiedział.", en:"Nobody said anything." },
+                { pl:"Nigdy nigdzie nie wychodzę wieczorem.", en:"I never go out anywhere in the evening." }
+              ] },
+
+            { front:"The ni- family",
+              sub:"The negative words all start with ni- - and they decline through the cases like everything else.",
+              table:[
+                { g:"nikt → nikogo, nikomu", e:"nobody", ex:"Nie znam tu nikogo." },
+                { g:"nic → niczego, niczym", e:"nothing", ex:"Nic nie widzę." },
+                { g:"nigdy", e:"never", ex:"Nigdy tam nie byłem." },
+                { g:"nigdzie", e:"nowhere", ex:"Nigdzie nie mogę znaleźć kluczy." },
+                { g:"żaden / żadna / żadne", e:"no / none", ex:"Nie mam żadnych pytań." }
+              ],
+              note:"<b>Nikogo nie było w domu</b> - nobody was home. After nie było, the person goes to the Genitive: the genitive-of-negation you met in Dopełniacz, working overtime." },
+
+            { front:"Negation changes the case",
+              sub:"The Dopełniacz reminder: a negated verb pushes its object from Accusative into Genitive.",
+              points:[
+                "Mam czas → Nie mam <b>czasu</b>. Lubię kawę → Nie lubię <b>kawy</b>.",
+                "There is / there isn't: Jest mleko → <b>Nie ma mleka</b>.",
+                "This only touches direct objects. Other cases stay put: Nie ufam <b>mu</b> (still Dative)."
+              ],
+              examples:[
+                { pl:"Nie mam dzisiaj czasu.", en:"I don't have time today." },
+                { pl:"W lodówce nie ma mleka.", en:"There's no milk in the fridge." }
+              ] },
+
+            { front:"ani... ani, jeszcze nie, już nie",
+              sub:"Three finishing touches that make your negatives sound native.",
+              table:[
+                { g:"neither... nor", e:"ani... ani", ex:"Nie lubię ani kawy, ani herbaty." },
+                { g:"not yet", e:"jeszcze nie", ex:"Jeszcze nie jadłem." },
+                { g:"not anymore", e:"już nie", ex:"Już tam nie pracuję." },
+                { g:"not at all", e:"w ogóle nie", ex:"W ogóle nie rozumiem." },
+                { g:"almost never", e:"prawie nigdy", ex:"Prawie nigdy nie choruję." }
+              ],
+              note:"<b>jeszcze nie</b> vs <b>już nie</b> is the pair worth drilling: jeszcze nie = hasn't happened yet; już nie = happened, but stopped. <i>Jeszcze nie jem</i> (I'm not eating yet) vs <i>Już nie jem</i> (I've stopped eating)." }
+          ],
+          drills: [
+            { type:"choose", prompt:"Nigdy ___ palę.", promptEn:"I never smoke.",
+              options:["nie","-","już"], answer:"nie",
+              explain:"nigdy demands its nie - dropping it is the classic English-speaker error.", full:"Nigdy nie palę.", fullEn:"I never smoke." },
+            { type:"choose", prompt:"Nikt nic ___ powiedział.", promptEn:"Nobody said anything.",
+              options:["nie","ani","już"], answer:"nie",
+              explain:"Stack them all: nikt + nic + nie. Every negative word joins in.", full:"Nikt nic nie powiedział.", fullEn:"Nobody said anything." },
+            { type:"choose", prompt:"Nie znam tu ___.", promptEn:"I don't know anyone here.",
+              options:["nikogo","nikt","nikomu"], answer:"nikogo",
+              explain:"Negated znać takes the Genitive - nikt becomes nikogo.", full:"Nie znam tu nikogo.", fullEn:"I don't know anyone here." },
+            { type:"choose", prompt:"Nie mam ___.", promptEn:"I don't have time.",
+              options:["czasu","czas","czasem"], answer:"czasu",
+              explain:"Negation pushes the object to Genitive: czas → czasu.", full:"Nie mam czasu.", fullEn:"I don't have time." },
+            { type:"choose", prompt:"W lodówce nie ma ___.", promptEn:"There's no milk in the fridge.",
+              options:["mleka","mleko","mlekiem"], answer:"mleka",
+              explain:"nie ma + Genitive: mleka.", full:"W lodówce nie ma mleka.", fullEn:"There's no milk in the fridge." },
+            { type:"choose", prompt:"___ nie było w domu.", promptEn:"Nobody was home.",
+              options:["Nikogo","Nikt","Nikomu"], answer:"Nikogo",
+              explain:"nie było takes Genitive - nikt becomes nikogo.", full:"Nikogo nie było w domu.", fullEn:"Nobody was home." },
+            { type:"choose", prompt:"Nie mam ___ pytań.", promptEn:"I have no questions.",
+              options:["żadnych","żaden","żadne"], answer:"żadnych",
+              explain:"żaden agrees with the Genitive plural pytań → żadnych.", full:"Nie mam żadnych pytań.", fullEn:"I have no questions." },
+            { type:"choose", prompt:"Nie lubię ___ kawy, ani herbaty.", promptEn:"I like neither coffee nor tea.",
+              options:["ani","albo","czy"], answer:"ani",
+              explain:"Neither... nor = ani... ani, both halves.", full:"Nie lubię ani kawy, ani herbaty.", fullEn:"I like neither coffee nor tea." },
+            { type:"choose", prompt:"Jadłeś już obiad? - ___ nie.", promptEn:"Have you eaten lunch? - Not yet.",
+              options:["Jeszcze","Już","Nigdy"], answer:"Jeszcze",
+              explain:"Hasn't happened yet → jeszcze nie. Już nie would mean you've stopped eating lunches altogether.", full:"Jadłeś już obiad? - Jeszcze nie.", fullEn:"Have you eaten lunch? - Not yet." },
+            { type:"choose", prompt:"___ tam nie pracuję.", promptEn:"I don't work there anymore.",
+              options:["Już","Jeszcze","Ani"], answer:"Już",
+              explain:"Happened, then stopped → już nie.", full:"Już tam nie pracuję.", fullEn:"I don't work there anymore." },
+            { type:"choose", prompt:"Nigdzie nie mogę znaleźć ___.", promptEn:"I can't find my keys anywhere.",
+              options:["kluczy","klucze","kluczami"], answer:"kluczy",
+              explain:"Negated znaleźć → Genitive: kluczy. Plus nigdzie stacking with nie.", full:"Nigdzie nie mogę znaleźć kluczy.", fullEn:"I can't find my keys anywhere." },
+            { type:"choose", prompt:"W ogóle ___ rozumiem.", promptEn:"I don't understand at all.",
+              options:["nie","już","ani"], answer:"nie",
+              explain:"w ogóle nie = not at all - the nie still shows up.", full:"W ogóle nie rozumiem.", fullEn:"I don't understand at all." }
+          ]
+        }
+      ]
+    }
+  );
+
 })();

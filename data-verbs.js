@@ -496,7 +496,17 @@
               examples:[
                 { pl:"Powinieneś odpocząć.", en:"You should rest." },
                 { pl:"Trzeba kupić bilet.", en:"You need to buy a ticket." }
-              ] }
+              ] },
+            { front:"warto, nie wolno, da się",
+              sub:"Three more impersonal helpers - no subject, just a verdict on the action.",
+              table:[
+                { g:"warto", e:"it's worth it", ex:"Warto obejrzeć ten film." },
+                { g:"nie warto", e:"not worth it", ex:"Nie warto się denerwować." },
+                { g:"nie wolno", e:"it's not allowed", ex:"Tu nie wolno palić." },
+                { g:"da się", e:"it can be done", ex:"Da się to naprawić." },
+                { g:"nie da się", e:"it can't be done", ex:"Nie da się tego zrobić w jeden dzień." }
+              ],
+              note:"They work exactly like trzeba and można: impersonal word + infinitive. <b>Da się?</b> on its own is a whole question - 'is it doable?'" },
           ],
           drills: [
             { type:"choose", prompt:"___ ci pomóc?", promptEn:"Can I help you?",
@@ -519,7 +529,16 @@
               explain:"powinien, 'ty' masculine: powinieneś.", full:"Powinieneś odpocząć.", fullEn:"You should rest." },
             { type:"choose", prompt:"___ kupić bilet.", promptEn:"You need to buy a ticket.",
               options:["Trzeba","Chcę","Mogę"], answer:"Trzeba",
-              explain:"Impersonal 'one needs to' = trzeba + infinitive.", full:"Trzeba kupić bilet.", fullEn:"You need to buy a ticket." }
+              explain:"Impersonal 'one needs to' = trzeba + infinitive.", full:"Trzeba kupić bilet.", fullEn:"You need to buy a ticket." },
+            { type:"choose", prompt:"___ obejrzeć ten film.", promptEn:"This film is worth watching.",
+              options:["Warto","Wolno","Trzeba"], answer:"Warto",
+              explain:"A recommendation of value → warto + infinitive.", full:"Warto obejrzeć ten film.", fullEn:"This film is worth watching." },
+            { type:"choose", prompt:"Tu ___ palić.", promptEn:"Smoking is not allowed here.",
+              options:["nie wolno","nie warto","nie trzeba"], answer:"nie wolno",
+              explain:"A prohibition → nie wolno. 'nie trzeba' would just mean you don't have to.", full:"Tu nie wolno palić.", fullEn:"Smoking is not allowed here." },
+            { type:"choose", prompt:"Tego ___ zrobić w jeden dzień.", promptEn:"This can't be done in one day.",
+              options:["nie da się","nie wolno","nie warto"], answer:"nie da się",
+              explain:"Impossibility → nie da się. nie wolno = forbidden, nie warto = pointless.", full:"Tego nie da się zrobić w jeden dzień.", fullEn:"This can't be done in one day." }
           ]
         },
 
@@ -692,6 +711,123 @@
             { type:"choose", prompt:"___ o piątej, czekaj na mnie.", promptEn:"I'll arrive at five, wait for me.",
               options:["Idę","Przyjdę","Chodzę"], answer:"Przyjdę",
               explain:"Arrive (finished, future) → perfective przyjdę.", full:"Przyjdę o piątej.", fullEn:"I'll arrive at five." }
+          ]
+        },
+        {
+          name: "Prefiksy ruchu (Motion prefixes)", emoji: "🧭", kind: "grammar", chip: "Verbs B1",
+          desc: "przyjść, wyjść, dojechać - one verb, eight directions",
+          teach: [
+            { front:"One verb, many directions",
+              sub:"You met pójść and przyjść in Verbs of motion. Here's the whole system - the biggest vocabulary multiplier in Polish.",
+              points:[
+                "A prefix on iść or jechać adds a <b>direction</b> and makes the verb <b>perfective</b> (one completed move).",
+                "Learn seven prefixes and you unlock dozens of verbs - the same set works on both the foot family and the wheels family.",
+                "przy- = arriving, wy- = out, w(e)- = in, do- = reaching, od(e)- = away from, prze- = across, po- = setting off."
+              ],
+              examples:[
+                { pl:"Przyjdę o piątej.", en:"I'll come (arrive) at five." },
+                { pl:"Wyjechał z Polski dwa lata temu.", en:"He left Poland two years ago." }
+              ] },
+
+            { front:"The map: on foot",
+              sub:"The iść family - each prefix answers 'where to?'",
+              table:[
+                { g:"przyjść", e:"to arrive / come", ex:"Przyjdę wieczorem." },
+                { g:"wyjść", e:"to go out / leave", ex:"Wyszedłem z biura o piątej." },
+                { g:"wejść", e:"to enter / go in", ex:"Wejdź do środka!" },
+                { g:"dojść", e:"to reach / get to", ex:"Jak dojść do dworca?" },
+                { g:"odejść", e:"to walk away / leave", ex:"Odszedł bez słowa." },
+                { g:"przejść", e:"to cross / go through", ex:"Przejdźmy przez ulicę." },
+                { g:"pójść", e:"to set off / go (once)", ex:"Pójdziemy jutro do kina." }
+              ],
+              note:"Spelling shuffles a little (przy<b>jść</b> but w<b>ejść</b>, od<b>ejść</b>) - the e slips in to keep things pronounceable. The prefix meaning never changes." },
+
+            { front:"The same map on wheels",
+              sub:"Swap iść for jechać and every prefix carries its meaning across.",
+              table:[
+                { g:"przyjechać", e:"to arrive (by vehicle)", ex:"Kiedy przyjechałeś do Polski?" },
+                { g:"wyjechać", e:"to leave (town, country)", ex:"Wyjeżdżam na weekend." },
+                { g:"wjechać", e:"to drive in", ex:"Wjechaliśmy do garażu." },
+                { g:"dojechać", e:"to reach / get to", ex:"Dojechałem do pracy w kwadrans." },
+                { g:"odjechać", e:"to depart (bus, train)", ex:"Pociąg odjechał punktualnie." },
+                { g:"przejechać", e:"to drive across / through", ex:"Przejechaliśmy całą Polskę." },
+                { g:"pojechać", e:"to set off (by vehicle)", ex:"Pojedziemy tam w sobotę." }
+              ],
+              note:"Station announcements live on these: <i>pociąg <b>odjeżdża</b> z toru trzeciego</i> - the train departs from track three." },
+
+            { front:"Each prefix brings its preposition",
+              sub:"The prefix and the preposition usually rhyme in meaning - learn them as pairs.",
+              table:[
+                { g:"wejść / wjechać", e:"do + Genitive", ex:"Wchodzę do budynku." },
+                { g:"wyjść / wyjechać", e:"z + Genitive", ex:"Wychodzę z domu o ósmej." },
+                { g:"dojść / dojechać", e:"do + Genitive", ex:"Jak dojechać do centrum?" },
+                { g:"odejść / odjechać", e:"od + Genitive", ex:"Odszedł od okna." },
+                { g:"przejść / przejechać", e:"przez + Accusative", ex:"Przechodzę przez most." },
+                { g:"przyjść / przyjechać", e:"do / na", ex:"Przyszedłem na spotkanie." }
+              ],
+              note:"wy- pairs with <b>z</b>, w- with <b>do</b> - out of and into. Hear the prefix, and the preposition is usually predictable." },
+
+            { front:"The ongoing versions: -chodzić and -jeżdżać",
+              sub:"Every prefixed verb has an imperfective partner for repeated or scheduled movement.",
+              points:[
+                "przyjść → <b>przychodzić</b>: Przychodzę tu codziennie - I come here every day.",
+                "wyjechać → <b>wyjeżdżać</b>: Często wyjeżdżam służbowo - I often travel for work.",
+                "Timetables use the imperfective: Pociąg <b>przyjeżdża</b> o ósmej, <b>odjeżdża</b> o ósmej dziesięć.",
+                "The pattern is regular: -iść verbs partner with -chodzić, -jechać verbs with -jeżdżać."
+              ],
+              examples:[
+                { pl:"Autobus przyjeżdża co dziesięć minut.", en:"The bus comes every ten minutes." },
+                { pl:"O której odjeżdża ostatni tramwaj?", en:"What time does the last tram leave?" }
+              ] },
+
+            { front:"Survival lines with prefixes inside",
+              sub:"Daily phrases you can use today - each one is the system in action.",
+              table:[
+                { g:"Zaraz przyjdę.", e:"I'll be right there.", ex:"Zaraz przyjdę, daj mi minutę." },
+                { g:"Muszę już wyjść.", e:"I have to leave now.", ex:"Muszę już wyjść, spóźnię się." },
+                { g:"Jak dojść do...?", e:"How do I get to...? (on foot)", ex:"Jak dojść do rynku?" },
+                { g:"Jak dojechać do / na...?", e:"How do I get to...? (transport)", ex:"Jak dojechać na lotnisko?" },
+                { g:"Przepraszam, przechodzę.", e:"Excuse me, coming through.", ex:"Przepraszam, przechodzę!" }
+              ],
+              note:"<b>Jak dojść</b> vs <b>jak dojechać</b> - the foot/wheels split from Verbs of motion carries all the way through the prefix system." }
+          ],
+          drills: [
+            { type:"choose", prompt:"Pociąg ___ o ósmej z toru drugiego.", promptEn:"The train departs at eight from track two.",
+              options:["odjeżdża","przyjeżdża","wjeżdża"], answer:"odjeżdża",
+              explain:"Departing = moving away → od-. przyjeżdża would mean it's arriving.", full:"Pociąg odjeżdża o ósmej z toru drugiego.", fullEn:"The train departs at eight from track two." },
+            { type:"choose", prompt:"___ o piątej, obiecuję.", promptEn:"I'll come at five, I promise.",
+              options:["Przyjdę","Wyjdę","Odejdę"], answer:"Przyjdę",
+              explain:"Arriving somewhere → przy-: przyjdę.", full:"Przyjdę o piątej, obiecuję.", fullEn:"I'll come at five, I promise." },
+            { type:"choose", prompt:"Muszę już ___ z biura.", promptEn:"I have to leave the office now.",
+              options:["wyjść","wejść","dojść"], answer:"wyjść",
+              explain:"Out of the office → wy-, and wy- pairs with z: wyjść z biura.", full:"Muszę już wyjść z biura.", fullEn:"I have to leave the office now." },
+            { type:"choose", prompt:"___ do środka, zimno na dworze!", promptEn:"Come inside, it's cold out!",
+              options:["Wejdź","Wyjdź","Odejdź"], answer:"Wejdź",
+              explain:"Going in → w(e)-: wejdź do środka.", full:"Wejdź do środka, zimno na dworze!", fullEn:"Come inside, it's cold out!" },
+            { type:"choose", prompt:"Przepraszam, jak ___ do dworca?", promptEn:"Excuse me, how do I get to the station? (on foot)",
+              options:["dojść","odejść","przejść"], answer:"dojść",
+              explain:"Reaching a destination → do-: jak dojść do...? The classic street question.", full:"Przepraszam, jak dojść do dworca?", fullEn:"Excuse me, how do I get to the station? (on foot)" },
+            { type:"choose", prompt:"___ przez ulicę na zielonym świetle.", promptEn:"I cross the street on a green light.",
+              options:["Przechodzę","Wychodzę","Przychodzę"], answer:"Przechodzę",
+              explain:"Across → prze-, with przez + Accusative: przechodzę przez ulicę.", full:"Przechodzę przez ulicę na zielonym świetle.", fullEn:"I cross the street on a green light." },
+            { type:"choose", prompt:"Autobus już ___, spóźniliśmy się.", promptEn:"The bus has already left, we missed it.",
+              options:["odjechał","przyjechał","dojechał"], answer:"odjechał",
+              explain:"Gone away → od-: odjechał. przyjechał would mean it just arrived - the opposite problem.", full:"Autobus już odjechał, spóźniliśmy się.", fullEn:"The bus has already left, we missed it." },
+            { type:"choose", prompt:"Kiedy ___ do Polski?", promptEn:"When did you arrive in Poland?",
+              options:["przyjechałeś","wyjechałeś","odjechałeś"], answer:"przyjechałeś",
+              explain:"Arriving in a country → przy- + do: przyjechałeś do Polski.", full:"Kiedy przyjechałeś do Polski?", fullEn:"When did you arrive in Poland?" },
+            { type:"choose", prompt:"Wychodzę ___ domu o ósmej rano.", promptEn:"I leave the house at eight in the morning.",
+              options:["z","do","od"], answer:"z",
+              explain:"wy- pairs with z + Genitive: wychodzę z domu.", full:"Wychodzę z domu o ósmej rano.", fullEn:"I leave the house at eight in the morning." },
+            { type:"choose", prompt:"On ___ z Polski dwa lata temu.", promptEn:"He left Poland two years ago.",
+              options:["wyjechał","przyjechał","pojechał"], answer:"wyjechał",
+              explain:"Leaving a country → wy- + z: wyjechał z Polski.", full:"On wyjechał z Polski dwa lata temu.", fullEn:"He left Poland two years ago." },
+            { type:"choose", prompt:"Autobus ___ co dziesięć minut.", promptEn:"The bus comes every ten minutes.",
+              options:["przyjeżdża","przyjedzie","przyjechał"], answer:"przyjeżdża",
+              explain:"Repeated, scheduled movement → the imperfective partner: przyjeżdża.", full:"Autobus przyjeżdża co dziesięć minut.", fullEn:"The bus comes every ten minutes." },
+            { type:"choose", prompt:"Zaraz ___, daj mi minutę.", promptEn:"I'll be right there, give me a minute.",
+              options:["przyjdę","pójdę","wyjdę"], answer:"przyjdę",
+              explain:"Coming to where you are → przy-: zaraz przyjdę - the everyday 'be right there'.", full:"Zaraz przyjdę, daj mi minutę.", fullEn:"I'll be right there, give me a minute." }
           ]
         }
 
