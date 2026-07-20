@@ -354,12 +354,15 @@
   /* ---------- card ---------- */
   .stage{flex:1;display:flex;align-items:center;justify-content:center;padding:16px 0 8px;min-height:452px}
   .scene{width:100%;perspective:1600px}
-  .flip{position:relative;width:100%;min-height:452px;transform-style:preserve-3d;
+  .flip{position:relative;display:grid;width:100%;min-height:452px;transform-style:preserve-3d;
     transition:transform .55s cubic-bezier(.2,.75,.2,1);cursor:pointer}
   .flip.flipped{transform:rotateY(180deg)}
-  .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  /* Both faces share one grid cell, so the card is always exactly as tall as its
+     taller face - no JS measuring, no internal scrolling, fonts can reflow freely. */
+  .face{position:relative;grid-area:1/1;width:100%;box-sizing:border-box;
+    backface-visibility:hidden;-webkit-backface-visibility:hidden;
     background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);
-    box-shadow:var(--shadow);padding:30px 24px;overflow-y:auto;
+    box-shadow:var(--shadow);padding:30px 24px 34px;
     display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px}
   .eyebrow{position:absolute;top:20px;left:22px;font-size:11px;font-weight:700;letter-spacing:.7px;
     text-transform:uppercase;color:#94a3b8}
@@ -1323,7 +1326,7 @@
    Unrelated to CACHE in sw.js, which is a machine counter - bump both when
    you deploy, but they don't need to match.
    ========================================================================= */
-const APP_VERSION = "7.23";
+const APP_VERSION = "7.24";
 document.getElementById("footVersion").textContent = "v" + APP_VERSION;
 
 /* =========================================================================
@@ -1467,7 +1470,7 @@ function modeLabel(lv){ return MODE_LABELS[lv.level] || lv.level; }
 const MODE_ICONS = {
   "Building Sentences":  '<rect width="18" height="7" x="3" y="3" rx="1"/><rect width="9" height="7" x="3" y="14" rx="1"/><rect width="5" height="7" x="16" y="14" rx="1"/>',
   "Grammar Cases":     '<path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>',
-  "Describing & Counting": '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  "People & Numbers": '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
   "Verbs":             '<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>',
   "Scenarios":         '<path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/>',
   "Podcasts":          '<path d="M16.85 18.58a9 9 0 1 0-9.7 0"/><path d="M8 14a5 5 0 1 1 8 0"/><circle cx="12" cy="11" r="1"/><path d="M13 17a1 1 0 1 0-2 0l.5 4.5a.5.5 0 1 0 1 0z"/>',
@@ -2175,21 +2178,10 @@ function gRenderTeach(){
   if(t.note)     b+='<div class="b-note">'+t.note+'</div>';
   if(t.examples) b+=t.examples.map(gExampleHTML).join('');
   $("gBackFace").innerHTML=b;
-  requestAnimationFrame(gFitCard);
 }
-/* Grammar teach cards hold variable content (tables, lists, examples). The flip card has a
-   fixed min-height, so tall cards used to crop. Grow the card to fit its tallest face instead.
-   Only affects #gFlip; the vocabulary study card keeps its fixed sizing. */
-function gFitCard(){
-  const flip=$("gFlip"); if(!flip) return;
-  flip.style.height="";                                   /* reset to CSS baseline first */
-  let needed=0;
-  flip.querySelectorAll(".face").forEach(f=>{ needed=Math.max(needed, f.scrollHeight); });
-  if(needed>flip.offsetHeight) flip.style.height=needed+"px";
-}
-window.addEventListener("resize", ()=>{
-  if($("grammar").classList.contains("active") && $("gLearn").style.display!=="none") gFitCard();
-});
+/* Card height is handled purely in CSS now: both faces share one grid cell, so the
+   flip container is always as tall as its taller face. The old gFitCard() measuring
+   approach was timing-sensitive (fonts, transitions) and failed on first render. */
 /* The mix topic resamples its drills from every case topic on each round, tagging
    each drill with the case it came from so the practice card can show it. */
 function gSampleMix(topic){
