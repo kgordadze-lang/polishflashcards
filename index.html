@@ -277,6 +277,7 @@
   .speed-toggle:active{transform:scale(.94)}
   .speed-toggle:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
   .speed-toggle svg{width:14px;height:14px}
+  .speed-label{min-width:44px;text-align:center}   /* keeps the chip a fixed width across Normal / Slow */
   .speed-toggle.on{background:var(--emerald);color:#fff;border-color:var(--emerald)}
   /* direction toggle sits on its own slim row under the study bar so the topic
      title and level keep full width. Right-aligned to line up under the controls. */
@@ -615,6 +616,7 @@
   .wchip:hover{border-color:var(--emerald);transform:translateY(-1px)}
   .wchip:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
   .wchip.in-row{background:var(--mint-bg);border-color:#c7d2fe;color:var(--sage-hover)}
+  .wchip.used{background:#f1f5f8;border-color:#e6edf2;color:transparent;cursor:default;pointer-events:none}   /* ghost slot: holds the word's exact position and width */
   .wchip.in-row.ok{background:var(--ok-bg);border-color:var(--ok-border);color:var(--ok-text)}
   .wchip.bad{background:var(--bad-bg);border-color:var(--bad-border);color:var(--bad-text)}
   .fb-box{margin-top:18px;display:none}
@@ -791,8 +793,8 @@
       </button>
       <div class="sbar-title"><b id="studyTitle"></b><span id="studyLevel"></span></div>
       <button class="speed-toggle" data-role="speed-toggle" aria-label="Toggle audio speed" title="Toggle audio speed">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
-        <span class="speed-label">Slow</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
+        <span class="speed-label">Normal</span>
       </button>
       <button class="back home-btn" aria-label="Home page">
         <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -900,8 +902,8 @@
       </button>
       <div class="sbar-title"><b id="gTitle"></b><span id="gPhase"></span></div>
       <button class="speed-toggle" data-role="speed-toggle" aria-label="Toggle audio speed" title="Toggle audio speed">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
-        <span class="speed-label">Slow</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
+        <span class="speed-label">Normal</span>
       </button>
       <button class="back home-btn" aria-label="Home page">
         <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -971,8 +973,8 @@
       </button>
       <div class="sbar-title"><b id="cTitle"></b><span id="cLevel"></span></div>
       <button class="speed-toggle" data-role="speed-toggle" aria-label="Toggle audio speed" title="Toggle audio speed">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
-        <span class="speed-label">Slow</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
+        <span class="speed-label">Normal</span>
       </button>
       <button class="back home-btn" aria-label="Home page">
         <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -998,8 +1000,8 @@
       </button>
       <div class="sbar-title"><b id="tTitle">Type it</b><span id="tLevelLbl"></span></div>
       <button class="speed-toggle" data-role="speed-toggle" aria-label="Toggle audio speed" title="Toggle audio speed">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
-        <span class="speed-label">Slow</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
+        <span class="speed-label">Normal</span>
       </button>
       <button class="back home-btn" aria-label="Home page">
         <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -1057,8 +1059,8 @@
       </button>
       <div class="sbar-title"><b id="lTitle">Listening</b><span id="lLevelLbl"></span></div>
       <button class="speed-toggle" data-role="speed-toggle" aria-label="Toggle audio speed" title="Toggle audio speed">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
-        <span class="speed-label">Slow</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
+        <span class="speed-label">Normal</span>
       </button>
       <button class="back home-btn" aria-label="Home page">
         <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -1112,8 +1114,8 @@
       </button>
       <div class="sbar-title"><b id="rTitle">Practice</b><span id="rSub"></span></div>
       <button class="speed-toggle" data-role="speed-toggle" aria-label="Toggle audio speed" title="Toggle audio speed">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
-        <span class="speed-label">Slow</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
+        <span class="speed-label">Normal</span>
       </button>
       <button class="back home-btn" aria-label="Home page">
         <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -1326,7 +1328,7 @@
    Unrelated to CACHE in sw.js, which is a machine counter - bump both when
    you deploy, but they don't need to match.
    ========================================================================= */
-const APP_VERSION = "7.25";
+const APP_VERSION = "7.3";
 document.getElementById("footVersion").textContent = "v" + APP_VERSION;
 
 /* =========================================================================
@@ -1947,6 +1949,8 @@ function updateSpeedUI(){
     btn.classList.toggle("on", on);
     btn.setAttribute("aria-pressed", on ? "true" : "false");
     btn.setAttribute("aria-label", on ? "Audio speed: slow. Tap to switch to normal." : "Audio speed: normal. Tap to switch to slow.");
+    const lbl = btn.querySelector(".speed-label");
+    if(lbl) lbl.textContent = on ? "Slow" : "Normal";
   });
 }
 document.addEventListener("click", e => {
@@ -2244,7 +2248,9 @@ function gChooseFeedback(c){
   fb.classList.add("show");
 }
 function gRenderBuild(c){
-  G.build.pool=gShuffle(c.answer).map((w,i)=>({w:w,id:i+"-"+w}));
+  /* the pool keeps every tile for the whole drill - tiles are marked used rather than
+     removed, so words never shift position and learners can plan taps ahead */
+  G.build.pool=gShuffle(c.answer).map((w,i)=>({w:w,id:i+"-"+w,used:false}));
   G.build.row=[];
   G.build.answer=c.answer;
   const dtb = c._case ? "Build the sentence \u00b7 <b>"+c._case+"</b>" : "Build the sentence";
@@ -2263,14 +2269,15 @@ function gPaintBuild(){
     const ok = G.build.answer && t.w===G.build.answer[i];
     return '<button class="wchip in-row'+(ok?" ok":"")+'" lang="pl" data-id="'+t.id+'">'+t.w+'</button>';
   }).join('');
-  pool.innerHTML=G.build.pool.map(t=>'<button class="wchip" lang="pl" data-id="'+t.id+'">'+t.w+'</button>').join('');
+  pool.innerHTML=G.build.pool.map(t=>'<button class="wchip'+(t.used?" used":"")+'" lang="pl" data-id="'+t.id+'"'+(t.used?' disabled aria-hidden="true" tabindex="-1"':'')+'>'+t.w+'</button>').join('');
   row.querySelectorAll(".wchip").forEach(ch=>ch.addEventListener("click",()=>{
-    const id=ch.getAttribute("data-id"); const t=G.build.row.find(x=>x.id===id);
-    G.build.row=G.build.row.filter(x=>x.id!==id); G.build.pool.push(t); gPaintBuild();
-  }));
-  pool.querySelectorAll(".wchip").forEach(ch=>ch.addEventListener("click",()=>{
     const id=ch.getAttribute("data-id"); const t=G.build.pool.find(x=>x.id===id);
-    G.build.pool=G.build.pool.filter(x=>x.id!==id); G.build.row.push(t); gPaintBuild();
+    G.build.row=G.build.row.filter(x=>x.id!==id); if(t) t.used=false; gPaintBuild();
+  }));
+  pool.querySelectorAll(".wchip:not(.used)").forEach(ch=>ch.addEventListener("click",()=>{
+    const id=ch.getAttribute("data-id"); const t=G.build.pool.find(x=>x.id===id);
+    if(!t||t.used) return;
+    t.used=true; G.build.row.push(t); gPaintBuild();
   }));
   const cb=$("gCheckBtn"); if(cb) cb.disabled=G.build.row.length===0;
 }
