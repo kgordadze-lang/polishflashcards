@@ -510,7 +510,7 @@ def listening_page():
 
     body.append('<div class="card">')
     body.append('<h2>Real Polish</h2>')
-    body.append('<p class="sub"><a href="https://realpolish.pl/" rel="noopener">realpolish.pl</a> '
+    body.append('<p class="sub"><a href="https://realpolish.pl/" target="_blank" rel="noopener">realpolish.pl</a> '
                 '&middot; also on Spotify and YouTube</p>')
     body.append('<p>Piotr records in Polish, slowly and clearly, about culture, history and ordinary '
                 'life. The idea is comprehensible input - you should understand most of it and be '
@@ -523,7 +523,7 @@ def listening_page():
 
     body.append('<div class="card">')
     body.append('<h2>Ratio viva</h2>')
-    body.append('<p class="sub"><a href="https://www.youtube.com/@Ratio_viva" rel="noopener">'
+    body.append('<p class="sub"><a href="https://www.youtube.com/@Ratio_viva" target="_blank" rel="noopener">'
                 'youtube.com/@Ratio_viva</a> &middot; also on Spotify</p>')
     body.append('<p>Not a learning channel at all. Nikodem makes short videos about psychology and '
                 'the thinking errors behind everyday decisions - made for Poles, at Polish speed. '
