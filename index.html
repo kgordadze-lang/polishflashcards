@@ -34,7 +34,7 @@
 <!-- Content Security Policy: closes off common script-injection and data-leak vectors.
      Everything the app needs is same-origin; no third-party scripts, images, or fetches are permitted.
      'unsafe-inline' remains on script-src because the app uses a large inline <script> block;
-     stripping it would require a full script-externalization refactor, not covered here. -->
+     stripping it would require externalizing the app's inline script into its own file. -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self'; connect-src 'self'; media-src 'self'; base-uri 'self'; form-action 'self'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 
@@ -1326,22 +1326,20 @@
    Unrelated to CACHE in sw.js, which is a machine counter - bump both when
    you deploy, but they don't need to match.
    ========================================================================= */
-const APP_VERSION = "7.24";
+const APP_VERSION = "7.25";
 document.getElementById("footVersion").textContent = "v" + APP_VERSION;
 
 /* =========================================================================
-   LEVELS - the ONLY thing you edit to grow the app.
-   -------------------------------------------------------------------------
-   To add a TOPIC to a level:  paste one  { name, emoji, desc, cards:[...] }
-                               block into that level's "topics" list.
-   To add a whole LEVEL:       paste one  { level, blurb, topics:[...] }  block.
+   LEVELS - loaded from the data-*.js files (window.PP_LEVELS).
+   To grow the app, edit those files; this file only consumes them.
+   A level is  { level, blurb, topics:[...] } ; a topic is
+   { name, emoji, desc, cards:[...] }.
    Card fields:
      pl    = Polish word / phrase
      en    = English meaning
      hint  = short note (gender / usage)          [optional]
      ex    = Polish example sentence (daily use)  [optional]
      exEn  = English translation of the example   [optional]
-   Ask Claude "make me a <topic> block for <level>" and drop the result in.
    ========================================================================= */
 const LEVELS = (window.PP_LEVELS && window.PP_LEVELS.length) ? window.PP_LEVELS : null;
 if(!LEVELS){
