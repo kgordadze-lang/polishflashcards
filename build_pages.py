@@ -5,7 +5,8 @@ Po polsku - build static, crawlable grammar pages from data-grammar.js.
 Why this exists: the app is a single-page PWA, so all lesson content lives in
 JS and is invisible to search engines. This script renders every grammar
 topic's TEACH content (not the drills) as real HTML at /grammar/<slug>/,
-plus a /grammar/ hub page, and regenerates sitemap.xml. Each page links back
+plus a /grammar/ hub page and the /guide/listening/ recommendations page,
+and regenerates sitemap.xml. Each page links back
 into the app to practice.
 
 Run it from the project root whenever data-grammar.js changes:
@@ -471,7 +472,71 @@ def guide_page(topics_by_level, vocab_items):
                     f'<span><span class="t">{esc(page_title)}</span><br>'
                     f'<span class="d">{esc(desc)} ({n} expressions)</span></span></a></li>')
     body.append('</ul>')
+    body.append('<span class="chip">Beyond the app</span>')
+    body.append('<ul class="hub-list">')
+    body.append('<li><a href="/guide/listening/"><span class="ic">' + ICONS["music"] + '</span>'
+                '<span><span class="t">What else I listen to</span><br>'
+                '<span class="d">Two Polish podcasts that actually helped</span></span></a></li>')
+    body.append('</ul>')
     body.append('<a class="cta" href="/">Open the app - flashcards, drills, conversations</a>')
+    body.append(FOOT.replace("{js}", ""))
+    return "".join(body)
+
+
+def listening_page():
+    """A hand-written recommendation page. Unlike every other page here it isn't
+    derived from the data files - it's editorial, so the copy lives inline. It
+    still goes through build_pages.py because /guide/ is wiped and rebuilt on
+    every run, so anything dropped in there by hand would not survive."""
+    canon = f"{SITE}/guide/listening/"
+    title = "Polish podcasts worth listening to | Po polsku"
+    meta_desc = ("Two Polish podcasts that actually helped - one graded for learners, one made "
+                 "for native speakers. Honest notes on what's free, what isn't, and what level each needs.")
+    ld = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "What else I listen to",
+        "description": meta_desc,
+        "url": canon,
+        "inLanguage": "en",
+        "publisher": {"@type": "Organization", "name": "Po polsku", "url": SITE + "/"},
+    }
+    body = [head(title, meta_desc, canon, ld)]
+    body.append('<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> &rsaquo; '
+                '<a href="/guide/">Guide</a> &rsaquo; What I listen to</nav>')
+    body.append('<h1>What else I listen to</h1>')
+    body.append('<p class="lede">Flashcards get you words. Getting used to the sound of the language '
+                'takes hours of listening, and these are the two things I keep going back to.</p>')
+
+    body.append('<div class="card">')
+    body.append('<h2>Real Polish</h2>')
+    body.append('<p class="sub"><a href="https://realpolish.pl/" rel="noopener">realpolish.pl</a> '
+                '&middot; also on Spotify and YouTube</p>')
+    body.append('<p>Piotr records in Polish, slowly and clearly, about culture, history and ordinary '
+                'life. The idea is comprehensible input - you should understand most of it and be '
+                'stretched by the rest, which is a very different feeling from being lost.</p>')
+    body.append('<p>The episodes are free. Transcripts and the extra study material are paid. I got a '
+                'long way on the free episodes alone, so start there and decide later.</p>')
+    body.append('<div class="note">Works from roughly A2 onward. Below that it will feel fast - that is '
+                'normal, and it is worth coming back to in a month or two.</div>')
+    body.append('</div>')
+
+    body.append('<div class="card">')
+    body.append('<h2>Ratio viva</h2>')
+    body.append('<p class="sub"><a href="https://www.youtube.com/@Ratio_viva" rel="noopener">'
+                'youtube.com/@Ratio_viva</a> &middot; also on Spotify</p>')
+    body.append('<p>Not a learning channel at all. Nikodem makes short videos about psychology and '
+                'the thinking errors behind everyday decisions - made for Poles, at Polish speed. '
+                'That is exactly why it is useful: real pace, real vocabulary, nobody slowing down '
+                'for you. Closed captions are on, so you can read along when your ears give out.</p>')
+    body.append('<div class="note">Harder than Real Polish. I treat it as the thing I graduate into, '
+                'and I still pause it constantly.</div>')
+    body.append('</div>')
+
+    body.append('<div class="note" style="margin:22px 0 4px;text-align:center">Neither of these paid '
+                'me anything and probably neither knows this page exists. They are just what worked.</div>')
+    body.append('<a class="cta" href="/">Open the app - flashcards, drills, conversations</a>')
+    body.append('<p class="cta-sub">Free, no account, works offline.</p>')
     body.append(FOOT.replace("{js}", ""))
     return "".join(body)
 
@@ -496,7 +561,8 @@ def redirect_stub(target):
 
 def write_sitemap(slugs, vslugs=()):
     today = datetime.date.today().isoformat()
-    urls = ([f"{SITE}/", f"{SITE}/guide/"] + [f"{SITE}/grammar/{s}/" for s in slugs]
+    urls = ([f"{SITE}/", f"{SITE}/guide/", f"{SITE}/guide/listening/"]
+            + [f"{SITE}/grammar/{s}/" for s in slugs]
             + [f"{SITE}/vocabulary/{s}/" for s in vslugs])
     items = "".join(
         f"  <url>\n    <loc>{u}</loc>\n    <lastmod>{today}</lastmod>\n  </url>\n" for u in urls)
@@ -565,6 +631,9 @@ def main():
         shutil.rmtree("guide")
     os.makedirs("guide")
     open("guide/index.html", "w", encoding="utf-8").write(guide_page(hub, vitems))
+    os.makedirs("guide/listening")
+    open("guide/listening/index.html", "w", encoding="utf-8").write(listening_page())
+    print("  + /guide/listening/  (recommendations)")
     open(f"{OUT_DIR}/index.html", "w", encoding="utf-8").write(redirect_stub("/guide/"))
     open("vocabulary/index.html", "w", encoding="utf-8").write(redirect_stub("/guide/"))
 
