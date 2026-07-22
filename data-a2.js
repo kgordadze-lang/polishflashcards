@@ -525,7 +525,7 @@
             { pl:"kilogram (kilo)", en:"kilogram", hint:"+ dope\u0142niacz \u00b7 kilo jab\u0142ek = a kilo of apples.", ex:"Poprosz\u0119 kilo pomidor\u00f3w.", exEn:"A kilo of tomatoes, please." },
             { pl:"deko(gram)", en:"10 grams (Polish 'deka')", hint:"used at the deli: dwadzie\u015bcia deko sera = 200g of cheese.", ex:"Poprosz\u0119 dwadzie\u015bcia deko szynki.", exEn:"200 grams of ham, please." },
             { pl:"litr", en:"litre", hint:"+ dope\u0142niacz \u00b7 litr mleka = a litre of milk.", ex:"Kupi\u0142em dwa litry wody.", exEn:"I bought two litres of water." },
-            { pl:"paczka", en:"packet, pack", hint:"+ dope\u0142niacz \u00b7 paczka herbaty = a pack of tea.", ex:"Poprosz\u0119 paczk\u0119 mas\u0142a.", exEn:"A pack of butter, please." },
+            { pl:"paczka", en:"packet, pack; parcel", hint:"+ dope\u0142niacz \u00b7 paczka herbaty = a pack of tea. Also a parcel: odebra\u0107 paczk\u0119 = to pick up a parcel.", ex:"Przysz\u0142a paczka od babci.", exEn:"A parcel from grandma arrived." },
             { pl:"butelka", en:"bottle", hint:"+ dope\u0142niacz \u00b7 butelka wina = a bottle of wine.", ex:"Wypili\u015bmy ca\u0142\u0105 butelk\u0119 wody.", exEn:"We drank the whole bottle of water." },
             { pl:"s\u0142oik", en:"jar", hint:"+ dope\u0142niacz \u00b7 s\u0142oik miodu = a jar of honey.", ex:"W lod\u00f3wce jest s\u0142oik ogórk\u00f3w.", exEn:"There's a jar of pickles in the fridge." },
             { pl:"kawa\u0142ek", en:"a piece / slice", hint:"+ dope\u0142niacz \u00b7 kawa\u0142ek ciasta = a piece of cake.", ex:"Zjem jeszcze kawa\u0142ek pizzy.", exEn:"I'll have one more slice of pizza." },

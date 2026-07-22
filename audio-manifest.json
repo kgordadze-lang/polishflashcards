@@ -1,6 +1,6 @@
 {
 "voice": "pl-PL-MarekNeural",
-"generatedAt": "2026-07-19T13:16:54.545889Z",
+"generatedAt": "2026-07-22T12:44:34.421215Z",
 "audioDir": "audio",
 "entries": {
 "000311d1288f": {
@@ -14166,6 +14166,10 @@
 "eb066db0c351": {
 "pl": "On wyjechał z Polski dwa lata temu.",
 "file": "audio/eb066db0c351.mp3"
+},
+"2a0146724468": {
+"pl": "Przyszła paczka od babci.",
+"file": "audio/2a0146724468.mp3"
 }
 }
 }
