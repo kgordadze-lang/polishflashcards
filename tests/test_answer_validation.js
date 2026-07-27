@@ -9,11 +9,12 @@
 // BEFORE the extraction, so the move can be shown to have changed nothing.
 //
 // Several assertions below deliberately lock in behaviour that is arguably
-// WRONG for a learner - hyphenated answers rejected, for instance. They are
-// marked KNOWN-UNDESIRABLE. They are not endorsements; they are the baseline a
-// later behaviour change has to consciously break. If you are here to change
-// one of those rules, expect the matching test to fail and update it
-// deliberately - that failure is the point.
+// WRONG for a learner - a word split by an apostrophe rejected, for instance.
+// They are marked KNOWN-UNDESIRABLE. They are not endorsements; they are the
+// baseline a later behaviour change has to consciously break. If you are here
+// to change one of those rules, expect the matching test to fail and update it
+// deliberately - that failure is the point. (Section 10 used to pin the missing
+// hyphen that way; it now pins the near-miss rule that replaced it.)
 //
 // TWO MODES, BOTH REAL
 // classify() takes an OPTIONAL answer index. Called without one it is the
@@ -73,6 +74,14 @@ var parenPl   = { id: 'f8', pl: 'kilogram (kilo)', en: 'kilogram' };
 var karta     = { id: 'f9', pl: 'karta', en: 'menu', acceptedAnswers: ['menu'] };
 var moj       = { id: 'f10', pl: 'mój', en: 'my (m / f)', acceptedAnswers: ['moja'] };
 var ellipsis  = { id: 'f11', pl: 'Gdzie jest...?', en: 'Where is...?' };
+// the three shipped hyphenated answers, by way of the required examples
+var wifi      = { id: 'f12', pl: 'Czy jest wi-fi?', en: 'Is there wi-fi?' };
+var ticket    = { id: 'f13', pl: 'Poproszę bilet 20-minutowy', en: 'A 20-minute ticket, please' };
+// invented, so the generic rule is exercised on words no card teaches
+var hyphA     = { id: 'f14', pl: 'ćwi-ks', en: 'fixture: one hyphen, one diacritic' };
+var hyphTwo   = { id: 'f15', pl: 'qix-vor-tan', en: 'fixture: two hyphens' };
+var spacedDash= { id: 'f16', pl: 'qix - vor', en: 'fixture: a dash used as punctuation' };
+var noHyphen  = { id: 'f17', pl: 'qixvor', en: 'fixture: the run-together spelling is what it teaches' };
 
 // =========================================================================
 // 1. THE EXACT TIER -> "right"
@@ -164,14 +173,59 @@ verdict('T9 dropping the parenthetical is wrong', 'kilogram', parenPl, 'wrong');
 verdict('T9 the parenthetical alone is wrong', 'kilo', parenPl, 'wrong');
 ok('T9 parentheses survive normalize', A.normalize('kilogram (kilo)') === 'kilogram (kilo)');
 
-// KNOWN-UNDESIRABLE, pinned deliberately: a hyphen is not folded to a space,
-// so spelling variants a learner would consider correct are still rejected.
-verdict('T10 KNOWN-UNDESIRABLE hyphen vs space stays wrong', 'adres e mail', email, 'wrong');
-verdict('T10 KNOWN-UNDESIRABLE hyphen removed stays wrong', 'adres email', email, 'wrong');
+// =========================================================================
+// 10. THE HYPHEN NEAR MISS -> "almost"
+// A word-forming hyphen written as nothing, or as one space, is a near miss.
+// It is never "right": the card teaches a spelling and the hyphen is part of it.
+// Isolated mode throughout - the index's part is section 25.
+
+// (a) the authored spelling is still the only RIGHT one
 verdict('T10 the hyphenated form itself is right', 'adres e-mail', email, 'right');
-ok('T10 normalize leaves hyphens alone', A.normalize('adres e-mail') === 'adres e-mail');
-ok('T10 fold does not rescue the hyphen either',
-   A.fold('adres e mail') !== A.fold('adres e-mail'));
+verdict('T10 hyphenated, capitalised and padded is still right', '  ADRES  E-MAIL  ', email, 'right');
+verdict('T10 the second shipped hyphen answer is right as authored', 'Czy jest wi-fi?', wifi, 'right');
+verdict('T10 its terminal punctuation is still ignored', 'czy jest wi-fi', wifi, 'right');
+verdict('T10 the third shipped hyphen answer is right as authored',
+        'Poproszę bilet 20-minutowy', ticket, 'right');
+verdict('T10 and with the full stop a learner would add', 'Poproszę bilet 20-minutowy.', ticket, 'right');
+ok('T10 normalize still leaves hyphens alone', A.normalize('adres e-mail') === 'adres e-mail');
+ok('T10 fold still leaves hyphens alone', A.fold('adres e-mail') === 'adres e-mail');
+
+// (b) the two supported near misses - the required examples, by card
+verdict('T10 hyphen removed is almost', 'adres email', email, 'almost');
+verdict('T10 hyphen written as a space is almost', 'adres e mail', email, 'almost');
+verdict('T10 second card, hyphen removed', 'czy jest wifi', wifi, 'almost');
+verdict('T10 second card, hyphen as a space', 'czy jest wi fi', wifi, 'almost');
+verdict('T10 third card, hyphen as a space', 'Poproszę bilet 20 minutowy', ticket, 'almost');
+verdict('T10 third card, hyphen removed', 'Poproszę bilet 20minutowy', ticket, 'almost');
+
+// (c) the other normalizations still apply on top
+verdict('T10 case is ignored on a near miss too', 'ADRES EMAIL', email, 'almost');
+verdict('T10 surrounding whitespace is ignored', '   adres email   ', email, 'almost');
+verdict('T10 repeated internal whitespace collapses', 'adres    e     mail', email, 'almost');
+verdict('T10 tabs and newlines collapse the same way', '\tadres\te\nmail\n', email, 'almost');
+verdict('T10 terminal punctuation is ignored on a near miss', 'czy jest wifi?', wifi, 'almost');
+
+// (d) a missing hyphen and missing diacritics COMPOSE into one "almost",
+// rather than adding up to "wrong"
+verdict('T10 missing diacritics and missing hyphen together are almost',
+        'poprosze bilet 20 minutowy', ticket, 'almost');
+verdict('T10 the same with the hyphen simply dropped',
+        'poprosze bilet 20minutowy', ticket, 'almost');
+verdict('T10 diacritics alone, hyphen kept, is still almost',
+        'poprosze bilet 20-minutowy', ticket, 'almost');
+verdict('T10 invented fixture: hyphen dropped and diacritic dropped', 'cwiks', hyphA, 'almost');
+verdict('T10 invented fixture: hyphen dropped, diacritic kept', 'ćwiks', hyphA, 'almost');
+verdict('T10 invented fixture: hyphen spaced, diacritic dropped', 'cwi ks', hyphA, 'almost');
+verdict('T10 invented fixture: authored spelling is right', 'ćwi-ks', hyphA, 'right');
+
+// (e) MULTIPLE HYPHENS - each one independently dropped or spaced
+verdict('T11h both hyphens kept is right', 'qix-vor-tan', hyphTwo, 'right');
+verdict('T11h both dropped', 'qixvortan', hyphTwo, 'almost');
+verdict('T11h both spaced', 'qix vor tan', hyphTwo, 'almost');
+verdict('T11h first dropped, second spaced', 'qixvor tan', hyphTwo, 'almost');
+verdict('T11h first spaced, second dropped', 'qix vortan', hyphTwo, 'almost');
+verdict('T11h a third word is still wrong', 'qix vor tan zzz', hyphTwo, 'wrong');
+verdict('T11h reordering the parts is wrong', 'tan vor qix', hyphTwo, 'wrong');
 
 // ISOLATED MODE (no index): two different words that collapse to the same
 // folded key still earn "almost" for each other, because a comparator with no
@@ -379,6 +433,172 @@ eq('T21 but the now-owned fold key is wrong', A.classify('wodex', shrA, SHR2), '
 eq('T21 and its own owner still gets it right', A.classify('wodex', shrC, SHR2), 'right');
 
 // =========================================================================
+// 23. hyphenVariants() - the pure helper, on its own
+// It generates SPELLINGS, not verdicts: same characters, same order, each
+// word-forming hyphen written as nothing or as one space.
+eq('T23 one hyphen yields exactly the two supported spellings',
+   A.hyphenVariants('adres e-mail'), ['adres email', 'adres e mail']);
+eq('T23 the answer is compared after normalization, so punctuation rides along',
+   A.hyphenVariants('Czy jest wi-fi?'), ['Czy jest wifi?', 'Czy jest wi fi?']);
+eq('T23 a digit counts as a word part like any other character',
+   A.hyphenVariants('Poproszę bilet 20-minutowy'),
+   ['Poproszę bilet 20minutowy', 'Poproszę bilet 20 minutowy']);
+eq('T23 no hyphen, nothing to vary', A.hyphenVariants('kawa'), []);
+eq('T23 a dash between spaces is punctuation, not a word joint',
+   A.hyphenVariants('qix - vor'), []);
+eq('T23 a dash at the start is a stray mark', A.hyphenVariants('-qix vor'), []);
+eq('T23 a dash at the end is a stray mark', A.hyphenVariants('qix vor-'), []);
+eq('T23 a dash with a space on one side only is still not a joint',
+   A.hyphenVariants('qix -vor'), []);
+eq('T23 an en dash is punctuation and is left alone', A.hyphenVariants('qix–vor'), []);
+eq('T23 an em dash is punctuation and is left alone', A.hyphenVariants('qix—vor'), []);
+ok('T23 the typographic hyphen counts', A.hyphenVariants('qix‐vor').length === 2);
+ok('T23 the non-breaking hyphen counts', A.hyphenVariants('qix‑vor').length === 2);
+eq('T23 two hyphens give every combination',
+   A.hyphenVariants('qix-vor-tan').sort(),
+   ['qixvortan', 'qix vortan', 'qixvor tan', 'qix vor tan'].sort());
+eq('T23 four hyphens still give every combination',
+   A.hyphenVariants('a-b-c-d-e').length, 16);
+// past the cap only the two uniform spellings are offered, so the work stays
+// bounded however many hyphens some future card might carry
+eq('T23 five hyphens fall back to the two uniform spellings',
+   A.hyphenVariants('a-b-c-d-e-f'), ['abcdef', 'a b c d e f']);
+eq('T23 and ten hyphens do the same', A.hyphenVariants('a-b-c-d-e-f-g-h-i-j-k').length, 2);
+// adjacent hyphens produce the same spelling twice; it is recorded once
+ok('T23 repeated spellings are deduplicated', (function () {
+  var v = A.hyphenVariants('a--b'), seen = {};
+  return v.every(function (s) { if (seen[s]) return false; seen[s] = true; return true; });
+})());
+ok('T23 the answer itself is never offered as a variant',
+   A.hyphenVariants('adres e-mail').indexOf('adres e-mail') === -1 &&
+   A.hyphenVariants('qix-vor-tan').indexOf('qix-vor-tan') === -1);
+eq('T23 a non-string is not a spelling', A.hyphenVariants(null), []);
+eq('T23 neither is a number', A.hyphenVariants(20), []);
+eq('T23 an empty string has nothing to vary', A.hyphenVariants(''), []);
+ok('T23 it does not mutate its input', (function () {
+  var s = 'adres e-mail';
+  A.hyphenVariants(s); A.hyphenVariants(s);
+  return s === 'adres e-mail';
+})());
+ok('T23 it returns a fresh array each call', (function () {
+  var a = A.hyphenVariants('adres e-mail'), b = A.hyphenVariants('adres e-mail');
+  a.push('injected');
+  return a !== b && b.length === 2 && A.hyphenVariants('adres e-mail').length === 2;
+})());
+ok('T23 it is deterministic', JSON.stringify(A.hyphenVariants('qix-vor-tan')) ===
+   JSON.stringify(A.hyphenVariants('qix-vor-tan')));
+
+// =========================================================================
+// 24. nearMatch() - and the safety limits around it
+// Variants are generated from the ACCEPTED answer only. That asymmetry is the
+// whole safety story: a hyphen the card never wrote has no known home.
+ok('T24 the hyphen-free spelling reaches the authored answer',
+   A.nearMatch('adres email', 'adres e-mail') === true);
+ok('T24 so does the spaced spelling', A.nearMatch('adres e mail', 'adres e-mail') === true);
+ok('T24 but NOT the other way round: a hyphen added to a hyphen-free answer',
+   A.nearMatch('adres e-mail', 'adres email') === false);
+ok('T24 the diacritic near miss still works through the same door',
+   A.nearMatch('dzien dobry', 'Dzień dobry') === true);
+ok('T24 an identical answer trivially near-matches itself',
+   A.nearMatch('kawa', 'kawa') === true);
+ok('T24 an unrelated word does not', A.nearMatch('herbata', 'kawa') === false);
+ok('T24 a non-string answer near-matches nothing', A.nearMatch('kawa', null) === false);
+
+// adding a hyphen where the card teaches none is NOT automatically almost
+verdict('T24 a hyphen inserted into a hyphen-free answer is wrong', 'qix-vor', noHyphen, 'wrong');
+verdict('T24 the run-together spelling it teaches is right', 'qixvor', noHyphen, 'right');
+verdict('T24 a hyphen inserted into an ordinary word is wrong', 'ka-wa', kawa, 'wrong');
+verdict('T24 and into a two-word answer', 'dzień-dobry', dzienDobry, 'wrong');
+// a dash used as punctuation is not forgiven either
+verdict('T24 the punctuation dash must be typed as authored', 'qix - vor', spacedDash, 'right');
+verdict('T24 dropping a punctuation dash is wrong', 'qix vor', spacedDash, 'wrong');
+verdict('T24 closing up a punctuation dash is wrong', 'qixvor', spacedDash, 'wrong');
+
+// the punctuation rules the hyphen change deliberately did not touch
+eq('T24 an apostrophe creates no variants', A.hyphenVariants("kaw'a"), []);
+verdict('T24 an internal apostrophe is still wrong', "kaw'a", kawa, 'wrong');
+eq('T24 a slash creates no variants', A.hyphenVariants('a / b'), []);
+verdict('T24 the left branch of a slash is still wrong', 'a', slashPl, 'wrong');
+verdict('T24 the whole slashed string is still right', 'a / b', slashPl, 'right');
+eq('T24 parentheses create no variants', A.hyphenVariants('kilogram (kilo)'), []);
+verdict('T24 dropping a parenthetical is still wrong', 'kilogram', parenPl, 'wrong');
+verdict('T24 a colon still splits a word', 'kaw:a', kawa, 'wrong');
+verdict('T24 a comma still splits a word', 'kaw,a', kawa, 'wrong');
+// no typo tolerance sneaked in with the new tier
+verdict('T24 a typo inside a hyphenated answer is still wrong', 'adres e-mial', email, 'wrong');
+verdict('T24 a typo plus a missing hyphen is still wrong', 'adres emial', email, 'wrong');
+verdict('T24 a missing word is still wrong', 'czy jest', wifi, 'wrong');
+verdict('T24 an extra word is still wrong', 'adres email zzz', email, 'wrong');
+verdict('T24 reversed word order is still wrong', 'email adres', email, 'wrong');
+verdict('T24 an unrelated word is still wrong', 'herbata', email, 'wrong');
+
+// =========================================================================
+// 25. THE HYPHEN NEAR MISS MEETS THE OWNERSHIP INDEX
+// Same guard as the diacritic tier, and it applies to hyphen variants too: a
+// spelling that is some OTHER typeable card's exact answer is wrong, not almost.
+var hypOwn = { id: 'h1', pl: 'ćwi-ks', en: 'fixture: hyphenated' };
+var runOwn = { id: 'h2', pl: 'ćwiks', en: 'fixture: the same letters run together' };
+var HYPIDX = A.buildIndex([hypOwn, runOwn]);
+eq('T25 the two fixtures are different exact answers',
+   A.normalize('ćwi-ks') !== A.normalize('ćwiks'), true);
+verdict('T25 isolated, the hyphen-free spelling is almost', 'ćwiks', hypOwn, 'almost');
+eq('T25 indexed, it is wrong because another card teaches it as written',
+   A.classify('ćwiks', hypOwn, HYPIDX), 'wrong');
+eq('T25 that other card still gets its own answer right',
+   A.classify('ćwiks', runOwn, HYPIDX), 'right');
+eq('T25 the hyphenated card still gets its own answer right',
+   A.classify('ćwi-ks', hypOwn, HYPIDX), 'right');
+// the other direction never needed the guard: it was not a near miss to begin with
+eq('T25 the reverse direction is wrong, indexed', A.classify('ćwi-ks', runOwn, HYPIDX), 'wrong');
+eq('T25 and wrong without any index too', A.classify('ćwi-ks', runOwn), 'wrong');
+// a variant nobody owns keeps its "almost"
+eq('T25 the spaced spelling is owned by nobody, so it stays almost',
+   A.classify('ćwi ks', hypOwn, HYPIDX), 'almost');
+// a variant that ALSO drops the diacritic is guarded the same way
+var foldOwn = { id: 'h3', pl: 'cwiks', en: 'fixture: no diacritic, run together' };
+var HYPIDX2 = A.buildIndex([hypOwn, runOwn, foldOwn]);
+eq('T25 a hyphen-and-diacritic variant is wrong when another card owns it',
+   A.classify('cwiks', hypOwn, HYPIDX2), 'wrong');
+eq('T25 and was only almost before that owner existed',
+   A.classify('cwiks', hypOwn, HYPIDX), 'almost');
+eq('T25 the owner of that spelling still gets it right',
+   A.classify('cwiks', foldOwn, HYPIDX2), 'right');
+// the guard can never demote a RIGHT: the exact tier settles first
+var bothWays = { id: 'h5', pl: 'ćwi-ks', en: 'fixture: teaches both spellings',
+                 acceptedAnswers: ['ćwiks'] };
+eq('T25 an exact accepted answer is right even when another card owns it too',
+   A.classify('ćwiks', bothWays, A.buildIndex([bothWays, runOwn])), 'right');
+eq('T25 and so is its hyphenated form',
+   A.classify('ćwi-ks', bothWays, A.buildIndex([bothWays, runOwn])), 'right');
+// two cards teaching the same hyphenated word: right for each, almost for each
+var shareH = { id: 'h4', pl: 'ćwi-ks', en: 'fixture: same word, another topic' };
+var SHRH = A.buildIndex([hypOwn, shareH]);
+eq('T25 one hyphenated answer, two owners', SHRH.owners['ćwi-ks'], ['h1', 'h4']);
+eq('T25 the shared answer is right for each owner',
+   [A.classify('ćwi-ks', hypOwn, SHRH), A.classify('ćwi-ks', shareH, SHRH)], ['right', 'right']);
+eq('T25 and its hyphen-free near miss is almost for each',
+   [A.classify('ćwiks', hypOwn, SHRH), A.classify('ćwiks', shareH, SHRH)], ['almost', 'almost']);
+// nothing about the shipped collision pair changed
+eq('T25 the diacritic-only collision is still wrong in both directions',
+   [A.classify('piec', piec5, IDX), A.classify('pięć', piecBake, IDX)], ['wrong', 'wrong']);
+eq('T25 an ordinary missing diacritic is still almost', A.classify('lodka', lodka, IDX), 'almost');
+ok('T25 the hyphen tier does not mutate the card or the index', (function () {
+  var card = { id: 'h6', pl: 'ćwi-ks', en: 'x' };
+  var idx = A.buildIndex([card, runOwn]);
+  var b1 = JSON.stringify(card), b2 = JSON.stringify(idx);
+  A.classify('ćwiks', card, idx); A.classify('ćwi ks', card, idx); A.classify('zzz', card, idx);
+  return JSON.stringify(card) === b1 && JSON.stringify(idx) === b2;
+})());
+ok('T25 hyphen verdicts are still only the three', (function () {
+  var seen = {}, cards = [email, wifi, ticket, hyphA, hyphTwo, spacedDash, noHyphen];
+  var inputs = ['adres email', 'czy jest wi fi', 'qixvor', 'ćwiks', 'qix-vor', '', 'zzz'];
+  cards.forEach(function (c) { inputs.forEach(function (i) { seen[A.classify(i, c, HYPIDX)] = true; }); });
+  return Object.keys(seen).every(function (k) {
+    return k === 'right' || k === 'almost' || k === 'wrong';
+  });
+})());
+
+// =========================================================================
 // 14. STATIC WIRING CHECK
 // Narrow on purpose: it proves both activities route through the shared
 // comparator and that the old inline copies are gone. It does NOT execute the
@@ -459,6 +679,20 @@ ok('T22 typedPracticeCards routes both activities through eligibleFor',
     ok('T22 pp-usage.js hardcodes no answer word (' + w + ')', USAGE_SRC.indexOf(w) === -1);
     ok('T22 index.html hardcodes no answer word (' + w + ')', INDEX.indexOf(w) === -1);
   });
+// The hyphen rule is generic in exactly the same way: it knows about hyphen
+// CHARACTERS, never about the three shipped answers that happen to carry one,
+// nor about the spellings a learner types instead. Checked against the two
+// shared helpers only - index.html's privacy notice mentions the English word
+// "email" in a sentence that has nothing to do with answer checking.
+['e-mail', 'email', 'adres', 'wi-fi', 'wifi', 'bilet', 'minutowy', 'ćwi-ks', 'qix']
+  .forEach(function (w) {
+    ok('T22 pp-answer.js hardcodes no hyphen example (' + w + ')', ANSWER_SRC.indexOf(w) === -1);
+    ok('T22 pp-usage.js hardcodes no hyphen example (' + w + ')', USAGE_SRC.indexOf(w) === -1);
+  });
+// and the character set it does know about is the three word-joining hyphens,
+// not a general licence over dashes
+ok('T22 pp-answer.js does not treat the en dash as a word joint', ANSWER_SRC.indexOf('–') === -1);
+ok('T22 pp-answer.js does not treat the em dash as a word joint', ANSWER_SRC.indexOf('—') === -1);
 // the comparator stays free of DOM, storage, audio and randomness
 ['document', 'window.', 'localStorage', 'sessionStorage', 'Math.random', 'Audio', 'speechSynthesis']
   .forEach(function (banned) {

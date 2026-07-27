@@ -338,6 +338,124 @@ ok('T7 typedPracticeCards is deterministic',
    JSON.stringify(U.typedPracticeCards(LEVELS).map(function (c) { return c.id; })) ===
    JSON.stringify(U.typedPracticeCards(LEVELS).map(function (c) { return c.id; })));
 
+// =========================================================================
+// 8. THE HYPHEN NEAR MISS OVER THE SHIPPED VOCABULARY
+// Section 3 does this for the diacritic near miss; this is the same question
+// for the hyphen one, and it is generated from the data for the same reason:
+// a hyphenated answer added by future content is covered the day it lands.
+//
+// For every typed-practice answer carrying a word-forming hyphen, every
+// spelling the comparator will accept as a near miss is enumerated, PRINTED,
+// and checked against three rules:
+//   - the authored spelling stays "right";
+//   - a generated spelling is "right" ONLY if the card already accepts it;
+//   - every other generated spelling is "almost", or a "wrong" the ownership
+//     index can account for - never an unexplained "wrong".
+// The pięć / piec regression in section 4 above is unaffected by any of this
+// and still runs: neither word carries a hyphen.
+// =========================================================================
+var HYPHEN_ROWS = [];
+CARDS.forEach(function (c) {
+  A.accepted(c).forEach(function (a, i) {
+    if (typeof a !== 'string' || !A.hyphenVariants(a).length) return;
+    HYPHEN_ROWS.push({ card: c, answer: a, canonical: i === 0 });
+  });
+});
+var HYPHEN_CARDS = {};
+HYPHEN_ROWS.forEach(function (r) { HYPHEN_CARDS[r.card.id] = true; });
+
+ok('T8 the corpus contains at least one hyphenated typed-practice answer', HYPHEN_ROWS.length > 0);
+console.log('  [info] typed-practice answers with a word-forming hyphen: ' + HYPHEN_ROWS.length +
+            ' on ' + Object.keys(HYPHEN_CARDS).length + ' of ' + CARDS.length + ' cards');
+
+var notRight = [], badVariant = [], unexplainedWrong = [], newlyRight = [];
+HYPHEN_ROWS.forEach(function (r) {
+  var c = r.card;
+  var acceptedKeys = {};
+  A.accepted(c).forEach(function (a) { if (typeof a === 'string') acceptedKeys[A.normalize(a)] = true; });
+
+  if (A.classify(r.answer, c, IDX) !== 'right') notRight.push(c.id + ' / "' + r.answer + '"');
+
+  var vs = A.hyphenVariants(r.answer);
+  console.log('  [info]   ' + c.id + (r.canonical ? ' pl ' : ' acceptedAnswers ') +
+              JSON.stringify(r.answer) + ' -> ' + vs.map(function (v) {
+    return JSON.stringify(v) + ' ' + A.classify(v, c, IDX);
+  }).join(', '));
+
+  vs.forEach(function (v) {
+    var got = A.classify(v, c, IDX);
+    var alreadyAccepted = !!acceptedKeys[A.normalize(v)];
+    if (got === 'right' && !alreadyAccepted) newlyRight.push(c.id + ' typed "' + v + '"');
+    if (got !== 'almost' && got !== 'wrong' && !alreadyAccepted)
+      badVariant.push(c.id + ' typed "' + v + '" -> ' + got);
+    // a "wrong" here is only legitimate when the ownership index explains it:
+    // the learner spelled some OTHER typeable card's answer exactly
+    if (got === 'wrong' && !A.ownedByOther(IDX, v, c))
+      unexplainedWrong.push(c.id + ' typed "' + v + '"');
+  });
+});
+ok('T8 every hyphenated answer is still right as authored (' + notRight.length + ' regressions)',
+   notRight.length === 0);
+notRight.slice(0, 10).forEach(function (s) { LOG.push('    no longer right: ' + s); });
+ok('T8 no generated spelling became right unless the card already accepts it (' +
+   newlyRight.length + ' failures)', newlyRight.length === 0);
+newlyRight.slice(0, 10).forEach(function (s) { LOG.push('    wrongly right: ' + s); });
+ok('T8 every generated spelling is almost or wrong (' + badVariant.length + ' failures)',
+   badVariant.length === 0);
+ok('T8 and every wrong among them is one the index accounts for (' +
+   unexplainedWrong.length + ' unexplained)', unexplainedWrong.length === 0);
+unexplainedWrong.slice(0, 10).forEach(function (s) { LOG.push('    unexplained wrong: ' + s); });
+
+// The blast radius: no OTHER answer in the corpus generates a spelling at all,
+// so for every other card the near-miss tier is exactly the fold comparison it
+// has always been.
+var strays = [];
+CARDS.forEach(function (c) {
+  if (HYPHEN_CARDS[c.id]) return;
+  A.accepted(c).forEach(function (a) {
+    if (typeof a === 'string' && A.hyphenVariants(a).length) strays.push(c.id + ' / "' + a + '"');
+  });
+});
+ok('T8 no other typed-practice answer generates a spelling (' + strays.length + ' found)',
+   strays.length === 0);
+
+// A hyphen the corpus never wrote must not become a near miss. Checked over the
+// whole corpus, not a sample: one is inserted into every hyphen-free canonical
+// answer and must still be wrong.
+var insertedOk = 0, insertedBad = [];
+CARDS.forEach(function (c) {
+  if (typeof c.pl !== 'string' || A.hyphenVariants(c.pl).length) return;
+  var at = -1;
+  for (var i = 1; i < c.pl.length; i++) {
+    if (!/\s/.test(c.pl.charAt(i - 1)) && !/\s/.test(c.pl.charAt(i))) { at = i; break; }
+  }
+  if (at === -1) return;
+  var spliced = c.pl.slice(0, at) + '-' + c.pl.slice(at);
+  if (A.accepted(c).some(function (a) {          // a card that genuinely accepts it is not a counterexample
+    return typeof a === 'string' && A.normalize(a) === A.normalize(spliced);
+  })) return;
+  insertedOk++;
+  if (A.classify(spliced, c, IDX) !== 'wrong') insertedBad.push(c.id + ' typed "' + spliced + '"');
+});
+ok('T8 the hyphen-insertion sweep actually covered the corpus', insertedOk > 0);
+ok('T8 inserting a hyphen the card never wrote stays wrong (' + insertedOk +
+   ' cards checked, ' + insertedBad.length + ' failing)', insertedBad.length === 0);
+console.log('  [info] hyphen-insertion sweep: ' + insertedOk + ' cards, all still wrong');
+insertedBad.slice(0, 10).forEach(function (s) { LOG.push('    hyphen insertion not wrong: ' + s); });
+
+// The rule is generic: pp-answer.js knows about hyphen CHARACTERS and nothing
+// about the answers that carry one. Derived from the data, so a "fix" that
+// special-cases a shipped phrase fails here even if nobody updates this list.
+var ANSWER_SRC = readFile(ROOT + 'pp-answer.js');
+HYPHEN_ROWS.forEach(function (r) {
+  ok('T8 pp-answer.js does not hardcode ' + JSON.stringify(r.answer),
+     ANSWER_SRC.indexOf(r.answer) === -1);
+  A.hyphenVariants(r.answer).forEach(function (v) {
+    ok('T8 pp-answer.js does not hardcode the spelling ' + JSON.stringify(v),
+       ANSWER_SRC.indexOf(v) === -1);
+  });
+});
+
 // ---------- report ----------
 console.log('Answer collision tests: ' + PASS + ' passed, ' + FAIL + ' failed.');
 LOG.forEach(function (l) { console.log('  ' + l); });
