@@ -124,5 +124,60 @@
     return false;
   };
 
+  /* ---- every card a learner can be asked to TYPE -------------------------
+     The one input to the typed-answer ownership index (PP_ANSWER.buildIndex).
+     A card only belongs here if some typed activity can actually put it in
+     front of the learner, because a card that is never asked for must never
+     make a correct-but-undiacriticked answer look like a different word.
+
+     The two typed activities reach their cards differently, so both are walked
+     and the results unioned:
+
+       Type It    draws whole LEVELS, so it only uses levels that are entirely
+                  plain vocabulary, and the mature topic gate keeps that set out
+       Mixed Quiz runs on ONE topic at a time, reached from the topic list or
+                  from the study screen - which is behind the mature gate, so
+                  the mature topic IS reachable and its cards do count
+
+     Their card-level rules happen to be identical today (both ask for
+     production, so both drop recognition-only cards). They are still collected
+     separately: if the rules ever diverge, the union stays correct without
+     anyone having to remember this function exists.
+
+     A topic carrying a `kind` - grammar, conversation, podcast, or one of the
+     synthetic practice shells - never asks for a typed vocabulary answer, so
+     none of its cards can create a collision. Neither can a card with no
+     stable id: the index has no way to tell it apart from the card being
+     answered. */
+  PP_USAGE.typedPracticeCards = function (levels) {
+    var out = [], seen = Object.create(null), lvs = levels || [];   /* null prototype: an id like "constructor" is still just an id */
+    function add(card) {
+      if (!card || !card.id || seen[card.id]) return;
+      seen[card.id] = true;
+      out.push(card);
+    }
+    lvs.filter(function (lv) {
+      return lv && lv.topics && lv.topics.length &&
+        lv.topics.every(function (t) { return t && !t.kind; });
+    }).forEach(function (lv) {
+      lv.topics.forEach(function (t) {
+        if (t.mature) return;                        /* Type It never reaches the gated set */
+        (t.cards || []).forEach(function (c) {
+          if (PP_USAGE.eligibleFor(c, "typeit")) add(c);
+        });
+      });
+    });
+    lvs.forEach(function (lv) {
+      if (!lv || !lv.topics) return;
+      lv.topics.forEach(function (t) {
+        if (!t || t.kind) return;
+        (t.cards || []).forEach(function (c) {
+          if (PP_USAGE.eligibleFor(c, "mixed")) add(c);
+        });
+      });
+    });
+    return out;
+  };
+
   global.PP_USAGE = PP_USAGE;
 })(typeof window !== "undefined" ? window : this);

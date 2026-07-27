@@ -9,17 +9,27 @@
 // BEFORE the extraction, so the move can be shown to have changed nothing.
 //
 // Several assertions below deliberately lock in behaviour that is arguably
-// WRONG for a learner - hyphenated answers rejected, "piec" accepted for the
-// number five. They are marked KNOWN-UNDESIRABLE. They are not endorsements;
-// they are the baseline a later behaviour change has to consciously break.
-// If you are here to change one of those rules, expect the matching test to
-// fail and update it deliberately - that failure is the point.
+// WRONG for a learner - hyphenated answers rejected, for instance. They are
+// marked KNOWN-UNDESIRABLE. They are not endorsements; they are the baseline a
+// later behaviour change has to consciously break. If you are here to change
+// one of those rules, expect the matching test to fail and update it
+// deliberately - that failure is the point.
+//
+// TWO MODES, BOTH REAL
+// classify() takes an OPTIONAL answer index. Called without one it is the
+// isolated comparator and behaves exactly as it always has, including calling
+// two words that fold together an "almost" for each other. Called WITH one -
+// which is what the app does - text that is exactly another typeable card's
+// answer is "wrong" instead. Every assertion below says which mode it is in.
 //
 // WHAT THIS FILE DOES NOT TEST
-// Nothing here touches the DOM, scoring counters, persistence, focus, audio or
-// eligibility. It covers the pure comparator contract and a static check that
-// both activities are wired to it. Round scoring and UI behaviour are not
-// exercised and must not be inferred from a green run here.
+// Nothing here touches the DOM, scoring counters, persistence, focus or audio.
+// It covers the pure comparator contract - including index construction against
+// SYNTHETIC cards - and a static check that both activities are wired to it.
+// Which REAL cards belong in the index, and what the shipped vocabulary
+// actually collides on, are tests/test_answer_collisions.js's job. Round
+// scoring and UI behaviour are not exercised here and must not be inferred
+// from a green run.
 ObjC.import('Foundation');
 
 function readFile(path) {
@@ -163,10 +173,14 @@ ok('T10 normalize leaves hyphens alone', A.normalize('adres e-mail') === 'adres 
 ok('T10 fold does not rescue the hyphen either',
    A.fold('adres e mail') !== A.fold('adres e-mail'));
 
-// KNOWN-UNDESIRABLE, pinned deliberately: these are two different words that
-// collapse to the same folded key, so each earns "almost" for the other.
-verdict('T11 KNOWN-UNDESIRABLE piec for five is almost', 'piec', piec5, 'almost');
-verdict('T11 KNOWN-UNDESIRABLE five for piec is almost', 'pięć', piecBake, 'almost');
+// ISOLATED MODE (no index): two different words that collapse to the same
+// folded key still earn "almost" for each other, because a comparator with no
+// corpus in front of it has no way to know the typed text is a real word of its
+// own. This is the contract for classify() called with two arguments, and it is
+// unchanged. The app never calls it that way - see T20 for the same pair with
+// an index, where both directions are "wrong".
+verdict('T11 isolated mode: piec for five is almost', 'piec', piec5, 'almost');
+verdict('T11 isolated mode: five for piec is almost', 'pięć', piecBake, 'almost');
 ok('T11 the two really do fold together', A.fold('pięć') === A.fold('piec'));
 ok('T11 but they are distinct under normalize',
    A.normalize('pięć') !== A.normalize('piec'));
@@ -223,12 +237,162 @@ ok('T13 classify only ever returns one of three verdicts', (function () {
 })());
 
 // =========================================================================
+// 18. THE ANSWER INDEX - which card owns an exact answer
+// buildIndex() is the whole mechanism: a map from normalized exact answer to
+// the stable ids of the cards that accept it. Nothing else. All fixtures here
+// are INVENTED strings, so nothing in this section can accidentally pass
+// because of something in the real vocabulary.
+var IDX = A.buildIndex([kawa, karta, lodka, piec5, piecBake]);
+
+eq('T18 keys are normalized exact answers, one per distinct answer',
+   Object.keys(IDX.owners).sort(),
+   ['karta', 'kawa', 'menu', 'piec', 'pięć', 'łódka'].sort());
+eq('T18 the canonical pl is indexed', IDX.owners['kawa'], ['f1']);
+eq('T18 an acceptedAnswers entry is indexed too', IDX.owners['menu'], ['f9']);
+eq('T18 a card owns every answer it accepts', IDX.owners['karta'], ['f9']);
+ok('T18 values are stable ids, not card objects',
+   IDX.owners['kawa'].every(function (v) { return typeof v === 'string'; }));
+
+// keys are normalize() output, so case and spacing never fork an owner
+eq('T18 answers are keyed case- and space-insensitively',
+   A.buildIndex([{ id: 'c1', pl: '  KaWa  ' }]).owners['kawa'], ['c1']);
+
+// one card listing the same answer several ways is ONE owner, recorded once
+var dupOwner = A.buildIndex([{ id: 'd1', pl: 'dupex', acceptedAnswers: ['DUPEX', '  dupex  ', 'dupex!'] }]);
+eq('T18 duplicate ownership by one stable id is deduplicated',
+   dupOwner.owners['dupex'], ['d1']);
+eq('T18 and it produces no other keys', Object.keys(dupOwner.owners), ['dupex']);
+
+// empty answers never become keys
+var emptyish = A.buildIndex([{ id: 'e1', pl: '   ', acceptedAnswers: ['', '  ', '...', 'realx'] }]);
+eq('T18 blank and punctuation-only answers are skipped',
+   Object.keys(emptyish.owners), ['realx']);
+
+// a card with no stable id cannot own anything - it could not be told apart
+// from the card being answered, so it must not be able to veto an "almost"
+eq('T18 a card without an id contributes nothing',
+   Object.keys(A.buildIndex([{ pl: 'ćwiks', en: 'no id' }]).owners), []);
+eq('T18 buildIndex tolerates no argument', Object.keys(A.buildIndex().owners), []);
+eq('T18 buildIndex tolerates an empty list', Object.keys(A.buildIndex([]).owners), []);
+eq('T18 buildIndex skips holes in the card list',
+   Object.keys(A.buildIndex([null, undefined, kawa]).owners), ['kawa']);
+
+// purity
+ok('T18 buildIndex does not mutate the cards it reads', (function () {
+  var card = { id: 'p1', pl: 'karta', acceptedAnswers: ['menu'] };
+  var before = JSON.stringify(card);
+  A.buildIndex([card]);
+  return JSON.stringify(card) === before;
+})());
+ok('T18 buildIndex is deterministic', (function () {
+  var cards = [kawa, karta, piec5];
+  return JSON.stringify(A.buildIndex(cards)) === JSON.stringify(A.buildIndex(cards));
+})());
+
+// =========================================================================
+// 19. ownedByOther() - the one question the guard asks
+ok('T19 an answer belonging to a different card is owned by another',
+   A.ownedByOther(IDX, 'piec', piec5) === true);
+ok('T19 a card does not count as another owner of its own answer',
+   A.ownedByOther(IDX, 'kawa', kawa) === false);
+ok('T19 unknown text is owned by nobody', A.ownedByOther(IDX, 'zzzzz', kawa) === false);
+ok('T19 with no index the question is unanswerable, so: no',
+   A.ownedByOther(null, 'piec', piec5) === false);
+ok('T19 an index-shaped object with no owners answers no',
+   A.ownedByOther({}, 'piec', piec5) === false);
+ok('T19 a card with no id can never be compared against, so: no',
+   A.ownedByOther(IDX, 'piec', { pl: 'pięć' }) === false);
+ok('T19 the lookup normalizes its text', A.ownedByOther(IDX, '  PIEC!  ', piec5) === true);
+ok('T19 an inherited key on a hand-built index is not an owner',
+   A.ownedByOther({ owners: {} }, 'constructor', kawa) === false);
+ok('T19 and buildIndex never exposes one either',
+   A.buildIndex([kawa]).owners['constructor'] === undefined);
+
+// =========================================================================
+// 20. INDEXED MODE - the collision-safe verdicts
+// A synthetic pair of different exact answers that fold to the same key.
+var synA = { id: 'y1', pl: 'ćwiks', en: 'fixture A' };
+var synB = { id: 'y2', pl: 'cwiks', en: 'fixture B' };
+var SYN = A.buildIndex([synA, synB]);
+ok('T20 the synthetic pair really does fold together', A.fold('ćwiks') === A.fold('cwiks'));
+ok('T20 and really is two different exact answers', A.normalize('ćwiks') !== A.normalize('cwiks'));
+verdict('T20 isolated, one for the other is almost', 'cwiks', synA, 'almost');
+eq('T20 indexed, typing B for A is wrong', A.classify('cwiks', synA, SYN), 'wrong');
+eq('T20 indexed, the reverse direction is wrong too', A.classify('ćwiks', synB, SYN), 'wrong');
+eq('T20 each card still gets its own answer right', A.classify('ćwiks', synA, SYN), 'right');
+eq('T20 and so does the other', A.classify('cwiks', synB, SYN), 'right');
+
+// the collision may live in an acceptedAnswers entry rather than in pl
+var accA = { id: 'y3', pl: 'zzz alpha', en: 'fixture C', acceptedAnswers: ['żóks'] };
+var accB = { id: 'y4', pl: 'zoks', en: 'fixture D' };
+var ACC = A.buildIndex([accA, accB]);
+eq('T20 an acceptedAnswers entry is indexed as an owner', ACC.owners['żóks'], ['y3']);
+eq('T20 indexed, a collision reached through acceptedAnswers is wrong',
+   A.classify('zoks', accA, ACC), 'wrong');
+eq('T20 and the reverse, against the plain card, is wrong', A.classify('żóks', accB, ACC), 'wrong');
+eq('T20 the acceptedAnswers entry itself is still right', A.classify('żóks', accA, ACC), 'right');
+verdict('T20 isolated, the same acceptedAnswers collision is only almost', 'zoks', accA, 'almost');
+
+// only the "almost" tier is guarded - the index can never demote a "right"
+eq('T20 an exact answer is right even when another card owns it too',
+   A.classify('kawa', kawa, A.buildIndex([kawa, { id: 'y5', pl: 'kawa', en: 'a second coffee card' }])),
+   'right');
+// and ordinary near-misses are untouched by the index
+eq('T20 an ordinary missing diacritic is still almost', A.classify('lodka', lodka, IDX), 'almost');
+eq('T20 an unrelated word is still wrong', A.classify('herbata', kawa, IDX), 'wrong');
+eq('T20 a card with no id keeps the pre-index verdict', A.classify('cwiks', { pl: 'ćwiks' }, SYN), 'almost');
+ok('T20 indexed classify still only ever returns the three verdicts', (function () {
+  var seen = {}, cards = [kawa, karta, lodka, piec5, piecBake, synA, synB];
+  var inputs = ['kawa', 'menu', 'lodka', 'piec', 'pięć', 'cwiks', 'ćwiks', '', 'zzz'];
+  cards.forEach(function (c) { inputs.forEach(function (i) { seen[A.classify(i, c, SYN)] = true; }); });
+  return Object.keys(seen).every(function (k) {
+    return k === 'right' || k === 'almost' || k === 'wrong';
+  });
+})());
+ok('T20 indexed classify does not mutate the card or the index', (function () {
+  var card = { id: 'y6', pl: 'ćwiks', en: 'x' };
+  var idx = A.buildIndex([card, synB]);
+  var b1 = JSON.stringify(card), b2 = JSON.stringify(idx);
+  A.classify('cwiks', card, idx); A.classify('ćwiks', card, idx); A.classify('zzz', card, idx);
+  return JSON.stringify(card) === b1 && JSON.stringify(idx) === b2;
+})());
+
+// =========================================================================
+// 21. TWO CARDS MAY SHARE ONE EXACT ANSWER
+// Common in the real data (the same word taught in two topics). Sharing an
+// exact answer must never make either card's own answer wrong.
+var shrA = { id: 'z1', pl: 'wódex', en: 'fixture E' };
+var shrB = { id: 'z2', pl: 'wódex', en: 'fixture F' };
+var SHR = A.buildIndex([shrA, shrB]);
+eq('T21 one answer, two owners', SHR.owners['wódex'], ['z1', 'z2']);
+eq('T21 the shared answer is right for the first card', A.classify('wódex', shrA, SHR), 'right');
+eq('T21 the shared answer is right for the second card too', A.classify('wódex', shrB, SHR), 'right');
+eq('T21 shared exact wording creates no false wrong on a near-miss',
+   A.classify('wodex', shrA, SHR), 'almost');
+eq('T21 and none on the other card either', A.classify('wodex', shrB, SHR), 'almost');
+// sharing plus a real collision: the collision still wins for the OTHER word
+var shrC = { id: 'z3', pl: 'wodex', en: 'fixture G' };
+var SHR2 = A.buildIndex([shrA, shrB, shrC]);
+eq('T21 the shared answer is still right for both owners',
+   [A.classify('wódex', shrA, SHR2), A.classify('wódex', shrB, SHR2)], ['right', 'right']);
+eq('T21 but the now-owned fold key is wrong', A.classify('wodex', shrA, SHR2), 'wrong');
+eq('T21 and its own owner still gets it right', A.classify('wodex', shrC, SHR2), 'right');
+
+// =========================================================================
 // 14. STATIC WIRING CHECK
 // Narrow on purpose: it proves both activities route through the shared
 // comparator and that the old inline copies are gone. It does NOT execute the
 // app, so it says nothing about scoring, focus or any UI behaviour.
 var INDEX = readFile(ROOT + 'index.html');
 var SW = readFile(ROOT + 'sw.js');
+var ANSWER_SRC = readFile(ROOT + 'pp-answer.js');
+var USAGE_SRC = readFile(ROOT + 'pp-usage.js');
+
+function occurrences(src, needle) {
+  var n = 0, at = src.indexOf(needle);
+  while (at !== -1) { n++; at = src.indexOf(needle, at + needle.length); }
+  return n;
+}
 
 function bodyOf(src, name) {
   var start = src.indexOf('function ' + name + '(');
@@ -262,6 +426,46 @@ ok('T14 both reveal-a-letter hints read PP_ANSWER.accepted',
    bodyOf(INDEX, 'tRevealLetter').indexOf('PP_ANSWER.accepted(') !== -1 &&
    bodyOf(INDEX, 'rRevealLetter').indexOf('PP_ANSWER.accepted(') !== -1);
 
+// (b2) both typed activities hand classify the SAME shared answer index, and
+// that index is built ONCE at load - never inside an answer submission.
+ok('T22 Type It passes the shared answer index',
+   tCheck.indexOf('PP_ANSWER.classify(val, c, PP_TYPED_INDEX)') !== -1);
+ok('T22 Mixed Quiz typed questions pass the same shared answer index',
+   rCheck.indexOf('PP_ANSWER.classify(val, c, PP_TYPED_INDEX)') !== -1);
+ok('T22 there are exactly two classify call sites and both are indexed',
+   occurrences(INDEX, 'PP_ANSWER.classify(') === 2 &&
+   occurrences(INDEX, 'PP_ANSWER.classify(val, c, PP_TYPED_INDEX)') === 2);
+ok('T22 the index is built exactly once in the whole app',
+   occurrences(INDEX, 'PP_ANSWER.buildIndex(') === 1);
+ok('T22 the one build is a top-level const, evaluated at load',
+   INDEX.indexOf('const PP_TYPED_INDEX = PP_ANSWER.buildIndex(PP_USAGE.typedPracticeCards(LEVELS));') !== -1);
+ok('T22 Type It answer checking does not build an index',
+   tCheck.indexOf('buildIndex') === -1);
+ok('T22 Mixed Quiz answer checking does not build an index',
+   rCheck.indexOf('buildIndex') === -1);
+ok('T22 the index is fed the typed-practice card set, not raw LEVELS',
+   INDEX.indexOf('PP_ANSWER.buildIndex(PP_USAGE.typedPracticeCards(') !== -1);
+// the card selection reuses the eligibility rules that already exist
+ok('T22 typedPracticeCards routes both activities through eligibleFor',
+   USAGE_SRC.indexOf('PP_USAGE.eligibleFor(c, "typeit")') !== -1 &&
+   USAGE_SRC.indexOf('PP_USAGE.eligibleFor(c, "mixed")') !== -1);
+
+// (b3) the mechanism is data-driven: no Polish word is written into it. Every
+// word this suite and the corpus suite collide on is checked against both
+// shared helpers, so a "fix" that special-cases a word fails here.
+['pięć', 'piec', 'łódka', 'ćwiks', 'cwiks', 'żóks', 'zoks', 'wódex', 'wodex', 'dupex']
+  .forEach(function (w) {
+    ok('T22 pp-answer.js hardcodes no answer word (' + w + ')', ANSWER_SRC.indexOf(w) === -1);
+    ok('T22 pp-usage.js hardcodes no answer word (' + w + ')', USAGE_SRC.indexOf(w) === -1);
+    ok('T22 index.html hardcodes no answer word (' + w + ')', INDEX.indexOf(w) === -1);
+  });
+// the comparator stays free of DOM, storage, audio and randomness
+['document', 'window.', 'localStorage', 'sessionStorage', 'Math.random', 'Audio', 'speechSynthesis']
+  .forEach(function (banned) {
+    ok('T22 pp-answer.js contains no ' + banned,
+       ANSWER_SRC.replace(/typeof window !== "undefined" \? window : this/, '').indexOf(banned) === -1);
+  });
+
 // (c) the old inline copies are gone - not merely unused
 ok('T15 inline tNormAns is gone', INDEX.indexOf('function tNormAns') === -1);
 ok('T15 inline tFold is gone', INDEX.indexOf('function tFold') === -1);
@@ -273,10 +477,11 @@ ok('T15 no call site still references the old names',
 // (d) the app shell can still be cached offline with the new file in it
 ok('T16 sw.js precaches pp-answer.js', SW.indexOf('"./pp-answer.js"') !== -1);
 
-// (e) this phase must not have touched the version or cache identifiers
-ok('T17 APP_VERSION untouched', INDEX.indexOf('const APP_VERSION = "7.27"') !== -1);
-ok('T17 CACHE untouched', SW.indexOf('const CACHE = "popolsku-v53"') !== -1);
-ok('T17 AUDIO_CACHE untouched', SW.indexOf('const AUDIO_CACHE = "popolsku-audio"') !== -1);
+// APP_VERSION, CACHE and AUDIO_CACHE are deliberately NOT pinned here. They are
+// release identifiers, meant to be bumped by a deployment; asserting their exact
+// values would make this suite fail on a correct release rather than on a broken
+// comparator. Whether a given CHANGE was allowed to touch them is a question for
+// that change's review, not a standing assertion in the answer tests.
 
 // ---------- report ----------
 console.log('Answer validation tests: ' + PASS + ' passed, ' + FAIL + ' failed.');

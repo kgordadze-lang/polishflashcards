@@ -1473,6 +1473,21 @@ LEVELS.push(
   });
 })();
 
+/* ---------------- typed-answer ownership index ----------------
+   Built ONCE, here, after LEVELS is final - never per submitted answer.
+
+   It answers one question for the comparator: "is what the learner just typed
+   the exact answer of some OTHER card they could be asked to type?" Without it,
+   dropping the ogonek off the number five spells a different real Polish word,
+   and the learner is told they almost spelled a word they spelled exactly right
+   - just not the one that was asked for. With it, that lands as "wrong".
+
+   Only cards a typed activity can actually ask for are in here, so an
+   explanatory template, a recognition-only card or a podcast phrase can never
+   invent a collision (PP_USAGE.typedPracticeCards). The index holds normalized
+   answers and stable ids - no card objects, no DOM, no storage. */
+const PP_TYPED_INDEX = PP_ANSWER.buildIndex(PP_USAGE.typedPracticeCards(LEVELS));
+
 /* ---------------- app state ---------------- */
 const S = { levelIdx:0, topicIdx:0, cards:[], queue:[], pos:0, still:new Set(), known:new Set(), query:"" };
 
@@ -2718,14 +2733,18 @@ $("cChallenge").addEventListener("click", ()=>{
    is correct; correct-except-diacritics is its own "almost" tier - it gets an
    amber "watch the ogonki" flag per question and is REPORTED SEPARATELY at the
    end, never folded into the correct total. Accepted answers are the canonical
-   `pl` plus any explicit `acceptedAnswers` - there is no implicit "/" splitting. */
+   `pl` plus any explicit `acceptedAnswers` - there is no implicit "/" splitting.
+   The one thing "almost" will not cover: text that is exactly some other
+   typeable card's answer, which is a different word rather than a slip. */
 const T = { topicRef:null, li:0, ti:0, qs:[], i:0, right:0, almost:0, revealed:0, state:"ask" };
 
 /* Answer comparison lives in pp-answer.js (PP_ANSWER) and is shared with the
-   Mixed Quiz's typed questions, so the two activities cannot drift apart.
-   The rules themselves are unchanged: normalize() is the exact tier, fold()
-   the diacritics tier, accepted() is `pl` plus any explicit acceptedAnswers
-   (still no implicit "/" splitting), and classify() returns the verdict. */
+   Mixed Quiz's typed questions, so the two activities cannot drift apart:
+   normalize() is the exact tier, fold() the diacritics tier, accepted() is `pl`
+   plus any explicit acceptedAnswers (still no implicit "/" splitting), and
+   classify() returns the verdict. Both activities hand classify() the SAME
+   PP_TYPED_INDEX, so the guard that keeps one real word from being scored as an
+   "almost" for another cannot apply in one activity but not the other. */
 /* Display-only variant summary (card back + Type-It feedback). Returns {k, v} or null.
    Synonyms -> "Also: dzisiaj"; gender/other labels -> "Forms: m: byłem · f: byłam".
    Aspect pairs are NOT shown here - they use the `pair` line. */
@@ -2777,7 +2796,7 @@ function tCheckAnswer(){
   if(T.state!=="ask") return;
   const c=T.qs[T.i].c, val=$("tInput").value;
   if(!PP_ANSWER.normalize(val)) { $("tInput").focus(); return; }
-  const verdict=PP_ANSWER.classify(val, c);
+  const verdict=PP_ANSWER.classify(val, c, PP_TYPED_INDEX);
   T.state="done";
   if(verdict==="right") T.right++; else if(verdict==="almost") T.almost++;
   $("tInput").disabled=true; $("tCheck").disabled=true; $("tHint").disabled=true;
@@ -3022,7 +3041,7 @@ function rCheckAnswer(){
   if(R.state!=="ask") return;
   const q=R.qs[R.i], c=q.c, val=$("rInput").value;
   if(!PP_ANSWER.normalize(val)) { $("rInput").focus(); return; }
-  const verdict=PP_ANSWER.classify(val, c);
+  const verdict=PP_ANSWER.classify(val, c, PP_TYPED_INDEX);
   R.state="done";
   rRecord(q, verdict==="wrong" ? "miss" : verdict);
   $("rInput").disabled=true; $("rCheck").disabled=true; $("rHint").disabled=true;
