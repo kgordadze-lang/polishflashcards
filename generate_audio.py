@@ -3,9 +3,16 @@
 Po polsku - pre-generate native pronunciation audio (Marek Neural) and update the manifest.
 
 How it works:
-  - Scans every data-*.js file for the strings the app actually plays: each card's `pl`
-    (the word/phrase), `ex` (the example sentence), `full` (the drill feedback sentence),
-    and `npc` (the conversation partner's line).
+  - PARSES every data-*.js file and asks pp_audio_rule.py which strings the app can
+    actually play: each card's main-card audio (`pl` for a standard card, a complete
+    `audioText` for a template, NOTHING for a template without one), plus `ex` (the
+    example sentence), `full` (the drill feedback sentence) and `npc` (the conversation
+    partner's line).
+  - The main-card rule is deliberately NOT a regex over `pl`. A template's `pl` is a
+    display pattern ("Gdzie jest...?"), and synthesising it produced clips of unfinished
+    phrases that the app then played as if they were the phrase being taught.
+    pp_audio_rule.main_audio_text() mirrors PP_USAGE.mainAudioText() in pp-usage.js, so
+    what gets built here is exactly what index.html asks for.
   - Normalizes each string EXACTLY like ppNormalize() in index.html (strip HTML tags,
     collapse whitespace, trim) so the app's runtime lookup matches.
   - Names each clip  audio/<first-12-hex-of-sha256(normalized)>.mp3  - the same scheme
@@ -32,26 +39,14 @@ import glob
 import hashlib
 import json
 import os
-import re
 
 import edge_tts
+
+from pp_audio_rule import DATA_GLOB, required_phrases
 
 VOICE = "pl-PL-MarekNeural"   # Marek
 AUDIO_DIR = "audio"
 MANIFEST = "audio-manifest.json"
-DATA_GLOB = "data-*.js"
-
-# Every pl / ex / full / npc string literal, escape-aware. These are the four
-# fields the app actually speaks: pl (word/front), ex (card example),
-# full (drill feedback sentence), npc (conversation partner's line).
-STR_RE = re.compile(r'\b(?:pl|ex|full|npc)\s*:\s*"((?:[^"\\]|\\.)*)"')
-
-
-def normalize(text: str) -> str:
-    """MUST match ppNormalize() in index.html - same operations, same order."""
-    text = re.sub(r"<[^>]+>", "", text)
-    text = re.sub(r"\s+", " ", text).strip()
-    return text
 
 
 def phrase_hash(normalized: str) -> str:
@@ -59,17 +54,11 @@ def phrase_hash(normalized: str) -> str:
 
 
 def collect_phrases() -> list:
-    """Ordered, de-duplicated list of every normalized pl/ex phrase in the data files."""
-    seen = {}
-    for path in sorted(glob.glob(DATA_GLOB)):
-        with open(path, encoding="utf-8") as fh:
-            src = fh.read()
-        for m in STR_RE.finditer(src):
-            raw = json.loads('"' + m.group(1) + '"')   # JSON-unescape the literal
-            n = normalize(raw)
-            if n:
-                seen.setdefault(n, True)
-    return list(seen.keys())
+    """Ordered, de-duplicated list of every normalized phrase that needs a clip.
+
+    Delegates to pp_audio_rule so this script, verify_audio.py and the app can't
+    disagree about what "needs audio" means."""
+    return required_phrases(DATA_GLOB)
 
 
 async def synth(text: str, out_path: str):

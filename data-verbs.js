@@ -12,14 +12,14 @@
 (function(){
   window.PP_LEVELS = window.PP_LEVELS || [];
   window.PP_LEVELS.push(
-    {
+    { id:"verbs",
       level: "Verbs",
       blurb: "How verbs change",
       group: "grammar",
       topics: [
 
         /* 1 -------------------------------------------------- PRESENT TENSE */
-        {
+        { id:"verbs-present-tense",
           name: "Czas teraźniejszy (Present tense)", emoji: "\uD83D\uDDE3\uFE0F", kind: "grammar", chip: "Verbs A1",
           desc: "Say what happens now - być and the four conjugation groups",
           teach: [
@@ -28,7 +28,7 @@
               points:[
                 "There is no helper verb - the ending alone carries the person.",
                 "You drop the subject pronoun when it is obvious: <i>Mieszkam w Warszawie.</i>",
-                "Almost every verb falls into one of four ending patterns. Learn the pattern, not each verb."
+                "Almost every verb follows one of four ending patterns - but the infinitive alone rarely tells you which, so learn each new verb together with its 'ja' and 'ty' forms."
               ],
               examples:[
                 { pl:"Mieszkam w Warszawie.", en:"I live in Warsaw." },
@@ -48,7 +48,7 @@
               examples:[ { pl:"Jestem głodny.", en:"I'm hungry." } ] },
 
             { front:"Group 1: -am / -asz (the easiest)",
-              sub:"Most verbs ending in -ać go here. Predictable and friendly.",
+              sub:"Many -ać verbs go here (mieszkać, czytać) - but not all of them, so check the 'ja' form.",
               table:[
                 { g:"ja", e:"mieszkam", ex:"Mieszkam tutaj." },
                 { g:"ty", e:"mieszkasz", ex:"Gdzie mieszkasz?" },
@@ -74,7 +74,7 @@
               examples:[ { pl:"Mówię trochę po polsku.", en:"I speak a little Polish." } ] },
 
             { front:"Group 3: -ę / -esz",
-              sub:"Often -ać or -ować verbs, but the stem changes - watch it.",
+              sub:"Also -ać and -ować verbs - pisać lands here, not in Group 1 - and the stem changes.",
               table:[
                 { g:"ja", e:"piszę", ex:"Piszę wiadomość." },
                 { g:"ty", e:"piszesz", ex:"Do kogo piszesz?" },
@@ -100,35 +100,35 @@
               examples:[ { pl:"Nie wiem, gdzie to jest.", en:"I don't know where it is." } ] }
           ],
           drills: [
-            { type:"choose", prompt:"Gdzie ty ___?", promptEn:"Where do you live?",
+            { id:"verbs-present-tense-001", type:"choose", prompt:"Gdzie ty ___?", promptEn:"Where do you live?",
               options:["mieszkam","mieszkasz","mieszka"], answer:"mieszkasz",
               explain:"'ty' → -asz: mieszkasz.", full:"Gdzie mieszkasz?", fullEn:"Where do you live?" },
-            { type:"choose", prompt:"Ja ___ po polsku.", promptEn:"I speak Polish.",
+            { id:"verbs-present-tense-002", type:"choose", prompt:"Ja ___ po polsku.", promptEn:"I speak Polish.",
               options:["mówisz","mówię","mówi"], answer:"mówię",
               explain:"'ja' in the -ę/-isz group → -ę: mówię.", full:"Mówię po polsku.", fullEn:"I speak Polish." },
-            { type:"choose", prompt:"Oni ___ w centrum.", promptEn:"They live in the centre.",
+            { id:"verbs-present-tense-003", type:"choose", prompt:"Oni ___ w centrum.", promptEn:"They live in the centre.",
               options:["mieszkają","mieszkacie","mieszkamy"], answer:"mieszkają",
               explain:"'oni' → -ają in the -am/-asz group.", full:"Oni mieszkają w centrum.", fullEn:"They live in the centre." },
-            { type:"choose", prompt:"___ głodny.", promptEn:"I'm hungry.",
+            { id:"verbs-present-tense-004", type:"choose", prompt:"___ głodny.", promptEn:"I'm hungry.",
               options:["Jesteś","Jestem","Jest"], answer:"Jestem",
               explain:"być, 'ja' form: jestem.", full:"Jestem głodny.", fullEn:"I'm hungry." },
-            { type:"build", promptEn:"What are you doing?",
+            { id:"verbs-present-tense-005", type:"build", promptEn:"What are you doing?",
               answer:["Co","robisz"],
               explain:"'ty' form of robić is robisz.", full:"Co robisz?", fullEn:"What are you doing?" },
-            { type:"choose", prompt:"My ___ projekt.", promptEn:"We're doing a project.",
+            { id:"verbs-present-tense-006", type:"choose", prompt:"My ___ projekt.", promptEn:"We're doing a project.",
               options:["robisz","robimy","robią"], answer:"robimy",
               explain:"'my' → -imy: robimy.", full:"Robimy projekt.", fullEn:"We're doing a project." },
-            { type:"choose", prompt:"Nie ___, gdzie to jest.", promptEn:"I don't know where it is.",
+            { id:"verbs-present-tense-007", type:"choose", prompt:"Nie ___, gdzie to jest.", promptEn:"I don't know where it is.",
               options:["wiesz","wiem","wie"], answer:"wiem",
               explain:"wiedzieć, 'ja' form: wiem (group 4).", full:"Nie wiem, gdzie to jest.", fullEn:"I don't know where it is." },
-            { type:"build", promptEn:"We live in Warsaw.",
+            { id:"verbs-present-tense-008", type:"build", promptEn:"We live in Warsaw.",
               answer:["Mieszkamy","w","Warszawie"],
               explain:"'my' form of mieszkać is mieszkamy; the pronoun drops.", full:"Mieszkamy w Warszawie.", fullEn:"We live in Warsaw." }
           ]
         },
 
         /* 2 ------------------------------------------------ REFLEXIVE VERBS */
-        {
+        { id:"verbs-reflexive",
           name: "Czasowniki zwrotne (Reflexive verbs)", emoji: "\uD83D\uDD04", kind: "grammar", chip: "Verbs A1",
           desc: "The little word 'się' - and the everyday verbs that need it",
           teach: [
@@ -152,7 +152,7 @@
                 { g:"on / ona", e:"nazywa się", ex:"Ona nazywa się Ada." },
                 { g:"my", e:"nazywamy się", ex:"Nazywamy się Kowalscy." },
                 { g:"wy", e:"nazywacie się", ex:"Jak się nazywacie?" },
-                { g:"oni / one", e:"nazywają się", ex:"Oni nazywają się Nowak." }
+                { g:"oni / one", e:"nazywają się", ex:"Nazywają się Nowakowie." }
               ],
               examples:[ { pl:"Nazywam się Anna.", en:"My name is Anna." } ] },
 
@@ -181,32 +181,32 @@
               note:"After <b>uczyć się</b> the thing you learn takes the genitive: uczę się <b>polskiego</b>, uczę się <b>gramatyki</b>." }
           ],
           drills: [
-            { type:"choose", prompt:"Jak ___ nazywasz?", promptEn:"What's your name?",
+            { id:"verbs-reflexive-001", type:"choose", prompt:"Jak ___ nazywasz?", promptEn:"What's your name?",
               options:["się","sobie","siebie"], answer:"się",
               explain:"The reflexive marker is 'się'.", full:"Jak się nazywasz?", fullEn:"What's your name?" },
-            { type:"choose", prompt:"Ja ___ polskiego.", promptEn:"I'm learning Polish.",
+            { id:"verbs-reflexive-002", type:"choose", prompt:"Ja ___ polskiego.", promptEn:"I'm learning Polish.",
               options:["uczysz się","uczę się","uczą się"], answer:"uczę się",
               explain:"'ja' form of uczyć się is uczę się.", full:"Uczę się polskiego.", fullEn:"I'm learning Polish." },
-            { type:"choose", prompt:"Jak się ___?", promptEn:"How do you feel?",
+            { id:"verbs-reflexive-003", type:"choose", prompt:"Jak się ___?", promptEn:"How do you feel?",
               options:["czuję","czujesz","czuje"], answer:"czujesz",
               explain:"'ty' form of czuć się is czujesz się.", full:"Jak się czujesz?", fullEn:"How do you feel?" },
-            { type:"build", promptEn:"My name is Anna.",
+            { id:"verbs-reflexive-004", type:"build", promptEn:"My name is Anna.",
               answer:["Nazywam","się","Anna"],
               explain:"nazywać się, 'ja' form: nazywam się.", full:"Nazywam się Anna.", fullEn:"My name is Anna." },
-            { type:"choose", prompt:"Uczę się ___.", promptEn:"I'm learning Polish.",
+            { id:"verbs-reflexive-005", type:"choose", prompt:"Uczę się ___.", promptEn:"I'm learning Polish.",
               options:["polski","polskiego","polsku"], answer:"polskiego",
               explain:"After uczyć się the object takes the genitive: polskiego.", full:"Uczę się polskiego.", fullEn:"I'm learning Polish." },
-            { type:"build", promptEn:"We meet at five.",
+            { id:"verbs-reflexive-006", type:"build", promptEn:"We meet at five.",
               answer:["Spotykamy","się","o","piątej"],
               explain:"spotykać się, 'my' form: spotykamy się.", full:"Spotykamy się o piątej.", fullEn:"We meet at five." },
-            { type:"choose", prompt:"Czuję ___ dobrze.", promptEn:"I feel fine.",
+            { id:"verbs-reflexive-007", type:"choose", prompt:"Czuję ___ dobrze.", promptEn:"I feel fine.",
               options:["siebie","się","sobą"], answer:"się",
               explain:"czuć się always keeps 'się'.", full:"Czuję się dobrze.", fullEn:"I feel fine." }
           ]
         },
 
         /* 3 --------------------------------------------------------- ASPECT */
-        {
+        { id:"verbs-aspect",
           name: "Aspekt (Verb aspect)", emoji: "\u2696\uFE0F", kind: "grammar", chip: "Verbs A2",
           desc: "Why verbs come in pairs - process vs. finished result",
           teach: [
@@ -260,32 +260,32 @@
               ] }
           ],
           drills: [
-            { type:"choose", prompt:"Codziennie ___ kawę rano.", promptEn:"I make coffee every morning.",
+            { id:"verbs-aspect-001", type:"choose", prompt:"Codziennie ___ kawę rano.", promptEn:"I make coffee every morning.",
               options:["zrobię","robię","zrobiłem"], answer:"robię",
               explain:"'Codziennie' = a habit → imperfective robię.", full:"Codziennie robię kawę rano.", fullEn:"I make coffee every morning." },
-            { type:"choose", prompt:"Wreszcie ___ ten raport.", promptEn:"I finally wrote that report.",
+            { id:"verbs-aspect-002", type:"choose", prompt:"Wreszcie ___ ten raport.", promptEn:"I finally wrote that report.",
               options:["pisałem","napisałem","piszę"], answer:"napisałem",
               explain:"'Wreszcie' + one finished result → perfective napisałem.", full:"Wreszcie napisałem ten raport.", fullEn:"I finally wrote that report." },
-            { type:"choose", prompt:"Jutro ___ zakupy.", promptEn:"I'll do the shopping tomorrow.",
+            { id:"verbs-aspect-003", type:"choose", prompt:"Jutro ___ zakupy.", promptEn:"I'll do the shopping tomorrow.",
               options:["robię","zrobię","robiłem"], answer:"zrobię",
               explain:"A single finished future action → perfective zrobię.", full:"Jutro zrobię zakupy.", fullEn:"I'll do the shopping tomorrow." },
-            { type:"choose", prompt:"Zwykle ___ książki wieczorem.", promptEn:"I usually read books in the evening.",
+            { id:"verbs-aspect-004", type:"choose", prompt:"Zwykle ___ książki wieczorem.", promptEn:"I usually read books in the evening.",
               options:["przeczytam","czytam","przeczytałem"], answer:"czytam",
               explain:"'Zwykle' = habit → imperfective czytam.", full:"Zwykle czytam książki wieczorem.", fullEn:"I usually read books in the evening." },
-            { type:"choose", prompt:"Właśnie ___ obiad, jestem najedzony.", promptEn:"I've just eaten lunch, I'm full.",
+            { id:"verbs-aspect-005", type:"choose", prompt:"Właśnie ___ obiad, jestem najedzony.", promptEn:"I've just eaten lunch, I'm full.",
               options:["jem","zjadłem","jadłem"], answer:"zjadłem",
               explain:"Finished, with a result (full) → perfective zjadłem.", full:"Właśnie zjadłem obiad.", fullEn:"I've just eaten lunch." },
-            { type:"build", promptEn:"Tell me. (one quick thing)",
+            { id:"verbs-aspect-006", type:"build", promptEn:"Tell me. (one quick thing)",
               answer:["Powiedz","mi"],
               explain:"A single, complete request → perfective powiedzieć → powiedz.", full:"Powiedz mi.", fullEn:"Tell me." },
-            { type:"choose", prompt:"Teraz ___ e-mail, poczekaj chwilę.", promptEn:"I'm writing an email right now, wait a moment.",
+            { id:"verbs-aspect-007", type:"choose", prompt:"Teraz ___ e-mail, poczekaj chwilę.", promptEn:"I'm writing an email right now, wait a moment.",
               options:["napiszę","piszę","napisałem"], answer:"piszę",
               explain:"In progress right now → imperfective piszę.", full:"Teraz piszę e-mail.", fullEn:"I'm writing an email right now." }
           ]
         },
 
         /* 4 ----------------------------------------------------- PAST TENSE */
-        {
+        { id:"verbs-past-tense",
           name: "Czas przeszły (Past tense)", emoji: "\u23EA", kind: "grammar", chip: "Verbs A2",
           desc: "Talk about yesterday - with endings that match your gender",
           teach: [
@@ -345,32 +345,32 @@
               ] }
           ],
           drills: [
-            { type:"choose", prompt:"Wczoraj ___ w pracy. (mężczyzna)", promptEn:"Yesterday I was at work. (a man speaking)",
+            { id:"verbs-past-tense-001", type:"choose", prompt:"Wczoraj ___ w pracy. (mężczyzna)", promptEn:"Yesterday I was at work. (a man speaking)",
               options:["byłam","byłem","był"], answer:"byłem",
               explain:"A man says byłem; a woman byłam.", full:"Wczoraj byłem w pracy.", fullEn:"Yesterday I was at work." },
-            { type:"choose", prompt:"Wczoraj ___ w pracy. (kobieta)", promptEn:"Yesterday I was at work. (a woman speaking)",
+            { id:"verbs-past-tense-002", type:"choose", prompt:"Wczoraj ___ w pracy. (kobieta)", promptEn:"Yesterday I was at work. (a woman speaking)",
               options:["byłam","byłem","była"], answer:"byłam",
               explain:"A woman uses the -am ending: byłam.", full:"Wczoraj byłam w pracy.", fullEn:"Yesterday I was at work." },
-            { type:"choose", prompt:"Ona ___ kawę.", promptEn:"She was making coffee.",
+            { id:"verbs-past-tense-003", type:"choose", prompt:"Ona ___ kawę.", promptEn:"She was making coffee.",
               options:["robił","robiła","robiłem"], answer:"robiła",
               explain:"'ona' → -ła: robiła.", full:"Ona robiła kawę.", fullEn:"She was making coffee." },
-            { type:"choose", prompt:"___ całą książkę i wiem, jak się kończy.", promptEn:"I read the whole book and I know how it ends.",
+            { id:"verbs-past-tense-004", type:"choose", prompt:"___ całą książkę i wiem, jak się kończy.", promptEn:"I read the whole book and I know how it ends.",
               options:["Czytałem","Przeczytałem","Czytam"], answer:"Przeczytałem",
               explain:"Finished, with a result → perfective przeczytałem.", full:"Przeczytałem całą książkę.", fullEn:"I read the whole book." },
-            { type:"build", promptEn:"We were together. (a mixed group)",
+            { id:"verbs-past-tense-005", type:"build", promptEn:"We were together. (a mixed group)",
               answer:["Byliśmy","razem"],
               explain:"A group with at least one man → byliśmy (-li).", full:"Byliśmy razem.", fullEn:"We were together." },
-            { type:"choose", prompt:"Oni ___ w kinie.", promptEn:"They were at the cinema.",
+            { id:"verbs-past-tense-006", type:"choose", prompt:"Oni ___ w kinie.", promptEn:"They were at the cinema.",
               options:["były","byliśmy","byli"], answer:"byli",
               explain:"'oni' (men / mixed) → byli.", full:"Oni byli w kinie.", fullEn:"They were at the cinema." },
-            { type:"choose", prompt:"Wczoraj ___ do domu pieszo. (mężczyzna)", promptEn:"Yesterday I walked home. (a man speaking)",
+            { id:"verbs-past-tense-007", type:"choose", prompt:"Wczoraj ___ do domu pieszo. (mężczyzna)", promptEn:"Yesterday I walked home. (a man speaking)",
               options:["szłam","szedłem","szedł"], answer:"szedłem",
               explain:"iść has an irregular past: szedłem (m) / szłam (f).", full:"Wczoraj szedłem do domu pieszo.", fullEn:"Yesterday I walked home." }
           ]
         },
 
         /* 5 --------------------------------------------------- FUTURE TENSE */
-        {
+        { id:"verbs-future-tense",
           name: "Czas przyszły (Future tense)", emoji: "\u23E9", kind: "grammar", chip: "Verbs A2",
           desc: "Two futures - and aspect decides which one you use",
           teach: [
@@ -420,32 +420,32 @@
               note:"Compare: <b>Będę się uczyć</b> (I'll be studying, ongoing) vs <b>Nauczę się</b> (I'll learn it / master it, finished)." }
           ],
           drills: [
-            { type:"choose", prompt:"Jutro ___ w domu.", promptEn:"Tomorrow I'll be at home.",
+            { id:"verbs-future-tense-001", type:"choose", prompt:"Jutro ___ w domu.", promptEn:"Tomorrow I'll be at home.",
               options:["jestem","będę","byłem"], answer:"będę",
               explain:"Future of być, 'ja': będę.", full:"Jutro będę w domu.", fullEn:"Tomorrow I'll be at home." },
-            { type:"choose", prompt:"Wieczorem ___ pracować.", promptEn:"In the evening I'll be working.",
+            { id:"verbs-future-tense-002", type:"choose", prompt:"Wieczorem ___ pracować.", promptEn:"In the evening I'll be working.",
               options:["będę","zrobię","jestem"], answer:"będę",
               explain:"Ongoing future = będę + imperfective infinitive.", full:"Wieczorem będę pracować.", fullEn:"In the evening I'll be working." },
-            { type:"choose", prompt:"Jutro ___ to zadanie i skończę.", promptEn:"Tomorrow I'll do (and finish) that task.",
+            { id:"verbs-future-tense-003", type:"choose", prompt:"Jutro ___ to zadanie i skończę.", promptEn:"Tomorrow I'll do (and finish) that task.",
               options:["będę robić","zrobię","robię"], answer:"zrobię",
               explain:"One finished result → perfective zrobię (no będę).", full:"Jutro zrobię to zadanie.", fullEn:"Tomorrow I'll do that task." },
-            { type:"choose", prompt:"Ona ___ później.", promptEn:"She'll be here later.",
+            { id:"verbs-future-tense-004", type:"choose", prompt:"Ona ___ później.", promptEn:"She'll be here later.",
               options:["będą","będzie","będziesz"], answer:"będzie",
               explain:"Future of być, 'ona': będzie.", full:"Ona będzie później.", fullEn:"She'll be here later." },
-            { type:"build", promptEn:"I'll write to you in the evening. (one message)",
+            { id:"verbs-future-tense-005", type:"build", promptEn:"I'll write to you in the evening. (one message)",
               answer:["Napiszę","do","ciebie","wieczorem"],
               explain:"A single finished action → perfective napiszę.", full:"Napiszę do ciebie wieczorem.", fullEn:"I'll write to you in the evening." },
-            { type:"choose", prompt:"Cały weekend ___ się uczyć.", promptEn:"All weekend I'll be studying.",
+            { id:"verbs-future-tense-006", type:"choose", prompt:"Cały weekend ___ się uczyć.", promptEn:"All weekend I'll be studying.",
               options:["nauczę","będę","będzie"], answer:"będę",
               explain:"Ongoing, all weekend → będę + uczyć się.", full:"Cały weekend będę się uczyć.", fullEn:"All weekend I'll be studying." },
-            { type:"choose", prompt:"My ___ jutro gotowi.", promptEn:"We'll be ready tomorrow.",
+            { id:"verbs-future-tense-007", type:"choose", prompt:"My ___ jutro gotowi.", promptEn:"We'll be ready tomorrow.",
               options:["będziemy","będziecie","będą"], answer:"będziemy",
               explain:"Future of być, 'my': będziemy.", full:"Będziemy jutro gotowi.", fullEn:"We'll be ready tomorrow." }
           ]
         },
 
         /* 6 -------------------------------------------------- MODAL VERBS */
-        {
+        { id:"verbs-modal-verbs",
           name: "Czasowniki modalne (Modal verbs)", emoji: "\uD83D\uDCAD", kind: "grammar", chip: "Verbs A2",
           desc: "Can, must, want, should - each followed by the infinitive",
           teach: [
@@ -509,41 +509,41 @@
               note:"They work exactly like trzeba and można: impersonal word + infinitive. <b>Da się?</b> on its own is a whole question - 'is it doable?'" },
           ],
           drills: [
-            { type:"choose", prompt:"___ ci pomóc?", promptEn:"Can I help you?",
+            { id:"verbs-modal-verbs-001", type:"choose", prompt:"___ ci pomóc?", promptEn:"Can I help you?",
               options:["Mogę","Możesz","Muszę"], answer:"Mogę",
               explain:"'ja' form of móc: mogę.", full:"Mogę ci pomóc?", fullEn:"Can I help you?" },
-            { type:"choose", prompt:"Muszę już ___.", promptEn:"I have to go now.",
+            { id:"verbs-modal-verbs-002", type:"choose", prompt:"Muszę już ___.", promptEn:"I have to go now.",
               options:["idę","iść","poszedłem"], answer:"iść",
               explain:"After a modal the second verb stays in the infinitive: iść.", full:"Muszę już iść.", fullEn:"I have to go now." },
-            { type:"choose", prompt:"Czy ___ zapłacić kartą?", promptEn:"Can I pay by card?",
+            { id:"verbs-modal-verbs-003", type:"choose", prompt:"Czy ___ zapłacić kartą?", promptEn:"Can I pay by card?",
               options:["mogę","może","mogą"], answer:"mogę",
               explain:"Polite 'may I' uses móc, 'ja' → mogę.", full:"Czy mogę zapłacić kartą?", fullEn:"Can I pay by card?" },
-            { type:"choose", prompt:"Ona ___ odpocząć.", promptEn:"She wants to rest.",
+            { id:"verbs-modal-verbs-004", type:"choose", prompt:"Ona ___ odpocząć.", promptEn:"She wants to rest.",
               options:["chcę","chce","chcą"], answer:"chce",
               explain:"chcieć, 'ona' form: chce.", full:"Ona chce odpocząć.", fullEn:"She wants to rest." },
-            { type:"build", promptEn:"We have to hurry.",
+            { id:"verbs-modal-verbs-005", type:"build", promptEn:"We have to hurry.",
               answer:["Musimy","się","spieszyć"],
               explain:"musieć 'my' → musimy, + reflexive spieszyć się.", full:"Musimy się spieszyć.", fullEn:"We have to hurry." },
-            { type:"choose", prompt:"___ odpocząć. (rada dla mężczyzny)", promptEn:"You should rest. (advice to a man)",
+            { id:"verbs-modal-verbs-006", type:"choose", prompt:"___ odpocząć. (rada dla mężczyzny)", promptEn:"You should rest. (advice to a man)",
               options:["Powinnaś","Powinieneś","Powinien"], answer:"Powinieneś",
               explain:"powinien, 'ty' masculine: powinieneś.", full:"Powinieneś odpocząć.", fullEn:"You should rest." },
-            { type:"choose", prompt:"___ kupić bilet.", promptEn:"You need to buy a ticket.",
+            { id:"verbs-modal-verbs-007", type:"choose", prompt:"___ kupić bilet.", promptEn:"You need to buy a ticket.",
               options:["Trzeba","Chcę","Mogę"], answer:"Trzeba",
               explain:"Impersonal 'one needs to' = trzeba + infinitive.", full:"Trzeba kupić bilet.", fullEn:"You need to buy a ticket." },
-            { type:"choose", prompt:"___ obejrzeć ten film.", promptEn:"This film is worth watching.",
+            { id:"verbs-modal-verbs-008", type:"choose", prompt:"___ obejrzeć ten film.", promptEn:"This film is worth watching.",
               options:["Warto","Wolno","Trzeba"], answer:"Warto",
               explain:"A recommendation of value → warto + infinitive.", full:"Warto obejrzeć ten film.", fullEn:"This film is worth watching." },
-            { type:"choose", prompt:"Tu ___ palić.", promptEn:"Smoking is not allowed here.",
+            { id:"verbs-modal-verbs-009", type:"choose", prompt:"Tu ___ palić.", promptEn:"Smoking is not allowed here.",
               options:["nie wolno","nie warto","nie trzeba"], answer:"nie wolno",
               explain:"A prohibition → nie wolno. 'nie trzeba' would just mean you don't have to.", full:"Tu nie wolno palić.", fullEn:"Smoking is not allowed here." },
-            { type:"choose", prompt:"Tego ___ zrobić w jeden dzień.", promptEn:"This can't be done in one day.",
+            { id:"verbs-modal-verbs-010", type:"choose", prompt:"Tego ___ zrobić w jeden dzień.", promptEn:"This can't be done in one day.",
               options:["nie da się","nie wolno","nie warto"], answer:"nie da się",
               explain:"Impossibility → nie da się. nie wolno = forbidden, nie warto = pointless.", full:"Tego nie da się zrobić w jeden dzień.", fullEn:"This can't be done in one day." }
           ]
         },
 
         /* 7 --------------------------------------------------- IMPERATIVE */
-        {
+        { id:"verbs-imperative",
           name: "Tryb rozkazujący (Imperative)", emoji: "\uD83D\uDCE3", kind: "grammar", chip: "Verbs A2",
           desc: "Giving instructions, asking, and telling someone not to",
           teach: [
@@ -604,32 +604,32 @@
               ] }
           ],
           drills: [
-            { type:"choose", prompt:"___ tutaj! (do kolegi)", promptEn:"Come here! (to a friend)",
+            { id:"verbs-imperative-001", type:"choose", prompt:"___ tutaj! (do kolegi)", promptEn:"Come here! (to a friend)",
               options:["Chodź","Chodzę","Chodzisz"], answer:"Chodź",
               explain:"ty command of chodzić: chodź.", full:"Chodź tutaj!", fullEn:"Come here!" },
-            { type:"choose", prompt:"___ chwilę.", promptEn:"Wait a moment.",
+            { id:"verbs-imperative-002", type:"choose", prompt:"___ chwilę.", promptEn:"Wait a moment.",
               options:["Czekasz","Poczekaj","Czekam"], answer:"Poczekaj",
               explain:"Command from poczekać: poczekaj.", full:"Poczekaj chwilę.", fullEn:"Wait a moment." },
-            { type:"choose", prompt:"Nie ___ się, wszystko będzie dobrze.", promptEn:"Don't worry, everything will be fine.",
+            { id:"verbs-imperative-003", type:"choose", prompt:"Nie ___ się, wszystko będzie dobrze.", promptEn:"Don't worry, everything will be fine.",
               options:["martw","zmartw","martwię"], answer:"martw",
               explain:"Negative command → imperfective: nie martw się.", full:"Nie martw się.", fullEn:"Don't worry." },
-            { type:"build", promptEn:"Let's take a break.",
+            { id:"verbs-imperative-004", type:"build", promptEn:"Let's take a break.",
               answer:["Zróbmy","przerwę"],
               explain:"'let's' adds -my: zróbmy.", full:"Zróbmy przerwę.", fullEn:"Let's take a break." },
-            { type:"choose", prompt:"___ usiąść. (uprzejmie)", promptEn:"Please sit down. (politely)",
+            { id:"verbs-imperative-005", type:"choose", prompt:"___ usiąść. (uprzejmie)", promptEn:"Please sit down. (politely)",
               options:["Siądź","Proszę","Siadaj"], answer:"Proszę",
               explain:"Polite form: Proszę + infinitive (usiąść).", full:"Proszę usiąść.", fullEn:"Please sit down." },
-            { type:"choose", prompt:"___ do mnie wieczorem.", promptEn:"Call me in the evening.",
+            { id:"verbs-imperative-006", type:"choose", prompt:"___ do mnie wieczorem.", promptEn:"Call me in the evening.",
               options:["Dzwoń","Zadzwoń","Dzwonisz"], answer:"Zadzwoń",
               explain:"Positive command → perfective: zadzwoń.", full:"Zadzwoń do mnie wieczorem.", fullEn:"Call me in the evening." },
-            { type:"build", promptEn:"Please speak more slowly.",
+            { id:"verbs-imperative-007", type:"build", promptEn:"Please speak more slowly.",
               answer:["Proszę","mówić","wolniej"],
               explain:"Proszę + infinitive mówić.", full:"Proszę mówić wolniej.", fullEn:"Please speak more slowly." }
           ]
         },
 
         /* 8 ------------------------------------------------ VERBS OF MOTION */
-        {
+        { id:"verbs-verbs-of-motion",
           name: "Czasowniki ruchu (Verbs of motion)", emoji: "\uD83D\uDEB6", kind: "grammar", chip: "Verbs A2",
           desc: "iść vs chodzić, jechać vs jeździć - on foot or by vehicle, once or often",
           teach: [
@@ -690,30 +690,30 @@
               note:"The same prefixes work on jechać: <b>przyjechać</b> (arrive by vehicle), <b>wyjechać</b> (leave / travel away)." }
           ],
           drills: [
-            { type:"choose", prompt:"___ do sklepu, wrócę za chwilę.", promptEn:"I'm going to the shop, I'll be back soon.",
+            { id:"verbs-verbs-of-motion-001", type:"choose", prompt:"___ do sklepu, wrócę za chwilę.", promptEn:"I'm going to the shop, I'll be back soon.",
               options:["Chodzę","Idę","Jadę"], answer:"Idę",
               explain:"One trip on foot, now → idę.", full:"Idę do sklepu.", fullEn:"I'm going to the shop." },
-            { type:"choose", prompt:"Codziennie ___ do pracy.", promptEn:"I go to work every day.",
+            { id:"verbs-verbs-of-motion-002", type:"choose", prompt:"Codziennie ___ do pracy.", promptEn:"I go to work every day.",
               options:["idę","chodzę","jadę"], answer:"chodzę",
               explain:"'Codziennie' = habit on foot → chodzę.", full:"Codziennie chodzę do pracy.", fullEn:"I go to work every day." },
-            { type:"choose", prompt:"Jutro ___ do Krakowa pociągiem.", promptEn:"Tomorrow I'm going to Kraków by train.",
+            { id:"verbs-verbs-of-motion-003", type:"choose", prompt:"Jutro ___ do Krakowa pociągiem.", promptEn:"Tomorrow I'm going to Kraków by train.",
               options:["idę","jeżdżę","jadę"], answer:"jadę",
               explain:"One trip by vehicle → jadę.", full:"Jutro jadę do Krakowa pociągiem.", fullEn:"Tomorrow I'm going to Kraków by train." },
-            { type:"choose", prompt:"Często ___ do rodziny na weekend.", promptEn:"I often go to my family for the weekend.",
+            { id:"verbs-verbs-of-motion-004", type:"choose", prompt:"Często ___ do rodziny na weekend.", promptEn:"I often go to my family for the weekend.",
               options:["jadę","jeżdżę","idę"], answer:"jeżdżę",
               explain:"'Często' = habit by vehicle → jeżdżę.", full:"Często jeżdżę do rodziny na weekend.", fullEn:"I often go to my family for the weekend." },
-            { type:"choose", prompt:"On jedzie ___.", promptEn:"He's going by bus.",
+            { id:"verbs-verbs-of-motion-005", type:"choose", prompt:"On jedzie ___.", promptEn:"He's going by bus.",
               options:["autobus","autobusem","autobusu"], answer:"autobusem",
               explain:"The vehicle takes the instrumental: autobusem.", full:"On jedzie autobusem.", fullEn:"He's going by bus." },
-            { type:"build", promptEn:"Please come in.",
+            { id:"verbs-verbs-of-motion-006", type:"build", promptEn:"Please come in.",
               answer:["Wejdź","proszę"],
               explain:"wejść (go in), ty command: wejdź.", full:"Wejdź, proszę.", fullEn:"Please come in." },
-            { type:"choose", prompt:"___ o piątej, czekaj na mnie.", promptEn:"I'll arrive at five, wait for me.",
+            { id:"verbs-verbs-of-motion-007", type:"choose", prompt:"___ o piątej, czekaj na mnie.", promptEn:"I'll arrive at five, wait for me.",
               options:["Idę","Przyjdę","Chodzę"], answer:"Przyjdę",
               explain:"Arrive (finished, future) → perfective przyjdę.", full:"Przyjdę o piątej.", fullEn:"I'll arrive at five." }
           ]
         },
-        {
+        { id:"verbs-motion-prefixes",
           name: "Prefiksy ruchu (Motion prefixes)", emoji: "🧭", kind: "grammar", chip: "Verbs B1",
           desc: "przyjść, wyjść, dojechać - one verb, eight directions",
           teach: [
@@ -722,6 +722,7 @@
               points:[
                 "A prefix on iść or jechać adds a <b>direction</b> and makes the verb <b>perfective</b> (one completed move).",
                 "Learn seven prefixes and you unlock dozens of verbs - the same set works on both the foot family and the wheels family.",
+                "It is a strong guide rather than a formula: a few prefixed verbs have settled into their own meanings you learn separately (<i>przejść na emeryturę</i> = to retire).",
                 "przy- = arriving, wy- = out, w(e)- = in, do- = reaching, od(e)- = away from, prze- = across, po- = setting off."
               ],
               examples:[
@@ -740,10 +741,10 @@
                 { g:"przejść", e:"to cross / go through", ex:"Przejdźmy przez ulicę." },
                 { g:"pójść", e:"to set off / go (once)", ex:"Pójdziemy jutro do kina." }
               ],
-              note:"Spelling shuffles a little (przy<b>jść</b> but w<b>ejść</b>, od<b>ejść</b>) - the e slips in to keep things pronounceable. The prefix meaning never changes." },
+              note:"Spelling shuffles a little (przy<b>jść</b> but w<b>ejść</b>, od<b>ejść</b>) - the e slips in to keep things pronounceable. Each prefix keeps a recognisable core meaning, though the literal sense is not always the whole story (<i>dojść do wniosku</i> = to reach a conclusion)." },
 
             { front:"The same map on wheels",
-              sub:"Swap iść for jechać and every prefix carries its meaning across.",
+              sub:"Swap iść for jechać and the same prefixes carry their meanings across.",
               table:[
                 { g:"przyjechać", e:"to arrive (by vehicle)", ex:"Kiedy przyjechałeś do Polski?" },
                 { g:"wyjechać", e:"to leave (town, country)", ex:"Wyjeżdżam na weekend." },
@@ -792,40 +793,40 @@
               note:"<b>Jak dojść</b> vs <b>jak dojechać</b> - the foot/wheels split from Verbs of motion carries all the way through the prefix system." }
           ],
           drills: [
-            { type:"choose", prompt:"Pociąg ___ o ósmej z toru drugiego.", promptEn:"The train departs at eight from track two.",
+            { id:"verbs-motion-prefixes-001", type:"choose", prompt:"Pociąg ___ o ósmej z toru drugiego.", promptEn:"The train departs at eight from track two.",
               options:["odjeżdża","przyjeżdża","wjeżdża"], answer:"odjeżdża",
               explain:"Departing = moving away → od-. przyjeżdża would mean it's arriving.", full:"Pociąg odjeżdża o ósmej z toru drugiego.", fullEn:"The train departs at eight from track two." },
-            { type:"choose", prompt:"___ o piątej, obiecuję.", promptEn:"I'll come at five, I promise.",
+            { id:"verbs-motion-prefixes-002", type:"choose", prompt:"___ o piątej, obiecuję.", promptEn:"I'll come at five, I promise.",
               options:["Przyjdę","Wyjdę","Odejdę"], answer:"Przyjdę",
               explain:"Arriving somewhere → przy-: przyjdę.", full:"Przyjdę o piątej, obiecuję.", fullEn:"I'll come at five, I promise." },
-            { type:"choose", prompt:"Muszę już ___ z biura.", promptEn:"I have to leave the office now.",
+            { id:"verbs-motion-prefixes-003", type:"choose", prompt:"Muszę już ___ z biura.", promptEn:"I have to leave the office now.",
               options:["wyjść","wejść","dojść"], answer:"wyjść",
               explain:"Out of the office → wy-, and wy- pairs with z: wyjść z biura.", full:"Muszę już wyjść z biura.", fullEn:"I have to leave the office now." },
-            { type:"choose", prompt:"___ do środka, zimno na dworze!", promptEn:"Come inside, it's cold out!",
+            { id:"verbs-motion-prefixes-004", type:"choose", prompt:"___ do środka, zimno na dworze!", promptEn:"Come inside, it's cold out!",
               options:["Wejdź","Wyjdź","Odejdź"], answer:"Wejdź",
               explain:"Going in → w(e)-: wejdź do środka.", full:"Wejdź do środka, zimno na dworze!", fullEn:"Come inside, it's cold out!" },
-            { type:"choose", prompt:"Przepraszam, jak ___ do dworca?", promptEn:"Excuse me, how do I get to the station? (on foot)",
+            { id:"verbs-motion-prefixes-005", type:"choose", prompt:"Przepraszam, jak ___ do dworca?", promptEn:"Excuse me, how do I get to the station? (on foot)",
               options:["dojść","odejść","przejść"], answer:"dojść",
               explain:"Reaching a destination → do-: jak dojść do...? The classic street question.", full:"Przepraszam, jak dojść do dworca?", fullEn:"Excuse me, how do I get to the station? (on foot)" },
-            { type:"choose", prompt:"___ przez ulicę na zielonym świetle.", promptEn:"I cross the street on a green light.",
+            { id:"verbs-motion-prefixes-006", type:"choose", prompt:"___ przez ulicę na zielonym świetle.", promptEn:"I cross the street on a green light.",
               options:["Przechodzę","Wychodzę","Przychodzę"], answer:"Przechodzę",
               explain:"Across → prze-, with przez + Accusative: przechodzę przez ulicę.", full:"Przechodzę przez ulicę na zielonym świetle.", fullEn:"I cross the street on a green light." },
-            { type:"choose", prompt:"Autobus już ___, spóźniliśmy się.", promptEn:"The bus has already left, we missed it.",
+            { id:"verbs-motion-prefixes-007", type:"choose", prompt:"Autobus już ___, spóźniliśmy się.", promptEn:"The bus has already left, we missed it.",
               options:["odjechał","przyjechał","dojechał"], answer:"odjechał",
               explain:"Gone away → od-: odjechał. przyjechał would mean it just arrived - the opposite problem.", full:"Autobus już odjechał, spóźniliśmy się.", fullEn:"The bus has already left, we missed it." },
-            { type:"choose", prompt:"Kiedy ___ do Polski?", promptEn:"When did you arrive in Poland?",
+            { id:"verbs-motion-prefixes-008", type:"choose", prompt:"Kiedy ___ do Polski?", promptEn:"When did you arrive in Poland?",
               options:["przyjechałeś","wyjechałeś","odjechałeś"], answer:"przyjechałeś",
               explain:"Arriving in a country → przy- + do: przyjechałeś do Polski.", full:"Kiedy przyjechałeś do Polski?", fullEn:"When did you arrive in Poland?" },
-            { type:"choose", prompt:"Wychodzę ___ domu o ósmej rano.", promptEn:"I leave the house at eight in the morning.",
+            { id:"verbs-motion-prefixes-009", type:"choose", prompt:"Wychodzę ___ domu o ósmej rano.", promptEn:"I leave the house at eight in the morning.",
               options:["z","do","od"], answer:"z",
               explain:"wy- pairs with z + Genitive: wychodzę z domu.", full:"Wychodzę z domu o ósmej rano.", fullEn:"I leave the house at eight in the morning." },
-            { type:"choose", prompt:"On ___ z Polski dwa lata temu.", promptEn:"He left Poland two years ago.",
+            { id:"verbs-motion-prefixes-010", type:"choose", prompt:"On ___ z Polski dwa lata temu.", promptEn:"He left Poland two years ago.",
               options:["wyjechał","przyjechał","pojechał"], answer:"wyjechał",
               explain:"Leaving a country → wy- + z: wyjechał z Polski.", full:"On wyjechał z Polski dwa lata temu.", fullEn:"He left Poland two years ago." },
-            { type:"choose", prompt:"Autobus ___ co dziesięć minut.", promptEn:"The bus comes every ten minutes.",
+            { id:"verbs-motion-prefixes-011", type:"choose", prompt:"Autobus ___ co dziesięć minut.", promptEn:"The bus comes every ten minutes.",
               options:["przyjeżdża","przyjedzie","przyjechał"], answer:"przyjeżdża",
               explain:"Repeated, scheduled movement → the imperfective partner: przyjeżdża.", full:"Autobus przyjeżdża co dziesięć minut.", fullEn:"The bus comes every ten minutes." },
-            { type:"choose", prompt:"Zaraz ___, daj mi minutę.", promptEn:"I'll be right there, give me a minute.",
+            { id:"verbs-motion-prefixes-012", type:"choose", prompt:"Zaraz ___, daj mi minutę.", promptEn:"I'll be right there, give me a minute.",
               options:["przyjdę","pójdę","wyjdę"], answer:"przyjdę",
               explain:"Coming to where you are → przy-: zaraz przyjdę - the everyday 'be right there'.", full:"Zaraz przyjdę, daj mi minutę.", fullEn:"I'll be right there, give me a minute." }
           ]

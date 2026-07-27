@@ -5,11 +5,11 @@
 (function(){
   window.PP_LEVELS = window.PP_LEVELS || [];
   window.PP_LEVELS.push(
-  {
+  { id:"scenarios",
       level: "Scenarios",
       blurb: "Real conversations",
       topics: [
-        {
+        { id:"scenarios-pharmacy",
           name: "W aptece", emoji: "\uD83D\uDC8A", kind: "convo",
           desc: "Describe a symptom, choose a remedy, ask how to take it, and pay",
           role: "Farmaceutka",
@@ -153,7 +153,7 @@
             }
           }
         },
-        {
+        { id:"scenarios-doctor",
           name: "U lekarza", emoji: "\uD83E\uDE7A", kind: "convo",
           desc: "Tell the doctor what's wrong and get a prescription",
           role: "Lekarka",
@@ -265,7 +265,7 @@
             }
           }
         },
-        {
+        { id:"scenarios-shops-services",
           name: "Sklep i usługi", emoji: "\uD83D\uDCB0", kind: "convo",
           desc: "Paying, ordering, and quick everyday errands",
           role: "Sprzedawcy i kasjerki",
@@ -371,7 +371,7 @@
             }
           }
         },
-        {
+        { id:"scenarios-city-transport",
           name: "Miasto i transport", emoji: "\uD83D\uDE8B", kind: "convo",
           desc: "Asking directions, catching transit, getting around",
           role: "Przechodnie i kierowcy",
@@ -393,7 +393,7 @@
                   note:"'Jak dojść do...' + genitive is the go-to formula for directions on foot.", goto:"s2" },
                 { pl:"Przepraszam, gdzie jest najbliższa stacja metra?", en:"Excuse me, where's the nearest metro station?",
                   note:"'najbliższy' = nearest - najbliższa stacja, najbliższy przystanek.", goto:"s2" },
-                { pl:"Jak najlepiej dojechać do centrum?", en:"What's the best way to get to the center?",
+                { pl:"Jak najlepiej dojechać do centrum?", en:"What's the best way to get to the centre?",
                   note:"'dojechać' (by vehicle) vs 'dojść' (on foot) - the iść/jechać split.", goto:"s2" }
               ]
             },
@@ -407,9 +407,9 @@
             s3: {
               npc:"(Nie jesteś pewien, czy ten autobus jedzie do centrum.)", npcEn:"(You're not sure if this bus goes downtown.)",
               options:[
-                { pl:"Czy ten autobus jedzie do centrum?", en:"Does this bus go to the center?",
+                { pl:"Czy ten autobus jedzie do centrum?", en:"Does this bus go to the centre?",
                   note:"'jechać' (by vehicle): autobus jedzie, ja jadę, ty jedziesz.", goto:"s4" },
-                { pl:"Przepraszam, dojadę tym autobusem do centrum?", en:"Excuse me, will this bus get me to the center?",
+                { pl:"Przepraszam, dojadę tym autobusem do centrum?", en:"Excuse me, will this bus get me to the centre?",
                   note:"'tym autobusem' = by this bus (instrumental for transport).", goto:"s4" }
               ]
             },
@@ -505,8 +505,8 @@
             s16: {
               npc:"(Chcesz wiedzieć, czy zapłacisz telefonem.)", npcEn:"(You want to know if you can pay with your phone.)",
               options:[
-                { pl:"Czy można płacić Blikiem?", en:"Can I pay with Blik?",
-                  note:"BLIK is Poland's near-universal mobile payment code.", goto:"s17" }
+                { pl:"Czy można płacić BLIKIEM?", en:"Can I pay with BLIK?",
+                  note:"BLIK is Poland's widely used mobile payment system - you pay by phone, either with a one-time code or by confirming in your banking app.", goto:"s17" }
               ]
             },
             s17: {
@@ -535,7 +535,7 @@
             }
           }
         },
-        {
+        { id:"scenarios-gym",
           name: "Siłownia", emoji: "\uD83D\uDD04", kind: "convo",
           desc: "Gym etiquette: sharing equipment and small talk",
           role: "Ludzie na siłowni",
@@ -676,7 +676,7 @@
             }
           }
         },
-        {
+        { id:"scenarios-work-university",
           name: "Praca i uczelnia", emoji: "\uD83C\uDF93", kind: "convo",
           desc: "Coffee breaks, deadlines, and office small talk",
           role: "Koledzy z pracy/uczelni",
@@ -793,7 +793,7 @@
             }
           }
         },
-        {
+        { id:"scenarios-neighbours",
           name: "Sąsiedzi i codzienność", emoji: "\uD83C\uDFE0", kind: "convo",
           desc: "Small talk with neighbors and everyday building life",
           role: "Sąsiedzi",
@@ -888,7 +888,7 @@
               npc:"Gdzie wyrzucić ten karton?", npcEn:"(A neighbor) Where do I throw away this cardboard?",
               options:[
                 { pl:"Do niebieskiego pojemnika.", en:"In the blue bin.",
-                  note:"Poland sorts recycling by color: blue = paper, yellow = plastic & metal, green = glass.", goto:"s10" }
+                  note:"Poland sorts recycling by colour: blue = paper, yellow = plastic & metal, green = glass.", goto:"s10" }
               ]
             },
             s10: {

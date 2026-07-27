@@ -1,0 +1,24 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Windows
+Thumbs.db
+
+# Editors
+*.swp
+.vscode/
+.idea/
+
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+
+# Local scratch and temporary files
+/scratch/
+/.analysis/
+*.tmp
+levels.json
+dump_levels.js
+analyze.py

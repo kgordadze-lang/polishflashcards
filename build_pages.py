@@ -21,7 +21,6 @@ sw.js navigate-handler fix - see the deploy notes.
 """
 
 import datetime
-import hashlib
 import html
 import json
 import os
@@ -29,7 +28,10 @@ import re
 import shutil
 import unicodedata
 
-import json5
+# The data-file parser and ppNormalize() equivalent live in pp_audio_rule.py, which
+# also owns the main-card audio rule. One parser, one normalizer: a page's audio
+# lookup can't disagree with what generate_audio.py actually built.
+from pp_audio_rule import load_levels, normalize
 
 DATA_FILE = "data-grammar.js"
 VOCAB_FILE = "data-b1.js"
@@ -51,60 +53,6 @@ SITE = "https://popolsku.app"
 
 # ---------------------------------------------------------------- parsing
 
-def fix_surrogates(obj):
-    """json5 decodes \\uD83C\\uDFC1-style escapes as lone surrogates; re-pair
-    them so emoji survive utf-8 encoding."""
-    if isinstance(obj, str):
-        return obj.encode("utf-16", "surrogatepass").decode("utf-16")
-    if isinstance(obj, list):
-        return [fix_surrogates(x) for x in obj]
-    if isinstance(obj, dict):
-        return {k: fix_surrogates(v) for k, v in obj.items()}
-    return obj
-
-
-def load_levels(data_file):
-    """Extract the object literals from EVERY PP_LEVELS.push(...) call and parse
-    them. The file may contain several push calls, and string values could in
-    principle contain ');' - so this walks characters with a string-aware
-    parenthesis counter instead of trusting a regex. json5 then tolerates
-    unquoted keys, trailing commas, and comments - the data files' whole
-    grammar. A parse failure is a data-file bug worth surfacing loudly."""
-    src = open(data_file, encoding="utf-8").read()
-    levels = []
-    i = 0
-    while True:
-        j = src.find(".push(", i)
-        if j == -1:
-            break
-        k = j + len(".push(")
-        depth, in_str, escn = 1, None, False
-        start = k
-        while k < len(src) and depth:
-            ch = src[k]
-            if in_str:
-                if escn:
-                    escn = False
-                elif ch == "\\":
-                    escn = True
-                elif ch == in_str:
-                    in_str = None
-            else:
-                if ch in "\"'":
-                    in_str = ch
-                elif ch == "(":
-                    depth += 1
-                elif ch == ")":
-                    depth -= 1
-            k += 1
-        payload = src[start:k - 1].strip()
-        parsed = json5.loads("[" + payload + "]")
-        levels.extend(fix_surrogates(parsed))
-        i = k
-    if not levels:
-        raise SystemExit(f"could not locate PP_LEVELS.push(...) in {data_file}")
-    return levels
-
 
 def load_audio_index():
     """normalized Polish phrase -> /audio/<hash>.mp3. The manifest is trusted:
@@ -114,12 +62,6 @@ def load_audio_index():
         return {}
     entries = json.load(open(AUDIO_MANIFEST, encoding="utf-8")).get("entries", {})
     return {e["pl"]: "/" + e["file"] for e in entries.values()}
-
-
-def normalize(text):
-    """Same operations as ppNormalize() in index.html / generate_audio.py."""
-    text = re.sub(r"<[^>]+>", "", text)
-    return re.sub(r"\s+", " ", text).strip()
 
 
 def slugify(name):

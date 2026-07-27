@@ -218,6 +218,43 @@
   .strength-badge.s-strong{background:#ffedd5;color:#c2410c}
   .strength-badge.s-vulgar{background:var(--bad-bg);color:var(--bad-text)}
 
+  /* ---------- usage metadata: register / region / production ----------
+     Every chip carries its own readable word, so colour is decoration only and the
+     row still reads correctly in greyscale or high-contrast mode. The strength
+     badge above keeps its own scale; a register chip that would repeat the same
+     word ("Vulgar") is suppressed in ppUsageLabels() rather than styled away. */
+  /* The chips sit inside an aria-hidden wrapper (the same information is announced
+     once, as a sentence, from the .sr-only span beside it). That wrapper is a single
+     flex item, so a gap on .usage-row alone never fell BETWEEN the badges and they
+     rendered edge to edge - createElement/appendChild leaves no whitespace text
+     nodes to save them either. The wrapper carries the gap instead, so spacing is
+     defined once for every surface that renders a usage row: both flashcard faces
+     and the Type It / Listening / mixed answer panels. */
+  .usage-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
+    column-gap:8px;row-gap:6px;margin:9px 0 0}
+  .usage-row[hidden]{display:none}
+  .usage-chips{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
+    column-gap:8px;row-gap:6px}
+  .usage-badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:10.5px;
+    font-weight:800;letter-spacing:.6px;text-transform:uppercase;
+    border:1px solid var(--border);background:var(--card);color:var(--muted)}
+  .usage-badge.u-formal{border-color:#c7d2fe;background:#eef2ff;color:#3730a3}
+  .usage-badge.u-informal{border-color:#bae6fd;background:#f0f9ff;color:#075985}
+  .usage-badge.u-slang{border-color:#fed7aa;background:#fff7ed;color:#9a3412}
+  .usage-badge.u-vulgar{border-color:var(--bad-border);background:var(--bad-bg);color:var(--bad-text)}
+  .usage-badge.u-region{border-color:#ddd6fe;background:#f5f3ff;color:#5b21b6}
+  .usage-badge.u-recognition{border-color:#fcd34d;background:#fffbeb;color:#92400e}
+  /* usage note: a real block on the explanatory side, never only a tooltip */
+  .warn-box{margin-top:12px;padding:10px 13px;border-radius:12px;text-align:left;
+    border:1px solid #fcd34d;background:#fffbeb;color:#78350f;
+    font-size:13px;line-height:1.5;max-width:34ch}
+  .warn-box[hidden]{display:none}
+  .warn-k{display:block;font-size:10.5px;font-weight:800;letter-spacing:.6px;
+    text-transform:uppercase;color:#92400e;margin-bottom:3px}
+  /* announced to screen readers, invisible on screen */
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+    overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
   /* ---------- topic search ---------- */
   .search{position:relative;margin-bottom:14px}
   .search-ic{position:absolute;left:15px;top:50%;transform:translateY(-50%);
@@ -329,6 +366,8 @@
   .verdict .v-row{display:flex;align-items:center;gap:10px}
   .verdict .v-ex{margin-top:8px;font-size:13.5px;color:var(--forest)}
   .verdict .v-exen{font-size:12.5px;color:var(--muted)}
+  .verdict .v-alt{margin-top:6px;font-size:12.5px;color:var(--muted)}
+  .verdict .v-alt .v-altk{font-weight:700}
   /* Listening */
   .l-play{margin:6px auto 0;width:86px;height:86px;border-radius:50%;border:none;background:var(--forest);
     color:var(--cream);cursor:pointer;display:grid;place-items:center;box-shadow:var(--shadow-sm);transition:.15s}
@@ -825,6 +864,7 @@
               </button>
               <div class="pl" id="plText" lang="pl"></div>
               <span class="strength-badge" id="strBadge" hidden></span>
+              <div class="usage-row" id="usageFront" hidden></div>
               <div class="hint" id="frontHint"></div>
               <div class="cue" id="frontCue">tap to see meaning</div>
             </div>
@@ -834,8 +874,11 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>
               </button>
               <div class="en" id="enText"></div>
+              <div class="usage-row" id="usageBack" hidden></div>
               <div class="hint" id="backHint"></div>
+              <div class="warn-box" id="warnBox" role="note" hidden><span class="warn-k">Usage note</span><span id="warnText"></span></div>
               <div class="pair-line" id="pairLine" hidden><span class="pair-k">Aspect pair</span><span class="pair-v" id="pairV" lang="pl"></span></div>
+              <div class="pair-line" id="variantLine" hidden><span class="pair-k" id="variantK">Also</span><span class="pair-v" id="variantV" lang="pl"></span></div>
               <a class="yt-link" id="ytLink" href="#" target="_blank" rel="noopener noreferrer" hidden>
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8zM9.6 15.6V8.4l6.2 3.6z"/></svg>
                 Watch on YouTube
@@ -1325,6 +1368,8 @@
 <script src="data-verbs.js"></script>
 <script src="data-scenarios.js"></script>
 <script src="data-podcasts.js"></script>
+<script src="pp-usage.js"></script>
+<script src="pp-migrate.js"></script>
 <script>
 /* =========================================================================
    APP_VERSION - the ONLY place the human-facing version lives.
@@ -1333,7 +1378,7 @@
    Unrelated to CACHE in sw.js, which is a machine counter - bump both when
    you deploy, but they don't need to match.
    ========================================================================= */
-const APP_VERSION = "7.4";
+const APP_VERSION = "7.26";
 document.getElementById("footVersion").textContent = "v" + APP_VERSION;
 
 /* =========================================================================
@@ -1362,12 +1407,34 @@ if(!LEVELS){
    here as ordinary levels/topics so the home nav, search, and routing pick them up
    through the normal paths. Nothing is persisted for them (sessions are ephemeral). */
 const VOCAB_SRC = LEVELS.filter(lv => lv.topics.length>0 && lv.topics.every(t=> !t.kind));
-function poolFor(srcLevels){
+
+/* ---------------- usage metadata + activity eligibility ----------------
+   Pure helpers - no DOM, no app state - so tests/test_activities.js can exercise
+   them directly. Absent metadata means the schema default: neutral / general /
+   active, and such a card renders no chips and is eligible everywhere. */
+/* The rules themselves live in pp-usage.js so tests exercise the same code the
+   app runs; these are thin aliases for readability at the call sites. */
+const ppRecognitionOnly = PP_USAGE.isRecognitionOnly;
+const ppUsageLabels     = PP_USAGE.labels;
+const ppUsageSummary    = PP_USAGE.summary;
+const ppEligibleFor     = PP_USAGE.eligibleFor;
+/* Main-card audio: the ONE place that decides what the big speaker plays, and
+   whether the card has one at all. Templates hold a display pattern in `pl`
+   ("Gdzie jest...?"), so they speak only a complete `audioText` and stay silent
+   without one - see pp-usage.js. Example-sentence audio (`ex`) is separate and
+   unaffected. pp_audio_rule.py generates and verifies from the same rule. */
+const ppMainAudioText   = PP_USAGE.mainAudioText;
+const ppHasMainAudio    = PP_USAGE.hasMainAudio;
+
+/* activity defaults to "typeit" (the production-safe reading) so any future
+   caller that forgets the argument errs towards excluding recognition-only. */
+function poolFor(srcLevels, activity){
+  const act = activity || "typeit";
   const out=[];
   VOCAB_SRC.filter(lv => !srcLevels || srcLevels.includes(lv.level)).forEach(lv =>
     lv.topics.forEach(t => {
       if(t.mature) return;                       /* the adult-language gate stays a gate */
-      t.cards.forEach(c => { if(!c.intro && c.pl && c.en) out.push({ c, topic: t.name }); });
+      t.cards.forEach(c => { if(ppEligibleFor(c, act)) out.push({ c, topic: t.name }); });
     }));
   return out;
 }
@@ -1422,26 +1489,64 @@ function updateDirToggle(){
 }
 const $ = id => document.getElementById(id);
 
-/* ---------------- progress persistence (localStorage) ---------------- */
-const STORE_KEY = "popolsku-progress-v1";
-function loadStore(){ try{ return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }catch(e){ return {}; } }
-function saveStore(st){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(st)); }catch(e){} }
-function topicKey(l,t){ return LEVELS[l].level + "|" + LEVELS[l].topics[t].name; }
+/* ---------------- progress persistence (localStorage, ID-based v2) ----------------
+   Learning identity is the stable content id (see data-*.js). A one-time, idempotent
+   migration (pp-migrate.js) moves the old text-keyed v1 store onto ids at startup and
+   preserves v1 untouched. Runtime containers and podcast intro cards never persist. */
+/* The v1 key is read and preserved by pp-migrate.js, never by the app directly and
+   never auto-deleted - so only v2 is named here. */
+const STORE_KEY_V2 = PP_MIGRATE.KEYS.v2;
+
+/* Migrate before anything reads progress. Non-critical: the app still runs if it throws.
+   Progress state gates ALL writes: "ready" = writable; "recovery-required" = the stored
+   data could not be loaded safely and must be left byte-for-byte untouched (read-only). */
+const PP_CTX = PP_MIGRATE.buildContext(LEVELS, PP_MIGRATE.LEGACY);
+let PP_PROGRESS_STATE = "ready";
+try{
+  const mig = PP_MIGRATE.migrateAtStartup(localStorage, PP_CTX, new Date().toISOString());
+  if(mig && (mig.status==="recovery-required" || mig.status==="failed" || mig.status==="write-error"))
+    PP_PROGRESS_STATE = "recovery-required";
+  if(mig && mig.unmapped && mig.unmapped.length)
+    console.info("Po polsku: "+mig.unmapped.length+" legacy progress item(s) couldn't be mapped - recorded, not lost.");
+}catch(e){ PP_PROGRESS_STATE = "recovery-required"; }
+function ppProgressWritable(){ return PP_PROGRESS_STATE === "ready"; }
+
+/* Read the stored v2 ONLY if it fully validates; otherwise a safe in-memory empty view
+   (never written back while recovery is required, so stored data is preserved). */
+function loadV2(){
+  try{ const s = JSON.parse(localStorage.getItem(STORE_KEY_V2)); if(s && PP_MIGRATE.validateStore(s).ok) return s; }catch(e){}
+  return { schemaVersion:PP_MIGRATE.SCHEMA_VERSION, migrationRevision:PP_MIGRATE.CONTENT_MIGRATION_REVISION, progress:{} };
+}
+function saveV2(store){
+  if(!ppProgressWritable()) return;               /* recovery mode: never overwrite preserved data */
+  try{ store.updated = new Date().toISOString(); localStorage.setItem(STORE_KEY_V2, JSON.stringify(store)); }catch(e){}
+}
+/* map a set of card indices -> stable ids, skipping intro cards (never assessed/tracked) */
+function cardIdsOf(sel){ return [...sel].filter(i=>S.cards[i] && S.cards[i].id && !S.cards[i].intro).map(i=>S.cards[i].id); }
 function persistProgress(){
-  const st = loadStore();
-  st[topicKey(S.levelIdx, S.topicIdx)] = {
-    still:[...S.still].map(i=>S.cards[i].pl),
-    known:[...S.known].map(i=>S.cards[i].pl)
-  };
-  saveStore(st);
+  if(!ppProgressWritable()) return;               /* read-only recovery mode */
+  const t = LEVELS[S.levelIdx].topics[S.topicIdx];
+  if(!t || !t.id) return;                         /* runtime containers / id-less topics don't persist */
+  const store = loadV2();
+  store.progress[t.id] = { still: cardIdsOf(S.still), known: cardIdsOf(S.known) };
+  saveV2(store);
+}
+/* Non-technical recovery notice; explicit text (not colour-only), announced to AT. */
+function ppShowRecoveryBanner(){
+  if(ppProgressWritable() || document.getElementById("ppRecoveryBanner")) return;
+  const b = document.createElement("div");
+  b.id = "ppRecoveryBanner"; b.setAttribute("role","status"); b.setAttribute("aria-live","polite");
+  b.style.cssText = "position:sticky;top:0;z-index:9999;background:#fef3c7;color:#7c2d12;border-bottom:1px solid #f59e0b;padding:10px 16px;font:500 14px/1.5 system-ui,-apple-system,sans-serif;text-align:center";
+  b.textContent = "Your lessons are available, but progress couldn't be loaded safely. Your saved data hasn't been changed — please export a backup or reload the app.";
+  document.body.insertBefore(b, document.body.firstChild);
 }
 function restoreProgress(l,t){
   S.still = new Set(); S.known = new Set();
-  const rec = loadStore()[topicKey(l,t)];
-  if(!rec) return;
-  const idx = {}; S.cards.forEach((c,i)=>{ idx[c.pl]=i; });
-  (rec.still||[]).forEach(pl=>{ if(idx[pl]!==undefined) S.still.add(idx[pl]); });
-  (rec.known||[]).forEach(pl=>{ if(idx[pl]!==undefined) S.known.add(idx[pl]); });
+  const tid = LEVELS[l].topics[t].id; if(!tid) return;
+  const rec = loadV2().progress[tid]; if(!rec) return;
+  const idx = {}; S.cards.forEach((c,i)=>{ if(c.id) idx[c.id]=i; });
+  (rec.still||[]).forEach(id=>{ if(idx[id]!==undefined) S.still.add(idx[id]); });
+  (rec.known||[]).forEach(id=>{ if(idx[id]!==undefined) S.known.add(idx[id]); });
 }
 function showScreen(scr){
   document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
@@ -1472,17 +1577,6 @@ function isVocabLevel(lv){ return lv.topics.length>0 && lv.topics.every(t=> !t.k
 /* Display-only labels for practice modes; the internal level key (e.g. "Scenarios") is untouched. */
 const MODE_LABELS = { "Scenarios":"Conversations" };
 function modeLabel(lv){ return MODE_LABELS[lv.level] || lv.level; }
-const MODE_ICONS = {
-  "Building Sentences":  '<rect width="18" height="7" x="3" y="3" rx="1"/><rect width="9" height="7" x="3" y="14" rx="1"/><rect width="5" height="7" x="16" y="14" rx="1"/>',
-  "Grammar Cases":     '<path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>',
-  "People & Numbers": '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
-  "Verbs":             '<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>',
-  "Scenarios":         '<path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/>',
-  "Podcasts":          '<path d="M16.85 18.58a9 9 0 1 0-9.7 0"/><path d="M8 14a5 5 0 1 1 8 0"/><circle cx="12" cy="11" r="1"/><path d="M13 17a1 1 0 1 0-2 0l.5 4.5a.5.5 0 1 0 1 0z"/>',
-  "Type it":           '<path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/>',
-  "Listening":         '<path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/>'
-};
-function modeIcon(lv){ return ICON_SVG(MODE_ICONS[lv.level] || ""); }
 /* Three browse categories. A level's category is derived from its shape, never
    stored: vocab = plain flashcard levels, grammar = group:"grammar" levels,
    practice = everything else. Add a new grammar level (group:"grammar") and it
@@ -1685,11 +1779,13 @@ function topicIcon(t){ return ICONS[t.emoji] ? ICON_SVG(ICONS[t.emoji]) : (t.emo
 
 function tCount(t, lv, store){
   if(t.mixOf) return '15 mixed drills';
-  if(t.kind==="typeit"||t.kind==="listen") return poolFor(t.src).length+' cards \u00b7 15 per round';
+  /* Count the pool the tile actually practises: the Listening pool
+     also holds the recognition-only cards, so the two differ by exactly those. */
+  if(t.kind==="typeit"||t.kind==="listen") return poolFor(t.src, t.kind).length+' cards \u00b7 15 per round';
   if(t.kind==="grammar") return t.drills.length+' drills';
   if(t.kind==="convo")   return '~'+convoLen(t)+' turns';
   let s = t.kind==="podcast" ? (t.cards.length-1)+' phrases' : t.cards.length+' cards';
-  const rec = store[lv.level+"|"+t.name];
+  const rec = (store.progress && t.id) ? store.progress[t.id] : null;
   if(rec && rec.still && rec.still.length) s += ' \u00b7 <span class="review-n">'+rec.still.length+' to review</span>';
   return s;
 }
@@ -1698,7 +1794,7 @@ function renderTopics(){
   const meta = $("searchMeta");
   const q = S.query.trim();
   const list = getVisibleTopics();
-  const store = loadStore();
+  const store = loadV2();
 
   if(meta){
     if(!q){ meta.textContent = ""; }
@@ -1760,12 +1856,104 @@ function setStrengthBadge(level){
   if(s){ el.textContent = s[0]; el.className = "strength-badge " + s[1]; el.hidden = false; }
   else { el.className = "strength-badge"; el.hidden = true; }
 }
+/* Fill one usage-chip row. Built with createElement/textContent only - card data
+   is never interpolated into HTML. The row itself is aria-hidden because the
+   same information is announced once, as a sentence, from the sr-only summary. */
+function ppFillUsageRow(el, card, opts){
+  el.textContent = "";
+  const labels = ppUsageLabels(card, opts);
+  if(!labels.length){ el.hidden = true; el.removeAttribute("aria-hidden"); return; }
+  const chips = document.createElement("span");
+  chips.className = "usage-chips";               /* owns the spacing between badges */
+  chips.setAttribute("aria-hidden", "true");
+  labels.forEach(l => {
+    const b = document.createElement("span");
+    b.className = "usage-badge " + l.cls;
+    b.textContent = l.text;
+    chips.appendChild(b);
+  });
+  el.appendChild(chips);
+  const sr = document.createElement("span");
+  sr.className = "sr-only";
+  sr.textContent = ppUsageSummary(card, opts);   /* spoken text mirrors the chips on THIS surface */
+  el.appendChild(sr);
+  el.hidden = false;
+}
+/* Append the usage chips + usage note to an activity's answer panel. Always
+   createElement/textContent - some surrounding panels build their markup from
+   strings, but no card metadata is ever interpolated into HTML. */
+function ppAppendUsageTo(container, card){
+  if(!container || !card) return;
+  const labels = ppUsageLabels(card);
+  const warn = typeof card.warning === "string" ? card.warning.trim() : "";
+  if(!labels.length && !warn) return;
+  if(labels.length){
+    const row = document.createElement("div");
+    row.className = "usage-row";
+    const chips = document.createElement("span");
+    chips.className = "usage-chips";             /* same shared spacing as the card faces */
+    chips.setAttribute("aria-hidden", "true");
+    labels.forEach(l => {
+      const b = document.createElement("span");
+      b.className = "usage-badge " + l.cls;
+      b.textContent = l.text;
+      chips.appendChild(b);
+    });
+    row.appendChild(chips);
+    const sr = document.createElement("span");
+    sr.className = "sr-only";
+    sr.textContent = ppUsageSummary(card);
+    row.appendChild(sr);
+    container.appendChild(row);
+  }
+  if(warn){
+    const box = document.createElement("div");
+    box.className = "warn-box"; box.setAttribute("role", "note");
+    const k = document.createElement("span");
+    k.className = "warn-k"; k.textContent = "Usage note";
+    const t = document.createElement("span"); t.textContent = warn;
+    box.appendChild(k); box.appendChild(t);
+    container.appendChild(box);
+  }
+}
+/* Usage chips on both faces (so they are there in either study direction) and the
+   warning as real text on the explanatory side. */
+function setUsageMeta(card){
+  /* FRONT sits next to the strength badge, so a register chip repeating that same
+     word is suppressed there - and only there. BACK has no strength badge, so it
+     shows the complete set: "Vulgar" must not vanish from a surface that has
+     nothing else saying it. */
+  ppFillUsageRow($("usageFront"), card, { suppressStrengthDuplicate: true });
+  ppFillUsageRow($("usageBack"), card);
+  const w = card && typeof card.warning === "string" ? card.warning.trim() : "";
+  if(w){ $("warnText").textContent = w; $("warnBox").hidden = false; }
+  else { $("warnText").textContent = ""; $("warnBox").hidden = true; }
+  ppSyncFaceA11y();
+}
+
+/* Both faces of the flip card exist in the DOM at once, so without this the
+   inactive face's usage summary and warning would still be exposed to assistive
+   tech - the learner would hear the usage twice, once per face. Keep it narrow:
+   only the three usage/warning elements are touched, and none of them contains a
+   focusable child, so no tab stop appears or disappears. */
+function ppSyncFaceA11y(){
+  const flipped = $("flip").classList.contains("flipped");
+  const set = (el, exposed) => {
+    if(!el) return;
+    if(exposed) el.removeAttribute("aria-hidden");
+    else el.setAttribute("aria-hidden", "true");
+  };
+  set($("usageFront"), !flipped);
+  set($("usageBack"), flipped);
+  set($("warnBox"), flipped);
+}
 function render(){
   if(S.pos >= S.queue.length){ showDone(); return; }
   $("cardView").style.display="flex"; $("doneView").style.display="none";
   updateDirToggle();                            /* show/hide + label the direction toggle */
   const c = currentCard();
   setStrengthBadge(c.strength);                 /* shows a strength pill only on cards that carry one */
+  setUsageMeta(c);                              /* register / region / recognition-only chips + usage note */
   const f = $("flip");
   if(f.classList.contains("flipped")){          /* reset to front without replaying the flip */
     f.style.transition = "none";
@@ -1801,7 +1989,9 @@ function render(){
     const yl = $("ytLink");
     if(c.link){ yl.hidden = false; yl.href = c.link; } else { yl.hidden = true; }
     document.querySelector(".feedback").hidden = true;
+    setUsageMeta(null);                         /* intro cards carry no usage metadata */
     $("pairLine").hidden = true;
+    $("variantLine").hidden = true;
     $("introStart").hidden = false;
     $("exampleBox").style.display = "none";
     $("fill").style.width = ((S.pos + 1) / S.queue.length) * 100 + "%";
@@ -1847,11 +2037,23 @@ function render(){
     $("enText").classList.remove("dir-pl");
     $("backHint").textContent = c.hint || "";
   }
+  /* Main speaker, last word on both faces: a card only gets one when there is a
+     complete utterance to play. A template without `audioText` shows none in
+     either direction - `hidden` takes the button out of the layout AND out of the
+     tab order, so no empty focus stop is left behind. Everything else about the
+     card renders normally, example-sentence audio included. */
+  if(!ppHasMainAudio(c)){ $("speak").hidden = true; $("speakBack").hidden = true; }
   if(c.pair){ $("pairV").textContent = c.pair; $("pairLine").hidden = false; }
   else $("pairLine").hidden = true;
+  const vp = ppVariantParts(c);
+  if(vp){ $("variantK").textContent = vp.k; $("variantV").textContent = vp.v; $("variantLine").hidden = false; }
+  else $("variantLine").hidden = true;
   if(c.ex){
     $("exampleBox").style.display = "flex";
-    $("exLabel").textContent = isPodcast ? "As the speaker put it" : "In everyday use";
+    /* Neutral wording on purpose: podcast examples are illustrative, NOT verified
+       quotations, so this must never claim the speaker said it. Attribution wording
+       here would be a provenance claim the data cannot support. */
+    $("exLabel").textContent = isPodcast ? "Example in context" : "In everyday use";
     $("exPl").textContent = c.ex;
     $("exEn").textContent = c.exEn || "";
   } else {
@@ -1866,6 +2068,7 @@ function flipLabel(){
   const label = enFront() ? (flipped ? "Show English" : "Show Polish")
                           : (flipped ? "Show Polish"  : "Show meaning");
   $("flip").setAttribute("aria-label", label);
+  ppSyncFaceA11y();      /* called from render(), flip() and the direction toggle */
 }
 function flip(){ $("flip").classList.toggle("flipped"); flipLabel(); if(window.PP_A2HS && $("flip").classList.contains("flipped")) window.PP_A2HS.bump(); }
 function advance(){ if($("flip").dataset.leaving) return; S.pos++; render(); }
@@ -2032,6 +2235,17 @@ function playPreGenerated(file, btn, originalText){
   });
 }
 
+/* The ONLY entry point for main-card audio. A card with nothing complete to say
+   plays nothing at all: no manifest lookup, and no speechSynthesis either. That
+   second half matters - speakText() falls back to the device voice when a clip is
+   missing, so simply deleting the template clips would have made the phone read
+   "Gdzie jest dot dot dot" instead. Silence is the correct behaviour here. */
+function speakCardMain(card, btn){
+  if(!card || card.intro) return;              /* podcast intro cards never speak */
+  if(!ppHasMainAudio(card)) return;
+  speakText(ppMainAudioText(card), btn);
+}
+
 function speakFallback(txt, btn){
   if(!("speechSynthesis" in window)) return;
   voiceHint();
@@ -2069,8 +2283,8 @@ $("flip").addEventListener("keydown", e=>{
     e.preventDefault(); e.stopPropagation(); flip();
   }
 });
-$("speak").addEventListener("click", e=>{ e.stopPropagation(); if(currentCard().intro) return; speakText(currentCard().pl, e.currentTarget); });
-$("speakBack").addEventListener("click", e=>{ e.stopPropagation(); if(currentCard().intro) return; speakText(currentCard().pl, e.currentTarget); });
+$("speak").addEventListener("click", e=>{ e.stopPropagation(); speakCardMain(currentCard(), e.currentTarget); });
+$("speakBack").addEventListener("click", e=>{ e.stopPropagation(); speakCardMain(currentCard(), e.currentTarget); });
 $("dirToggle").addEventListener("click", e=>{
   e.stopPropagation();
   cardDir = (cardDir === "en") ? "pl" : "en";
@@ -2474,8 +2688,8 @@ $("cChallenge").addEventListener("click", ()=>{
    15 cards per round, drawn from the chosen level(s), shortest answers first so
    sessions warm up. Matching is two-tier: exact (after case/punctuation folding)
    is correct; correct-except-diacritics scores as correct but gets an amber
-   "watch the ogonki" flag. Cards whose front lists variants ("duzy / maly")
-   accept any single variant or the full string. */
+   "watch the ogonki" flag. Accepted answers are the canonical `pl` plus any
+   explicit `acceptedAnswers` on the card - there is no implicit "/" splitting. */
 const T = { topicRef:null, li:0, ti:0, qs:[], i:0, right:0, almost:0, revealed:0, state:"ask" };
 
 function tNormAns(s){
@@ -2488,14 +2702,28 @@ function tFold(s){
   return tNormAns(s).normalize("NFD").replace(/[\u0300-\u036f]/g, "")
     .replace(/\u0142/g, "l");                                    /* ł doesn't decompose */
 }
-function tAccepted(pl){
-  const parts = pl.split("/").map(x => x.trim()).filter(Boolean);
-  const set = new Set(parts.length > 1 ? parts.concat([pl]) : [pl]);
-  return [...set];
+/* Accepted Type-It answers = the canonical pl PLUS any explicit acceptedAnswers.
+   No implicit split on "/" - a slash in visible text never creates alternatives. */
+function tAccepted(card){
+  if(typeof card === "string") card = { pl: card };
+  const out = [card.pl];
+  (card.acceptedAnswers || []).forEach(a => { if(a && out.indexOf(a) < 0) out.push(a); });
+  return out;
+}
+/* Display-only variant summary (card back + Type-It feedback). Returns {k, v} or null.
+   Synonyms -> "Also: dzisiaj"; gender/other labels -> "Forms: m: byłem · f: byłam".
+   Aspect pairs are NOT shown here - they use the `pair` line. */
+function ppVariantParts(card){
+  if(!card || !Array.isArray(card.variants) || !card.variants.length) return null;
+  const vs = card.variants.filter(v => v && v.form);
+  if(!vs.length) return null;
+  const allSyn = vs.every(v => v.label === "synonym");
+  if(allSyn) return { k:"Also", v: vs.map(v => v.form).join(" · ") };
+  return { k:"Forms", v: vs.map(v => (v.label ? v.label + ": " : "") + v.form).join(" · ") };
 }
 function startTypeit(l, t){
   T.li=l; T.ti=t; T.topicRef=LEVELS[l].topics[t];
-  const pool=poolFor(T.topicRef.src);
+  const pool=poolFor(T.topicRef.src, "typeit");   /* production: recognition-only cards are excluded */
   T.qs=gShuffle(pool).slice(0,15).sort((a,b)=>a.c.pl.length-b.c.pl.length);
   T.i=0; T.right=0; T.almost=0;
   $("tLevelLbl").textContent = T.topicRef.name + " \u00b7 " + T.qs.length + " words";
@@ -2523,7 +2751,7 @@ function tRender(){
 }
 function tRevealLetter(){
   const c=T.qs[T.i].c;
-  const canon=tAccepted(c.pl)[0];
+  const canon=tAccepted(c)[0];
   if(T.revealed < canon.length-1) T.revealed++;
   $("tHintLine").hidden=false;
   $("tHintLine").textContent="Starts with: "+canon.slice(0,T.revealed)+"\u2026";
@@ -2533,7 +2761,7 @@ function tCheckAnswer(){
   if(T.state!=="ask") return;
   const c=T.qs[T.i].c, val=$("tInput").value;
   if(!tNormAns(val)) { $("tInput").focus(); return; }
-  const acc=tAccepted(c.pl);
+  const acc=tAccepted(c);
   let verdict="wrong";
   if(acc.some(a=>tNormAns(a)===tNormAns(val))) verdict="right";
   else if(acc.some(a=>tFold(a)===tFold(val))) verdict="almost";
@@ -2541,14 +2769,31 @@ function tCheckAnswer(){
   if(verdict==="right") T.right++; else if(verdict==="almost") T.almost++;
   $("tInput").disabled=true; $("tCheck").disabled=true; $("tHint").disabled=true;
   const v=$("tVerdict");
-  const audioBtn='<button class="mini-audio" data-say="'+encodeURIComponent(c.pl)+'" aria-label="Play">'+G_AUDIO+'</button>';
+  /* Same main-audio rule as the flashcard: the button exists only when there is a
+     complete utterance to play, so it is never a control that does nothing. The
+     displayed `v-pl` below still shows the card's canonical `pl` either way.
+     (ppEligibleFor already keeps templates out of this pool; this keeps the rule
+     true structurally rather than by routing.) */
+  const audioBtn=ppHasMainAudio(c) ? '<button class="mini-audio" data-say="'+encodeURIComponent(ppMainAudioText(c))+'" aria-label="Play">'+G_AUDIO+'</button>' : "";
   const exHtml=c.ex ? '<div class="v-ex" lang="pl">'+c.ex+'</div><div class="v-exen">'+(c.exEn||"")+'</div>' : "";
   const head = verdict==="right" ? "Dobrze!"
              : verdict==="almost" ? "Almost - watch the \u0105, \u0119, \u00f3, \u017c\u2026"
              : "Not this time";
+  /* Accepted-alternative line: variants (synonym/gender forms) or, for abbreviation-style
+     cards, the explicit acceptedAnswers. Aspect pairs are excluded (they use the `pair`
+     display, not Type-It synonyms), so a valid alternative like "by\u0142am" is never framed
+     as the only-wrong-answer. */
+  let alt=null;
+  const vp=ppVariantParts(c);
+  if(vp) alt={ label:vp.k, value:vp.v };
+  else if(c.relationType!=="aspect-pair" && Array.isArray(c.acceptedAnswers) && c.acceptedAnswers.length)
+    alt={ label:"Also accepted", value:c.acceptedAnswers.join(" \u00b7 ") };
+  const altHtml=alt ? '<div class="v-alt"><span class="v-altk"></span>: <span class="v-altv" lang="pl"></span></div>' : "";
   v.innerHTML='<div class="v-head">'+head+'</div>'+
-    '<div class="v-row"><span class="v-pl" lang="pl"></span>'+audioBtn+'</div>'+exHtml;
+    '<div class="v-row"><span class="v-pl" lang="pl"></span>'+audioBtn+'</div>'+altHtml+exHtml;
   v.querySelector(".v-pl").textContent=c.pl;
+  if(alt){ v.querySelector(".v-altk").textContent=alt.label; v.querySelector(".v-altv").textContent=alt.value; }
+  ppAppendUsageTo(v, c);                  /* so a slang answer is labelled before the learner reuses it */
   v.className="verdict show v-"+verdict;
   $("tNext").disabled=false; $("tNext").focus();
 }
@@ -2582,7 +2827,7 @@ const L = { topicRef:null, li:0, ti:0, qs:[], i:0, results:[], attempted:false }
 
 function startListen(l, t){
   L.li=l; L.ti=t; L.topicRef=LEVELS[l].topics[t];
-  const pool=poolFor(L.topicRef.src);
+  const pool=poolFor(L.topicRef.src, "listen");   /* recognition: recognition-only cards stay in */
   L.qs=gShuffle(pool).slice(0,15).map(item=>{
     const seen=new Set([item.c.en]); const opts=[];
     gShuffle(pool.filter(x=>x.topic===item.topic))
@@ -2617,7 +2862,9 @@ function lRender(){
         rv.textContent=q.c.pl; rv.classList.add("show");
         const exHtml=q.c.ex ? '<div class="fb-good"><div class="t"><div class="p" lang="pl">'+q.c.ex+'</div><div class="e">'+(q.c.exEn||"")+'</div></div>'+
           '<button class="mini-audio" data-say="'+encodeURIComponent(q.c.ex)+'" aria-label="Play">'+G_AUDIO+'</button></div>' : "";
-        if(exHtml){ fb.innerHTML=exHtml; fb.classList.add("show"); }
+        if(exHtml){ fb.innerHTML=exHtml; }
+        ppAppendUsageTo(fb, q.c);          /* recognition-only cards stay in Listening, so label them here */
+        if(fb.childNodes.length) fb.classList.add("show");
         $("lNext").disabled=false;
       } else {
         b.classList.add("wrong"); b.disabled=true;
@@ -2628,7 +2875,10 @@ function lRender(){
   });
   /* no autoplay - the learner starts each clip with the play button */
 }
-function lPlayCurrent(){ if(L.i < L.qs.length) speakText(L.qs[L.i].c.pl, $("lPlay")); }
+/* Templates are already excluded from the Listening pool by ppEligibleFor, so this
+   only ever sees ordinary cards - routing it through speakCardMain anyway means a
+   future pool change can't quietly reintroduce an unfinished phrase. */
+function lPlayCurrent(){ if(L.i < L.qs.length) speakCardMain(L.qs[L.i].c, $("lPlay")); }
 function lShowDone(){
   $("lMain").style.display="none"; $("lDone").style.display="flex";
   $("lFill").style.width="100%"; $("lCountLbl").textContent=L.qs.length+" / "+L.qs.length;
@@ -2660,10 +2910,14 @@ function rBuildOptions(card, pool){
 function startRound(l, t){
   R.li=l; R.ti=t;
   const topic = LEVELS[l].topics[t];
-  const cards = topic.cards.filter(c => !c.intro && c.pl && c.en);
-  let dPool = cards;
-  if(dPool.length < 4) dPool = dPool.concat(poolFor([LEVELS[l].level]).map(x=>x.c));
-  const sample = gShuffle(cards).slice(0,15);
+  /* Mixed quiz asks for typed production, so it follows the production rule and
+     drops recognition-only cards from the QUESTIONS. They may still appear as
+     multiple-choice distractors, which asks nothing of the learner. */
+  const shown  = topic.cards.filter(c => ppEligibleFor(c, "listen"));   /* display-eligible */
+  const asked  = topic.cards.filter(c => ppEligibleFor(c, "mixed"));    /* production-eligible */
+  let dPool = shown;
+  if(dPool.length < 4) dPool = dPool.concat(poolFor([LEVELS[l].level], "listen").map(x=>x.c));
+  const sample = gShuffle(asked).slice(0,15);
   /* podcast phrases are long - recognition formats only, no typing */
   const fmts = topic.kind==="podcast" ? ["listen","mc"] : ["listen","type","mc"];
   R.qs = gShuffle(sample.map((c,k) => ({
@@ -2728,7 +2982,9 @@ function rPickOption(btn, o, q, box){
     const fb=$("rFb");
     const exHtml=q.c.ex ? '<div class="fb-good"><div class="t"><div class="p" lang="pl">'+q.c.ex+'</div><div class="e">'+(q.c.exEn||"")+'</div></div>'+
       '<button class="mini-audio" data-say="'+encodeURIComponent(q.c.ex)+'" aria-label="Play">'+G_AUDIO+'</button></div>' : "";
-    if(exHtml){ fb.innerHTML=exHtml; fb.classList.add("show"); }
+    if(exHtml){ fb.innerHTML=exHtml; }
+    ppAppendUsageTo(fb, q.c);           /* the listen/mc formats need the labels too, not just typed */
+    if(fb.childNodes.length) fb.classList.add("show");   /* example, chips or warning - any is enough */
     $("rNext").disabled=false;
   } else {
     btn.classList.add("wrong"); btn.disabled=true;
@@ -2737,7 +2993,7 @@ function rPickOption(btn, o, q, box){
 }
 function rRevealLetter(){
   const c=R.qs[R.i].c;
-  const canon=tAccepted(c.pl)[0];
+  const canon=tAccepted(c)[0];
   if(R.revealed < canon.length-1) R.revealed++;
   $("rHintLine").hidden=false;
   $("rHintLine").textContent="Starts with: "+canon.slice(0,R.revealed)+"\u2026";
@@ -2747,7 +3003,7 @@ function rCheckAnswer(){
   if(R.state!=="ask") return;
   const q=R.qs[R.i], c=q.c, val=$("rInput").value;
   if(!tNormAns(val)) { $("rInput").focus(); return; }
-  const acc=tAccepted(c.pl);
+  const acc=tAccepted(c);
   let verdict="wrong";
   if(acc.some(a=>tNormAns(a)===tNormAns(val))) verdict="right";
   else if(acc.some(a=>tFold(a)===tFold(val))) verdict="almost";
@@ -2755,14 +3011,31 @@ function rCheckAnswer(){
   rRecord(q, verdict==="wrong" ? "miss" : verdict);
   $("rInput").disabled=true; $("rCheck").disabled=true; $("rHint").disabled=true;
   const v=$("rVerdict");
-  const audioBtn='<button class="mini-audio" data-say="'+encodeURIComponent(c.pl)+'" aria-label="Play">'+G_AUDIO+'</button>';
+  /* Same main-audio rule as the flashcard: the button exists only when there is a
+     complete utterance to play, so it is never a control that does nothing. The
+     displayed `v-pl` below still shows the card's canonical `pl` either way.
+     (ppEligibleFor already keeps templates out of this pool; this keeps the rule
+     true structurally rather than by routing.) */
+  const audioBtn=ppHasMainAudio(c) ? '<button class="mini-audio" data-say="'+encodeURIComponent(ppMainAudioText(c))+'" aria-label="Play">'+G_AUDIO+'</button>' : "";
   const exHtml=c.ex ? '<div class="v-ex" lang="pl">'+c.ex+'</div><div class="v-exen">'+(c.exEn||"")+'</div>' : "";
   const head = verdict==="right" ? "Dobrze!"
              : verdict==="almost" ? "Almost - watch the \u0105, \u0119, \u00f3, \u017c\u2026"
              : "Not this time";
+  /* Accepted-alternative line: variants (synonym/gender forms) or, for abbreviation-style
+     cards, the explicit acceptedAnswers. Aspect pairs are excluded (they use the `pair`
+     display, not Type-It synonyms), so a valid alternative like "by\u0142am" is never framed
+     as the only-wrong-answer. */
+  let alt=null;
+  const vp=ppVariantParts(c);
+  if(vp) alt={ label:vp.k, value:vp.v };
+  else if(c.relationType!=="aspect-pair" && Array.isArray(c.acceptedAnswers) && c.acceptedAnswers.length)
+    alt={ label:"Also accepted", value:c.acceptedAnswers.join(" \u00b7 ") };
+  const altHtml=alt ? '<div class="v-alt"><span class="v-altk"></span>: <span class="v-altv" lang="pl"></span></div>' : "";
   v.innerHTML='<div class="v-head">'+head+'</div>'+
-    '<div class="v-row"><span class="v-pl" lang="pl"></span>'+audioBtn+'</div>'+exHtml;
+    '<div class="v-row"><span class="v-pl" lang="pl"></span>'+audioBtn+'</div>'+altHtml+exHtml;
   v.querySelector(".v-pl").textContent=c.pl;
+  if(alt){ v.querySelector(".v-altk").textContent=alt.label; v.querySelector(".v-altv").textContent=alt.value; }
+  ppAppendUsageTo(v, c);                  /* same labelling in the mixed quiz */
   v.className="verdict show v-"+verdict;
   $("rNext").disabled=false; $("rNext").focus();
 }
@@ -2788,20 +3061,24 @@ function rShowDone(){
     + (almost>0 ? " ("+almost+" with diacritic slips.)" : "");
   /* feed results back into the topic's progress: a first-try miss goes to "still
      learning", a first-try right is solid evidence the word is known */
-  const st = loadStore(), key = topicKey(R.li, R.ti);
-  const rec = st[key] || { still:[], known:[] };
-  const still = new Set(rec.still||[]), known = new Set(rec.known||[]);
-  scored.forEach(q=>{
-    if(q.result==="miss"){ still.add(q.c.pl); known.delete(q.c.pl); }
-    else if(q.result==="right"){ known.add(q.c.pl); still.delete(q.c.pl); }
-    /* "almost" leaves progress untouched - the word is known, the spelling isn't */
-  });
-  st[key] = { still:[...still], known:[...known] };
-  saveStore(st);
+  const tRound = LEVELS[R.li].topics[R.ti];
+  if(ppProgressWritable() && tRound && tRound.id){
+    const store = loadV2();
+    const rec = store.progress[tRound.id] || { still:[], known:[] };
+    const still = new Set(rec.still||[]), known = new Set(rec.known||[]);
+    scored.forEach(q=>{
+      const id = q.c && q.c.id; if(!id || (q.c && q.c.intro)) return;   /* never track intro cards */
+      if(q.result==="miss"){ still.add(id); known.delete(id); }
+      else if(q.result==="right"){ known.add(id); still.delete(id); }
+      /* "almost" leaves progress untouched - the word is known, the spelling isn't */
+    });
+    store.progress[tRound.id] = { still:[...still], known:[...known] };
+    saveV2(store);
+  }
   if(window.PP_A2HS){ window.PP_A2HS.bump(3); $("rNudge").innerHTML = window.PP_A2HS.nudgeHTML(); }
 }
 $("rBack").addEventListener("click", ()=>show("home"));
-$("rPlay").addEventListener("click", ()=>{ if(R.i<R.qs.length) speakText(R.qs[R.i].c.pl, $("rPlay")); });
+$("rPlay").addEventListener("click", ()=>{ if(R.i<R.qs.length) speakCardMain(R.qs[R.i].c, $("rPlay")); });
 $("rCheck").addEventListener("click", rCheckAnswer);
 $("rHint").addEventListener("click", rRevealLetter);
 $("rNext").addEventListener("click", ()=>{ R.i++; rRender(); });
@@ -2823,19 +3100,11 @@ function ppBackupData(){
     const k = localStorage.key(i);
     if(k && k.indexOf("popolsku-")===0) data[k] = localStorage.getItem(k);
   }
-  return { app:"popolsku.app", version:APP_VERSION, exported:new Date().toISOString(), data };
+  return PP_MIGRATE.buildBackupEnvelope(data, APP_VERSION, new Date().toISOString());
 }
-function ppProgressCounts(data){
-  let known=0, still=0;
-  try{
-    const st = JSON.parse(data[STORE_KEY] || "{}");
-    Object.keys(st).forEach(k=>{
-      known += (st[k].known||[]).length;
-      still += (st[k].still||[]).length;
-    });
-  }catch(e){}
-  return {known, still};
-}
+/* Count progress for a backup's data map. Prefers the v2 store, falls back to v1
+   so both new and old backup files report sensible totals. */
+function ppProgressCounts(data){ return PP_MIGRATE.progressCounts(data); }
 function ppDownloadBackup(){
   const payload = ppBackupData();
   const n = ppProgressCounts(payload.data);
@@ -2851,23 +3120,27 @@ function ppDownloadBackup(){
 }
 function ppApplyBackup(obj){
   const s = $("dataStatus");
-  if(!obj || obj.app!=="popolsku.app" || typeof obj.data!=="object" || obj.data===null){
+  /* Preflight against an ISOLATED in-memory copy first: a rejected backup makes zero
+     changes to this device's data. */
+  const pf = PP_MIGRATE.preflightBackup(obj, PP_CTX, new Date().toISOString());
+  if(!pf.ok){
     s.className = "data-status err";
-    s.textContent = "That file doesn't look like a Po polsku backup.";
+    s.textContent = pf.reason || "That file doesn't look like a Po polsku backup.";
     return false;
   }
-  const n = ppProgressCounts(obj.data);
+  const n = pf.counts;
   const when = obj.exported ? obj.exported.slice(0,10) : "an unknown date";
   const msg = "This backup from " + when + " contains " + n.known + " known words and " + n.still +
               " to review.\n\nReplace the progress on this device with it?";
   if(!window.confirm(msg)) { s.className="data-status"; s.textContent="Restore cancelled - nothing was changed."; return false; }
-  for(let i=localStorage.length-1;i>=0;i--){
-    const k = localStorage.key(i);
-    if(k && k.indexOf("popolsku-")===0) localStorage.removeItem(k);
+  /* Rollback-safe apply: snapshot -> replace -> re-validate; any failure rolls back
+     to the exact prior state and leaves the device unchanged. */
+  const res = PP_MIGRATE.restoreBackup(localStorage, obj, PP_CTX, new Date().toISOString());
+  if(!res.ok){
+    s.className = "data-status err";
+    s.textContent = "Restore couldn't be completed safely, so your existing data was left unchanged.";
+    return false;
   }
-  Object.keys(obj.data).forEach(k=>{
-    if(k.indexOf("popolsku-")===0 && typeof obj.data[k]==="string") localStorage.setItem(k, obj.data[k]);
-  });
   s.className = "data-status ok";
   s.textContent = "Restored. Reloading\u2026";
   setTimeout(()=>location.reload(), 400);
@@ -3064,6 +3337,7 @@ $("searchClear").addEventListener("click", ()=>{ clearSearch(); renderLevels(); 
 
 /* ---------------- init ---------------- */
 renderLevels(); renderTopics();
+ppShowRecoveryBanner();          /* only shows if progress is in read-only recovery mode */
 </script>
 </body>
 </html>

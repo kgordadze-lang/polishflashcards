@@ -1,15 +1,11 @@
 {
 "voice": "pl-PL-MarekNeural",
-"generatedAt": "2026-07-22T12:44:34.421215Z",
+"generatedAt": "2026-07-26T18:48:51.268706Z",
 "audioDir": "audio",
 "entries": {
 "000311d1288f": {
 "pl": "dowód osobisty",
 "file": "audio/000311d1288f.mp3"
-},
-"006e8445b33d": {
-"pl": "kierowce",
-"file": "audio/006e8445b33d.mp3"
 },
 "007996a550f8": {
 "pl": "Zimą pada śnieg.",
@@ -55,10 +51,6 @@
 "pl": "zatrudnić",
 "file": "audio/0126b3bdf92c.mp3"
 },
-"013b9c09d6f6": {
-"pl": "inwestować / zainwestować",
-"file": "audio/013b9c09d6f6.mp3"
-},
 "017ac6e68df5": {
 "pl": "bezrobocie",
 "file": "audio/017ac6e68df5.mp3"
@@ -70,10 +62,6 @@
 "01bd89d0ded6": {
 "pl": "obciąć włosy",
 "file": "audio/01bd89d0ded6.mp3"
-},
-"01c3a6997203": {
-"pl": "Mogę sam wytaczać sobie szlak mojego życia.",
-"file": "audio/01c3a6997203.mp3"
 },
 "01d9c91120e2": {
 "pl": "Ciebie kocham, nie jego!",
@@ -90,10 +78,6 @@
 "02132eb0e44e": {
 "pl": "Jak często?",
 "file": "audio/02132eb0e44e.mp3"
-},
-"0224af15a521": {
-"pl": "Jak dojść do...?",
-"file": "audio/0224af15a521.mp3"
 },
 "0235f7b28091": {
 "pl": "(Zapomniałeś magnezji i chcesz kogoś zapytać.)",
@@ -131,10 +115,6 @@
 "pl": "Jadę pociągiem po Polsce.",
 "file": "audio/03146aea7d0c.mp3"
 },
-"0337171bb435": {
-"pl": "wakacje",
-"file": "audio/0337171bb435.mp3"
-},
 "03373e0924f9": {
 "pl": "Kupuję gazetę.",
 "file": "audio/03373e0924f9.mp3"
@@ -146,14 +126,6 @@
 "036515600b85": {
 "pl": "Poproszę jeden bilet.",
 "file": "audio/036515600b85.mp3"
-},
-"0390bd7e7c19": {
-"pl": "Mam mało czasu i dużo pracy.",
-"file": "audio/0390bd7e7c19.mp3"
-},
-"03c468c25907": {
-"pl": "złoty (zł)",
-"file": "audio/03c468c25907.mp3"
 },
 "03d89afce24f": {
 "pl": "Nie, dziękuję.",
@@ -170,10 +142,6 @@
 "0458bf4a90f7": {
 "pl": "zasypiać",
 "file": "audio/0458bf4a90f7.mp3"
-},
-"04672bc9703e": {
-"pl": "mleka",
-"file": "audio/04672bc9703e.mp3"
 },
 "047908aca321": {
 "pl": "Zepsuł się piekarnik.",
@@ -211,10 +179,6 @@
 "pl": "To jest mój nowy samochód.",
 "file": "audio/052c3262c0f4.mp3"
 },
-"0551f572ec42": {
-"pl": "czasem",
-"file": "audio/0551f572ec42.mp3"
-},
 "058cf8c379ca": {
 "pl": "śnieg",
 "file": "audio/058cf8c379ca.mp3"
@@ -230,14 +194,6 @@
 "05acfdbd0d79": {
 "pl": "Kawiarnia jest między bankiem a księgarnią.",
 "file": "audio/05acfdbd0d79.mp3"
-},
-"05f18a69868f": {
-"pl": "kupować / kupić",
-"file": "audio/05f18a69868f.mp3"
-},
-"062785fd3df2": {
-"pl": "wytaczać sobie własny szlak",
-"file": "audio/062785fd3df2.mp3"
 },
 "069726e0df23": {
 "pl": "To jest bardzo blisko.",
@@ -275,10 +231,6 @@
 "pl": "Cześć",
 "file": "audio/0750163b33b6.mp3"
 },
-"075ecfeaf2c1": {
-"pl": "CV / życiorys",
-"file": "audio/075ecfeaf2c1.mp3"
-},
 "0762119e12d1": {
 "pl": "ręcznik",
 "file": "audio/0762119e12d1.mp3"
@@ -287,17 +239,9 @@
 "pl": "O której dzisiaj zamykacie?",
 "file": "audio/079478ffdf54.mp3"
 },
-"07b4612016eb": {
-"pl": "Ukraińcy",
-"file": "audio/07b4612016eb.mp3"
-},
 "07c0b447132e": {
 "pl": "Moi sąsiedzi to Ukraińcy.",
 "file": "audio/07c0b447132e.mp3"
-},
-"07c69254545d": {
-"pl": "mężczyźni",
-"file": "audio/07c69254545d.mp3"
 },
 "07c6dfdf2071": {
 "pl": "sprzątać",
@@ -311,21 +255,9 @@
 "pl": "hobby",
 "file": "audio/0834a044f52d.mp3"
 },
-"083bd44bdf7b": {
-"pl": "Proszę zatrzymać resztę.",
-"file": "audio/083bd44bdf7b.mp3"
-},
-"0857a27f0590": {
-"pl": "doktorze",
-"file": "audio/0857a27f0590.mp3"
-},
 "085d38bca14e": {
 "pl": "W weekend odwiedzam ciocię.",
 "file": "audio/085d38bca14e.mp3"
-},
-"08965c4feb6e": {
-"pl": "Moim celem zawodowym jest bycie ekspertem.",
-"file": "audio/08965c4feb6e.mp3"
 },
 "08b470ca1cd8": {
 "pl": "Kredyt ma bardzo wysokie odsetki.",
@@ -350,10 +282,6 @@
 "093976cd6291": {
 "pl": "składniki",
 "file": "audio/093976cd6291.mp3"
-},
-"097743c5f8a2": {
-"pl": "jego",
-"file": "audio/097743c5f8a2.mp3"
 },
 "09c461545882": {
 "pl": "stać się lepszą wersją siebie",
@@ -419,10 +347,6 @@
 "pl": "Przepraszam, kiedy jest następny autobus?",
 "file": "audio/0c30d7240609.mp3"
 },
-"0c4348e4e77e": {
-"pl": "nauczycieli",
-"file": "audio/0c4348e4e77e.mp3"
-},
 "0c4911759f36": {
 "pl": "elegancki",
 "file": "audio/0c4911759f36.mp3"
@@ -487,10 +411,6 @@
 "pl": "Spróbuję go do tego przekonać.",
 "file": "audio/0dee4614da17.mp3"
 },
-"0e169d08ede4": {
-"pl": "Ci",
-"file": "audio/0e169d08ede4.mp3"
-},
 "0e2943bac75e": {
 "pl": "Anna czyta książkę.",
 "file": "audio/0e2943bac75e.mp3"
@@ -527,17 +447,9 @@
 "pl": "Dziękuję lekarzowi.",
 "file": "audio/0f2319469888.mp3"
 },
-"0f2718a5d990": {
-"pl": "Mamą",
-"file": "audio/0f2718a5d990.mp3"
-},
 "0fa4e293d37f": {
 "pl": "moja kawa, twoja książka",
 "file": "audio/0fa4e293d37f.mp3"
-},
-"0fc003d04913": {
-"pl": "ząb / zęby",
-"file": "audio/0fc003d04913.mp3"
 },
 "0febfb7ac359": {
 "pl": "Rozumiem",
@@ -587,10 +499,6 @@
 "pl": "tam",
 "file": "audio/1129e6f195d9.mp3"
 },
-"1134b6f9b0c3": {
-"pl": "długopisem",
-"file": "audio/1134b6f9b0c3.mp3"
-},
 "1136527aaa7c": {
 "pl": "Trąba powietrzna zniszczyła las.",
 "file": "audio/1136527aaa7c.mp3"
@@ -630,10 +538,6 @@
 "1259997aab6c": {
 "pl": "Po deszczu trawa jest mokra.",
 "file": "audio/1259997aab6c.mp3"
-},
-"1285c2c558bc": {
-"pl": "Z jednej strony...",
-"file": "audio/1285c2c558bc.mp3"
 },
 "12aadad7def7": {
 "pl": "Są bardzo towarzyscy.",
@@ -675,10 +579,6 @@
 "pl": "Masz świetny przepis na to ciasto.",
 "file": "audio/13cad05e6ac2.mp3"
 },
-"13cc1b43b32e": {
-"pl": "kość / kości",
-"file": "audio/13cc1b43b32e.mp3"
-},
 "13d168bafa4b": {
 "pl": "A ile to kosztuje?",
 "file": "audio/13d168bafa4b.mp3"
@@ -715,17 +615,9 @@
 "pl": "Nasi nowi sąsiedzi są bardzo mili.",
 "file": "audio/149580afce56.mp3"
 },
-"14ab77bc6966": {
-"pl": "Zrobię ci przelew blikiem na telefon.",
-"file": "audio/14ab77bc6966.mp3"
-},
 "14b71db6afa2": {
 "pl": "kaucja",
 "file": "audio/14b71db6afa2.mp3"
-},
-"14d1c29a5d60": {
-"pl": "moje",
-"file": "audio/14d1c29a5d60.mp3"
 },
 "151dfc83355f": {
 "pl": "Pomóc ci w czymś?",
@@ -795,17 +687,9 @@
 "pl": "Jestem studentem.",
 "file": "audio/1747570b6688.mp3"
 },
-"1749c6727140": {
-"pl": "szefowie",
-"file": "audio/1749c6727140.mp3"
-},
 "176ab0b2e69a": {
 "pl": "gardło",
 "file": "audio/176ab0b2e69a.mp3"
-},
-"176d5e650f9f": {
-"pl": "kanapie",
-"file": "audio/176d5e650f9f.mp3"
 },
 "17a3591cf343": {
 "pl": "Ten dom jest duży.",
@@ -827,14 +711,6 @@
 "pl": "Daję Ani prezent.",
 "file": "audio/17db881d49bc.mp3"
 },
-"180472a56988": {
-"pl": "robiłem / zrobiłem",
-"file": "audio/180472a56988.mp3"
-},
-"180a7f768171": {
-"pl": "Poproszę paczkę masła.",
-"file": "audio/180a7f768171.mp3"
-},
 "181d38fb1590": {
 "pl": "Zimą nie wychodzę bez kurtki.",
 "file": "audio/181d38fb1590.mp3"
@@ -842,10 +718,6 @@
 "18217419525d": {
 "pl": "Kładę się spać około północy.",
 "file": "audio/18217419525d.mp3"
-},
-"1856b19aa66d": {
-"pl": "wyrzucać / wyrzucić",
-"file": "audio/1856b19aa66d.mp3"
 },
 "18601b74a151": {
 "pl": "koncert",
@@ -855,10 +727,6 @@
 "pl": "dobrostan psychiczny",
 "file": "audio/1879e520a461.mp3"
 },
-"187c0da48216": {
-"pl": "marnować / zmarnować",
-"file": "audio/187c0da48216.mp3"
-},
 "1893eaee518d": {
 "pl": "karta pobytu",
 "file": "audio/1893eaee518d.mp3"
@@ -867,17 +735,9 @@
 "pl": "Kuchnia jest mała, ale wygodna.",
 "file": "audio/189e8253076b.mp3"
 },
-"18a3560bc30e": {
-"pl": "Mam... lat",
-"file": "audio/18a3560bc30e.mp3"
-},
 "18e33d10690b": {
 "pl": "pralka",
 "file": "audio/18e33d10690b.mp3"
-},
-"1918b43e02a5": {
-"pl": "Włosi",
-"file": "audio/1918b43e02a5.mp3"
 },
 "191a19794a3d": {
 "pl": "O której odjeżdża pociąg?",
@@ -890,10 +750,6 @@
 "194abb7764e1": {
 "pl": "Ma dominujący charakter.",
 "file": "audio/194abb7764e1.mp3"
-},
-"19503ea6785e": {
-"pl": "mu",
-"file": "audio/19503ea6785e.mp3"
 },
 "195f4aafc3c2": {
 "pl": "Taka rutyna prowadzi tylko do wypalenia.",
@@ -934,10 +790,6 @@
 "1a596a5465b9": {
 "pl": "Wysłałem ci plik na maila.",
 "file": "audio/1a596a5465b9.mp3"
-},
-"1a8a241b0f29": {
-"pl": "kierowcowie",
-"file": "audio/1a8a241b0f29.mp3"
 },
 "1a8c5e4668d4": {
 "pl": "Płacę gotówką.",
@@ -983,10 +835,6 @@
 "pl": "Wypiłem szklankę wody.",
 "file": "audio/1ba955f4290b.mp3"
 },
-"1bd3ffaf22a1": {
-"pl": "koledzy",
-"file": "audio/1bd3ffaf22a1.mp3"
-},
 "1bdb72eea2a8": {
 "pl": "Ważne, żeby praca stanowiła dla nas wyzwanie.",
 "file": "audio/1bdb72eea2a8.mp3"
@@ -1011,17 +859,9 @@
 "pl": "Przepraszam, gdzie jest wyjście?",
 "file": "audio/1c4d44866524.mp3"
 },
-"1c62ff089037": {
-"pl": "mądrzy",
-"file": "audio/1c62ff089037.mp3"
-},
 "1c8fae6f7cc9": {
 "pl": "z nim wczoraj",
 "file": "audio/1c8fae6f7cc9.mp3"
-},
-"1cabd8a2dc30": {
-"pl": "Marka",
-"file": "audio/1cabd8a2dc30.mp3"
 },
 "1cb6eaf0af8a": {
 "pl": "obowiązki domowe",
@@ -1059,10 +899,6 @@
 "pl": "z Anną",
 "file": "audio/1d52fcaabd16.mp3"
 },
-"1d79aa7acc2c": {
-"pl": "Nie mamy przestrzeni, żeby zdrowo odreagować dzień pracy.",
-"file": "audio/1d79aa7acc2c.mp3"
-},
 "1db0883280af": {
 "pl": "odważny",
 "file": "audio/1db0883280af.mp3"
@@ -1079,10 +915,6 @@
 "pl": "Mam bilety do teatru na sobotę.",
 "file": "audio/1e351e2dc523.mp3"
 },
-"1e769dceb570": {
-"pl": "pracownikowie",
-"file": "audio/1e769dceb570.mp3"
-},
 "1eb4e3633b81": {
 "pl": "Czy pójdziemy na spacer? To zależy od pogody.",
 "file": "audio/1eb4e3633b81.mp3"
@@ -1094,14 +926,6 @@
 "1ed1e4b1efe3": {
 "pl": "Wietnamczycy prowadzą tę świetną restaurację.",
 "file": "audio/1ed1e4b1efe3.mp3"
-},
-"1efbcccd597d": {
-"pl": "inżyniery",
-"file": "audio/1efbcccd597d.mp3"
-},
-"1f10084a52b0": {
-"pl": "Czyje",
-"file": "audio/1f10084a52b0.mp3"
 },
 "1f3950c82d09": {
 "pl": "hydraulik",
@@ -1147,17 +971,9 @@
 "pl": "Samolot startuje o ósmej.",
 "file": "audio/217b5f939288.mp3"
 },
-"219124b3c0a4": {
-"pl": "kotu",
-"file": "audio/219124b3c0a4.mp3"
-},
 "219870a4ddc5": {
 "pl": "Bądź ze mną szczery.",
 "file": "audio/219870a4ddc5.mp3"
-},
-"21a0bb94b190": {
-"pl": "Możesz podłączyć dwa urządzenia na raz.",
-"file": "audio/21a0bb94b190.mp3"
 },
 "220790d174eb": {
 "pl": "Nie ma mleka.",
@@ -1207,10 +1023,6 @@
 "pl": "Co podać?",
 "file": "audio/2326b1726962.mp3"
 },
-"234145c12ed8": {
-"pl": "Mam paracetamol i ibuprofen. Co pan woli?",
-"file": "audio/234145c12ed8.mp3"
-},
 "23474066a744": {
 "pl": "Oddam butelki w sklepie.",
 "file": "audio/23474066a744.mp3"
@@ -1239,10 +1051,6 @@
 "pl": "nerwowy",
 "file": "audio/23905d81730e.mp3"
 },
-"23a40ef06269": {
-"pl": "po lewej / prawej stronie",
-"file": "audio/23a40ef06269.mp3"
-},
 "23c6b01a1090": {
 "pl": "Wynajmuję mieszkanie w centrum.",
 "file": "audio/23c6b01a1090.mp3"
@@ -1266,10 +1074,6 @@
 "24b8654937b9": {
 "pl": "Przepraszam, mam pytanie.",
 "file": "audio/24b8654937b9.mp3"
-},
-"24d1eb5f7c3d": {
-"pl": "autobusem",
-"file": "audio/24d1eb5f7c3d.mp3"
 },
 "24d864fc8752": {
 "pl": "Ta kanapa jest bardzo wygodna.",
@@ -1311,10 +1115,6 @@
 "pl": "mieszkanie",
 "file": "audio/25b8a50f82c1.mp3"
 },
-"2600671897d5": {
-"pl": "Szukam mieszkania z dwoma pokojami.",
-"file": "audio/2600671897d5.mp3"
-},
 "2628bffe1489": {
 "pl": "Pięciu studentów jest w klasie.",
 "file": "audio/2628bffe1489.mp3"
@@ -1330,10 +1130,6 @@
 "264c8c381bf1": {
 "pl": "student",
 "file": "audio/264c8c381bf1.mp3"
-},
-"26741a26e1b4": {
-"pl": "towarzyscy",
-"file": "audio/26741a26e1b4.mp3"
 },
 "26b19f1a45ac": {
 "pl": "Polscy studenci są mądrzy.",
@@ -1359,21 +1155,9 @@
 "pl": "herbata",
 "file": "audio/2748620de466.mp3"
 },
-"2761c4c3de85": {
-"pl": "zapomniałem / zapomniałam",
-"file": "audio/2761c4c3de85.mp3"
-},
 "279965a07bfa": {
 "pl": "Jak masz na imię?",
 "file": "audio/279965a07bfa.mp3"
-},
-"279f670a4876": {
-"pl": "Masz ogień?",
-"file": "audio/279f670a4876.mp3"
-},
-"27ced40b2785": {
-"pl": "ze mną",
-"file": "audio/27ced40b2785.mp3"
 },
 "28021d233cae": {
 "pl": "pamiętam, jak",
@@ -1394,10 +1178,6 @@
 "287962c1baf5": {
 "pl": "Zadaj sobie te pytania i nie ignoruj ich.",
 "file": "audio/287962c1baf5.mp3"
-},
-"288d4896c38a": {
-"pl": "zwracać / zwrócić",
-"file": "audio/288d4896c38a.mp3"
 },
 "289de8623f43": {
 "pl": "Lekarz zlecił dodatkowe badania.",
@@ -1463,10 +1243,6 @@
 "pl": "Można mieć sztywne granice między pracą a życiem.",
 "file": "audio/2abce2f78e81.mp3"
 },
-"2aec9480d4eb": {
-"pl": "towarzyskie",
-"file": "audio/2aec9480d4eb.mp3"
-},
 "2aef9c5b82dc": {
 "pl": "Nie ma brata.",
 "file": "audio/2aef9c5b82dc.mp3"
@@ -1482,14 +1258,6 @@
 "2b430d77ad19": {
 "pl": "Jaka dzisiaj pogoda?",
 "file": "audio/2b430d77ad19.mp3"
-},
-"2b5d8ba5d6c2": {
-"pl": "domu",
-"file": "audio/2b5d8ba5d6c2.mp3"
-},
-"2b818e2209fd": {
-"pl": "doktora",
-"file": "audio/2b818e2209fd.mp3"
 },
 "2b83c638235f": {
 "pl": "Kupiłam dwie pary butów.",
@@ -1523,14 +1291,6 @@
 "pl": "nos",
 "file": "audio/2c9e378375ea.mp3"
 },
-"2cf5175f8d72": {
-"pl": "długopisu",
-"file": "audio/2cf5175f8d72.mp3"
-},
-"2cfb7919c6f5": {
-"pl": "Nazywam się...",
-"file": "audio/2cfb7919c6f5.mp3"
-},
 "2d4015286987": {
 "pl": "Przepraszam, zapomniałem o spotkaniu.",
 "file": "audio/2d4015286987.mp3"
@@ -1543,17 +1303,9 @@
 "pl": "być panem swojego losu",
 "file": "audio/2d47bd003bbc.mp3"
 },
-"2d4ad6813c33": {
-"pl": "Tabletki czy syrop?",
-"file": "audio/2d4ad6813c33.mp3"
-},
 "2d5dc45bccbb": {
 "pl": "Nie, gorączki nie ma.",
 "file": "audio/2d5dc45bccbb.mp3"
-},
-"2d6f60c61d4f": {
-"pl": "mogłem / mogłam",
-"file": "audio/2d6f60c61d4f.mp3"
 },
 "2d891fdda26a": {
 "pl": "Codziennie jadę metrem do pracy.",
@@ -1578,10 +1330,6 @@
 "2ee8f9a9992b": {
 "pl": "Moi koledzy to Ukraińcy.",
 "file": "audio/2ee8f9a9992b.mp3"
-},
-"2f0e389f4e76": {
-"pl": "przecena / wyprzedaż",
-"file": "audio/2f0e389f4e76.mp3"
 },
 "2f14dadc0a4c": {
 "pl": "Włosi uwielbiają pizzę.",
@@ -1611,17 +1359,9 @@
 "pl": "Co słychać?",
 "file": "audio/30408493e44f.mp3"
 },
-"305d6e58617d": {
-"pl": "kawy",
-"file": "audio/305d6e58617d.mp3"
-},
 "305ebb232ea7": {
 "pl": "stół",
 "file": "audio/305ebb232ea7.mp3"
-},
-"307fa046baa7": {
-"pl": "Warszawie",
-"file": "audio/307fa046baa7.mp3"
 },
 "30984d872d25": {
 "pl": "Czy ci turyści to Brytyjczycy?",
@@ -1639,25 +1379,9 @@
 "pl": "odebrać",
 "file": "audio/31c4231a2560.mp3"
 },
-"31ec1412a751": {
-"pl": "są",
-"file": "audio/31ec1412a751.mp3"
-},
-"31f37457d9b5": {
-"pl": "pracowici",
-"file": "audio/31f37457d9b5.mp3"
-},
 "31f615fbb611": {
 "pl": "Przepraszam, czy może pan powtórzyć?",
 "file": "audio/31f615fbb611.mp3"
-},
-"3212564531cf": {
-"pl": "menedżerowie",
-"file": "audio/3212564531cf.mp3"
-},
-"322e2425a9d0": {
-"pl": "siostry",
-"file": "audio/322e2425a9d0.mp3"
 },
 "3231795cb91b": {
 "pl": "zarabiać",
@@ -1670,10 +1394,6 @@
 "325c77c45d12": {
 "pl": "Sprawdzam rozkład jazdy w aplikacji.",
 "file": "audio/325c77c45d12.mp3"
-},
-"325e03bb0536": {
-"pl": "długopis",
-"file": "audio/325e03bb0536.mp3"
 },
 "328f81803957": {
 "pl": "Ile płacę za wszystko?",
@@ -1694,10 +1414,6 @@
 "329c31af4f10": {
 "pl": "Amerykanie często podróżują.",
 "file": "audio/329c31af4f10.mp3"
-},
-"32dcec21cffe": {
-"pl": "puszka / słoik",
-"file": "audio/32dcec21cffe.mp3"
 },
 "32e98ab42562": {
 "pl": "Widzę cię!",
@@ -1731,14 +1447,6 @@
 "pl": "Wychodzę z domu o ósmej piętnaście.",
 "file": "audio/339d165c68cb.mp3"
 },
-"33b0d5789888": {
-"pl": "pakować / zapakować",
-"file": "audio/33b0d5789888.mp3"
-},
-"33ca16eebcff": {
-"pl": "menedżerzy",
-"file": "audio/33ca16eebcff.mp3"
-},
 "33fee4fe699c": {
 "pl": "'this my good cat'",
 "file": "audio/33fee4fe699c.mp3"
@@ -1750,10 +1458,6 @@
 "341f91df5189": {
 "pl": "Udostępnij ten artykuł na swoim profilu.",
 "file": "audio/341f91df5189.mp3"
-},
-"344d58c24538": {
-"pl": "dobrzy",
-"file": "audio/344d58c24538.mp3"
 },
 "34525af4f1d4": {
 "pl": "Samochód wydaje dziwne dźwięki, jadę do mechanika.",
@@ -1778,10 +1482,6 @@
 "34b19bbdb710": {
 "pl": "Chcę chronić środowisko.",
 "file": "audio/34b19bbdb710.mp3"
-},
-"34d3d887af2b": {
-"pl": "Oczekuję dobrego wynagrodzenia.",
-"file": "audio/34d3d887af2b.mp3"
 },
 "34ede203e8d9": {
 "pl": "Mam pięć jabłek i trzy banany.",
@@ -1823,21 +1523,9 @@
 "pl": "ta ulica, tamta pani",
 "file": "audio/35c29bbe1cae.mp3"
 },
-"35e237071273": {
-"pl": "z ja",
-"file": "audio/35e237071273.mp3"
-},
 "35e737cb9f2d": {
 "pl": "Nasi studenci są bardzo mądrzy.",
 "file": "audio/35e737cb9f2d.mp3"
-},
-"35e99f929e01": {
-"pl": "jest",
-"file": "audio/35e99f929e01.mp3"
-},
-"36963fb92786": {
-"pl": "Potrzebuje pan/pani paragon?",
-"file": "audio/36963fb92786.mp3"
 },
 "36d2b3a3806e": {
 "pl": "wynajem",
@@ -1847,10 +1535,6 @@
 "pl": "Chłopcy byli nieśmiali.",
 "file": "audio/36e17d9ffcfb.mp3"
 },
-"3702fc186663": {
-"pl": "ja",
-"file": "audio/3702fc186663.mp3"
-},
 "3702ff878dc8": {
 "pl": "Zimno i pada.",
 "file": "audio/3702ff878dc8.mp3"
@@ -1859,53 +1543,21 @@
 "pl": "Używasz tych hantli?",
 "file": "audio/370832092efd.mp3"
 },
-"372262c3dc76": {
-"pl": "jej",
-"file": "audio/372262c3dc76.mp3"
-},
 "373a4e92d82a": {
 "pl": "Prześlesz mi notatki?",
 "file": "audio/373a4e92d82a.mp3"
-},
-"37961235a5c8": {
-"pl": "oszczędzać / oszczędzić",
-"file": "audio/37961235a5c8.mp3"
-},
-"379bb13ad975": {
-"pl": "Polakami",
-"file": "audio/379bb13ad975.mp3"
-},
-"37ec741f4657": {
-"pl": "telefonem",
-"file": "audio/37ec741f4657.mp3"
 },
 "380c7b6b6841": {
 "pl": "Wolę prysznic niż kąpiel w wannie.",
 "file": "audio/380c7b6b6841.mp3"
 },
-"3811d23bedc9": {
-"pl": "targ / rynek",
-"file": "audio/3811d23bedc9.mp3"
-},
-"381b5ce3283c": {
-"pl": "Moim zdaniem...",
-"file": "audio/381b5ce3283c.mp3"
-},
 "382ccba815cc": {
 "pl": "gotówka",
 "file": "audio/382ccba815cc.mp3"
 },
-"382e19a43dc3": {
-"pl": "przyjaciół",
-"file": "audio/382e19a43dc3.mp3"
-},
 "383b69ec0b3a": {
 "pl": "Rano poszedłem do sklepu.",
 "file": "audio/383b69ec0b3a.mp3"
-},
-"384209cdc36d": {
-"pl": "mężczyzn",
-"file": "audio/384209cdc36d.mp3"
 },
 "384c3cec0cc0": {
 "pl": "skupiać się na czymś",
@@ -1931,29 +1583,13 @@
 "pl": "na prawo",
 "file": "audio/38a6d9583dd5.mp3"
 },
-"38c3c16e42ac": {
-"pl": "kierowcy",
-"file": "audio/38c3c16e42ac.mp3"
-},
-"38ce8d23ede2": {
-"pl": "sióstr",
-"file": "audio/38ce8d23ede2.mp3"
-},
 "38cf4eeb1f2b": {
 "pl": "twarda woda",
 "file": "audio/38cf4eeb1f2b.mp3"
 },
-"38f6cce15699": {
-"pl": "Białorusini",
-"file": "audio/38f6cce15699.mp3"
-},
 "38fd4fd94aeb": {
 "pl": "Bardzo się cieszę, że cię widzę.",
 "file": "audio/38fd4fd94aeb.mp3"
-},
-"39877ccc8f79": {
-"pl": "Mój brat to blondyn, a ja jestem brunetką.",
-"file": "audio/39877ccc8f79.mp3"
 },
 "39a9763e1352": {
 "pl": "zorganizowany",
@@ -1966,14 +1602,6 @@
 "3a1c701e485e": {
 "pl": "Amerykanki są turystkami.",
 "file": "audio/3a1c701e485e.mp3"
-},
-"3a82e1b36194": {
-"pl": "kolegi",
-"file": "audio/3a82e1b36194.mp3"
-},
-"3a967a193fa3": {
-"pl": "ambitne",
-"file": "audio/3a967a193fa3.mp3"
 },
 "3a9e74577922": {
 "pl": "Co jest ważniejsze, zarobki czy twoje szczęście?",
@@ -2027,10 +1655,6 @@
 "pl": "za",
 "file": "audio/3c42d9ac9807.mp3"
 },
-"3c44c3e1b8b7": {
-"pl": "ma",
-"file": "audio/3c44c3e1b8b7.mp3"
-},
 "3cb50978e140": {
 "pl": "oszczędzać",
 "file": "audio/3cb50978e140.mp3"
@@ -2038,10 +1662,6 @@
 "3ccf61998240": {
 "pl": "przymierzyć",
 "file": "audio/3ccf61998240.mp3"
-},
-"3cdca815ce6e": {
-"pl": "Piotra",
-"file": "audio/3cdca815ce6e.mp3"
 },
 "3ce367085e2b": {
 "pl": "Jesteś bardzo podobny do brata.",
@@ -2062,10 +1682,6 @@
 "3d4de7d28ff6": {
 "pl": "Moi dziadkowie są bardzo mądrzy.",
 "file": "audio/3d4de7d28ff6.mp3"
-},
-"3d5d94c172f4": {
-"pl": "siostrze",
-"file": "audio/3d5d94c172f4.mp3"
 },
 "3d6dd8a72c85": {
 "pl": "studentach, domach",
@@ -2154,14 +1770,6 @@
 "404e49ec4c23": {
 "pl": "skrzyżowanie",
 "file": "audio/404e49ec4c23.mp3"
-},
-"40629c224d9b": {
-"pl": "wody",
-"file": "audio/40629c224d9b.mp3"
-},
-"4068190842e2": {
-"pl": "To jest za drogo.",
-"file": "audio/4068190842e2.mp3"
 },
 "406ea1e2d05a": {
 "pl": "Poproszę rachunek.",
@@ -2259,10 +1867,6 @@
 "pl": "Ta kurtka jest bardzo modna.",
 "file": "audio/4287c02052c2.mp3"
 },
-"42bf87a7e381": {
-"pl": "domem",
-"file": "audio/42bf87a7e381.mp3"
-},
 "42e02867db46": {
 "pl": "dominujący",
 "file": "audio/42e02867db46.mp3"
@@ -2287,10 +1891,6 @@
 "pl": "bank",
 "file": "audio/4381dc2ab142.mp3"
 },
-"43d8c1ddedb0": {
-"pl": "Bóg",
-"file": "audio/43d8c1ddedb0.mp3"
-},
 "4407ea38062d": {
 "pl": "A skąd pan jest?",
 "file": "audio/4407ea38062d.mp3"
@@ -2311,17 +1911,9 @@
 "pl": "(Chcesz sprawdzić, czy szafka jest zajęta.)",
 "file": "audio/444b7f2a2f0b.mp3"
 },
-"447c418af900": {
-"pl": "Lampa w sypialni się przepaliła.",
-"file": "audio/447c418af900.mp3"
-},
 "44910d170061": {
 "pl": "znajomi",
 "file": "audio/44910d170061.mp3"
-},
-"4498ab6efa5b": {
-"pl": "Poproszę o paragon",
-"file": "audio/4498ab6efa5b.mp3"
 },
 "44c3666ed711": {
 "pl": "Nie, dziękuję, to wszystko.",
@@ -2354,10 +1946,6 @@
 "452e0e4a7236": {
 "pl": "Czy muszę skasować bilet?",
 "file": "audio/452e0e4a7236.mp3"
-},
-"4533d7b2cee7": {
-"pl": "Poproszę o paragon.",
-"file": "audio/4533d7b2cee7.mp3"
 },
 "453604d95f34": {
 "pl": "W weekend jesteśmy leniwi.",
@@ -2395,10 +1983,6 @@
 "pl": "trąba powietrzna",
 "file": "audio/466069b815cf.mp3"
 },
-"4692b382f211": {
-"pl": "autobusu",
-"file": "audio/4692b382f211.mp3"
-},
 "46a2813ef5a9": {
 "pl": "Chyba zabłądziłem, gdzie jestem?",
 "file": "audio/46a2813ef5a9.mp3"
@@ -2415,21 +1999,9 @@
 "pl": "Zadzwonię do właściciela.",
 "file": "audio/46d435c1ef86.mp3"
 },
-"46e70fe8cfad": {
-"pl": "Czy to jest dobry kierunek?",
-"file": "audio/46e70fe8cfad.mp3"
-},
 "46ff0e7b793b": {
 "pl": "studentom, panom, kolegom",
 "file": "audio/46ff0e7b793b.mp3"
-},
-"4703127e5475": {
-"pl": "Uważam, że...",
-"file": "audio/4703127e5475.mp3"
-},
-"470e3f2b7b6b": {
-"pl": "Na przystawkę poproszę zupę.",
-"file": "audio/470e3f2b7b6b.mp3"
 },
 "471980541e6e": {
 "pl": "Musiałem wcześnie wstać.",
@@ -2471,10 +2043,6 @@
 "pl": "Nie powinniśmy wycinać drzew.",
 "file": "audio/483c4bce44e9.mp3"
 },
-"4847de8b704d": {
-"pl": "drogo / tanio",
-"file": "audio/4847de8b704d.mp3"
-},
 "485a82f89cd3": {
 "pl": "nadgodziny",
 "file": "audio/485a82f89cd3.mp3"
@@ -2502,10 +2070,6 @@
 "48976805f4be": {
 "pl": "Inżynierowie i menedżerowie pracują razem.",
 "file": "audio/48976805f4be.mp3"
-},
-"48a8d9ca65d4": {
-"pl": "profesor",
-"file": "audio/48a8d9ca65d4.mp3"
 },
 "48b3385315a4": {
 "pl": "Moi rodzice są oszczędni.",
@@ -2543,17 +2107,9 @@
 "pl": "pięć",
 "file": "audio/4a860849bab4.mp3"
 },
-"4a88738ab9d1": {
-"pl": "Nie, ile płacę?",
-"file": "audio/4a88738ab9d1.mp3"
-},
 "4a91e8861c19": {
 "pl": "katar",
 "file": "audio/4a91e8861c19.mp3"
-},
-"4acad7a393f1": {
-"pl": "Wsiadam / Wysiadam",
-"file": "audio/4acad7a393f1.mp3"
 },
 "4b28132c0262": {
 "pl": "Sklep jest na prawo.",
@@ -2579,10 +2135,6 @@
 "pl": "komunikacja miejska",
 "file": "audio/4b68b5db9832.mp3"
 },
-"4b74e93be540": {
-"pl": "To przystanek na żądanie, naciśnij guzik.",
-"file": "audio/4b74e93be540.mp3"
-},
 "4b8cf1f58d4b": {
 "pl": "Włosi i Francuzi to Europejczycy.",
 "file": "audio/4b8cf1f58d4b.mp3"
@@ -2590,10 +2142,6 @@
 "4bb0b87ea428": {
 "pl": "Bierz leki i szybko zdrowiej!",
 "file": "audio/4bb0b87ea428.mp3"
-},
-"4bb733b46646": {
-"pl": "założyć / zakładać",
-"file": "audio/4bb733b46646.mp3"
 },
 "4bc293f1f8c9": {
 "pl": "trochę",
@@ -2607,29 +2155,13 @@
 "pl": "Dla wielu osób praca jest czymś, w czym się spełniają.",
 "file": "audio/4c60f57f2d3e.mp3"
 },
-"4c785cde423d": {
-"pl": "Włochy",
-"file": "audio/4c785cde423d.mp3"
-},
 "4ca00caa3a4c": {
 "pl": "Tak, mam kota.",
 "file": "audio/4ca00caa3a4c.mp3"
 },
-"4cc4798d6f98": {
-"pl": "Bez nawigacji na pewno bym zabłądził.",
-"file": "audio/4cc4798d6f98.mp3"
-},
-"4cd0e21a9a07": {
-"pl": "go",
-"file": "audio/4cd0e21a9a07.mp3"
-},
 "4cf2dba9e4aa": {
 "pl": "skąpy",
 "file": "audio/4cf2dba9e4aa.mp3"
-},
-"4d47c39b263f": {
-"pl": "Przepraszam, czy to jest dobry kierunek na centrum?",
-"file": "audio/4d47c39b263f.mp3"
 },
 "4d58fbc4d3e9": {
 "pl": "wstawać",
@@ -2663,14 +2195,6 @@
 "pl": "przejście dla pieszych",
 "file": "audio/4e9c8ac444aa.mp3"
 },
-"4ea1f153b79c": {
-"pl": "Kasi",
-"file": "audio/4ea1f153b79c.mp3"
-},
-"4ed2c65a52f7": {
-"pl": "To bardzo blisko, pięć minut stąd.",
-"file": "audio/4ed2c65a52f7.mp3"
-},
 "4f33b8e4958a": {
 "pl": "Boli mnie brzuch.",
 "file": "audio/4f33b8e4958a.mp3"
@@ -2687,14 +2211,6 @@
 "pl": "Proszę mówić wolniej",
 "file": "audio/4ff9ab890115.mp3"
 },
-"500095379eb2": {
-"pl": "lekarką",
-"file": "audio/500095379eb2.mp3"
-},
-"5011641887fb": {
-"pl": "wakacji",
-"file": "audio/5011641887fb.mp3"
-},
 "5057e80c8249": {
 "pl": "Powieś płaszcz w szafie.",
 "file": "audio/5057e80c8249.mp3"
@@ -2707,17 +2223,9 @@
 "pl": "Sklep jest tam.",
 "file": "audio/50932a3c0835.mp3"
 },
-"509f6b903c7b": {
-"pl": "Annie",
-"file": "audio/509f6b903c7b.mp3"
-},
 "50a6c5d6adc7": {
 "pl": "To są Ukraińcy.",
 "file": "audio/50a6c5d6adc7.mp3"
-},
-"50d47a64dbf4": {
-"pl": "oddawać / oddać",
-"file": "audio/50d47a64dbf4.mp3"
 },
 "50dbd5d2abcf": {
 "pl": "Proszę pokazać dokument.",
@@ -2730,10 +2238,6 @@
 "512c65337711": {
 "pl": "stąd",
 "file": "audio/512c65337711.mp3"
-},
-"518f962aec78": {
-"pl": "Ta",
-"file": "audio/518f962aec78.mp3"
 },
 "51a8a8336343": {
 "pl": "zostawiam cię z tym pytaniem",
@@ -2759,10 +2263,6 @@
 "pl": "Stolik na cztery osoby.",
 "file": "audio/525f9b67ae5d.mp3"
 },
-"528599c07527": {
-"pl": "programisty",
-"file": "audio/528599c07527.mp3"
-},
 "52a3de5c9338": {
 "pl": "Świetnie, dziękuję za pomoc.",
 "file": "audio/52a3de5c9338.mp3"
@@ -2775,14 +2275,6 @@
 "pl": "plecy",
 "file": "audio/52d05a462b7a.mp3"
 },
-"52d2374d8668": {
-"pl": "mówiłem / powiedziałem",
-"file": "audio/52d2374d8668.mp3"
-},
-"53004f05dba6": {
-"pl": "profesora",
-"file": "audio/53004f05dba6.mp3"
-},
 "5323a9c738c0": {
 "pl": "Dzień dobry",
 "file": "audio/5323a9c738c0.mp3"
@@ -2791,17 +2283,9 @@
 "pl": "rata",
 "file": "audio/534e026da7ff.mp3"
 },
-"53bb70929d19": {
-"pl": "Może pan mi pomóc?",
-"file": "audio/53bb70929d19.mp3"
-},
 "53c391c9736c": {
 "pl": "Jestem z Hiszpanii.",
 "file": "audio/53c391c9736c.mp3"
-},
-"53c4a2e70fb4": {
-"pl": "mlekiem",
-"file": "audio/53c4a2e70fb4.mp3"
 },
 "53ccd0951f2b": {
 "pl": "Na wynos, proszę.",
@@ -2839,10 +2323,6 @@
 "pl": "Szefowie mają dzisiaj wolne.",
 "file": "audio/5484f1dddbdf.mp3"
 },
-"548aca53b0f3": {
-"pl": "kwiaty",
-"file": "audio/548aca53b0f3.mp3"
-},
 "54ee90ddff8e": {
 "pl": "Uwielbiam wakacje nad morzem.",
 "file": "audio/54ee90ddff8e.mp3"
@@ -2858,10 +2338,6 @@
 "556a75d6a180": {
 "pl": "Nie, proszę przejść.",
 "file": "audio/556a75d6a180.mp3"
-},
-"55fc04b0c1a4": {
-"pl": "tej książki",
-"file": "audio/55fc04b0c1a4.mp3"
 },
 "55fd46641ee9": {
 "pl": "syrop",
@@ -2899,10 +2375,6 @@
 "pl": "Ta książka jest ciekawa.",
 "file": "audio/56a974b2d517.mp3"
 },
-"56ab66163cd0": {
-"pl": "używać / użyć",
-"file": "audio/56ab66163cd0.mp3"
-},
 "56cfcf991592": {
 "pl": "Wsiadam do tramwaju numer 10.",
 "file": "audio/56cfcf991592.mp3"
@@ -2918,10 +2390,6 @@
 "575c55e04ffc": {
 "pl": "odpoczywać",
 "file": "audio/575c55e04ffc.mp3"
-},
-"57708769bf43": {
-"pl": "bratu",
-"file": "audio/57708769bf43.mp3"
 },
 "5798bfcf7a61": {
 "pl": "Gdzie jest najbliższa apteka?",
@@ -2939,10 +2407,6 @@
 "pl": "Nie ma problemu",
 "file": "audio/57f0add505f8.mp3"
 },
-"57fa556c9bf2": {
-"pl": "Mam ból gardła od wczoraj.",
-"file": "audio/57fa556c9bf2.mp3"
-},
 "57fb8a18c66d": {
 "pl": "uczyć się",
 "file": "audio/57fb8a18c66d.mp3"
@@ -2954,10 +2418,6 @@
 "583de74fb332": {
 "pl": "Gdzie mam podpisać?",
 "file": "audio/583de74fb332.mp3"
-},
-"58442ccb2730": {
-"pl": "studentom",
-"file": "audio/58442ccb2730.mp3"
 },
 "586f3843fdfa": {
 "pl": "lekarz",
@@ -3027,14 +2487,6 @@
 "pl": "Jadę do Warszawy.",
 "file": "audio/5aa48fd5091e.mp3"
 },
-"5aab708fb8e9": {
-"pl": "Warszawa",
-"file": "audio/5aab708fb8e9.mp3"
-},
-"5aaf529b20c7": {
-"pl": "ją",
-"file": "audio/5aaf529b20c7.mp3"
-},
 "5ac468f97d2c": {
 "pl": "Pięciu mężczyzn pracuje tutaj.",
 "file": "audio/5ac468f97d2c.mp3"
@@ -3046,10 +2498,6 @@
 "5b2c058e074f": {
 "pl": "Znam Annę.",
 "file": "audio/5b2c058e074f.mp3"
-},
-"5b46fb5d3327": {
-"pl": "Moim zdaniem, to nie jest dobry pomysł.",
-"file": "audio/5b46fb5d3327.mp3"
 },
 "5b8ffdd0d482": {
 "pl": "Gorąco polecam wam tę książkę.",
@@ -3115,10 +2563,6 @@
 "pl": "Nie ma chleba.",
 "file": "audio/5d3b3e6fd19c.mp3"
 },
-"5d60f405f89a": {
-"pl": "profesorze",
-"file": "audio/5d60f405f89a.mp3"
-},
 "5d66cc333c3e": {
 "pl": "Kupiłem dwa litry wody.",
 "file": "audio/5d66cc333c3e.mp3"
@@ -3130,10 +2574,6 @@
 "5dbfbabd1acb": {
 "pl": "kuchenka",
 "file": "audio/5dbfbabd1acb.mp3"
-},
-"5df0569b3b41": {
-"pl": "Kot bawi się w książkach.",
-"file": "audio/5df0569b3b41.mp3"
 },
 "5df8b59bbec4": {
 "pl": "Kupię siostrze prezent.",
@@ -3151,10 +2591,6 @@
 "pl": "Jest opiekuńczym ojcem.",
 "file": "audio/5e20974e3a46.mp3"
 },
-"5e767bf811b4": {
-"pl": "Przepraszam, może pan mi pomóc?",
-"file": "audio/5e767bf811b4.mp3"
-},
 "5e8d7a1ab05a": {
 "pl": "Rozmawiam z tobą.",
 "file": "audio/5e8d7a1ab05a.mp3"
@@ -3162,10 +2598,6 @@
 "5e9255cc5d45": {
 "pl": "wylogować się",
 "file": "audio/5e9255cc5d45.mp3"
-},
-"5ed28d72a1e5": {
-"pl": "nauczycielki",
-"file": "audio/5ed28d72a1e5.mp3"
 },
 "5ee77baa76ff": {
 "pl": "(Widzisz wolne miejsce obok kogoś w tramwaju.)",
@@ -3255,10 +2687,6 @@
 "pl": "Droga Aniu, dziękuję za list.",
 "file": "audio/60ec0d1a558d.mp3"
 },
-"6133b3bc1102": {
-"pl": "Jeżdżę komunikacją miejską zamiast samochodem.",
-"file": "audio/6133b3bc1102.mp3"
-},
 "6174881f9e50": {
 "pl": "Nie, możesz brać.",
 "file": "audio/6174881f9e50.mp3"
@@ -3283,14 +2711,6 @@
 "pl": "To niedaleko, dziękuję.",
 "file": "audio/61bb2baa4478.mp3"
 },
-"61d036363674": {
-"pl": "czas",
-"file": "audio/61d036363674.mp3"
-},
-"61d5b7309025": {
-"pl": "brać / wziąć prysznic",
-"file": "audio/61d5b7309025.mp3"
-},
 "620c3e8a2a05": {
 "pl": "Mój tata jest kierowcą.",
 "file": "audio/620c3e8a2a05.mp3"
@@ -3307,17 +2727,9 @@
 "pl": "Mam też syrop na gardło. Coś jeszcze?",
 "file": "audio/62cc1065a892.mp3"
 },
-"62ceab9457ce": {
-"pl": "mądre",
-"file": "audio/62ceab9457ce.mp3"
-},
 "62ed09a7458f": {
 "pl": "Potrzebujemy odskoczni od pracy.",
 "file": "audio/62ed09a7458f.mp3"
-},
-"63096cc97929": {
-"pl": "szczerzy",
-"file": "audio/63096cc97929.mp3"
 },
 "630eadf7f612": {
 "pl": "Dziękuję! - Nie ma za co.",
@@ -3346,10 +2758,6 @@
 "64148c6ae902": {
 "pl": "Włosi robią pizzę.",
 "file": "audio/64148c6ae902.mp3"
-},
-"6451637db20e": {
-"pl": "programistowie",
-"file": "audio/6451637db20e.mp3"
 },
 "64c2780b49fc": {
 "pl": "Coś nie działa",
@@ -3407,10 +2815,6 @@
 "pl": "Dyrektorzy mają spotkanie.",
 "file": "audio/66045363bd2e.mp3"
 },
-"667619baa212": {
-"pl": "Aniu",
-"file": "audio/667619baa212.mp3"
-},
 "66b4c5f145f4": {
 "pl": "Robię śniadanie dla mojej rodziny.",
 "file": "audio/66b4c5f145f4.mp3"
@@ -3418,14 +2822,6 @@
 "66b76084567b": {
 "pl": "Po śniadaniu myję zęby.",
 "file": "audio/66b76084567b.mp3"
-},
-"66cde5e35918": {
-"pl": "karta / menu",
-"file": "audio/66cde5e35918.mp3"
-},
-"66d2b4850c45": {
-"pl": "książki",
-"file": "audio/66d2b4850c45.mp3"
 },
 "67201bec32d1": {
 "pl": "Płacimy razem",
@@ -3447,17 +2843,9 @@
 "pl": "otwarty",
 "file": "audio/679cc60ceb9c.mp3"
 },
-"679fc9193f14": {
-"pl": "koncertu",
-"file": "audio/679fc9193f14.mp3"
-},
 "67aa4b69d367": {
 "pl": "Czy oni są z Polski?",
 "file": "audio/67aa4b69d367.mp3"
-},
-"67aac5cd56c7": {
-"pl": "Dla mnie...",
-"file": "audio/67aac5cd56c7.mp3"
 },
 "67d51f4ab140": {
 "pl": "niezależny",
@@ -3547,10 +2935,6 @@
 "pl": "Jaki rozmiar pan nosi?",
 "file": "audio/6aac9aba7074.mp3"
 },
-"6ac57e9d999f": {
-"pl": "Francuzowie",
-"file": "audio/6ac57e9d999f.mp3"
-},
 "6af4566adc3d": {
 "pl": "kanapka",
 "file": "audio/6af4566adc3d.mp3"
@@ -3579,10 +2963,6 @@
 "pl": "Będę segregować śmieci w domu.",
 "file": "audio/6c3ef13381c9.mp3"
 },
-"6c61fc10c7cd": {
-"pl": "mamie",
-"file": "audio/6c61fc10c7cd.mp3"
-},
 "6c6cb18884fe": {
 "pl": "Powodzenia!",
 "file": "audio/6c6cb18884fe.mp3"
@@ -3602,10 +2982,6 @@
 "6cac83d50ec7": {
 "pl": "klucze",
 "file": "audio/6cac83d50ec7.mp3"
-},
-"6cb83520bf9f": {
-"pl": "kelnerzy",
-"file": "audio/6cb83520bf9f.mp3"
 },
 "6cd28b81cde5": {
 "pl": "Dziękuję. Jak często mam brać lekarstwo?",
@@ -3627,29 +3003,13 @@
 "pl": "studentami, kotami, pociągami",
 "file": "audio/6d6e0e034e25.mp3"
 },
-"6d6f5120a82d": {
-"pl": "Jakie",
-"file": "audio/6d6f5120a82d.mp3"
-},
-"6d8f60aecb4a": {
-"pl": "Warszawą",
-"file": "audio/6d8f60aecb4a.mp3"
-},
 "6da1468728ad": {
 "pl": "Przepraszam, czy mogę przejść?",
 "file": "audio/6da1468728ad.mp3"
 },
-"6da7242d323f": {
-"pl": "skręcić w lewo / w prawo",
-"file": "audio/6da7242d323f.mp3"
-},
 "6dc12b667c0d": {
 "pl": "Cześć Marek, jak się masz?",
 "file": "audio/6dc12b667c0d.mp3"
-},
-"6dc4fe3c071a": {
-"pl": "bratem",
-"file": "audio/6dc4fe3c071a.mp3"
 },
 "6df814218f8c": {
 "pl": "naprawić",
@@ -3667,17 +3027,9 @@
 "pl": "Staram się oszczędzać na wakacje.",
 "file": "audio/6e247b44260b.mp3"
 },
-"6e452c20047d": {
-"pl": "Włosy",
-"file": "audio/6e452c20047d.mp3"
-},
 "6e5039c8db2e": {
 "pl": "sypialnia",
 "file": "audio/6e5039c8db2e.mp3"
-},
-"6e6405518cb5": {
-"pl": "Jeśli objawy nie miną w tydzień, proszę wrócić.",
-"file": "audio/6e6405518cb5.mp3"
 },
 "6e8a1b26d6c5": {
 "pl": "Urodził się w tysiąc dziewięćset osiemdziesiątym piątym roku.",
@@ -3747,10 +3099,6 @@
 "pl": "Klimat się zmienia.",
 "file": "audio/6fecfc726ccc.mp3"
 },
-"6ffa998fde96": {
-"pl": "Upadłem, ale nie złamałem żadnej kości.",
-"file": "audio/6ffa998fde96.mp3"
-},
 "700eae4a5282": {
 "pl": "moje biurko, twoje dziecko",
 "file": "audio/700eae4a5282.mp3"
@@ -3758,10 +3106,6 @@
 "7019b73793e1": {
 "pl": "kobietom, siostrom, książkom",
 "file": "audio/7019b73793e1.mp3"
-},
-"701ed88a68bd": {
-"pl": "przyjaciółmi",
-"file": "audio/701ed88a68bd.mp3"
 },
 "7072a527dcda": {
 "pl": "Ona jest bardzo wrażliwa na krytykę.",
@@ -3774,10 +3118,6 @@
 "70b56b32defe": {
 "pl": "paść jak muchy",
 "file": "audio/70b56b32defe.mp3"
-},
-"70df51ebea21": {
-"pl": "inżynierowie",
-"file": "audio/70df51ebea21.mp3"
 },
 "70f18f17a2cc": {
 "pl": "Nie mam czasu na śniadanie, spieszę się do pracy.",
@@ -3811,10 +3151,6 @@
 "pl": "myć zęby",
 "file": "audio/72745ff1059d.mp3"
 },
-"72a48d11d20b": {
-"pl": "ambitni",
-"file": "audio/72a48d11d20b.mp3"
-},
 "72a957afdfc7": {
 "pl": "Nauczyciel musi być cierpliwy.",
 "file": "audio/72a957afdfc7.mp3"
@@ -3839,10 +3175,6 @@
 "pl": "burza",
 "file": "audio/7378a1e8c909.mp3"
 },
-"737e92c9ff68": {
-"pl": "mnie",
-"file": "audio/737e92c9ff68.mp3"
-},
 "7389e8128012": {
 "pl": "Przepraszam, ile to kosztuje?",
 "file": "audio/7389e8128012.mp3"
@@ -3851,17 +3183,9 @@
 "pl": "Na początku było trudno.",
 "file": "audio/73a2f09a755d.mp3"
 },
-"73b3e196c180": {
-"pl": "blondyn / blondynka",
-"file": "audio/73b3e196c180.mp3"
-},
 "73e4a30a9293": {
 "pl": "Pierogi ruskie to moje ulubione danie.",
 "file": "audio/73e4a30a9293.mp3"
-},
-"7419c662ccb9": {
-"pl": "książkę",
-"file": "audio/7419c662ccb9.mp3"
 },
 "741ce214a60e": {
 "pl": "Proszę skręcić w prawo.",
@@ -3878,14 +3202,6 @@
 "7522327bf7e9": {
 "pl": "Według mnie",
 "file": "audio/7522327bf7e9.mp3"
-},
-"755cdc2680af": {
-"pl": "tutaj / tu",
-"file": "audio/755cdc2680af.mp3"
-},
-"7566ad8da86a": {
-"pl": "Te",
-"file": "audio/7566ad8da86a.mp3"
 },
 "757ec3e76d01": {
 "pl": "Zasypiam bardzo szybko.",
@@ -3915,10 +3231,6 @@
 "pl": "Proszę minąć park i skręcić w lewo.",
 "file": "audio/7692563c9f86.mp3"
 },
-"76ba29b941c7": {
-"pl": "Gdzie mam wysiąść na dworzec?",
-"file": "audio/76ba29b941c7.mp3"
-},
 "772bc4d33f28": {
 "pl": "wypełnić",
 "file": "audio/772bc4d33f28.mp3"
@@ -3934,10 +3246,6 @@
 "77779179fb53": {
 "pl": "Mam katar i kaszel.",
 "file": "audio/77779179fb53.mp3"
-},
-"779b474d56ba": {
-"pl": "Proszę skręcić na lewo.",
-"file": "audio/779b474d56ba.mp3"
 },
 "779d425fd0a7": {
 "pl": "rozmiar",
@@ -3987,10 +3295,6 @@
 "pl": "zbędne obciążenie",
 "file": "audio/79616c5784fc.mp3"
 },
-"79ad3150e706": {
-"pl": "Czy można płacić Blikiem?",
-"file": "audio/79ad3150e706.mp3"
-},
 "79b2facdd613": {
 "pl": "Dzień dobry, poproszę bilet.",
 "file": "audio/79b2facdd613.mp3"
@@ -4014,10 +3318,6 @@
 "7a18d62092e8": {
 "pl": "Dziękuję, zdążę.",
 "file": "audio/7a18d62092e8.mp3"
-},
-"7a4a81d2f516": {
-"pl": "kierowcą",
-"file": "audio/7a4a81d2f516.mp3"
 },
 "7a71de685bba": {
 "pl": "Pewnie, wchodź.",
@@ -4075,10 +3375,6 @@
 "pl": "Czy ma pan dowód zakupu?",
 "file": "audio/7cfcdb440d98.mp3"
 },
-"7d10cacf17e7": {
-"pl": "Pamiętaj, żeby się wylogować z banku.",
-"file": "audio/7d10cacf17e7.mp3"
-},
 "7d652ffff729": {
 "pl": "interesować się",
 "file": "audio/7d652ffff729.mp3"
@@ -4086,14 +3382,6 @@
 "7d70c062c50f": {
 "pl": "Kupię chłopcu prezent.",
 "file": "audio/7d70c062c50f.mp3"
-},
-"7dbdbd9a3561": {
-"pl": "inżynierzy",
-"file": "audio/7dbdbd9a3561.mp3"
-},
-"7dbf60684260": {
-"pl": "dobre",
-"file": "audio/7dbf60684260.mp3"
 },
 "7dd83d5dabe7": {
 "pl": "Parking jest za budynkiem.",
@@ -4118,10 +3406,6 @@
 "7e187c79faed": {
 "pl": "Gotówką, proszę.",
 "file": "audio/7e187c79faed.mp3"
-},
-"7e6e9877fff0": {
-"pl": "dom",
-"file": "audio/7e6e9877fff0.mp3"
 },
 "7e73102e6387": {
 "pl": "Tak, mam.",
@@ -4155,10 +3439,6 @@
 "pl": "Nie bądź skąpy, postaw kawę!",
 "file": "audio/7fb2b281132c.mp3"
 },
-"7fc3ec81dd41": {
-"pl": "miłe",
-"file": "audio/7fc3ec81dd41.mp3"
-},
 "7fd07c20ff3a": {
 "pl": "Na skrzyżowaniu proszę skręcić w lewo.",
 "file": "audio/7fd07c20ff3a.mp3"
@@ -4175,10 +3455,6 @@
 "pl": "Używam tej aplikacji do nauki języków.",
 "file": "audio/803bbbca2219.mp3"
 },
-"806b81ebb38e": {
-"pl": "ta książka",
-"file": "audio/806b81ebb38e.mp3"
-},
 "8079092e9e3b": {
 "pl": "Ci ludzie to moi znajomi.",
 "file": "audio/8079092e9e3b.mp3"
@@ -4191,10 +3467,6 @@
 "pl": "wyglądać na",
 "file": "audio/809d4ce5d235.mp3"
 },
-"80af370695a1": {
-"pl": "mężczyzną",
-"file": "audio/80af370695a1.mp3"
-},
 "80c74192584d": {
 "pl": "Pomagam kolegom.",
 "file": "audio/80c74192584d.mp3"
@@ -4203,21 +3475,9 @@
 "pl": "Przepraszam, który autobus jedzie na dworzec?",
 "file": "audio/80f59c1c5e94.mp3"
 },
-"80f65d7f7b31": {
-"pl": "Anny",
-"file": "audio/80f65d7f7b31.mp3"
-},
 "810c12aafda2": {
 "pl": "żołądek",
 "file": "audio/810c12aafda2.mp3"
-},
-"812182d84c6d": {
-"pl": "dziećmi",
-"file": "audio/812182d84c6d.mp3"
-},
-"81295c4ff6ed": {
-"pl": "stołem",
-"file": "audio/81295c4ff6ed.mp3"
 },
 "812ca7a1ed50": {
 "pl": "Proszę wypełnić formularz.",
@@ -4243,10 +3503,6 @@
 "pl": "Pracuję na uniwersytecie.",
 "file": "audio/8181b31bbf8c.mp3"
 },
-"81b73bd707aa": {
-"pl": "byłem / byłam",
-"file": "audio/81b73bd707aa.mp3"
-},
 "81e3d3fdef01": {
 "pl": "na wynos",
 "file": "audio/81e3d3fdef01.mp3"
@@ -4255,17 +3511,9 @@
 "pl": "Dzień dobry, panie doktorze.",
 "file": "audio/81ecfa4951f0.mp3"
 },
-"81ef02cb10e1": {
-"pl": "kelnery",
-"file": "audio/81ef02cb10e1.mp3"
-},
 "821352380de4": {
 "pl": "Rozmawiam z Anną.",
 "file": "audio/821352380de4.mp3"
-},
-"8237e63481fc": {
-"pl": "leniwe",
-"file": "audio/8237e63481fc.mp3"
 },
 "825ff5ac8ea1": {
 "pl": "inwestować",
@@ -4274,14 +3522,6 @@
 "8270805612b9": {
 "pl": "Chodź ze mną.",
 "file": "audio/8270805612b9.mp3"
-},
-"8272f44ab327": {
-"pl": "stole",
-"file": "audio/8272f44ab327.mp3"
-},
-"82a151e1ce6f": {
-"pl": "Niemcy",
-"file": "audio/82a151e1ce6f.mp3"
 },
 "833942db6fa5": {
 "pl": "Nie, dzięki, radzę sobie.",
@@ -4303,10 +3543,6 @@
 "pl": "codziennie",
 "file": "audio/837ba95aaba3.mp3"
 },
-"83818d643029": {
-"pl": "wodą",
-"file": "audio/83818d643029.mp3"
-},
 "8393574eda31": {
 "pl": "kawa",
 "file": "audio/8393574eda31.mp3"
@@ -4319,10 +3555,6 @@
 "pl": "cieszyć się",
 "file": "audio/83b4682c73f2.mp3"
 },
-"83dce865f035": {
-"pl": "Jem obiad o drugiej.",
-"file": "audio/83dce865f035.mp3"
-},
 "8438d831723d": {
 "pl": "Potrzebujesz asekuracji?",
 "file": "audio/8438d831723d.mp3"
@@ -4331,17 +3563,9 @@
 "pl": "kiedy byłem dzieckiem",
 "file": "audio/845398481bbf.mp3"
 },
-"8497bc38df7a": {
-"pl": "Tak / Nie",
-"file": "audio/8497bc38df7a.mp3"
-},
 "84d6986716bf": {
 "pl": "Czy możemy zapłacić osobno?",
 "file": "audio/84d6986716bf.mp3"
-},
-"84d70c1f6879": {
-"pl": "studenta",
-"file": "audio/84d70c1f6879.mp3"
 },
 "85023ec95c25": {
 "pl": "Chcę być inżynierem.",
@@ -4387,10 +3611,6 @@
 "pl": "Potrzebuję zaświadczenia z pracy.",
 "file": "audio/860fd33340cd.mp3"
 },
-"8635988334ce": {
-"pl": "studencie",
-"file": "audio/8635988334ce.mp3"
-},
 "8673dc2eb2fd": {
 "pl": "Lubię ją.",
 "file": "audio/8673dc2eb2fd.mp3"
@@ -4406,10 +3626,6 @@
 "8720f57098eb": {
 "pl": "Nie, dziękuję. To wszystko.",
 "file": "audio/8720f57098eb.mp3"
-},
-"872f87686552": {
-"pl": "dzieciom",
-"file": "audio/872f87686552.mp3"
 },
 "8757e5fcc4f1": {
 "pl": "Dobry wieczór",
@@ -4459,10 +3675,6 @@
 "pl": "uprawiać sport",
 "file": "audio/88f14be1bb8c.mp3"
 },
-"890c579f0f99": {
-"pl": "wymieniać się / wymienić się",
-"file": "audio/890c579f0f99.mp3"
-},
 "891113c95cbe": {
 "pl": "Firma planuje zatrudnić nowe osoby.",
 "file": "audio/891113c95cbe.mp3"
@@ -4474,10 +3686,6 @@
 "89500777f05e": {
 "pl": "Widziałam wczoraj twoją siostrę.",
 "file": "audio/89500777f05e.mp3"
-},
-"8953c8b09682": {
-"pl": "kilogram (kilo)",
-"file": "audio/8953c8b09682.mp3"
 },
 "897b4c8823d5": {
 "pl": "Mam pytanie",
@@ -4494,14 +3702,6 @@
 "8a6f204d8b2d": {
 "pl": "(Nie jesteś pewien, czy ten autobus jedzie do centrum.)",
 "file": "audio/8a6f204d8b2d.mp3"
-},
-"8a7df745664e": {
-"pl": "Poproszę...",
-"file": "audio/8a7df745664e.mp3"
-},
-"8aa15e851c6a": {
-"pl": "kulturą",
-"file": "audio/8aa15e851c6a.mp3"
 },
 "8aa62c84f11d": {
 "pl": "(Szukasz automatu do biletów.)",
@@ -4587,10 +3787,6 @@
 "pl": "Mam ładny dom.",
 "file": "audio/8c70a4258707.mp3"
 },
-"8c70b01b8643": {
-"pl": "Brytyjczykowie",
-"file": "audio/8c70b01b8643.mp3"
-},
 "8cbca1ae3ffd": {
 "pl": "Będę z tobą całkowicie szczery.",
 "file": "audio/8cbca1ae3ffd.mp3"
@@ -4599,17 +3795,9 @@
 "pl": "Czy to daleko stąd?",
 "file": "audio/8ccc5a7ed451.mp3"
 },
-"8cf1a9bca279": {
-"pl": "dużo / mało",
-"file": "audio/8cf1a9bca279.mp3"
-},
 "8cfaee0d0a69": {
 "pl": "Dobrze, dziękuję bardzo.",
 "file": "audio/8cfaee0d0a69.mp3"
-},
-"8d26af2b786f": {
-"pl": "Boga",
-"file": "audio/8d26af2b786f.mp3"
 },
 "8d53a3e36729": {
 "pl": "hotel",
@@ -4654,10 +3842,6 @@
 "8df763a55c0e": {
 "pl": "cierpliwy",
 "file": "audio/8df763a55c0e.mp3"
-},
-"8e29d5aabce6": {
-"pl": "kota",
-"file": "audio/8e29d5aabce6.mp3"
 },
 "8e47ad8e2874": {
 "pl": "Nasi nauczyciele są cierpliwi.",
@@ -4751,10 +3935,6 @@
 "pl": "słoik",
 "file": "audio/91539d60d782.mp3"
 },
-"91617f4849ab": {
-"pl": "Ten",
-"file": "audio/91617f4849ab.mp3"
-},
 "91982899baa9": {
 "pl": "Czyja to jest książka?",
 "file": "audio/91982899baa9.mp3"
@@ -4775,21 +3955,9 @@
 "pl": "Interesuję się muzyką.",
 "file": "audio/91ef70f83620.mp3"
 },
-"92143f01022b": {
-"pl": "pieszo / na piechotę",
-"file": "audio/92143f01022b.mp3"
-},
-"922f404c30e7": {
-"pl": "Jestem z...",
-"file": "audio/922f404c30e7.mp3"
-},
 "922f6db14fc1": {
 "pl": "Te kwiaty są bardzo ładne.",
 "file": "audio/922f6db14fc1.mp3"
-},
-"923818e5629f": {
-"pl": "Piotr",
-"file": "audio/923818e5629f.mp3"
 },
 "923c6a90e001": {
 "pl": "Poproszę kawę z mlekiem.",
@@ -4802,10 +3970,6 @@
 "925b21dc4bef": {
 "pl": "smażyć",
 "file": "audio/925b21dc4bef.mp3"
-},
-"926d72042bb3": {
-"pl": "Ukraińce",
-"file": "audio/926d72042bb3.mp3"
 },
 "927aca0a5d9a": {
 "pl": "wypłacić gotówkę",
@@ -4887,10 +4051,6 @@
 "pl": "jacy ludzie",
 "file": "audio/949cdd80254f.mp3"
 },
-"94ae73e09cf1": {
-"pl": "Wątpię, że zdążymy na czas.",
-"file": "audio/94ae73e09cf1.mp3"
-},
 "94fc2fbc0b06": {
 "pl": "Kot jest na kanapie.",
 "file": "audio/94fc2fbc0b06.mp3"
@@ -4898,10 +4058,6 @@
 "950820f50d0f": {
 "pl": "(Chcesz wiedzieć, czy ktoś używa tych hantli.)",
 "file": "audio/950820f50d0f.mp3"
-},
-"953c4d56d441": {
-"pl": "Niemiec",
-"file": "audio/953c4d56d441.mp3"
 },
 "95427c68d3ce": {
 "pl": "gwarancja",
@@ -4918,10 +4074,6 @@
 "956ce6b5bbe7": {
 "pl": "Do widzenia, do jutra!",
 "file": "audio/956ce6b5bbe7.mp3"
-},
-"95924d38f66b": {
-"pl": "Polki",
-"file": "audio/95924d38f66b.mp3"
 },
 "95a6b9beba12": {
 "pl": "Kiedy byłem dzieckiem, mieszkaliśmy na wsi.",
@@ -4954,10 +4106,6 @@
 "97081a03d700": {
 "pl": "Świetnie, dzięki.",
 "file": "audio/97081a03d700.mp3"
-},
-"97392c91de1b": {
-"pl": "W naszym kranie jest twarda woda.",
-"file": "audio/97392c91de1b.mp3"
 },
 "973ed8f8f2ad": {
 "pl": "Lubię muzykę.",
@@ -5003,10 +4151,6 @@
 "pl": "Jest mu smutno.",
 "file": "audio/9929a54b7f6d.mp3"
 },
-"9960fd5aba36": {
-"pl": "Jaka",
-"file": "audio/9960fd5aba36.mp3"
-},
 "99756c1623e9": {
 "pl": "Burze będą silniejsze niż teraz.",
 "file": "audio/99756c1623e9.mp3"
@@ -5030,10 +4174,6 @@
 "9a2a435e80da": {
 "pl": "Kawa jest gorąca.",
 "file": "audio/9a2a435e80da.mp3"
-},
-"9a32e947ded4": {
-"pl": "Kasia",
-"file": "audio/9a32e947ded4.mp3"
 },
 "9a5f0a93d134": {
 "pl": "Sto złotych, proszę.",
@@ -5083,17 +4223,9 @@
 "pl": "Oni są w domu.",
 "file": "audio/9bbf7f3e1667.mp3"
 },
-"9be43ed812c6": {
-"pl": "Które",
-"file": "audio/9be43ed812c6.mp3"
-},
 "9c231111126e": {
 "pl": "studentów, Polaków, panów",
 "file": "audio/9c231111126e.mp3"
-},
-"9c6383dfaae9": {
-"pl": "Warszawy",
-"file": "audio/9c6383dfaae9.mp3"
 },
 "9c64b1de61cc": {
 "pl": "Widzę kota.",
@@ -5143,10 +4275,6 @@
 "pl": "basen",
 "file": "audio/9d245fc1a7d6.mp3"
 },
-"9d798543660f": {
-"pl": "duży / mały",
-"file": "audio/9d798543660f.mp3"
-},
 "9dd95963d122": {
 "pl": "dzieci",
 "file": "audio/9dd95963d122.mp3"
@@ -5162,10 +4290,6 @@
 "9ed5e8ea00a9": {
 "pl": "w tysiąc dziewięćset osiemdziesiątym piątym roku",
 "file": "audio/9ed5e8ea00a9.mp3"
-},
-"9f1e1fe0bbcf": {
-"pl": "brata",
-"file": "audio/9f1e1fe0bbcf.mp3"
 },
 "9f2978182cc0": {
 "pl": "Proszę",
@@ -5187,10 +4311,6 @@
 "pl": "paszport",
 "file": "audio/9f7bb5285a77.mp3"
 },
-"9f8b1e3d64c4": {
-"pl": "Przed egzaminem jestem nerwowa.",
-"file": "audio/9f8b1e3d64c4.mp3"
-},
 "9fcb4e13c05b": {
 "pl": "Kto to zostawił na klatce?",
 "file": "audio/9fcb4e13c05b.mp3"
@@ -5198,10 +4318,6 @@
 "a0644e770973": {
 "pl": "odskocznia od pracy",
 "file": "audio/a0644e770973.mp3"
-},
-"a07f498baf36": {
-"pl": "deko(gram)",
-"file": "audio/a07f498baf36.mp3"
 },
 "a0cbc132aa6d": {
 "pl": "Dostałem awans i podwyżkę!",
@@ -5214,10 +4330,6 @@
 "a0f836e081c2": {
 "pl": "w domu",
 "file": "audio/a0f836e081c2.mp3"
-},
-"a1032be7f416": {
-"pl": "Białorusinie",
-"file": "audio/a1032be7f416.mp3"
 },
 "a1453f380fa9": {
 "pl": "para",
@@ -5246,10 +4358,6 @@
 "a1c57f7d9b30": {
 "pl": "stres",
 "file": "audio/a1c57f7d9b30.mp3"
-},
-"a1c7033c65d1": {
-"pl": "musiałem / musiałam",
-"file": "audio/a1c7033c65d1.mp3"
 },
 "a1c79fbedff6": {
 "pl": "Lato będzie bardziej suche.",
@@ -5291,33 +4399,13 @@
 "pl": "bilet lotniczy",
 "file": "audio/a372b89b1461.mp3"
 },
-"a38e77e7fda8": {
-"pl": "programiści",
-"file": "audio/a38e77e7fda8.mp3"
-},
 "a3cf52f8035c": {
 "pl": "Nasi szefowie mają dzisiaj wolne.",
 "file": "audio/a3cf52f8035c.mp3"
 },
-"a3fe81deb86e": {
-"pl": "czasu",
-"file": "audio/a3fe81deb86e.mp3"
-},
-"a438111030cf": {
-"pl": "Ani",
-"file": "audio/a438111030cf.mp3"
-},
 "a444ca006856": {
 "pl": "Ten telewizor jest jeszcze na gwarancji.",
 "file": "audio/a444ca006856.mp3"
-},
-"a447fcbced9a": {
-"pl": "maszło maślane",
-"file": "audio/a447fcbced9a.mp3"
-},
-"a4488dba99c4": {
-"pl": "dobry",
-"file": "audio/a4488dba99c4.mp3"
 },
 "a44933aeda54": {
 "pl": "system kaucyjny",
@@ -5439,10 +4527,6 @@
 "pl": "Znowu zepsuta.",
 "file": "audio/a74bac4bfc99.mp3"
 },
-"a74e23971b8a": {
-"pl": "Wietnamczyk",
-"file": "audio/a74e23971b8a.mp3"
-},
 "a7d52afab858": {
 "pl": "To są Brytyjczycy.",
 "file": "audio/a7d52afab858.mp3"
@@ -5470,10 +4554,6 @@
 "a89659f71b51": {
 "pl": "To jest masło maślane, nie ma na to dobrej odpowiedzi.",
 "file": "audio/a89659f71b51.mp3"
-},
-"a8b956d4688c": {
-"pl": "Kupiłem puszkę fasoli i słoik dżemu.",
-"file": "audio/a8b956d4688c.mp3"
 },
 "a91585dbee67": {
 "pl": "tani",
@@ -5551,10 +4631,6 @@
 "pl": "Miło mi cię poznać.",
 "file": "audio/aacbc55209ee.mp3"
 },
-"aad32ca3d79f": {
-"pl": "Kasiu",
-"file": "audio/aad32ca3d79f.mp3"
-},
 "aae23025d775": {
 "pl": "Dzień dobry. Proszę usiąść. Co się dzieje?",
 "file": "audio/aae23025d775.mp3"
@@ -5579,10 +4655,6 @@
 "pl": "Zakładam czyste ubranie.",
 "file": "audio/abf3457fa545.mp3"
 },
-"ac2419a07e6b": {
-"pl": "zbierać / zebrać",
-"file": "audio/ac2419a07e6b.mp3"
-},
 "ac3326cf1a97": {
 "pl": "Znamy się, to Polacy.",
 "file": "audio/ac3326cf1a97.mp3"
@@ -5602,10 +4674,6 @@
 "acb144fe26f4": {
 "pl": "cukier",
 "file": "audio/acb144fe26f4.mp3"
-},
-"accef4516eff": {
-"pl": "Anną",
-"file": "audio/accef4516eff.mp3"
 },
 "acd32aec640e": {
 "pl": "Padał ulewny deszcz.",
@@ -5631,17 +4699,9 @@
 "pl": "silny",
 "file": "audio/ad325be07004.mp3"
 },
-"ad44c3607da9": {
-"pl": "blisko / daleko",
-"file": "audio/ad44c3607da9.mp3"
-},
 "ad6eca2ad28c": {
 "pl": "Zawsze byliśmy szczerzy.",
 "file": "audio/ad6eca2ad28c.mp3"
-},
-"ad742d2b63f4": {
-"pl": "Często czytam, ale rzadko oglądam telewizję.",
-"file": "audio/ad742d2b63f4.mp3"
 },
 "ad766d23bd81": {
 "pl": "Dobry księgowy jest dokładny.",
@@ -5675,10 +4735,6 @@
 "pl": "zmienić zdanie",
 "file": "audio/ae5244631f32.mp3"
 },
-"ae59b1c48f3c": {
-"pl": "Czy mogę prosić o...?",
-"file": "audio/ae59b1c48f3c.mp3"
-},
 "aea49165ba40": {
 "pl": "bilet",
 "file": "audio/aea49165ba40.mp3"
@@ -5706,10 +4762,6 @@
 "afd621db42f7": {
 "pl": "Poproszę duże cappuccino.",
 "file": "audio/afd621db42f7.mp3"
-},
-"aff4008b1065": {
-"pl": "autobus",
-"file": "audio/aff4008b1065.mp3"
 },
 "affa514086c6": {
 "pl": "odsetki",
@@ -5775,10 +4827,6 @@
 "pl": "susza",
 "file": "audio/b24addb6f741.mp3"
 },
-"b2667476ccee": {
-"pl": "szkole",
-"file": "audio/b2667476ccee.mp3"
-},
 "b26ca09713a1": {
 "pl": "awans",
 "file": "audio/b26ca09713a1.mp3"
@@ -5799,14 +4847,6 @@
 "pl": "właściciel",
 "file": "audio/b2d4dbdd6e3b.mp3"
 },
-"b2d71c483335": {
-"pl": "Szukam czegoś na katar.",
-"file": "audio/b2d71c483335.mp3"
-},
-"b2fa50a09839": {
-"pl": "zakręcać / zakręcić",
-"file": "audio/b2fa50a09839.mp3"
-},
 "b301422151e5": {
 "pl": "Nie mam siostry.",
 "file": "audio/b301422151e5.mp3"
@@ -5819,17 +4859,9 @@
 "pl": "To jest butelka zwrotna.",
 "file": "audio/b38386e3d1a7.mp3"
 },
-"b38c02ae9132": {
-"pl": "siostrę",
-"file": "audio/b38c02ae9132.mp3"
-},
 "b38db173d03e": {
 "pl": "Jest bardzo towarzyska i ma dużo przyjaciół.",
 "file": "audio/b38db173d03e.mp3"
-},
-"b393e6133b4b": {
-"pl": "moja",
-"file": "audio/b393e6133b4b.mp3"
 },
 "b3a8891f170d": {
 "pl": "Szkło wyrzucam do zielonego pojemnika.",
@@ -5839,21 +4871,9 @@
 "pl": "Kierowcy autobusów mają przerwę.",
 "file": "audio/b3b49fdfe7c6.mp3"
 },
-"b4085d0d31ee": {
-"pl": "Mam na imię...",
-"file": "audio/b4085d0d31ee.mp3"
-},
 "b40c47bf67f1": {
 "pl": "Mój brat jest nauczycielem historii.",
 "file": "audio/b40c47bf67f1.mp3"
-},
-"b43a546d3f4c": {
-"pl": "pracowite",
-"file": "audio/b43a546d3f4c.mp3"
-},
-"b4761e26efba": {
-"pl": "Jaki masz zawód?",
-"file": "audio/b4761e26efba.mp3"
 },
 "b486b744be9a": {
 "pl": "Latem jem śniadanie na balkonie.",
@@ -5919,14 +4939,6 @@
 "pl": "Jak się pan dzisiaj czuje?",
 "file": "audio/b6c2ace1897c.mp3"
 },
-"b6d70554a1a2": {
-"pl": "Szczerze mówiąc...",
-"file": "audio/b6d70554a1a2.mp3"
-},
-"b7367edaa7bb": {
-"pl": "telefon",
-"file": "audio/b7367edaa7bb.mp3"
-},
 "b737be4580fa": {
 "pl": "ten pociąg, tamten dom",
 "file": "audio/b737be4580fa.mp3"
@@ -5939,18 +4951,6 @@
 "pl": "Nie mam prądu w kuchni.",
 "file": "audio/b7644269ffcf.mp3"
 },
-"b780e23dff6e": {
-"pl": "szefzy",
-"file": "audio/b780e23dff6e.mp3"
-},
-"b78855eb9113": {
-"pl": "wujek / ciocia",
-"file": "audio/b78855eb9113.mp3"
-},
-"b7b7090be47b": {
-"pl": "siostrą",
-"file": "audio/b7b7090be47b.mp3"
-},
 "b7cfa93545af": {
 "pl": "bagaż",
 "file": "audio/b7cfa93545af.mp3"
@@ -5959,10 +4959,6 @@
 "pl": "Dużo studentów jest w klasie.",
 "file": "audio/b82942e6dcfe.mp3"
 },
-"b87e811a94c4": {
-"pl": "ona",
-"file": "audio/b87e811a94c4.mp3"
-},
 "b88e0585309b": {
 "pl": "Czy potrzebuję recepty?",
 "file": "audio/b88e0585309b.mp3"
@@ -5970,10 +4966,6 @@
 "b89a8eebc480": {
 "pl": "drobne",
 "file": "audio/b89a8eebc480.mp3"
-},
-"b8d31e852725": {
-"pl": "on",
-"file": "audio/b8d31e852725.mp3"
 },
 "b8dd60981cb6": {
 "pl": "rezerwacja",
@@ -6027,21 +5019,9 @@
 "pl": "Nie ma okna.",
 "file": "audio/ba3e6edf0adf.mp3"
 },
-"baa8972c3a7e": {
-"pl": "lekarzowi",
-"file": "audio/baa8972c3a7e.mp3"
-},
 "baafafe3584f": {
 "pl": "harmonogram",
 "file": "audio/baafafe3584f.mp3"
-},
-"babef3914639": {
-"pl": "Wietnamczycy",
-"file": "audio/babef3914639.mp3"
-},
-"badb60d91ea7": {
-"pl": "Całkiem ładnie.",
-"file": "audio/badb60d91ea7.mp3"
 },
 "bb0c65116474": {
 "pl": "Zostało kilka jabłek.",
@@ -6074,10 +5054,6 @@
 "bcd98b313d55": {
 "pl": "grosz",
 "file": "audio/bcd98b313d55.mp3"
-},
-"bcee5ffdc088": {
-"pl": "Marku",
-"file": "audio/bcee5ffdc088.mp3"
 },
 "bcf752395ad6": {
 "pl": "Co u ciebie?",
@@ -6127,10 +5103,6 @@
 "pl": "Dziękuję!",
 "file": "audio/bed9f49a2ac0.mp3"
 },
-"beda7d4b67c7": {
-"pl": "Jak dojechać do...?",
-"file": "audio/beda7d4b67c7.mp3"
-},
 "beddfdd21e74": {
 "pl": "Chcę przymierzyć te buty.",
 "file": "audio/beddfdd21e74.mp3"
@@ -6155,17 +5127,9 @@
 "pl": "zimny",
 "file": "audio/bf3287fba669.mp3"
 },
-"bf4907fe2bee": {
-"pl": "przyjaciele",
-"file": "audio/bf4907fe2bee.mp3"
-},
 "bf4c0f09cbc4": {
 "pl": "ubezpieczenie",
 "file": "audio/bf4c0f09cbc4.mp3"
-},
-"bf4fccd61625": {
-"pl": "Anna",
-"file": "audio/bf4fccd61625.mp3"
 },
 "bf8248baff5d": {
 "pl": "Nie mam dowodu osobistego.",
@@ -6178,10 +5142,6 @@
 "bf99f7b4f9da": {
 "pl": "brat",
 "file": "audio/bf99f7b4f9da.mp3"
-},
-"bfd798c91161": {
-"pl": "tę książkę",
-"file": "audio/bfd798c91161.mp3"
 },
 "bfd86ecf3be5": {
 "pl": "spokojny",
@@ -6206,10 +5166,6 @@
 "c069b6cc9e3c": {
 "pl": "Jaki jest termin?",
 "file": "audio/c069b6cc9e3c.mp3"
-},
-"c09d7dd0e0ce": {
-"pl": "pracownicy",
-"file": "audio/c09d7dd0e0ce.mp3"
 },
 "c09f6b4c06a1": {
 "pl": "naprzeciwko",
@@ -6238,10 +5194,6 @@
 "c1286c3510e5": {
 "pl": "Nie lubię kłótliwych ludzi.",
 "file": "audio/c1286c3510e5.mp3"
-},
-"c134f2bb43b6": {
-"pl": "Wysłałem moje CV do trzech firm.",
-"file": "audio/c134f2bb43b6.mp3"
 },
 "c18875d391ca": {
 "pl": "Restauracja jest po lewej stronie.",
@@ -6275,10 +5227,6 @@
 "pl": "Czy możesz mi pożyczyć stówę?",
 "file": "audio/c1fec35fcebd.mp3"
 },
-"c21387091c69": {
-"pl": "nauczyciele",
-"file": "audio/c21387091c69.mp3"
-},
 "c25cfa3ca5b1": {
 "pl": "Powiem ci prawdę.",
 "file": "audio/c25cfa3ca5b1.mp3"
@@ -6290,10 +5238,6 @@
 "c29a16729d55": {
 "pl": "Poproszę zupę pomidorową.",
 "file": "audio/c29a16729d55.mp3"
-},
-"c2a87f70666f": {
-"pl": "kanapę",
-"file": "audio/c2a87f70666f.mp3"
 },
 "c3024732e453": {
 "pl": "Dobry lider powinien być pewny siebie.",
@@ -6307,10 +5251,6 @@
 "pl": "Proszę dbać o siebie. Do widzenia!",
 "file": "audio/c32de113ba0e.mp3"
 },
-"c368fd0666e6": {
-"pl": "menedżery",
-"file": "audio/c368fd0666e6.mp3"
-},
 "c371c01fedf0": {
 "pl": "Tak, oto recepta. Proszę wykupić lekarstwo w aptece.",
 "file": "audio/c371c01fedf0.mp3"
@@ -6318,14 +5258,6 @@
 "c3b018477b5b": {
 "pl": "ogrzewanie",
 "file": "audio/c3b018477b5b.mp3"
-},
-"c3b86d59351c": {
-"pl": "Czy może być dłużna grosika?",
-"file": "audio/c3b86d59351c.mp3"
-},
-"c3d448f55df0": {
-"pl": "szefy",
-"file": "audio/c3d448f55df0.mp3"
 },
 "c408ccc6bab5": {
 "pl": "płacić rachunki",
@@ -6347,25 +5279,9 @@
 "pl": "Nie będę kupować nowych ubrań.",
 "file": "audio/c441b73cc648.mp3"
 },
-"c44953aa7009": {
-"pl": "wyłączać / wyłączyć",
-"file": "audio/c44953aa7009.mp3"
-},
 "c474b5613337": {
 "pl": "Ten dom jest bardzo duży.",
 "file": "audio/c474b5613337.mp3"
-},
-"c4855aba0282": {
-"pl": "Gdzie jest...?",
-"file": "audio/c4855aba0282.mp3"
-},
-"c4907df42ba9": {
-"pl": "poszedłem / poszłam",
-"file": "audio/c4907df42ba9.mp3"
-},
-"c49a07db233e": {
-"pl": "lekarza",
-"file": "audio/c49a07db233e.mp3"
 },
 "c50921d3be9d": {
 "pl": "kobietami, książkami",
@@ -6431,10 +5347,6 @@
 "pl": "Nie mogłam spać całą noc.",
 "file": "audio/c713dc0e6bea.mp3"
 },
-"c73f389f4075": {
-"pl": "wycinać / wyciąć",
-"file": "audio/c73f389f4075.mp3"
-},
 "c7465ce3323d": {
 "pl": "Chodź ze mną do kina.",
 "file": "audio/c7465ce3323d.mp3"
@@ -6442,14 +5354,6 @@
 "c763a77c16ce": {
 "pl": "o nauczycielu",
 "file": "audio/c763a77c16ce.mp3"
-},
-"c7de02928dfa": {
-"pl": "studenci",
-"file": "audio/c7de02928dfa.mp3"
-},
-"c7e7749f5f7f": {
-"pl": "Pracuję jako...",
-"file": "audio/c7e7749f5f7f.mp3"
 },
 "c82cccf47727": {
 "pl": "Muszę odebrać paczkę z paczkomatu.",
@@ -6466,10 +5370,6 @@
 "c8e89d544f43": {
 "pl": "Przepraszam, coś nie działa.",
 "file": "audio/c8e89d544f43.mp3"
-},
-"c92f188a1c0b": {
-"pl": "Na zdrowie! Za spotkanie!",
-"file": "audio/c92f188a1c0b.mp3"
 },
 "c93e7c5c85da": {
 "pl": "blisko",
@@ -6491,10 +5391,6 @@
 "pl": "To kosztuje dwa złote pięćdziesiąt groszy.",
 "file": "audio/c9e98ed868a1.mp3"
 },
-"ca09a039e2c5": {
-"pl": "Mamę",
-"file": "audio/ca09a039e2c5.mp3"
-},
 "ca4776d77c87": {
 "pl": "zastanawiać się nad czymś",
 "file": "audio/ca4776d77c87.mp3"
@@ -6514,10 +5410,6 @@
 "cab322b2d360": {
 "pl": "Co jesz na śniadanie?",
 "file": "audio/cab322b2d360.mp3"
-},
-"cac006a7aaec": {
-"pl": "pracowniki",
-"file": "audio/cac006a7aaec.mp3"
 },
 "cac7fb0c69df": {
 "pl": "deszczowy",
@@ -6543,10 +5435,6 @@
 "pl": "podwyżka",
 "file": "audio/cb626aa87161.mp3"
 },
-"cb7189e7c2dd": {
-"pl": "chciałem / chciałam",
-"file": "audio/cb7189e7c2dd.mp3"
-},
 "cb7652f7f1ff": {
 "pl": "Muszę dzisiaj wyprać ubrania.",
 "file": "audio/cb7652f7f1ff.mp3"
@@ -6563,29 +5451,9 @@
 "pl": "powiadomienie",
 "file": "audio/cbc88622fa03.mp3"
 },
-"cc0370fba01f": {
-"pl": "Brytyjczyki",
-"file": "audio/cc0370fba01f.mp3"
-},
-"cc2154faa4c7": {
-"pl": "Boli mnie...",
-"file": "audio/cc2154faa4c7.mp3"
-},
-"cc3c049229a6": {
-"pl": "lekarzem",
-"file": "audio/cc3c049229a6.mp3"
-},
 "cc69f23dc09d": {
 "pl": "W dni robocze jestem bardzo zajęty.",
 "file": "audio/cc69f23dc09d.mp3"
-},
-"cc705c2f882f": {
-"pl": "To są bardzo dobre studenci.",
-"file": "audio/cc705c2f882f.mp3"
-},
-"cc8a9e81c952": {
-"pl": "miałem / miałam",
-"file": "audio/cc8a9e81c952.mp3"
 },
 "ccaec2e49712": {
 "pl": "Lekarki pomagają pacjentom.",
@@ -6594,10 +5462,6 @@
 "ccb711f092ac": {
 "pl": "mama",
 "file": "audio/ccb711f092ac.mp3"
-},
-"cce55539edc5": {
-"pl": "telefonu",
-"file": "audio/cce55539edc5.mp3"
 },
 "ccf8254988bc": {
 "pl": "budzić się",
@@ -6627,10 +5491,6 @@
 "pl": "Moje główne hobby to fotografia.",
 "file": "audio/cdcff7af9649.mp3"
 },
-"cdedb7f2f3b9": {
-"pl": "Dziesięć minut do tramwaju.",
-"file": "audio/cdedb7f2f3b9.mp3"
-},
 "ce0dd8c3acf0": {
 "pl": "'this my good coffee'",
 "file": "audio/ce0dd8c3acf0.mp3"
@@ -6647,10 +5507,6 @@
 "pl": "Pytanie, na ile utożsamiasz się ze swoją pracą.",
 "file": "audio/ce4a4398cb82.mp3"
 },
-"ce559e6f98e6": {
-"pl": "Proszę, karta.",
-"file": "audio/ce559e6f98e6.mp3"
-},
 "ce7aae5c2ac0": {
 "pl": "W weekend jestem leniwy.",
 "file": "audio/ce7aae5c2ac0.mp3"
@@ -6658,10 +5514,6 @@
 "ceac68c50494": {
 "pl": "Studiuję na uniwersytecie.",
 "file": "audio/ceac68c50494.mp3"
-},
-"cec27a8b08ed": {
-"pl": "redukować / zredukować",
-"file": "audio/cec27a8b08ed.mp3"
 },
 "cee9fa7bff7b": {
 "pl": "Mam dwa koty.",
@@ -6686,10 +5538,6 @@
 "cf949d4a4086": {
 "pl": "lotnisko",
 "file": "audio/cf949d4a4086.mp3"
-},
-"cfa9508cb49f": {
-"pl": "widelec / nóż / łyżka",
-"file": "audio/cfa9508cb49f.mp3"
 },
 "cfb84809e1e6": {
 "pl": "jeść śniadanie",
@@ -6739,41 +5587,13 @@
 "pl": "Tak, to wszystko.",
 "file": "audio/d0833cafb30e.mp3"
 },
-"d0a4b5aa040f": {
-"pl": "oko / oczy",
-"file": "audio/d0a4b5aa040f.mp3"
-},
-"d0a507de8754": {
-"pl": "Francuzi",
-"file": "audio/d0a507de8754.mp3"
-},
-"d0c6f63fa1e9": {
-"pl": "Chciałbym złożyć reklamację, te buty są zepsute.",
-"file": "audio/d0c6f63fa1e9.mp3"
-},
-"d0c7b004ae95": {
-"pl": "gorący / zimny",
-"file": "audio/d0c7b004ae95.mp3"
-},
 "d0fd9b37bb23": {
 "pl": "Ci profesorowie uczą na uniwersytecie.",
 "file": "audio/d0fd9b37bb23.mp3"
 },
-"d1894aa2a865": {
-"pl": "Czy potrzebuję...?",
-"file": "audio/d1894aa2a865.mp3"
-},
-"d1974e0e3e57": {
-"pl": "Polska",
-"file": "audio/d1974e0e3e57.mp3"
-},
 "d1bb6ee541dd": {
 "pl": "list motywacyjny",
 "file": "audio/d1bb6ee541dd.mp3"
-},
-"d1c9635fa5c6": {
-"pl": "kolegami",
-"file": "audio/d1c9635fa5c6.mp3"
 },
 "d1ccf3b15150": {
 "pl": "Stan umysłu · Praca a życie",
@@ -6782,14 +5602,6 @@
 "d1d659aee38d": {
 "pl": "Kupię jej prezent.",
 "file": "audio/d1d659aee38d.mp3"
-},
-"d1e5f6a7f720": {
-"pl": "Ania",
-"file": "audio/d1e5f6a7f720.mp3"
-},
-"d1e7c1f5db04": {
-"pl": "Czyja",
-"file": "audio/d1e7c1f5db04.mp3"
 },
 "d24b63c6aa92": {
 "pl": "Do zobaczenia!",
@@ -6803,17 +5615,9 @@
 "pl": "centrum",
 "file": "audio/d27c2fbf8703.mp3"
 },
-"d2840152a6f0": {
-"pl": "płacić kartą / gotówką",
-"file": "audio/d2840152a6f0.mp3"
-},
 "d28d8d906c8f": {
 "pl": "mieć na sobie",
 "file": "audio/d28d8d906c8f.mp3"
-},
-"d2a34727f8ca": {
-"pl": "książce",
-"file": "audio/d2a34727f8ca.mp3"
 },
 "d2c5bfc2341c": {
 "pl": "wystawa",
@@ -6831,14 +5635,6 @@
 "pl": "Pociąg odjeżdża z peronu drugiego.",
 "file": "audio/d312de1e00e5.mp3"
 },
-"d31496a83ad9": {
-"pl": "mądry",
-"file": "audio/d31496a83ad9.mp3"
-},
-"d33f7927b57f": {
-"pl": "cukrem",
-"file": "audio/d33f7927b57f.mp3"
-},
 "d34dcdf91707": {
 "pl": "trzecia przestrzeń",
 "file": "audio/d34dcdf91707.mp3"
@@ -6846,10 +5642,6 @@
 "d3660133b338": {
 "pl": "Ona wydaje dużo na ubrania.",
 "file": "audio/d3660133b338.mp3"
-},
-"d3663e9bb7b8": {
-"pl": "uniwersytecie",
-"file": "audio/d3663e9bb7b8.mp3"
 },
 "d372dcc6a218": {
 "pl": "na dachu",
@@ -6874,10 +5666,6 @@
 "d42c170c2302": {
 "pl": "Mieszkanie ma dwie sypialnie.",
 "file": "audio/d42c170c2302.mp3"
-},
-"d495ebeccdea": {
-"pl": "Która",
-"file": "audio/d495ebeccdea.mp3"
 },
 "d4a1f6948586": {
 "pl": "Rano bolała mnie szyja.",
@@ -7035,10 +5823,6 @@
 "pl": "Nawzajem!",
 "file": "audio/d8dde747972b.mp3"
 },
-"d8e2318ead2a": {
-"pl": "Czyj",
-"file": "audio/d8e2318ead2a.mp3"
-},
 "d8f42250b3b4": {
 "pl": "Jesień jest deszczowa.",
 "file": "audio/d8f42250b3b4.mp3"
@@ -7054,10 +5838,6 @@
 "d9ade2ba86bf": {
 "pl": "niecierpliwy",
 "file": "audio/d9ade2ba86bf.mp3"
-},
-"d9aea59f422e": {
-"pl": "kelnerowie",
-"file": "audio/d9aea59f422e.mp3"
 },
 "d9be640a9368": {
 "pl": "Chcę otworzyć nowe konto bankowe.",
@@ -7075,10 +5855,6 @@
 "pl": "Nie mam zdania",
 "file": "audio/d9cd5529a445.mp3"
 },
-"d9ec231ad64b": {
-"pl": "ze mnie",
-"file": "audio/d9ec231ad64b.mp3"
-},
 "da05cc46a520": {
 "pl": "cztery",
 "file": "audio/da05cc46a520.mp3"
@@ -7086,10 +5862,6 @@
 "da0e70d665cb": {
 "pl": "kosztować",
 "file": "audio/da0e70d665cb.mp3"
-},
-"da4282f54205": {
-"pl": "leniwi",
-"file": "audio/da4282f54205.mp3"
 },
 "da45a13b69e1": {
 "pl": "Muszę wypłacić gotówkę z bankomatu.",
@@ -7110,10 +5882,6 @@
 "daf27d2ceb43": {
 "pl": "Ci studenci są z Polski.",
 "file": "audio/daf27d2ceb43.mp3"
-},
-"daf5819a163e": {
-"pl": "Niemce",
-"file": "audio/daf5819a163e.mp3"
 },
 "dafdebba87e6": {
 "pl": "Widzę ich.",
@@ -7155,17 +5923,9 @@
 "pl": "Kocham cię.",
 "file": "audio/db6d845fc23b.mp3"
 },
-"db88ad39b7a3": {
-"pl": "koncercie",
-"file": "audio/db88ad39b7a3.mp3"
-},
 "dba54d791119": {
 "pl": "Oni są szczęśliwym małżeństwem.",
 "file": "audio/dba54d791119.mp3"
-},
-"dbae98752af2": {
-"pl": "nauczyciel / nauczycielka",
-"file": "audio/dbae98752af2.mp3"
 },
 "dbe1406f61dc": {
 "pl": "pierwszego maja",
@@ -7178,14 +5938,6 @@
 "dbec5df28c32": {
 "pl": "Sprzedawcy są w sklepie.",
 "file": "audio/dbec5df28c32.mp3"
-},
-"dbfb56129d00": {
-"pl": "mili",
-"file": "audio/dbfb56129d00.mp3"
-},
-"dc65d4ac41a5": {
-"pl": "Polek",
-"file": "audio/dc65d4ac41a5.mp3"
 },
 "dc89396d417f": {
 "pl": "Mam receptę",
@@ -7206,10 +5958,6 @@
 "dcfb755dc641": {
 "pl": "Interesuję się sportem.",
 "file": "audio/dcfb755dc641.mp3"
-},
-"dd3e511d1ca4": {
-"pl": "Który",
-"file": "audio/dd3e511d1ca4.mp3"
 },
 "dd554138af30": {
 "pl": "Muszę się przesiąść na inny tramwaj.",
@@ -7291,21 +6039,9 @@
 "pl": "Apteka jest obok banku.",
 "file": "audio/dfd470569c88.mp3"
 },
-"e002e191b5ea": {
-"pl": "ucho / uszy",
-"file": "audio/e002e191b5ea.mp3"
-},
 "e015828237b8": {
 "pl": "przed",
 "file": "audio/e015828237b8.mp3"
-},
-"e02a227c625a": {
-"pl": "kulturę",
-"file": "audio/e02a227c625a.mp3"
-},
-"e0340a261466": {
-"pl": "Mieszkam w...",
-"file": "audio/e0340a261466.mp3"
 },
 "e04527f868f3": {
 "pl": "Załóż kurtkę, jest zimno.",
@@ -7359,10 +6095,6 @@
 "pl": "Kot jest w kuchni.",
 "file": "audio/e2124bbab73d.mp3"
 },
-"e2175f4b85a1": {
-"pl": "często / rzadko",
-"file": "audio/e2175f4b85a1.mp3"
-},
 "e23258c0a338": {
 "pl": "Będę brać prysznic zamiast kąpieli.",
 "file": "audio/e23258c0a338.mp3"
@@ -7374,10 +6106,6 @@
 "e268a8888a0f": {
 "pl": "Zimy będą chłodniejsze niż teraz.",
 "file": "audio/e268a8888a0f.mp3"
-},
-"e26e9ce99c40": {
-"pl": "Brytyjczycy",
-"file": "audio/e26e9ce99c40.mp3"
 },
 "e29a232f096a": {
 "pl": "Jest wrażliwy na krytykę.",
@@ -7427,29 +6155,13 @@
 "pl": "Muszę rozładować zmywarkę.",
 "file": "audio/e39ac172411b.mp3"
 },
-"e39afce2809c": {
-"pl": "mapa / nawigacja",
-"file": "audio/e39afce2809c.mp3"
-},
 "e39e8dfcb9e8": {
 "pl": "złożyć wniosek",
 "file": "audio/e39e8dfcb9e8.mp3"
 },
-"e3a6466ef255": {
-"pl": "Spłaciłem wczoraj cały mój dług.",
-"file": "audio/e3a6466ef255.mp3"
-},
 "e3b1cdadf2c1": {
 "pl": "Zostawiam was z tym pytaniem.",
 "file": "audio/e3b1cdadf2c1.mp3"
-},
-"e3c96eb99441": {
-"pl": "Ile wynosi wynajem?",
-"file": "audio/e3c96eb99441.mp3"
-},
-"e3cb03b39a1a": {
-"pl": "Gdzie mogę zostawić mój bagaż?",
-"file": "audio/e3cb03b39a1a.mp3"
 },
 "e3e24fc43252": {
 "pl": "Kupiliśmy nowe meble do salonu.",
@@ -7459,17 +6171,9 @@
 "pl": "osiem",
 "file": "audio/e41d1e05d4d9.mp3"
 },
-"e42b596ac9fe": {
-"pl": "szczere",
-"file": "audio/e42b596ac9fe.mp3"
-},
 "e46cf9428001": {
 "pl": "Trzeba uprawiać sport, żeby być zdrowym.",
 "file": "audio/e46cf9428001.mp3"
-},
-"e46f21a1621e": {
-"pl": "Piotrze",
-"file": "audio/e46f21a1621e.mp3"
 },
 "e4cc35a38682": {
 "pl": "Nie mam pojęcia.",
@@ -7523,10 +6227,6 @@
 "pl": "aplikacja",
 "file": "audio/e64f2f24a32e.mp3"
 },
-"e68073890a38": {
-"pl": "szkołę",
-"file": "audio/e68073890a38.mp3"
-},
 "e6ceb2f68ace": {
 "pl": "Mój telefon ma pęknięty ekran.",
 "file": "audio/e6ceb2f68ace.mp3"
@@ -7534,10 +6234,6 @@
 "e6e68ffa4ff5": {
 "pl": "To bardzo ambitna osoba.",
 "file": "audio/e6e68ffa4ff5.mp3"
-},
-"e709cb795dbb": {
-"pl": "mój / moja",
-"file": "audio/e709cb795dbb.mp3"
 },
 "e723bb7ff0c6": {
 "pl": "łóżko",
@@ -7547,29 +6243,13 @@
 "pl": "Przepraszam, czy jest tu wi-fi?",
 "file": "audio/e724d7cb625e.mp3"
 },
-"e728719e1f3c": {
-"pl": "wakacjach",
-"file": "audio/e728719e1f3c.mp3"
-},
 "e72db5a5d5c1": {
 "pl": "robić śniadanie",
 "file": "audio/e72db5a5d5c1.mp3"
 },
-"e7727ff60c1c": {
-"pl": "lek / lekarstwo",
-"file": "audio/e7727ff60c1c.mp3"
-},
-"e779ab26a921": {
-"pl": "Mogę mieć problemy z moim dobrostanem psychicznym.",
-"file": "audio/e779ab26a921.mp3"
-},
 "e7c74567c03a": {
 "pl": "kanapa",
 "file": "audio/e7c74567c03a.mp3"
-},
-"e80c62a85e33": {
-"pl": "Białorusin",
-"file": "audio/e80c62a85e33.mp3"
 },
 "e86c5c68fdce": {
 "pl": "Idę do centrum.",
@@ -7655,18 +6335,6 @@
 "pl": "Jako dziecko był zamknięty w sobie.",
 "file": "audio/eb29a6480e5b.mp3"
 },
-"eb482e2dec2e": {
-"pl": "lekarki",
-"file": "audio/eb482e2dec2e.mp3"
-},
-"eb52bf810d57": {
-"pl": "uczeń / student",
-"file": "audio/eb52bf810d57.mp3"
-},
-"ebaf1b6e8b30": {
-"pl": "Annę",
-"file": "audio/ebaf1b6e8b30.mp3"
-},
 "ebd439c9e3d3": {
 "pl": "To są bardzo mili Francuzi.",
 "file": "audio/ebd439c9e3d3.mp3"
@@ -7674,10 +6342,6 @@
 "ec03fa3ca391": {
 "pl": "poważny",
 "file": "audio/ec03fa3ca391.mp3"
-},
-"ec16cd73f88a": {
-"pl": "Marek",
-"file": "audio/ec16cd73f88a.mp3"
 },
 "ec2dea872d00": {
 "pl": "Nie wiem",
@@ -7759,10 +6423,6 @@
 "pl": "zupa",
 "file": "audio/eec14b9f0c82.mp3"
 },
-"eee1c1ade652": {
-"pl": "mi",
-"file": "audio/eee1c1ade652.mp3"
-},
 "ef4043073e6a": {
 "pl": "Bardzo dziękuję. Jak często mam brać lekarstwo?",
 "file": "audio/ef4043073e6a.mp3"
@@ -7799,10 +6459,6 @@
 "pl": "pociąg",
 "file": "audio/f01f8f432e53.mp3"
 },
-"f04f6659de80": {
-"pl": "mamą",
-"file": "audio/f04f6659de80.mp3"
-},
 "f05d993a70e5": {
 "pl": "Poproszę dwadzieścia deko szynki.",
 "file": "audio/f05d993a70e5.mp3"
@@ -7823,17 +6479,9 @@
 "pl": "To bardzo ciekawa wystawa sztuki.",
 "file": "audio/f0cc6fa2a713.mp3"
 },
-"f0f1248ebc6e": {
-"pl": "widziałem / widziałam",
-"file": "audio/f0f1248ebc6e.mp3"
-},
 "f0f63fc476f1": {
 "pl": "rolnictwo",
 "file": "audio/f0f63fc476f1.mp3"
-},
-"f1036963b1c3": {
-"pl": "kawę",
-"file": "audio/f1036963b1c3.mp3"
 },
 "f12e484daeac": {
 "pl": "Muszę kupić wszystkie składniki na zupę.",
@@ -7842,10 +6490,6 @@
 "f14c3b706f17": {
 "pl": "Mam kaszel i gorączkę.",
 "file": "audio/f14c3b706f17.mp3"
-},
-"f1ad08e14da5": {
-"pl": "Ukrainiec",
-"file": "audio/f1ad08e14da5.mp3"
 },
 "f20b376ee0e7": {
 "pl": "grząski grunt",
@@ -7866,10 +6510,6 @@
 "f27c55c14b24": {
 "pl": "Najpierw piję kawę, a potem jem.",
 "file": "audio/f27c55c14b24.mp3"
-},
-"f28f2636af4d": {
-"pl": "studentem",
-"file": "audio/f28f2636af4d.mp3"
 },
 "f29cce648c96": {
 "pl": "Kochani, dziękuję!",
@@ -7919,14 +6559,6 @@
 "pl": "współpraca",
 "file": "audio/f4923be5a4d8.mp3"
 },
-"f49de6d27c54": {
-"pl": "kwiatów",
-"file": "audio/f49de6d27c54.mp3"
-},
-"f4b06ef6d3c8": {
-"pl": "To",
-"file": "audio/f4b06ef6d3c8.mp3"
-},
 "f4de35d4dc52": {
 "pl": "ulegać presji",
 "file": "audio/f4de35d4dc52.mp3"
@@ -7939,17 +6571,9 @@
 "pl": "urząd",
 "file": "audio/f4e6960687f5.mp3"
 },
-"f51fca942f01": {
-"pl": "Tak, poproszę. Nie, dziękuję.",
-"file": "audio/f51fca942f01.mp3"
-},
 "f5a5cd8a6174": {
 "pl": "Czesi i Słowacy są tutaj.",
 "file": "audio/f5a5cd8a6174.mp3"
-},
-"f5ab2c4b1d4a": {
-"pl": "Francuzy",
-"file": "audio/f5ab2c4b1d4a.mp3"
 },
 "f5b453014a9b": {
 "pl": "siłownia",
@@ -7971,10 +6595,6 @@
 "pl": "Jak często mam to stosować?",
 "file": "audio/f6121a798fc9.mp3"
 },
-"f62775648a61": {
-"pl": "doktor",
-"file": "audio/f62775648a61.mp3"
-},
 "f634cdd52e61": {
 "pl": "wesoły",
 "file": "audio/f634cdd52e61.mp3"
@@ -7983,21 +6603,9 @@
 "pl": "To są Amerykanie.",
 "file": "audio/f63a7c70e01d.mp3"
 },
-"f654d886bd5d": {
-"pl": "Wietnamczyki",
-"file": "audio/f654d886bd5d.mp3"
-},
 "f668752ca8a4": {
 "pl": "siedem",
 "file": "audio/f668752ca8a4.mp3"
-},
-"f681d2f76269": {
-"pl": "cukru",
-"file": "audio/f681d2f76269.mp3"
-},
-"f68b58f22b54": {
-"pl": "odreagować dzień",
-"file": "audio/f68b58f22b54.mp3"
 },
 "f6c2d138ce2a": {
 "pl": "Jest mi bardzo miło.",
@@ -8031,14 +6639,6 @@
 "pl": "Na rogu proszę skręcić w prawo.",
 "file": "audio/f7e90a64dba9.mp3"
 },
-"f83e162711c5": {
-"pl": "Mamo",
-"file": "audio/f83e162711c5.mp3"
-},
-"f861ac5d39ed": {
-"pl": "Jaki",
-"file": "audio/f861ac5d39ed.mp3"
-},
 "f8869b93e292": {
 "pl": "Przepraszam, ale zupełnie nie masz racji.",
 "file": "audio/f8869b93e292.mp3"
@@ -8047,10 +6647,6 @@
 "pl": "Chcę zarezerwować pokój na dwie noce.",
 "file": "audio/f8bd4ce7f66f.mp3"
 },
-"f8d098b5b8fc": {
-"pl": "studentów",
-"file": "audio/f8d098b5b8fc.mp3"
-},
 "f8d7a53638aa": {
 "pl": "serce",
 "file": "audio/f8d7a53638aa.mp3"
@@ -8058,14 +6654,6 @@
 "f8fec1dbb9fe": {
 "pl": "Ile kosztuje ten bilet?",
 "file": "audio/f8fec1dbb9fe.mp3"
-},
-"f95ba9658c7a": {
-"pl": "Polską",
-"file": "audio/f95ba9658c7a.mp3"
-},
-"f979bdad060b": {
-"pl": "Boże",
-"file": "audio/f979bdad060b.mp3"
 },
 "f98dd91b9460": {
 "pl": "Następny przystanek: Rynek.",
@@ -8078,10 +6666,6 @@
 "f9b21e48a000": {
 "pl": "Nagle zaczął padać deszcz.",
 "file": "audio/f9b21e48a000.mp3"
-},
-"f9b53417f448": {
-"pl": "Wolę płacić kartą niż gotówką.",
-"file": "audio/f9b53417f448.mp3"
 },
 "f9d8b5975eb1": {
 "pl": "Muszę iść do urzędu.",
@@ -8098,10 +6682,6 @@
 "fa22ca968519": {
 "pl": "Ten kolor pasuje do twoich oczu.",
 "file": "audio/fa22ca968519.mp3"
-},
-"fa37c4e4808a": {
-"pl": "uniwersytetem",
-"file": "audio/fa37c4e4808a.mp3"
 },
 "fa6a3c964a59": {
 "pl": "Spotkajmy się przed kinem.",
@@ -8126,10 +6706,6 @@
 "fb5cead224b2": {
 "pl": "Musisz się zalogować, żeby zobaczyć zdjęcia.",
 "file": "audio/fb5cead224b2.mp3"
-},
-"fb9aa9a7b3d8": {
-"pl": "Mama",
-"file": "audio/fb9aa9a7b3d8.mp3"
 },
 "fba9de4a739e": {
 "pl": "dowód zakupu",
@@ -8235,10 +6811,6 @@
 "pl": "Mój szef jest wymagający.",
 "file": "audio/fe97d8b2fd7e.mp3"
 },
-"fec82e68c5d2": {
-"pl": "Polsce",
-"file": "audio/fec82e68c5d2.mp3"
-},
 "ff17f40b0211": {
 "pl": "Było pyszne",
 "file": "audio/ff17f40b0211.mp3"
@@ -8299,10 +6871,6 @@
 "pl": "robić z igły widły",
 "file": "audio/345449a2fda4.mp3"
 },
-"951bc06c377d": {
-"pl": "Nie rób z igły widły, to naprawdę drobiazg.",
-"file": "audio/951bc06c377d.mp3"
-},
 "544864c95822": {
 "pl": "musztarda po obiedzie",
 "file": "audio/544864c95822.mp3"
@@ -8338,10 +6906,6 @@
 "e0318dffd4f1": {
 "pl": "wiercić komuś dziurę w brzuchu",
 "file": "audio/e0318dffd4f1.mp3"
-},
-"4b43e9b7285a": {
-"pl": "Dzieci wierciły mi dziurę w brzuchu, żeby kupić psa.",
-"file": "audio/4b43e9b7285a.mp3"
 },
 "b80787dcb485": {
 "pl": "pierwsze koty za płoty",
@@ -8394,10 +6958,6 @@
 "eea9d21a69a4": {
 "pl": "trzymać kciuki",
 "file": "audio/eea9d21a69a4.mp3"
-},
-"85ca70c48ccf": {
-"pl": "Trzymam za ciebie kciuki na jutrzejszy egzamin.",
-"file": "audio/85ca70c48ccf.mp3"
 },
 "cbabad5367ea": {
 "pl": "wypisz wymaluj",
@@ -9007,10 +7567,6 @@
 "pl": "ustawka",
 "file": "audio/fca532120fde.mp3"
 },
-"60c56e9790fd": {
-"pl": "Mamy ustawkę na piwo o dwudziestej.",
-"file": "audio/60c56e9790fd.mp3"
-},
 "2a04caa37920": {
 "pl": "melanż",
 "file": "audio/2a04caa37920.mp3"
@@ -9247,10 +7803,6 @@
 "pl": "jebać",
 "file": "audio/7aa6a9bfb480.mp3"
 },
-"356562f59bea": {
-"pl": "Jebać, robimy po swojemu.",
-"file": "audio/356562f59bea.mp3"
-},
 "bccdea490a2e": {
 "pl": "wkurwić się",
 "file": "audio/bccdea490a2e.mp3"
@@ -9286,10 +7838,6 @@
 "d340f5ea3a91": {
 "pl": "zajebiście",
 "file": "audio/d340f5ea3a91.mp3"
-},
-"cc6b917354df": {
-"pl": "Koncert był zajebiście, najlepszy w życiu.",
-"file": "audio/cc6b917354df.mp3"
 },
 "d0d64f0349c2": {
 "pl": "kot → koty, samochód → samochody",
@@ -9371,17 +7919,9 @@
 "pl": "pociąg → pociągiem, Polak → Polakiem",
 "file": "audio/826b56ab5dcf.mp3"
 },
-"d4a475176203": {
-"pl": "kobieta → kobiecie, praca → pracy",
-"file": "audio/d4a475176203.mp3"
-},
 "3f11edd21f6a": {
 "pl": "Polka → Polce, książka → książce",
 "file": "audio/3f11edd21f6a.mp3"
-},
-"c87947f1578f": {
-"pl": "kuchnia → kuchni, ulica → ulicy",
-"file": "audio/c87947f1578f.mp3"
 },
 "c467ff1302cd": {
 "pl": "okno → oknie, miasto → mieście",
@@ -9414,10 +7954,6 @@
 "23892d4d3007": {
 "pl": "Marek → Marku, syn → synu",
 "file": "audio/23892d4d3007.mp3"
-},
-"6dbe4d712a60": {
-"pl": "nauczyciel → nauczycielu, tato → tato",
-"file": "audio/6dbe4d712a60.mp3"
 },
 "6a2f5d0ee515": {
 "pl": "dziecko → dziecko!",
@@ -9574,10 +8110,6 @@
 "178e31736386": {
 "pl": "Jak się nazywacie?",
 "file": "audio/178e31736386.mp3"
-},
-"d88dc58cee2b": {
-"pl": "Oni nazywają się Nowak.",
-"file": "audio/d88dc58cee2b.mp3"
 },
 "0695651d6564": {
 "pl": "Nazywam się Anna.",
@@ -9819,10 +8351,6 @@
 "pl": "Musisz odpocząć.",
 "file": "audio/2fa670154e3d.mp3"
 },
-"53680b76d2f1": {
-"pl": "Ona chce kawę.",
-"file": "audio/53680b76d2f1.mp3"
-},
 "f2250b0b5801": {
 "pl": "Musimy się spieszyć.",
 "file": "audio/f2250b0b5801.mp3"
@@ -9970,10 +8498,6 @@
 "5770e16ea78d": {
 "pl": "Dzieci chodzą do szkoły.",
 "file": "audio/5770e16ea78d.mp3"
-},
-"47432e87f6cf": {
-"pl": "Muszę już pójść.",
-"file": "audio/47432e87f6cf.mp3"
 },
 "dd67fed3ee17": {
 "pl": "Przyjdę o piątej.",
@@ -10847,25 +9371,9 @@
 "pl": "Moja siostra ma na imię Ewa.",
 "file": "audio/d804d9ee0815.mp3"
 },
-"e481a55753aa": {
-"pl": "syn / córka",
-"file": "audio/e481a55753aa.mp3"
-},
-"62af7de3b6d6": {
-"pl": "Mam syna i córkę.",
-"file": "audio/62af7de3b6d6.mp3"
-},
-"84b39ec58a66": {
-"pl": "mąż / żona",
-"file": "audio/84b39ec58a66.mp3"
-},
 "664a50dc3556": {
 "pl": "To jest moja żona, Anna.",
 "file": "audio/664a50dc3556.mp3"
-},
-"72bafa411c80": {
-"pl": "dziecko / dzieci",
-"file": "audio/72bafa411c80.mp3"
 },
 "858c8f8ff30b": {
 "pl": "Czy masz dzieci?",
@@ -10887,41 +9395,21 @@
 "pl": "Mój dziadek ma osiemdziesiąt lat.",
 "file": "audio/ce6fe35969c4.mp3"
 },
-"ae9b33d2dc09": {
-"pl": "przyjaciel / przyjaciółka",
-"file": "audio/ae9b33d2dc09.mp3"
-},
 "a9862d03cf5d": {
 "pl": "To jest mój przyjaciel Marek.",
 "file": "audio/a9862d03cf5d.mp3"
-},
-"f784664bc468": {
-"pl": "znajomy / znajoma",
-"file": "audio/f784664bc468.mp3"
 },
 "30c2382b1279": {
 "pl": "To jest moja znajoma z pracy.",
 "file": "audio/30c2382b1279.mp3"
 },
-"c53d862bc511": {
-"pl": "kolega / koleżanka",
-"file": "audio/c53d862bc511.mp3"
-},
 "d0a0266076d0": {
 "pl": "Mój kolega z pracy jest z Ukrainy.",
 "file": "audio/d0a0266076d0.mp3"
 },
-"01e081d542ec": {
-"pl": "chłopak / dziewczyna",
-"file": "audio/01e081d542ec.mp3"
-},
 "584623b18820": {
 "pl": "Moja dziewczyna uczy się polskiego.",
 "file": "audio/584623b18820.mp3"
-},
-"928fac4519e7": {
-"pl": "To jest mój... / moja...",
-"file": "audio/928fac4519e7.mp3"
 },
 "3c0122b476c9": {
 "pl": "To jest mój brat, a to moja siostra.",
@@ -10934,10 +9422,6 @@
 "53e468d02813": {
 "pl": "W parku jest dużo ludzi.",
 "file": "audio/53e468d02813.mp3"
-},
-"3fd4229ace98": {
-"pl": "pan / pani",
-"file": "audio/3fd4229ace98.mp3"
 },
 "0bf70a2e67c9": {
 "pl": "Ten pan czeka na autobus.",
@@ -10999,10 +9483,6 @@
 "pl": "W niedzielę sklepy są zamknięte.",
 "file": "audio/b3678c111bd1.mp3"
 },
-"4ecc35c8f42d": {
-"pl": "dzień / tydzień",
-"file": "audio/4ecc35c8f42d.mp3"
-},
 "c1df483a60a3": {
 "pl": "Mam wolny dzień w tym tygodniu.",
 "file": "audio/c1df483a60a3.mp3"
@@ -11014,10 +9494,6 @@
 "3e094ebefa2f": {
 "pl": "Co robisz w weekend?",
 "file": "audio/3e094ebefa2f.mp3"
-},
-"11372d1fad7a": {
-"pl": "dziś / dzisiaj",
-"file": "audio/11372d1fad7a.mp3"
 },
 "1789bb15c37f": {
 "pl": "Dzisiaj jest piątek.",
@@ -11079,10 +9555,6 @@
 "pl": "O której godzinie zaczynamy?",
 "file": "audio/0b59519cc7d7.mp3"
 },
-"e9eb61d95301": {
-"pl": "o siódmej / o ósmej",
-"file": "audio/e9eb61d95301.mp3"
-},
 "efa2694489f5": {
 "pl": "Wstaję o siódmej rano.",
 "file": "audio/efa2694489f5.mp3"
@@ -11094,22 +9566,6 @@
 "6d2c8fda0014": {
 "pl": "Przepraszam, która jest godzina?",
 "file": "audio/6d2c8fda0014.mp3"
-},
-"8919a427d4d5": {
-"pl": "teraz / później",
-"file": "audio/8919a427d4d5.mp3"
-},
-"216b9f105b27": {
-"pl": "Teraz pracuję, porozmawiamy później.",
-"file": "audio/216b9f105b27.mp3"
-},
-"51988628751d": {
-"pl": "zawsze / nigdy",
-"file": "audio/51988628751d.mp3"
-},
-"f5fb378bbdbc": {
-"pl": "Zawsze jem śniadanie, ale nigdy nie jem kolacji.",
-"file": "audio/f5fb378bbdbc.mp3"
 },
 "5a6e97cd05b5": {
 "pl": "styczeń",
@@ -11375,10 +9831,6 @@
 "pl": "Na obiad są ziemniaki i kotlet.",
 "file": "audio/92f3e2715d5a.mp3"
 },
-"57193e211833": {
-"pl": "ryż / makaron",
-"file": "audio/57193e211833.mp3"
-},
 "b5b858b77526": {
 "pl": "Wolę makaron niż ryż.",
 "file": "audio/b5b858b77526.mp3"
@@ -11403,14 +9855,6 @@
 "pl": "Na kolację jem kanapki.",
 "file": "audio/f253561da205.mp3"
 },
-"78167d5545cc": {
-"pl": "lubię / nie lubię",
-"file": "audio/78167d5545cc.mp3"
-},
-"c7af7b3ad033": {
-"pl": "Lubię pierogi, ale nie lubię ryb.",
-"file": "audio/c7af7b3ad033.mp3"
-},
 "b02beaf8056b": {
 "pl": "smaczny",
 "file": "audio/b02beaf8056b.mp3"
@@ -11418,14 +9862,6 @@
 "77b4b7259952": {
 "pl": "Ta zupa jest bardzo smaczna.",
 "file": "audio/77b4b7259952.mp3"
-},
-"4a5b5f8881b9": {
-"pl": "głodny / spragniony",
-"file": "audio/4a5b5f8881b9.mp3"
-},
-"80436881c88f": {
-"pl": "Jestem głodny i spragniony.",
-"file": "audio/80436881c88f.mp3"
 },
 "c2c313fc8d4f": {
 "pl": "Jaka jest pogoda?",
@@ -11739,18 +10175,6 @@
 "pl": "Przepraszam, czy może mi pan pomóc?",
 "file": "audio/aa5565bbb3ba.mp3"
 },
-"251650dfa7db": {
-"pl": "głodny / chce mi się pić",
-"file": "audio/251650dfa7db.mp3"
-},
-"e67da489f6b6": {
-"pl": "Jestem głodny i chce mi się pić.",
-"file": "audio/e67da489f6b6.mp3"
-},
-"4d5a60f7c084": {
-"pl": "Gdzie mam wysiąść, żeby dojechać na dworzec?",
-"file": "audio/4d5a60f7c084.mp3"
-},
 "830694b1713f": {
 "pl": "To przystanek na żądanie, naciśnij przycisk.",
 "file": "audio/830694b1713f.mp3"
@@ -11847,10 +10271,6 @@
 "pl": "wytyczać sobie własny szlak",
 "file": "audio/39c64ead8141.mp3"
 },
-"3c9490eb04f4": {
-"pl": "Mogę sam wytyczać sobie szlak mojego życia.",
-"file": "audio/3c9490eb04f4.mp3"
-},
 "0148f2d71ef4": {
 "pl": "Jeśli objawy nie miną w ciągu tygodnia, proszę wrócić.",
 "file": "audio/0148f2d71ef4.mp3"
@@ -11899,29 +10319,13 @@
 "pl": "Jaki jest twój adres?",
 "file": "audio/116f5e811abb.mp3"
 },
-"03c390eee3f0": {
-"pl": "żonaty / mężatka",
-"file": "audio/03c390eee3f0.mp3"
-},
 "df7ae1c329f1": {
 "pl": "Jestem żonaty od pięciu lat.",
 "file": "audio/df7ae1c329f1.mp3"
 },
-"4eb8fd7c07e4": {
-"pl": "kawaler / panna",
-"file": "audio/4eb8fd7c07e4.mp3"
-},
-"6f647eba888a": {
-"pl": "Nie, jestem kawalerem.",
-"file": "audio/6f647eba888a.mp3"
-},
 "6ec3b16278fe": {
 "pl": "Moja mama jest nauczycielką.",
 "file": "audio/6ec3b16278fe.mp3"
-},
-"56fa61ce3ee6": {
-"pl": "lekarz / lekarka",
-"file": "audio/56fa61ce3ee6.mp3"
 },
 "52bb8e0b397c": {
 "pl": "On jest lekarzem w szpitalu.",
@@ -12355,25 +10759,13 @@
 "pl": "Kupię sałatę na kanapki.",
 "file": "audio/4ae9a0e5f445.mp3"
 },
-"7958af911d10": {
-"pl": "kilo / pół kilo",
-"file": "audio/7958af911d10.mp3"
-},
 "c34fea760a3c": {
 "pl": "Poproszę pół kilo pomidorów.",
 "file": "audio/c34fea760a3c.mp3"
 },
-"707ce09802de": {
-"pl": "świeży / dojrzały",
-"file": "audio/707ce09802de.mp3"
-},
 "024ba4d3a3f8": {
 "pl": "Czy te banany są dojrzałe?",
 "file": "audio/024ba4d3a3f8.mp3"
-},
-"9524ae7b0628": {
-"pl": "Poproszę kilo...",
-"file": "audio/9524ae7b0628.mp3"
 },
 "1311fdad061e": {
 "pl": "Poproszę kilo jabłek i dwie cytryny.",
@@ -12403,25 +10795,13 @@
 "pl": "Planujemy wakacje nad morzem.",
 "file": "audio/2e4a095513e6.mp3"
 },
-"c3279fdc2049": {
-"pl": "Masz ochotę...?",
-"file": "audio/c3279fdc2049.mp3"
-},
 "98bfc1cf4a3c": {
 "pl": "Masz ochotę na kawę?",
 "file": "audio/98bfc1cf4a3c.mp3"
 },
-"c5171ade9bc6": {
-"pl": "Może pójdziemy...?",
-"file": "audio/c5171ade9bc6.mp3"
-},
 "2c621a5ca05d": {
 "pl": "Może pójdziemy do kina w piątek?",
 "file": "audio/2c621a5ca05d.mp3"
-},
-"349e992da834": {
-"pl": "za mały / za duży",
-"file": "audio/349e992da834.mp3"
 },
 "8178d9d8963f": {
 "pl": "Te buty są za małe.",
@@ -12975,10 +11355,6 @@
 "pl": "nałóg",
 "file": "audio/d84a287cce95.mp3"
 },
-"fbc7754f365d": {
-"pl": "Rzucenie nałogu wymaga silnej woli.",
-"file": "audio/fbc7754f365d.mp3"
-},
 "443230381aad": {
 "pl": "równowaga",
 "file": "audio/443230381aad.mp3"
@@ -13027,14 +11403,6 @@
 "pl": "Zakochałem się w niej od pierwszego wejrzenia.",
 "file": "audio/8b879f1ccb9e.mp3"
 },
-"9777bee8fcbf": {
-"pl": "kochać / lubić",
-"file": "audio/9777bee8fcbf.mp3"
-},
-"a7df09d0e5bd": {
-"pl": "Kocham cię, ale czasem mnie denerwujesz.",
-"file": "audio/a7df09d0e5bd.mp3"
-},
 "8982d35a0671": {
 "pl": "Jesteśmy razem, jesteśmy parą.",
 "file": "audio/8982d35a0671.mp3"
@@ -13042,10 +11410,6 @@
 "95c10e527f3f": {
 "pl": "Poznaj mojego chłopaka.",
 "file": "audio/95c10e527f3f.mp3"
-},
-"adb9d174fac9": {
-"pl": "narzeczony / narzeczona",
-"file": "audio/adb9d174fac9.mp3"
 },
 "09be5a0e98b3": {
 "pl": "To jest moja narzeczona, bierzemy ślub latem.",
@@ -13215,10 +11579,6 @@
 "pl": "Ta książka jest oparta na faktach.",
 "file": "audio/9c0c1951ff34.mp3"
 },
-"e0cdf303a37c": {
-"pl": "autor / autorka",
-"file": "audio/e0cdf303a37c.mp3"
-},
 "6c2218122f13": {
 "pl": "Kto jest autorem tej książki?",
 "file": "audio/6c2218122f13.mp3"
@@ -13266,14 +11626,6 @@
 "a3aa3cdcc1c7": {
 "pl": "Ten serial naprawdę warto obejrzeć.",
 "file": "audio/a3aa3cdcc1c7.mp3"
-},
-"d084769bb89b": {
-"pl": "nudny / wciągający",
-"file": "audio/d084769bb89b.mp3"
-},
-"be8d9a0c2837": {
-"pl": "Początek był nudny, ale potem film mnie wciągnął.",
-"file": "audio/be8d9a0c2837.mp3"
 },
 "5ca9905e69c9": {
 "pl": "Jak ci się podobało?",
@@ -13386,10 +11738,6 @@
 "3b0ea0b16af8": {
 "pl": "Na szczęście mam ubezpieczenie podróżne.",
 "file": "audio/3b0ea0b16af8.mp3"
-},
-"7d356f9b841f": {
-"pl": "Złożyłem reklamację za zgubiony bagaż.",
-"file": "audio/7d356f9b841f.mp3"
 },
 "3f126a94259a": {
 "pl": "zwrot pieniędzy",
@@ -14170,6 +12518,790 @@
 "2a0146724468": {
 "pl": "Przyszła paczka od babci.",
 "file": "audio/2a0146724468.mp3"
+},
+"dae91306c776": {
+"pl": "Tak",
+"file": "audio/dae91306c776.mp3"
+},
+"c38811a58a4b": {
+"pl": "Nie",
+"file": "audio/c38811a58a4b.mp3"
+},
+"a9a21996ec06": {
+"pl": "drogo",
+"file": "audio/a9a21996ec06.mp3"
+},
+"f6814c081aaa": {
+"pl": "tanio",
+"file": "audio/f6814c081aaa.mp3"
+},
+"c9406208c3cf": {
+"pl": "Tutaj jest tanio.",
+"file": "audio/c9406208c3cf.mp3"
+},
+"ffe0438d1af3": {
+"pl": "karta",
+"file": "audio/ffe0438d1af3.mp3"
+},
+"8562176dbe58": {
+"pl": "gorący",
+"file": "audio/8562176dbe58.mp3"
+},
+"3afdad7903bd": {
+"pl": "duży",
+"file": "audio/3afdad7903bd.mp3"
+},
+"8c586909c59a": {
+"pl": "mały",
+"file": "audio/8c586909c59a.mp3"
+},
+"a0443829e1ab": {
+"pl": "Poproszę małą kawę.",
+"file": "audio/a0443829e1ab.mp3"
+},
+"1a9264123f06": {
+"pl": "tutaj",
+"file": "audio/1a9264123f06.mp3"
+},
+"4e143966dd3d": {
+"pl": "żonaty",
+"file": "audio/4e143966dd3d.mp3"
+},
+"a5504fd33cf1": {
+"pl": "kawaler",
+"file": "audio/a5504fd33cf1.mp3"
+},
+"2b43bacda8b8": {
+"pl": "W rubryce stan cywilny wpisałem: kawaler.",
+"file": "audio/2b43bacda8b8.mp3"
+},
+"43985b73df87": {
+"pl": "nauczyciel",
+"file": "audio/43985b73df87.mp3"
+},
+"d3178343482c": {
+"pl": "On jest nauczycielem.",
+"file": "audio/d3178343482c.mp3"
+},
+"8ce1956a0b96": {
+"pl": "nauczycielka",
+"file": "audio/8ce1956a0b96.mp3"
+},
+"e86ebd2ad73c": {
+"pl": "Moja siostra jest lekarką.",
+"file": "audio/e86ebd2ad73c.mp3"
+},
+"ed415da6d67d": {
+"pl": "syn",
+"file": "audio/ed415da6d67d.mp3"
+},
+"ba87e9cdd788": {
+"pl": "Mam syna.",
+"file": "audio/ba87e9cdd788.mp3"
+},
+"eab9daeb9f71": {
+"pl": "córka",
+"file": "audio/eab9daeb9f71.mp3"
+},
+"8d926e634158": {
+"pl": "Mam córkę.",
+"file": "audio/8d926e634158.mp3"
+},
+"52685f19d5f5": {
+"pl": "mąż",
+"file": "audio/52685f19d5f5.mp3"
+},
+"1e24296054a3": {
+"pl": "Mój mąż ma na imię Marek.",
+"file": "audio/1e24296054a3.mp3"
+},
+"63edce56f35b": {
+"pl": "żona",
+"file": "audio/63edce56f35b.mp3"
+},
+"cb56eb137c83": {
+"pl": "dziecko",
+"file": "audio/cb56eb137c83.mp3"
+},
+"682c2f762ad3": {
+"pl": "To jest małe dziecko.",
+"file": "audio/682c2f762ad3.mp3"
+},
+"f6abda7e6c11": {
+"pl": "przyjaciel",
+"file": "audio/f6abda7e6c11.mp3"
+},
+"3aa093d6385e": {
+"pl": "przyjaciółka",
+"file": "audio/3aa093d6385e.mp3"
+},
+"6e29b50549d1": {
+"pl": "To jest moja przyjaciółka Kasia.",
+"file": "audio/6e29b50549d1.mp3"
+},
+"40a95640e5d9": {
+"pl": "znajomy",
+"file": "audio/40a95640e5d9.mp3"
+},
+"cca73203f555": {
+"pl": "To jest mój znajomy z pracy.",
+"file": "audio/cca73203f555.mp3"
+},
+"47806b528057": {
+"pl": "znajoma",
+"file": "audio/47806b528057.mp3"
+},
+"ce7a4d39def2": {
+"pl": "kolega",
+"file": "audio/ce7a4d39def2.mp3"
+},
+"03300cc1d50f": {
+"pl": "koleżanka",
+"file": "audio/03300cc1d50f.mp3"
+},
+"7738923ab929": {
+"pl": "Moja koleżanka z pracy jest z Ukrainy.",
+"file": "audio/7738923ab929.mp3"
+},
+"9afb6d9aacb5": {
+"pl": "chłopak",
+"file": "audio/9afb6d9aacb5.mp3"
+},
+"461fc0a558bb": {
+"pl": "To jest mój chłopak.",
+"file": "audio/461fc0a558bb.mp3"
+},
+"6e0d27deec87": {
+"pl": "dziewczyna",
+"file": "audio/6e0d27deec87.mp3"
+},
+"00e37ffae056": {
+"pl": "pan",
+"file": "audio/00e37ffae056.mp3"
+},
+"3a2e07ff868f": {
+"pl": "pani",
+"file": "audio/3a2e07ff868f.mp3"
+},
+"ac3aaf5d8d7d": {
+"pl": "Ta pani czeka na autobus.",
+"file": "audio/ac3aaf5d8d7d.mp3"
+},
+"af7face3b047": {
+"pl": "dzień",
+"file": "audio/af7face3b047.mp3"
+},
+"90def7356696": {
+"pl": "tydzień",
+"file": "audio/90def7356696.mp3"
+},
+"202d62208a85": {
+"pl": "dziś",
+"file": "audio/202d62208a85.mp3"
+},
+"a423526efd9c": {
+"pl": "o siódmej",
+"file": "audio/a423526efd9c.mp3"
+},
+"dc153ae57bd0": {
+"pl": "teraz",
+"file": "audio/dc153ae57bd0.mp3"
+},
+"19cb43404c81": {
+"pl": "Teraz nie mam czasu.",
+"file": "audio/19cb43404c81.mp3"
+},
+"0857eca37625": {
+"pl": "później",
+"file": "audio/0857eca37625.mp3"
+},
+"518a24f753d2": {
+"pl": "Porozmawiamy później.",
+"file": "audio/518a24f753d2.mp3"
+},
+"767fef545cd4": {
+"pl": "zawsze",
+"file": "audio/767fef545cd4.mp3"
+},
+"38c8987bcea9": {
+"pl": "Zawsze jem śniadanie.",
+"file": "audio/38c8987bcea9.mp3"
+},
+"087491b4917b": {
+"pl": "nigdy",
+"file": "audio/087491b4917b.mp3"
+},
+"d5844e69d112": {
+"pl": "Nigdy nie jem kolacji.",
+"file": "audio/d5844e69d112.mp3"
+},
+"cf8a94c58e6b": {
+"pl": "ryż",
+"file": "audio/cf8a94c58e6b.mp3"
+},
+"645b52804273": {
+"pl": "Na obiad jem ryż.",
+"file": "audio/645b52804273.mp3"
+},
+"e3f23b01e231": {
+"pl": "makaron",
+"file": "audio/e3f23b01e231.mp3"
+},
+"4d067872ff06": {
+"pl": "lubię",
+"file": "audio/4d067872ff06.mp3"
+},
+"78a8540884b8": {
+"pl": "Lubię pierogi.",
+"file": "audio/78a8540884b8.mp3"
+},
+"286a98df195c": {
+"pl": "nie lubię",
+"file": "audio/286a98df195c.mp3"
+},
+"c6308174d780": {
+"pl": "Nie lubię ryb.",
+"file": "audio/c6308174d780.mp3"
+},
+"e304f7df7628": {
+"pl": "głodny",
+"file": "audio/e304f7df7628.mp3"
+},
+"1799694db303": {
+"pl": "chce mi się pić",
+"file": "audio/1799694db303.mp3"
+},
+"cf023aae604c": {
+"pl": "Chce mi się pić.",
+"file": "audio/cf023aae604c.mp3"
+},
+"54c5ccf0f305": {
+"pl": "kilo",
+"file": "audio/54c5ccf0f305.mp3"
+},
+"30f0c25d7583": {
+"pl": "pół kilo",
+"file": "audio/30f0c25d7583.mp3"
+},
+"faa609848163": {
+"pl": "Te warzywa są świeże.",
+"file": "audio/faa609848163.mp3"
+},
+"fb54162e4259": {
+"pl": "dojrzały",
+"file": "audio/fb54162e4259.mp3"
+},
+"c5d5cc4b3557": {
+"pl": "Gdzie mam wysiąść, żeby dostać się na dworzec?",
+"file": "audio/c5d5cc4b3557.mp3"
+},
+"9546eedb46f3": {
+"pl": "Wsiadam",
+"file": "audio/9546eedb46f3.mp3"
+},
+"34954fae2c28": {
+"pl": "Wysiadam",
+"file": "audio/34954fae2c28.mp3"
+},
+"8afa0a25b74e": {
+"pl": "Czy jadę w dobrym kierunku?",
+"file": "audio/8afa0a25b74e.mp3"
+},
+"e5d1e6b0d3f9": {
+"pl": "Przepraszam, czy jadę w dobrym kierunku do centrum?",
+"file": "audio/e5d1e6b0d3f9.mp3"
+},
+"08f2810df2b3": {
+"pl": "lek",
+"file": "audio/08f2810df2b3.mp3"
+},
+"684ba053896d": {
+"pl": "Od wczoraj boli mnie gardło.",
+"file": "audio/684ba053896d.mp3"
+},
+"e3aa9337b9af": {
+"pl": "Na przystawkę poproszę sałatkę.",
+"file": "audio/e3aa9337b9af.mp3"
+},
+"56df27365a3e": {
+"pl": "widelec",
+"file": "audio/56df27365a3e.mp3"
+},
+"034e7eb1887e": {
+"pl": "nóż",
+"file": "audio/034e7eb1887e.mp3"
+},
+"c3d9cb420d88": {
+"pl": "Poproszę nóż.",
+"file": "audio/c3d9cb420d88.mp3"
+},
+"678b0f8860c6": {
+"pl": "łyżka",
+"file": "audio/678b0f8860c6.mp3"
+},
+"99bc8eff5fc7": {
+"pl": "Potrzebuję łyżki do zupy.",
+"file": "audio/99bc8eff5fc7.mp3"
+},
+"35c0ade8d75f": {
+"pl": "często",
+"file": "audio/35c0ade8d75f.mp3"
+},
+"84d8a2ba77de": {
+"pl": "Często czytam książki.",
+"file": "audio/84d8a2ba77de.mp3"
+},
+"05d2a9ec8a0f": {
+"pl": "rzadko",
+"file": "audio/05d2a9ec8a0f.mp3"
+},
+"849081a750c1": {
+"pl": "Rzadko oglądam telewizję.",
+"file": "audio/849081a750c1.mp3"
+},
+"336ab0106f42": {
+"pl": "wujek",
+"file": "audio/336ab0106f42.mp3"
+},
+"58f68f688312": {
+"pl": "Mój wujek mieszka w Gdańsku.",
+"file": "audio/58f68f688312.mp3"
+},
+"e09d1ee6489b": {
+"pl": "ciocia",
+"file": "audio/e09d1ee6489b.mp3"
+},
+"0b4c62acca23": {
+"pl": "oko",
+"file": "audio/0b4c62acca23.mp3"
+},
+"f9979f5352af": {
+"pl": "Coś mam w oku.",
+"file": "audio/f9979f5352af.mp3"
+},
+"228a65658f62": {
+"pl": "oczy",
+"file": "audio/228a65658f62.mp3"
+},
+"27ba6ad87629": {
+"pl": "ząb",
+"file": "audio/27ba6ad87629.mp3"
+},
+"acda481bc895": {
+"pl": "Boli mnie ząb.",
+"file": "audio/acda481bc895.mp3"
+},
+"c4304e6ab31c": {
+"pl": "zęby",
+"file": "audio/c4304e6ab31c.mp3"
+},
+"39409bd0ccf2": {
+"pl": "ucho",
+"file": "audio/39409bd0ccf2.mp3"
+},
+"b6086f3ec9ce": {
+"pl": "uszy",
+"file": "audio/b6086f3ec9ce.mp3"
+},
+"4949dc1f49c0": {
+"pl": "Mam zimne uszy.",
+"file": "audio/4949dc1f49c0.mp3"
+},
+"b61f5f3df4ae": {
+"pl": "kość",
+"file": "audio/b61f5f3df4ae.mp3"
+},
+"7bddfcd6e7d1": {
+"pl": "Złamałem kość.",
+"file": "audio/7bddfcd6e7d1.mp3"
+},
+"ca5a3a09ac92": {
+"pl": "kości",
+"file": "audio/ca5a3a09ac92.mp3"
+},
+"eb4282069987": {
+"pl": "Bolą mnie kości.",
+"file": "audio/eb4282069987.mp3"
+},
+"8b0805c2044b": {
+"pl": "targ",
+"file": "audio/8b0805c2044b.mp3"
+},
+"65ca8c148481": {
+"pl": "rynek",
+"file": "audio/65ca8c148481.mp3"
+},
+"662fdeb6307d": {
+"pl": "Spotkajmy się na rynku.",
+"file": "audio/662fdeb6307d.mp3"
+},
+"4908e28e7b41": {
+"pl": "puszka",
+"file": "audio/4908e28e7b41.mp3"
+},
+"41a38b8b0d51": {
+"pl": "Kupiłem puszkę fasoli.",
+"file": "audio/41a38b8b0d51.mp3"
+},
+"4cfe96139a39": {
+"pl": "Kupiłem słoik dżemu.",
+"file": "audio/4cfe96139a39.mp3"
+},
+"8e2d02c04261": {
+"pl": "Gdzie mogę zostawić bagaż?",
+"file": "audio/8e2d02c04261.mp3"
+},
+"11a42474bd68": {
+"pl": "Moja siostra jest nauczycielką.",
+"file": "audio/11a42474bd68.mp3"
+},
+"490ee103b1b3": {
+"pl": "uczeń",
+"file": "audio/490ee103b1b3.mp3"
+},
+"70905f91f63a": {
+"pl": "Mój syn jest uczniem.",
+"file": "audio/70905f91f63a.mp3"
+},
+"9298dae51e5b": {
+"pl": "Z zawodu jestem nauczycielem.",
+"file": "audio/9298dae51e5b.mp3"
+},
+"d379f75063af": {
+"pl": "Jakie jest wynagrodzenie na tym stanowisku?",
+"file": "audio/d379f75063af.mp3"
+},
+"5d790bafe162": {
+"pl": "oddawać",
+"file": "audio/5d790bafe162.mp3"
+},
+"627263bdae1a": {
+"pl": "zwracać",
+"file": "audio/627263bdae1a.mp3"
+},
+"7be4851f37c3": {
+"pl": "zbierać",
+"file": "audio/7be4851f37c3.mp3"
+},
+"b23b897cdd0a": {
+"pl": "wyrzucać",
+"file": "audio/b23b897cdd0a.mp3"
+},
+"8969888744f4": {
+"pl": "wyłączać",
+"file": "audio/8969888744f4.mp3"
+},
+"6ecacc55194e": {
+"pl": "zakręcać",
+"file": "audio/6ecacc55194e.mp3"
+},
+"c15b850ef704": {
+"pl": "marnować",
+"file": "audio/c15b850ef704.mp3"
+},
+"00adc0f0c514": {
+"pl": "Mamy twardą wodę w kranie.",
+"file": "audio/00adc0f0c514.mp3"
+},
+"a537d805fffd": {
+"pl": "wymieniać się",
+"file": "audio/a537d805fffd.mp3"
+},
+"3dc94c01eb6c": {
+"pl": "pakować",
+"file": "audio/3dc94c01eb6c.mp3"
+},
+"f353ec8484f0": {
+"pl": "używać",
+"file": "audio/f353ec8484f0.mp3"
+},
+"22515bf32181": {
+"pl": "Jeżdżę komunikacją miejską zamiast jeździć samochodem.",
+"file": "audio/22515bf32181.mp3"
+},
+"52561b320a26": {
+"pl": "redukować",
+"file": "audio/52561b320a26.mp3"
+},
+"4f7bdbc938f4": {
+"pl": "wycinać",
+"file": "audio/4f7bdbc938f4.mp3"
+},
+"91142615127f": {
+"pl": "zakładać",
+"file": "audio/91142615127f.mp3"
+},
+"ab609b7a80c6": {
+"pl": "blondyn",
+"file": "audio/ab609b7a80c6.mp3"
+},
+"9dea7686d688": {
+"pl": "Mój brat to blondyn.",
+"file": "audio/9dea7686d688.mp3"
+},
+"f1f2ca60d159": {
+"pl": "blondynka",
+"file": "audio/f1f2ca60d159.mp3"
+},
+"4bfd205bc590": {
+"pl": "Moja siostra to blondynka.",
+"file": "audio/4bfd205bc590.mp3"
+},
+"33c4ccda1631": {
+"pl": "za mały",
+"file": "audio/33c4ccda1631.mp3"
+},
+"14d4a77bd7aa": {
+"pl": "za duży",
+"file": "audio/14d4a77bd7aa.mp3"
+},
+"0f891fd840f1": {
+"pl": "Ta koszula jest za duża.",
+"file": "audio/0f891fd840f1.mp3"
+},
+"d8a52403c5ce": {
+"pl": "byłem",
+"file": "audio/d8a52403c5ce.mp3"
+},
+"19a83b3d8512": {
+"pl": "miałem",
+"file": "audio/19a83b3d8512.mp3"
+},
+"75f18d92a298": {
+"pl": "robiłem",
+"file": "audio/75f18d92a298.mp3"
+},
+"cc2369bf4c22": {
+"pl": "poszedłem",
+"file": "audio/cc2369bf4c22.mp3"
+},
+"6d1c9d5e0ac6": {
+"pl": "widziałem",
+"file": "audio/6d1c9d5e0ac6.mp3"
+},
+"2d9efc474658": {
+"pl": "mówiłem",
+"file": "audio/2d9efc474658.mp3"
+},
+"d3b7f45e838a": {
+"pl": "chciałem",
+"file": "audio/d3b7f45e838a.mp3"
+},
+"dbb93f3b125a": {
+"pl": "musiałem",
+"file": "audio/dbb93f3b125a.mp3"
+},
+"95f8a6903b96": {
+"pl": "mogłem",
+"file": "audio/95f8a6903b96.mp3"
+},
+"31d300f035ef": {
+"pl": "zapomniałem",
+"file": "audio/31d300f035ef.mp3"
+},
+"16db10b28489": {
+"pl": "kilogram",
+"file": "audio/16db10b28489.mp3"
+},
+"79e7d6f66151": {
+"pl": "deko",
+"file": "audio/79e7d6f66151.mp3"
+},
+"61bb95044f8b": {
+"pl": "dużo",
+"file": "audio/61bb95044f8b.mp3"
+},
+"389f4d72df81": {
+"pl": "Mam dużo pracy.",
+"file": "audio/389f4d72df81.mp3"
+},
+"28c751914349": {
+"pl": "mało",
+"file": "audio/28c751914349.mp3"
+},
+"7ebd74116ef1": {
+"pl": "Mam mało czasu.",
+"file": "audio/7ebd74116ef1.mp3"
+},
+"0475f38e124e": {
+"pl": "płacić kartą",
+"file": "audio/0475f38e124e.mp3"
+},
+"7ecb6563369c": {
+"pl": "płacić gotówką",
+"file": "audio/7ecb6563369c.mp3"
+},
+"848877509589": {
+"pl": "Wolę płacić gotówką.",
+"file": "audio/848877509589.mp3"
+},
+"12f04ae7dfa5": {
+"pl": "wyprzedaż",
+"file": "audio/12f04ae7dfa5.mp3"
+},
+"02455d2290dc": {
+"pl": "przecena",
+"file": "audio/02455d2290dc.mp3"
+},
+"7ba8daec9552": {
+"pl": "Ten sweter jest w przecenie.",
+"file": "audio/7ba8daec9552.mp3"
+},
+"f2adbb55ae54": {
+"pl": "skręcić w lewo",
+"file": "audio/f2adbb55ae54.mp3"
+},
+"a522386c7d02": {
+"pl": "Proszę skręcić w lewo.",
+"file": "audio/a522386c7d02.mp3"
+},
+"e235c35204d6": {
+"pl": "skręcić w prawo",
+"file": "audio/e235c35204d6.mp3"
+},
+"9ae920495d8d": {
+"pl": "To bardzo blisko.",
+"file": "audio/9ae920495d8d.mp3"
+},
+"f868b34a4525": {
+"pl": "To daleko od centrum.",
+"file": "audio/f868b34a4525.mp3"
+},
+"40bbc29068a2": {
+"pl": "po lewej stronie",
+"file": "audio/40bbc29068a2.mp3"
+},
+"01a9fbd51c04": {
+"pl": "po prawej stronie",
+"file": "audio/01a9fbd51c04.mp3"
+},
+"1e5b687e8ca3": {
+"pl": "Sklep jest po prawej stronie.",
+"file": "audio/1e5b687e8ca3.mp3"
+},
+"af60b270834b": {
+"pl": "pieszo",
+"file": "audio/af60b270834b.mp3"
+},
+"d003028bf558": {
+"pl": "Mam mapę miasta.",
+"file": "audio/d003028bf558.mp3"
+},
+"06a6781ff019": {
+"pl": "nawigacja",
+"file": "audio/06a6781ff019.mp3"
+},
+"8ed4ac26e979": {
+"pl": "Bez nawigacji bym zabłądził.",
+"file": "audio/8ed4ac26e979.mp3"
+},
+"919a8c39c320": {
+"pl": "Zrobię ci przelew na telefon BLIK.",
+"file": "audio/919a8c39c320.mp3"
+},
+"777bb79a2c87": {
+"pl": "Spłaciłem wczoraj cały swój dług.",
+"file": "audio/777bb79a2c87.mp3"
+},
+"0f5fed1791e0": {
+"pl": "CV",
+"file": "audio/0f5fed1791e0.mp3"
+},
+"63494e80e7d4": {
+"pl": "Wysłałem CV do trzech firm.",
+"file": "audio/63494e80e7d4.mp3"
+},
+"b9c310218a97": {
+"pl": "Pamiętaj, żeby się wylogować z aplikacji bankowej.",
+"file": "audio/b9c310218a97.mp3"
+},
+"5aec0f379c89": {
+"pl": "Wyjście z nałogu wymaga silnej woli.",
+"file": "audio/5aec0f379c89.mp3"
+},
+"42637e77f897": {
+"pl": "Lubię cię.",
+"file": "audio/42637e77f897.mp3"
+},
+"0718113e9e8d": {
+"pl": "To jest moja dziewczyna.",
+"file": "audio/0718113e9e8d.mp3"
+},
+"572d99bedf4b": {
+"pl": "narzeczony",
+"file": "audio/572d99bedf4b.mp3"
+},
+"7ab8db52f931": {
+"pl": "To jest mój narzeczony.",
+"file": "audio/7ab8db52f931.mp3"
+},
+"89f5ed84ae85": {
+"pl": "narzeczona",
+"file": "audio/89f5ed84ae85.mp3"
+},
+"3ae92cf0ef42": {
+"pl": "autor",
+"file": "audio/3ae92cf0ef42.mp3"
+},
+"c6696520a533": {
+"pl": "autorka",
+"file": "audio/c6696520a533.mp3"
+},
+"593e3aa66bdb": {
+"pl": "Ona jest autorką tej książki.",
+"file": "audio/593e3aa66bdb.mp3"
+},
+"1684a0d65de3": {
+"pl": "nudny",
+"file": "audio/1684a0d65de3.mp3"
+},
+"72c574196dc9": {
+"pl": "Ten film jest nudny.",
+"file": "audio/72c574196dc9.mp3"
+},
+"eb8bf20bd620": {
+"pl": "wciągający",
+"file": "audio/eb8bf20bd620.mp3"
+},
+"0897c867cab3": {
+"pl": "Ta książka jest wciągająca.",
+"file": "audio/0897c867cab3.mp3"
+},
+"fc84dc8e98ea": {
+"pl": "Złożyłem reklamację w sprawie zagubionego bagażu.",
+"file": "audio/fc84dc8e98ea.mp3"
+},
+"16655e9a7687": {
+"pl": "Policja spodziewała się ustawki kibiców.",
+"file": "audio/16655e9a7687.mp3"
+},
+"a2a61c34fd18": {
+"pl": "W załączeniu przesyłam CV i list motywacyjny.",
+"file": "audio/a2a61c34fd18.mp3"
+},
+"dc031baa6e26": {
+"pl": "odreagować po całym dniu",
+"file": "audio/dc031baa6e26.mp3"
+},
+"c8cfe4e7387c": {
+"pl": "Nie mamy przestrzeni, żeby zdrowo odreagować po całym dniu pracy.",
+"file": "audio/c8cfe4e7387c.mp3"
+},
+"2ab96dd03fa1": {
+"pl": "Mogę sam wytyczać sobie szlak swojego życia.",
+"file": "audio/2ab96dd03fa1.mp3"
+},
+"ac6382588ed0": {
+"pl": "Mogę mieć problemy ze swoim dobrostanem psychicznym.",
+"file": "audio/ac6382588ed0.mp3"
+},
+"ecd9761f874e": {
+"pl": "Czy można płacić BLIKIEM?",
+"file": "audio/ecd9761f874e.mp3"
+},
+"38335f98b620": {
+"pl": "Nazywają się Nowakowie.",
+"file": "audio/38335f98b620.mp3"
 }
 }
 }
