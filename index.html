@@ -1369,6 +1369,7 @@
 <script src="data-scenarios.js"></script>
 <script src="data-podcasts.js"></script>
 <script src="pp-usage.js"></script>
+<script src="pp-answer.js"></script>
 <script src="pp-migrate.js"></script>
 <script>
 /* =========================================================================
@@ -2716,24 +2717,11 @@ $("cChallenge").addEventListener("click", ()=>{
    explicit `acceptedAnswers` on the card - there is no implicit "/" splitting. */
 const T = { topicRef:null, li:0, ti:0, qs:[], i:0, right:0, almost:0, revealed:0, state:"ask" };
 
-function tNormAns(s){
-  return s.toLowerCase()
-    .replace(/\.\.\.|\u2026/g, " ")
-    .replace(/[?!.,;:\u201c\u201d"']/g, " ")
-    .replace(/\s+/g, " ").trim();
-}
-function tFold(s){
-  return tNormAns(s).normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-    .replace(/\u0142/g, "l");                                    /* ł doesn't decompose */
-}
-/* Accepted Type-It answers = the canonical pl PLUS any explicit acceptedAnswers.
-   No implicit split on "/" - a slash in visible text never creates alternatives. */
-function tAccepted(card){
-  if(typeof card === "string") card = { pl: card };
-  const out = [card.pl];
-  (card.acceptedAnswers || []).forEach(a => { if(a && out.indexOf(a) < 0) out.push(a); });
-  return out;
-}
+/* Answer comparison lives in pp-answer.js (PP_ANSWER) and is shared with the
+   Mixed Quiz's typed questions, so the two activities cannot drift apart.
+   The rules themselves are unchanged: normalize() is the exact tier, fold()
+   the diacritics tier, accepted() is `pl` plus any explicit acceptedAnswers
+   (still no implicit "/" splitting), and classify() returns the verdict. */
 /* Display-only variant summary (card back + Type-It feedback). Returns {k, v} or null.
    Synonyms -> "Also: dzisiaj"; gender/other labels -> "Forms: m: byłem · f: byłam".
    Aspect pairs are NOT shown here - they use the `pair` line. */
@@ -2775,7 +2763,7 @@ function tRender(){
 }
 function tRevealLetter(){
   const c=T.qs[T.i].c;
-  const canon=tAccepted(c)[0];
+  const canon=PP_ANSWER.accepted(c)[0];
   if(T.revealed < canon.length-1) T.revealed++;
   $("tHintLine").hidden=false;
   $("tHintLine").textContent="Starts with: "+canon.slice(0,T.revealed)+"\u2026";
@@ -2784,11 +2772,8 @@ function tRevealLetter(){
 function tCheckAnswer(){
   if(T.state!=="ask") return;
   const c=T.qs[T.i].c, val=$("tInput").value;
-  if(!tNormAns(val)) { $("tInput").focus(); return; }
-  const acc=tAccepted(c);
-  let verdict="wrong";
-  if(acc.some(a=>tNormAns(a)===tNormAns(val))) verdict="right";
-  else if(acc.some(a=>tFold(a)===tFold(val))) verdict="almost";
+  if(!PP_ANSWER.normalize(val)) { $("tInput").focus(); return; }
+  const verdict=PP_ANSWER.classify(val, c);
   T.state="done";
   if(verdict==="right") T.right++; else if(verdict==="almost") T.almost++;
   $("tInput").disabled=true; $("tCheck").disabled=true; $("tHint").disabled=true;
@@ -3017,7 +3002,7 @@ function rPickOption(btn, o, q, box){
 }
 function rRevealLetter(){
   const c=R.qs[R.i].c;
-  const canon=tAccepted(c)[0];
+  const canon=PP_ANSWER.accepted(c)[0];
   if(R.revealed < canon.length-1) R.revealed++;
   $("rHintLine").hidden=false;
   $("rHintLine").textContent="Starts with: "+canon.slice(0,R.revealed)+"\u2026";
@@ -3026,11 +3011,8 @@ function rRevealLetter(){
 function rCheckAnswer(){
   if(R.state!=="ask") return;
   const q=R.qs[R.i], c=q.c, val=$("rInput").value;
-  if(!tNormAns(val)) { $("rInput").focus(); return; }
-  const acc=tAccepted(c);
-  let verdict="wrong";
-  if(acc.some(a=>tNormAns(a)===tNormAns(val))) verdict="right";
-  else if(acc.some(a=>tFold(a)===tFold(val))) verdict="almost";
+  if(!PP_ANSWER.normalize(val)) { $("rInput").focus(); return; }
+  const verdict=PP_ANSWER.classify(val, c);
   R.state="done";
   rRecord(q, verdict==="wrong" ? "miss" : verdict);
   $("rInput").disabled=true; $("rCheck").disabled=true; $("rHint").disabled=true;

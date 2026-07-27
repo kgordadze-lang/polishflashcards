@@ -13,6 +13,7 @@ const ASSETS = [
   "./",
   "./index.html",
   "./pp-usage.js",
+  "./pp-answer.js",
   "./pp-migrate.js",
   "./data-a1.js",
   "./data-a2.js",
