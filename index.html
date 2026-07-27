@@ -2822,13 +2822,23 @@ function tCheckAnswer(){
   const head = verdict==="right" ? "Dobrze!"
              : verdict==="almost" ? "Almost - watch the \u0105, \u0119, \u00f3, \u017c\u2026"
              : "Not this time";
-  /* Accepted-alternative line: variants (synonym/gender forms) or, for abbreviation-style
-     cards, the explicit acceptedAnswers. Aspect pairs are excluded (they use the `pair`
-     display, not Type-It synonyms), so a valid alternative like "by\u0142am" is never framed
-     as the only-wrong-answer. */
+  /* Accepted-alternative line, ONE line, first match wins:
+       aspect pair  -> the authored `pair`, the same "Aspect pair" line the flashcard shows
+       variants     -> synonym / gender forms
+       acceptedAnswers -> abbreviation-style cards ("z\u0142oty" / "z\u0142")
+     An aspect-pair card accepts either aspect, so typing the partner is right and the
+     learner needs to see WHY: the whole pair, exactly as authored. It is taken from
+     `pair` and never rebuilt from `pl` + acceptedAnswers, so the reading order is the
+     authored one (a2-ecology-020 is "bra\u0107 / wzi\u0105\u0107 prysznic", not "bra\u0107 prysznic / \u2026").
+     `pair` REPLACES the acceptedAnswers line for these cards rather than joining it, so
+     a valid alternative like "odda\u0107" is never framed as the only-wrong-answer and is
+     never printed twice. A card tagged aspect-pair with no usable `pair` string falls
+     through to exactly what it showed before this line existed: nothing. */
   let alt=null;
   const vp=ppVariantParts(c);
-  if(vp) alt={ label:vp.k, value:vp.v };
+  const apPair=(c.relationType==="aspect-pair" && typeof c.pair==="string" && c.pair.trim()) ? c.pair : null;
+  if(apPair) alt={ label:"Aspect pair", value:apPair };
+  else if(vp) alt={ label:vp.k, value:vp.v };
   else if(c.relationType!=="aspect-pair" && Array.isArray(c.acceptedAnswers) && c.acceptedAnswers.length)
     alt={ label:"Also accepted", value:c.acceptedAnswers.join(" \u00b7 ") };
   const altHtml=alt ? '<div class="v-alt"><span class="v-altk"></span>: <span class="v-altv" lang="pl"></span></div>' : "";
