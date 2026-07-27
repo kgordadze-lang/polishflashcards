@@ -1378,7 +1378,7 @@
    Unrelated to CACHE in sw.js, which is a machine counter - bump both when
    you deploy, but they don't need to match.
    ========================================================================= */
-const APP_VERSION = "7.26";
+const APP_VERSION = "7.27";
 document.getElementById("footVersion").textContent = "v" + APP_VERSION;
 
 /* =========================================================================
@@ -2221,18 +2221,42 @@ function playPreGenerated(file, btn, originalText){
   if(btn){
     speakBtn = btn; btn.classList.add("speaking");
   }
-  audio.onended = () => { if(currentAudio===audio){ currentAudio=null; } clearSpeaking(); };
-  audio.onerror = () => {
-    /* MP3 missing / network hiccup - fall back to speechSynthesis so playback still happens */
-    if(currentAudio===audio) currentAudio=null;
+  /* settle() decides, once, whether this clip's outcome still matters. It guards
+     two different things, and both are needed.
+
+     ONCE PER ATTEMPT. A failing clip signals BOTH channels for the SAME attempt -
+     the element fires `error` AND the play() promise rejects with
+     NotSupportedError - and speechSynthesis.speak() QUEUES instead of replacing,
+     so falling back from each channel spoke the phrase twice offline. The first
+     outcome to arrive wins and detaches the handlers; later signals for the same
+     attempt are a no-op. Both channels stay wired, because only one of them fires
+     in some cases (autoplay refusal rejects the promise with no error event; a
+     mid-stream decode error fires the event with no pending promise).
+
+     ONLY WHILE STILL CURRENT. A clip that has been superseded or stopped must
+     stay out of the way completely. pause() ABORTS a pending play(), so every
+     interrupted clip gets a late AbortError - and a stopped clip may still fire
+     `error` afterwards. Acting on those would speak a phrase the learner already
+     moved on from, and would strip the "speaking" class off the button that
+     replaced it. currentAudio is the single source of truth for which attempt is
+     live: if this element is no longer it, settle() cleans up nothing and reports
+     false, so no fallback follows.
+
+     A new press builds a new Audio with a fresh latch, so it still speaks. */
+  let settled = false;
+  function settle(){
+    if(settled) return false;
+    settled = true;
+    audio.onended = null; audio.onerror = null;   /* this element is done - no late, contradictory cleanup */
+    if(currentAudio !== audio) return false;      /* superseded or stopped - not ours to clean up or speak for */
+    currentAudio = null;
     clearSpeaking();
-    speakFallback(originalText, btn);
-  };
-  audio.play().catch(()=>{
-    if(currentAudio===audio) currentAudio=null;
-    clearSpeaking();
-    speakFallback(originalText, btn);
-  });
+    return true;
+  }
+  audio.onended = () => { settle(); };
+  /* MP3 missing / network hiccup - fall back to speechSynthesis so playback still happens */
+  audio.onerror = () => { if(settle()) speakFallback(originalText, btn); };
+  audio.play().catch(() => { if(settle()) speakFallback(originalText, btn); });
 }
 
 /* The ONLY entry point for main-card audio. A card with nothing complete to say
