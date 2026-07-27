@@ -2735,8 +2735,11 @@ $("cChallenge").addEventListener("click", ()=>{
    end, never folded into the correct total. Accepted answers are the canonical
    `pl` plus any explicit `acceptedAnswers` - there is no implicit "/" splitting.
    The one thing "almost" will not cover: text that is exactly some other
-   typeable card's answer, which is a different word rather than a slip. */
-const T = { topicRef:null, li:0, ti:0, qs:[], i:0, right:0, almost:0, revealed:0, state:"ask" };
+   typeable card's answer, which is a different word rather than a slip.
+   Hint use is reported alongside those tiers but is NEVER mixed into them: a
+   hinted answer keeps its own verdict, and `hinted` counts QUESTIONS that used
+   "Reveal a letter" (five reveals on one question is still one question). */
+const T = { topicRef:null, li:0, ti:0, qs:[], i:0, right:0, almost:0, hinted:0, revealed:0, state:"ask" };
 
 /* Answer comparison lives in pp-answer.js (PP_ANSWER) and is shared with the
    Mixed Quiz's typed questions, so the two activities cannot drift apart:
@@ -2760,7 +2763,7 @@ function startTypeit(l, t){
   T.li=l; T.ti=t; T.topicRef=LEVELS[l].topics[t];
   const pool=poolFor(T.topicRef.src, "typeit");   /* production: recognition-only cards are excluded */
   T.qs=gShuffle(pool).slice(0,15).sort((a,b)=>a.c.pl.length-b.c.pl.length);
-  T.i=0; T.right=0; T.almost=0;
+  T.i=0; T.right=0; T.almost=0; T.hinted=0;   /* "New round" routes here, so every counter restarts */
   $("tLevelLbl").textContent = T.topicRef.name + " \u00b7 " + T.qs.length + " words";
   show("typeit"); tRender();
 }
@@ -2798,6 +2801,14 @@ function tCheckAnswer(){
   if(!PP_ANSWER.normalize(val)) { $("tInput").focus(); return; }
   const verdict=PP_ANSWER.classify(val, c, PP_TYPED_INDEX);
   T.state="done";
+  /* Hint use is banked HERE, once, on the single accepted submission: the
+     `T.state` guard above has already turned every repeat (Enter again, a
+     second click, Enter-then-click) into a no-op, and a blank submission
+     returned before it, so a question can raise this by at most one however
+     many letters it revealed. `T.revealed` is letters actually shown, so a
+     click that reveals nothing is not counted as help. The verdict tiers below
+     are untouched - a hinted answer is still right, almost or wrong. */
+  if(T.revealed>0) T.hinted++;
   if(verdict==="right") T.right++; else if(verdict==="almost") T.almost++;
   $("tInput").disabled=true; $("tCheck").disabled=true; $("tHint").disabled=true;
   const v=$("tVerdict");
@@ -2837,12 +2848,19 @@ function tShowDone(){
      verdict (Next stays disabled until one is checked), so `miss` is exactly the
      wrong answers. */
   const right=T.right, almost=T.almost, miss=T.qs.length-right-almost;
+  /* Hinted questions are reported, not deducted: the three tiles above stay
+     exactly the right/almost/missed split. The unaided perfect-round line needs
+     BOTH a clean sweep and no help, so an all-right round that leaned on
+     "Reveal a letter" states its total and its hints instead of claiming it. */
+  const hinted=T.hinted||0;
   $("tScoreN").textContent=right; $("tAlmostN").textContent=almost; $("tMissN").textContent=miss;
   $("tDoneMsg").textContent =
-    (right===T.qs.length ? "You typed every one exactly right."
+    (right===T.qs.length && hinted===0 ? "You typed every one exactly right."
                          : "You typed "+right+" of "+T.qs.length+" exactly right.")
     + (almost>0 ? " "+almost+" almost - the \u0105 and \u0119 will come." : "")
-    + (miss>0 ? " "+miss+" to revisit." : "");
+    + (miss>0 ? " "+miss+" to revisit." : "")
+    + (hinted>0 ? (hinted===1 ? " You used a hint on 1 question."
+                              : " You used hints on "+hinted+" questions.") : "");
   if(window.PP_A2HS) window.PP_A2HS.bump(3);
 }
 $("tBack").addEventListener("click", ()=>show("home"));
