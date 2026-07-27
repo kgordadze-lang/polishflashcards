@@ -476,6 +476,7 @@
     padding:16px 10px;box-shadow:var(--shadow-sm)}
   .stat b{display:block;font-size:26px;font-weight:800;letter-spacing:-.5px}
   .stat b.know-n{color:var(--sage)}
+  .stat b.almost-n{color:#854d0e}   /* same amber as .verdict.v-almost, so the tier reads the same everywhere */
   .stat b.still-n{color:var(--coral)}
   .stat span{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.2px}
   .done-actions{display:flex;flex-direction:column;gap:11px;width:100%;max-width:320px}
@@ -1085,7 +1086,8 @@
       <p id="tDoneMsg"></p>
       <div class="stat-row">
         <div class="stat"><b class="know-n" id="tScoreN">0</b><span>CORRECT</span></div>
-        <div class="stat"><b class="still-n" id="tMissN">0</b><span>TO REVISIT</span></div>
+        <div class="stat"><b class="almost-n" id="tAlmostN">0</b><span>ALMOST</span></div>
+        <div class="stat"><b class="still-n" id="tMissN">0</b><span>MISSED</span></div>
       </div>
       <div class="done-actions">
         <button class="btn-primary" id="tAgain">New round</button>
@@ -1208,7 +1210,8 @@
       <h2>Brawo!</h2>
       <p id="rDoneMsg"></p>
       <div class="stat-row">
-        <div class="stat"><b class="know-n" id="rScoreN">0</b><span>FIRST TRY</span></div>
+        <div class="stat"><b class="know-n" id="rScoreN">0</b><span>CORRECT</span></div>
+        <div class="stat"><b class="almost-n" id="rAlmostN">0</b><span>ALMOST</span></div>
         <div class="stat"><b class="still-n" id="rMissN">0</b><span>TO REVIEW</span></div>
       </div>
       <div class="done-actions">
@@ -2712,9 +2715,10 @@ $("cChallenge").addEventListener("click", ()=>{
 /* ---------------- Type it (EN -> typed PL recall) ----------------
    15 cards per round, drawn from the chosen level(s), shortest answers first so
    sessions warm up. Matching is two-tier: exact (after case/punctuation folding)
-   is correct; correct-except-diacritics scores as correct but gets an amber
-   "watch the ogonki" flag. Accepted answers are the canonical `pl` plus any
-   explicit `acceptedAnswers` on the card - there is no implicit "/" splitting. */
+   is correct; correct-except-diacritics is its own "almost" tier - it gets an
+   amber "watch the ogonki" flag per question and is REPORTED SEPARATELY at the
+   end, never folded into the correct total. Accepted answers are the canonical
+   `pl` plus any explicit `acceptedAnswers` - there is no implicit "/" splitting. */
 const T = { topicRef:null, li:0, ti:0, qs:[], i:0, right:0, almost:0, revealed:0, state:"ask" };
 
 /* Answer comparison lives in pp-answer.js (PP_ANSWER) and is shared with the
@@ -2809,11 +2813,17 @@ function tCheckAnswer(){
 function tShowDone(){
   $("tMain").style.display="none"; $("tDone").style.display="flex";
   $("tFill").style.width="100%"; $("tCountLbl").textContent=T.qs.length+" / "+T.qs.length;
-  const good=T.right+T.almost, miss=T.qs.length-good;
-  $("tScoreN").textContent=good; $("tMissN").textContent=miss;
+  /* Three separate tiers, and they always sum to T.qs.length: an "almost" is no
+     longer added to the correct total. Every question reaching this screen has a
+     verdict (Next stays disabled until one is checked), so `miss` is exactly the
+     wrong answers. */
+  const right=T.right, almost=T.almost, miss=T.qs.length-right-almost;
+  $("tScoreN").textContent=right; $("tAlmostN").textContent=almost; $("tMissN").textContent=miss;
   $("tDoneMsg").textContent =
-    (good===T.qs.length ? "You typed every one correctly." : "You produced "+good+" of "+T.qs.length+" from memory.")
-    + (T.almost>0 ? " ("+T.almost+" with diacritic slips - the \u0105 and \u0119 will come.)" : "");
+    (right===T.qs.length ? "You typed every one exactly right."
+                         : "You typed "+right+" of "+T.qs.length+" exactly right.")
+    + (almost>0 ? " "+almost+" almost - the \u0105 and \u0119 will come." : "")
+    + (miss>0 ? " "+miss+" to revisit." : "");
   if(window.PP_A2HS) window.PP_A2HS.bump(3);
 }
 $("tBack").addEventListener("click", ()=>show("home"));
@@ -3059,12 +3069,17 @@ function rShowDone(){
   const right  = scored.filter(q=>q.result==="right").length;
   const almost = scored.filter(q=>q.result==="almost").length;
   const missed = scored.filter(q=>q.result==="miss").length;
-  $("rScoreN").textContent = right+almost;
-  $("rMissN").textContent  = missed;
+  /* Only an exact match counts as correct; "almost" gets its own tile rather than
+     being added to the score. `scored` already excludes requeued copies, so the
+     three tiers sum to the number of questions actually asked. */
+  $("rScoreN").textContent  = right;
+  $("rAlmostN").textContent = almost;
+  $("rMissN").textContent   = missed;
   $("rDoneMsg").textContent =
-    (missed===0 ? "Every question right on the first try. \u015awietnie!"
-                : "You got "+(right+almost)+" of "+scored.length+" on the first try.")
-    + (almost>0 ? " ("+almost+" with diacritic slips.)" : "");
+    (right===scored.length ? "Every question right on the first try. \u015awietnie!"
+                           : "You got "+right+" of "+scored.length+" right on the first try.")
+    + (almost>0 ? " "+almost+" almost - the \u0105 and \u0119 will come." : "")
+    + (missed>0 ? " "+missed+" to review." : "");
   /* feed results back into the topic's progress: a first-try miss goes to "still
      learning", a first-try right is solid evidence the word is known */
   const tRound = LEVELS[R.li].topics[R.ti];
