@@ -68,8 +68,8 @@
             { id:"a1-numbers-prices-017", pl:"gotówka", en:"cash", hint:"'gotówką' = in cash.", ex:"Płacę gotówką.", exEn:"I'm paying in cash." },
             { id:"a1-numbers-prices-018", pl:"razem", en:"together / in total", hint:"Useful when splitting or totalling.", ex:"Ile razem?", exEn:"How much in total?" },
             { id:"a1-numbers-prices-019", pl:"reszta", en:"change (money back)", hint:"Feminine noun. 'Reszty nie trzeba' uses the genitive of negation.", ex:"Reszty nie trzeba.", exEn:"Keep the change." },
-            { id:"a1-numbers-prices-020", pl:"drogo", en:"expensive", relatedIds:["a1-numbers-prices-021"], relationType:"contrast", hint:"Adverb: 'za drogo' = too expensive.", ex:"To za drogo!", exEn:"That's too expensive!" },
-            { id:"a1-numbers-prices-021", pl:"tanio", en:"cheap", relatedIds:["a1-numbers-prices-020"], relationType:"contrast", hint:"Adverb: the opposite of 'drogo'.", ex:"Tutaj jest tanio.", exEn:"It's cheap here." }
+            { id:"a1-numbers-prices-020", pl:"drogo", en:"expensive", typeItCue:"adverb: how much it costs", relatedIds:["a1-numbers-prices-021"], relationType:"contrast", hint:"Adverb: 'za drogo' = too expensive.", ex:"To za drogo!", exEn:"That's too expensive!" },
+            { id:"a1-numbers-prices-021", pl:"tanio", en:"cheap", typeItCue:"adverb: how much it costs", relatedIds:["a1-numbers-prices-020"], relationType:"contrast", hint:"Adverb: the opposite of 'drogo'.", ex:"Tutaj jest tanio.", exEn:"It's cheap here." }
           ]
         },
         { id:"a1-cafe",
@@ -90,7 +90,7 @@
             { id:"a1-cafe-011", pl:"na wynos", en:"to take away", hint:"'na miejscu' = to have here.", ex:"Na wynos, proszę.", exEn:"To take away, please." },
             { id:"a1-cafe-012", pl:"na miejscu", en:"to have here / dine in", hint:"The opposite of na wynos.", ex:"Na miejscu czy na wynos?", exEn:"To have here or take away?" },
             { id:"a1-cafe-013", pl:"Smacznego!", en:"Enjoy your meal!", hint:"Said before eating. The usual reply is 'Dziękuję'. If the other person is also eating, you can add 'nawzajem' (you too).", ex:"Smacznego!", exEn:"Enjoy your meal!" },
-            { id:"a1-cafe-014", pl:"stolik", en:"table", hint:"Diminutive of 'stół'.", ex:"Czy ten stolik jest wolny?", exEn:"Is this table free?" },
+            { id:"a1-cafe-014", pl:"stolik", en:"table", typeItCue:"small or café table", hint:"Diminutive of 'stół'.", ex:"Czy ten stolik jest wolny?", exEn:"Is this table free?" },
             { id:"a1-cafe-015", pl:"karta", en:"menu", acceptedAnswers:["menu"], variants:[{form:"menu",label:"synonym"}], hint:"Both are used.", ex:"Poproszę kartę.", exEn:"The menu, please." },
             { id:"a1-cafe-016", pl:"Czy jest wi-fi?", en:"Is there wi-fi?", hint:"Ask for the 'hasło' - password.", ex:"Przepraszam, czy jest tu wi-fi?", exEn:"Excuse me, is there wi-fi here?" },
             { id:"a1-cafe-017", pl:"gorący", en:"hot", relatedIds:["a1-cafe-021"], relationType:"contrast", hint:"Adjective - endings change by gender.", ex:"Kawa jest gorąca.", exEn:"The coffee is hot." },
@@ -380,7 +380,7 @@
             { id:"a1-colours-clothes-008", pl:"szary", en:"grey", hint:"Adjective. 'szary' also means dull or drab.", ex:"Listopad jest zawsze szary.", exEn:"November is always grey." },
             { id:"a1-colours-clothes-009", pl:"brązowy", en:"brown", hint:"Adjective. From 'brąz' (bronze).", ex:"Mam brązowe oczy.", exEn:"I have brown eyes." },
             { id:"a1-colours-clothes-010", pl:"różowy", en:"pink", hint:"Adjective. From 'róża' (rose).", ex:"Ona ma różową sukienkę.", exEn:"She has a pink dress." },
-            { id:"a1-colours-clothes-011", pl:"pomarańczowy", en:"orange", hint:"Adjective. Same root as 'pomarańcza' (the fruit).", ex:"Lubię sok pomarańczowy.", exEn:"I like orange juice." },
+            { id:"a1-colours-clothes-011", pl:"pomarańczowy", en:"orange", typeItCue:"the colour", hint:"Adjective. Same root as 'pomarańcza' (the fruit).", ex:"Lubię sok pomarańczowy.", exEn:"I like orange juice." },
             { id:"a1-colours-clothes-012", pl:"ubranie", en:"clothing / clothes", hint:"Neuter noun. Often used in plural: 'ubrania'.", ex:"Muszę kupić nowe ubrania.", exEn:"I need to buy new clothes." },
             { id:"a1-colours-clothes-013", pl:"koszulka", en:"T-shirt", hint:"Feminine noun. 'koszula' is a formal shirt.", ex:"Noszę koszulkę i dżinsy.", exEn:"I'm wearing a T-shirt and jeans." },
             { id:"a1-colours-clothes-014", pl:"spodnie", en:"trousers", hint:"Plural only, like in English.", ex:"Te spodnie są za długie.", exEn:"These trousers are too long." },
@@ -434,7 +434,7 @@
             { id:"a1-fruit-vegetables-005", pl:"gruszka", en:"pear", hint:"Feminine noun.", ex:"Te gruszki są bardzo słodkie.", exEn:"These pears are very sweet." },
             { id:"a1-fruit-vegetables-006", pl:"truskawki", en:"strawberries", hint:"Plural. Singular: 'truskawka'. Best in June.", ex:"Latem kupuję truskawki na targu.", exEn:"In summer I buy strawberries at the market." },
             { id:"a1-fruit-vegetables-007", pl:"winogrona", en:"grapes", hint:"Plural noun.", ex:"Kupiłem zielone winogrona.", exEn:"I bought green grapes. A woman: kupiłam." },
-            { id:"a1-fruit-vegetables-008", pl:"pomarańcza", en:"orange", hint:"Feminine noun. The fruit; the colour is 'pomarańczowy'.", ex:"Wyciskam sok z pomarańczy.", exEn:"I'm squeezing juice from an orange." },
+            { id:"a1-fruit-vegetables-008", pl:"pomarańcza", en:"orange", typeItCue:"the fruit", hint:"Feminine noun. The fruit; the colour is 'pomarańczowy'.", ex:"Wyciskam sok z pomarańczy.", exEn:"I'm squeezing juice from an orange." },
             { id:"a1-fruit-vegetables-009", pl:"cytryna", en:"lemon", hint:"Feminine noun. 'herbata z cytryną' = tea with lemon.", ex:"Poproszę herbatę z cytryną.", exEn:"Tea with lemon, please." },
             { id:"a1-fruit-vegetables-010", pl:"śliwka", en:"plum", hint:"Feminine noun. 'śliwka' also means a black eye.", ex:"Jesienią jem dużo śliwek.", exEn:"In autumn I eat a lot of plums." },
             { id:"a1-fruit-vegetables-011", pl:"arbuz", en:"watermelon", hint:"Masculine noun. A summer favourite.", ex:"W upał nie ma nic lepszego niż arbuz.", exEn:"In the heat there's nothing better than watermelon." },

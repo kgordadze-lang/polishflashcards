@@ -2774,7 +2774,21 @@ function tRender(){
   T.state="ask"; T.revealed=0;
   $("tCountLbl").textContent=(T.i+1)+" / "+T.qs.length;
   $("tFill").style.width=(T.i/T.qs.length*100)+"%";
-  $("tEn").textContent=c.en;
+  /* Type It-only prompt cue. A few English glosses are shared by two cards that
+     want DIFFERENT Polish answers ("expensive" -> `drogo` the adverb on one card,
+     `drogi` the adjective on another), so the bare gloss cannot be answered fairly:
+     the learner is guessing which card they drew, not recalling Polish. `typeItCue`
+     names the sense being asked for. It clarifies the QUESTION only - nothing here
+     touches PP_ANSWER or acceptedAnswers, so the sibling card's word stays WRONG.
+     The guard is a string-and-trim test, so a cue that is missing, null, blank,
+     whitespace, a number, an array, an object or a boolean falls back to the plain
+     gloss rather than printing "undefined", "[object Object]" or a dangling dash.
+     Assigned through textContent like every other prompt, so a cue can never be
+     markup. Type It is the only reader: the Mixed Quiz, Listening, the flashcard
+     and the generated pages all still show `en` exactly as before. */
+  const rawCue = c.typeItCue;
+  const cue = (typeof rawCue==="string" && rawCue.trim()) ? rawCue.trim() : "";
+  $("tEn").textContent = cue ? c.en+" \u2014 "+cue : c.en;
   $("tCtx").textContent=c.exEn ? "Context: "+c.exEn : "";
   $("tFrom").textContent="From: "+q.topic;
   const inp=$("tInput");
