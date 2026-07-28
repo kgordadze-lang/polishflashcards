@@ -4,15 +4,33 @@
    them and tests/test_activities.js exercises them directly, so the rules the
    app runs are literally the rules under test.
 
-   Four optional card fields drive everything here:
-     register   formal | neutral | informal | slang | vulgar
-     region     general | warsaw | regional
-     production active | recognition-only
-     warning    free learner-facing text
+   Two different kinds of optional card metadata are read here.
 
-   All four are optional. Absent means the schema default - neutral / general /
-   active - and a card carrying no metadata renders no chips at all. Most cards
-   have none, so "no metadata" must stay the quiet, unremarkable case. */
+   1. USAGE - four learner-facing fields. These are what becomes chips beside the
+      term and the spoken "Usage:" summary:
+        register   formal | neutral | informal | slang | vulgar
+        region     general | warsaw | regional
+        production active | recognition-only
+        warning    free learner-facing text
+
+      All four are optional. Absent means the schema default - neutral / general
+      / active - and a card carrying no metadata renders no chips at all. Most
+      cards have none, so "no metadata" must stay the quiet, unremarkable case.
+
+   2. PRACTICE - one optional OBJECT holding per-card ACTIVITY decisions. It is
+      never shown to the learner and renders nothing:
+        practice.typeIt  false = never ask the learner to TYPE this card
+
+      `typeIt` is its only key today. It is an object rather than a flat field so
+      a later phase can add its own activity key beside it; each key is read only
+      by the helper that owns it, so an unrelated key changes nothing here - see
+      PP_USAGE.typeItOptOut.
+
+   Note that `production: "recognition-only"` and `practice` answer different
+   questions. The first is a fact about the WORD - it is understood, not said -
+   and so removes the card from every activity that asks the learner to produce
+   it. The second is a judgement about ONE activity's fit for a card that is
+   otherwise perfectly producible. */
 (function (global) {
   "use strict";
   var PP_USAGE = {};
@@ -104,7 +122,8 @@
                    is filtered out of it; this branch states that contract
                    explicitly rather than leaving it to fall through
        listen    - a RECOGNITION activity, so recognition-only cards are KEPT
-       typeit    - active production, so recognition-only cards are excluded
+       typeit    - active production, so recognition-only cards are excluded, and
+                   a card may additionally opt OUT by itself - see typeItOptOut
        mixed     - the mixed quiz types answers, so it follows the production rule
 
      Templates and podcast intros stay excluded from every *practice* activity:
@@ -120,8 +139,33 @@
     if (card.intro || !card.pl || !card.en) return false;
     if (card.cardType === "template") return false;
     if (activity === "listen") return true;
+    if (activity === "typeit" && PP_USAGE.typeItOptOut(card)) return false;
     if (activity === "typeit" || activity === "mixed") return !PP_USAGE.isRecognitionOnly(card);
     return false;
+  };
+
+  /* ---- one card's own "not for Type It" decision -------------------------
+     `practice: { typeIt: false }` on a single card means "never ask the learner
+     to TYPE this one". Type It is active recall of words and short practical
+     phrases; a fifty-character proverb typed from memory stops measuring recall
+     and starts measuring typing accuracy, where one slipped letter reads as a
+     failure. Those cards stay exactly as they are - same wording, same accepted
+     answers - and keep teaching through flashcards, search, Listening and the
+     Mixed Quiz. Only the typing drill drops them.
+
+     Deliberately NOT a length rule in code. The runtime never measures `pl` and
+     never guesses: each exclusion is authored on the card, so it shows up in a
+     diff and can be argued with. The 30-character boundary is a REVIEW tool for
+     finding candidates, not a threshold the app applies.
+
+     STRICT: only the boolean `false` carries meaning. `practice` absent, null,
+     "false", [], {}, {typeIt:true}, {typeIt:0} and {typeIt:"false"} every one
+     leave the card as eligible as it was. A typo in the data can silently
+     exclude nothing - it takes the exact value to drop a card. (typeof null is
+     "object", hence the truthiness check first.) */
+  PP_USAGE.typeItOptOut = function (card) {
+    var p = card && card.practice;
+    return !!p && typeof p === "object" && p.typeIt === false;
   };
 
   /* ---- every card a learner can be asked to TYPE -------------------------
@@ -139,10 +183,12 @@
                   from the study screen - which is behind the mature gate, so
                   the mature topic IS reachable and its cards do count
 
-     Their card-level rules happen to be identical today (both ask for
-     production, so both drop recognition-only cards). They are still collected
-     separately: if the rules ever diverge, the union stays correct without
-     anyone having to remember this function exists.
+     Their card-level rules HAVE now diverged, which is exactly why both are
+     walked. Both still drop recognition-only cards, but `practice:{typeIt:false}`
+     removes a card from Type It ALONE - the Mixed Quiz can still ask it, so it
+     must stay in this union or its answer would quietly stop being protected
+     from collisions. Collecting the two activities separately is what keeps that
+     correct without anyone having to remember this function exists.
 
      A topic carrying a `kind` - grammar, conversation, podcast, or one of the
      synthetic practice shells - never asks for a typed vocabulary answer, so

@@ -115,16 +115,39 @@ ok('T1 every Mixed Quiz typed card is in the index set',
    M_SIDE.every(function (c) { return uIds[c.id]; }));
 ok('T1 the index set adds nothing neither activity can ask for',
    CARDS.every(function (c) { return tIds[c.id] || mIds[c.id]; }));
-// Today the two agree on the CARD rule (both ask for production) and differ only
-// on reach: the Mixed Quiz gets to the mature topic through the study screen's
-// gate, Type It never draws it. Stated as a fact, not relied on.
+// The Mixed Quiz side is the larger of the two, for exactly two reasons - one of
+// reach and one of card rule:
+//   REACH     the Mixed Quiz gets to the mature topic through the study screen's
+//             gate; Type It never draws it
+//   CARD RULE `practice:{typeIt:false}` drops an answer too long to type from
+//             memory out of Type It ALONE - the Mixed Quiz can still ask it
+// The second reason is why every such card MUST stay in the union: it is still
+// askable, so its answer must still be owned in the index, or an unrelated
+// card's "almost" would quietly turn into "wrong".
 ok('T1 Type It cards are a subset of the Mixed Quiz typed cards',
    T_SIDE.every(function (c) { return mIds[c.id]; }));
-ok('T1 the extra cards are exactly the gated (mature) ones',
-   M_SIDE.filter(function (c) { return !tIds[c.id]; })
-     .every(function (c) { return U.eligibleFor(c, 'typeit'); }));
+var MATURE_IDS = {};
+LEVELS.forEach(function (lv) {
+  lv.topics.forEach(function (t) {
+    if (t.mature) (t.cards || []).forEach(function (c) { if (c.id) MATURE_IDS[c.id] = true; });
+  });
+});
+var EXTRA = M_SIDE.filter(function (c) { return !tIds[c.id]; });
+ok('T1 every extra card is either mature-gated or Type It-opted-out',
+   EXTRA.every(function (c) { return MATURE_IDS[c.id] || U.typeItOptOut(c); }));
+// ...and the two reasons are the WHOLE explanation: an extra card that is neither
+// gated nor opted out would mean some new rule started removing cards from Type
+// It without anyone deciding to.
+ok('T1 no extra card is unexplained',
+   EXTRA.every(function (c) { return MATURE_IDS[c.id] || U.eligibleFor(c, 'typeit') || U.typeItOptOut(c); }));
+var EXTRA_OPTOUT = EXTRA.filter(function (c) { return U.typeItOptOut(c) && !MATURE_IDS[c.id]; });
+ok('T1 opted-out cards are still in the typed index',
+   EXTRA_OPTOUT.every(function (c) { return uIds[c.id]; }));
 console.log('  [info] typed-practice cards: ' + CARDS.length +
             ' (Type It ' + T_SIDE.length + ', Mixed Quiz typed ' + M_SIDE.length + ')');
+console.log('  [info] Mixed-only cards: ' + EXTRA.length +
+            ' (mature-gated ' + EXTRA.filter(function (c) { return MATURE_IDS[c.id]; }).length +
+            ', Type It-opted-out ' + EXTRA_OPTOUT.length + ')');
 
 // cards the data has but no typed activity can ask for
 var ALL = [];

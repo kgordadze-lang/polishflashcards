@@ -48,6 +48,11 @@ var intro      = { id: 'x12', pl: 'Stan umysłu', en: 'State of Mind', intro: tr
 var noEn       = { id: 'x13', pl: 'coś' };
 var regional   = { id: 'x14', pl: 'pyry', en: 'potatoes', region: 'regional' };
 var neutralDef = { id: 'x15', pl: 'stół', en: 'table', register: 'neutral', region: 'general', production: 'active' };
+// A card that opts ITSELF out of Type It - an answer too long to be typed from
+// memory. Every other activity keeps it. tests/test_typeit_eligibility.js owns
+// the corpus review and the full strictness matrix; the contract lives here.
+var typeItOff  = { id: 'x16', pl: 'apetyt rośnie w miarę jedzenia', en: 'appetite comes with eating',
+                   practice: { typeIt: false } };
 
 // =========================================================================
 // 1. defaults render nothing - ordinary cards must look unchanged
@@ -132,6 +137,28 @@ ok('T11 intro is a flashcard', PP_USAGE.eligibleFor(intro, 'flashcard') === true
 ['listen', 'typeit', 'mixed'].forEach(function (a) {
   ok('T11 intro excluded from ' + a, PP_USAGE.eligibleFor(intro, a) === false);
 });
+
+// 11b. a card may opt itself out of Type It ALONE, via practice:{typeIt:false}.
+//      It is not recognition-only: the learner is still asked to recall it in the
+//      Mixed Quiz and still hears it in Listening. Only the typing drill drops it.
+ok('T11b opted-out card excluded from Type It', PP_USAGE.eligibleFor(typeItOff, 'typeit') === false);
+['flashcard', 'search', 'listen', 'mixed'].forEach(function (a) {
+  ok('T11b opted-out card still eligible for ' + a, PP_USAGE.eligibleFor(typeItOff, a) === true);
+});
+ok('T11b typeItOptOut reports it', PP_USAGE.typeItOptOut(typeItOff) === true);
+ok('T11b typeItOptOut is false for an ordinary card', PP_USAGE.typeItOptOut(plain) === false);
+// Only the boolean false means anything - a data typo must never empty a pool.
+// (typeof null is "object", so `practice: null` is the one that would throw.)
+[null, 'false', [], {}, { typeIt: true }, { typeIt: 0 }, { typeIt: 'false' }].forEach(function (p) {
+  var c = { id: 'x16-' + JSON.stringify(p), pl: 'kawa', en: 'coffee', practice: p };
+  ok('T11b practice ' + JSON.stringify(p) + ' leaves Type It eligibility alone',
+     PP_USAGE.eligibleFor(c, 'typeit') === true && PP_USAGE.typeItOptOut(c) === false);
+});
+ok('T11b the opt-out does not rescue a template',
+   PP_USAGE.eligibleFor({ id: 'x17', pl: 'Gdzie jest...?', en: 'Where is...?',
+                          cardType: 'template', practice: { typeIt: false } }, 'typeit') === false);
+ok('T11b the opt-out does not make an unknown activity pass',
+   PP_USAGE.eligibleFor(typeItOff, 'something-new') === false);
 
 // 12. defensive: missing fields and junk input
 ok('T12 card without en excluded from practice', PP_USAGE.eligibleFor(noEn, 'typeit') === false);
