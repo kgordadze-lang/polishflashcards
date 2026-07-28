@@ -2990,6 +2990,100 @@ $("tInput").addEventListener("keydown", e=>{
    whose text happens to match. See pp-distractor.js. */
 const L = { topicRef:null, li:0, ti:0, qs:[], i:0, results:[], attempted:false };
 
+/* ---- previous-round memory: this tab only, one slot per scope ----
+   Every round used to be an independent sample, so pressing "New round" could
+   hand back a question the learner had just answered - sometimes several. This
+   remembers what the LAST round of each scope asked, so the next one can prefer
+   everything else first.
+
+   A Map, deliberately, and nothing more: no localStorage, no sessionStorage, no
+   migration, no entry in the saved progress. Reloading the page forgets it, which
+   is the right lifetime for "what did I just see" - it is a within-session
+   courtesy, not learning history, and the spaced-repetition side of the app is
+   untouched by it. Only the compact identities below are kept, never cards.
+
+   Keyed by SCOPE, so the A1 round, the A2 round and the All-levels round each
+   compare against their own last round. Opening A2 does not consume A1's memory,
+   and coming back to A1 still avoids what A1 last asked. */
+const L_RECENT = new Map();   /* scope key -> [question identity, ...] of that scope's last round */
+
+/* Which pool the learner is drilling, as one string. The level name and the topic
+   name together separate a full-level round ("Listening / A1") from any ordinary
+   topic of the same name, and the source list separates "All levels" (no src)
+   from a single level. Indices are NOT used: they shift whenever a level or topic
+   is added, and the slot would silently follow the wrong pool. */
+function lScopeKey(l, t){
+  const lv = LEVELS[l], topic = lv && lv.topics ? lv.topics[t] : null;
+  const src = topic && Array.isArray(topic.src) ? topic.src.slice().sort() : null;
+  /* JSON, not concatenation: a level or a topic whose name happens to contain the
+     separator cannot then collide with a different scope. */
+  return JSON.stringify([lv ? lv.level : "?", topic ? topic.name : "?", src]);
+}
+
+/* What makes two Listening questions "the same question". Not the card, and not
+   the English gloss: the learner hears one Polish clip and nothing else, so two
+   separate cards that play the same word ARE the same question to them - the
+   corpus teaches `woda` in three topics with three glosses. The identity is
+   therefore the heard prompt, normalised exactly the way PP_DISTRACTOR compares
+   options, so "who may share a question" and "what did I just hear" can never
+   drift apart. Diacritics stay meaningful there, and so they do here.
+
+   The id fallback is defensive only. A card with no playable prompt cannot reach
+   Listening today (ppEligibleFor drops it), and giving it its own identity is the
+   safe answer if one ever did: it keeps such cards apart instead of collapsing
+   them all into one bucket. Nothing is written to the card. */
+function lQuestionKey(card){
+  const heard = PP_DISTRACTOR.normalizeKey(ppMainAudioText(card));
+  if(heard) return heard;
+  return card && typeof card.id === "string" && card.id ? "id\u241F" + card.id : "";
+}
+
+/* Choosing a round. Pure: no DOM, no storage, no audio, no L, no Math.random -
+   the shuffle is handed in, so tests/test_listening_variety.js runs this exact
+   function with a deterministic one.
+
+   Shuffle a COPY of the pool, then read it once and drop each card into one of
+   four queues:
+
+     1. a heard prompt this round has not used yet, and the last round did not use;
+     2. a heard prompt this round has not used yet, but the last round did;
+     3. a repeat of a prompt this round already has, unused by the last round;
+     4. a repeat of a prompt this round already has, and the last round used it.
+
+   Taking the queues in that order maximises DISTINCT prompts first, prefers
+   unheard ones among them, and only then falls back to a second card of a prompt
+   already in the round. The round is never shortened to dodge a repeat: a ten-card
+   topic still asks ten questions, because a short round is a worse answer than a
+   familiar one. The result is exactly
+   min(count, distinct source cards available).
+
+   One question per source card, always - the same card object, or the same stable
+   id, can never be asked twice in one round even if the pool lists it twice. */
+function lSelectQuestions(pool, recentKeys, count, shuffle){
+  if(!Array.isArray(pool)) return [];
+  const want = Math.floor(Number(count));
+  if(!(want > 0)) return [];
+  const recent = new Set(Array.isArray(recentKeys) ? recentKeys
+    : (recentKeys && typeof recentKeys.forEach === "function" ? Array.from(recentKeys) : []));
+  const shuffled = typeof shuffle === "function" ? shuffle(pool.slice()) : null;
+  const order = Array.isArray(shuffled) ? shuffled : pool.slice();
+  const seenSource = new Set();       /* stable id, or the card object when it has none */
+  const seenKey = new Set();          /* heard prompts this round already asks */
+  const tiers = [[], [], [], []];
+  order.forEach((item, n) => {
+    const card = item && typeof item === "object" ? (("c" in item) ? item.c : item) : null;
+    if(!card || typeof card !== "object") return;             /* a broken pool entry is skipped, never thrown on */
+    const source = (typeof card.id === "string" && card.id) ? card.id : card;
+    if(seenSource.has(source)) return;
+    seenSource.add(source);
+    const key = lQuestionKey(card) || ("row\u241F" + n);   /* no prompt AND no id: its own identity */
+    const first = !seenKey.has(key);
+    if(first) seenKey.add(key);
+    tiers[(first ? 0 : 2) + (recent.has(key) ? 1 : 0)].push(item);
+  });
+  return tiers[0].concat(tiers[1], tiers[2], tiers[3]).slice(0, want);
+}
+
 /* ---- the Listening result, in words ----
    Colour carried the whole answer here: .opt.correct and .opt.wrong differ only in
    background, border and text colour, which is nothing to a screen reader and not
@@ -3053,7 +3147,16 @@ function startListen(l, t){
   stopAllAudio();   /* every entry into a round starts silent - the topic tile and "New round" both land here */
   L.li=l; L.ti=t; L.topicRef=LEVELS[l].topics[t];
   const pool=poolFor(L.topicRef.src, "listen");   /* recognition: recognition-only cards stay in */
-  L.qs=gShuffle(pool).slice(0,15).map(item=>{
+  /* Sampling, and only sampling, is what changed here: this scope's LAST round is
+     handed to the selector so its questions go to the back of the queue, and the
+     round just chosen becomes what the next one avoids. The memory is updated as
+     soon as the round exists - leaving after one question still counts as "seen",
+     which is exactly the case "New round" is pressed in. Everything below is
+     untouched: the same pool, the same builder, the same four options. */
+  const scope=lScopeKey(l, t);
+  const picked=lSelectQuestions(pool, L_RECENT.get(scope), 15, gShuffle);
+  L_RECENT.set(scope, picked.map(item=>lQuestionKey(item.c)));
+  L.qs=picked.map(item=>{
     const built=PP_DISTRACTOR.buildOptions({
       correct:item, candidates:pool, count:4, shuffle:gShuffle, heardOf:ppMainAudioText
     });

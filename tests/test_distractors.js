@@ -97,6 +97,12 @@ function bodyOf(src, name) {
 function codeOnly(s) {
   return s.replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/(^|[^:])\/\/[^\n]*/g, '$1 ');
 }
+// Whitespace-free view, for source checks whose claim is about TOKENS and their
+// order rather than about how the line happens to be typed. Re-indenting a block,
+// breaking a long statement over two lines or putting spaces around an `=`
+// changes nothing the code does, so none of it may fail a test.
+function squash(s) { return s.replace(/\s+/g, ''); }
+function hasCode(hay, needle) { return squash(hay).indexOf(squash(needle)) !== -1; }
 
 // ---------- injected randomness ----------
 // A seeded shuffle: deterministic, repeatable, and returning a NEW array so a
@@ -1151,13 +1157,21 @@ var CODE_LRENDER = codeOnly(SRC_LRENDER);
 
 ok('H1 Listening builds its options through PP_DISTRACTOR',
    CODE_START_LISTEN.indexOf('PP_DISTRACTOR.buildOptions') !== -1);
-eq('H1 it calls the builder exactly once', countOf(CODE_START_LISTEN, 'PP_DISTRACTOR.buildOptions'), 1);
+// One call site inside the per-question map: the builder runs once for each
+// selected question, never twice for one and never once for the whole round.
+eq('H1 the builder has exactly one call site in startListen',
+   countOf(CODE_START_LISTEN, 'PP_DISTRACTOR.buildOptions'), 1);
 ok('H1 it asks for four options', CODE_START_LISTEN.indexOf('count:4') !== -1);
 ok('H1 it injects the app shuffle', CODE_START_LISTEN.indexOf('shuffle:gShuffle') !== -1);
 ok('H1 it passes the real heard-prompt rule', CODE_START_LISTEN.indexOf('heardOf:ppMainAudioText') !== -1);
 ok('H1 it still draws from the Listening pool',
    CODE_START_LISTEN.indexOf('poolFor(L.topicRef.src, "listen")') !== -1);
-ok('H1 the round is still 15 questions', CODE_START_LISTEN.indexOf('slice(0,15)') !== -1);
+// Phase 3E moved the `.slice(0,15)` INTO lSelectQuestions, which now owns the
+// count so it can prefer prompts the previous round did not use. The claim is
+// unchanged - Listening still asks for fifteen - so only the expression it is
+// read from is narrowed. Variety itself is owned by tests/test_listening_variety.js.
+ok('H1 the round is still 15 questions',
+   /lSelectQuestions\(\s*pool\s*,[^;]*?,\s*15\s*,\s*gShuffle\s*\)/.test(CODE_START_LISTEN));
 
 // The old inline loop is gone - not merely bypassed.
 ok('H2 the inline seen-set is gone', CODE_START_LISTEN.indexOf('new Set(') === -1);
@@ -1173,29 +1187,39 @@ ok('H3 lRender no longer decides correctness by comparing glosses',
 ok('H3 the option button still shows the English gloss', CODE_LRENDER.indexOf('b.textContent=o.label') !== -1);
 
 // First-attempt scoring, retries, reveal, examples and usage labels are untouched.
+// Read through hasCode: the claim is which tokens appear and in what order, never
+// the indentation or the spacing they are typed in.
 ok('H4 a first-attempt success is still the only thing scored',
-   CODE_LRENDER.indexOf('if(!L.attempted) L.results[L.i]=true;') !== -1);
+   hasCode(CODE_LRENDER, 'if(!L.attempted) L.results[L.i]=true;'));
 ok('H4 a wrong answer still marks the question missed',
-   CODE_LRENDER.indexOf('L.attempted=true; L.results[L.i]=false;') !== -1);
+   hasCode(CODE_LRENDER, 'L.attempted=true; L.results[L.i]=false;'));
 ok('H4 a wrong answer still disables only that button',
-   CODE_LRENDER.indexOf('b.classList.add("wrong"); b.disabled=true;') !== -1);
-ok('H4 the Polish is still revealed on success', CODE_LRENDER.indexOf('rv.textContent=q.c.pl') !== -1);
-ok('H4 the example is still shown', CODE_LRENDER.indexOf('q.c.ex') !== -1);
-ok('H4 usage labels are still appended', CODE_LRENDER.indexOf('ppAppendUsageTo(fb, q.c)') !== -1);
-ok('H4 there is still no autoplay', SRC_LRENDER.indexOf('no autoplay') !== -1);
+   hasCode(CODE_LRENDER, 'b.classList.add("wrong"); b.disabled=true;'));
+ok('H4 the Polish is still revealed on success', hasCode(CODE_LRENDER, 'rv.textContent=q.c.pl'));
+ok('H4 the example is still shown', hasCode(CODE_LRENDER, 'q.c.ex'));
+ok('H4 usage labels are still appended', hasCode(CODE_LRENDER, 'ppAppendUsageTo(fb, q.c)'));
+// Autoplay is asserted on the CODE, not on a comment that says so. A comment can
+// be reworded or deleted without changing a thing the learner hears, and pinning
+// its wording teaches people to restore the sentence rather than read it. What
+// must stay true is that rendering a question starts no sound by any route.
+ok('H4 there is still no autoplay: rendering a question starts nothing',
+   ['speakText', 'speakCardMain', 'lPlayCurrent', 'new Audio', 'speechSynthesis.speak']
+     .every(function (entry) { return !hasCode(CODE_LRENDER, entry); }));
 // What matters is that Play still routes the CURRENT question's card through
 // speakCardMain and hands it the Play button - not that the function is still
 // one line long. It has since grown a manifest-readiness guard (Phase 3C), whose
 // own behaviour is owned by tests/test_audio_fallback.js.
 ok('H4 the replay button still speaks the card', (function () {
   var body = codeOnly(bodyOf(INDEX, 'lPlayCurrent'));
-  return body.indexOf('L.i < L.qs.length') !== -1 &&
-         body.indexOf('speakCardMain(L.qs[L.i].c, $("lPlay"))') !== -1;
+  return hasCode(body, 'L.i < L.qs.length') &&
+         hasCode(body, 'speakCardMain(L.qs[L.i].c, $("lPlay"))');
 })());
+// The completion WORDING is a string the learner reads, so it stays pinned
+// exactly - its spacing is content, not formatting.
 ok('H4 the completion wording is unchanged',
    INDEX.indexOf('"You recognised "+score+" of "+L.qs.length+" on the first listen."') !== -1);
 ok('H4 the score is still first-attempt successes',
-   INDEX.indexOf('const score=L.results.filter(Boolean).length') !== -1);
+   hasCode(codeOnly(INDEX), 'const score=L.results.filter(Boolean).length'));
 
 // The Mixed Quiz is Phase 4 territory and must still BEHAVE as it did. What is
 // asserted is its behaviour, its wiring and its independence from this phase -
@@ -1207,8 +1231,19 @@ ok('H5 the Mixed Quiz still builds its options the old way',
 ok('H5 the Mixed Quiz does not use the new builder',
    codeOnly(SRC_STARTROUND).indexOf('PP_DISTRACTOR') === -1 &&
    codeOnly(SRC_RBUILD).indexOf('PP_DISTRACTOR') === -1);
-eq('H5 PP_DISTRACTOR is used in exactly one place in index.html',
-   countOf(codeOnly(INDEX), 'PP_DISTRACTOR'), 1);
+// This suite makes NO application-wide claim about who may call into
+// pp-distractor.js. Counting call sites across index.html was a claim about the
+// app's shape rather than about this file's API, and it was already due to break
+// on purpose: Phase 4 is expected to adopt PP_DISTRACTOR.buildOptions in the
+// Mixed Quiz, which would fail a count while being exactly the intended change.
+// What is asserted instead is scoped to the two callers this phase owns - the
+// assertions above for startListen, and this one for the Phase 3E key - and the
+// Mixed Quiz's independence is asserted directly, immediately above, where Phase
+// 4 will deliberately update it.
+ok('H5 the Listening question key normalises through PP_DISTRACTOR',
+   hasCode(codeOnly(bodyOf(INDEX, 'lQuestionKey')), 'PP_DISTRACTOR.normalizeKey('));
+ok('H5 Listening still builds its options through PP_DISTRACTOR',
+   hasCode(CODE_START_LISTEN, 'PP_DISTRACTOR.buildOptions('));
 ok('H5 rRender still reads plain option strings',
    codeOnly(bodyOf(INDEX, 'rRender')).indexOf('.label') === -1);
 

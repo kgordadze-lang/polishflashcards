@@ -728,12 +728,23 @@ var L_CONTROLS = ['lNext', 'lBack', 'lHome', 'lAgain', 'lPlay'];
 // The last five are Phase 3D's announcement and focus helpers: lRender and the
 // option handlers call them, so the compiled scope needs them to run. Their own
 // behaviour is asserted in tests/test_listening_accessibility.js, not here.
+// Appended after those are Phase 3E's three round-selection helpers, which
+// startListen calls to build L.qs. Which questions a round picks, and what the
+// previous round leaves behind, is asserted in tests/test_listening_variety.js;
+// they are listed here only so the shipping startListen can run at all.
 var LNAMES = ['startListen', 'lRender', 'lPlayCurrent', 'lShowDone', 'lAdvance', 'lExit',
               'syncListeningAudioReadiness',
-              'lSetStatus', 'lAnnounceWrong', 'lAnnounceCorrect', 'lFocusNextOption', 'lFocusQuestion'];
+              'lSetStatus', 'lAnnounceWrong', 'lAnnounceCorrect', 'lFocusNextOption', 'lFocusQuestion',
+              'lScopeKey', 'lQuestionKey', 'lSelectQuestions'];
 var LSRC = {};
 LNAMES.forEach(function (n) { LSRC[n] = extractFunction(INDEX, n); });
+// The session-only previous-round memory, taken from index.html rather than
+// re-declared here, so the compiled scope holds the real thing. It is a plain
+// in-memory Map with no storage behind it - see tests/test_listening_variety.js.
+var L_RECENT_SRC = (INDEX.match(/const\s+L_RECENT\s*=[^;\n]*;/) || [])[0];
+if (!L_RECENT_SRC) throw new Error('extract: Listening previous-round memory L_RECENT not found in index.html');
 var LISTEN = (new Function('$', 'document', 'show', 'L', 'LEVELS', 'poolFor', 'gShuffle', 'ppAppendUsageTo', 'G_AUDIO',
+  L_RECENT_SRC + '\n' +
   LNAMES.map(function (n) { return LSRC[n]; }).join('\n') + '\n' +
   // one wrapper so a test can watch the moment the next question renders
   'var __spy = null, __realRender = lRender;\n' +

@@ -424,17 +424,26 @@ function handlerExpr(id) {
 // PARAMETERS of a generated scope rather than planted as globals. Everything they
 // share with the counters above (stopAllAudio, speakCardMain, Audio) still
 // resolves to the same globals, so what runs is one system.
+// The last three are Phase 3E's round-selection helpers, which startListen calls
+// to build L.qs. What they choose is asserted in tests/test_listening_variety.js;
+// they are listed here only so the shipping startListen can run at all.
 var LNAMES = ['startListen', 'lRender', 'lPlayCurrent', 'lShowDone', 'lAdvance', 'lExit',
               'syncListeningAudioReadiness',
-              'lSetStatus', 'lAnnounceWrong', 'lAnnounceCorrect', 'lFocusNextOption', 'lFocusQuestion'];
+              'lSetStatus', 'lAnnounceWrong', 'lAnnounceCorrect', 'lFocusNextOption', 'lFocusQuestion',
+              'lScopeKey', 'lQuestionKey', 'lSelectQuestions'];
 var LSRC = {};
 LNAMES.forEach(function (n) { LSRC[n] = extractFunction(INDEX, n); });
 var L_CONTROLS = ['lNext', 'lBack', 'lHome', 'lAgain', 'lPlay'];
 var lStateMatch = INDEX.match(/const\s+L\s*=\s*(\{[^}]*\})\s*;/);
 if (!lStateMatch) throw new Error('extract: Listening state object L not found in index.html');
 var L = (0, eval)('(' + lStateMatch[1] + ')');
+// Phase 3E's session-only previous-round memory, taken from index.html rather
+// than re-declared here, so the compiled scope holds the real thing.
+var L_RECENT_SRC = (INDEX.match(/const\s+L_RECENT\s*=[^;\n]*;/) || [])[0];
+if (!L_RECENT_SRC) throw new Error('extract: Listening previous-round memory L_RECENT not found in index.html');
 
 var LISTEN = (new Function('$', 'document', 'show', 'L', 'LEVELS', 'poolFor', 'gShuffle', 'ppAppendUsageTo', 'G_AUDIO',
+  L_RECENT_SRC + '\n' +
   LNAMES.map(function (n) { return LSRC[n]; }).join('\n') + '\n' +
   'return {\n' +
   '  startListen: function(a,b){ return startListen(a,b); },\n' +
