@@ -27,6 +27,18 @@
 //
 // The functions under test are read OUT OF index.html rather than copied here,
 // so the audio path the app ships is literally the audio path under test.
+//
+// SECTIONS 10-18: THE LISTENING AUDIO LIFECYCLE
+// A Listening clip is routinely still running when the learner moves on - they
+// answer as soon as they recognise the word, well before the clip ends. Neither
+// show() nor lRender() touches audio, so every way OUT of a question has to
+// silence it: Next, Back, Home, and starting another round. Those sections drive
+// the real Listening screen code (also read out of index.html) against a fake
+// DOM, and assert both the cleanup and its ORDER - the audio is already released
+// by the time the next question renders or Home appears. They also re-check that
+// Priority 0's settle() latch still makes the abandoned clip's late error /
+// rejection / ended a no-op, which is what keeps the boundary calls from needing
+// any new stale-callback machinery of their own.
 ObjC.import('Foundation');
 
 function readFile(path) {
@@ -471,6 +483,472 @@ stopAllAudio();
 loneAudio.fireError(); loneAudio.rejectPlay('AbortError');
 eq('T9f stopped-with-no-successor speaks nothing', synth.spoken.length, 0);
 ok('T9f button not resurrected', lone.speaking === false && speakBtn === null);
+
+// =========================================================================
+// LISTENING AUDIO LIFECYCLE (sections 10-18)
+// =========================================================================
+// Everything below drives the SHIPPING Listening functions - startListen,
+// lRender, lPlayCurrent, lShowDone and the two boundary helpers - pulled out of
+// index.html the same way the audio functions above are.
+
+// Comment-stripped view of a snippet. Ordering assertions must be decided by
+// code, not by prose that happens to mention a call. Same string/comment machine
+// as extractFunction; used only on snippets already extracted from index.html.
+function stripComments(src) {
+  var out = '', mode = 'code';
+  for (var j = 0; j < src.length; j++) {
+    var c = src[j], n = src[j + 1];
+    if (mode === 'line') { if (c === '\n') { mode = 'code'; out += c; } continue; }
+    if (mode === 'block') { if (c === '*' && n === '/') { mode = 'code'; j++; } continue; }
+    if (mode === 'sq' || mode === 'dq' || mode === 'tpl') {
+      out += c;
+      if (c === '\\') { out += src[j + 1]; j++; continue; }
+      if (mode === 'sq' && c === "'") mode = 'code';
+      else if (mode === 'dq' && c === '"') mode = 'code';
+      else if (mode === 'tpl' && c === '`') mode = 'code';
+      continue;
+    }
+    if (c === '/' && n === '/') { mode = 'line'; j++; continue; }
+    if (c === '/' && n === '*') { mode = 'block'; j++; continue; }
+    if (c === "'" || c === '"' || c === '`') { mode = (c === "'" ? 'sq' : c === '"' ? 'dq' : 'tpl'); out += c; continue; }
+    out += c;
+  }
+  return out;
+}
+
+// The Listening state object ships in index.html - read its shape rather than
+// restating it, so a renamed or added field is caught here.
+var lStateMatch = INDEX.match(/const\s+L\s*=\s*(\{[^}]*\})\s*;/);
+if (!lStateMatch) throw new Error('extract: Listening state object L not found in index.html');
+var L = (0, eval)('(' + lStateMatch[1] + ')');
+
+// ---------- a fake DOM: just enough for the real Listening screen code ----------
+function FakeEl(tag) {
+  this.tag = tag || 'div';
+  this.textContent = '';
+  this.className = '';
+  this.disabled = false;
+  this.style = {};
+  this.children = [];
+  this.classes = {};
+  this._html = '';
+  this._attrs = {};
+  this._on = {};
+  var self = this;
+  this.classList = {
+    add: function (c) { self.classes[c] = true; },
+    remove: function (c) { delete self.classes[c]; },
+    contains: function (c) { return !!self.classes[c]; }
+  };
+}
+// innerHTML replaces every child, exactly as the real property does - that is
+// what lets lRender clear the option row and the feedback box between questions.
+Object.defineProperty(FakeEl.prototype, 'innerHTML', {
+  get: function () { return this._html; },
+  set: function (v) { this._html = String(v); this.children = this._html ? [new FakeEl('parsed')] : []; }
+});
+Object.defineProperty(FakeEl.prototype, 'childNodes', { get: function () { return this.children; } });
+// same accessor FakeBtn exposes, so either kind of button can be checked alike
+Object.defineProperty(FakeEl.prototype, 'speaking', { get: function () { return this.classes.speaking === true; } });
+FakeEl.prototype.appendChild = function (el) { this.children.push(el); return el; };
+FakeEl.prototype.setAttribute = function (k, v) { this._attrs[k] = v; };
+FakeEl.prototype.getAttribute = function (k) { return this._attrs[k]; };
+FakeEl.prototype.addEventListener = function (t, fn) { (this._on[t] = this._on[t] || []).push(fn); };
+FakeEl.prototype.click = function () { (this._on.click || []).forEach(function (fn) { fn({}); }); };
+FakeEl.prototype.querySelectorAll = function (sel) {
+  var want = sel.replace('.', '');
+  return this.children.filter(function (c) { return (' ' + c.className + ' ').indexOf(' ' + want + ' ') !== -1; });
+};
+
+var DOM = {};
+function el(id) { return DOM[id] || (DOM[id] = new FakeEl('#' + id)); }   // index.html's $()
+var fakeDoc = { createElement: function (t) { return new FakeEl(t); } };
+
+// show() is stubbed, and records the audio state AT THE MOMENT IT IS CALLED.
+// That is how "Home is shown only after cleanup" becomes an assertion rather
+// than an assumption.
+var shown = [];
+function pauseTotal() { return FakeAudio.created.reduce(function (n, a) { return n + a.pauses; }, 0); }
+function fakeShow(scr) { shown.push({ scr: scr, audio: currentAudio, pauses: pauseTotal(), btn: speakBtn }); }
+
+// pp-distractor.js is the real builder - index.html calls it with exactly this shape.
+(0, eval)(readFile(ROOT + 'pp-distractor.js'));
+var PP_DISTRACTOR = window.PP_DISTRACTOR;
+
+// A five-card topic. Distinct glosses, distinct heard prompts, so the builder
+// returns four options every time and the round is fully deterministic.
+var LCARDS = [
+  { id: 'l1', pl: 'kawa',    en: 'coffee', ex: 'Poproszę kawę.', exEn: 'A coffee, please.' },
+  { id: 'l2', pl: 'herbata', en: 'tea' },
+  { id: 'l3', pl: 'woda',    en: 'water' },
+  { id: 'l4', pl: 'sok',     en: 'juice' },
+  { id: 'l5', pl: 'mleko',   en: 'milk' }
+];
+var LEVELS = [{ level: 'A1', topics: [{ name: 'W kawiarni', src: ['A1'], kind: 'listen' }] }];
+function fakePoolFor() { return LCARDS.map(function (c) { return { c: c, topic: 'W kawiarni' }; }); }
+function fakeShuffle(a) { return a.slice(); }            // deterministic: identity
+// pp-usage's labelling is owned by tests/test_activities.js; nothing here depends on it.
+function fakeAppendUsage() {}
+var G_AUDIO_STUB = '<svg data-icon="audio"></svg>';
+
+// ---------- reading the wiring out of index.html ----------
+// The click handler expression bound to a Listening control, whatever its shape.
+function handlerExpr(id) {
+  var re = new RegExp('\\$\\(\\s*["\']' + id + '["\']\\s*\\)\\s*\\.addEventListener\\(\\s*["\']click["\']\\s*,([\\s\\S]*?)\\)\\s*;', 'g');
+  var hits = [], m;
+  while ((m = re.exec(INDEX)) !== null) hits.push(m[1].trim());
+  if (hits.length !== 1) throw new Error('wiring: expected exactly one click handler for ' + id + ', found ' + hits.length);
+  return hits[0];
+}
+
+// The Listening functions need $, document, show and the app-level helpers. `$`
+// is already taken in this file - it is JXA's ObjC bridge - so they are handed
+// in as PARAMETERS of a generated scope instead of being planted as globals.
+// Everything they share with the audio path above (stopAllAudio, speakText,
+// speakCardMain, currentAudio, speakBtn) still resolves to the same globals the
+// sections above exercise, so the two halves test one system, not two.
+//
+// The four boundary CONTROLS are compiled into that scope from their handler
+// expressions as index.html writes them, so activate() below runs what the app
+// actually binds - not a copy of it. (They cannot be eval'd on demand instead:
+// under osascript a direct eval inside a nested function resolves globally, so
+// it would not see this scope at all.)
+var L_CONTROLS = ['lNext', 'lBack', 'lHome', 'lAgain'];
+var LNAMES = ['startListen', 'lRender', 'lPlayCurrent', 'lShowDone', 'lAdvance', 'lExit'];
+var LSRC = {};
+LNAMES.forEach(function (n) { LSRC[n] = extractFunction(INDEX, n); });
+var LISTEN = (new Function('$', 'document', 'show', 'L', 'LEVELS', 'poolFor', 'gShuffle', 'ppAppendUsageTo', 'G_AUDIO',
+  LNAMES.map(function (n) { return LSRC[n]; }).join('\n') + '\n' +
+  // one wrapper so a test can watch the moment the next question renders
+  'var __spy = null, __realRender = lRender;\n' +
+  'lRender = function(){ if(__spy) __spy(); return __realRender(); };\n' +
+  'return {\n' +
+  '  spyRender: function(fn){ __spy = fn; },\n' +
+  '  startListen: function(a,b){ return startListen(a,b); },\n' +
+  '  lRender: function(){ return lRender(); },\n' +
+  '  lPlayCurrent: function(){ return lPlayCurrent(); },\n' +
+  '  handlers: {\n' +
+  L_CONTROLS.map(function (id) { return '    ' + id + ': (' + handlerExpr(id) + ')'; }).join(',\n') + '\n' +
+  '  }\n' +
+  '};'
+))(el, fakeDoc, fakeShow, L, LEVELS, fakePoolFor, fakeShuffle, fakeAppendUsage, G_AUDIO_STUB);
+// What actually runs when the control is activated: the expression itself, or
+// the single named function it delegates to. Inline body or named helper both
+// resolve - the assertion is about behaviour, not about which style was chosen.
+function handlerBody(id) {
+  var code = stripComments(handlerExpr(id)).trim();
+  var bare = code.match(/^([A-Za-z_$][A-Za-z0-9_$]*)$/);
+  if (bare) return stripComments(extractFunction(INDEX, bare[1]));
+  var delegate = code.match(/^\(\s*\)\s*=>\s*([A-Za-z_$][A-Za-z0-9_$]*)\s*\(/);
+  if (delegate) return stripComments(extractFunction(INDEX, delegate[1]));
+  return code;
+}
+// Audio must be stopped BEFORE anything the learner can observe changes.
+var L_EFFECTS = ['show(', 'lRender(', 'L.i', 'L.li', 'L.qs', 'L.results', 'L.attempted'];
+function stopsAudioFirst(body) {
+  var stop = body.indexOf('stopAllAudio');
+  if (stop === -1) return false;
+  for (var i = 0; i < L_EFFECTS.length; i++) {
+    var e = body.indexOf(L_EFFECTS[i]);
+    if (e !== -1 && e < stop) return false;
+  }
+  return true;
+}
+function activate(id) { return LISTEN.handlers[id](); }
+
+// ---------- per-test setup ----------
+var L_CLIPS = {
+  'kawa': 'audio/l-kawa.mp3', 'herbata': 'audio/l-herbata.mp3', 'woda': 'audio/l-woda.mp3',
+  'sok': 'audio/l-sok.mp3', 'mleko': 'audio/l-mleko.mp3', 'Poproszę kawę.': 'audio/l-ex-kawa.mp3'
+};
+function lReset() {
+  reset();                                                 // shared audio state, as above
+  Object.keys(L_CLIPS).forEach(function (k) { audioMap[k] = L_CLIPS[k]; });
+  DOM = {}; shown = []; LISTEN.spyRender(null);
+}
+// a fresh round on question 1, nothing playing. The navigation log is cleared
+// AFTER the round opens, so `shown` below holds only what the boundary did.
+function lStart() { lReset(); LISTEN.startListen(0, 0); shown = []; }
+function lPress() { LISTEN.lPlayCurrent(); return lastAudio(); }   // the learner presses Play
+function answerCorrect() {                                  // click the option flagged `correct`
+  var opts = el('lOpts').children, q = L.qs[L.i], idx = -1;
+  q.options.forEach(function (o, i) { if (o.correct) idx = i; });
+  if (idx < 0) throw new Error('fixture: no correct option built for question ' + L.i);
+  opts[idx].click();
+}
+
+// =========================================================================
+// 10. the fixture round itself is sane, and entering it is silent
+lStart();
+eq('T10 a round of every fixture card', L.qs.length, 5);
+eq('T10 starts on question one', L.i, 0);
+ok('T10 four options built', el('lOpts').children.length === 4);
+eq('T10 the counter shows question one', el('lCountLbl').textContent, '1 / 5');
+ok('T10 entering a round autoplays nothing', FakeAudio.created.length === 0 && synth.spoken.length === 0);
+ok('T10 Play starts the current clip', (function () {
+  var clip = lPress();
+  return FakeAudio.created.length === 1 && clip.src === L_CLIPS['kawa'] && currentAudio === clip;
+})());
+ok('T10 Play marks its button speaking', el('lPlay').speaking === true && speakBtn === el('lPlay'));
+
+// =========================================================================
+// 11. A. ADVANCE while the MP3 is playing (Next)
+lStart();
+var lClip = lPress();
+var lBtn = el('lPlay');
+var atRender = [];
+LISTEN.spyRender(function () {
+  atRender.push({ i: L.i, audio: currentAudio, pauses: lClip.pauses, speaking: lBtn.speaking });
+});
+activate('lNext');
+eq('T11 the clip was paused exactly once', lClip.pauses, 1);
+ok('T11 currentAudio released', currentAudio === null);
+ok('T11 the Play button lost its speaking class', lBtn.speaking === false && speakBtn === null);
+ok('T11 speech synthesis was cancelled', synth.cancels >= 1);
+ok('T11 the audio was ALREADY stopped when the next question rendered',
+   atRender.length === 1 && atRender[0].audio === null && atRender[0].pauses === 1 && atRender[0].speaking === false);
+eq('T11 the render that saw the cleanup is the NEXT question', atRender[0].i, 1);
+eq('T11 the round advanced', L.i, 1);
+eq('T11 the next question is on screen', el('lCountLbl').textContent, '2 / 5');
+ok('T11 the next question has its own options', el('lOpts').children.length === 4);
+ok('T11 the next question starts silent - no autoplay',
+   FakeAudio.created.length === 1 && synth.spoken.length === 0);
+ok('T11 the next question can still play its own clip', (function () {
+  var second = lPress();
+  return FakeAudio.created.length === 2 && second !== lClip && currentAudio === second && el('lPlay').speaking === true;
+})());
+
+// advancing off the LAST question lands on the results screen, just as silently
+lStart();
+L.i = 4; LISTEN.lRender();
+var lastClip = lPress();
+activate('lNext');
+eq('T11 the final clip was paused', lastClip.pauses, 1);
+ok('T11 results screen reached with nothing playing', currentAudio === null && speakBtn === null);
+ok('T11 the results screen is showing', el('lDone').style.display === 'flex' && el('lMain').style.display === 'none');
+
+// =========================================================================
+// 12. B/C. EXIT through Back, and through Home - identical guarantees
+['lBack', 'lHome'].forEach(function (id) {
+  lStart();
+  var clip = lPress();
+  var btn = el('lPlay');
+  var cancelsBefore = synth.cancels;
+  activate(id);
+  eq('T12 ' + id + ' paused the clip exactly once', clip.pauses, 1);
+  ok('T12 ' + id + ' released currentAudio', currentAudio === null);
+  ok('T12 ' + id + ' cancelled speech synthesis', synth.cancels > cancelsBefore);
+  ok('T12 ' + id + ' cleared the Play button', btn.speaking === false && speakBtn === null);
+  eq('T12 ' + id + ' went home', shown.length === 1 ? shown[0].scr : shown.map(function (s) { return s.scr; }), 'home');
+  ok('T12 ' + id + ' showed Home only AFTER the cleanup',
+     shown[0].audio === null && shown[0].pauses === 1 && shown[0].btn === null);
+  ok('T12 ' + id + ' started nothing on the way out',
+     FakeAudio.created.length === 1 && synth.spoken.length === 0);
+});
+
+// =========================================================================
+// 13. D. START ANOTHER ROUND - "New round", and the topic tile
+// the previous round's clip cannot follow the learner into the new one
+lStart();
+var againClip = lPress();
+var againBtn = el('lPlay');
+activate('lAgain');
+eq('T13 New round paused the previous clip exactly once', againClip.pauses, 1);
+ok('T13 New round released currentAudio', currentAudio === null);
+ok('T13 New round cleared the speaking button', againBtn.speaking === false && speakBtn === null);
+ok('T13 New round cancelled speech synthesis', synth.cancels >= 1);
+eq('T13 the new round starts on question one', L.i, 0);
+eq('T13 the new round is a full round', L.qs.length, 5);
+eq('T13 the new round has a clean score', L.results.length, 0);
+eq('T13 the new round is on screen', el('lCountLbl').textContent, '1 / 5');
+ok('T13 the new round autoplays nothing',
+   FakeAudio.created.length === 1 && synth.spoken.length === 0);
+
+// an EXAMPLE clip - not the question clip - is stopped by the same boundary
+lStart();
+var exMini = new FakeBtn('mini');
+speakText('Poproszę kawę.', exMini);
+var exClip = lastAudio();
+ok('T13 the example clip is the live one', currentAudio === exClip && exMini.speaking === true);
+activate('lAgain');
+eq('T13 New round paused the example clip', exClip.pauses, 1);
+ok('T13 New round released the example clip', currentAudio === null && exMini.speaking === false);
+
+// entering from the topic tile: routeTopic calls startListen directly, with
+// whatever the previous screen left playing
+lReset();
+var homeBtn = new FakeBtn('card');
+speakText('kawa', homeBtn);
+var carried = lastAudio();
+LISTEN.startListen(0, 0);
+eq('T13 the topic tile paused the carried-over clip', carried.pauses, 1);
+ok('T13 the topic tile entry is silent', currentAudio === null && homeBtn.speaking === false);
+ok('T13 the topic tile round rendered', L.qs.length === 5 && L.i === 0);
+
+// =========================================================================
+// 14. E. SPEECH-SYNTHESIS playback is cancelled at the boundaries too,
+//        and the score is not touched on the way through
+lStart();
+answerCorrect();
+eq('T14 the first try scored', L.results, [true]);
+delete audioMap['kawa'];                          // no clip -> the device voice takes over
+var fbBtn = el('lPlay');
+lPress();
+eq('T14 the fallback voice is speaking', synth.spoken.length, 1);
+ok('T14 the fallback owns the button', fbBtn.speaking === true && speakBtn === fbBtn);
+var cancelsPre = synth.cancels;
+activate('lNext');
+ok('T14 advancing cancelled the utterance', synth.cancels > cancelsPre);
+ok('T14 advancing cleared the button', fbBtn.speaking === false && speakBtn === null);
+eq('T14 the score is unchanged by advancing', L.results, [true]);
+eq('T14 the round advanced', L.i, 1);
+eq('T14 advancing started no new speech', synth.spoken.length, 1);
+// and on the way out
+lStart();
+answerCorrect();
+delete audioMap['kawa'];
+lPress();
+var exitCancels = synth.cancels;
+activate('lHome');
+ok('T14 exiting cancelled the utterance', synth.cancels > exitCancels);
+ok('T14 exiting cleared the button', el('lPlay').speaking === false && speakBtn === null);
+eq('T14 the score is unchanged by exiting', L.results, [true]);
+ok('T14 speech was cancelled before Home appeared', shown[0].btn === null && shown[0].audio === null);
+
+// =========================================================================
+// 15. F. a LATE error / rejected play() from a clip abandoned at a boundary
+//        must stay stale. settle() already refuses to act for an element that
+//        is no longer currentAudio, and the boundary call is what releases it.
+[['lNext', 'advance'], ['lBack', 'Back'], ['lHome', 'Home']].forEach(function (pair) {
+  var id = pair[0], what = pair[1];
+  // rejection first, then error
+  lStart();
+  var clip = lPress();
+  activate(id);
+  clip.rejectPlay('AbortError');
+  eq('T15 ' + what + ': the abandoned clip\'s rejection speaks nothing', synth.spoken.length, 0);
+  clip.fireError();
+  eq('T15 ' + what + ': the following error speaks nothing', synth.spoken.length, 0);
+  ok('T15 ' + what + ': nothing was resurrected', currentAudio === null && speakBtn === null);
+  // error first, then rejection
+  lStart();
+  clip = lPress();
+  activate(id);
+  clip.fireError();
+  eq('T15 ' + what + ': the abandoned clip\'s error speaks nothing', synth.spoken.length, 0);
+  clip.rejectPlay('AbortError');
+  eq('T15 ' + what + ': the following rejection speaks nothing', synth.spoken.length, 0);
+  ok('T15 ' + what + ': the Play button was not re-marked', el('lPlay').speaking === false);
+});
+// a stale signal must not spoil the NEXT question's own failure handling
+lStart();
+var staleClip = lPress();
+activate('lNext');
+staleClip.fireError(); staleClip.rejectPlay('AbortError');
+var liveClip = lPress();
+liveClip.fireError(); liveClip.rejectPlay();
+eq('T15 the next question still falls back exactly once', synth.spoken.length, 1);
+eq('T15 and it spoke the NEW question', synth.spoken[0].text, 'herbata');
+
+// =========================================================================
+// 16. G. a LATE `ended` from question one must not disturb question two
+lStart();
+var q1 = lPress();
+activate('lNext');
+var q2 = lPress();
+ok('T16 question two owns the audio', currentAudio === q2 && q2 !== q1);
+ok('T16 question two owns the button', el('lPlay').speaking === true && speakBtn === el('lPlay'));
+q1.fireEnded();
+ok('T16 question two is still current', currentAudio === q2);
+ok('T16 question two keeps its speaking class', el('lPlay').speaking === true && speakBtn === el('lPlay'));
+eq('T16 the round did not move', L.i, 1);
+eq('T16 the score was not touched', L.results.length, 0);
+eq('T16 nothing was spoken', synth.spoken.length, 0);
+q2.fireEnded();
+ok('T16 question two still ends cleanly on its own', currentAudio === null && el('lPlay').speaking === false);
+eq('T16 a clean end speaks nothing', synth.spoken.length, 0);
+// the same after an EXIT rather than an advance
+lStart();
+var goneClip = lPress();
+activate('lBack');
+goneClip.fireEnded();
+ok('T16 an abandoned clip\'s ended changes nothing on the way out',
+   currentAudio === null && speakBtn === null && shown.length === 1);
+eq('T16 and speaks nothing', synth.spoken.length, 0);
+
+// =========================================================================
+// 17. H. the FEEDBACK EXAMPLE's mini-audio goes through the same lifecycle
+lStart();
+answerCorrect();
+var fbHtml = el('lFbBox').innerHTML;
+var sayMatch = fbHtml.match(/data-say="([^"]*)"/);
+ok('T17 the correct answer offers the example clip', !!sayMatch);
+var sayText = decodeURIComponent(sayMatch[1]);
+eq('T17 the mini-audio plays the example sentence', sayText, 'Poproszę kawę.');
+// exactly what the delegated [data-say] listener does with that button
+var mini = new FakeBtn('mini-audio');
+speakText(sayText, mini);
+var exampleClip = lastAudio();
+ok('T17 the example clip is live', currentAudio === exampleClip && mini.speaking === true);
+activate('lNext');
+eq('T17 advancing paused the example clip exactly once', exampleClip.pauses, 1);
+ok('T17 advancing released it', currentAudio === null);
+ok('T17 advancing cleared the mini-audio button', mini.speaking === false && speakBtn === null);
+eq('T17 the round advanced', L.i, 1);
+ok('T17 the next question starts silent', el('lPlay').speaking === false);
+exampleClip.rejectPlay('AbortError'); exampleClip.fireError();
+eq('T17 the abandoned example clip speaks no fallback', synth.spoken.length, 0);
+// and on the way out
+lStart();
+answerCorrect();
+var mini2 = new FakeBtn('mini-audio');
+speakText(decodeURIComponent(el('lFbBox').innerHTML.match(/data-say="([^"]*)"/)[1]), mini2);
+var exampleClip2 = lastAudio();
+activate('lHome');
+eq('T17 exiting paused the example clip', exampleClip2.pauses, 1);
+ok('T17 exiting cleared the mini-audio button', mini2.speaking === false && currentAudio === null);
+ok('T17 Home appeared only after the example clip was released',
+   shown[0].audio === null && shown[0].btn === null && shown[0].pauses === 1);
+
+// =========================================================================
+// 18. I. WIRING - every Listening boundary in index.html is protected, and the
+//        protection runs BEFORE anything the learner can observe changes.
+ok('T18 Next stops audio before the question changes', stopsAudioFirst(handlerBody('lNext')));
+ok('T18 Back stops audio before leaving', stopsAudioFirst(handlerBody('lBack')));
+ok('T18 Home stops audio before leaving', stopsAudioFirst(handlerBody('lHome')));
+ok('T18 New round stops audio before rebuilding the round', stopsAudioFirst(handlerBody('lAgain')));
+ok('T18 startListen stops audio first, so every round entry is covered',
+   stopsAudioFirst(stripComments(LSRC.startListen)));
+ok('T18 Play is still wired to lPlayCurrent', handlerExpr('lPlay') === 'lPlayCurrent');
+// routeTopic is the OTHER way into a round - the topic tile
+ok('T18 the topic tile routes Listening through startListen',
+   /kind\s*===\s*"listen"\s*\)\s*startListen\(/.test(stripComments(extractFunction(INDEX, 'routeTopic'))));
+// the feedback example shares currentAudio ownership because it goes through speakText
+ok('T18 [data-say] audio is played by speakText',
+   /closest\("\[data-say\]"\)[\s\S]{0,120}speakText\(/.test(INDEX));
+// the boundaries must delegate to stopAllAudio, not hand-roll their own cleanup
+['lNext', 'lBack', 'lHome', 'lAgain'].forEach(function (id) {
+  var body = handlerBody(id);
+  ok('T18 ' + id + ' does not hand-roll pausing',
+     body.indexOf('.pause(') === -1 && body.indexOf('speechSynthesis') === -1 && body.indexOf('speakBtn') === -1);
+});
+// Priority 0's audio functions are untouched by this phase
+ok('T18 stopAllAudio still pauses, releases, cancels and clears', (function () {
+  var s = stripComments(SRC.stopAllAudio);
+  return /currentAudio\s*\.\s*pause\(\)|currentAudio\.pause\(\)/.test(s) && /currentAudio\s*=\s*null/.test(s) &&
+         s.indexOf('speechSynthesis.cancel()') !== -1 && s.indexOf('clearSpeaking()') !== -1;
+})());
+ok('T18 settle() still keys off the live currentAudio',
+   /currentAudio\s*!==\s*audio/.test(stripComments(SRC.playPreGenerated)));
+// no autoplay was introduced: rendering a question never starts playback
+ok('T18 lRender starts no audio', (function () {
+  var s = stripComments(LSRC.lRender);
+  return s.indexOf('speakText') === -1 && s.indexOf('speakCardMain') === -1 && s.indexOf('lPlayCurrent') === -1;
+})());
+ok('T18 startListen starts no audio', (function () {
+  var s = stripComments(LSRC.startListen);
+  return s.indexOf('speakText') === -1 && s.indexOf('speakCardMain') === -1 && s.indexOf('lPlayCurrent') === -1;
+})());
 
 // ---------- report ----------
 console.log('Audio fallback tests: ' + PASS + ' passed, ' + FAIL + ' failed.');

@@ -2914,6 +2914,7 @@ $("tInput").addEventListener("keydown", e=>{
 const L = { topicRef:null, li:0, ti:0, qs:[], i:0, results:[], attempted:false };
 
 function startListen(l, t){
+  stopAllAudio();   /* every entry into a round starts silent - the topic tile and "New round" both land here */
   L.li=l; L.ti=t; L.topicRef=LEVELS[l].topics[t];
   const pool=poolFor(L.topicRef.src, "listen");   /* recognition: recognition-only cards stay in */
   L.qs=gShuffle(pool).slice(0,15).map(item=>{
@@ -2976,11 +2977,26 @@ function lShowDone(){
     : "You recognised "+score+" of "+L.qs.length+" on the first listen.";
   if(window.PP_A2HS) window.PP_A2HS.bump(3);
 }
-$("lBack").addEventListener("click", ()=>show("home"));
+/* ---- Listening boundaries: every way out of a question silences it first ----
+   The learner starts each clip with Play and may answer while it is still
+   running, so a live clip at the moment they advance or leave is the ordinary
+   case, not an edge one. Neither show() nor lRender() touches audio, so without
+   these calls the clip played on over the next question - or over the home
+   screen, after Back or Home.
+
+   The same call is what makes the abandoned clip's LATE signals stale, and no
+   extra guard is needed for them: stopAllAudio() releases currentAudio, and
+   playPreGenerated's settle() only cleans up or falls back while its own element
+   is still currentAudio. So the aborted play() rejection that pause() guarantees,
+   plus any error or ended that follows, speak nothing and cannot strip the
+   "speaking" class off whatever the learner starts next. */
+function lAdvance(){ stopAllAudio(); L.i++; lRender(); }
+function lExit(){ stopAllAudio(); show("home"); }
+$("lBack").addEventListener("click", lExit);
 $("lPlay").addEventListener("click", lPlayCurrent);
-$("lNext").addEventListener("click", ()=>{ L.i++; lRender(); });
-$("lAgain").addEventListener("click", ()=>startListen(L.li, L.ti));
-$("lHome").addEventListener("click", ()=>show("home"));
+$("lNext").addEventListener("click", lAdvance);
+$("lAgain").addEventListener("click", ()=>startListen(L.li, L.ti));   /* startListen stops audio itself - no second call here */
+$("lHome").addEventListener("click", lExit);
 
 
 /* ---------------- Practice this set: a mixed round over one topic's cards ----------------
