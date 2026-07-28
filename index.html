@@ -640,6 +640,13 @@
   .drill{flex:1;display:flex;flex-direction:column;padding:10px 0 0}
   .drill-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:26px 22px;display:flex;flex-direction:column}
   .d-type{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:#94a3b8;margin-bottom:14px}
+  /* The two Listening focus ANCHORS. Both are tabindex="-1", so neither is a tab
+     stop and neither is keyboard-operable - focus only ever arrives here because
+     lRender or lShowDone put it here, to anchor the reader on what just changed.
+     Left alone the browser draws its default ring around them, which is a box
+     around a label nobody tabbed to. Every real control keeps its :focus-visible
+     ring; this turns one off for two elements that cannot be reached by Tab. */
+  #lPrompt:focus,#lDoneTitle:focus{outline:none}
   .q-prompt{font-size:22px;font-weight:800;line-height:1.35;letter-spacing:-.4px;color:var(--forest)}
   .q-prompt .blank{display:inline-block;min-width:56px;border-bottom:3px solid var(--emerald);margin:0 3px;vertical-align:middle;height:1.1em}
   .q-en{font-size:14px;color:var(--muted);font-weight:500;margin-top:8px}
@@ -650,6 +657,18 @@
   .opt:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
   .opt.correct{background:var(--ok-bg);border-color:var(--ok-border);color:var(--ok-text)}
   .opt.wrong{background:#fbeee8;border-color:var(--coral);color:var(--coral-hover)}
+  /* The result in WORDS, not in colour alone. It sits on its own line under the
+     gloss, so a long English answer still wraps and nothing is pushed sideways at
+     375px. Screen readers are served by the button's aria-label and by #lStatus,
+     never by this - generated content is decoration that some readers skip. */
+  .opt.correct::after,.opt.wrong::after{display:block;margin-top:5px;font-size:11.5px;
+    font-weight:800;letter-spacing:.5px;text-transform:uppercase}
+  /* A no-break space, and the trailing space after it is the ESCAPE TERMINATOR, not
+     a second gap. A plain space straight after \2713 would be eaten as that escape's
+     terminator and print "✓Correct"; \00a0 without the terminator is worse, because
+     "C" is itself a hex digit and CSS would read \00a0C as one code point. */
+  .opt.correct::after{content:"\2713\00a0 Correct"}
+  .opt.wrong::after{content:"\2715\00a0 Try again"}
   .build-row{min-height:56px;border:1.5px dashed #c7d3db;border-radius:14px;background:#fbfdfe;margin-top:20px;padding:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
   .build-row.empty::before{content:"Tap words below to build the sentence";color:#aebbc4;font-size:13px;font-weight:500;padding:4px 6px}
   .build-row.shake{animation:shake .32s}
@@ -1122,7 +1141,9 @@
     <div id="lMain" style="display:flex;flex-direction:column;flex:1">
       <div class="drill">
         <div class="drill-card">
-          <div class="d-type">What did you hear?</div>
+          <!-- the one part of the question that never moves: when the manifest is still
+               in flight and Play is unpressable, this is where a new question puts focus. -->
+          <div class="d-type" id="lPrompt" tabindex="-1">What did you hear?</div>
           <!-- starts unpressable: until audio-manifest.json settles, a press would hear
                the device voice for a phrase that has a real clip waiting. syncListeningAudioReadiness() owns this state from here on. -->
           <button class="l-play" id="lPlay" aria-label="Polish audio is loading" aria-busy="true" disabled>
@@ -1130,7 +1151,14 @@
           </button>
           <div class="l-reveal" id="lReveal" lang="pl"></div>
           <div class="opts" id="lOpts"></div>
-          <div class="fb-box" id="lFbBox" aria-live="polite"></div>
+          <!-- NOT a live region any more. What it holds is OPTIONAL - an example, a usage
+               chip, a warning - so on an ordinary card it stayed empty and announced
+               nothing, and on a rich card it raced lStatus below. It is now ordinary
+               content the learner reads on demand; lStatus owns the result. -->
+          <div class="fb-box" id="lFbBox"></div>
+          <!-- the single immediate result announcement: one polite atomic region, so a
+               correct or wrong answer is spoken once whether or not the card is rich. -->
+          <div class="sr-only" id="lStatus" role="status" aria-live="polite" aria-atomic="true"></div>
         </div>
         <div class="controls">
           <button class="ctrl" id="lNext" disabled>
@@ -1144,7 +1172,9 @@
       <div class="done-badge">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
       </div>
-      <h2>Brawo!</h2>
+      <!-- lShowDone focuses this, so the reader lands on the result rather than on
+           "New round" - the buttons stay after it in the ordinary tab order. -->
+      <h2 id="lDoneTitle" tabindex="-1">Brawo!</h2>
       <p id="lDoneMsg"></p>
       <div class="stat-row">
         <div class="stat"><b class="know-n" id="lScoreN">0</b><span>FIRST TRY</span></div>
@@ -2960,6 +2990,65 @@ $("tInput").addEventListener("keydown", e=>{
    whose text happens to match. See pp-distractor.js. */
 const L = { topicRef:null, li:0, ti:0, qs:[], i:0, results:[], attempted:false };
 
+/* ---- the Listening result, in words ----
+   Colour carried the whole answer here: .opt.correct and .opt.wrong differ only in
+   background, border and text colour, which is nothing to a screen reader and not
+   enough on its own for anyone who cannot separate the two hues. The result is now
+   said three ways - a visible word on the button (CSS ::after), the button's
+   accessible name, and this one polite region - and the three are independent, so
+   losing any one of them still leaves the answer legible.
+
+   Text nodes only, never innerHTML: an English gloss or a Polish phrase may carry
+   an ampersand, a quote or an angle bracket, and here it is content, not markup.
+   Nothing written here is kept in L or persisted - it describes this moment on
+   screen and is rebuilt from scratch each time. */
+function lSetStatus(parts){
+  const box=$("lStatus"); if(!box) return;
+  box.textContent="";                                  /* drops the previous announcement's nodes */
+  (parts||[]).forEach(p=>box.appendChild(typeof p==="string" ? document.createTextNode(p) : p));
+}
+/* Naming the option that was just rejected is what makes two wrong answers in a row
+   two DIFFERENT strings: an option is disabled once chosen, so no label can be
+   announced twice, and a polite region that would drop an unchanged message has
+   something changed to read every time. */
+function lAnnounceWrong(label){
+  lSetStatus([label + " is not correct. Try another answer."]);
+}
+/* The Polish answer travels in its own lang="pl" node so a reader that switches
+   voices pronounces it as Polish instead of reading it as English. */
+function lAnnounceCorrect(pl){
+  const answer=document.createElement("span");
+  answer.setAttribute("lang","pl");
+  answer.textContent=pl;
+  lSetStatus(["Correct. The Polish answer is ", answer, ". Next is ready."]);
+}
+
+/* Focus after a wrong answer. The chosen button is disabled while it still holds
+   focus, and a disabled element cannot keep it - without this the learner is
+   dropped on <body> and has to tab back in from the top of the page. The correct
+   option is never disabled before the round is won, so on a real question there is
+   always somewhere to land; the wrap keeps the last option from being a dead end. */
+function lFocusNextOption(box, from){
+  const opts=Array.prototype.slice.call(box.querySelectorAll(".opt"));
+  const at=opts.indexOf(from);
+  for(let k=1;k<=opts.length;k++){
+    const next=opts[(at+k+opts.length)%opts.length];
+    if(next && !next.disabled){ next.focus(); return next; }
+  }
+  return null;
+}
+/* Where a NEW question puts focus. Play when it can be pressed, and the question
+   prompt while the manifest is still in flight and Play is closed - focusing a
+   disabled button does nothing, which is the case that used to leave focus on
+   <body>. Neither branch plays anything: this moves focus and nothing else. */
+function lFocusQuestion(){
+  const play=$("lPlay");
+  if(play && !play.disabled){ play.focus(); return play; }
+  const prompt=$("lPrompt");
+  if(prompt){ prompt.focus(); return prompt; }
+  return null;
+}
+
 function startListen(l, t){
   stopAllAudio();   /* every entry into a round starts silent - the topic tile and "New round" both land here */
   L.li=l; L.ti=t; L.topicRef=LEVELS[l].topics[t];
@@ -2984,6 +3073,7 @@ function lRender(){
   $("lFill").style.width=(L.i/L.qs.length*100)+"%";
   const rv=$("lReveal"); rv.classList.remove("show"); rv.textContent="";
   const fb=$("lFbBox"); fb.classList.remove("show"); fb.innerHTML="";
+  lSetStatus([]);                         /* the previous question's result must not linger */
   $("lNext").disabled=true;
   $("lNextLabel").textContent = L.i===L.qs.length-1 ? "See results" : "Next";
   const box=$("lOpts"); box.innerHTML="";
@@ -2993,6 +3083,7 @@ function lRender(){
     b.addEventListener("click", ()=>{
       if(o.correct){          /* the retained source, not a string match: two cards can share a gloss */
         b.classList.add("correct");
+        b.setAttribute("aria-label", o.label + ", correct");   /* the state, not only the colour */
         box.querySelectorAll(".opt").forEach(x=>x.disabled=true);
         if(!L.attempted) L.results[L.i]=true;
         rv.textContent=q.c.pl; rv.classList.add("show");
@@ -3001,15 +3092,24 @@ function lRender(){
         if(exHtml){ fb.innerHTML=exHtml; }
         ppAppendUsageTo(fb, q.c);          /* recognition-only cards stay in Listening, so label them here */
         if(fb.childNodes.length) fb.classList.add("show");
+        lAnnounceCorrect(q.c.pl);        /* announced before Next moves, so the reader hears why it moved */
         $("lNext").disabled=false;
+        $("lNext").focus();              /* only ever after it is enabled - focus cannot land on a closed button */
       } else {
         b.classList.add("wrong"); b.disabled=true;
+        b.setAttribute("aria-label", o.label + ", incorrect. Try again");
         L.attempted=true; L.results[L.i]=false;
+        lAnnounceWrong(o.label);         /* say it first, then move - the move is what the reader lands on */
+        lFocusNextOption(box, b);
       }
     });
     box.appendChild(b);
   });
-  /* no autoplay - the learner starts each clip with the play button */
+  /* Focus goes to the new question LAST, once the options exist: lNext was just
+     disabled above and may have been holding focus, which a browser answers by
+     dropping focus to <body>. no autoplay - the learner starts each clip with the
+     play button, and this moves focus without touching audio. */
+  lFocusQuestion();
 }
 /* Listening is the one activity built entirely around hearing the phrase, so it
    is the one that must not be pressed before the manifest settles. This owns the
@@ -3018,7 +3118,12 @@ function lRender(){
    (settleAudioManifest). Both call this; nothing polls, nothing retries.
 
    The icon and the layout are untouched - only `disabled`, `aria-busy` and the
-   label move - so the button never resizes or jumps as it becomes pressable. */
+   label move - so the button never resizes or jumps as it becomes pressable.
+
+   It also moves NO focus, deliberately. Settlement lands whenever the network
+   answers, long after lRender chose a focus target, and by then the learner may be
+   part-way down the options; pulling them back to Play would be the manifest
+   interrupting them. lRender is the only thing that places focus on a question. */
 function syncListeningAudioReadiness(){
   const btn = $("lPlay");
   if(!btn) return;
@@ -3052,6 +3157,11 @@ function lShowDone(){
   $("lDoneMsg").textContent = score===L.qs.length
     ? "Every one recognised on the first listen. \u015awietnie!"
     : "You recognised "+score+" of "+L.qs.length+" on the first listen.";
+  lSetStatus([]);          /* the last question's result is over; the panel below says everything now */
+  /* Land on the result, not on "New round". The heading is the top of what just
+     changed, and the two buttons stay after it in the ordinary tab order - so the
+     score is read first and acted on second, which is the order it is written in. */
+  const title=$("lDoneTitle"); if(title) title.focus();
   if(window.PP_A2HS) window.PP_A2HS.bump(3);
 }
 /* ---- Listening boundaries: every way out of a question silences it first ----

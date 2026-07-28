@@ -650,6 +650,12 @@ Object.defineProperty(FakeEl.prototype, 'childNodes', { get: function () { retur
 // same accessor FakeBtn exposes, so either kind of button can be checked alike
 Object.defineProperty(FakeEl.prototype, 'speaking', { get: function () { return this.classes.speaking === true; } });
 FakeEl.prototype.appendChild = function (el) { this.children.push(el); return el; };
+// Phase 3D moves focus at the end of every question and after every answer. Nothing
+// in THIS file asserts on focus - where it lands is owned by
+// tests/test_listening_accessibility.js - but the calls have to exist for the real
+// lRender to run at all, so the fake records the last one and no more.
+FakeEl.prototype.focus = function () { FakeEl.lastFocused = this; };
+FakeEl.lastFocused = null;
 FakeEl.prototype.setAttribute = function (k, v) { this._attrs[k] = v; };
 FakeEl.prototype.getAttribute = function (k) { return this._attrs[k]; };
 FakeEl.prototype.addEventListener = function (t, fn) { (this._on[t] = this._on[t] || []).push(fn); };
@@ -661,7 +667,13 @@ FakeEl.prototype.querySelectorAll = function (sel) {
 
 var DOM = {};
 function el(id) { return DOM[id] || (DOM[id] = new FakeEl('#' + id)); }   // index.html's $()
-var fakeDoc = { createElement: function (t) { return new FakeEl(t); } };
+// createTextNode joins createElement because Phase 3D's status region is built from
+// text nodes rather than from an HTML string. A text node needs nothing but its
+// text here, so it is the smallest object the real code can append.
+var fakeDoc = {
+  createElement: function (t) { return new FakeEl(t); },
+  createTextNode: function (t) { return { nodeType: 3, textContent: String(t) }; }
+};
 
 // show() is stubbed, and records the audio state AT THE MOMENT IT IS CALLED.
 // That is how "Home is shown only after cleanup" becomes an assertion rather
@@ -713,8 +725,12 @@ function handlerExpr(id) {
 // under osascript a direct eval inside a nested function resolves globally, so
 // it would not see this scope at all.)
 var L_CONTROLS = ['lNext', 'lBack', 'lHome', 'lAgain', 'lPlay'];
+// The last five are Phase 3D's announcement and focus helpers: lRender and the
+// option handlers call them, so the compiled scope needs them to run. Their own
+// behaviour is asserted in tests/test_listening_accessibility.js, not here.
 var LNAMES = ['startListen', 'lRender', 'lPlayCurrent', 'lShowDone', 'lAdvance', 'lExit',
-              'syncListeningAudioReadiness'];
+              'syncListeningAudioReadiness',
+              'lSetStatus', 'lAnnounceWrong', 'lAnnounceCorrect', 'lFocusNextOption', 'lFocusQuestion'];
 var LSRC = {};
 LNAMES.forEach(function (n) { LSRC[n] = extractFunction(INDEX, n); });
 var LISTEN = (new Function('$', 'document', 'show', 'L', 'LEVELS', 'poolFor', 'gShuffle', 'ppAppendUsageTo', 'G_AUDIO',
