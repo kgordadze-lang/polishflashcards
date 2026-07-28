@@ -39,6 +39,18 @@
 // Priority 0's settle() latch still makes the abandoned clip's late error /
 // rejection / ended a no-op, which is what keeps the boundary calls from needing
 // any new stale-callback machinery of their own.
+//
+// SECTIONS 19-20: MANIFEST READINESS
+// audioMap is empty for the whole time audio-manifest.json is in flight, and an
+// empty map reads exactly like "this phrase has no clip" - so a press during
+// that window heard the device voice for a phrase that HAS a Marek recording,
+// while the identical press a second later played the MP3. audioManifestStatus
+// is what tells "not known yet" apart from "not there", and Listening's Play
+// button is held closed until it settles. Those sections drive the real
+// settlement function, the real load statement (against a fake fetch), and the
+// real Listening screen, and pin down the thing that makes gating safe on
+// mobile: settlement OPENS the button and plays nothing - no queued first press,
+// no autoplay, no stale phrase from a question the learner already left.
 ObjC.import('Foundation');
 
 function readFile(path) {
@@ -102,10 +114,47 @@ function extractFunction(src, name) {
   throw new Error('extract: unbalanced braces for ' + name);
 }
 
+// The manifest load is a top-level STATEMENT, not a function, so it is pulled out
+// by scanning to the semicolon that closes it - same string/comment machine as
+// above, plus bracket depth so the semicolons inside the chain don't end it.
+function extractStatement(src, needle) {
+  var start = src.indexOf(needle);
+  if (start === -1) throw new Error('extract: statement ' + needle + ' not found in index.html');
+  if (src.indexOf(needle, start + 1) !== -1) throw new Error('extract: statement ' + needle + ' appears more than once');
+  var depth = 0, mode = 'code';
+  for (var j = start; j < src.length; j++) {
+    var c = src[j], n = src[j + 1];
+    if (mode === 'line') { if (c === '\n') mode = 'code'; continue; }
+    if (mode === 'block') { if (c === '*' && n === '/') { mode = 'code'; j++; } continue; }
+    if (mode === 'sq' || mode === 'dq' || mode === 'tpl') {
+      if (c === '\\') { j++; continue; }
+      if (mode === 'sq' && c === "'") mode = 'code';
+      else if (mode === 'dq' && c === '"') mode = 'code';
+      else if (mode === 'tpl' && c === '`') mode = 'code';
+      continue;
+    }
+    if (c === '/' && n === '/') { mode = 'line'; j++; continue; }
+    if (c === '/' && n === '*') { mode = 'block'; j++; continue; }
+    if (c === "'") { mode = 'sq'; continue; }
+    if (c === '"') { mode = 'dq'; continue; }
+    if (c === '`') { mode = 'tpl'; continue; }
+    if (c === '(' || c === '{' || c === '[') depth++;
+    else if (c === ')' || c === '}' || c === ']') depth--;
+    else if (c === ';' && depth === 0) return src.slice(start, j + 1);
+  }
+  throw new Error('extract: unterminated statement ' + needle);
+}
+
 var SRC = {};
 ['ppNormalize', 'clearSpeaking', 'stopAllAudio', 'speakText',
- 'playPreGenerated', 'speakCardMain', 'speakFallback', 'currentRate'
+ 'playPreGenerated', 'speakCardMain', 'speakFallback', 'currentRate',
+ 'settleAudioManifest'
 ].forEach(function (n) { SRC[n] = extractFunction(INDEX, n); });
+
+// The startup load, exactly as index.html writes it. Section 19D runs this
+// against a fake fetch, so the HTTP / JSON / network failure routes are tested
+// as WIRED rather than as described.
+var MANIFEST_LOAD = extractStatement(INDEX, 'fetch("audio-manifest.json"');
 
 // The speed table ships in index.html too - read it rather than restating it,
 // so a changed rate is caught here instead of silently passing.
@@ -178,12 +227,57 @@ var Audio = FakeAudio;
 var voiceHintCalls = 0;
 function voiceHint() { voiceHintCalls++; }             // real one touches localStorage + DOM
 
+// A synchronous stand-in for the promise chain the manifest load builds. Same
+// reason as Thenable above - osascript drains no microtask queue - but this one
+// has to CHAIN, because the shipping code is fetch().then().then().catch(). Each
+// link runs the moment a value or error reaches it, and a link that returns a
+// thenable (r.json()) is waited on, which is the whole shape under test.
+function SyncP() { this.links = []; this.state = null; this.value = undefined; }
+SyncP.prototype.then = function (onF, onR) {
+  var next = new SyncP(), link = { f: onF, r: onR, next: next };
+  this.links.push(link);
+  if (this.state) this._run(link);
+  return next;
+};
+SyncP.prototype.catch = function (onR) { return this.then(null, onR); };
+SyncP.prototype._run = function (link) {
+  var h = this.state === 'ok' ? link.f : link.r;
+  if (typeof h !== 'function') { link.next.settle(this.state, this.value); return; }   // pass it along
+  var out;
+  try { out = h(this.value); } catch (e) { link.next.settle('err', e); return; }
+  if (out && typeof out.then === 'function') {
+    out.then(function (x) { link.next.settle('ok', x); }, function (x) { link.next.settle('err', x); });
+    return;
+  }
+  link.next.settle('ok', out);
+};
+SyncP.prototype.settle = function (state, v) {
+  if (this.state) return;                                // a promise settles once
+  this.state = state; this.value = v;
+  var self = this;
+  this.links.forEach(function (l) { self._run(l); });
+};
+SyncP.prototype.resolve = function (v) { this.settle('ok', v); };
+SyncP.prototype.reject = function (e) { this.settle('err', e); };
+
+// The network, faked. Nothing here reaches a socket; the test decides what the
+// response is and when it arrives, including "never".
+var fetchCalls = [], pendingFetch = null;
+function fetch(url, opts) { fetchCalls.push({ url: url, opts: opts }); pendingFetch = new SyncP(); return pendingFetch; }
+function runManifestLoad() { fetchCalls = []; pendingFetch = null; (0, eval)(MANIFEST_LOAD); return pendingFetch; }
+
 // module-level state the extracted functions read and write
 var audioMap = {};
+var audioManifestStatus = 'loading';
 var currentAudio = null;
 var speakBtn = null;
 var plVoice = null;
 var currentSpeed = 'normal';
+// settleAudioManifest refreshes the Listening button through this name. The real
+// helper is compiled into the Listening scope below (it needs $ and L, which are
+// handed in as parameters there), so the global settlement path reaches it via
+// this one-line delegate. index.html has a single definition; so does this file.
+function syncListeningAudioReadiness() { return LISTEN.syncReadiness(); }
 
 Object.keys(SRC).forEach(function (n) { (0, eval)(SRC[n]); });
 
@@ -192,9 +286,14 @@ function reset() {
   FakeAudio.created = [];
   synth.spoken = []; synth.cancels = 0;
   currentAudio = null; speakBtn = null; currentSpeed = 'normal'; voiceHintCalls = 0;
+  audioManifestStatus = 'ready';        // sections 1-18 are all about a settled manifest
   audioMap = { 'kawa': CLIP, 'Gdzie jest apteka?': 'audio/cafe1234.mp3' };
 }
 function lastAudio() { return FakeAudio.created[FakeAudio.created.length - 1]; }
+// "which clip played?", safe to ask when the answer is "none". A gate that wrongly
+// refuses a press should read as a failed assertion, not as a crash three lines on.
+function lastSrc() { var a = lastAudio(); return a ? a.src : '(no clip was created)'; }
+function spokenText(n) { var u = synth.spoken[n]; return u ? u.text : '(nothing was spoken)'; }
 
 // =========================================================================
 // 0. the extracted source really is the audio path, and BOTH failure routes
@@ -613,8 +712,9 @@ function handlerExpr(id) {
 // actually binds - not a copy of it. (They cannot be eval'd on demand instead:
 // under osascript a direct eval inside a nested function resolves globally, so
 // it would not see this scope at all.)
-var L_CONTROLS = ['lNext', 'lBack', 'lHome', 'lAgain'];
-var LNAMES = ['startListen', 'lRender', 'lPlayCurrent', 'lShowDone', 'lAdvance', 'lExit'];
+var L_CONTROLS = ['lNext', 'lBack', 'lHome', 'lAgain', 'lPlay'];
+var LNAMES = ['startListen', 'lRender', 'lPlayCurrent', 'lShowDone', 'lAdvance', 'lExit',
+              'syncListeningAudioReadiness'];
 var LSRC = {};
 LNAMES.forEach(function (n) { LSRC[n] = extractFunction(INDEX, n); });
 var LISTEN = (new Function('$', 'document', 'show', 'L', 'LEVELS', 'poolFor', 'gShuffle', 'ppAppendUsageTo', 'G_AUDIO',
@@ -627,6 +727,7 @@ var LISTEN = (new Function('$', 'document', 'show', 'L', 'LEVELS', 'poolFor', 'g
   '  startListen: function(a,b){ return startListen(a,b); },\n' +
   '  lRender: function(){ return lRender(); },\n' +
   '  lPlayCurrent: function(){ return lPlayCurrent(); },\n' +
+  '  syncReadiness: function(){ return syncListeningAudioReadiness(); },\n' +
   '  handlers: {\n' +
   L_CONTROLS.map(function (id) { return '    ' + id + ': (' + handlerExpr(id) + ')'; }).join(',\n') + '\n' +
   '  }\n' +
@@ -670,6 +771,23 @@ function lReset() {
 // AFTER the round opens, so `shown` below holds only what the boundary did.
 function lStart() { lReset(); LISTEN.startListen(0, 0); shown = []; }
 function lPress() { LISTEN.lPlayCurrent(); return lastAudio(); }   // the learner presses Play
+// A round entered BEFORE the manifest came back: nothing known, nothing pressable.
+// audioMap is emptied because that is literally what the app holds at that moment.
+function lStartLoading() {
+  lReset();
+  audioMap = {}; audioManifestStatus = 'loading';
+  LISTEN.startListen(0, 0); shown = [];
+}
+// The learner really pressing the button. A browser delivers neither click nor
+// Enter nor Space to a disabled control, so this refuses exactly when the browser
+// would, and runs the handler index.html actually binds when it would not.
+function pressPlayButton() { if (el('lPlay').disabled) return false; activate('lPlay'); return true; }
+// A manifest of the shape audio-manifest.json ships, built from a clip table.
+function manifestOf(clips) {
+  var entries = {}, n = 0;
+  Object.keys(clips).forEach(function (k) { entries['h' + (n++)] = { pl: k, file: clips[k] }; });
+  return { voice: 'marek', generatedAt: '2026-01-01', audioDir: 'audio', entries: entries };
+}
 function answerCorrect() {                                  // click the option flagged `correct`
   var opts = el('lOpts').children, q = L.qs[L.i], idx = -1;
   q.options.forEach(function (o, i) { if (o.correct) idx = i; });
@@ -949,6 +1067,510 @@ ok('T18 startListen starts no audio', (function () {
   var s = stripComments(LSRC.startListen);
   return s.indexOf('speakText') === -1 && s.indexOf('speakCardMain') === -1 && s.indexOf('lPlayCurrent') === -1;
 })());
+
+// =========================================================================
+// MANIFEST READINESS (sections 19-20)
+// =========================================================================
+var FULL_MANIFEST = manifestOf(L_CLIPS);
+
+// -------------------------------------------------------------------------
+// 19A. the state the learner meets when the manifest has not come back yet
+lStartLoading();
+var pb = el('lPlay');
+eq('T19A a fresh page starts out loading', audioManifestStatus, 'loading');
+ok('T19A the Play button is disabled while the manifest is loading', pb.disabled === true);
+eq('T19A the button reports itself busy', pb.getAttribute('aria-busy'), 'true');
+ok('T19A the label says the audio is loading', /loading/i.test(pb.getAttribute('aria-label') || ''));
+ok('T19A the loading label is not the ready label', pb.getAttribute('aria-label') !== 'Play the Polish audio');
+ok('T19A nothing autoplayed while loading', FakeAudio.created.length === 0 && synth.spoken.length === 0);
+ok('T19A the question itself rendered as usual',
+   el('lOpts').children.length === 4 && el('lCountLbl').textContent === '1 / 5');
+ok('T19A the rest of the screen is untouched',
+   el('lMain').style.display === 'flex' && el('lNext').disabled === true);
+
+// -------------------------------------------------------------------------
+// 19B. an attempted press while loading does NOTHING - not a clip, and not the
+//      device voice standing in for one. `disabled` stops the learner; the guard
+//      inside lPlayCurrent stops everything else.
+var iBefore = L.i, resBefore = L.results.slice();
+ok('T19B a disabled Play button refuses normal activation', pressPlayButton() === false);
+LISTEN.lPlayCurrent();                                   // and reached directly
+ok('T19B loading creates no Audio', FakeAudio.created.length === 0);
+ok('T19B loading speaks no utterance', synth.spoken.length === 0);
+ok('T19B nothing claimed the speaking class', pb.speaking === false && speakBtn === null);
+ok('T19B currentAudio stays empty', currentAudio === null);
+eq('T19B the question index is unchanged', L.i, iBefore);
+eq('T19B the score is unchanged', L.results, resBefore);
+ok('T19B the button is still disabled afterwards', pb.disabled === true);
+eq('T19B a refused press does not settle the status', audioManifestStatus, 'loading');
+eq('T19B a refused press does not invent a map', Object.keys(audioMap).length, 0);
+
+// -------------------------------------------------------------------------
+// 19C. SUCCESSFUL settlement: the button opens, and nothing plays
+lStartLoading();
+pressPlayButton();                                       // refused, and not remembered
+settleAudioManifest(FULL_MANIFEST);
+eq('T19C a valid manifest settles as ready', audioManifestStatus, 'ready');
+eq('T19C audioMap was rebuilt from the entries', audioMap['kawa'], L_CLIPS['kawa']);
+eq('T19C every usable entry made it in', Object.keys(audioMap).length, Object.keys(L_CLIPS).length);
+ok('T19C the button became pressable', el('lPlay').disabled === false);
+eq('T19C aria-busy was cleared', el('lPlay').getAttribute('aria-busy'), 'false');
+eq('T19C the shipped label was restored', el('lPlay').getAttribute('aria-label'), 'Play the Polish audio');
+ok('T19C settlement itself made no sound', FakeAudio.created.length === 0 && synth.spoken.length === 0);
+ok('T19C settlement claimed no button', speakBtn === null && currentAudio === null);
+eq('T19C settlement did not move the round', L.i, 0);
+eq('T19C settlement did not touch the score', L.results.length, 0);
+ok('T19C the next deliberate press plays the MP3', pressPlayButton() &&
+   FakeAudio.created.length === 1 && lastAudio().src === L_CLIPS['kawa'] && currentAudio === lastAudio());
+eq('T19C ... with no device voice standing in for it', synth.spoken.length, 0);
+ok('T19C ... and it owns the Play button', el('lPlay').speaking === true && speakBtn === el('lPlay'));
+
+// only well-formed entries are trusted: a half-written manifest must not hand
+// new Audio() something that is not a path
+lStartLoading();
+settleAudioManifest({ entries: {
+  good:    { pl: 'kawa',    file: 'audio/l-kawa.mp3' },
+  noFile:  { pl: 'herbata' },
+  noPl:    { file: 'audio/l-woda.mp3' },
+  blankPl: { pl: '',        file: 'audio/l-sok.mp3' },
+  blankF:  { pl: 'mleko',   file: '' },
+  numeric: { pl: 'woda',    file: 7 },
+  nested:  { pl: 'sok',     file: { path: 'audio/x.mp3' } },
+  nul:     null,
+  str:     'audio/y.mp3'
+} });
+eq('T19C a manifest with at least one usable entry is ready', audioManifestStatus, 'ready');
+eq('T19C only the usable entry was kept', Object.keys(audioMap), ['kawa']);
+ok('T19C the button opened anyway', el('lPlay').disabled === false);
+ok('T19C a skipped entry falls back rather than playing a non-path', (function () {
+  L.i = 1; LISTEN.lRender();                             // question two: herbata, entry had no file
+  pressPlayButton();
+  return FakeAudio.created.length === 0 && synth.spoken.length === 1 && synth.spoken[0].text === 'herbata';
+})());
+
+// an empty but well-formed manifest is a settled ANSWER, not a failure
+lStartLoading();
+settleAudioManifest({ voice: 'marek', entries: {} });
+eq('T19C an empty well-formed manifest is ready', audioManifestStatus, 'ready');
+eq('T19C ... with an empty map', Object.keys(audioMap).length, 0);
+ok('T19C ... and an open button', el('lPlay').disabled === false);
+pressPlayButton();
+eq('T19C ... where a press uses the fallback voice exactly once', synth.spoken.length, 1);
+
+// -------------------------------------------------------------------------
+// 19J. the entries CONTAINER must be a DICTIONARY keyed by entry id. A JSON
+//      array is typeof "object" as well, so "it is an object" cannot tell the
+//      shipping contract apart from a different shape that merely happens to
+//      carry entry-looking members. Reading one anyway would build a map out of
+//      a shape nobody promised - so it is not a manifest we can read.
+[['an empty entries array', { entries: [] }],
+ ['an entries array of real-looking entries',
+  { entries: [{ pl: 'kawa',    file: 'audio/l-kawa.mp3' },
+              { pl: 'herbata', file: 'audio/l-herbata.mp3' }] }]
+].forEach(function (pair) {
+  var what = pair[0], bad = pair[1];
+  lStartLoading();
+  pressPlayButton();                                     // refused while loading
+  settleAudioManifest(bad);
+  eq('T19J ' + what + ' settles as unavailable', audioManifestStatus, 'unavailable');
+  eq('T19J ' + what + ' builds no map', Object.keys(audioMap).length, 0);
+  ok('T19J ' + what + ' still frees the button', el('lPlay').disabled === false);
+  eq('T19J ' + what + ' clears aria-busy', el('lPlay').getAttribute('aria-busy'), 'false');
+  eq('T19J ' + what + ' restores the shipped label',
+     el('lPlay').getAttribute('aria-label'), 'Play the Polish audio');
+  ok('T19J ' + what + ' plays nothing while settling',
+     FakeAudio.created.length === 0 && synth.spoken.length === 0);
+  ok('T19J ' + what + ': a later press is accepted', pressPlayButton());
+  eq('T19J ' + what + ': the fallback speaks exactly once', synth.spoken.length, 1);
+  eq('T19J ' + what + ': speaking the current question', spokenText(0), 'kawa');
+  eq('T19J ' + what + ': and requesting no clip', FakeAudio.created.length, 0);
+});
+// the contrast that makes the rule a rule: the SAME entry, in a dictionary, is
+// read normally - so the rejection is about the container, not about the entry
+lStartLoading();
+settleAudioManifest({ entries: { k1: { pl: 'kawa', file: 'audio/l-kawa.mp3' } } });
+eq('T19J the same entry inside a dictionary settles ready', audioManifestStatus, 'ready');
+eq('T19J ... and reaches the map', audioMap['kawa'], 'audio/l-kawa.mp3');
+ok('T19J ... so the press plays the clip rather than falling back',
+   pressPlayButton() && lastSrc() === 'audio/l-kawa.mp3' && synth.spoken.length === 0);
+
+// -------------------------------------------------------------------------
+// 19K. an entry is usable only when BOTH halves carry real content. Whitespace
+//      is neither a phrase nor a path: keyed into the map it makes an entry
+//      nothing can ever look up, and stored as a file it hands new Audio() a
+//      blank src. The container is still a loaded manifest, so the STATUS stays
+//      ready - it is the individual members that are skipped.
+lStartLoading();
+settleAudioManifest({ entries: {
+  good:      { pl: 'kawa',   file: 'audio/l-kawa.mp3' },
+  blankPl:   { pl: '   ',    file: 'audio/l-herbata.mp3' },
+  blankFile: { pl: 'woda',   file: '   ' },
+  blankBoth: { pl: ' \t\n ', file: ' \t ' }
+} });
+eq('T19K a valid dictionary carrying unusable members is still ready', audioManifestStatus, 'ready');
+eq('T19K only the usable entry reached the map', Object.keys(audioMap), ['kawa']);
+eq('T19K ... under its real key, with its real path', audioMap['kawa'], 'audio/l-kawa.mp3');
+ok('T19K no whitespace-only key was created',
+   Object.keys(audioMap).every(function (k) { return k.trim() !== ''; }));
+ok('T19K no whitespace-only path was stored',
+   Object.keys(audioMap).every(function (k) { return String(audioMap[k]).trim() !== ''; }));
+ok('T19K the skipped entries are genuinely absent, not stored empty',
+   audioMap['   '] === undefined && audioMap[''] === undefined &&
+   audioMap[' \t\n '] === undefined && audioMap['woda'] === undefined &&
+   audioMap['herbata'] === undefined);
+ok('T19K settlement produced no sound',
+   FakeAudio.created.length === 0 && synth.spoken.length === 0);
+ok('T19K the button opened', el('lPlay').disabled === false);
+ok('T19K the retained neighbour still plays its clip',
+   pressPlayButton() && lastSrc() === 'audio/l-kawa.mp3' && synth.spoken.length === 0);
+// a dictionary whose members are ALL unusable is still a manifest that LOADED.
+// Skipping members is not the same as failing to read the container, so the
+// answer stays "ready, with nothing in it" - the same as an empty dictionary.
+lStartLoading();
+settleAudioManifest({ entries: {
+  a: { pl: '  ',  file: 'audio/l-kawa.mp3' },
+  b: { pl: 'sok', file: '\t' },
+  c: null
+} });
+eq('T19K a dictionary yielding zero usable entries is still ready', audioManifestStatus, 'ready');
+eq('T19K ... with an empty map', Object.keys(audioMap).length, 0);
+ok('T19K ... and an open button', el('lPlay').disabled === false);
+ok('T19K ... and no sound at settlement',
+   FakeAudio.created.length === 0 && synth.spoken.length === 0);
+ok('T19K ... where a press falls back exactly once',
+   pressPlayButton() && synth.spoken.length === 1 && FakeAudio.created.length === 0);
+
+// and a phrase whose entry was skipped falls back, rather than playing a blank src
+lStartLoading();
+settleAudioManifest({ entries: {
+  good:      { pl: 'kawa',    file: 'audio/l-kawa.mp3' },
+  blankFile: { pl: 'herbata', file: '   ' }
+} });
+L.i = 1; LISTEN.lRender();                               // question two is herbata
+ok('T19K a skipped entry falls back instead of playing a blank path', pressPlayButton());
+eq('T19K ... requesting no clip', FakeAudio.created.length, 0);
+eq('T19K ... speaking exactly once', synth.spoken.length, 1);
+eq('T19K ... and speaking the right phrase', spokenText(0), 'herbata');
+
+// -------------------------------------------------------------------------
+// 19L. the stored key is normalized the way the LOOKUP normalizes what it asks
+//      for, and the path is trimmed, so a usably-formed entry is reachable by
+//      the only route anything uses to reach it.
+lStartLoading();
+settleAudioManifest({ entries: {
+  padded: { pl: '  kawa  ',              file: '  audio/l-kawa.mp3  ' },
+  inner:  { pl: 'Gdzie   jest\tapteka?', file: 'audio/l-apteka.mp3' }
+} });
+eq('T19L a valid entry with harmless padding is still ready', audioManifestStatus, 'ready');
+eq('T19L the padded entry is stored under its normalized key',
+   audioMap['kawa'], 'audio/l-kawa.mp3');
+ok('T19L the raw padded text is NOT the stored key', audioMap['  kawa  '] === undefined);
+eq('T19L the stored path is trimmed', audioMap['kawa'], String(audioMap['kawa']).trim());
+eq('T19L inner whitespace is collapsed the way the lookup collapses it',
+   audioMap[ppNormalize('Gdzie   jest\tapteka?')], 'audio/l-apteka.mp3');
+eq('T19L ... which is exactly the key a lookup would ask for',
+   audioMap['Gdzie jest apteka?'], 'audio/l-apteka.mp3');
+ok('T19L every stored key is already normalized - a second pass changes nothing',
+   Object.keys(audioMap).every(function (k) { return ppNormalize(k) === k; }));
+ok('T19L settlement produced no sound',
+   FakeAudio.created.length === 0 && synth.spoken.length === 0);
+ok('T19L the padded entry is reachable end-to-end from a real press',
+   pressPlayButton() && lastSrc() === 'audio/l-kawa.mp3' && synth.spoken.length === 0);
+
+// -------------------------------------------------------------------------
+// 19D. FAILED settlement. Every shape of "no usable manifest" is a SETTLED
+//      answer: the button opens, the device voice takes over, nothing autoplays.
+[['a null manifest',                    null],
+ ['a manifest that is a bare string',   'audio-manifest.json'],
+ ['a manifest that is a bare number',   42],
+ ['a manifest with no entries key',     { voice: 'marek' }],
+ ['a manifest whose entries are null',  { entries: null }],
+ ['a manifest whose entries are a string', { entries: 'lots of them' }],
+ ['a manifest whose entries are an array', { entries: [] }],
+ ['a manifest whose entries are a populated array',
+  { entries: [{ pl: 'kawa', file: 'audio/l-kawa.mp3' }] }]
+].forEach(function (pair) {
+  var what = pair[0], bad = pair[1];
+  lStartLoading();
+  pressPlayButton();                                     // refused while loading
+  settleAudioManifest(bad);
+  eq('T19D ' + what + ' settles as unavailable', audioManifestStatus, 'unavailable');
+  eq('T19D ' + what + ' leaves an empty map', Object.keys(audioMap).length, 0);
+  ok('T19D ' + what + ' still frees the button', el('lPlay').disabled === false);
+  eq('T19D ' + what + ' clears aria-busy', el('lPlay').getAttribute('aria-busy'), 'false');
+  eq('T19D ' + what + ' restores the shipped label',
+     el('lPlay').getAttribute('aria-label'), 'Play the Polish audio');
+  ok('T19D ' + what + ' makes no sound while settling',
+     FakeAudio.created.length === 0 && synth.spoken.length === 0);
+  ok('T19D ' + what + ': a later press is accepted', pressPlayButton());
+  eq('T19D ' + what + ': the fallback speaks exactly once', synth.spoken.length, 1);
+  eq('T19D ' + what + ': and it speaks the current question', spokenText(0), 'kawa');
+  ok('T19D ' + what + ': no clip was requested', FakeAudio.created.length === 0);
+});
+
+// the real startup statement, driven against a fake fetch, so the HTTP / JSON /
+// network routes are tested as WIRED rather than as described
+lStartLoading();
+var reqP = runManifestLoad();
+eq('T19D the manifest is requested exactly once', fetchCalls.length, 1);
+eq('T19D ... for audio-manifest.json', fetchCalls[0].url, 'audio-manifest.json');
+ok('T19D ... bypassing the HTTP cache', !!fetchCalls[0].opts && fetchCalls[0].opts.cache === 'no-store');
+eq('T19D an in-flight request leaves the status loading', audioManifestStatus, 'loading');
+ok('T19D ... and the button closed', el('lPlay').disabled === true);
+var jsonReads = 0;
+reqP.resolve({ ok: false, status: 404, json: function () { jsonReads++; return new SyncP(); } });
+eq('T19D an HTTP error settles as unavailable', audioManifestStatus, 'unavailable');
+eq('T19D an HTTP error never parses a body', jsonReads, 0);
+ok('T19D an HTTP error frees the button', el('lPlay').disabled === false);
+ok('T19D an HTTP error plays nothing', FakeAudio.created.length === 0 && synth.spoken.length === 0);
+
+lStartLoading();
+reqP = runManifestLoad();
+var bodyP = new SyncP();
+reqP.resolve({ ok: true, json: function () { return bodyP; } });
+eq('T19D a body still being parsed is still loading', audioManifestStatus, 'loading');
+ok('T19D ... and the button is still closed', el('lPlay').disabled === true);
+bodyP.reject(new SyntaxError('Unexpected token < in JSON at position 0'));
+eq('T19D unreadable JSON settles as unavailable', audioManifestStatus, 'unavailable');
+ok('T19D unreadable JSON frees the button', el('lPlay').disabled === false);
+ok('T19D unreadable JSON plays nothing', FakeAudio.created.length === 0 && synth.spoken.length === 0);
+ok('T19D unreadable JSON: a press then uses the fallback', pressPlayButton());
+eq('T19D unreadable JSON: exactly one fallback', synth.spoken.length, 1);
+
+lStartLoading();
+reqP = runManifestLoad();
+reqP.reject(new TypeError('Failed to fetch'));
+eq('T19D a failed request settles as unavailable', audioManifestStatus, 'unavailable');
+ok('T19D a failed request frees the button', el('lPlay').disabled === false);
+ok('T19D a failed request plays nothing', FakeAudio.created.length === 0 && synth.spoken.length === 0);
+
+// and the SUCCESS route through the very same chain
+lStartLoading();
+reqP = runManifestLoad();
+bodyP = new SyncP();
+reqP.resolve({ ok: true, json: function () { return bodyP; } });
+bodyP.resolve(FULL_MANIFEST);
+eq('T19D a good response settles as ready', audioManifestStatus, 'ready');
+eq('T19D ... and built the map', audioMap['herbata'], L_CLIPS['herbata']);
+ok('T19D ... freed the button', el('lPlay').disabled === false);
+ok('T19D ... and played nothing on the way', FakeAudio.created.length === 0 && synth.spoken.length === 0);
+ok('T19D ... so the first sound is the learner\'s own press',
+   pressPlayButton() && lastAudio().src === L_CLIPS['kawa']);
+
+// -------------------------------------------------------------------------
+// 19E. a TRUE manifest miss, after readiness, still behaves exactly as before
+lStart();                                                // settled, full clip table
+delete audioMap['kawa'];
+LISTEN.lRender();
+ok('T19E a settled manifest leaves the button open', el('lPlay').disabled === false);
+eq('T19E ... and not busy', el('lPlay').getAttribute('aria-busy'), 'false');
+ok('T19E the press is accepted', pressPlayButton());
+eq('T19E a genuine miss falls back exactly once', synth.spoken.length, 1);
+eq('T19E ... speaking the question phrase', spokenText(0), 'kawa');
+ok('T19E ... and requesting no clip', FakeAudio.created.length === 0);
+ok('T19E ... while still owning the button', el('lPlay').speaking === true && speakBtn === el('lPlay'));
+
+// -------------------------------------------------------------------------
+// 19F. NO QUEUED FIRST PLAY. A press that arrived while loading is refused, not
+//      remembered - by the time the manifest lands it is outside the gesture
+//      that asked for it, and the learner may have left the question entirely.
+[['lNext', 'advancing'], ['lBack', 'going Back'],
+ ['lHome', 'going Home'], ['lAgain', 'starting another round']].forEach(function (pair) {
+  var id = pair[0], what = pair[1];
+  lStartLoading();
+  ok('T19F ' + what + ': the press while loading was refused', pressPlayButton() === false);
+  LISTEN.lPlayCurrent();                                 // and directly, too
+  activate(id);
+  var iAfter = L.i, resAfter = L.results.slice();
+  settleAudioManifest(FULL_MANIFEST);
+  eq('T19F ' + what + ': settlement started no clip', FakeAudio.created.length, 0);
+  eq('T19F ' + what + ': settlement spoke nothing', synth.spoken.length, 0);
+  ok('T19F ' + what + ': nothing holds the audio or the button',
+     currentAudio === null && speakBtn === null);
+  ok('T19F ' + what + ': no stale button was marked speaking', el('lPlay').speaking === false);
+  eq('T19F ' + what + ': settlement did not move the round', L.i, iAfter);
+  eq('T19F ' + what + ': settlement did not touch the score', L.results, resAfter);
+  eq('T19F ' + what + ': the status settled exactly once', audioManifestStatus, 'ready');
+});
+
+// -------------------------------------------------------------------------
+// 19G. the CURRENT question owns the button. A press refused on question one
+//      cannot resurface as question one's clip after the learner has moved on.
+lStartLoading();
+ok('T19G question one refused the press', pressPlayButton() === false);
+activate('lNext');
+eq('T19G the round moved to question two', L.i, 1);
+ok('T19G question two is still closed while loading', el('lPlay').disabled === true);
+eq('T19G ... and still announces loading', el('lPlay').getAttribute('aria-busy'), 'true');
+settleAudioManifest(FULL_MANIFEST);
+ok('T19G settlement opened the button', el('lPlay').disabled === false);
+ok('T19G settlement played nothing', FakeAudio.created.length === 0 && synth.spoken.length === 0);
+ok('T19G the press is now accepted', pressPlayButton());
+eq('T19G exactly one clip was ever created', FakeAudio.created.length, 1);
+eq('T19G and it is question TWO\'s clip', lastSrc(), L_CLIPS['herbata']);
+ok('T19G question one was never heard',
+   FakeAudio.created.every(function (a) { return a.src !== L_CLIPS['kawa']; }));
+eq('T19G no device voice spoke the abandoned question', synth.spoken.length, 0);
+
+// -------------------------------------------------------------------------
+// 19H. RE-RENDERING: every new active question is gated the same way, and every
+//      one becomes playable once settled - with no autoplay anywhere.
+lStartLoading();
+for (var qi = 0; qi < 5; qi++) {
+  ok('T19H loading: question ' + (qi + 1) + ' is closed', el('lPlay').disabled === true);
+  eq('T19H loading: question ' + (qi + 1) + ' announces loading',
+     el('lPlay').getAttribute('aria-busy'), 'true');
+  ok('T19H loading: question ' + (qi + 1) + ' refuses the press', pressPlayButton() === false);
+  activate('lNext');
+}
+ok('T19H the results screen was reached',
+   el('lDone').style.display === 'flex' && el('lMain').style.display === 'none');
+ok('T19H the hidden results-screen Play control is not actionable', el('lPlay').disabled === true);
+settleAudioManifest(FULL_MANIFEST);
+ok('T19H settlement does not turn the hidden control into a live one', el('lPlay').disabled === true);
+ok('T19H settlement on the results screen plays nothing',
+   FakeAudio.created.length === 0 && synth.spoken.length === 0);
+eq('T19H the results screen kept its score', L.results.length, 0);
+
+activate('lAgain');                                      // a fresh round, manifest now settled
+['kawa', 'herbata', 'woda', 'sok', 'mleko'].forEach(function (word, n) {
+  ok('T19H settled: question ' + (n + 1) + ' is pressable', el('lPlay').disabled === false);
+  eq('T19H settled: question ' + (n + 1) + ' is not busy',
+     el('lPlay').getAttribute('aria-busy'), 'false');
+  eq('T19H settled: question ' + (n + 1) + ' carries the shipped label',
+     el('lPlay').getAttribute('aria-label'), 'Play the Polish audio');
+  ok('T19H settled: question ' + (n + 1) + ' autoplayed nothing', FakeAudio.created.length === n);
+  ok('T19H settled: question ' + (n + 1) + ' plays on request', pressPlayButton());
+  eq('T19H settled: question ' + (n + 1) + ' played its own clip', lastSrc(), L_CLIPS[word]);
+  activate('lNext');
+});
+eq('T19H no device voice was needed anywhere in the settled round', synth.spoken.length, 0);
+ok('T19H the round ended with the hidden control closed again',
+   el('lDone').style.display === 'flex' && el('lPlay').disabled === true);
+
+// -------------------------------------------------------------------------
+// 19I. the Phase 3B boundaries still hold for a round that started while loading
+lStartLoading();
+settleAudioManifest(FULL_MANIFEST);                      // settles mid-round
+ok('T19I the button opened mid-round', el('lPlay').disabled === false);
+ok('T19I the press is accepted', pressPlayButton());
+// stand-in only if the gate wrongly refused the press: keeps the assertions below
+// readable (they fail) instead of crashing on a missing element
+var midClip = lastAudio() ||
+  { src: '(no clip was created)', pauses: -1, rejectPlay: function () {}, fireError: function () {}, fireEnded: function () {} };
+ok('T19I the MP3 is live', currentAudio === midClip && el('lPlay').speaking === true);
+activate('lNext');
+eq('T19I Next still pauses the clip exactly once', midClip.pauses, 1);
+ok('T19I Next still releases it', currentAudio === null && speakBtn === null);
+midClip.rejectPlay('AbortError'); midClip.fireError(); midClip.fireEnded();
+eq('T19I the abandoned clip is still stale', synth.spoken.length, 0);
+ok('T19I ... and did not re-mark the button', el('lPlay').speaking === false);
+ok('T19I ... and the new question is playable', el('lPlay').disabled === false);
+
+lStartLoading();
+settleAudioManifest(null);                               // unavailable -> device voice
+ok('T19I an unavailable manifest still opens the button', el('lPlay').disabled === false);
+pressPlayButton();
+eq('T19I the fallback is speaking', synth.spoken.length, 1);
+var cancelsPre = synth.cancels;
+activate('lHome');
+ok('T19I leaving cancelled the utterance', synth.cancels > cancelsPre);
+ok('T19I leaving cleared the button', el('lPlay').speaking === false && speakBtn === null);
+eq('T19I leaving started no new speech', synth.spoken.length, 1);
+eq('T19I Home was reached', shown[0].scr, 'home');
+ok('T19I Home appeared only after the cleanup', shown[0].audio === null && shown[0].btn === null);
+
+// =========================================================================
+// 20. J. WIRING - the readiness gate as index.html writes it, read from code.
+var statusDecls = INDEX.match(/\b(?:let|var|const)\s+audioManifestStatus\b/g) || [];
+eq('T20 exactly one manifest status is declared', statusDecls.length, 1);
+var statusInit = INDEX.match(/\b(?:let|var|const)\s+audioManifestStatus\s*=\s*"([a-z]+)"\s*;/);
+ok('T20 the status is initialised to a literal', !!statusInit);
+eq('T20 the initial status is loading', statusInit ? statusInit[1] : null, 'loading');
+
+var settleBody = stripComments(SRC.settleAudioManifest);
+var syncBody   = stripComments(LSRC.syncListeningAudioReadiness);
+var playBody   = stripComments(LSRC.lPlayCurrent);
+var renderBody = stripComments(LSRC.lRender);
+var loadBody   = stripComments(MANIFEST_LOAD);
+
+ok('T20 settlement assigns the status', /audioManifestStatus\s*=[^=]/.test(settleBody));
+ok('T20 settlement can reach BOTH settled states',
+   settleBody.indexOf('"ready"') !== -1 && settleBody.indexOf('"unavailable"') !== -1);
+ok('T20 settlement never leaves it loading', settleBody.indexOf('"loading"') === -1);
+ok('T20 settlement rebuilds the map', /audioMap\s*=/.test(settleBody));
+// the container contract is decided in code, not only in the tests above. Any
+// of the usual array tests counts - what is pinned is that arrays are excluded
+// by name, since typeof alone cannot do it.
+ok('T20 settlement excludes array-shaped entry containers',
+   /Array\.isArray|instanceof\s+Array|constructor\s*===\s*Array/.test(settleBody));
+ok('T20 settlement refreshes the Play button', settleBody.indexOf('syncListeningAudioReadiness(') !== -1);
+ok('T20 settlement leaves the round alone',
+   settleBody.indexOf('L.i') === -1 && settleBody.indexOf('L.results') === -1 &&
+   settleBody.indexOf('L.qs') === -1 && settleBody.indexOf('lRender') === -1);
+
+// success AND failure both flow through the one settlement function
+ok('T20 the load routes a resolved response into settlement',
+   /\.then\(\s*settleAudioManifest\s*\)/.test(loadBody));
+ok('T20 the load routes a rejection into settlement',
+   /\.catch\([\s\S]*settleAudioManifest\s*\(/.test(loadBody));
+eq('T20 the manifest is fetched from exactly one place',
+   (INDEX.match(/fetch\(\s*"audio-manifest\.json"/g) || []).length, 1);
+
+// the two synchronisation points, and only those
+ok('T20 lRender synchronises the Play button', renderBody.indexOf('syncListeningAudioReadiness(') !== -1);
+eq('T20 the readiness helper is called from exactly two places - a new question, and settlement',
+   (INDEX.match(/syncListeningAudioReadiness\(\)\s*;/g) || []).length, 2);
+eq('T20 nothing else touches the Play button\'s disabled state',
+   (INDEX.match(/\$\(\s*"lPlay"\s*\)\s*\.disabled/g) || []).length, 0);
+
+// defence in depth inside lPlayCurrent
+ok('T20 lPlayCurrent guards on the manifest status', /audioManifestStatus/.test(playBody));
+ok('T20 the guard tests the LOADING state, not a settled one',
+   /audioManifestStatus\s*===\s*"loading"/.test(playBody));
+ok('T20 the guard runs before any playback is reached', (function () {
+  var guard = playBody.indexOf('audioManifestStatus'), play = playBody.indexOf('speakCardMain');
+  return guard !== -1 && play !== -1 && guard < play;
+})());
+
+// nothing in the readiness path may start audio, wait, or remember a request
+var AUDIO_STARTERS = ['playPreGenerated', 'speakText(', 'speakFallback', 'speakCardMain',
+                      'speechSynthesis', 'new Audio'];
+[['settlement', settleBody], ['the readiness helper', syncBody],
+ ['the manifest load', loadBody]].forEach(function (pair) {
+  var what = pair[0], body = pair[1];
+  AUDIO_STARTERS.forEach(function (fn) {
+    ok('T20 ' + what + ' never calls ' + fn, body.indexOf(fn) === -1);
+  });
+  ok('T20 ' + what + ' uses no timer, poll or retry',
+     body.indexOf('setTimeout') === -1 && body.indexOf('setInterval') === -1 &&
+     body.indexOf('requestAnimationFrame') === -1);
+  ok('T20 ' + what + ' queues no phrase for later',
+     !/pending|queue|deferred|replay|lastRequest/i.test(body));
+});
+
+// the helper moves state, not structure
+ok('T20 the readiness helper toggles disabled', /\.disabled\s*=/.test(syncBody));
+ok('T20 the readiness helper sets aria-busy', syncBody.indexOf('aria-busy') !== -1);
+ok('T20 the readiness helper restores the shipped label',
+   syncBody.indexOf('Play the Polish audio') !== -1);
+ok('T20 the readiness helper leaves the icon and layout alone',
+   syncBody.indexOf('innerHTML') === -1 && syncBody.indexOf('textContent') === -1 &&
+   syncBody.indexOf('createElement') === -1 && syncBody.indexOf('style') === -1);
+
+// the shipped button: icon-only, and closed before the first render
+var playEl = (INDEX.match(/<button[^>]*id="lPlay"[\s\S]*?<\/button>/) || [])[0];
+ok('T20 the Play button markup was found', !!playEl);
+ok('T20 the Play button is still icon-only - no loading panel was added',
+   /^<button[^>]*>\s*<svg[\s\S]*<\/svg>\s*<\/button>$/.test(playEl || ''));
+ok('T20 the shipped markup starts disabled', /\sdisabled(\s|>)/.test(playEl || ''));
+ok('T20 the shipped markup starts busy', /aria-busy="true"/.test(playEl || ''));
+ok('T20 the shipped markup\'s label matches the loading state',
+   /aria-label="[^"]*loading[^"]*"/i.test(playEl || ''));
+// the disabled look is a dim, not a different control
+ok('T20 the disabled Play button is dimmed', /\.l-play:disabled\{[^}]*opacity/.test(INDEX));
+ok('T20 the disabled Play button is not resized',
+   !/\.l-play:disabled\{[^}]*(width|height|border-radius)\s*:/.test(INDEX));
 
 // ---------- report ----------
 console.log('Audio fallback tests: ' + PASS + ' passed, ' + FAIL + ' failed.');

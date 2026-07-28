@@ -373,6 +373,10 @@
     color:var(--cream);cursor:pointer;display:grid;place-items:center;box-shadow:var(--shadow-sm);transition:.15s}
   .l-play:hover{transform:scale(1.04)}
   .l-play:active{transform:scale(.96)}
+  /* Waiting on the audio manifest. Same size, same icon, same place - only dimmed,
+     so the button cannot move or reflow when it becomes pressable. */
+  .l-play:disabled{opacity:.45;cursor:progress;box-shadow:none}
+  .l-play:disabled:hover,.l-play:disabled:active{transform:none}
   .l-play svg{width:34px;height:34px}
   .l-reveal{margin-top:14px;text-align:center;font-size:19px;font-weight:800;color:var(--forest);display:none}
   .l-reveal.show{display:block;animation:fade .3s ease}
@@ -1119,7 +1123,9 @@
       <div class="drill">
         <div class="drill-card">
           <div class="d-type">What did you hear?</div>
-          <button class="l-play" id="lPlay" aria-label="Play the Polish audio">
+          <!-- starts unpressable: until audio-manifest.json settles, a press would hear
+               the device voice for a phrase that has a real clip waiting. syncListeningAudioReadiness() owns this state from here on. -->
+          <button class="l-play" id="lPlay" aria-label="Polish audio is loading" aria-busy="true" disabled>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>
           </button>
           <div class="l-reveal" id="lReveal" lang="pl"></div>
@@ -2161,6 +2167,14 @@ function restart(){ startTopic(S.levelIdx, S.topicIdx); }
         speechSynthesis so nothing breaks silently while you catch up on audio. */
 
 let audioMap = {};              /* normalized Polish text -> "audio/<hash>.mp3" */
+/* Has the manifest come back yet? audioMap alone cannot say: while the fetch is
+   in flight it is empty, which reads exactly like "this phrase has no clip". Any
+   playback decided from that emptiness picks the device voice for a phrase Marek
+   HAS recorded - and the clip appears a moment later, so the same button gives a
+   different voice depending on how fast the network was. "loading" is the state
+   that tells those two apart; "ready" and "unavailable" are both SETTLED, and
+   only "loading" holds playback back. */
+let audioManifestStatus = "loading";   /* "loading" | "ready" | "unavailable" */
 let currentAudio = null;        /* the <audio> element currently playing, if any */
 let speakBtn = null;
 let plVoice = null;             /* speechSynthesis fallback voice, if any */
@@ -2200,18 +2214,51 @@ function ppNormalize(text){
   return text.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
 }
 
-/* Load the manifest once at startup. Failure is fine - we just fall back to speechSynthesis. */
-fetch("audio-manifest.json", { cache: "no-store" })
-  .then(r => r.ok ? r.json() : null)
-  .then(m => {
-    if(!m || !m.entries) return;
-    const map = {};
-    for(const entry of Object.values(m.entries)){
-      if(entry && entry.pl && entry.file) map[entry.pl] = entry.file;
+/* The one place "still loading" becomes a settled answer. Every outcome of the
+   startup fetch arrives here - a good manifest, an HTTP error, unreadable JSON,
+   no network at all - so there is a single transition to reason about instead of
+   one per failure route.
+
+   It answers "may audio start?" and nothing else. It plays NOTHING, not even a
+   press that arrived while loading: by the time the manifest lands, that press is
+   no longer inside the learner's gesture, and mobile browsers refuse audio
+   started outside one. The button becomes pressable and the learner presses it.
+   It also leaves the round alone - no score, no question index. */
+function settleAudioManifest(manifest){
+  const entries = (manifest && typeof manifest === "object") ? manifest.entries : null;
+  /* The contract is a DICTIONARY keyed by entry id. A JSON array is typeof
+     "object" too, so "it is an object" does not distinguish the shipping shape
+     from a different one that merely happens to carry entry-looking members -
+     hence the explicit array exclusion. A container of the wrong shape is not a
+     manifest we can read, so it settles unavailable rather than half-read. */
+  const usable = !!entries && typeof entries === "object" && !Array.isArray(entries);
+  const map = {};
+  if(usable){
+    for(const entry of Object.values(entries)){
+      if(!entry || typeof entry.pl !== "string" || typeof entry.file !== "string") continue;
+      /* The key is normalized exactly the way the lookup normalizes what it is
+         asked for, so an entry can only be found the way it was stored. Content
+         is what makes a field usable, not mere truthiness: a value of pure
+         whitespace is neither a phrase nor a path, and taking one would key the
+         map on something nothing can ever ask for, or hand new Audio() a blank
+         src. Such an entry is skipped; its valid neighbours are still kept. */
+      const pl = ppNormalize(entry.pl), file = entry.file.trim();
+      if(pl && file) map[pl] = file;
     }
-    audioMap = map;
-  })
-  .catch(()=>{ /* offline first-load or missing manifest - fallback handles it */ });
+  }
+  audioMap = map;
+  /* A well-formed dictionary that yields nothing usable is still a manifest that
+     LOADED - that is a settled answer ("ready", empty map), not a failure. */
+  audioManifestStatus = usable ? "ready" : "unavailable";
+  syncListeningAudioReadiness();
+}
+
+/* Load the manifest once at startup - one request, no retry, no polling. Failure
+   is fine: "unavailable" is a settled answer, and speechSynthesis takes over. */
+fetch("audio-manifest.json", { cache: "no-store" })
+  .then(r => r.ok ? r.json() : null)          /* HTTP error -> null -> unavailable */
+  .then(settleAudioManifest)
+  .catch(() => settleAudioManifest(null));    /* offline first-load, missing file, or unreadable JSON */
 
 function clearSpeaking(){ if(speakBtn){ speakBtn.classList.remove("speaking"); speakBtn=null; } }
 
@@ -2928,6 +2975,7 @@ function startListen(l, t){
   show("listen"); lRender();
 }
 function lRender(){
+  syncListeningAudioReadiness();          /* before the branch: the results screen needs it too */
   if(L.i >= L.qs.length){ lShowDone(); return; }
   $("lMain").style.display="flex"; $("lDone").style.display="none";
   const q=L.qs[L.i];
@@ -2963,10 +3011,39 @@ function lRender(){
   });
   /* no autoplay - the learner starts each clip with the play button */
 }
+/* Listening is the one activity built entirely around hearing the phrase, so it
+   is the one that must not be pressed before the manifest settles. This owns the
+   Play button's pressable state, and there are exactly two moments the answer can
+   change: the question changed (lRender) or the manifest settled
+   (settleAudioManifest). Both call this; nothing polls, nothing retries.
+
+   The icon and the layout are untouched - only `disabled`, `aria-busy` and the
+   label move - so the button never resizes or jumps as it becomes pressable. */
+function syncListeningAudioReadiness(){
+  const btn = $("lPlay");
+  if(!btn) return;
+  const loading = audioManifestStatus === "loading";
+  /* The results screen has no question to play and hides this button with its
+     panel; it stays unpressable there rather than becoming a live control that
+     nobody can see. */
+  btn.disabled = loading || L.i >= L.qs.length;
+  btn.setAttribute("aria-busy", loading ? "true" : "false");
+  btn.setAttribute("aria-label", loading ? "Polish audio is loading" : "Play the Polish audio");
+}
+
 /* Templates are already excluded from the Listening pool by ppEligibleFor, so this
    only ever sees ordinary cards - routing it through speakCardMain anyway means a
-   future pool change can't quietly reintroduce an unfinished phrase. */
-function lPlayCurrent(){ if(L.i < L.qs.length) speakCardMain(L.qs[L.i].c, $("lPlay")); }
+   future pool change can't quietly reintroduce an unfinished phrase.
+
+   The manifest check repeats what `disabled` already prevents, on purpose:
+   `disabled` stops mouse, touch and keyboard, but this function is also reachable
+   directly, and a press that slipped through before settlement must produce no
+   clip AND no device voice - not the wrong one of the two. Nothing is remembered
+   for later either; the learner simply presses again once the button lights up. */
+function lPlayCurrent(){
+  if(audioManifestStatus === "loading") return;
+  if(L.i < L.qs.length) speakCardMain(L.qs[L.i].c, $("lPlay"));
+}
 function lShowDone(){
   $("lMain").style.display="none"; $("lDone").style.display="flex";
   $("lFill").style.width="100%"; $("lCountLbl").textContent=L.qs.length+" / "+L.qs.length;

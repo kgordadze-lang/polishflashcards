@@ -1183,8 +1183,15 @@ ok('H4 the Polish is still revealed on success', CODE_LRENDER.indexOf('rv.textCo
 ok('H4 the example is still shown', CODE_LRENDER.indexOf('q.c.ex') !== -1);
 ok('H4 usage labels are still appended', CODE_LRENDER.indexOf('ppAppendUsageTo(fb, q.c)') !== -1);
 ok('H4 there is still no autoplay', SRC_LRENDER.indexOf('no autoplay') !== -1);
-ok('H4 the replay button still speaks the card',
-   INDEX.indexOf('function lPlayCurrent(){ if(L.i < L.qs.length) speakCardMain(L.qs[L.i].c, $("lPlay")); }') !== -1);
+// What matters is that Play still routes the CURRENT question's card through
+// speakCardMain and hands it the Play button - not that the function is still
+// one line long. It has since grown a manifest-readiness guard (Phase 3C), whose
+// own behaviour is owned by tests/test_audio_fallback.js.
+ok('H4 the replay button still speaks the card', (function () {
+  var body = codeOnly(bodyOf(INDEX, 'lPlayCurrent'));
+  return body.indexOf('L.i < L.qs.length') !== -1 &&
+         body.indexOf('speakCardMain(L.qs[L.i].c, $("lPlay"))') !== -1;
+})());
 ok('H4 the completion wording is unchanged',
    INDEX.indexOf('"You recognised "+score+" of "+L.qs.length+" on the first listen."') !== -1);
 ok('H4 the score is still first-attempt successes',
