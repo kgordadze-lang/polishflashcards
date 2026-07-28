@@ -1373,6 +1373,7 @@
 <script src="data-podcasts.js"></script>
 <script src="pp-usage.js"></script>
 <script src="pp-answer.js"></script>
+<script src="pp-distractor.js"></script>
 <script src="pp-migrate.js"></script>
 <script>
 /* =========================================================================
@@ -2902,18 +2903,24 @@ $("tInput").addEventListener("keydown", e=>{
 /* ---------------- Listening (hear PL -> pick the meaning) ----------------
    15 questions per round. Distractors are drawn from the same topic first, so
    the options are plausible neighbours, then padded from the rest of the pool.
-   Scoring mirrors the drills: first try counts, retries don't. */
+   Scoring mirrors the drills: first try counts, retries don't.
+
+   WHICH cards may share one question is PP_DISTRACTOR's decision, not this
+   file's: the corpus teaches the same Polish word in several topics with a
+   different gloss each time (burza -> "storm" / "(thunder)storm"), and offering
+   both meant marking a true answer wrong. The builder keeps each option's
+   source card, so the right answer is the one flagged `correct` - never the one
+   whose text happens to match. See pp-distractor.js. */
 const L = { topicRef:null, li:0, ti:0, qs:[], i:0, results:[], attempted:false };
 
 function startListen(l, t){
   L.li=l; L.ti=t; L.topicRef=LEVELS[l].topics[t];
   const pool=poolFor(L.topicRef.src, "listen");   /* recognition: recognition-only cards stay in */
   L.qs=gShuffle(pool).slice(0,15).map(item=>{
-    const seen=new Set([item.c.en]); const opts=[];
-    gShuffle(pool.filter(x=>x.topic===item.topic))
-      .concat(gShuffle(pool.filter(x=>x.topic!==item.topic)))
-      .forEach(x=>{ if(opts.length<3 && !seen.has(x.c.en)){ opts.push(x.c.en); seen.add(x.c.en); } });
-    return { c:item.c, topic:item.topic, options:gShuffle(opts.concat([item.c.en])) };
+    const built=PP_DISTRACTOR.buildOptions({
+      correct:item, candidates:pool, count:4, shuffle:gShuffle, heardOf:ppMainAudioText
+    });
+    return { c:item.c, topic:item.topic, options:built.options };
   });
   L.i=0; L.results=[];
   $("lLevelLbl").textContent = L.topicRef.name + " \u00b7 " + L.qs.length + " questions";
@@ -2933,9 +2940,9 @@ function lRender(){
   const box=$("lOpts"); box.innerHTML="";
   q.options.forEach(o=>{
     const b=document.createElement("button");
-    b.className="opt"; b.textContent=o;
+    b.className="opt"; b.textContent=o.label;
     b.addEventListener("click", ()=>{
-      if(o===q.c.en){
+      if(o.correct){          /* the retained source, not a string match: two cards can share a gloss */
         b.classList.add("correct");
         box.querySelectorAll(".opt").forEach(x=>x.disabled=true);
         if(!L.attempted) L.results[L.i]=true;
