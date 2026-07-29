@@ -224,6 +224,11 @@ var SRC_TCHECK  = bodyOf(INDEX, 'tCheckAnswer');
 var SRC_DONE    = bodyOf(INDEX, 'tShowDone');
 var SRC_RCHECK  = bodyOf(INDEX, 'rCheckAnswer');
 var SRC_RRECORD = bodyOf(INDEX, 'rRecord');
+// Phase 4F: rCheckAnswer re-asks the Next-button wording after rRecord, because a miss
+// on the final original question appends the first retry under a label already on screen.
+// It is lifted so the shipping code RUNS; the wording itself is owned by
+// tests/test_mixed_round_legibility.js and nothing here asserts about it.
+var SRC_RSYNC   = bodyOf(INDEX, 'rSyncNextLabel');
 
 // The functions call each other, so they are compiled into ONE scope with
 // their free identifiers supplied as parameters.
@@ -232,7 +237,7 @@ var FREE = ['$', 'T', 'R', 'LEVELS', 'poolFor', 'gShuffle', 'show', 'PP_ANSWER',
             'document', 'G_AUDIO', 'window'];
 var COMPILE = Function.apply(null, FREE.concat([
   SRC_VARIANT + '\n' + SRC_USAGE + '\n' + SRC_START + '\n' + SRC_RENDER + '\n' + SRC_REVEAL + '\n' +
-  SRC_TCHECK + '\n' + SRC_DONE + '\n' + SRC_RCHECK + '\n' + SRC_RRECORD + '\n' +
+  SRC_TCHECK + '\n' + SRC_DONE + '\n' + SRC_RSYNC + '\n' + SRC_RCHECK + '\n' + SRC_RRECORD + '\n' +
   'return { startTypeit:startTypeit, tRender:tRender, tRevealLetter:tRevealLetter,' +
   '         tCheckAnswer:tCheckAnswer, tShowDone:tShowDone, rCheckAnswer:rCheckAnswer,' +
   '         ppVariantParts:ppVariantParts };'

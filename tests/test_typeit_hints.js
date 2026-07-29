@@ -534,21 +534,77 @@ ok('E5 the hint sentence reuses the existing summary paragraph',
 ok('E5 no new hint node was added to the done screen',
    DONE_MARKUP.indexOf('tHintN') === -1 && DONE_MARKUP.indexOf('tHinted') === -1);
 
-// Mixed Quiz is untouched: its own hint reveal and its own scoring
+// The two activities each own a hint counter, and they are SEPARATE.
+// Until Phase 4F the Mixed Quiz had none at all, and this section said so. That is no
+// longer the boundary worth defending: the Mixed Quiz now reports hint use of its own,
+// on its own state, over its own scope. What still has to be true - and is what this
+// section now asserts - is that the two counters never became one, and that neither
+// activity folds hints into its score. The Mixed Quiz's own hint RULES (question-level
+// counting, blank submissions, requeued questions excluded) are owned by
+// tests/test_mixed_round_legibility.js; nothing here restates them.
 var SRC_R_REVEAL = bodyOf(INDEX, 'rRevealLetter');
 var SRC_R_CHECK  = bodyOf(INDEX, 'rCheckAnswer');
 var SRC_R_DONE   = bodyOf(INDEX, 'rShowDone');
-ok('E6 Mixed Quiz reveal has no hint counter', SRC_R_REVEAL.indexOf('hinted') === -1);
-ok('E6 Mixed Quiz check has no hint counter', SRC_R_CHECK.indexOf('hinted') === -1);
-ok('E6 Mixed Quiz done screen has no hint sentence',
-   SRC_R_DONE.indexOf('hinted') === -1 && SRC_R_DONE.indexOf('used a hint') === -1);
-ok('E6 Mixed Quiz still resets only its own per-question reveal',
+var SRC_R_START  = bodyOf(INDEX, 'startRound');
+
+// Type It's own behaviour is unchanged by the other activity gaining a counter.
+ok('E6 Type It still banks its hint on the accepted submission',
+   SRC_CHECK.indexOf('if(T.revealed>0) T.hinted++;') !== -1);
+ok('E6 Type It still reveals without banking anything', SRC_REVEAL.indexOf('T.hinted') === -1);
+ok('E6 Type It still reports its hints from its own counter', SRC_DONE.indexOf('T.hinted') !== -1);
+ok('E6 Type It never reads the Mixed Quiz counter',
+   SRC_CHECK.indexOf('R.hinted') === -1 && SRC_DONE.indexOf('R.hinted') === -1 &&
+   SRC_REVEAL.indexOf('R.hinted') === -1);
+
+// The Mixed Quiz now owns a counter, and it is R's, not T's.
+ok('E6 the Mixed Quiz banks its hint in its own check', SRC_R_CHECK.indexOf('R.hinted++') !== -1);
+ok('E6 the Mixed Quiz reveal still banks nothing', SRC_R_REVEAL.indexOf('hinted') === -1);
+ok('E6 the Mixed Quiz reports its hints from its own counter', SRC_R_DONE.indexOf('R.hinted') !== -1);
+ok('E6 the Mixed Quiz never reads the Type It counter',
+   SRC_R_CHECK.indexOf('T.hinted') === -1 && SRC_R_DONE.indexOf('T.hinted') === -1 &&
+   SRC_R_START.indexOf('T.hinted') === -1);
+ok('E6 the Mixed Quiz clears its counter when a round starts',
+   SRC_R_START.replace(/\s+/g, '').indexOf('R.hinted=0') !== -1);
+ok('E6 the Mixed Quiz still resets its own per-question reveal',
    INDEX.indexOf('R.i=0; R.state="ask"; R.revealed=0; R.attempted=false;') !== -1);
-ok('E6 the hinted counter lives on the Type It state alone',
-   INDEX.indexOf('R.hinted') === -1);
-// only ONE activity gained the counter, and it is declared on T
-ok('E6 T declares the hinted counter', INDEX.indexOf('const T = {') !== -1 &&
-   INDEX.slice(INDEX.indexOf('const T = {'), INDEX.indexOf('const T = {') + 200).indexOf('hinted:0') !== -1);
+
+// Two counters, two state objects, and no shared global between them.
+ok('E6 T declares its own hinted counter', INDEX.indexOf('const T = {') !== -1 &&
+   INDEX.slice(INDEX.indexOf('const T = {'), INDEX.indexOf('const T = {') + 220).indexOf('hinted:0') !== -1);
+ok('E6 R declares its own hinted counter', INDEX.indexOf('const R = {') !== -1 &&
+   INDEX.slice(INDEX.indexOf('const R = {'), INDEX.indexOf('const R = {') + 220).indexOf('hinted:0') !== -1);
+ok('E6 no shared hint counter was introduced', (function () {
+  // every increment in the file belongs to one activity's own state object
+  var all = (INDEX.match(/[A-Za-z_$][\w$]*\.hinted\+\+/g) || []);
+  return all.length === 2 && all.indexOf('T.hinted++') !== -1 && all.indexOf('R.hinted++') !== -1;
+})());
+ok('E6 there is no activity-neutral hint global',
+   /\bvar\s+hinted\b/.test(INDEX) === false && /\blet\s+hinted\b/.test(INDEX) === false &&
+   /\bwindow\.hinted\b/.test(INDEX) === false);
+ok('E6 each activity increments its counter exactly once',
+   (INDEX.match(/T\.hinted\+\+/g) || []).length === 1 &&
+   (INDEX.match(/R\.hinted\+\+/g) || []).length === 1);
+
+// Neither activity mixes hints into its score arithmetic.
+ok('E6 Type It still counts its tiers without the hint count',
+   SRC_CHECK.indexOf('if(verdict==="right") T.right++; else if(verdict==="almost") T.almost++;') !== -1);
+ok('E6 Type It derives missed from the round size, not the hints',
+   SRC_DONE.indexOf('miss=T.qs.length-right-almost') !== -1);
+ok('E6 the Mixed Quiz still scores first attempts only',
+   SRC_R_DONE.indexOf('R.qs.filter(q=>!q.requeued)') !== -1);
+ok('E6 neither done screen folds hints into a tier', (function () {
+  var both = (SRC_DONE + SRC_R_DONE).replace(/\s+/g, '');
+  return both.indexOf('right-hinted') === -1 && both.indexOf('right+hinted') === -1 &&
+         both.indexOf('almost+hinted') === -1 && both.indexOf('miss+hinted') === -1 &&
+         both.indexOf('missed+hinted') === -1;
+})());
+// and both report hint use in the same words, from the same shape of sentence
+ok('E6 both activities use the same singular wording',
+   SRC_DONE.indexOf('You used a hint on 1 question.') !== -1 &&
+   SRC_R_DONE.indexOf('You used a hint on 1 question.') !== -1);
+ok('E6 both activities use the same plural wording',
+   SRC_DONE.indexOf('You used hints on ') !== -1 &&
+   SRC_R_DONE.indexOf('You used hints on ') !== -1);
 
 // ---------- report ----------
 console.log('Type It hint tests: ' + PASS + ' passed, ' + FAIL + ' failed.');

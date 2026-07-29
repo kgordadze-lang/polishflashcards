@@ -563,6 +563,10 @@ function handlerExpr(id) {
 // tests/test_mixed_audio.js; what they do to FOCUS is asserted here.
 var RNAMES = ['rBuildOptions', 'startRound', 'rSetBlocks',
               'rSetStatus', 'rAnnounceWrong', 'rAnnounceCorrect', 'rFocusNextOption',
+              // Phase 4F: rRender measures progress through these three, so the compiled
+              // scope needs them for the shipping code to run. What they SAY is owned by
+              // tests/test_mixed_round_legibility.js; nothing here asserts about them.
+              'rOriginalTotal', 'rPct', 'rReviewPos', 'rSyncNextLabel',
               'rRender', 'rPickOption', 'rRevealLetter', 'rCheckAnswer', 'rRecord', 'rShowDone',
               'syncRoundAudioReadiness', 'rPlayCurrent', 'rAdvance', 'rExit'];
 var RSRC = {};

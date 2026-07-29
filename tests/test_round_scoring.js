@@ -65,6 +65,11 @@ function bodyOf(src, name) {
 var SRC_T_DONE = bodyOf(INDEX, 'tShowDone');
 var SRC_R_DONE = bodyOf(INDEX, 'rShowDone');
 var SRC_R_RECORD = bodyOf(INDEX, 'rRecord');
+// Phase 4F: rShowDone reports the round against the size it was ASKED at, which it
+// reads through this helper rather than off the R.qs array the requeue mechanism grows.
+// It is lifted with rShowDone so the shipping code runs; what it says about PROGRESS is
+// owned by tests/test_mixed_round_legibility.js.
+var SRC_R_TOTAL = bodyOf(INDEX, 'rOriginalTotal');
 
 // Compile a lifted function with its free identifiers supplied as parameters.
 function lift(src, name, argNames) {
@@ -72,7 +77,7 @@ function lift(src, name, argNames) {
   return function (args) { return f.apply(null, argNames.map(function (k) { return args[k]; })); };
 }
 var liftTShowDone = lift(SRC_T_DONE, 'tShowDone', ['$', 'T', 'window']);
-var liftRShowDone = lift(SRC_R_DONE, 'rShowDone',
+var liftRShowDone = lift(SRC_R_TOTAL + '\n' + SRC_R_DONE, 'rShowDone',
   ['$', 'R', 'LEVELS', 'ppProgressWritable', 'loadV2', 'saveV2', 'window']);
 var liftRRecord = lift(SRC_R_RECORD, 'rRecord', ['R', 'gShuffle']);
 
@@ -174,9 +179,14 @@ COMBOS.forEach(function (cmb) {
 function mixedRound(spec, opts) {
   opts = opts || {};
   var dom = makeDom();
-  var R = { li: 0, ti: 0, i: 0, qs: spec.map(function (s) {
-    return { c: { id: s[0], en: s[0], intro: !!s[2] }, fmt: 'type', options: [], requeued: false, result: null };
-  }) };
+  // Phase 4F: the round now carries the size it was ASKED at, fixed before any retry
+  // could exist, plus its own hint counter. `spec` IS the original phase, so its length
+  // is exactly what startRound would have banked. `hinted` defaults to none, so every
+  // assertion written before this phase describes an un-hinted round, unchanged.
+  var R = { li: 0, ti: 0, i: 0, originalTotal: spec.length, hinted: opts.hinted || 0,
+    qs: spec.map(function (s) {
+      return { c: { id: s[0], en: s[0], intro: !!s[2] }, fmt: 'type', options: [], requeued: false, result: null };
+    }) };
   var rRecord = liftRRecord({ R: R, gShuffle: function (a) { return a; } });
 
   // walk the round the way the UI does: answer each question, including any
@@ -206,6 +216,8 @@ function mixedRound(spec, opts) {
     missed:  dom.text('rMissN'),
     msg:     dom.text('rDoneMsg'),
     asked:   R.qs.length,
+    counter: dom.text('rCountLbl'),
+    total:   R.originalTotal,
     known:   rec ? rec.known.slice().sort() : null,
     still:   rec ? rec.still.slice().sort() : null
   };
@@ -272,6 +284,117 @@ eq('T2 an all-almost round reports both as almost', allAlmostMq.almost, '2');
 eq('T2 an all-almost round requeues nothing', allAlmostMq.asked, 2);
 ok('T2 an all-almost round is not called perfect',
    allAlmostMq.msg.indexOf('Every question right on the first try') === -1);
+
+// =========================================================================
+// 2e. PHASE 4F - the tiers are still the ORIGINAL round, and hints stay outside
+// The round now carries `originalTotal`, fixed when it started, and `hinted`, its own
+// count of first-attempt questions that used "Reveal a letter". Neither may reach the
+// arithmetic above. What the counter and the hint sentence SAY during a round is owned
+// by tests/test_mixed_round_legibility.js; this file owns only that the numbers on the
+// done screen did not move.
+// =========================================================================
+// the tiers are still counted over the original questions, however much R.qs grew
+var f4 = mixedRound([['c1','right'],['c2','miss'],['c3','almost'],['c4','miss'],['c5','right']]);
+eq('T2e the round was asked at five questions', f4.total, 5);
+eq('T2e ... and grew to seven with the retries', f4.asked, 7);
+eq('T2e the tiers still sum to the ORIGINAL total',
+   Number(f4.correct) + Number(f4.almost) + Number(f4.missed), f4.total);
+ok('T2e ... and not to the grown array',
+   Number(f4.correct) + Number(f4.almost) + Number(f4.missed) !== f4.asked);
+ok('T2e the message counts out of the original total', f4.msg.indexOf('2 of 5 right') !== -1);
+ok('T2e ... never out of the grown array', f4.msg.indexOf(' of 7') === -1);
+eq('T2e the results counter reads the original total, twice', f4.counter, '5 / 5');
+ok('T2e the results counter is not the grown array', f4.counter.indexOf('7') === -1);
+// retries are still excluded from every tier, exactly as before
+var f4r = mixedRound([['c1','miss'],['c2','miss'],['c3','miss']], { secondPass: { c1:'right', c2:'right', c3:'right' } });
+eq('T2e three retries answered right still score zero', f4r.correct, '0');
+eq('T2e ... and stay three to review', f4r.missed, '3');
+eq('T2e ... over an original total of three', f4r.total, 3);
+eq('T2e ... in a six-slot array', f4r.asked, 6);
+eq('T2e ... with the counter still reading the original round', f4r.counter, '3 / 3');
+
+// hints change no tier - same spec, run with and without them
+var HPLAN = [['c1','right'],['c2','almost'],['c3','miss'],['c4','right']];
+var noHint = mixedRound(HPLAN);
+var withHint = mixedRound(HPLAN, { hinted: 3 });
+eq('T2e hints do not move the correct tile', withHint.correct, noHint.correct);
+eq('T2e hints do not move the almost tile', withHint.almost, noHint.almost);
+eq('T2e hints do not move the review tile', withHint.missed, noHint.missed);
+eq('T2e hints do not move the original total', withHint.total, noHint.total);
+eq('T2e hints do not move the results counter', withHint.counter, noHint.counter);
+eq('T2e hints requeue nothing extra', withHint.asked, noHint.asked);
+eq('T2e hints do not move progress writeback', withHint.known, noHint.known);
+eq('T2e ... either way', withHint.still, noHint.still);
+// the sentence is APPENDED, outside the tier clauses
+eq('T2e the hinted message is the un-hinted message plus one sentence',
+   withHint.msg, noHint.msg + ' You used hints on 3 questions.');
+ok('T2e the tier clauses come first',
+   withHint.msg.indexOf('to review.') < withHint.msg.indexOf('You used hints'));
+ok('T2e an un-hinted round says nothing about hints', noHint.msg.indexOf('hint') === -1);
+var h1 = mixedRound(HPLAN, { hinted: 1 });
+ok('T2e one hinted question uses the singular', h1.msg.indexOf(' You used a hint on 1 question.') !== -1);
+ok('T2e ... and not the plural', h1.msg.indexOf('hints on') === -1);
+// a perfect round that used hints keeps the perfect wording AND reports the hints
+var hPerfect = mixedRound([['c1','right'],['c2','right']], { hinted: 2 });
+eq('T2e a hinted clean sweep still scores every question', hPerfect.correct, '2');
+ok('T2e ... and keeps the perfect-round wording',
+   hPerfect.msg.indexOf('Every question right on the first try') === 0);
+ok('T2e ... while still reporting the hints',
+   hPerfect.msg.indexOf('You used hints on 2 questions.') !== -1);
+ok('T2e the hint sentence never frames a hinted answer as lesser',
+   [h1.msg, withHint.msg, hPerfect.msg].every(function (m) {
+     return m.indexOf('deduct') === -1 && m.indexOf('penal') === -1 && m.indexOf('not count') === -1;
+   }));
+// persistence is untouched by either new field
+var hProg = mixedRound([['c1','right'],['c2','miss'],['c3','almost']], { hinted: 2 });
+eq('T2e a hinted round still writes right to known', hProg.known, ['c1']);
+eq('T2e ... and miss to still learning', hProg.still, ['c2']);
+ok('T2e ... and almost to neither',
+   hProg.known.indexOf('c3') === -1 && hProg.still.indexOf('c3') === -1);
+// and neither new field is persisted
+ok('T2e neither new field reaches the stored record',
+   SRC_R_DONE.indexOf('hinted:') === -1 && SRC_R_DONE.indexOf('originalTotal:') === -1);
+ok('T2e the stored shape is still still/known id lists',
+   SRC_R_DONE.indexOf('store.progress[tRound.id] = { still:[...still], known:[...known] };') !== -1);
+// the tiers are computed from `scored`, never from the hint count
+ok('T2e no tier is derived from the hint count', (function () {
+  var s = SRC_R_DONE.replace(/\s+/g, '');
+  return s.indexOf('right-hinted') === -1 && s.indexOf('right+hinted') === -1 &&
+         s.indexOf('almost-hinted') === -1 && s.indexOf('missed+hinted') === -1 &&
+         s.indexOf('scored.length-hinted') === -1;
+})());
+// The visible denominator is the FIXED original total, not the length of the filtered
+// array. The two are equal under the current requeue policy - one retry per first-try
+// miss, and a retry never re-requeues - so this is an ownership claim rather than an
+// arithmetic one: R.originalTotal answers "how big was this round", and a filtered
+// array that happens to agree is not the same statement.
+ok('T2e the completion message is built from the fixed original total',
+   SRC_R_DONE.indexOf('"You got "+right+" of "+total+" right on the first try."') !== -1);
+ok('T2e the perfect-round test is against the fixed original total',
+   SRC_R_DONE.indexOf('right===total ?') !== -1);
+ok('T2e the fixed total is read from the original-total helper',
+   SRC_R_DONE.replace(/\s+/g, '').indexOf('consttotal=rOriginalTotal()') !== -1);
+ok('T2e no learner-facing "of N" is taken from scored.length', (function () {
+  var s = SRC_R_DONE.replace(/\s+/g, '');
+  return s.indexOf('of"+scored.length') === -1 && s.indexOf('right===scored.length') === -1;
+})());
+// ... while `scored` keeps the arithmetic and the persistence walk
+ok('T2e the tiers are still counted off the scored originals', (function () {
+  var s = SRC_R_DONE.replace(/\s+/g, '');
+  return s.indexOf('scored.filter(q=>q.result==="right").length') !== -1 &&
+         s.indexOf('scored.filter(q=>q.result==="almost").length') !== -1 &&
+         s.indexOf('scored.filter(q=>q.result==="miss").length') !== -1;
+})());
+ok('T2e retries are still excluded from the scored set',
+   SRC_R_DONE.indexOf('R.qs.filter(q=>!q.requeued)') !== -1);
+ok('T2e the persistence walk still uses the scored originals',
+   SRC_R_DONE.replace(/\s+/g, '').indexOf('scored.forEach(q=>{') !== -1);
+// and the two agree in practice, on every fixture this file drives
+[f4, f4r, noHint, withHint, h1, hPerfect, hProg, mq, mq2, mq3, perfect, nearPerfect, allAlmostMq]
+  .forEach(function (r, n) {
+    eq('T2e fixture ' + n + ': the tiers sum to the fixed original total',
+       Number(r.correct) + Number(r.almost) + Number(r.missed), r.total);
+  });
 
 // =========================================================================
 // 3. MARKUP - each done screen has its own three tiles, wired to the counters

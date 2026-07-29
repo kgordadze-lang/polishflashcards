@@ -3329,8 +3329,15 @@ $("lHome").addEventListener("click", lExit);
    Three formats interleaved - hear it & pick the meaning, see the meaning & type the Polish,
    see the Polish & pick the meaning. A question missed on the first try returns once at the
    end of the round (requeued copies never count toward the score). Results flow back into
-   the topic's still/known progress, so the topic list's "to review" count stays honest. */
-const R = { li:0, ti:0, qs:[], i:0, state:"ask", revealed:0, attempted:false };
+   the topic's still/known progress, so the topic list's "to review" count stays honest.
+
+   `qs` GROWS during a round - every requeued copy is appended to it - so it is the wrong
+   thing to measure the round against. `originalTotal` is the size of the original phase,
+   fixed by startRound before any retry can exist, and it owns every "of N" the learner
+   reads and the whole width of the progress bar. `hinted` counts original typed QUESTIONS
+   that used "Reveal a letter" (five reveals on one word is still one question), reported
+   beside the score exactly as Type It reports its own and never mixed into it. */
+const R = { li:0, ti:0, qs:[], i:0, state:"ask", revealed:0, attempted:false, originalTotal:0, hinted:0 };
 
 /* ---- Mixed Quiz options: the same safety rules Listening already answers to ----
    Both option-bearing formats ask one question and offer four English meanings, so
@@ -3408,6 +3415,14 @@ function startRound(l, t){
              requeued:false, result:null };
   }));
   R.i=0; R.state="ask"; R.revealed=0; R.attempted=false;
+  /* The round's own size, banked HERE and only here: R.qs has just been built and no
+     retry can have been appended yet, so this is the number of questions the learner
+     was actually asked. Small topics legitimately produce fewer than 15, so it is read
+     off the list rather than assumed. Everything the learner reads about "how far
+     through" is measured against this from now on, never against R.qs, which grows.
+     "Practice again" routes through here too, so both counters restart with the round. */
+  R.originalTotal = R.qs.length;
+  R.hinted = 0;
   $("rTitle").textContent = topic.name;
   $("rSub").textContent = "Mixed quiz";
   show("round"); rRender();
@@ -3463,20 +3478,87 @@ function rFocusNextOption(box, from){
   }
   return null;
 }
+/* ---------------- Mixed Quiz: how far through, and through WHAT ----------------
+   A missed question is answered again at the end of the round, and the retry is
+   APPENDED to R.qs. So R.qs.length is not the size of the round - it is the size of
+   the round plus however many retries the learner has earned, and measuring progress
+   against it told the learner their first miss had made the quiz longer ("2 / 16"),
+   while the score screen went on reporting the 15 questions actually asked. These
+   three helpers are the only things that answer "how far through", and none of them
+   reads R.qs.length. */
+/* The fixed size of the original phase. Number() and the >0 test are not defensiveness
+   about startRound - which always sets it - but about arithmetic: a width is a style
+   string, and "NaN%" or "Infinity%" is a silently broken bar rather than a thrown error. */
+function rOriginalTotal(){ const n=Number(R.originalTotal); return n>0 ? n : 0; }
+/* Width as a percentage of the ORIGINAL round, clamped at both ends so no fixture and
+   no future caller can paint a bar outside its own track. */
+function rPct(done, total){
+  if(!(total>0)) return 0;
+  const p = done/total*100;
+  return p<0 ? 0 : p>100 ? 100 : p;
+}
+/* Where the current retry sits among the retries. DERIVED, not a second counter kept
+   in step by hand: every retry is appended, so by the time the first one renders the
+   original phase is over and no further retry can ever be created - a requeued question
+   never re-requeues. The list is therefore complete and final at the moment it is first
+   read, which is what makes "Review 1 / 4" honest on the very first review. */
+function rReviewPos(){
+  let total=0, at=0;
+  for(let k=0;k<R.qs.length;k++){
+    if(!R.qs[k].requeued) continue;
+    total++;
+    if(k<=R.i) at=total;
+  }
+  return { at, total };
+}
+/* What the forward button promises, computed against the list as it stands RIGHT NOW.
+   This has to be re-asked after an answer, not only when a question renders: rRecord
+   appends a retry, so the final original question is the one case where the list grows
+   UNDER a label already on screen. Answer it wrongly and the button the learner is
+   focused on still said "See results" while the click actually opened "Review 1 / 1" -
+   it named a screen it was no longer going to reach.
+
+   Recomputing it is unconditional and idempotent, so the two answer paths can simply
+   call it: a right or almost answer appended nothing and the wording does not move,
+   while a miss that appended a retry corrects it to "Next". Keeping the rule in one
+   place is what stops the render path and the answer paths from drifting apart. */
+function rSyncNextLabel(){
+  $("rNextLabel").textContent = R.i===R.qs.length-1 ? "See results" : "Next";
+}
 function rRender(){
   syncRoundAudioReadiness();              /* before the branch: the results screen needs it too */
   if(R.i >= R.qs.length){ rShowDone(); return; }
   $("rMain").style.display="flex"; $("rDone").style.display="none";
   const q=R.qs[R.i], c=q.c;
   R.state="ask"; R.revealed=0; R.attempted=false;
-  $("rCountLbl").textContent=(R.i+1)+" / "+R.qs.length;
-  $("rFill").style.width=(R.i/R.qs.length*100)+"%";
+  /* #rCountLbl is already the round's one polite live region, so this is the sentence a
+     reader hears on every question change - which makes it the right place to say WHICH
+     phase the question belongs to, rather than adding a second region to compete with it.
+     A review says so in words; an original question reads exactly as it always has.
+     The bar keeps its existing convention - the current question counts once it has been
+     answered and Next moves on, so question one opens at 0% - and it is now drawn against
+     the original round, so finishing that round fills it. Reviews are extra work past a
+     finished round, so the bar stays full rather than shrinking to make room for them. */
+  if(q.requeued){
+    const rev=rReviewPos();
+    $("rCountLbl").textContent="Review "+rev.at+" / "+rev.total;
+    $("rFill").style.width="100%";
+  } else {
+    $("rCountLbl").textContent=(R.i+1)+" / "+rOriginalTotal();
+    $("rFill").style.width=rPct(R.i, rOriginalTotal())+"%";
+  }
   $("rStatus").textContent="";            /* the previous question's result must not linger */
   $("rNext").disabled=true;
-  $("rNextLabel").textContent = R.i===R.qs.length-1 ? "See results" : "Next";
-  $("rType").textContent = q.fmt==="listen" ? "What did you hear?"
-                         : q.fmt==="type"   ? "Type the Polish"
-                         : "What does it mean?";
+  /* The last RENDERED question, not the last original one: when misses were requeued the
+     round is not over at question 15. Answering can move this again - see rSyncNextLabel. */
+  rSyncNextLabel();
+  /* textContent, and one assignment: the marker is a prefix on the sentence that is
+     already there, so a review is identified by what the question SAYS rather than by
+     where it happens to sit - and it stays legible to anyone who never sees the counter. */
+  $("rType").textContent = (q.requeued ? "Review · " : "")
+                         + (q.fmt==="listen" ? "What did you hear?"
+                          : q.fmt==="type"   ? "Type the Polish"
+                          : "What does it mean?");
   rSetBlocks(q.fmt);
   if(q.fmt==="type"){
     $("rEn").textContent=c.en;
@@ -3579,6 +3661,7 @@ function rPickOption(btn, o, q, box){
     box.querySelectorAll(".opt").forEach(x=>x.disabled=true);
     R.state="done";
     rRecord(q, R.attempted ? "miss" : "right");
+    rSyncNextLabel();     /* rRecord may have appended a retry - re-ask before the button opens */
     if(q.fmt==="listen"){ $("rReveal").textContent=q.c.pl; $("rReveal").classList.add("show"); }
     const fb=$("rFb");
     const exHtml=q.c.ex ? '<div class="fb-good"><div class="t"><div class="p" lang="pl">'+q.c.ex+'</div><div class="e">'+(q.c.exEn||"")+'</div></div>'+
@@ -3623,7 +3706,22 @@ function rCheckAnswer(){
      instruction standing would contradict the verdict for anyone reading the page
      rather than listening to it announce. */
   $("rStatus").textContent="";
+  /* Hint use is banked HERE, once, on the single accepted submission - the same place
+     and the same rule Type It uses. The `R.state` guard above has already turned every
+     repeat (Enter again, a second click, Enter-then-click) into a no-op and the blank
+     guard returned before it, so a question can raise this by at most one however many
+     letters it revealed; `R.revealed` is letters actually SHOWN, so a press that reveals
+     nothing is not counted as help.
+
+     The one rule that is this activity's own: a requeued question is excluded. The
+     completion screen below is explicitly first-try scoring - `scored` drops every
+     requeued copy - so a hint count reported beside it has to be drawn from the same
+     questions, or the sentence would be describing a different round from the tiles.
+     The verdict is untouched either way: a hinted answer is still right, almost or a
+     miss, and still requeues on exactly the same rule. */
+  if(R.revealed>0 && !q.requeued) R.hinted++;
   rRecord(q, verdict==="wrong" ? "miss" : verdict);
+  rSyncNextLabel();     /* rRecord may have appended a retry - re-ask before the button opens */
   $("rInput").disabled=true; $("rCheck").disabled=true; $("rHint").disabled=true;
   const v=$("rVerdict");
   /* Same main-audio rule as the flashcard: the button exists only when there is a
@@ -3671,8 +3769,21 @@ function rRecord(q, result){
 }
 function rShowDone(){
   $("rMain").style.display="none"; $("rDone").style.display="flex";
-  $("rFill").style.width="100%"; $("rCountLbl").textContent=R.qs.length+" / "+R.qs.length;
+  /* The round that was ASKED, finished - not the round plus its retries. The tiles below
+     count the original questions and nothing else, so a counter reading "16 / 16" beside
+     a score out of 15 described a round that never existed. */
+  /* One fixed total, read once, for every "of N" on this screen. `scored.length` happens
+     to equal it under the current requeue policy - one retry per first-try miss, and a
+     retry never re-requeues - but that is a coincidence of the requeue design, not a
+     statement about the round. The round's size is R.originalTotal's to answer, so the
+     counter and the message both ask it rather than counting a filtered array and
+     trusting the two to agree. */
+  const total = rOriginalTotal();
+  $("rFill").style.width="100%";
+  $("rCountLbl").textContent=total+" / "+total;
   $("rStatus").textContent="";   /* the last question's result is over; the panel below says everything now */
+  /* `scored` still owns the ARITHMETIC - which questions have a first-try verdict, and
+     what that verdict was - for the tiers and for the progress writeback below. */
   const scored = R.qs.filter(q=>!q.requeued);
   const right  = scored.filter(q=>q.result==="right").length;
   const almost = scored.filter(q=>q.result==="almost").length;
@@ -3683,11 +3794,19 @@ function rShowDone(){
   $("rScoreN").textContent  = right;
   $("rAlmostN").textContent = almost;
   $("rMissN").textContent   = missed;
+  /* Hinted questions are REPORTED, not deducted: the three tiles above stay exactly the
+     right/almost/missed split of the original round, and this sentence sits outside that
+     arithmetic entirely - it says how the learner got there, not how well they did. So a
+     clean sweep that leaned on "Reveal a letter" keeps the perfect-round line AND states
+     its hints; nothing here can turn a right answer into a lesser one. */
+  const hinted=R.hinted||0;
   $("rDoneMsg").textContent =
-    (right===scored.length ? "Every question right on the first try. \u015awietnie!"
-                           : "You got "+right+" of "+scored.length+" right on the first try.")
+    (right===total ? "Every question right on the first try. \u015awietnie!"
+                   : "You got "+right+" of "+total+" right on the first try.")
     + (almost>0 ? " "+almost+" almost - the \u0105 and \u0119 will come." : "")
-    + (missed>0 ? " "+missed+" to review." : "");
+    + (missed>0 ? " "+missed+" to review." : "")
+    + (hinted>0 ? (hinted===1 ? " You used a hint on 1 question."
+                              : " You used hints on "+hinted+" questions.") : "");
   /* feed results back into the topic's progress: a first-try miss goes to "still
      learning", a first-try right is solid evidence the word is known */
   const tRound = LEVELS[R.li].topics[R.ti];

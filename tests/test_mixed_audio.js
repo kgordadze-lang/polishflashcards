@@ -432,6 +432,10 @@ var PP_TYPED_INDEX = PP_ANSWER.buildIndex(CARDS);
 // eval inside a nested function resolves globally, so it would not see this scope.)
 var RNAMES = ['rBuildOptions', 'startRound', 'rSetBlocks',
               'rSetStatus', 'rAnnounceWrong', 'rAnnounceCorrect', 'rFocusNextOption',
+              // Phase 4F: rRender measures progress through these three, so the compiled
+              // scope needs them for the shipping code to run. What they SAY is owned by
+              // tests/test_mixed_round_legibility.js; nothing here asserts about them.
+              'rOriginalTotal', 'rPct', 'rReviewPos', 'rSyncNextLabel',
               'rRender', 'syncRoundAudioReadiness', 'rPlayCurrent',
               'rPickOption', 'rRevealLetter', 'rCheckAnswer', 'rRecord', 'rShowDone',
               'rAdvance', 'rExit'];

@@ -253,9 +253,15 @@ var COMPILE = Function.apply(null, FREE.concat([
 // gives the Mixed Quiz Play button a readiness state, refreshed once per render. It
 // is passed as a no-op here - this file renders the typed question to prove what the
 // PROMPT says, and the button's states are owned by tests/test_mixed_audio.js.
+// Phase 4F adds three progress helpers that rRender calls; they are lifted with it for
+// the same reason - the shipping code has to RUN. What they say is owned by
+// tests/test_mixed_round_legibility.js; nothing here asserts about them.
 var COMPILE_R = Function.apply(null, ['$', 'R', 'rShowDone', 'gShuffle', 'document',
                                       'syncRoundAudioReadiness'].concat([
-  bodyOf(INDEX, 'rSetBlocks') + '\n' + bodyOf(INDEX, 'rRender') + '\n' +
+  bodyOf(INDEX, 'rSetBlocks') + '\n' +
+  bodyOf(INDEX, 'rOriginalTotal') + '\n' + bodyOf(INDEX, 'rPct') + '\n' +
+  bodyOf(INDEX, 'rReviewPos') + '\n' + bodyOf(INDEX, 'rSyncNextLabel') + '\n' +
+  bodyOf(INDEX, 'rRender') + '\n' +
   'return { rRender:rRender };'
 ]));
 
