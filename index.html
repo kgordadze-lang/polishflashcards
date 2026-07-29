@@ -655,6 +655,9 @@
      Listening one, so each activity's anchors stay listed with that activity. Every
      real Mixed Quiz control keeps its :focus-visible ring. */
   #rType:focus,#rPl:focus,#rDoneTitle:focus{outline:none}
+  /* Grammar's completion heading follows the same programmatic-focus pattern. It is
+     not a tab stop; every option and control keeps its ordinary focus-visible ring. */
+  #gDoneTitle:focus{outline:none}
   .q-prompt{font-size:22px;font-weight:800;line-height:1.35;letter-spacing:-.4px;color:var(--forest)}
   .q-prompt .blank{display:inline-block;min-width:56px;border-bottom:3px solid var(--emerald);margin:0 3px;vertical-align:middle;height:1.1em}
   .q-en{font-size:14px;color:var(--muted);font-weight:500;margin-top:8px}
@@ -1013,6 +1016,7 @@
     <div id="gPractice" style="display:none;flex-direction:column;flex:1">
       <div class="drill">
         <div class="drill-card" id="gDrillCard"></div>
+        <div class="sr-only" id="gStatus" role="status" aria-live="polite" aria-atomic="true"></div>
         <div class="controls">
           <button class="ctrl" id="gDrillNext" disabled>
             <span id="gDrillNextLabel">Next</span>
@@ -1028,7 +1032,7 @@
         <div class="done-badge">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
         </div>
-        <h2>Brawo!</h2>
+        <h2 id="gDoneTitle" tabindex="-1">Brawo!</h2>
         <p id="gDoneMsg"></p>
         <div class="score-ring"><span id="gScore">0</span><span class="lbl"> / <span id="gTotal">0</span> first try</span></div>
         <div class="done-actions">
@@ -2517,7 +2521,7 @@ document.addEventListener("keydown", e=>{
 });
 
 /* ---------------- grammar (teach -> drill) ---------------- */
-const G = { topic:null, li:0, tpi:0, ti:0, di:0, results:[], attempted:false, build:{pool:[],row:[]} };
+const G = { topic:null, li:0, tpi:0, ti:0, di:0, results:[], attempted:false, state:"ask", build:{pool:[],row:[]} };
 const G_AUDIO='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>';
 
 function gExampleHTML(ex){
@@ -2577,7 +2581,7 @@ function gSampleMix(topic){
    re-practiced before the round ends. Requeued copies never count toward the score. */
 function gStartPractice(){
   if(G.topic.mixOf) gSampleMix(G.topic);
-  G.queue=G.topic.drills.slice(); G.di=0; G.results=[]; gRenderDrill(); gPhaseView("practice");
+  G.queue=G.topic.drills.slice(); G.di=0; G.results=[]; gPhaseView("practice"); gRenderDrill();
 }
 function gUpdateNextLabel(){
   const willRequeue = G.results[G.di]===false && !G.queue[G.di]._requeue;
@@ -2586,7 +2590,7 @@ function gUpdateNextLabel(){
 }
 function gRenderDrill(){
   const c=G.queue[G.di];
-  G.attempted=false;
+  G.attempted=false; G.state="ask"; gSetStatus([]);
   const tag = c._requeue ? " \u00b7 retry" : "";
   $("gPhase").textContent="Practice \u00b7 "+(G.di+1)+" of "+G.queue.length+tag;
   $("gCount").textContent=(G.di+1)+" / "+G.queue.length;
@@ -2595,26 +2599,69 @@ function gRenderDrill(){
   gUpdateNextLabel();
   if(c.type==="choose") gRenderChoose(c); else gRenderBuild(c);
 }
+function gSetStatus(parts){
+  const box=$("gStatus"); if(!box) return;
+  box.textContent="";
+  (parts||[]).forEach(p=>box.appendChild(typeof p==="string" ? document.createTextNode(p) : p));
+}
+function gAnnounceWrong(label){
+  gSetStatus([label+" is not correct. Try another answer."]);
+}
+function gAnnounceCorrect(pl){
+  const answer=document.createElement("span");
+  answer.setAttribute("lang","pl");
+  answer.textContent=pl;
+  gSetStatus(["Correct. The answer is ",answer,". Next is ready."]);
+}
+function gFocusNextOption(box,from){
+  const opts=Array.prototype.slice.call(box.querySelectorAll(".opt"));
+  const at=opts.indexOf(from);
+  for(let k=1;k<=opts.length;k++){
+    const next=opts[(at+k+opts.length)%opts.length];
+    if(next && !next.disabled){ next.focus(); return next; }
+  }
+  return null;
+}
 function gRenderChoose(c){
   const p=c.prompt.replace("___",'<span class="blank"></span>');
   const dt = c._case ? "Choose the right form \u00b7 <b>"+c._case+"</b>" : "Choose the right form";
-  let h='<div class="d-type">'+dt+'</div><div class="q-prompt" lang="pl">'+p+'</div><div class="q-en">'+c.promptEn+'</div><div class="opts">';
-  gShuffle(c.options).forEach(o=>{ h+='<button class="opt" lang="pl" data-val="'+o+'">'+o+'</button>'; });
-  h+='</div><div class="fb-box" id="gFbBox" aria-live="polite"></div>';
-  $("gDrillCard").innerHTML=h;
-  $("gDrillCard").querySelectorAll(".opt").forEach(btn=>{
+  const card=$("gDrillCard");
+  card.innerHTML='<div class="d-type">'+dt+'</div><div class="q-prompt" lang="pl">'+p+'</div><div class="q-en">'+c.promptEn+'</div><div class="opts"></div><div class="fb-box" id="gFbBox"></div>';
+  const box=card.querySelector(".opts");
+  const buttons=gShuffle(c.options).map(o=>{
+    const btn=document.createElement("button");
+    btn.className="opt";
+    btn.setAttribute("lang","pl");
+    btn.setAttribute("data-val",o);
+    btn.textContent=o;
     btn.addEventListener("click",()=>{
+      if(G.state!=="ask") return;
       const val=btn.getAttribute("data-val");
       if(val===c.answer){
         btn.classList.add("correct");
-        $("gDrillCard").querySelectorAll(".opt").forEach(b=>b.disabled=true);
+        btn.setAttribute("aria-label",val+", correct");
+        buttons.forEach(b=>b.disabled=true);
+        G.state="done";
         if(!G.attempted) G.results[G.di]=true; else G.results[G.di]=false;
         gChooseFeedback(c);
         gUpdateNextLabel();
+        gAnnounceCorrect(c.answer);
         $("gDrillNext").disabled=false;
-      } else { btn.classList.add("wrong"); btn.disabled=true; G.attempted=true; G.results[G.di]=false; }
+        $("gDrillNext").focus();
+      } else {
+        btn.classList.add("wrong");
+        btn.setAttribute("aria-label",val+", incorrect. Try again");
+        btn.disabled=true;
+        G.attempted=true; G.results[G.di]=false;
+        gAnnounceWrong(val);
+        gFocusNextOption(box,btn);
+      }
     });
+    box.appendChild(btn);
+    return btn;
   });
+  const first=buttons.find(btn=>!btn.disabled);
+  if(first) first.focus();
 }
 function gChooseFeedback(c){
   const fb=$("gFbBox");
@@ -2693,6 +2740,7 @@ function gShowDone(){
     ? "Every answer right on the first try. This is clicking."
     : "Nice work through the set - "+retried+" drill"+(retried===1?"":"s")+" came back for a second pass and you cleared "+(retried===1?"it":"them")+".";
   gPhaseView("done");
+  $("gDoneTitle").focus();
 }
 
 /* grammar events */
