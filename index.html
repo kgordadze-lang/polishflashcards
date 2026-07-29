@@ -2583,7 +2583,7 @@ function gSampleMix(topic){
    re-practiced before the round ends. Requeued copies never count toward the score. */
 function gStartPractice(){
   if(G.topic.mixOf) gSampleMix(G.topic);
-  G.queue=G.topic.drills.slice(); G.di=0; G.results=[]; gPhaseView("practice"); gRenderDrill();
+  G.queue=G.topic.mixOf ? G.topic.drills.slice() : gShuffle(G.topic.drills); G.di=0; G.results=[]; gPhaseView("practice"); gRenderDrill();
 }
 function gUpdateNextLabel(){
   const willRequeue = G.results[G.di]===false && !G.queue[G.di]._requeue;

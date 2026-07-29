@@ -138,6 +138,19 @@ var window = { PP_LEVELS: [] };
 (0, eval)(readFile(ROOT + 'data-grammar.js'));
 (0, eval)(readFile(ROOT + 'data-verbs.js'));
 var GRAMMAR_LEVELS = window.PP_LEVELS.slice();
+function applyShippingGrammarMix(levels) {
+  var anchor = INDEX.indexOf(
+    'const gc = LEVELS.find(lv => lv.level === "Grammar Cases");'
+  );
+  if (anchor === -1) throw new Error('extract: shipping Grammar Mix injection not found');
+  var start = INDEX.lastIndexOf('(function(){', anchor);
+  var end = INDEX.indexOf('})();', anchor);
+  if (start === -1 || end === -1) {
+    throw new Error('extract: shipping Grammar Mix injection is incomplete');
+  }
+  (new Function('LEVELS', INDEX.slice(start, end + 5)))(levels);
+}
+applyShippingGrammarMix(GRAMMAR_LEVELS);
 if (savedWindow !== undefined) window = savedWindow;
 
 var DRILLS = [];
@@ -495,6 +508,8 @@ GNAMES.forEach(function (name) {
   try { GSRC[name] = extractFunction(INDEX, name); }
   catch (_) { GSRC[name] = 'function ' + name + '(){}'; }
 });
+var SHUFFLE_SRC = extractFunction(INDEX, 'gShuffle');
+var SAMPLE_MIX_SRC = extractFunction(INDEX, 'gSampleMix');
 var AUDIO_STARTS = 0;
 function speakText() { AUDIO_STARTS++; }
 function speakCardMain() { AUDIO_STARTS++; }
@@ -502,11 +517,62 @@ function stopAllAudio() {}
 function identityShuffle(a) { return a.slice(); }
 function noMix() {}
 function immediateTimer(fn) { fn(); }
-var GRAMMAR = (new Function(
-  '$', 'document', 'G', 'G_AUDIO', 'gShuffle', 'gSampleMix', 'setTimeout',
-  GNAMES.map(function (n) { return GSRC[n]; }).join('\n') +
-  '\nreturn {' + GNAMES.map(function (n) { return n + ':' + n; }).join(',') + '};'
-))(el, fakeDocument, G, '<svg class="audio-icon"></svg>', identityShuffle, noMix, immediateTimer);
+function grammarRuntime(shuffle, sampleMix) {
+  return (new Function(
+    '$', 'document', 'G', 'G_AUDIO', 'gShuffle', 'gSampleMix', 'setTimeout',
+    GNAMES.map(function (n) { return GSRC[n]; }).join('\n') +
+    '\nreturn {' + GNAMES.map(function (n) { return n + ':' + n; }).join(',') + '};'
+  ))(el, fakeDocument, G, '<svg class="audio-icon"></svg>',
+     shuffle, sampleMix || noMix, immediateTimer);
+}
+function controlledShippingShuffle(initialValues) {
+  var values = initialValues ? initialValues.slice() : [0];
+  var at = 0;
+  var calls = [];
+  var shipping = (new Function(
+    'Math', SHUFFLE_SRC + '\nreturn gShuffle;'
+  ))({
+    floor: Math.floor,
+    random: function () {
+      var value = values.length ? values[at % values.length] : 0;
+      at++;
+      return value;
+    }
+  });
+  function instrumented(a) {
+    var out = shipping(a);
+    calls.push({ input: a, output: out.slice() });
+    return out;
+  }
+  instrumented.use = function (nextValues) {
+    values = nextValues.slice();
+    at = 0;
+  };
+  instrumented.clear = function () {
+    calls.length = 0;
+    at = 0;
+  };
+  instrumented.calls = calls;
+  return instrumented;
+}
+function shippingSampleMix(levels, shuffle) {
+  return (new Function(
+    'LEVELS', 'gShuffle', SAMPLE_MIX_SRC + '\nreturn gSampleMix;'
+  ))(levels, shuffle);
+}
+function shippingStartOnly(shuffle, sampleMix, events) {
+  return (new Function(
+    'G', 'gShuffle', 'gSampleMix', 'gPhaseView', 'gRenderDrill',
+    GSRC.gStartPractice + '\nreturn gStartPractice;'
+  ))(
+    G, shuffle, sampleMix || noMix,
+    function (phase) { events.push('phase:' + phase); },
+    function () {
+      events.push('render:' + (G.queue[G.di] && G.queue[G.di].id));
+    }
+  );
+}
+var GRAMMAR = grammarRuntime(identityShuffle, noMix);
 
 function add(parent, id, tag) {
   var node = new FakeEl(tag || 'div');
@@ -515,7 +581,8 @@ function add(parent, id, tag) {
   if (parent) parent.appendChild(node);
   return node;
 }
-function resetDom() {
+function resetDom(runtime) {
+  var activeRuntime = runtime || GRAMMAR;
   DOM = {};
   HTML_WRITES = {};
   AUDIO_STARTS = 0;
@@ -543,8 +610,8 @@ function resetDom() {
   add(BODY, 'gPhase');
   add(BODY, 'gCount');
   add(BODY, 'gFill');
-  next.addEventListener('click', GRAMMAR.gDrillAdvance);
-  el('gAgain').addEventListener('click', GRAMMAR.gStartPractice);
+  next.addEventListener('click', activeRuntime.gDrillAdvance);
+  el('gAgain').addEventListener('click', activeRuntime.gStartPractice);
 }
 function resetG(topic) {
   Object.keys(G).forEach(function (k) { delete G[k]; });
@@ -1331,6 +1398,368 @@ BUILD.forEach(function (entry) {
 });
 ok('R4 every current real build drill accepts its exact authored order',
    allRealBuildsAcceptExact);
+
+// =========================================================================
+// S. PHASE 4I ORDINARY TOPIC QUEUE CREATION
+// =========================================================================
+function drillIds(drills) {
+  return drills.map(function (d) { return d.id; });
+}
+function sortedDrillIds(drills) {
+  return drillIds(drills).slice().sort();
+}
+var sA = choose('s-a', ['a-good', 'a-bad'], 'a-good');
+var sB = build('s-b', ['B', 'build']);
+var sC = choose('s-c', ['c-good', 'c-bad'], 'c-good');
+var sD = build('s-d', ['D', 'build']);
+var sDrills = [sA, sB, sC, sD];
+var sTopic = topicOf(sDrills);
+var sAuthoredIds = drillIds(sTopic.drills);
+var sSourceArray = sTopic.drills;
+var sShuffle = controlledShippingShuffle([0]);
+var sEvents = [];
+var sStartOnly = shippingStartOnly(sShuffle, noMix, sEvents);
+resetG(sTopic);
+G.di = 3;
+G.results = [true, false];
+sStartOnly();
+eq('S1 ordinary gStartPractice calls shipping gShuffle exactly once',
+   sShuffle.calls.length, 1);
+eq('S1 ordinary queue follows the controlled Fisher-Yates order',
+   drillIds(G.queue), ['s-b', 's-c', 's-d', 's-a']);
+ok('S1 controlled ordinary queue differs from authored order',
+   JSON.stringify(drillIds(G.queue)) !== JSON.stringify(sAuthoredIds));
+eq('S2 ordinary queue retains the complete exact drill-id set',
+   sortedDrillIds(G.queue), sAuthoredIds.slice().sort());
+eq('S2 ordinary queue neither adds nor omits a drill', G.queue.length, sDrills.length);
+ok('S2 ordinary queue is a new array', G.queue !== sSourceArray);
+ok('S2 authored drills keep their original array identity', sTopic.drills === sSourceArray);
+eq('S2 authored drill order remains unchanged', drillIds(sTopic.drills), sAuthoredIds);
+ok('S2 queue entries retain the authored drill objects',
+   G.queue.every(function (d) { return sDrills.indexOf(d) !== -1; }));
+eq('S3 a new ordinary round resets the current index', G.di, 0);
+eq('S3 a new ordinary round resets results', G.results, []);
+eq('S3 practice is shown before the first drill renders',
+   sEvents, ['phase:practice', 'render:s-b']);
+eq('S3 the first shuffled drill is the rendered drill',
+   sEvents[1], 'render:' + G.queue[0].id);
+
+// =========================================================================
+// T. PHASE 4I PRACTICE AGAIN AND INITIAL FOCUS
+// =========================================================================
+var tShuffle = controlledShippingShuffle([0.999]);
+var tRuntime = grammarRuntime(tShuffle, noMix);
+resetDom(tRuntime);
+resetG(sTopic);
+tRuntime.gStartPractice();
+var tRoundOne = G.queue.slice();
+eq('T1 first controlled round uses its deterministic order',
+   drillIds(tRoundOne), ['s-a', 's-b', 's-c', 's-d']);
+ok('T1 first shuffled choose drill receives existing choose focus',
+   G.queue[0] === sA && ACTIVE === optionButtons()[0] && ACTIVE !== BODY);
+
+G.results = [true, false, true, true];
+G.di = 3;
+G.queue.push(Object.assign({}, G.queue[1], { _requeue: true }));
+G.attempted = true;
+G.state = 'done';
+G.build = {
+  pool: [{ w: 'stale', id: 'stale', used: true }],
+  row: [{ w: 'stale', id: 'stale', used: true }],
+  answer: ['stale']
+};
+status().textContent = 'Stale verdict';
+el('gDrillNext').disabled = false;
+tShuffle.use([0]);
+tRuntime.gStartPractice();
+var tRoundTwo = G.queue.slice();
+eq('T2 Practice again uses the second deterministic shuffle',
+   drillIds(tRoundTwo), ['s-b', 's-c', 's-d', 's-a']);
+eq('T2 both rounds contain the same complete drill-id set',
+   sortedDrillIds(tRoundTwo), sortedDrillIds(tRoundOne));
+eq('T2 Practice again still preserves the authored source order',
+   drillIds(sTopic.drills), sAuthoredIds);
+ok('T2 the two controlled round queues differ',
+   JSON.stringify(drillIds(tRoundTwo)) !== JSON.stringify(drillIds(tRoundOne)));
+eq('T3 Practice again resets the current index', G.di, 0);
+eq('T3 Practice again clears stale results', G.results, []);
+eq('T3 Practice again clears stale attempted state', G.attempted, false);
+eq('T3 Practice again resets drill state to ask', G.state, 'ask');
+eq('T3 the first shuffled build starts with an empty row', G.build.row, []);
+eq('T3 the first shuffled build replaces the stale tile pool',
+   G.build.pool.map(function (tile) { return tile.w; }).slice().sort(),
+   sB.answer.slice().sort());
+ok('T3 the new round contains no retry copies',
+   G.queue.every(function (d) { return !d._requeue; }));
+eq('T4 the new render lifecycle clears stale status', status().textContent, '');
+eq('T4 Practice again begins with Next disabled', el('gDrillNext').disabled, true);
+eq('T4 Practice again shows the practice phase', el('gPractice').style.display, 'flex');
+ok('T4 first shuffled build receives existing first-pool focus',
+   G.queue[0] === sB && ACTIVE === poolButtons()[0] && ACTIVE !== BODY);
+ok('T4 the second queue still reuses authored drill objects',
+   G.queue.every(function (d) { return sDrills.indexOf(d) !== -1; }));
+
+// =========================================================================
+// U. PHASE 4I MIX SAMPLING IS NOT DOUBLE-SHUFFLED
+// =========================================================================
+function syntheticChooseSeries(prefix, count) {
+  var out = [];
+  for (var i = 0; i < count; i++) {
+    out.push(choose(prefix + '-' + i, [prefix + '-good-' + i, prefix + '-bad-' + i],
+                    prefix + '-good-' + i));
+  }
+  return out;
+}
+var uCaseADrills = syntheticChooseSeries('u-a', 10);
+var uCaseBDrills = syntheticChooseSeries('u-b', 8);
+var uMix = {
+  id: 'u-mix', name: 'Synthetic Mix', mixOf: 'Synthetic Cases',
+  teach: [], drills: []
+};
+var uCaseA = { id: 'u-case-a', name: 'Case A', drills: uCaseADrills };
+var uCaseB = { id: 'u-case-b', name: 'Case B', drills: uCaseBDrills };
+var uLevels = [{ level: 'Synthetic Cases', topics: [uMix, uCaseA, uCaseB] }];
+var uSourcesBefore = JSON.stringify([uCaseADrills, uCaseBDrills]);
+var uShuffle = controlledShippingShuffle([0]);
+var uSample = shippingSampleMix(uLevels, uShuffle);
+var uEvents = [];
+var uStart = shippingStartOnly(uShuffle, uSample, uEvents);
+resetG(uMix);
+uStart();
+eq('U1 complete Mix start path calls shipping gShuffle exactly once',
+   uShuffle.calls.length, 1);
+eq('U1 the one Mix shuffle receives the complete source pool',
+   uShuffle.calls[0].input.length, uCaseADrills.length + uCaseBDrills.length);
+eq('U1 gSampleMix keeps exactly 15 drills when at least 15 are available',
+   uMix.drills.length, 15);
+eq('U1 gSampleMix order is the first 15 from its controlled shipping shuffle',
+   drillIds(uMix.drills), drillIds(uShuffle.calls[0].output.slice(0, 15)));
+eq('U2 gStartPractice preserves gSampleMix order in G.queue',
+   drillIds(G.queue), drillIds(uMix.drills));
+ok('U2 Mix queue is still a separate array from sampled topic.drills',
+   G.queue !== uMix.drills);
+ok('U2 every sampled drill retains its source case label',
+   uMix.drills.every(function (d) {
+     return (d.id.indexOf('u-a-') === 0 && d._case === 'Case A') ||
+            (d.id.indexOf('u-b-') === 0 && d._case === 'Case B');
+   }));
+eq('U2 source topic drill arrays remain unchanged',
+   JSON.stringify([uCaseADrills, uCaseBDrills]), uSourcesBefore);
+ok('U2 no sampled Mix drill is a retry before answering',
+   G.queue.every(function (d) { return !d._requeue; }));
+eq('U2 Mix lifecycle shows practice before rendering the sampled first drill',
+   uEvents, ['phase:practice', 'render:' + G.queue[0].id]);
+
+var uShortDrills = syntheticChooseSeries('u-short', 7);
+var uShortMix = {
+  id: 'u-short-mix', name: 'Short Synthetic Mix', mixOf: 'Short Cases',
+  teach: [], drills: []
+};
+var uShortTopic = { id: 'u-short-case', name: 'Short Case', drills: uShortDrills };
+var uShortLevels = [{ level: 'Short Cases', topics: [uShortMix, uShortTopic] }];
+var uShortBefore = JSON.stringify(uShortDrills);
+var uShortShuffle = controlledShippingShuffle([0]);
+var uShortError = null;
+try {
+  var uShortSample = shippingSampleMix(uShortLevels, uShortShuffle);
+  var uShortStart = shippingStartOnly(uShortShuffle, uShortSample, []);
+  resetG(uShortMix);
+  uShortStart();
+} catch (e) {
+  uShortError = String(e);
+}
+eq('U3 a Mix pool smaller than 15 starts without error', uShortError, null);
+eq('U3 a short Mix retains every available drill', G.queue.length, uShortDrills.length);
+eq('U3 a short Mix introduces no duplicate ids',
+   new Set(drillIds(G.queue)).size, uShortDrills.length);
+eq('U3 a short Mix preserves the complete source id set',
+   sortedDrillIds(G.queue), sortedDrillIds(uShortDrills));
+eq('U3 a short Mix still shuffles exactly once', uShortShuffle.calls.length, 1);
+eq('U3 a short Mix leaves its source drill array unchanged',
+   JSON.stringify(uShortDrills), uShortBefore);
+ok('U3 every short sample retains its case label',
+   G.queue.every(function (d) { return d._case === 'Short Case'; }));
+
+// =========================================================================
+// V. PHASE 4I POSITIONAL SCORING AFTER SHUFFLE
+// =========================================================================
+var v1 = choose('v-1', ['v1-right', 'v1-wrong'], 'v1-right');
+var v2 = choose('v-2', ['v2-right', 'v2-wrong'], 'v2-right');
+var v3 = choose('v-3', ['v3-right', 'v3-wrong'], 'v3-right');
+var v4 = choose('v-4', ['v4-right', 'v4-wrong'], 'v4-right');
+var vTopic = topicOf([v1, v2, v3, v4]);
+var vShuffle = controlledShippingShuffle([0]);
+var vRuntime = grammarRuntime(vShuffle, noMix);
+resetDom(vRuntime);
+resetG(vTopic);
+vRuntime.gStartPractice();
+eq('V1 scoring scenario begins in deterministic shuffled order',
+   drillIds(G.queue), ['v-2', 'v-3', 'v-4', 'v-1']);
+press(byValue(G.queue[0].answer));
+eq('V1 first-try correct is stored at shuffled queue index zero',
+   G.results[0], true);
+activateNext();
+var vMissed = G.queue[1];
+var vWrong = vMissed.options.filter(function (o) { return o !== vMissed.answer; })[0];
+press(byValue(vWrong));
+eq('V2 a miss marks the shuffled queue index false', G.results[1], false);
+press(byValue(vMissed.answer));
+eq('V2 correction does not overwrite the shuffled miss', G.results[1], false);
+eq('V2 Next predicts the pending retry', el('gDrillNextLabel').textContent, 'Next');
+activateNext();
+eq('V3 advancing the miss appends one retry', G.queue.length, 5);
+var vRetryPlain = Object.assign({}, G.queue[4]);
+delete vRetryPlain._requeue;
+ok('V3 retry is a copy of the exact missed shuffled drill',
+   G.queue[4] !== vMissed &&
+   G.queue[4]._requeue === true &&
+   JSON.stringify(vRetryPlain) === JSON.stringify(vMissed));
+eq('V3 the missed drill appears only once as a retry',
+   G.queue.filter(function (d) { return d._requeue && d.id === vMissed.id; }).length, 1);
+press(byValue(G.queue[G.di].answer));
+activateNext();
+press(byValue(G.queue[G.di].answer));
+eq('V4 last original says Next while its retry remains',
+   el('gDrillNextLabel').textContent, 'Next');
+activateNext();
+ok('V4 the pending retry is now current',
+   G.queue[G.di]._requeue === true && G.queue[G.di].id === vMissed.id);
+press(byValue(G.queue[G.di].answer));
+eq('V4 final retry changes the label to See results',
+   el('gDrillNextLabel').textContent, 'See results');
+eq('V4 positional results retain first-attempt outcomes and retry success',
+   G.results, [true, false, true, true, true]);
+activateNext();
+eq('V5 final score excludes the successful retry', el('gScore').textContent, '3');
+eq('V5 final total counts shuffled originals only', el('gTotal').textContent, '4');
+eq('V5 completion follows the existing done path', el('gDone').style.display, 'flex');
+
+// =========================================================================
+// W. PHASE 4I CORPUS-WIDE ROUND INVARIANTS
+// =========================================================================
+var wTopics = [];
+GRAMMAR_LEVELS.forEach(function (level) {
+  (level.topics || []).forEach(function (topic) {
+    wTopics.push({ level: level, topic: topic });
+  });
+});
+var wOrdinary = wTopics.filter(function (entry) { return !entry.topic.mixOf; });
+var wMix = wTopics.filter(function (entry) { return !!entry.topic.mixOf; });
+var wSmall = wOrdinary.filter(function (entry) {
+  return (entry.topic.drills || []).length < 2;
+});
+info('Grammar topics discovered: ' + wTopics.length + ' total; ' +
+     wOrdinary.length + ' ordinary; ' + wMix.length + ' Mix');
+info('ordinary Grammar drill counts: ' + wOrdinary.map(function (entry) {
+  return (entry.topic.id || entry.topic.name) + '=' + (entry.topic.drills || []).length;
+}).join(', '));
+info('ordinary Grammar topics with fewer than two drills: ' +
+     (wSmall.length ? wSmall.map(function (entry) {
+       return entry.topic.id || entry.topic.name;
+     }).join(', ') : 'none'));
+
+var wOrdinaryInvariant = true;
+wOrdinary.forEach(function (entry) {
+  var topic = entry.topic;
+  var source = topic.drills;
+  var idsBefore = drillIds(source);
+  var jsonBefore = JSON.stringify(source);
+  var shuffle = controlledShippingShuffle([0]);
+  var startOnly = shippingStartOnly(shuffle, noMix, []);
+  resetG(topic);
+  startOnly();
+  var sameIds = JSON.stringify(sortedDrillIds(G.queue)) ===
+                JSON.stringify(idsBefore.slice().sort());
+  if (G.queue.length !== source.length || !sameIds ||
+      JSON.stringify(source) !== jsonBefore ||
+      G.queue.some(function (d) { return d._requeue; })) {
+    wOrdinaryInvariant = false;
+  }
+});
+ok('W1 every real ordinary topic preserves ids, count, source order and fresh state',
+   wOrdinaryInvariant);
+
+var wMixInvariant = true;
+wMix.forEach(function (entry) {
+  var topic = entry.topic;
+  var sourceLevel = GRAMMAR_LEVELS.find(function (level) {
+    return level.level === topic.mixOf;
+  });
+  if (!sourceLevel) {
+    wMixInvariant = false;
+    return;
+  }
+  var sourceTopics = sourceLevel.topics.filter(function (candidate) {
+    return candidate !== topic && candidate.drills && candidate.drills.length;
+  });
+  var available = sourceTopics.reduce(function (n, sourceTopic) {
+    return n + sourceTopic.drills.length;
+  }, 0);
+  var sourceBefore = JSON.stringify(sourceTopics.map(function (sourceTopic) {
+    return sourceTopic.drills;
+  }));
+  var shuffle = controlledShippingShuffle([0]);
+  var sample = shippingSampleMix(GRAMMAR_LEVELS, shuffle);
+  var startOnly = shippingStartOnly(shuffle, sample, []);
+  resetG(topic);
+  startOnly();
+  var sourceNames = sourceTopics.map(function (sourceTopic) { return sourceTopic.name; });
+  if (!sourceTopics.length || shuffle.calls.length !== 1 ||
+      G.queue.length !== Math.min(15, available) ||
+      G.queue.some(function (d) {
+        return !usableString(d.id) || sourceNames.indexOf(d._case) === -1 || d._requeue;
+      }) ||
+      JSON.stringify(sourceTopics.map(function (sourceTopic) {
+        return sourceTopic.drills;
+      })) !== sourceBefore) {
+    wMixInvariant = false;
+  }
+});
+ok('W2 every real Mix discovers its pool and keeps sample ids, case labels and size',
+   wMixInvariant);
+
+// =========================================================================
+// X. PHASE 4I SEMANTIC SOURCE WIRING
+// =========================================================================
+var X_START = codeOnly(GSRC.gStartPractice);
+var X_SHUFFLE = codeOnly(SHUFFLE_SRC);
+var X_SAMPLE = codeOnly(SAMPLE_MIX_SRC);
+ok('X1 ordinary gStartPractice creates its queue with gShuffle',
+   hasCode(X_START,
+     'G.queue=G.topic.mixOf?G.topic.drills.slice():gShuffle(G.topic.drills)'));
+eq('X1 gStartPractice has exactly one queue-level gShuffle call',
+   countOf(X_START, 'gShuffle('), 1);
+ok('X1 Mix gStartPractice copies the already randomized sample',
+   hasCode(X_START, 'G.topic.mixOf?G.topic.drills.slice():gShuffle(G.topic.drills)'));
+ok('X2 gSampleMix still owns random sample creation',
+   hasCode(X_SAMPLE, 'topic.drills=gShuffle(all).slice(0,15)'));
+ok('X2 gShuffle still clones before Fisher-Yates',
+   hasCode(X_SHUFFLE, 'a=a.slice()') &&
+   X_SHUFFLE.indexOf('a=a.slice()') < X_SHUFFLE.indexOf('for(') &&
+   X_SHUFFLE.indexOf('Math.random()') !== -1);
+ok('X3 gStartPractice still resets index and results',
+   hasCode(X_START, 'G.di=0') && hasCode(X_START, 'G.results=[]'));
+ok('X3 gStartPractice still shows practice before rendering',
+   X_START.indexOf('gPhaseView("practice")') !== -1 &&
+   X_START.indexOf('gPhaseView("practice")') < X_START.indexOf('gRenderDrill()'));
+ok('X4 gDrillAdvance retains Phase 4H positional retry behavior',
+   hasCode(CODE_G.gDrillAdvance, 'if(G.results[G.di]===false&&!c._requeue)') &&
+   hasCode(CODE_G.gDrillAdvance,
+     'G.queue.push(Object.assign({},c,{_requeue:true}))') &&
+   hasCode(CODE_G.gDrillAdvance,
+     'if(G.di<G.queue.length-1){G.di++;gRenderDrill();}else gShowDone()'));
+ok('X4 gShowDone retains original-only positional scoring',
+   hasCode(CODE_G.gShowDone, 'const total=G.queue.filter(d=>!d._requeue).length') &&
+   hasCode(CODE_G.gShowDone,
+     'const score=G.queue.reduce((n,d,i)=>n+((!d._requeue&&G.results[i]===true)?1:0),0)'));
+ok('X5 Phase 4G choose construction and initial focus remain wired',
+   hasCode(CODE_G.gRenderChoose, 'document.createElement("button")') &&
+   CODE_G.gRenderChoose.indexOf('addEventListener') !== -1 &&
+   hasCode(CODE_G.gRenderChoose, 'if(first)first.focus()'));
+ok('X5 Phase 4H build exactness and initial focus remain wired',
+   hasCode(CODE_G.gRenderBuild, 'gPaintBuild({kind:"first-pool"})') &&
+   hasCode(CODE_G.gCheckBuild,
+     'const got=G.build.row.map(t=>t.w).join(" "),want=c.answer.join(" ")'));
 
 info('assertions drive the shipping Grammar functions extracted from index.html');
 info('fake DOM models disabled-focus -> BODY, hidden-focus no-op, textContent vs innerHTML, and aria-label names');
