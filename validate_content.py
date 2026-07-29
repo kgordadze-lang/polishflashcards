@@ -16,6 +16,7 @@ Checks (fatal = non-zero exit):
     - no duplicate `pl` or `en` within a topic
     - `choose` drills: answer is one of the options
     - `build` drills: no duplicated answer tokens
+    - optional build `acceptedOrders` preserve the keyed tile multiset and change order
     - scenario `goto` destinations all resolve; no unreachable scenes
   SENSE GROUPS (Phase 4E, optional `senseGroups` metadata)
     - non-empty array of unique, non-blank, untrimmed-free lowercase-kebab keys
@@ -72,6 +73,65 @@ def topic_kind(t):
     if "drills" in t or t.get("kind") == "grammar": return "grammar"
     if "cards" in t: return "vocab"
     return t.get("kind") or "unknown"
+
+
+def build_token_key(token):
+    """Grammar build-tile identity: only sentence-position case may differ."""
+    if not isinstance(token, str) or not token:
+        return token
+    return token[0].lower() + token[1:]
+
+
+def check_accepted_orders(drill, drill_ref):
+    """Validate optional Grammar build acceptedOrders; return (drills, orders)."""
+    if "acceptedOrders" not in drill:
+        return (0, 0)
+    if drill.get("type") != "build":
+        err(f"[acceptedOrders] only allowed on build drills: {drill_ref}")
+        return (0, 0)
+
+    accepted = drill["acceptedOrders"]
+    if not isinstance(accepted, list):
+        err(f"[acceptedOrders] must be a non-empty list: {drill_ref}")
+        return (1, 0)
+    if not accepted:
+        err(f"[acceptedOrders] must not be empty: {drill_ref}")
+        return (1, 0)
+
+    toks = drill.get("answer", [])
+    answer_keys = (
+        [build_token_key(token) for token in toks]
+        if isinstance(toks, list) else None
+    )
+    seen_orders = set()
+    for order_idx, order in enumerate(accepted):
+        order_ref = f"{drill_ref}/acceptedOrders[{order_idx}]"
+        if not isinstance(order, list):
+            err(f"[acceptedOrders] order must be a non-empty list: {order_ref}")
+            continue
+        if not order:
+            err(f"[acceptedOrders] order must not be empty: {order_ref}")
+            continue
+        if not all(isinstance(token, str) and token.strip() for token in order):
+            err(f"[acceptedOrders] every token must be a non-empty string: {order_ref}")
+            continue
+        if not isinstance(toks, list):
+            err(f"[acceptedOrders] build answer must be a list: {drill_ref}")
+            continue
+        order_keys = [build_token_key(token) for token in order]
+        if len(order) != len(toks):
+            err(f"[acceptedOrders] token count must match answer: {order_ref}")
+        elif Counter(order_keys) != Counter(answer_keys):
+            err(f"[acceptedOrders] keyed token multiset must match answer: {order_ref}")
+        if order_keys == answer_keys:
+            err(f"[acceptedOrders] must change tile order, not capitalization "
+                f"alone: {order_ref}")
+        order_key = tuple(order_keys)
+        if order_key in seen_orders:
+            err(f"[acceptedOrders] duplicate accepted order: {order_ref}")
+        else:
+            seen_orders.add(order_key)
+    return (1, len(accepted))
 
 
 def load_all_levels():
@@ -476,6 +536,7 @@ def main():
     slash_pl, ellipsis_pl, paren_pl, templates, recognition = [], [], [], [], []
 
     n_lvl = n_top = n_card = n_drill = 0
+    accepted_build_drills = accepted_build_orders = 0
 
     for L in levels:
         n_lvl += 1
@@ -597,12 +658,17 @@ def main():
             if "drills" in t:
                 for idx, d in enumerate(t["drills"]):
                     n_drill += 1
-                    check_id("drill", d, f"drill {tname}/#{idx} ({d.get('type')})", all_ids)
-                    if d.get("type") == "choose":
+                    did = check_id("drill", d, f"drill {tname}/#{idx} ({d.get('type')})", all_ids)
+                    drill_ref = did or f"{tid}/#{idx}"
+                    dtype = d.get("type")
+                    accepted_drills, accepted_orders = check_accepted_orders(d, drill_ref)
+                    accepted_build_drills += accepted_drills
+                    accepted_build_orders += accepted_orders
+                    if dtype == "choose":
                         opts, ans = d.get("options", []), d.get("answer")
                         if ans not in opts:
                             err(f"[drill] choose answer {ans!r} not in options {opts} ({tid}/#{idx})")
-                    elif d.get("type") == "build":
+                    elif dtype == "build":
                         toks = d.get("answer", [])
                         if isinstance(toks, list):
                             dups = [w for w, n in Counter(toks).items() if n > 1]
@@ -745,6 +811,8 @@ def main():
         print("usage metadata: " + "  ".join(f"{k}={v}" for k, v in sorted(usage_tally.items())))
     if audio_tally:
         print("main-card audio: " + "  ".join(f"{k}={v}" for k, v in sorted(audio_tally.items())))
+    print(f"accepted build orders: {accepted_build_drills} drill(s), "
+          f"{accepted_build_orders} order(s)")
     # Phase-4E: reported, never pinned. The number of groups is an editorial
     # decision that is allowed to grow as glosses are reviewed, so asserting it
     # here would only make honest content work fail the validator.

@@ -2678,6 +2678,10 @@ function gChooseFeedback(c){
     '<div class="fb-explain">'+c.explain+'</div>';
   fb.classList.add("show");
 }
+function gBuildTokenKey(token){
+  if(typeof token!=="string"||!token) return token;
+  return token.charAt(0).toLocaleLowerCase("pl-PL")+token.slice(1);
+}
 function gRenderBuild(c){
   /* the pool keeps every tile for the whole drill - tiles are marked used rather than
      removed, so words never shift position and learners can plan taps ahead */
@@ -2695,10 +2699,13 @@ function gRenderBuild(c){
 function gPaintBuild(focusIntent){
   const row=$("gBuildRow"), pool=$("gBuildPool");
   row.className="build-row"+(G.build.row.length===0?" empty":"");
+  const guide=focusIntent&&Array.isArray(focusIntent.guideOrder)
+    ? focusIntent.guideOrder : G.build.answer;
   /* hybrid feedback: a word in its correct position greens live; red is only shown on Check */
   row.innerHTML=G.build.row.map((t,i)=>{
-    const ok = G.build.answer && t.w===G.build.answer[i];
-    return '<button class="wchip in-row'+(ok?" ok":"")+'" lang="pl" data-id="'+t.id+'">'+t.w+'</button>';
+    const ok = guide && gBuildTokenKey(t.w)===gBuildTokenKey(guide[i]);
+    const surface = ok ? guide[i] : t.w;
+    return '<button class="wchip in-row'+(ok?" ok":"")+'" lang="pl" data-id="'+t.id+'">'+surface+'</button>';
   }).join('');
   pool.innerHTML=G.build.pool.map(t=>'<button class="wchip'+(t.used?" used":"")+'" lang="pl" data-id="'+t.id+'"'+(t.used?' disabled aria-hidden="true" tabindex="-1"':'')+'>'+t.w+'</button>').join('');
   row.querySelectorAll(".wchip").forEach(ch=>ch.addEventListener("click",()=>{
@@ -2737,11 +2744,27 @@ function gPaintBuild(focusIntent){
 }
 function gCheckBuild(c){
   if(G.state!=="ask") return;
-  const got=G.build.row.map(t=>t.w).join(" "), want=c.answer.join(" ");
-  if(got===want){
+  const gotTokens=G.build.row.map(t=>t.w);
+  const accepted=Array.isArray(c.acceptedOrders)
+    ? c.acceptedOrders.filter(order=>
+        Array.isArray(order)&&
+        order.length===c.answer.length&&
+        order.every(token=>typeof token==="string"))
+    : [];
+  const validOrders=[c.answer].concat(accepted);
+  const matchedOrder=validOrders.find(order=>
+    gotTokens.length===order.length&&
+    gotTokens.every((token,i)=>gBuildTokenKey(token)===gBuildTokenKey(order[i])));
+  if(matchedOrder){
     if(!G.attempted) G.results[G.di]=true;
     G.state="done";
-    $("gBuildRow").classList.add("locked");
+    const settledRow=$("gBuildRow");
+    settledRow.querySelectorAll(".wchip").forEach((ch,i)=>{
+      ch.textContent=matchedOrder[i];
+      ch.classList.remove("bad");
+      ch.classList.add("ok");
+    });
+    settledRow.classList.add("locked");
     $("gBuildPool").style.display="none"; $("gCheckBtn").style.display="none";
     const fb=$("gFbBox");
     fb.innerHTML='<div class="fb-good"><div class="t"><div class="p" lang="pl">'+c.full+'</div><div class="e">'+c.fullEn+'</div></div>'+
@@ -2759,9 +2782,25 @@ function gCheckBuild(c){
        These clear automatically on the next tap, since gPaintBuild re-renders the row. */
     const r=$("gBuildRow");
     const incomplete=G.build.row.length<c.answer.length;
+    let guideOrder=validOrders[0], bestMatches=-1;
+    validOrders.forEach(order=>{
+      let matches=0;
+      gotTokens.forEach((token,i)=>{
+        if(gBuildTokenKey(token)===gBuildTokenKey(order[i])) matches++;
+      });
+      if(matches>bestMatches){ bestMatches=matches; guideOrder=order; }
+    });
     let firstBad=null;
     r.querySelectorAll(".wchip").forEach((ch,i)=>{
-      if(G.build.row[i].w!==c.answer[i]){
+      if(gBuildTokenKey(G.build.row[i].w)===gBuildTokenKey(guideOrder[i])){
+        ch.classList.remove("bad");
+        ch.classList.add("ok");
+        if(G.build.row[i].w!==guideOrder[i]){
+          ch.textContent=guideOrder[i];
+          ch.setAttribute("aria-label",guideOrder[i]);
+        }
+      } else {
+        ch.classList.remove("ok");
         ch.classList.add("bad");
         ch.setAttribute("aria-label",G.build.row[i].w+", wrong position");
         if(!firstBad) firstBad=ch;
@@ -2773,7 +2812,7 @@ function gCheckBuild(c){
       r.classList.add("shake"); setTimeout(()=>r.classList.remove("shake"),340);
     } else if(incomplete){
       gAnnounceBuildIncomplete();
-      gPaintBuild({kind:"first-pool"});
+      gPaintBuild({kind:"first-pool",guideOrder:guideOrder});
     }
   }
 }

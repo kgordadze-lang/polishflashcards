@@ -921,6 +921,7 @@
               explain:"Formal address uses Vocative. Masculine 'profesor' \u2192 'profesorze' with r \u2192 rz softening.", full:"Panie profesorze, dzień dobry!", fullEn:"Good morning, professor!" },
             { id:"grammar-cases-vocative-004", type:"build", promptEn:"Piotr, come here!",
               answer:["Piotrze","chodź","tutaj"],
+              acceptedOrders:[["Chodź","tutaj","Piotrze"]],
               explain:"Masculine name 'Piotr' \u2192 'Piotrze' in Vocative. The softening turns -r into -rz.", full:"Piotrze, chodź tutaj!", fullEn:"Piotr, come here!" },
             { id:"grammar-cases-vocative-005", type:"choose", prompt:"___ , kocham cię.", promptEn:"Mom, I love you.",
               options:["Mamo","Mama","Mamą"], answer:"Mamo",
@@ -933,6 +934,7 @@
               explain:"'Bóg' \u2192 'Boże' in Vocative. This is the fixed exclamation form.", full:"O Boże, co się stało?", fullEn:"Oh God, what happened?" },
             { id:"grammar-cases-vocative-008", type:"build", promptEn:"Kids, come here!",
               answer:["Dzieci","chodźcie","tu"],
+              acceptedOrders:[["Chodźcie","tu","dzieci"]],
               explain:"Plural nouns don't change in Vocative - 'dzieci' stays 'dzieci'.", full:"Dzieci, chodźcie tu!", fullEn:"Kids, come here!" },
             { id:"grammar-cases-vocative-009", type:"choose", prompt:"Panie ___ , mam pytanie.", promptEn:"Doctor, I have a question.",
               options:["doktorze","doktor","doktora"], answer:"doktorze",
@@ -942,6 +944,7 @@
               explain:"Diminutive 'Kasia' \u2192 'Kasiu' in Vocative.", full:"Kasiu, dziękuję za wszystko.", fullEn:"Kasia, thank you for everything." },
             { id:"grammar-cases-vocative-011", type:"build", promptEn:"Grandma, I miss you.",
               answer:["Babciu","tęsknię","za","tobą"],
+              acceptedOrders:[["Tęsknię","za","tobą","babciu"]],
               explain:"Affectionate 'babcia' \u2192 'babciu' in Vocative.", full:"Babciu, tęsknię za tobą.", fullEn:"Grandma, I miss you." },
             { id:"grammar-cases-vocative-012", type:"choose", prompt:"___ , chodź na obiad!", promptEn:"Marek, come for lunch!",
               options:["Marku","Marek","Marka"], answer:"Marku",
@@ -951,6 +954,7 @@
               explain:"Letter opening \u2192 Vocative. 'Piotr' \u2192 'Piotrze'.", full:"Drogi Piotrze, piszę z Warszawy.", fullEn:"Dear Piotr, I'm writing from Warsaw." },
             { id:"grammar-cases-vocative-014", type:"build", promptEn:"Dear friends, thank you!",
               answer:["Kochani","dziękuję"],
+              acceptedOrders:[["Dziękuję","kochani"]],
               explain:"Plural doesn't change in Vocative. 'Kochani' (dear ones) is the same as in Nominative.", full:"Kochani, dziękuję!", fullEn:"Dear friends, thank you!" }
           ]
         }

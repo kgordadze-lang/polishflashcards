@@ -164,9 +164,29 @@ GRAMMAR_LEVELS.forEach(function (level) {
 var CHOOSE = DRILLS.filter(function (x) { return x.drill.type === 'choose'; });
 var BUILD = DRILLS.filter(function (x) { return x.drill.type === 'build'; });
 var IDS = DRILLS.map(function (x) { return x.drill.id; });
+var EXPECTED_ACCEPTED_ORDERS = {
+  'grammar-cases-vocative-004': [['Chodź', 'tutaj', 'Piotrze']],
+  'grammar-cases-vocative-008': [['Chodźcie', 'tu', 'dzieci']],
+  'grammar-cases-vocative-011': [['Tęsknię', 'za', 'tobą', 'babciu']],
+  'grammar-cases-vocative-014': [['Dziękuję', 'kochani']],
+  'verbs-future-tense-005': [['Wieczorem', 'napiszę', 'do', 'ciebie']],
+  'verbs-verbs-of-motion-006': [['Proszę', 'wejdź']]
+};
+var EXPECTED_ACCEPTED_IDS = Object.keys(EXPECTED_ACCEPTED_ORDERS).sort();
+var EXPLICITLY_NON_ACCEPTED_IDS = [
+  'people-numbers-every-all-011',
+  'verbs-imperative-007',
+  'grammar-cases-locative-013',
+  'verbs-reflexive-006',
+  'grammar-cases-instrumental-013'
+];
 function usableString(v) { return typeof v === 'string' && v.trim().length > 0; }
 function optionNorm(v) {
   return v.normalize('NFC').trim().toLocaleLowerCase().replace(/\s+/g, ' ');
+}
+function drillById(id) {
+  var found = DRILLS.filter(function (entry) { return entry.drill.id === id; });
+  return found.length ? found[0].drill : null;
 }
 
 ok('A1 Grammar data files expose at least one drill', DRILLS.length > 0);
@@ -497,6 +517,7 @@ if (!G_STATE_MATCH) throw new Error('extract: Grammar state object G not found')
 function freshG() { return (0, eval)('(' + G_STATE_MATCH[1] + ')'); }
 var G = freshG();
 var GNAMES = [
+  'gBuildTokenKey',
   'gPhaseView', 'gStartPractice', 'gUpdateNextLabel', 'gRenderDrill',
   'gRenderChoose', 'gSetStatus', 'gAnnounceWrong', 'gAnnounceCorrect',
   'gAnnounceBuildWrong', 'gAnnounceBuildIncomplete', 'gFocusNextOption',
@@ -506,7 +527,11 @@ var GNAMES = [
 var GSRC = {};
 GNAMES.forEach(function (name) {
   try { GSRC[name] = extractFunction(INDEX, name); }
-  catch (_) { GSRC[name] = 'function ' + name + '(){}'; }
+  catch (_) {
+    GSRC[name] = name === 'gBuildTokenKey'
+      ? 'function gBuildTokenKey(token){return token;}'
+      : 'function ' + name + '(){}';
+  }
 });
 var SHUFFLE_SRC = extractFunction(INDEX, 'gShuffle');
 var SAMPLE_MIX_SRC = extractFunction(INDEX, 'gSampleMix');
@@ -627,13 +652,17 @@ function choose(id, options, answer) {
     fullEn: 'I live here.'
   };
 }
-function build(id, answer) {
-  return {
+function build(id, answer, acceptedOrders) {
+  var drill = {
     id: id, type: 'build', promptEn: 'Build the sentence.',
     answer: answer.slice(),
     explain: 'Keep <b>the authored order</b>.',
     full: answer.join(' '), fullEn: 'The built sentence.'
   };
+  if (acceptedOrders !== undefined) {
+    drill.acceptedOrders = acceptedOrders.map(function (order) { return order.slice(); });
+  }
+  return drill;
 }
 function topicOf(drills) {
   return { id: 'synthetic-topic', name: 'Synthetic Grammar', teach: [], drills: drills };
@@ -662,6 +691,22 @@ function unusedPoolButtons() {
 }
 function placeTile(id) { press(poolTile(id)); }
 function placeTiles(ids) { ids.forEach(placeTile); }
+function buildTokenKey(token) { return GRAMMAR.gBuildTokenKey(token); }
+function keyedOrder(order) { return order.map(buildTokenKey); }
+function keyedMultiset(order) { return keyedOrder(order).slice().sort(); }
+function placeWords(words) {
+  words.forEach(function (word) {
+    var key = buildTokenKey(word);
+    var tile = G.build.pool.filter(function (candidate) {
+      return !candidate.used && buildTokenKey(candidate.w) === key;
+    })[0];
+    if (tile) placeTile(tile.id);
+  });
+}
+function submitWords(words) {
+  placeWords(words);
+  press(el('gCheckBtn'));
+}
 function authoredPoolIds() { return G.build.pool.map(function (t) { return t.id; }); }
 function solveBuildExact() {
   placeTiles(authoredPoolIds());
@@ -676,6 +721,105 @@ function handler(button) {
   return button && button._on.click && button._on.click[0];
 }
 function activateNext() { el('gDrillNext').click(); }
+
+// =========================================================================
+// A4. PHASE 4J AUTHORED ACCEPTED-ORDER CONTRACT
+// =========================================================================
+var ACTUAL_ACCEPTED_ORDERS = {};
+DRILLS.forEach(function (entry) {
+  if (Object.prototype.hasOwnProperty.call(entry.drill, 'acceptedOrders')) {
+    ACTUAL_ACCEPTED_ORDERS[entry.drill.id] = entry.drill.acceptedOrders;
+  }
+});
+eq('A4 exactly the six reviewed drills carry their exact accepted orders',
+   ACTUAL_ACCEPTED_ORDERS, EXPECTED_ACCEPTED_ORDERS);
+eq('A4 no unexpected drill carries acceptedOrders',
+   Object.keys(ACTUAL_ACCEPTED_ORDERS).sort(), EXPECTED_ACCEPTED_IDS);
+ok('A4 every acceptedOrders field belongs to a build drill',
+   DRILLS.filter(function (entry) {
+     return Object.prototype.hasOwnProperty.call(entry.drill, 'acceptedOrders');
+   }).every(function (entry) { return entry.drill.type === 'build'; }));
+ok('A4 every acceptedOrders field is a non-empty array',
+   Object.keys(ACTUAL_ACCEPTED_ORDERS).every(function (id) {
+     return Array.isArray(ACTUAL_ACCEPTED_ORDERS[id]) &&
+            ACTUAL_ACCEPTED_ORDERS[id].length > 0;
+   }));
+ok('A4 every accepted order is a non-empty token array',
+   Object.keys(ACTUAL_ACCEPTED_ORDERS).every(function (id) {
+     return ACTUAL_ACCEPTED_ORDERS[id].every(function (order) {
+       return Array.isArray(order) && order.length > 0;
+     });
+   }));
+ok('A4 every accepted token is a raw non-empty string',
+   Object.keys(ACTUAL_ACCEPTED_ORDERS).every(function (id) {
+     return ACTUAL_ACCEPTED_ORDERS[id].every(function (order) {
+       return order.every(usableString);
+     });
+   }));
+ok('A4 every accepted order has the canonical token count',
+   Object.keys(ACTUAL_ACCEPTED_ORDERS).every(function (id) {
+     var drill = drillById(id);
+     return ACTUAL_ACCEPTED_ORDERS[id].every(function (order) {
+       return drill && order.length === drill.answer.length;
+     });
+   }));
+ok('A4 every accepted order preserves the narrow keyed token multiset',
+   EXPECTED_ACCEPTED_IDS.every(function (id) {
+     var drill = drillById(id);
+     return drill && EXPECTED_ACCEPTED_ORDERS[id].every(function (order) {
+       return JSON.stringify(keyedMultiset(order)) ===
+              JSON.stringify(keyedMultiset(drill.answer));
+     });
+   }));
+ok('A4 every accepted order changes tile order, not capitalization alone',
+   EXPECTED_ACCEPTED_IDS.every(function (id) {
+     var drill = drillById(id);
+     return drill && EXPECTED_ACCEPTED_ORDERS[id].every(function (order) {
+       return JSON.stringify(keyedOrder(order)) !== JSON.stringify(keyedOrder(drill.answer));
+     });
+   }));
+ok('A4 no accepted order duplicates another keyed order',
+   Object.keys(ACTUAL_ACCEPTED_ORDERS).every(function (id) {
+     var keyed = ACTUAL_ACCEPTED_ORDERS[id].map(function (order) {
+       return JSON.stringify(keyedOrder(order));
+     });
+     return new Set(keyed).size === keyed.length;
+   }));
+ok('A4 all six alternatives contain the required sentence-position case change',
+   EXPECTED_ACCEPTED_IDS.every(function (id) {
+     var drill = drillById(id);
+     var accepted = EXPECTED_ACCEPTED_ORDERS[id][0];
+     return drill && accepted.some(function (surface) {
+       return drill.answer.indexOf(surface) === -1 &&
+              drill.answer.some(function (canonical) {
+                return buildTokenKey(canonical) === buildTokenKey(surface);
+              });
+     });
+   }));
+ok('A4 explicitly excluded drills remain free of acceptedOrders',
+   EXPLICITLY_NON_ACCEPTED_IDS.every(function (id) {
+     var drill = drillById(id);
+     return drill && !Object.prototype.hasOwnProperty.call(drill, 'acceptedOrders');
+   }));
+
+eq('A5 narrow key equates chodź only across first-letter case',
+   buildTokenKey('chodź'), buildTokenKey('Chodź'));
+eq('A5 narrow key equates Dzieci only across first-letter case',
+   buildTokenKey('Dzieci'), buildTokenKey('dzieci'));
+eq('A5 narrow key equates Napiszę only across first-letter case',
+   buildTokenKey('Napiszę'), buildTokenKey('napiszę'));
+ok('A5 changed diacritic remains a different tile',
+   buildTokenKey('tobą') !== buildTokenKey('toba'));
+ok('A5 changed non-initial spelling remains a different tile',
+   buildTokenKey('chodź') !== buildTokenKey('chodz'));
+ok('A5 changed punctuation remains a different tile',
+   buildTokenKey('proszę!') !== buildTokenKey('Proszę?'));
+ok('A5 trailing whitespace remains a different tile',
+   buildTokenKey('do') !== buildTokenKey('Do '));
+ok('A5 a different word remains a different tile',
+   buildTokenKey('wejdź') !== buildTokenKey('wejść'));
+eq('A5 non-string tile values pass through without normalization',
+   [buildTokenKey(null), buildTokenKey(7)], [null, 7]);
 
 // =========================================================================
 // C. INITIAL FOCUS
@@ -998,9 +1142,16 @@ eq('K7 both build tile handlers carry an ask-state guard',
 ok('K7 gCheckBuild carries an ask-state guard',
    hasCode(CODE_G.gCheckBuild, 'if(G.state!=="ask")return;') ||
    hasCode(CODE_G.gCheckBuild, "if(G.state!=='ask')return;"));
-ok('K7 exact authored build comparator remains unchanged',
-   hasCode(CODE_G.gCheckBuild,
-     'const got=G.build.row.map(t=>t.w).join(" "),want=c.answer.join(" ")'));
+ok('K7 canonical answer is first and acceptedOrders is read only as an array',
+   hasCode(CODE_G.gCheckBuild, 'const validOrders=[c.answer].concat(accepted)') &&
+   hasCode(CODE_G.gCheckBuild, 'Array.isArray(c.acceptedOrders)'));
+ok('K7 accepted-order matching uses exact ordered narrow token keys',
+   CODE_G.gCheckBuild.indexOf('gBuildTokenKey') !== -1 &&
+   CODE_G.gCheckBuild.indexOf('.find(') !== -1 &&
+   CODE_G.gCheckBuild.indexOf('.every(') !== -1);
+ok('K7 comparator introduces no broad answer normalization or permutations',
+   !/\.trim\(|normalize\(|sort\(|permut/i.test(CODE_G.gCheckBuild) &&
+   !/toLocaleLowerCase|toLowerCase/.test(CODE_G.gCheckBuild));
 ok('K7 correct build settlement sets done and announces the full Polish sentence',
    (hasCode(CODE_G.gCheckBuild, 'G.state="done"') ||
     hasCode(CODE_G.gCheckBuild, "G.state='done'")) &&
@@ -1016,13 +1167,19 @@ ok('K7 incomplete build announcement uses the safe status helper',
 ok('K7 incomplete build branch checks row length against the authored answer',
    hasCode(CODE_G.gCheckBuild,
      'const incomplete=G.build.row.length<c.answer.length'));
+ok('K7 wrong-position guidance scores every valid order and keeps canonical ties',
+   CODE_G.gCheckBuild.indexOf('validOrders') !== -1 &&
+   CODE_G.gCheckBuild.indexOf('matches') !== -1 &&
+   CODE_G.gCheckBuild.indexOf('>bestMatches') !== -1 &&
+   CODE_G.gCheckBuild.indexOf('>=bestMatches') === -1);
 ok('K7 incomplete build branch follows the first-mismatch branch',
    CODE_G.gCheckBuild.indexOf('if(firstBad)') !== -1 &&
    CODE_G.gCheckBuild.indexOf('else if(incomplete)') >
      CODE_G.gCheckBuild.indexOf('if(firstBad)'));
 ok('K7 incomplete build branch announces and focuses the first unused pool tile',
    CODE_G.gCheckBuild.indexOf('gAnnounceBuildIncomplete') !== -1 &&
-   hasCode(CODE_G.gCheckBuild, 'gPaintBuild({kind:"first-pool"})'));
+   CODE_G.gCheckBuild.indexOf('kind:"first-pool"') !== -1 &&
+   CODE_G.gCheckBuild.indexOf('guideOrder:guideOrder') !== -1);
 ok('K7 wrong build path labels and focuses mismatched row tiles',
    CODE_G.gCheckBuild.indexOf('aria-label') !== -1 &&
    /wrong position/i.test(CODE_G.gCheckBuild) &&
@@ -1756,10 +1913,360 @@ ok('X5 Phase 4G choose construction and initial focus remain wired',
    hasCode(CODE_G.gRenderChoose, 'document.createElement("button")') &&
    CODE_G.gRenderChoose.indexOf('addEventListener') !== -1 &&
    hasCode(CODE_G.gRenderChoose, 'if(first)first.focus()'));
-ok('X5 Phase 4H build exactness and initial focus remain wired',
+ok('X5 Phase 4H build focus and Phase 4J exact keyed matching remain wired',
    hasCode(CODE_G.gRenderBuild, 'gPaintBuild({kind:"first-pool"})') &&
-   hasCode(CODE_G.gCheckBuild,
-     'const got=G.build.row.map(t=>t.w).join(" "),want=c.answer.join(" ")'));
+   hasCode(CODE_G.gCheckBuild, 'const validOrders=[c.answer].concat(accepted)') &&
+   CODE_G.gCheckBuild.indexOf('gBuildTokenKey') !== -1);
+
+// =========================================================================
+// Y. PHASE 4J CANONICAL AND ACCEPTED-ORDER INTERACTIONS
+// =========================================================================
+var yCanonicalFailures = [];
+EXPECTED_ACCEPTED_IDS.forEach(function (id) {
+  var drill = drillById(id);
+  start([drill]);
+  submitWords(drill.answer);
+  if (G.results[0] !== true || G.attempted !== false || G.state !== 'done' ||
+      !el('gBuildRow').classList.contains('locked') ||
+      el('gBuildPool').style.display !== 'none' ||
+      el('gCheckBtn').style.display !== 'none' ||
+      el('gDrillNext').disabled || ACTIVE !== el('gDrillNext')) {
+    yCanonicalFailures.push(id);
+  }
+});
+eq('Y1 all six affected drills still accept their canonical orders completely',
+   yCanonicalFailures, []);
+
+var yAcceptedSourceBefore = {};
+EXPECTED_ACCEPTED_IDS.forEach(function (id) {
+  var drill = drillById(id);
+  var accepted = EXPECTED_ACCEPTED_ORDERS[id][0];
+  yAcceptedSourceBefore[id] = {
+    json: JSON.stringify(drill),
+    acceptedRef: drill.acceptedOrders
+  };
+  start([drill]);
+  placeWords(accepted);
+  var submittedIds = G.build.row.map(function (tile) { return tile.id; });
+  var submittedTileWords = G.build.row.map(function (tile) { return tile.w; });
+  press(el('gCheckBtn'));
+  eq('Y2 ' + id + ' accepted alternative banks true', G.results[0], true);
+  eq('Y2 ' + id + ' accepted alternative leaves attempted false', G.attempted, false);
+  eq('Y2 ' + id + ' accepted alternative settles done', G.state, 'done');
+  ok('Y2 ' + id + ' accepted row locks',
+     el('gBuildRow').classList.contains('locked'));
+  eq('Y2 ' + id + ' accepted settlement preserves tile identities',
+     G.build.row.map(function (tile) { return tile.id; }), submittedIds);
+  eq('Y2 ' + id + ' accepted settlement preserves canonical tile values internally',
+     G.build.row.map(function (tile) { return tile.w; }), submittedTileWords);
+  eq('Y3 ' + id + ' locked row displays authored accepted capitalization',
+     rowButtons().map(function (button) { return button.textContent; }), accepted);
+  ok('Y3 ' + id + ' does not retain wrong canonical capitalization in the locked row',
+     JSON.stringify(rowButtons().map(function (button) { return button.textContent; })) !==
+     JSON.stringify(submittedTileWords));
+  eq('Y3 ' + id + ' pool hides', el('gBuildPool').style.display, 'none');
+  eq('Y3 ' + id + ' Check hides', el('gCheckBtn').style.display, 'none');
+  eq('Y3 ' + id + ' Next enables', el('gDrillNext').disabled, false);
+  ok('Y3 ' + id + ' Next receives focus',
+     ACTIVE === el('gDrillNext') && ACTIVE !== BODY);
+  ok('Y4 ' + id + ' persistent status announces Correct',
+     /^Correct\b/.test(status().textContent));
+  ok('Y4 ' + id + ' canonical Polish teaching feedback remains visible',
+     el('gFbBox').innerHTML.indexOf(drill.full) !== -1);
+  ok('Y4 ' + id + ' canonical English teaching feedback remains visible',
+     el('gFbBox').innerHTML.indexOf(drill.fullEn) !== -1);
+  ok('Y4 ' + id + ' canonical explanation remains visible',
+     el('gFbBox').innerHTML.indexOf(drill.explain) !== -1);
+  eq('Y4 ' + id + ' keeps one canonical mini-audio control',
+     el('gFbBox').querySelectorAll('.mini-audio').length, 1);
+  eq('Y4 ' + id + ' accepted alternative never autoplays', AUDIO_STARTS, 0);
+  eq('Y4 ' + id + ' authored drill and acceptedOrders remain unmodified',
+     JSON.stringify(drill), yAcceptedSourceBefore[id].json);
+  ok('Y4 ' + id + ' acceptedOrders array identity remains stable',
+     drill.acceptedOrders === yAcceptedSourceBefore[id].acceptedRef);
+});
+
+// =========================================================================
+// Z. PHASE 4J PREFIX AND CLOSEST-ORDER GUIDANCE
+// =========================================================================
+var zGuide = build(
+  'z-guide',
+  ['Piotrze', 'chodź', 'tutaj'],
+  [['Chodź', 'tutaj', 'Piotrze']]
+);
+start([zGuide]);
+placeWords(['Piotrze', 'chodź']);
+press(el('gCheckBtn'));
+eq('Z1 canonical incomplete prefix banks a miss', G.results[0], false);
+ok('Z1 canonical incomplete prefix is announced as incomplete',
+   /sentence is incomplete/i.test(status().textContent));
+ok('Z1 canonical incomplete prefix has no false bad markers',
+   rowButtons().every(function (button) {
+     return !button.classList.contains('bad') && button.classList.contains('ok');
+   }));
+ok('Z1 canonical incomplete prefix focuses the first unused pool tile',
+   ACTIVE === unusedPoolButtons()[0] && ACTIVE !== BODY);
+
+start([zGuide]);
+placeWords(['Chodź', 'tutaj']);
+press(el('gCheckBtn'));
+eq('Z2 accepted incomplete prefix banks a miss', G.results[0], false);
+ok('Z2 accepted incomplete prefix is announced as incomplete',
+   /sentence is incomplete/i.test(status().textContent));
+ok('Z2 accepted incomplete prefix has no false bad markers',
+   rowButtons().every(function (button) {
+     return !button.classList.contains('bad') && button.classList.contains('ok');
+   }));
+ok('Z2 accepted incomplete prefix focuses the first unused pool tile',
+   ACTIVE === unusedPoolButtons()[0] && ACTIVE !== BODY);
+
+var zClosest = build(
+  'z-closest',
+  ['A', 'B', 'C', 'D'],
+  [['B', 'C', 'D', 'a']]
+);
+start([zClosest]);
+submitWords(['B', 'A', 'D', 'C']);
+eq('Z3 genuinely wrong complete order remains rejected', G.results[0], false);
+eq('Z3 closest accepted guide controls ok and bad positions',
+   rowButtons().map(function (button) {
+     return button.classList.contains('ok') ? 'ok' :
+            button.classList.contains('bad') ? 'bad' : 'plain';
+   }), ['ok', 'bad', 'ok', 'bad']);
+ok('Z3 closest-guide rejection focuses its first mismatched row tile',
+   ACTIVE === rowButtons()[1] && ACTIVE !== BODY);
+eq('Z3 closest-guide rejection retains the existing actionable status',
+   status().textContent,
+   'That order is not correct. Adjust the highlighted words and try again.');
+ok('Z3 reduced-motion-safe timeout still removes shake',
+   !el('gBuildRow').classList.contains('shake'));
+
+var zTie = build('z-tie', ['A', 'B', 'C'], [['B', 'C', 'a']]);
+start([zTie]);
+submitWords(['B', 'A', 'C']);
+eq('Z4 canonical order deterministically wins equal-match ties',
+   rowButtons().map(function (button) {
+     return button.classList.contains('ok') ? 'ok' :
+            button.classList.contains('bad') ? 'bad' : 'plain';
+   }), ['bad', 'bad', 'ok']);
+ok('Z4 canonical-tie guidance focuses the first canonical mismatch',
+   ACTIVE === rowButtons()[0]);
+
+// =========================================================================
+// AA. NON-AUTHORED ORDERS AND THE CORRECTED TWO-TOKEN RULE
+// =========================================================================
+var NON_AUTHORED_ORDERS = {
+  'grammar-cases-vocative-004': ['Piotrze', 'tutaj', 'chodź'],
+  'grammar-cases-vocative-008': ['Dzieci', 'tu', 'chodźcie'],
+  'grammar-cases-vocative-011': ['Babciu', 'za', 'tęsknię', 'tobą'],
+  'verbs-future-tense-005': ['Napiszę', 'ciebie', 'do', 'wieczorem']
+};
+Object.keys(NON_AUTHORED_ORDERS).forEach(function (id) {
+  var drill = drillById(id);
+  var candidate = NON_AUTHORED_ORDERS[id];
+  var validKeyed = [drill.answer].concat(EXPECTED_ACCEPTED_ORDERS[id]).map(function (order) {
+    return JSON.stringify(keyedOrder(order));
+  });
+  ok('AA1 ' + id + ' test candidate is explicitly outside every authored valid order',
+     validKeyed.indexOf(JSON.stringify(keyedOrder(candidate))) === -1);
+  start([drill]);
+  submitWords(candidate);
+  eq('AA1 ' + id + ' non-authored complete order remains wrong',
+     G.results[0], false);
+  eq('AA1 ' + id + ' non-authored complete order remains open',
+     G.state, 'ask');
+});
+
+var aaInstrumental = drillById('grammar-cases-instrumental-013');
+start([aaInstrumental]);
+submitWords(['Proszę', 'kawa', 'z', 'mlekiem']);
+eq('AA2 instrumental reorder remains explicitly rejected', G.results[0], false);
+eq('AA2 instrumental reorder remains open for correction', G.state, 'ask');
+
+['grammar-cases-vocative-014', 'verbs-verbs-of-motion-006'].forEach(function (id) {
+  var drill = drillById(id);
+  var accepted = EXPECTED_ACCEPTED_ORDERS[id][0];
+  var permutations = [
+    drill.answer.slice(),
+    [drill.answer[1], drill.answer[0]]
+  ];
+  var permutationKeys = permutations.map(function (order) {
+    return JSON.stringify(keyedOrder(order));
+  });
+  var validKeys = [drill.answer, accepted].map(function (order) {
+    return JSON.stringify(keyedOrder(order));
+  }).sort();
+  eq('AA3 ' + id + ' has exactly two complete distinct tile permutations',
+     new Set(permutationKeys).size, 2);
+  eq('AA3 ' + id + ' canonical and accepted exhaust those permutations',
+     permutationKeys.slice().sort(), validKeys);
+
+  start([drill]);
+  placeWords([drill.answer[0]]);
+  press(el('gCheckBtn'));
+  ok('AA3 ' + id + ' canonical one-token prefix is incomplete without bad markers',
+     /sentence is incomplete/i.test(status().textContent) &&
+     rowButtons().every(function (button) { return !button.classList.contains('bad'); }));
+
+  start([drill]);
+  placeWords([accepted[0]]);
+  press(el('gCheckBtn'));
+  ok('AA3 ' + id + ' accepted one-token prefix is incomplete without bad markers',
+     /sentence is incomplete/i.test(status().textContent) &&
+     rowButtons().every(function (button) { return !button.classList.contains('bad'); }));
+});
+
+// =========================================================================
+// AB. ACCEPTED-ORDER SCORING, RETRIES, AND REQUEUE METADATA
+// =========================================================================
+var abDrill = drillById('verbs-future-tense-005');
+var abAccepted = EXPECTED_ACCEPTED_ORDERS[abDrill.id][0];
+var abAcceptedRef = abDrill.acceptedOrders;
+start([abDrill]);
+submitWords(NON_AUTHORED_ORDERS[abDrill.id]);
+eq('AB1 wrong first attempt banks false', G.results[0], false);
+while (G.build.row.length) press(rowButtons()[rowButtons().length - 1]);
+submitWords(abAccepted);
+eq('AB1 accepted correction preserves original false result', G.results[0], false);
+eq('AB1 accepted correction settles normally', G.state, 'done');
+eq('AB1 accepted correction enables Next', el('gDrillNext').disabled, false);
+activateNext();
+eq('AB2 advancing requeues the missed original exactly once', G.queue.length, 2);
+var abRetry = G.queue.length > 1 ? G.queue[1] : null;
+ok('AB2 retry is a copy marked once with the original identity',
+   !!abRetry && abRetry !== abDrill && abRetry._requeue === true &&
+   abRetry.id === abDrill.id);
+ok('AB2 retry preserves acceptedOrders metadata and array identity',
+   !!abRetry && abRetry.acceptedOrders === abAcceptedRef &&
+   JSON.stringify(abRetry.acceptedOrders) === JSON.stringify(abDrill.acceptedOrders));
+if (abRetry) submitWords(abAccepted);
+eq('AB3 accepted retry succeeds without changing the original miss',
+   G.results, [false, true]);
+eq('AB3 accepted retry causes no duplicate requeue', G.queue.length, 2);
+activateNext();
+eq('AB3 retry remains excluded from final score', el('gScore').textContent, '0');
+eq('AB3 retry remains excluded from final denominator', el('gTotal').textContent, '1');
+
+var abTwo = drillById('verbs-verbs-of-motion-006');
+var abTwoAccepted = EXPECTED_ACCEPTED_ORDERS[abTwo.id][0];
+start([abTwo]);
+placeWords([abTwoAccepted[0]]);
+press(el('gCheckBtn'));
+eq('AB4 two-token incomplete first attempt banks false', G.results[0], false);
+while (G.build.row.length) press(rowButtons()[rowButtons().length - 1]);
+submitWords(abTwoAccepted);
+eq('AB4 two-token accepted correction retains false', G.results[0], false);
+activateNext();
+eq('AB4 two-token miss requeues exactly once', G.queue.length, 2);
+submitWords(abTwoAccepted);
+eq('AB4 two-token accepted retry succeeds', G.results, [false, true]);
+activateNext();
+eq('AB4 two-token retry is excluded from score and total',
+   [el('gScore').textContent, el('gTotal').textContent], ['0', '1']);
+
+// =========================================================================
+// AC. ACCEPTED-ORDER SETTLED GUARDS
+// =========================================================================
+var acDrill = drillById('grammar-cases-vocative-014');
+var acAccepted = EXPECTED_ACCEPTED_ORDERS[acDrill.id][0];
+start([acDrill]);
+var acPoolHandler = handler(poolButtons()[0]);
+placeWords(acAccepted);
+var acRowHandler = handler(rowButtons()[0]);
+press(el('gCheckBtn'));
+G.build.pool[0].used = false;
+var acSnapshot = {
+  result: JSON.stringify(G.results),
+  attempted: G.attempted,
+  state: G.state,
+  row: JSON.stringify(G.build.row),
+  pool: JSON.stringify(G.build.pool),
+  status: status().textContent,
+  statusChildren: status().children,
+  feedback: el('gFbBox').innerHTML,
+  feedbackWrites: HTML_WRITES.gFbBox,
+  focus: ACTIVE,
+  nextDisabled: el('gDrillNext').disabled,
+  nextLabel: el('gDrillNextLabel').textContent,
+  rowSurface: rowButtons().map(function (button) { return button.textContent; })
+};
+if (acPoolHandler) acPoolHandler({});
+if (acRowHandler) acRowHandler({});
+GRAMMAR.gCheckBuild(acDrill);
+eq('AC1 retained accepted-order handlers cannot change result',
+   JSON.stringify(G.results), acSnapshot.result);
+eq('AC1 retained accepted-order handlers cannot change attempted',
+   G.attempted, acSnapshot.attempted);
+eq('AC1 retained accepted-order handlers cannot change state', G.state, acSnapshot.state);
+eq('AC1 retained accepted-order handlers cannot change row',
+   JSON.stringify(G.build.row), acSnapshot.row);
+eq('AC1 retained accepted-order handlers cannot change pool',
+   JSON.stringify(G.build.pool), acSnapshot.pool);
+eq('AC1 repeated accepted-order Check cannot change status',
+   status().textContent, acSnapshot.status);
+ok('AC1 repeated accepted-order Check cannot rebuild status',
+   status().children === acSnapshot.statusChildren);
+eq('AC1 repeated accepted-order Check cannot change feedback',
+   el('gFbBox').innerHTML, acSnapshot.feedback);
+eq('AC1 repeated accepted-order Check cannot rebuild feedback',
+   HTML_WRITES.gFbBox, acSnapshot.feedbackWrites);
+ok('AC1 accepted-order settled guard preserves focus', ACTIVE === acSnapshot.focus);
+eq('AC1 accepted-order settled guard preserves Next',
+   [el('gDrillNext').disabled, el('gDrillNextLabel').textContent],
+   [acSnapshot.nextDisabled, acSnapshot.nextLabel]);
+eq('AC1 accepted-order settled guard preserves authored row capitalization',
+   rowButtons().map(function (button) { return button.textContent; }),
+   acSnapshot.rowSurface);
+
+// =========================================================================
+// AD. PHASE 4I METADATA IMMUTABILITY AND SOURCE SCOPE
+// =========================================================================
+var adOrdinaryMetadata = true;
+EXPECTED_ACCEPTED_IDS.forEach(function (id) {
+  var entry = DRILLS.filter(function (candidate) {
+    return candidate.drill.id === id;
+  })[0];
+  var sourceJson = JSON.stringify(entry.drill);
+  var acceptedRef = entry.drill.acceptedOrders;
+  var startOnly = shippingStartOnly(identityShuffle, noMix, []);
+  resetG(entry.topic);
+  startOnly();
+  var queued = G.queue.filter(function (drill) { return drill.id === id; })[0];
+  if (queued !== entry.drill || queued.acceptedOrders !== acceptedRef ||
+      JSON.stringify(entry.drill) !== sourceJson) {
+    adOrdinaryMetadata = false;
+  }
+});
+ok('AD1 all six acceptedOrders survive ordinary shuffling without source mutation',
+   adOrdinaryMetadata);
+ok('AD1 all six authored drill objects and acceptedOrders arrays remain unchanged',
+   EXPECTED_ACCEPTED_IDS.every(function (id) {
+     var drill = drillById(id);
+     return JSON.stringify(drill) === yAcceptedSourceBefore[id].json &&
+            drill.acceptedOrders === yAcceptedSourceBefore[id].acceptedRef;
+   }));
+
+var AD_GRAMMAR_START = INDEX.indexOf('function gShuffle(');
+var AD_GRAMMAR_END = INDEX.indexOf('/* ---------------- conversation (Rozmowy) ---------------- */');
+var AD_OUTSIDE_GRAMMAR =
+  INDEX.slice(0, AD_GRAMMAR_START) + INDEX.slice(AD_GRAMMAR_END);
+eq('AD2 no non-Grammar answer system references gBuildTokenKey',
+   countOf(AD_OUTSIDE_GRAMMAR, 'gBuildTokenKey'), 0);
+ok('AD2 narrow helper only changes the first character and preserves the suffix',
+   hasCode(CODE_G.gBuildTokenKey, 'if(typeof token!=="string"||!token)return token') &&
+   hasCode(CODE_G.gBuildTokenKey,
+     'return token.charAt(0).toLocaleLowerCase("pl-PL")+token.slice(1)'));
+ok('AD2 gBuildTokenKey contains no trim, accent folding, punctuation stripping or whitespace collapse',
+   !/trim\(|normalize\(|replace\(|split\(|join\(/.test(CODE_G.gBuildTokenKey));
+ok('AD3 accepted settlement rewrites only locked-row display surface strings',
+   CODE_G.gCheckBuild.indexOf('matchedOrder') !== -1 &&
+   CODE_G.gCheckBuild.indexOf('textContent') !== -1);
+ok('AD3 wrong-position guidance considers all valid orders through narrow keys',
+   CODE_G.gCheckBuild.indexOf('validOrders') !== -1 &&
+   CODE_G.gCheckBuild.indexOf('bestMatches') !== -1 &&
+   CODE_G.gCheckBuild.indexOf('gBuildTokenKey') !== -1);
+ok('AD3 canonical-only drills retain one valid order',
+   hasCode(CODE_G.gCheckBuild, 'const validOrders=[c.answer].concat(accepted)'));
 
 info('assertions drive the shipping Grammar functions extracted from index.html');
 info('fake DOM models disabled-focus -> BODY, hidden-focus no-op, textContent vs innerHTML, and aria-label names');
