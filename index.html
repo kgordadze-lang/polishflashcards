@@ -647,6 +647,13 @@
      around a label nobody tabbed to. Every real control keeps its :focus-visible
      ring; this turns one off for two elements that cannot be reached by Tab. */
   #lPrompt:focus,#lDoneTitle:focus{outline:none}
+  /* The same pair for the Mixed Quiz: the Polish prompt a new "mc" question focuses,
+     and the completion heading. Both are tabindex="-1", so neither is a tab stop and
+     neither is keyboard-operable - focus only ever arrives because rRender or
+     rShowDone put it there. Kept as its own rule rather than folded into the
+     Listening one, so each activity's anchors stay listed with that activity. Every
+     real Mixed Quiz control keeps its :focus-visible ring. */
+  #rPl:focus,#rDoneTitle:focus{outline:none}
   .q-prompt{font-size:22px;font-weight:800;line-height:1.35;letter-spacing:-.4px;color:var(--forest)}
   .q-prompt .blank{display:inline-block;min-width:56px;border-bottom:3px solid var(--emerald);margin:0 3px;vertical-align:middle;height:1.1em}
   .q-en{font-size:14px;color:var(--muted);font-weight:500;margin-top:8px}
@@ -1214,10 +1221,19 @@
             <button class="l-play" id="rPlay" aria-label="Play the Polish audio">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>
             </button>
-            <div class="q-prompt" id="rPl" lang="pl" hidden></div>
+            <!-- the multiple-choice question itself, and the one part of an "mc" question
+                 that never moves - rRender focuses it so a new question starts on what
+                 is being asked rather than on <body>. tabindex="-1" is script-focusable
+                 without becoming a tab stop. -->
+            <div class="q-prompt" id="rPl" lang="pl" tabindex="-1" hidden></div>
             <div class="l-reveal" id="rReveal" lang="pl"></div>
             <div class="opts" id="rOpts"></div>
-            <div class="fb-box" id="rFb" aria-live="polite"></div>
+            <!-- NOT a live region any more. What it holds is OPTIONAL - an example, a
+                 usage chip, a warning - so on an ordinary card it announced silence for
+                 a correct answer, and on a rich card it announced example prose that
+                 never said "correct". It is now ordinary content the learner reads on
+                 demand; rStatus below owns the result. -->
+            <div class="fb-box" id="rFb"></div>
           </div>
           <div id="rTyped" hidden>
             <div class="q-prompt" id="rEn"></div>
@@ -1230,6 +1246,12 @@
             </div>
             <div class="verdict" id="rVerdict" aria-live="polite"></div>
           </div>
+          <!-- Outside both format blocks on purpose: #rMcq and #rTyped take turns being
+               `hidden`, which removes them from the accessibility tree, and this region
+               has to be readable on every question. It carries the multiple-choice
+               result and the empty-typed-answer instruction; the typed verdict keeps
+               announcing from #rVerdict, so the two never say the same thing twice. -->
+          <div class="sr-only" id="rStatus" role="status" aria-live="polite" aria-atomic="true"></div>
         </div>
         <div class="controls">
           <button class="ctrl" id="rNext" disabled>
@@ -1243,7 +1265,9 @@
       <div class="done-badge">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
       </div>
-      <h2>Brawo!</h2>
+      <!-- rShowDone focuses this, so the reader lands on the result rather than on
+           "Practice again" - the buttons stay after it in the ordinary tab order. -->
+      <h2 id="rDoneTitle" tabindex="-1">Brawo!</h2>
       <p id="rDoneMsg"></p>
       <div class="stat-row">
         <div class="stat"><b class="know-n" id="rScoreN">0</b><span>CORRECT</span></div>
@@ -3329,6 +3353,51 @@ function rSetBlocks(fmt){
   $("rPlay").hidden  = fmt!=="listen";
   $("rPl").hidden    = fmt!=="mc";
 }
+
+/* ---------------- Mixed Quiz: the non-visual half of a multiple-choice answer ----------------
+   .opt.correct and .opt.wrong differ by colour, and the words the CSS draws after
+   them are generated content some readers skip. So the result is said three ways -
+   the colour, the button's own accessible name, and this one polite region - and the
+   three are independent, so losing any one of them still leaves the answer legible.
+
+   Text nodes only, never innerHTML: an English gloss or a Polish phrase may carry an
+   ampersand, a quote or an angle bracket, and here it is content, not markup. Nothing
+   written here is kept in R or persisted - it describes this moment on screen and is
+   rebuilt from scratch each time. */
+function rSetStatus(parts){
+  const box=$("rStatus"); if(!box) return;
+  box.textContent="";                                  /* drops the previous announcement's nodes */
+  (parts||[]).forEach(p=>box.appendChild(typeof p==="string" ? document.createTextNode(p) : p));
+}
+/* Naming the option that was just rejected is what makes two wrong answers in a row
+   two DIFFERENT strings: an option is disabled once chosen, so no label can be
+   announced twice, and a polite region that would drop an unchanged message has
+   something changed to read every time. */
+function rAnnounceWrong(label){
+  rSetStatus([label + " is not correct. Try another answer."]);
+}
+/* The Polish answer travels in its own lang="pl" node so a reader that switches
+   voices pronounces it as Polish instead of reading it as English. */
+function rAnnounceCorrect(pl){
+  const answer=document.createElement("span");
+  answer.setAttribute("lang","pl");
+  answer.textContent=pl;
+  rSetStatus(["Correct. The Polish answer is ", answer, ". Next is ready."]);
+}
+/* Focus after a wrong answer. The chosen button is disabled while it still holds
+   focus, and a disabled element cannot keep it - without this the learner is dropped
+   on <body> and has to tab back in from the top of the page. The correct option is
+   never disabled before the question is answered, so there is always somewhere to
+   land; the wrap keeps the last option from being a dead end. */
+function rFocusNextOption(box, from){
+  const opts=Array.prototype.slice.call(box.querySelectorAll(".opt"));
+  const at=opts.indexOf(from);
+  for(let k=1;k<=opts.length;k++){
+    const next=opts[(at+k+opts.length)%opts.length];
+    if(next && !next.disabled){ next.focus(); return next; }
+  }
+  return null;
+}
 function rRender(){
   if(R.i >= R.qs.length){ rShowDone(); return; }
   $("rMain").style.display="flex"; $("rDone").style.display="none";
@@ -3336,6 +3405,7 @@ function rRender(){
   R.state="ask"; R.revealed=0; R.attempted=false;
   $("rCountLbl").textContent=(R.i+1)+" / "+R.qs.length;
   $("rFill").style.width=(R.i/R.qs.length*100)+"%";
+  $("rStatus").textContent="";            /* the previous question's result must not linger */
   $("rNext").disabled=true;
   $("rNextLabel").textContent = R.i===R.qs.length-1 ? "See results" : "Next";
   $("rType").textContent = q.fmt==="listen" ? "What did you hear?"
@@ -3350,7 +3420,6 @@ function rRender(){
     $("rHintLine").hidden=true; $("rHintLine").textContent="";
     $("rHint").disabled=false; $("rCheck").disabled=false;
     const v=$("rVerdict"); v.className="verdict"; v.innerHTML="";
-    inp.focus();
   } else {
     $("rPl").textContent = q.fmt==="mc" ? c.pl : "";
     const rv=$("rReveal"); rv.classList.remove("show"); rv.textContent="";
@@ -3363,11 +3432,20 @@ function rRender(){
       box.appendChild(b);
     });
   }
+  /* Focus goes to the new question LAST, once it is fully built: rNext was just
+     disabled above and may have been holding focus, which a browser answers by
+     dropping focus to <body>. Each format lands on the thing that question is
+     actually about - the typed input, the Play button, or the Polish being glossed -
+     and none of the three plays anything: this moves focus and nothing else. */
+  if(q.fmt==="type"){ $("rInput").focus(); }
+  else if(q.fmt==="listen"){ const play=$("rPlay"); if(play && !play.disabled) play.focus(); }
+  else { $("rPl").focus(); }
 }
 function rPickOption(btn, o, q, box){
   if(R.state!=="ask") return;
   if(o===q.c.en){
     btn.classList.add("correct");
+    btn.setAttribute("aria-label", o + ", correct");        /* the state, not only the colour */
     box.querySelectorAll(".opt").forEach(x=>x.disabled=true);
     R.state="done";
     rRecord(q, R.attempted ? "miss" : "right");
@@ -3378,10 +3456,14 @@ function rPickOption(btn, o, q, box){
     if(exHtml){ fb.innerHTML=exHtml; }
     ppAppendUsageTo(fb, q.c);           /* the listen/mc formats need the labels too, not just typed */
     if(fb.childNodes.length) fb.classList.add("show");   /* example, chips or warning - any is enough */
-    $("rNext").disabled=false;
+    rAnnounceCorrect(q.c.pl);        /* announced before Next moves, so the reader hears why it moved */
+    $("rNext").disabled=false; $("rNext").focus();   /* only ever after it is enabled - focus cannot land on a closed button */
   } else {
     btn.classList.add("wrong"); btn.disabled=true;
+    btn.setAttribute("aria-label", o + ", incorrect. Try again");
     R.attempted=true;
+    rAnnounceWrong(o);               /* say it first, then move - the move is what the reader lands on */
+    rFocusNextOption(box, btn);
   }
 }
 function rRevealLetter(){
@@ -3395,9 +3477,22 @@ function rRevealLetter(){
 function rCheckAnswer(){
   if(R.state!=="ask") return;
   const q=R.qs[R.i], c=q.c, val=$("rInput").value;
-  if(!PP_ANSWER.normalize(val)) { $("rInput").focus(); return; }
+  /* Blank or whitespace-only: still not an answer - nothing is scored, nothing is
+     settled, Next stays closed. All that is added is the reason, said out loud, so
+     pressing Check on an empty box is no longer a silent no-op for a reader who
+     cannot see that the input is empty. */
+  if(!PP_ANSWER.normalize(val)) {
+    $("rStatus").textContent="Type the Polish answer first.";
+    $("rInput").focus();
+    return;
+  }
   const verdict=PP_ANSWER.classify(val, c, PP_TYPED_INDEX);
   R.state="done";
+  /* A real answer retires the "type something first" instruction. #rVerdict below
+     owns what the answer WAS, so nothing is written here to replace it - leaving the
+     instruction standing would contradict the verdict for anyone reading the page
+     rather than listening to it announce. */
+  $("rStatus").textContent="";
   rRecord(q, verdict==="wrong" ? "miss" : verdict);
   $("rInput").disabled=true; $("rCheck").disabled=true; $("rHint").disabled=true;
   const v=$("rVerdict");
@@ -3439,6 +3534,7 @@ function rRecord(q, result){
 function rShowDone(){
   $("rMain").style.display="none"; $("rDone").style.display="flex";
   $("rFill").style.width="100%"; $("rCountLbl").textContent=R.qs.length+" / "+R.qs.length;
+  $("rStatus").textContent="";   /* the last question's result is over; the panel below says everything now */
   const scored = R.qs.filter(q=>!q.requeued);
   const right  = scored.filter(q=>q.result==="right").length;
   const almost = scored.filter(q=>q.result==="almost").length;
@@ -3471,6 +3567,10 @@ function rShowDone(){
     saveV2(store);
   }
   if(window.PP_A2HS){ window.PP_A2HS.bump(3); $("rNudge").innerHTML = window.PP_A2HS.nudgeHTML(); }
+  /* Land on the result, not on "Practice again". The heading is the top of what just
+     changed, and the two buttons stay after it in the ordinary tab order - so the
+     score is read first and acted on second, which is the order it is written in. */
+  const title=$("rDoneTitle"); if(title) title.focus();
 }
 $("rBack").addEventListener("click", ()=>show("home"));
 $("rPlay").addEventListener("click", ()=>{ if(R.i<R.qs.length) speakCardMain(R.qs[R.i].c, $("rPlay")); });

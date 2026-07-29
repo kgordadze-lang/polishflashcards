@@ -79,12 +79,17 @@ var liftRRecord = lift(SRC_R_RECORD, 'rRecord', ['R', 'gShuffle']);
 // ---------- stub DOM: just enough for the two done screens ----------
 // textContent coerces to string exactly as a real node does, so the assertions
 // below compare what a learner would actually read.
+// CAPABILITY ONLY, no new assertion: rShowDone now focuses the completion heading,
+// so a node that cannot be focused throws before any score is written. Where focus
+// actually LANDS is asserted in tests/test_mixed_accessibility.js, which models the
+// real focus rules; this file still asks only about the numbers on the done screen.
 function makeNode() {
-  var o = { style: {} }, t = '', h = '';
+  var o = { style: {}, focused: 0 }, t = '', h = '';
   Object.defineProperty(o, 'textContent', { get: function () { return t; },
                                             set: function (v) { t = String(v); } });
   Object.defineProperty(o, 'innerHTML', { get: function () { return h; },
                                           set: function (v) { h = String(v); } });
+  o.focus = function () { o.focused++; };
   return o;
 }
 function makeDom() {
