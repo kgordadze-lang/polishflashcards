@@ -1,4 +1,4 @@
-// Behavioral tests for the shipping Grammar choose-drill interaction.
+// Behavioral tests for the shipping Grammar choose- and build-drill interactions.
 // Runs in JavaScriptCore:
 //     osascript -l JavaScript tests/test_grammar_interaction.js
 //
@@ -233,9 +233,13 @@ ok('B2 choose gFbBox is not a competing live region',
 ok('B2 choose gFbBox remains the visible feedback box',
    CODE_RENDER_CHOOSE.indexOf('gFbBox') !== -1 &&
    CODE_RENDER_CHOOSE.indexOf('fb-box') !== -1);
-ok('B2 build feedback behavior remains live and out of Phase 4G',
+ok('B2 build gFbBox is not a competing live region',
    CODE_RENDER_BUILD.indexOf('gFbBox') !== -1 &&
-   CODE_RENDER_BUILD.indexOf('aria-live="polite"') !== -1);
+   CODE_RENDER_BUILD.indexOf('aria-live') === -1 &&
+   CODE_RENDER_BUILD.indexOf('role="status"') === -1);
+ok('B2 build gFbBox remains the visible feedback box',
+   CODE_RENDER_BUILD.indexOf('gFbBox') !== -1 &&
+   CODE_RENDER_BUILD.indexOf('fb-box') !== -1);
 var TAG_DONE = tagFor('gDoneTitle');
 ok('B3 gDoneTitle is the existing h2', /^<h2\b/.test(TAG_DONE));
 eq('B3 exactly one gDoneTitle exists', countOf(INDEX, 'id="gDoneTitle"'), 1);
@@ -322,6 +326,9 @@ function register(node) {
 Object.defineProperty(FakeEl.prototype, 'innerHTML', {
   get: function () { return this._html; },
   set: function (v) {
+    var focused = ACTIVE;
+    while (focused && focused !== this) focused = focused.parentNode;
+    if (focused === this && ACTIVE !== this) ACTIVE = BODY;
     this._html = String(v);
     this._own = '';
     this._htmlText = decodeHtmlText(this._html);
@@ -336,6 +343,17 @@ Object.defineProperty(FakeEl.prototype, 'innerHTML', {
         parseAttrs(om[1], opts);
         this.appendChild(register(opts));
       }
+      var rowPoolIds = ['gBuildRow', 'gBuildPool'];
+      rowPoolIds.forEach(function (id) {
+        var rm = this._html.match(new RegExp(
+          '<div\\b([^>]*\\bid\\s*=\\s*"' + id + '"[^>]*)>'
+        ));
+        if (rm) {
+          var box = new FakeEl('div');
+          parseAttrs(rm[1], box);
+          this.appendChild(register(box));
+        }
+      }, this);
       var fm = this._html.match(/<div\b([^>]*\bid\s*=\s*"gFbBox"[^>]*)>/);
       if (fm) {
         var fb = new FakeEl('div');
@@ -355,6 +373,16 @@ Object.defineProperty(FakeEl.prototype, 'innerHTML', {
           b.appendChild(kid);
         }
         (classHas(b, 'opt') && opts ? opts : this).appendChild(register(b));
+      }
+    } else if (this.id === 'gBuildRow' || this.id === 'gBuildPool') {
+      var wr = /<button\b([^>]*)>([\s\S]*?)<\/button>/g, wm;
+      while ((wm = wr.exec(this._html)) !== null) {
+        var chip = new FakeEl('button');
+        parseAttrs(wm[1], chip);
+        if (/\bdisabled(?:\s|>|$)/.test(wm[1])) chip.disabled = true;
+        chip._html = wm[2];
+        chip._htmlText = decodeHtmlText(wm[2]);
+        this.appendChild(register(chip));
       }
     } else {
       var tr = /<([a-zA-Z][\w-]*)\b([^>]*)>/g, tm;
@@ -418,6 +446,7 @@ FakeEl.prototype.querySelectorAll = function (selector) {
     node.children.forEach(function (child) {
       var hit = classMatch ? classHas(child, classMatch[1]) :
                 idMatch ? child.id === idMatch[1] : false;
+      if (hit && selector.indexOf(':not(.used)') !== -1 && classHas(child, 'used')) hit = false;
       if (hit && selector.indexOf(':not(:disabled)') !== -1 && child.disabled) hit = false;
       if (hit) out.push(child);
       if (child.children) visit(child);
@@ -457,8 +486,9 @@ var G = freshG();
 var GNAMES = [
   'gPhaseView', 'gStartPractice', 'gUpdateNextLabel', 'gRenderDrill',
   'gRenderChoose', 'gSetStatus', 'gAnnounceWrong', 'gAnnounceCorrect',
-  'gFocusNextOption', 'gChooseFeedback', 'gRenderBuild', 'gPaintBuild',
-  'gCheckBuild', 'gDrillAdvance', 'gShowDone'
+  'gAnnounceBuildWrong', 'gAnnounceBuildIncomplete', 'gFocusNextOption',
+  'gChooseFeedback', 'gRenderBuild', 'gPaintBuild', 'gCheckBuild',
+  'gDrillAdvance', 'gShowDone'
 ];
 var GSRC = {};
 GNAMES.forEach(function (name) {
@@ -530,6 +560,14 @@ function choose(id, options, answer) {
     fullEn: 'I live here.'
   };
 }
+function build(id, answer) {
+  return {
+    id: id, type: 'build', promptEn: 'Build the sentence.',
+    answer: answer.slice(),
+    explain: 'Keep <b>the authored order</b>.',
+    full: answer.join(' '), fullEn: 'The built sentence.'
+  };
+}
 function topicOf(drills) {
   return { id: 'synthetic-topic', name: 'Synthetic Grammar', teach: [], drills: drills };
 }
@@ -544,6 +582,24 @@ function byValue(value) {
   return found.length ? found[0] : null;
 }
 function status() { return el('gStatus'); }
+function rowButtons() { return el('gBuildRow').querySelectorAll('.wchip'); }
+function poolButtons() { return el('gBuildPool').querySelectorAll('.wchip'); }
+function tileById(buttons, id) {
+  var found = buttons.filter(function (b) { return b.getAttribute('data-id') === id; });
+  return found.length ? found[0] : null;
+}
+function rowTile(id) { return tileById(rowButtons(), id); }
+function poolTile(id) { return tileById(poolButtons(), id); }
+function unusedPoolButtons() {
+  return poolButtons().filter(function (b) { return !classHas(b, 'used'); });
+}
+function placeTile(id) { press(poolTile(id)); }
+function placeTiles(ids) { ids.forEach(placeTile); }
+function authoredPoolIds() { return G.build.pool.map(function (t) { return t.id; }); }
+function solveBuildExact() {
+  placeTiles(authoredPoolIds());
+  press(el('gCheckBtn'));
+}
 function press(button) {
   if (!button) return;
   button.focus();
@@ -863,25 +919,418 @@ ok('K6 gDrillAdvance retains the same advance-or-done branch',
 ok('K6 gUpdateNextLabel retains future-retry prediction',
    hasCode(CODE_G.gUpdateNextLabel,
      'const willRequeue=G.results[G.di]===false&&!G.queue[G.di]._requeue'));
-ok('K7 build path is not wired to Phase 4G state, verdict or focus helpers',
-   ['gStatus', 'gSetStatus', 'gAnnounce', 'gFocusNextOption', 'G.state'].every(function (t) {
-     return CODE_G.gRenderBuild.indexOf(t) === -1 &&
-            CODE_G.gPaintBuild.indexOf(t) === -1 &&
-            CODE_G.gCheckBuild.indexOf(t) === -1;
+ok('K7 build initial paint carries an explicit first-pool focus intent',
+   hasCode(CODE_G.gRenderBuild, 'gPaintBuild({kind:"first-pool"})') ||
+   hasCode(CODE_G.gRenderBuild, "gPaintBuild({kind:'first-pool'})"));
+ok('K7 build placement and removal repaint with stable-id focus intents',
+   CODE_G.gPaintBuild.indexOf('data-id') !== -1 &&
+   CODE_G.gPaintBuild.indexOf('after-pool') !== -1 &&
+   CODE_G.gPaintBuild.indexOf('pool-id') !== -1);
+eq('K7 both build tile handlers carry an ask-state guard',
+   (CODE_G.gPaintBuild.match(/G\.state\s*!==\s*["']ask["']/g) || []).length, 2);
+ok('K7 gCheckBuild carries an ask-state guard',
+   hasCode(CODE_G.gCheckBuild, 'if(G.state!=="ask")return;') ||
+   hasCode(CODE_G.gCheckBuild, "if(G.state!=='ask')return;"));
+ok('K7 exact authored build comparator remains unchanged',
+   hasCode(CODE_G.gCheckBuild,
+     'const got=G.build.row.map(t=>t.w).join(" "),want=c.answer.join(" ")'));
+ok('K7 correct build settlement sets done and announces the full Polish sentence',
+   (hasCode(CODE_G.gCheckBuild, 'G.state="done"') ||
+    hasCode(CODE_G.gCheckBuild, "G.state='done'")) &&
+   hasCode(CODE_G.gCheckBuild, 'gAnnounceCorrect(c.full)'));
+ok('K7 wrong build settlement explicitly stays ask and announces its verdict',
+   (hasCode(CODE_G.gCheckBuild, 'G.state="ask"') ||
+    hasCode(CODE_G.gCheckBuild, "G.state='ask'")) &&
+   CODE_G.gCheckBuild.indexOf('gAnnounceBuildWrong') !== -1);
+ok('K7 incomplete build announcement uses the safe status helper',
+   CODE_G.gAnnounceBuildIncomplete.indexOf('gSetStatus') !== -1 &&
+   CODE_G.gAnnounceBuildIncomplete.indexOf('innerHTML') === -1 &&
+   /sentence is incomplete/i.test(CODE_G.gAnnounceBuildIncomplete));
+ok('K7 incomplete build branch checks row length against the authored answer',
+   hasCode(CODE_G.gCheckBuild,
+     'const incomplete=G.build.row.length<c.answer.length'));
+ok('K7 incomplete build branch follows the first-mismatch branch',
+   CODE_G.gCheckBuild.indexOf('if(firstBad)') !== -1 &&
+   CODE_G.gCheckBuild.indexOf('else if(incomplete)') >
+     CODE_G.gCheckBuild.indexOf('if(firstBad)'));
+ok('K7 incomplete build branch announces and focuses the first unused pool tile',
+   CODE_G.gCheckBuild.indexOf('gAnnounceBuildIncomplete') !== -1 &&
+   hasCode(CODE_G.gCheckBuild, 'gPaintBuild({kind:"first-pool"})'));
+ok('K7 wrong build path labels and focuses mismatched row tiles',
+   CODE_G.gCheckBuild.indexOf('aria-label') !== -1 &&
+   /wrong position/i.test(CODE_G.gCheckBuild) &&
+   CODE_G.gCheckBuild.indexOf('.focus(') !== -1);
+ok('K8 locked build tiles disable pointer events',
+   cssBlocks('.build-row.locked .wchip').some(function (b) {
+     return /pointer-events\s*:\s*none/.test(b.body);
    }));
-ok('K7 Grammar interaction functions add no persistence behavior',
+ok('K8 bad build tiles expose a visible non-colour Wrong position marker',
+   cssBlocks('.wchip.bad::after').some(function (b) {
+     return /content\s*:\s*"[^"]*Wrong position/i.test(b.body);
+   }));
+ok('K8 reduced motion disables the Grammar build-row shake',
+   /@media\s*\(prefers-reduced-motion\s*:\s*reduce\)\s*\{[\s\S]*?\.build-row\.shake\s*\{[^}]*animation\s*:\s*none/.test(STYLE));
+ok('K8 Conversations reply-option shake remains enabled',
+   cssBlocks('.reply-opt.shake').some(function (b) {
+     return /animation\s*:\s*shake/.test(b.body) &&
+            !/animation\s*:\s*none/.test(b.body);
+   }));
+ok('K8 build feedback is ordinary visible content',
+   CODE_G.gRenderBuild.indexOf('gFbBox') !== -1 &&
+   CODE_G.gRenderBuild.indexOf('aria-live') === -1 &&
+   CODE_G.gRenderBuild.indexOf('role="status"') === -1);
+ok('K9 Grammar interaction functions add no persistence behavior',
    GNAMES.every(function (name) {
      return !/localStorage|saveV2|loadV2|progress/.test(CODE_G[name]);
    }));
-ok('K7 teaching feedback keeps its deliberate markup path',
+ok('K9 teaching feedback keeps its deliberate markup path',
    CODE_G.gChooseFeedback.indexOf('innerHTML') !== -1 &&
    CODE_G.gChooseFeedback.indexOf('c.explain') !== -1);
-eq('K7 no render/verdict/focus path autoplays',
+eq('K9 no render/verdict/focus path autoplays',
    ['gRenderDrill', 'gRenderChoose', 'gSetStatus', 'gAnnounceWrong',
-    'gAnnounceCorrect', 'gFocusNextOption', 'gChooseFeedback', 'gShowDone']
+    'gAnnounceCorrect', 'gAnnounceBuildWrong', 'gAnnounceBuildIncomplete',
+    'gFocusNextOption', 'gChooseFeedback', 'gRenderBuild', 'gPaintBuild',
+    'gCheckBuild', 'gShowDone']
      .filter(function (name) {
        return /speakText|speakCardMain|new Audio|SpeechSynthesisUtterance/.test(CODE_G[name]);
      }), []);
+
+// =========================================================================
+// L. BUILD INITIAL STATE
+// =========================================================================
+var bInitial = build('b-initial', ['Ala', 'ma', 'kota']);
+start([bInitial]);
+var bInitialIds = authoredPoolIds();
+eq('L1 a build drill renders every pool tile', poolButtons().length, bInitial.answer.length);
+eq('L1 a build drill starts with an empty row', rowButtons().length, 0);
+ok('L1 the first available pool tile receives focus',
+   ACTIVE === poolTile(bInitialIds[0]) && ACTIVE !== BODY);
+eq('L2 build Check begins disabled', el('gCheckBtn').disabled, true);
+eq('L2 build Next begins disabled', el('gDrillNext').disabled, true);
+eq('L2 build state begins ask', G.state, 'ask');
+eq('L2 build status begins empty', status().textContent, '');
+eq('L2 build render does not autoplay', AUDIO_STARTS, 0);
+
+// =========================================================================
+// M. BUILD PLACEMENT AND FOCUS
+// =========================================================================
+var bPlace = build('b-place', ['pierwszy', 'drugi', 'trzeci']);
+start([bPlace]);
+var bPlaceIds = authoredPoolIds();
+placeTile(bPlaceIds[0]);
+eq('M1 placement appends the exact stable tile identity',
+   G.build.row.map(function (t) { return t.id; }), [bPlaceIds[0]]);
+eq('M1 placement marks that exact pool tile used', G.build.pool[0].used, true);
+ok('M1 placement leaves every other pool tile available',
+   G.build.pool.slice(1).every(function (t) { return !t.used; }));
+eq('M1 placement enables Check', el('gCheckBtn').disabled, false);
+ok('M2 placement focuses the next unused pool tile',
+   ACTIVE === poolTile(bPlaceIds[1]) && ACTIVE !== BODY);
+
+start([bPlace]);
+var bWrapIds = authoredPoolIds();
+placeTile(bWrapIds[1]);
+ok('M3 next-unused search moves forward in pool order',
+   ACTIVE === poolTile(bWrapIds[2]));
+placeTile(bWrapIds[2]);
+ok('M3 next-unused search wraps to the first pool tile',
+   ACTIVE === poolTile(bWrapIds[0]));
+placeTile(bWrapIds[0]);
+eq('M4 no unused pool tile remains', unusedPoolButtons().length, 0);
+ok('M4 final placement focuses enabled Check',
+   ACTIVE === el('gCheckBtn') && !el('gCheckBtn').disabled && ACTIVE !== BODY);
+
+// =========================================================================
+// N. BUILD REMOVAL, STABLE IDENTITIES, AND EDIT CLEANUP
+// =========================================================================
+var bRemove = build('b-remove', ['jeden', 'dwa', 'trzy']);
+start([bRemove]);
+var bRemoveIds = authoredPoolIds();
+placeTiles([bRemoveIds[0], bRemoveIds[1]]);
+ok('N1 correctly positioned row tiles retain the live green indication',
+   rowButtons().every(function (b) { return b.classList.contains('ok'); }));
+press(rowTile(bRemoveIds[1]));
+eq('N1 removal deletes only the exact row tile',
+   G.build.row.map(function (t) { return t.id; }), [bRemoveIds[0]]);
+eq('N1 the matching pool tile becomes available', G.build.pool[1].used, false);
+ok('N1 removal focuses the matching returned pool tile',
+   ACTIVE === poolTile(bRemoveIds[1]) && ACTIVE !== BODY);
+eq('N1 Check stays enabled while the row is non-empty', el('gCheckBtn').disabled, false);
+ok('N1 the remaining correct-position indication survives repaint',
+   rowTile(bRemoveIds[0]).classList.contains('ok'));
+press(rowTile(bRemoveIds[0]));
+eq('N2 removing the final row tile disables Check', el('gCheckBtn').disabled, true);
+ok('N2 final removal still focuses its returned pool tile',
+   ACTIVE === poolTile(bRemoveIds[0]) && ACTIVE !== BODY);
+
+var bDuplicate = build('b-duplicate', ['nie', 'nie', 'teraz']);
+start([bDuplicate]);
+var bDuplicateIds = authoredPoolIds();
+placeTile(bDuplicateIds[1]);
+eq('N3 repeated-looking words retain the activated stable identity',
+   G.build.row.map(function (t) { return t.id; }), [bDuplicateIds[1]]);
+eq('N3 the other repeated-looking pool tile remains unused', G.build.pool[0].used, false);
+press(rowTile(bDuplicateIds[1]));
+ok('N3 removal focuses the exact returned duplicate by data-id',
+   ACTIVE === poolTile(bDuplicateIds[1]) && ACTIVE !== poolTile(bDuplicateIds[0]));
+
+var bEdit = build('b-edit', ['A', 'B', 'C']);
+start([bEdit]);
+var bEditIds = authoredPoolIds();
+placeTiles([bEditIds[1], bEditIds[0], bEditIds[2]]);
+press(el('gCheckBtn'));
+ok('N4 a rejected order creates a persistent status before editing',
+   /order is not correct/i.test(status().textContent));
+ok('N4 a rejected order marks at least one bad position',
+   rowButtons().some(function (b) { return b.classList.contains('bad'); }));
+press(rowTile(bEditIds[1]));
+eq('N4 editing clears the stale wrong-order status', status().textContent, '');
+ok('N4 repaint clears every stale bad-position marker',
+   rowButtons().every(function (b) { return !b.classList.contains('bad'); }));
+ok('N4 editing a rejected answer keeps build state ask', G.state === 'ask');
+ok('N4 edit focus lands on the returned stable pool tile',
+   ACTIVE === poolTile(bEditIds[1]) && ACTIVE !== BODY);
+
+// =========================================================================
+// N5. BUILD INCOMPLETE PREFIX
+// =========================================================================
+var bIncomplete = build('b-incomplete', ['Ala', 'ma', 'kota']);
+start([bIncomplete]);
+var bIncompleteOneIds = authoredPoolIds();
+placeTile(bIncompleteOneIds[0]);
+press(el('gCheckBtn'));
+eq('N5 one-word prefix marks the drill attempted', G.attempted, true);
+eq('N5 one-word prefix banks false', G.results[0], false);
+eq('N5 one-word prefix remains ask', G.state, 'ask');
+eq('N5 one-word prefix keeps Next disabled', el('gDrillNext').disabled, true);
+ok('N5 one-word prefix keeps Check available',
+   !el('gCheckBtn').disabled && el('gCheckBtn').style.display !== 'none');
+ok('N5 correct one-word prefix receives no bad marker',
+   rowButtons().every(function (b) { return !b.classList.contains('bad'); }));
+ok('N5 status explicitly identifies the incomplete sentence',
+   /sentence is incomplete/i.test(status().textContent));
+ok('N5 status does not claim unmarked words are highlighted',
+   !/highlighted words/i.test(status().textContent));
+ok('N5 focus moves to the first unused pool tile',
+   ACTIVE === poolTile(bIncompleteOneIds[1]));
+ok('N5 focus leaves Check and BODY',
+   ACTIVE !== el('gCheckBtn') && ACTIVE !== BODY);
+placeTile(bIncompleteOneIds[1]);
+eq('N5 placing the next tile clears incomplete status', status().textContent, '');
+eq('N5 incomplete one-word prefix does not autoplay', AUDIO_STARTS, 0);
+
+start([bIncomplete]);
+var bIncompleteTwoIds = authoredPoolIds();
+placeTiles([bIncompleteTwoIds[0], bIncompleteTwoIds[1]]);
+press(el('gCheckBtn'));
+eq('N6 two-word prefix marks the drill attempted', G.attempted, true);
+eq('N6 two-word prefix banks false', G.results[0], false);
+eq('N6 two-word prefix remains ask', G.state, 'ask');
+eq('N6 two-word prefix keeps Next disabled', el('gDrillNext').disabled, true);
+ok('N6 two-word prefix keeps Check available',
+   !el('gCheckBtn').disabled && el('gCheckBtn').style.display !== 'none');
+ok('N6 correct two-word prefix receives no bad marker',
+   rowButtons().every(function (b) { return !b.classList.contains('bad'); }));
+ok('N6 status explicitly identifies the incomplete sentence',
+   /sentence is incomplete/i.test(status().textContent));
+ok('N6 status does not claim unmarked words are highlighted',
+   !/highlighted words/i.test(status().textContent));
+ok('N6 focus moves to the first unused pool tile',
+   ACTIVE === poolTile(bIncompleteTwoIds[2]));
+ok('N6 focus leaves Check and BODY',
+   ACTIVE !== el('gCheckBtn') && ACTIVE !== BODY);
+placeTile(bIncompleteTwoIds[2]);
+eq('N6 placing the next tile clears incomplete status', status().textContent, '');
+eq('N6 incomplete two-word prefix does not autoplay', AUDIO_STARTS, 0);
+
+// =========================================================================
+// O. BUILD WRONG-ORDER REJECTION
+// =========================================================================
+var bWrong = build('b-wrong', ['dobry', 'jest', 'porządek']);
+start([bWrong]);
+var bWrongIds = authoredPoolIds();
+placeTiles([bWrongIds[1], bWrongIds[0], bWrongIds[2]]);
+press(el('gCheckBtn'));
+eq('O1 wrong build marks the drill attempted', G.attempted, true);
+eq('O1 wrong build banks false', G.results[0], false);
+eq('O1 wrong build remains ask', G.state, 'ask');
+eq('O1 wrong build keeps Next disabled', el('gDrillNext').disabled, true);
+ok('O1 wrong build keeps Check usable',
+   !el('gCheckBtn').disabled && el('gCheckBtn').style.display !== 'none');
+eq('O2 only mismatched positions receive bad state',
+   rowButtons().map(function (b) { return b.classList.contains('bad'); }),
+   [true, true, false]);
+ok('O2 a matching position retains its live green state',
+   rowButtons()[2].classList.contains('ok'));
+eq('O2 the first mismatch accessible name includes word and state',
+   rowButtons()[0].accName(), 'jest, wrong position');
+eq('O2 the second mismatch accessible name includes word and state',
+   rowButtons()[1].accName(), 'dobry, wrong position');
+eq('O2 a matching tile receives no wrong-position accessible label',
+   rowButtons()[2].getAttribute('aria-label'), null);
+eq('O3 persistent status announces a concise actionable rejection',
+   status().textContent,
+   'That order is not correct. Adjust the highlighted words and try again.');
+ok('O3 focus moves to the first mismatched row tile',
+   ACTIVE === rowButtons()[0] && ACTIVE !== BODY);
+ok('O4 the shake class is removed after its timeout',
+   !el('gBuildRow').classList.contains('shake'));
+eq('O4 wrong rejection does not autoplay', AUDIO_STARTS, 0);
+
+// =========================================================================
+// P. BUILD CORRECT SETTLEMENT
+// =========================================================================
+var bCorrect = build('b-correct', ['To', 'jest', 'dobrze']);
+start([bCorrect]);
+solveBuildExact();
+eq('P1 first-try correct build banks true', G.results[0], true);
+eq('P1 first-try correct build leaves attempted false', G.attempted, false);
+eq('P1 correct build settles state to done', G.state, 'done');
+ok('P2 correct build locks the row', el('gBuildRow').classList.contains('locked'));
+eq('P2 correct build hides the pool', el('gBuildPool').style.display, 'none');
+eq('P2 correct build hides Check', el('gCheckBtn').style.display, 'none');
+eq('P3 full Polish build feedback remains', el('gFbBox').innerHTML.indexOf(bCorrect.full) !== -1, true);
+eq('P3 English build feedback remains', el('gFbBox').innerHTML.indexOf(bCorrect.fullEn) !== -1, true);
+ok('P3 authored build explanation markup remains',
+   el('gFbBox').innerHTML.indexOf(bCorrect.explain) !== -1 &&
+   el('gFbBox').innerHTML.indexOf('<b>') !== -1);
+ok('P3 build feedback remains visible', el('gFbBox').classList.contains('show'));
+eq('P3 one build mini-audio button remains',
+   el('gFbBox').querySelectorAll('.mini-audio').length, 1);
+eq('P3 build feedback is not a verdict live region',
+   el('gFbBox').getAttribute('aria-live'), null);
+ok('P4 build status explicitly begins with Correct', /^Correct\b/.test(status().textContent));
+ok('P4 build status says Next is ready', /Next is ready/.test(status().textContent));
+var buildStatusPl = status().children.filter(function (n) {
+  return n.getAttribute && n.getAttribute('lang') === 'pl';
+});
+eq('P4 build correct status contains one lang=pl node', buildStatusPl.length, 1);
+eq('P4 build status announces the full Polish sentence',
+   buildStatusPl.length ? buildStatusPl[0].textContent : null, bCorrect.full);
+eq('P5 final clean build labels Next as See results',
+   el('gDrillNextLabel').textContent, 'See results');
+eq('P5 correct build enables Next', el('gDrillNext').disabled, false);
+ok('P5 correct build focuses enabled Next',
+   ACTIVE === el('gDrillNext') && !ACTIVE.disabled && ACTIVE !== BODY);
+eq('P5 correct build does not autoplay', AUDIO_STARTS, 0);
+
+start([bCorrect]);
+var bCorrectRetryIds = authoredPoolIds();
+placeTiles([bCorrectRetryIds[1], bCorrectRetryIds[0], bCorrectRetryIds[2]]);
+press(el('gCheckBtn'));
+while (G.build.row.length) press(rowButtons()[rowButtons().length - 1]);
+solveBuildExact();
+eq('P6 correct after an earlier build miss remains false', G.results[0], false);
+eq('P6 corrected build settles state to done', G.state, 'done');
+ok('P6 corrected build focuses Next', ACTIVE === el('gDrillNext'));
+
+// =========================================================================
+// Q. BUILD SETTLED-STATE PROTECTION
+// =========================================================================
+start([bCorrect]);
+placeTiles(authoredPoolIds());
+var retainedRowHandler = handler(rowButtons()[0]);
+press(el('gCheckBtn'));
+var qRowBefore = JSON.stringify(G.build.row);
+var qPoolBefore = JSON.stringify(G.build.pool);
+var qRowFocus = ACTIVE;
+if (retainedRowHandler) retainedRowHandler({});
+eq('Q1 retained row handler cannot change a settled row',
+   JSON.stringify(G.build.row), qRowBefore);
+eq('Q1 retained row handler cannot change a settled pool',
+   JSON.stringify(G.build.pool), qPoolBefore);
+ok('Q1 retained row handler cannot move settled focus', ACTIVE === qRowFocus);
+ok('Q1 settled row remains locked and complete',
+   el('gBuildRow').classList.contains('locked') &&
+   G.build.row.length === bCorrect.answer.length);
+
+start([bCorrect]);
+var qPoolIds = authoredPoolIds();
+var retainedPoolHandler = handler(poolTile(qPoolIds[0]));
+solveBuildExact();
+G.build.pool[0].used = false;
+var qDirectPoolBefore = JSON.stringify(G.build.pool);
+var qDirectRowBefore = JSON.stringify(G.build.row);
+if (retainedPoolHandler) retainedPoolHandler({});
+eq('Q2 retained pool handler cannot change settled pool state',
+   JSON.stringify(G.build.pool), qDirectPoolBefore);
+eq('Q2 retained pool handler cannot append to a settled row',
+   JSON.stringify(G.build.row), qDirectRowBefore);
+
+start([bCorrect]);
+solveBuildExact();
+var qCheckResult = JSON.stringify(G.results);
+var qCheckAttempted = G.attempted;
+var qCheckRow = JSON.stringify(G.build.row);
+var qCheckPool = JSON.stringify(G.build.pool);
+var qCheckStatus = status().textContent;
+var qCheckStatusChildren = status().children;
+var qCheckFeedback = el('gFbBox').innerHTML;
+var qCheckFeedbackWrites = HTML_WRITES.gFbBox;
+var qCheckFocus = ACTIVE;
+var qCheckNextDisabled = el('gDrillNext').disabled;
+var qCheckNextLabel = el('gDrillNextLabel').textContent;
+GRAMMAR.gCheckBuild(bCorrect);
+eq('Q3 repeated gCheckBuild cannot change settled result',
+   JSON.stringify(G.results), qCheckResult);
+eq('Q3 repeated gCheckBuild cannot change attempted state', G.attempted, qCheckAttempted);
+eq('Q3 repeated gCheckBuild cannot change settled row', JSON.stringify(G.build.row), qCheckRow);
+eq('Q3 repeated gCheckBuild cannot change settled pool', JSON.stringify(G.build.pool), qCheckPool);
+eq('Q3 repeated gCheckBuild cannot change status', status().textContent, qCheckStatus);
+ok('Q3 repeated gCheckBuild cannot rebuild status nodes',
+   status().children === qCheckStatusChildren);
+eq('Q3 repeated gCheckBuild cannot change feedback', el('gFbBox').innerHTML, qCheckFeedback);
+eq('Q3 repeated gCheckBuild cannot rebuild feedback',
+   HTML_WRITES.gFbBox, qCheckFeedbackWrites);
+ok('Q3 repeated gCheckBuild cannot move focus', ACTIVE === qCheckFocus);
+eq('Q3 repeated gCheckBuild cannot change Next state',
+   el('gDrillNext').disabled, qCheckNextDisabled);
+eq('Q3 repeated gCheckBuild cannot change Next label',
+   el('gDrillNextLabel').textContent, qCheckNextLabel);
+
+// =========================================================================
+// R. BUILD ROUND BEHAVIOR AND REAL CORPUS
+// =========================================================================
+var bRound = build('b-round', ['dokładnie', 'ta', 'kolejność']);
+start([bRound]);
+var bRoundIds = authoredPoolIds();
+placeTiles([bRoundIds[1], bRoundIds[0], bRoundIds[2]]);
+press(el('gCheckBtn'));
+eq('R1 swapped authored words remain rejected', G.results[0], false);
+eq('R1 a rejected build remains open for correction', G.state, 'ask');
+while (G.build.row.length) press(rowButtons()[rowButtons().length - 1]);
+solveBuildExact();
+eq('R1 corrected original remains a first-attempt miss', G.results[0], false);
+eq('R2 missed final original labels its advance as Next',
+   el('gDrillNextLabel').textContent, 'Next');
+activateNext();
+eq('R2 a missed build appends exactly one retry', G.queue.length, 2);
+ok('R2 build retry is marked and preserves identity',
+   G.queue[1]._requeue === true && G.queue[1].id === bRound.id);
+eq('R2 retry starts in ask state', G.state, 'ask');
+ok('R2 retry starts focused in its build pool',
+   ACTIVE === poolButtons()[0] && ACTIVE !== BODY);
+solveBuildExact();
+eq('R3 a clean retry can settle successfully', G.results[1], true);
+eq('R3 final retry labels Next as See results',
+   el('gDrillNextLabel').textContent, 'See results');
+activateNext();
+eq('R3 retry completion keeps original score at zero', el('gScore').textContent, '0');
+eq('R3 retry completion keeps original total at one', el('gTotal').textContent, '1');
+ok('R3 build completion focuses the existing done heading',
+   ACTIVE === el('gDoneTitle') && ACTIVE !== BODY);
+
+var allRealBuildsAcceptExact = true;
+BUILD.forEach(function (entry) {
+  start([entry.drill]);
+  solveBuildExact();
+  if (G.state !== 'done' || G.results[0] !== true ||
+      el('gDrillNext').disabled || ACTIVE !== el('gDrillNext')) {
+    allRealBuildsAcceptExact = false;
+  }
+});
+ok('R4 every current real build drill accepts its exact authored order',
+   allRealBuildsAcceptExact);
 
 info('assertions drive the shipping Grammar functions extracted from index.html');
 info('fake DOM models disabled-focus -> BODY, hidden-focus no-op, textContent vs innerHTML, and aria-label names');

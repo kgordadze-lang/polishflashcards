@@ -684,7 +684,7 @@
   .build-row.empty::before{content:"Tap words below to build the sentence";color:#aebbc4;font-size:13px;font-weight:500;padding:4px 6px}
   .build-row.shake{animation:shake .32s}
   @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
-  .build-row.locked .wchip{background:var(--ok-bg);border-color:var(--ok-border);color:var(--ok-text);cursor:default}
+  .build-row.locked .wchip{background:var(--ok-bg);border-color:var(--ok-border);color:var(--ok-text);cursor:default;pointer-events:none}
   .build-pool{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
   .wchip{border:1.5px solid var(--border);background:#fff;color:var(--forest);border-radius:11px;padding:9px 14px;font-size:15px;font-weight:700;cursor:pointer;transition:.13s;font-family:inherit}
   .wchip:hover{border-color:var(--emerald);transform:translateY(-1px)}
@@ -693,6 +693,7 @@
   .wchip.used{background:#f1f5f8;border-color:#e6edf2;color:transparent;cursor:default;pointer-events:none}   /* ghost slot: holds the word's exact position and width */
   .wchip.in-row.ok{background:var(--ok-bg);border-color:var(--ok-border);color:var(--ok-text)}
   .wchip.bad{background:var(--bad-bg);border-color:var(--bad-border);color:var(--bad-text)}
+  .wchip.bad::after{content:"\2715\00a0 Wrong position";display:block;margin-top:4px;font-size:10.5px;font-weight:800;line-height:1.15;letter-spacing:.2px;text-transform:uppercase;white-space:normal}
   .fb-box{margin-top:18px;display:none}
   .fb-box.show{display:block;animation:fade .3s ease}
   .fb-good{background:var(--mint-bg);border-radius:14px;padding:13px 14px;display:flex;align-items:flex-start;gap:11px}
@@ -783,6 +784,7 @@
     box-shadow:var(--shadow);animation:fade .3s ease}
 
   @media (prefers-reduced-motion:reduce){
+    .build-row.shake{animation:none}
     .flip,.screen,.done,.bubble,.hero h1,.hero h1 em,.hero-badge{transition:none;animation:none}
     .hero h1 em{background:none;-webkit-text-fill-color:var(--emerald)}
   }
@@ -2613,6 +2615,12 @@ function gAnnounceCorrect(pl){
   answer.textContent=pl;
   gSetStatus(["Correct. The answer is ",answer,". Next is ready."]);
 }
+function gAnnounceBuildWrong(){
+  gSetStatus(["That order is not correct. Adjust the highlighted words and try again."]);
+}
+function gAnnounceBuildIncomplete(){
+  gSetStatus(["The sentence is incomplete. Add the remaining words and try again."]);
+}
 function gFocusNextOption(box,from){
   const opts=Array.prototype.slice.call(box.querySelectorAll(".opt"));
   const at=opts.indexOf(from);
@@ -2680,11 +2688,11 @@ function gRenderBuild(c){
   $("gDrillCard").innerHTML='<div class="d-type">'+dtb+'</div><div class="q-prompt">'+c.promptEn+'</div>'+
     '<div class="q-en">Tap the words in the right order</div>'+
     '<div class="build-row" id="gBuildRow"></div><div class="build-pool" id="gBuildPool"></div>'+
-    '<button class="check-btn" id="gCheckBtn" disabled>Check</button><div class="fb-box" id="gFbBox" aria-live="polite"></div>';
-  gPaintBuild();
+    '<button class="check-btn" id="gCheckBtn" disabled>Check</button><div class="fb-box" id="gFbBox"></div>';
+  gPaintBuild({kind:"first-pool"});
   $("gCheckBtn").addEventListener("click",()=>gCheckBuild(c));
 }
-function gPaintBuild(){
+function gPaintBuild(focusIntent){
   const row=$("gBuildRow"), pool=$("gBuildPool");
   row.className="build-row"+(G.build.row.length===0?" empty":"");
   /* hybrid feedback: a word in its correct position greens live; red is only shown on Check */
@@ -2694,34 +2702,79 @@ function gPaintBuild(){
   }).join('');
   pool.innerHTML=G.build.pool.map(t=>'<button class="wchip'+(t.used?" used":"")+'" lang="pl" data-id="'+t.id+'"'+(t.used?' disabled aria-hidden="true" tabindex="-1"':'')+'>'+t.w+'</button>').join('');
   row.querySelectorAll(".wchip").forEach(ch=>ch.addEventListener("click",()=>{
+    if(G.state!=="ask") return;
     const id=ch.getAttribute("data-id"); const t=G.build.pool.find(x=>x.id===id);
-    G.build.row=G.build.row.filter(x=>x.id!==id); if(t) t.used=false; gPaintBuild();
+    G.build.row=G.build.row.filter(x=>x.id!==id); if(t) t.used=false;
+    gSetStatus([]);
+    gPaintBuild({kind:"pool-id",id:id});
   }));
   pool.querySelectorAll(".wchip:not(.used)").forEach(ch=>ch.addEventListener("click",()=>{
+    if(G.state!=="ask") return;
     const id=ch.getAttribute("data-id"); const t=G.build.pool.find(x=>x.id===id);
     if(!t||t.used) return;
-    t.used=true; G.build.row.push(t); gPaintBuild();
+    t.used=true; G.build.row.push(t);
+    gSetStatus([]);
+    gPaintBuild({kind:"after-pool",id:id});
   }));
   const cb=$("gCheckBtn"); if(cb) cb.disabled=G.build.row.length===0;
+  if(!focusIntent) return;
+  const available=Array.from(pool.querySelectorAll(".wchip:not(.used)"));
+  const byId=id=>available.find(ch=>ch.getAttribute("data-id")===id);
+  let target=null;
+  if(focusIntent.kind==="first-pool"){
+    target=available[0]||null;
+  } else if(focusIntent.kind==="pool-id"){
+    target=byId(focusIntent.id)||null;
+  } else if(focusIntent.kind==="after-pool"){
+    const at=G.build.pool.findIndex(t=>t.id===focusIntent.id);
+    for(let k=1;k<=G.build.pool.length;k++){
+      const t=G.build.pool[(at+k+G.build.pool.length)%G.build.pool.length];
+      if(t&&!t.used){ target=byId(t.id)||null; break; }
+    }
+    if(!target&&cb&&!cb.disabled) target=cb;
+  }
+  if(target) target.focus();
 }
 function gCheckBuild(c){
+  if(G.state!=="ask") return;
   const got=G.build.row.map(t=>t.w).join(" "), want=c.answer.join(" ");
   if(got===want){
     if(!G.attempted) G.results[G.di]=true;
+    G.state="done";
     $("gBuildRow").classList.add("locked");
     $("gBuildPool").style.display="none"; $("gCheckBtn").style.display="none";
     const fb=$("gFbBox");
     fb.innerHTML='<div class="fb-good"><div class="t"><div class="p" lang="pl">'+c.full+'</div><div class="e">'+c.fullEn+'</div></div>'+
       '<button class="mini-audio" data-say="'+encodeURIComponent(c.full)+'" aria-label="Play">'+G_AUDIO+'</button></div>'+
       '<div class="fb-explain">'+c.explain+'</div>';
-    fb.classList.add("show"); gUpdateNextLabel(); $("gDrillNext").disabled=false;
+    fb.classList.add("show");
+    gUpdateNextLabel();
+    gAnnounceCorrect(c.full);
+    $("gDrillNext").disabled=false;
+    $("gDrillNext").focus();
   } else {
     G.attempted=true; G.results[G.di]=false;
+    G.state="ask";
     /* red-flag the words sitting in the wrong slot; correct ones keep their green.
        These clear automatically on the next tap, since gPaintBuild re-renders the row. */
     const r=$("gBuildRow");
-    r.querySelectorAll(".wchip").forEach((ch,i)=>{ if(G.build.row[i].w!==c.answer[i]) ch.classList.add("bad"); });
-    r.classList.add("shake"); setTimeout(()=>r.classList.remove("shake"),340);
+    const incomplete=G.build.row.length<c.answer.length;
+    let firstBad=null;
+    r.querySelectorAll(".wchip").forEach((ch,i)=>{
+      if(G.build.row[i].w!==c.answer[i]){
+        ch.classList.add("bad");
+        ch.setAttribute("aria-label",G.build.row[i].w+", wrong position");
+        if(!firstBad) firstBad=ch;
+      }
+    });
+    if(firstBad){
+      gAnnounceBuildWrong();
+      firstBad.focus();
+      r.classList.add("shake"); setTimeout(()=>r.classList.remove("shake"),340);
+    } else if(incomplete){
+      gAnnounceBuildIncomplete();
+      gPaintBuild({kind:"first-pool"});
+    }
   }
 }
 function gDrillAdvance(){
