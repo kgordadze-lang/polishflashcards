@@ -425,7 +425,9 @@ var fakeDoc = {
 var window = {};                                                // the shared helpers attach themselves here
 (0, eval)(readFile(ROOT + 'pp-usage.js'));
 (0, eval)(readFile(ROOT + 'pp-answer.js'));
+(0, eval)(readFile(ROOT + 'pp-distractor.js'));                 // Phase 4D: rBuildOptions delegates to it
 var PP_ANSWER = window.PP_ANSWER;                               // the REAL comparator decides typed verdicts
+var PP_DISTRACTOR = window.PP_DISTRACTOR;                       // the REAL option builder, as index.html binds it
 var ppMainAudioText = window.PP_USAGE.mainAudioText;            // index.html binds them the same way
 var ppHasMainAudio = window.PP_USAGE.hasMainAudio;
 
@@ -574,7 +576,7 @@ var PP_TYPED_INDEX = PP_ANSWER.buildIndex(PLAIN_CARDS.concat(NASTY_CARDS));
 
 var MIXED = (new Function('$', 'document', 'show', 'R', 'LEVELS', 'poolFor', 'gShuffle',
   'ppEligibleFor', 'ppAppendUsageTo', 'ppVariantParts', 'ppProgressWritable', 'loadV2', 'saveV2',
-  'PP_ANSWER', 'PP_TYPED_INDEX', 'ppHasMainAudio', 'ppMainAudioText', 'G_AUDIO',
+  'PP_ANSWER', 'PP_TYPED_INDEX', 'ppHasMainAudio', 'ppMainAudioText', 'G_AUDIO', 'PP_DISTRACTOR',
   RNAMES.map(function (n) { return RSRC[n]; }).join('\n') + '\n' +
   'return {\n' +
   '  startRound: function(a,b){ return startRound(a,b); },\n' +
@@ -587,7 +589,7 @@ var MIXED = (new Function('$', 'document', 'show', 'R', 'LEVELS', 'poolFor', 'gS
   '};'
 ))(el, fakeDoc, fakeShow, R, LEVELS, fakePoolFor, fakeShuffle,
    fakeEligible, fakeAppendUsage, ppVariantPartsStub, fakeProgressWritable, fakeLoadV2, fakeSaveV2,
-   PP_ANSWER, PP_TYPED_INDEX, ppHasMainAudio, ppMainAudioText, '<svg data-icon="audio"></svg>');
+   PP_ANSWER, PP_TYPED_INDEX, ppHasMainAudio, ppMainAudioText, '<svg data-icon="audio"></svg>', PP_DISTRACTOR);
 function activate(id) { return MIXED.handlers[id](); }
 
 // ---------- per-test setup ----------
@@ -618,18 +620,21 @@ function opts() { return el('rOpts').children; }
 function status() { return el('rStatus'); }
 function q() { return R.qs[R.i]; }
 // The correct button for the current question, found the way the app answers -
-// the option string that equals the card's own gloss.
+// Phase 4D: by the option record's retained `correct` flag, not by comparing its
+// text with the card's gloss. Which options get built, and why identity rather than
+// text decides, is owned by tests/test_mixed_distractors.js; this file needs only to
+// press the right button and read the label off the same record the app rendered.
 function correctBtn() {
   var cur = q(), list = opts();
-  for (var i = 0; i < cur.options.length; i++) if (cur.options[i] === cur.c.en) return list[i];
+  for (var i = 0; i < cur.options.length; i++) if (cur.options[i].correct === true) return list[i];
   throw new Error('fixture: no correct option in question ' + R.i);
 }
 function wrongBtns() {
   var cur = q(), list = opts(), out = [];
-  for (var i = 0; i < cur.options.length; i++) if (cur.options[i] !== cur.c.en) out.push(list[i]);
+  for (var i = 0; i < cur.options.length; i++) if (cur.options[i].correct !== true) out.push(list[i]);
   return out;
 }
-function labelOf(btn) { return q().options[opts().indexOf(btn)]; }
+function labelOf(btn) { return q().options[opts().indexOf(btn)].label; }
 // What a keyboard learner does: focus the control, then activate it.
 function press(btn) { btn.focus(); btn.click(); }
 function typeAndCheck(text) { el('rInput').value = text; activate('rCheck'); }
@@ -641,7 +646,14 @@ eq('A6 the round is the sampled 15-or-fewer questions', R.qs.length, PLAIN_CARDS
 eq('A6 question 0 is the listen format', R.qs[0].fmt, 'listen');
 eq('A6 question 1 is the typed format', R.qs[1].fmt, 'type');
 eq('A6 question 2 is the multiple-choice format', R.qs[2].fmt, 'mc');
-eq('A6 every question has four options', R.qs.filter(function (x) { return x.options.length === 4; }).length, R.qs.length);
+// Phase 4D: the two option-bearing formats carry four RECORDS each, and a typed
+// question carries none at all - it never reaches the option builder.
+eq('A6 every option-bearing question has four options',
+   R.qs.filter(function (x) { return x.fmt !== 'type' && x.options.length === 4; }).length,
+   R.qs.filter(function (x) { return x.fmt !== 'type'; }).length);
+eq('A6 every typed question carries no options',
+   R.qs.filter(function (x) { return x.fmt === 'type' && x.options.length === 0; }).length,
+   R.qs.filter(function (x) { return x.fmt === 'type'; }).length);
 eq('A6 the round opened on the Mixed Quiz screen', shown, ['round']);
 
 // =========================================================================
@@ -713,9 +725,12 @@ eq('C6 a wrong answer starts no audio', AUDIO_MADE.length + UTTER_MADE.length + 
 press(correctBtn());
 eq('C7 the first-attempt result is missed, exactly as before', R.qs[2].result, 'miss');
 
-// The wrap: the LAST option being wrong must not be a dead end. A reversing
-// shuffle puts the correct gloss first, so the last option is a distractor.
-reset({ at: 2, shuffle: reverse });
+// The wrap: the LAST option being wrong must not be a dead end. The shared builder
+// puts the answer at the head of the set before shuffling it, so an identity shuffle
+// leaves the correct option first and every option after it is a distractor. (Before
+// Phase 4D the answer was appended, and a REVERSING shuffle produced the same
+// arrangement; the guard below is what states which one this fixture actually has.)
+reset({ at: 2 });
 var lastBtn = opts()[opts().length - 1];
 ok('C8 fixture guard: the last option is a distractor', labelOf(lastBtn) !== q().c.en);
 press(lastBtn);
@@ -1163,8 +1178,11 @@ function blockAfter(code, from) {
   }
   throw new Error('wiring: unbalanced answer branch');
 }
-var ifAt = CODE_PICK.indexOf('if(o===q.c.en)');
-ok('K0 the answer handler still branches on the option matching the card gloss', ifAt !== -1);
+// Phase 4D: the branch reads the option record's retained flag instead of comparing
+// its visible text with the card's gloss. WHY that had to change is owned by
+// tests/test_mixed_distractors.js; all this file needs is to find the two arms.
+var ifAt = CODE_PICK.indexOf('if(o.correct===true)');
+ok('K0 the answer handler still branches on the chosen option', ifAt !== -1);
 var CORRECT_ARM = blockAfter(CODE_PICK, ifAt);
 var WRONG_ARM = blockAfter(CODE_PICK, CORRECT_ARM.end);
 ok('K0 both arms were located',
@@ -1223,8 +1241,13 @@ ok('K3 focus is assigned after the options are built', (function () {
 })());
 ok('K3 the Play button is never focused while it is closed',
    hasCode(CODE_RENDER, '!play.disabled'));
-ok('K3 rRender still builds the options as plain strings',
-   hasCode(CODE_RENDER, 'b.textContent=o') && CODE_RENDER.indexOf('.label') === -1);
+// Phase 4D: an option is a record, so the button's text is the record's label and
+// the record itself - not its text - is what reaches the answer handler. Still
+// textContent, never innerHTML: an English gloss is authored content.
+ok('K3 rRender writes the option label as text',
+   hasCode(CODE_RENDER, 'b.textContent=o.label'));
+ok('K3 rRender hands the whole option record to the answer handler',
+   hasCode(CODE_RENDER, 'rPickOption(b, o, q, box)'));
 ok('K4 rShowDone focuses the completion heading', hasCode(CODE_DONE, '$("rDoneTitle")') &&
    reachesAt(CODE_DONE, '.focus(') !== -1);
 ok('K4 rShowDone clears the status region', reachesAt(CODE_DONE, 'rStatus') !== -1);
@@ -1287,19 +1310,23 @@ ok('K6 the Play button is still the only playback entry point', (function () {
   return /speakCardMain\(/.test(target) && /R\.qs\[R\.i\]/.test(target);
 })());
 
-// Phase 4D owns the distractor builder. This phase must not have touched it.
+// The distractor builder is tests/test_mixed_distractors.js's file, not this one's.
+// What is asserted here is only that it stayed OUT of accessibility's way: choosing
+// which cards may share a question is a content decision, and nothing in it may
+// reach a name, a focus target or the status region.
 var CODE_BUILD = codeOnly(RSRC.rBuildOptions);
-ok('K7 rBuildOptions still filters the card and its own gloss out of the pool',
-   hasCode(CODE_BUILD, 'pool.filter(c => c !== card && c.en !== card.en)'));
-ok('K7 rBuildOptions still takes three distractors and adds the answer',
-   hasCode(CODE_BUILD, '.slice(0,3).map(c=>c.en)') && hasCode(CODE_BUILD, 'wrong.concat([card.en])'));
-ok('K7 rBuildOptions still shuffles both the pool and the result',
-   countOf(squash(CODE_BUILD), 'gShuffle(') === 2);
+ok('K7 rBuildOptions delegates the option set to the shared builder',
+   hasCode(CODE_BUILD, 'PP_DISTRACTOR.buildOptions('));
+ok('K7 it still injects the app shuffle rather than owning randomness',
+   hasCode(CODE_BUILD, 'shuffle: gShuffle') && CODE_BUILD.indexOf('Math.random') === -1);
 ok('K7 rBuildOptions gained no accessibility concern at all',
-   ['aria', 'focus', 'rStatus', 'Status', 'label'].every(function (t) { return CODE_BUILD.indexOf(t) === -1; }));
-ok('K7 the round is still sampled and built the way it was',
-   hasCode(codeOnly(RSRC.startRound), 'rBuildOptions(c, dPool)') &&
+   ['aria', 'focus', 'rStatus', 'Status', 'announce', 'Announce', 'document']
+     .every(function (t) { return CODE_BUILD.indexOf(t) === -1; }));
+ok('K7 the round is still sampled the way it was',
    hasCode(codeOnly(RSRC.startRound), 'gShuffle(asked).slice(0,15)'));
+ok('K7 the round still builds one option set per question',
+   hasCode(codeOnly(RSRC.startRound), 'rBuildOptions(') &&
+   countOf(squash(codeOnly(RSRC.startRound)), 'rBuildOptions(') === 1);
 ok('K7 the requeue rule is unchanged',
    hasCode(codeOnly(RSRC.rRecord), 'if(q.requeued) return;') &&
    hasCode(codeOnly(RSRC.rRecord), 'if(result==="miss")'));

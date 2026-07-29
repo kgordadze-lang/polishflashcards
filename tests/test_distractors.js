@@ -33,8 +33,11 @@
 // tests/test_typeit_eligibility.js. How a typed answer is judged belongs to
 // test_answer_validation.js, how a round scores to test_round_scoring.js. This
 // file owns the option SET: who may share a question, and that the right answer
-// survives as identity rather than as a string. The Mixed Quiz is out of scope
-// for this phase and is asserted UNCHANGED (section H).
+// survives as identity rather than as a string. The Mixed Quiz adopted the same
+// builder in Phase 4D; section H asserts only that the adoption is real, and
+// everything the Mixed Quiz does with the records afterwards - the two prompt
+// identities, the fallback join, the retry and the corpus sweep - is owned by
+// tests/test_mixed_distractors.js.
 // Release identifiers - APP_VERSION, CACHE, AUDIO_CACHE - are not pinned: they
 // change on purpose at release time.
 ObjC.import('Foundation');
@@ -1154,6 +1157,8 @@ var SRC_RBUILD = bodyOf(INDEX, 'rBuildOptions');
 var SRC_STARTROUND = bodyOf(INDEX, 'startRound');
 var CODE_START_LISTEN = codeOnly(SRC_START_LISTEN);
 var CODE_LRENDER = codeOnly(SRC_LRENDER);
+var CODE_RRENDER = codeOnly(bodyOf(INDEX, 'rRender'));
+var CODE_RPICK = codeOnly(bodyOf(INDEX, 'rPickOption'));
 
 ok('H1 Listening builds its options through PP_DISTRACTOR',
    CODE_START_LISTEN.indexOf('PP_DISTRACTOR.buildOptions') !== -1);
@@ -1221,83 +1226,86 @@ ok('H4 the completion wording is unchanged',
 ok('H4 the score is still first-attempt successes',
    hasCode(codeOnly(INDEX), 'const score=L.results.filter(Boolean).length'));
 
-// The Mixed Quiz is Phase 4 territory and must still BEHAVE as it did. What is
-// asserted is its behaviour, its wiring and its independence from this phase -
-// deliberately not its source text. A whitespace tidy or a renamed local is not
-// a regression, and a suite that failed for one would train people to edit the
-// expected string without reading it, which is how a real change slips through.
-ok('H5 the Mixed Quiz still builds its options the old way',
-   codeOnly(SRC_STARTROUND).indexOf('rBuildOptions(c, dPool)') !== -1);
-ok('H5 the Mixed Quiz does not use the new builder',
-   codeOnly(SRC_STARTROUND).indexOf('PP_DISTRACTOR') === -1 &&
-   codeOnly(SRC_RBUILD).indexOf('PP_DISTRACTOR') === -1);
+// The Mixed Quiz adopted this builder in Priority 3 Phase 4D. What is asserted
+// here is only that the ADOPTION is real - that the second caller goes through
+// the same door, and that it kept the source rather than flattening it back to
+// strings. Everything the Mixed Quiz does with those records afterwards - the two
+// prompt identities, the fallback join, the retry, the rendering and the corpus
+// sweep - belongs to tests/test_mixed_distractors.js, and duplicating it here
+// would mean two files to update for one change.
+// Read through hasCode: the claim is which tokens appear, never how they are typed.
+ok('H5 the Mixed Quiz builds its options through PP_DISTRACTOR',
+   hasCode(codeOnly(SRC_RBUILD), 'PP_DISTRACTOR.buildOptions('));
+ok('H5 it asks the shared builder for four options', hasCode(codeOnly(SRC_RBUILD), 'count: 4'));
+ok('H5 it injects the app shuffle', hasCode(codeOnly(SRC_RBUILD), 'shuffle: gShuffle'));
+ok('H5 the old exact-string filter is gone',
+   codeOnly(SRC_RBUILD).indexOf('pool.filter(') === -1 &&
+   codeOnly(SRC_RBUILD).indexOf('c.en !== card.en') === -1);
+ok('H5 the round hands the builder pool RECORDS, not raw cards',
+   hasCode(codeOnly(SRC_STARTROUND), '{ c, topic: topic.name }') &&
+   codeOnly(SRC_STARTROUND).indexOf('x=>x.c') === -1);
 // This suite makes NO application-wide claim about who may call into
-// pp-distractor.js. Counting call sites across index.html was a claim about the
-// app's shape rather than about this file's API, and it was already due to break
-// on purpose: Phase 4 is expected to adopt PP_DISTRACTOR.buildOptions in the
-// Mixed Quiz, which would fail a count while being exactly the intended change.
-// What is asserted instead is scoped to the two callers this phase owns - the
-// assertions above for startListen, and this one for the Phase 3E key - and the
-// Mixed Quiz's independence is asserted directly, immediately above, where Phase
-// 4 will deliberately update it.
+// pp-distractor.js. Counting call sites across index.html would be a claim about
+// the app's shape rather than about this file's API, and it is exactly the count
+// that Phase 4D was always going to break by adopting the builder in a second
+// activity. What is asserted instead is scoped to each caller in turn.
 ok('H5 the Listening question key normalises through PP_DISTRACTOR',
    hasCode(codeOnly(bodyOf(INDEX, 'lQuestionKey')), 'PP_DISTRACTOR.normalizeKey('));
 ok('H5 Listening still builds its options through PP_DISTRACTOR',
    hasCode(CODE_START_LISTEN, 'PP_DISTRACTOR.buildOptions('));
-ok('H5 rRender still reads plain option strings',
-   codeOnly(bodyOf(INDEX, 'rRender')).indexOf('.label') === -1);
+ok('H5 the Mixed Quiz renders the retained label', hasCode(CODE_RRENDER, 'b.textContent=o.label'));
+ok('H5 the Mixed Quiz decides correctness by the retained flag',
+   hasCode(CODE_RPICK, 'o.correct===true'));
+ok('H5 no visible string decides a Mixed Quiz answer',
+   CODE_RPICK.indexOf('o===q.c.en') === -1 && CODE_RPICK.indexOf('o === q.c.en') === -1);
 
 // ...and the real rBuildOptions is EXECUTED, against a synthetic pool and a
-// deterministic gShuffle, so "unchanged" is a claim about what it does rather
+// deterministic gShuffle, so the adoption is a claim about what it does rather
 // than about how it is typed.
 (function () {
-  var rBuildOptions = new Function('gShuffle', SRC_RBUILD + '\nreturn rBuildOptions;')(KEEP);
+  var rBuildOptions = new Function('gShuffle', 'PP_DISTRACTOR', 'ppMainAudioText',
+    SRC_RBUILD + '\nreturn rBuildOptions;')(KEEP, D, U.mainAudioText);
   var card = { id: 'r-1', pl: 'r1', en: 'the answer' };
   var pool = [card,
               { id: 'r-2', pl: 'r2', en: 'first' },
               { id: 'r-3', pl: 'r3', en: 'second' },
               { id: 'r-4', pl: 'r4', en: 'third' },
-              { id: 'r-5', pl: 'r5', en: 'fourth' }];
+              { id: 'r-5', pl: 'r5', en: 'fourth' }]
+             .map(function (c) { return { c: c, topic: 'Fixture topic' }; });
 
-  var out = rBuildOptions(card, pool);
-  ok('H5 rBuildOptions still returns plain strings',
-     Array.isArray(out) && out.every(function (o) { return typeof o === 'string'; }));
-  eq('H5 rBuildOptions still returns four options when the pool allows', out.length, 4);
-  eq('H5 rBuildOptions still includes the correct gloss exactly once',
-     out.filter(function (o) { return o === 'the answer'; }).length, 1);
+  var out = rBuildOptions(pool[0], pool, 'mc');
+  ok('H5 rBuildOptions returns retained records, not strings',
+     Array.isArray(out) && out.length > 0 &&
+     out.every(function (o) { return o && typeof o === 'object' && typeof o.label === 'string'; }));
+  eq('H5 rBuildOptions returns four options when the pool allows', out.length, 4);
+  eq('H5 every record keeps its card, its pool item and its stable id',
+     out.filter(function (o) { return o.card && o.item && o.id === o.card.id; }).length, out.length);
+  eq('H5 exactly one record is flagged correct',
+     out.filter(function (o) { return o.correct === true; }).length, 1);
+  ok('H5 the correct record is the asked card',
+     out.filter(function (o) { return o.correct === true; })[0].card === card);
   eq('H5 rBuildOptions still draws its distractors from the pool',
-     out.filter(function (o) { return ['first', 'second', 'third', 'fourth'].indexOf(o) !== -1; }).length, 3);
+     out.filter(function (o) { return ['first', 'second', 'third', 'fourth'].indexOf(o.label) !== -1; }).length, 3);
 
-  // The card is never its own distractor - by object identity...
-  var selfPool = [card, card, { id: 'r-6', pl: 'r6', en: 'other' }];
-  eq('H5 rBuildOptions never uses the card as its own distractor',
-     rBuildOptions(card, selfPool).filter(function (o) { return o === 'the answer'; }).length, 1);
-  // ...and a DIFFERENT card whose gloss exactly duplicates the answer is
-  // dropped too, so the answer is never printed twice.
-  var dupPool = [card,
-                 { id: 'r-7', pl: 'r7', en: 'the answer' },
-                 { id: 'r-8', pl: 'r8', en: 'first' },
-                 { id: 'r-9', pl: 'r9', en: 'second' }];
-  var dupOut = rBuildOptions(card, dupPool);
-  eq('H5 rBuildOptions does not add an exact duplicate of the answer twice',
-     dupOut.filter(function (o) { return o === 'the answer'; }).length, 1);
-  eq('H5 and it fills the remaining places from the rest of the pool', dupOut.length, 3);
+  // The rules the shared builder owns now hold for the Mixed Quiz too. A DIFFERENT
+  // card whose gloss merely reads the same as another is dropped - the case the old
+  // exact-string filter let straight through.
+  var twinPool = [card,
+                  { id: 'r-11', pl: 'r11', en: 'twin' },
+                  { id: 'r-12', pl: 'r12', en: 'Twin!' },
+                  { id: 'r-13', pl: 'r13', en: 'distinct' }]
+                 .map(function (c) { return { c: c, topic: 'Fixture topic' }; });
+  var twins = rBuildOptions(twinPool[0], twinPool, 'mc');
+  eq('H5 two distractors that read the same no longer share a Mixed Quiz question',
+     twins.filter(function (o) { return key(o.label) === key('twin'); }).length, 1);
 
-  // A thin pool yields a shorter list rather than throwing or repeating.
-  eq('H5 rBuildOptions degrades on a thin pool',
-     rBuildOptions(card, [card, { id: 'r-10', pl: 'r10', en: 'lonely' }]).sort(),
-     ['lonely', 'the answer']);
+  // A typed question never reaches the builder at all.
+  eq('H5 a typed question builds no options', rBuildOptions(pool[0], pool, 'type'), []);
 
-  // Characterised, NOT pinned: two distractors that merely resemble each other
-  // are still allowed through here. Tightening that is Priority 3 Phase 4's
-  // job, and reporting it marks the boundary this phase deliberately stopped at.
-  var twins = rBuildOptions(card, [card,
-                                   { id: 'r-11', pl: 'r11', en: 'twin' },
-                                   { id: 'r-12', pl: 'r12', en: 'twin' },
-                                   { id: 'r-13', pl: 'r13', en: 'distinct' }]);
   info('Mixed Quiz today: duplicate distractor glosses ' +
-       (twins.filter(function (o) { return o === 'twin'; }).length > 1 ? 'still reach' : 'no longer reach') +
-       ' the learner - Phase 4 territory, not asserted here');
+       (twins.filter(function (o) { return key(o.label) === key('twin'); }).length > 1
+          ? 'still reach' : 'no longer reach') +
+       ' the learner - the option SET is now owned by tests/test_mixed_distractors.js');
 })();
 
 // Script order and offline availability.

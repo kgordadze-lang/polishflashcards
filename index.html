@@ -3332,9 +3332,48 @@ $("lHome").addEventListener("click", lExit);
    the topic's still/known progress, so the topic list's "to review" count stays honest. */
 const R = { li:0, ti:0, qs:[], i:0, state:"ask", revealed:0, attempted:false };
 
-function rBuildOptions(card, pool){
-  const wrong = gShuffle(pool.filter(c => c !== card && c.en !== card.en)).slice(0,3).map(c=>c.en);
-  return gShuffle(wrong.concat([card.en]));
+/* ---- Mixed Quiz options: the same safety rules Listening already answers to ----
+   Both option-bearing formats ask one question and offer four English meanings, so
+   the failure Listening was fixed for is available here word for word: two cards
+   whose glosses read the same, or whose prompts are the same, sitting side by side
+   with only one of them marked right. WHICH cards may share a question is
+   PP_DISTRACTOR's decision, not this file's - deduplication, normalisation, source
+   identity, same-topic preference and the exhaustive search all live there, and are
+   deliberately not reimplemented here.
+
+   What this wrapper owns is the one thing the shared builder cannot know: WHAT THE
+   LEARNER IS ANSWERING FROM. The two formats print the same English on the buttons,
+   so the visible label is `card.en` either way, but their prompts are different
+   senses:
+
+     listen - the main speaker plays a clip, so the prompt is whatever PP_USAGE says
+              that speaker would play (a template speaks its complete `audioText`,
+              never its display pattern);
+     mc     - nothing is played; the learner reads the Polish printed above the
+              options, which is the card's canonical `pl`.
+
+   Passing the wrong one of those would let a card that SOUNDS like the answer sit in
+   a printed question, or a card that READS like it sit in a heard one, so the two are
+   written out separately rather than folded into one accessor. English is never the
+   prompt identity on either format - it is what the buttons show, and using it would
+   collapse the prompt rule into the label rule and lose both.
+
+   `type` shows no options at all: it returns an empty array without reaching the
+   builder, which is why a typed question can never gain a button by accident.
+
+   The result is the builder's RECORDS, not strings: each keeps its card, its pool
+   item, its stable id, its visible label and its `correct` flag, so rPickOption marks
+   the answer by retained identity instead of comparing two strings that may be equal
+   by accident. */
+function rBuildOptions(correctItem, candidates, fmt){
+  const promptOf = fmt==="listen" ? ppMainAudioText            /* what the speaker plays */
+                 : fmt==="mc"     ? (card => card.pl)          /* what is printed above the options */
+                 : null;                                       /* "type" has no options to build */
+  if(!promptOf) return [];
+  return PP_DISTRACTOR.buildOptions({
+    correct: correctItem, candidates: candidates, count: 4, shuffle: gShuffle,
+    heardOf: promptOf                    /* the builder's prompt-identity slot, per format */
+  }).options;
 }
 function startRound(l, t){
   stopAllAudio();   /* every entry into a round starts silent - the topic tile and "Practice again" both land here */
@@ -3345,16 +3384,29 @@ function startRound(l, t){
      multiple-choice distractors, which asks nothing of the learner. */
   const shown  = topic.cards.filter(c => ppEligibleFor(c, "listen"));   /* display-eligible */
   const asked  = topic.cards.filter(c => ppEligibleFor(c, "mixed"));    /* production-eligible */
-  let dPool = shown;
-  if(dPool.length < 4) dPool = dPool.concat(poolFor([LEVELS[l].level], "listen").map(x=>x.c));
+  /* Pool ITEMS, the shape poolFor already returns and PP_DISTRACTOR already reads:
+     the card plus the topic it is being taught in. The topic identity is the same
+     `t.name` poolFor writes, so a fallback record from this very topic bands with
+     these rather than against them, and same-topic preference survives the join.
+     Which cards are eligible is unchanged - only their wrapper is. */
+  const items  = shown.map(c => ({ c, topic: topic.name }));
+  let dPool = items;
+  /* Too few cards here to fill a question: widen to the level, as RECORDS. The join
+     may well contain this topic's own cards a second time - poolFor walks them too -
+     and that is fine: the builder excludes a source it has already used, by object
+     and by stable id, so no card can appear twice however many times it is offered.
+     Neither array is mutated; concat builds a third. */
+  if(dPool.length < 4) dPool = dPool.concat(poolFor([LEVELS[l].level], "listen"));
   const sample = gShuffle(asked).slice(0,15);
   /* podcast phrases are long - recognition formats only, no typing */
   const fmts = topic.kind==="podcast" ? ["listen","mc"] : ["listen","type","mc"];
-  R.qs = gShuffle(sample.map((c,k) => ({
-    c, fmt: fmts[k % fmts.length],
-    options: rBuildOptions(c, dPool),
-    requeued:false, result:null
-  })));
+  R.qs = gShuffle(sample.map((c,k) => {
+    const fmt = fmts[k % fmts.length];
+    /* the asked card's OWN pool item is the correct source, so the answer carries the
+       same topic and the same identity the distractors are compared against */
+    return { c, fmt, options: rBuildOptions(items.find(it => it.c === c), dPool, fmt),
+             requeued:false, result:null };
+  }));
   R.i=0; R.state="ask"; R.revealed=0; R.attempted=false;
   $("rTitle").textContent = topic.name;
   $("rSub").textContent = "Mixed quiz";
@@ -3439,9 +3491,13 @@ function rRender(){
     const rv=$("rReveal"); rv.classList.remove("show"); rv.textContent="";
     const fb=$("rFb"); fb.classList.remove("show"); fb.innerHTML="";
     const box=$("rOpts"); box.innerHTML="";
+    /* textContent, never innerHTML: an English gloss is authored content and may
+       carry an ampersand, a quote or an angle bracket. The whole RECORD is handed
+       to rPickOption - the label is what the learner reads, not what decides the
+       answer. */
     q.options.forEach(o=>{
       const b=document.createElement("button");
-      b.className="opt"; b.textContent=o;
+      b.className="opt"; b.textContent=o.label;
       b.addEventListener("click", ()=> rPickOption(b, o, q, box));
       box.appendChild(b);
     });
@@ -3513,9 +3569,13 @@ function rPlayCurrent(){
 }
 function rPickOption(btn, o, q, box){
   if(R.state!=="ask") return;
-  if(o===q.c.en){
+  /* The retained flag, not a string match: two cards can share a gloss, and the one
+     the learner pressed is the record that was built for that button. What is shown
+     stays `o.label` throughout - the visible English is unchanged, it just no longer
+     doubles as the correctness key. */
+  if(o.correct===true){
     btn.classList.add("correct");
-    btn.setAttribute("aria-label", o + ", correct");        /* the state, not only the colour */
+    btn.setAttribute("aria-label", o.label + ", correct");  /* the state, not only the colour */
     box.querySelectorAll(".opt").forEach(x=>x.disabled=true);
     R.state="done";
     rRecord(q, R.attempted ? "miss" : "right");
@@ -3530,9 +3590,9 @@ function rPickOption(btn, o, q, box){
     $("rNext").disabled=false; $("rNext").focus();   /* only ever after it is enabled - focus cannot land on a closed button */
   } else {
     btn.classList.add("wrong"); btn.disabled=true;
-    btn.setAttribute("aria-label", o + ", incorrect. Try again");
+    btn.setAttribute("aria-label", o.label + ", incorrect. Try again");
     R.attempted=true;
-    rAnnounceWrong(o);               /* say it first, then move - the move is what the reader lands on */
+    rAnnounceWrong(o.label);         /* say it first, then move - the move is what the reader lands on */
     rFocusNextOption(box, btn);
   }
 }
@@ -3598,7 +3658,15 @@ function rRecord(q, result){
   if(q.requeued) return;                     /* second passes never score or re-requeue */
   q.result = result;
   if(result==="miss"){
-    R.qs.push({ c:q.c, fmt:q.fmt, options:gShuffle(q.options.slice()), requeued:true, result:null });
+    /* The retry offers the SAME safe set in a fresh order. The retained records are
+       handed back to the shared builder as their own candidate pool, so the ordering
+       is new and the safety is re-proved rather than assumed - and the correct source
+       is the same card, because it is the same record. A typed question carries no
+       options and gains none. */
+    const right = q.options.filter(o=>o.correct)[0];
+    R.qs.push({ c:q.c, fmt:q.fmt,
+                options: right ? rBuildOptions(right.item, q.options.map(o=>o.item), q.fmt) : [],
+                requeued:true, result:null });
   }
 }
 function rShowDone(){

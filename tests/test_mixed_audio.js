@@ -202,7 +202,9 @@ var SPEEDS = (0, eval)('(' + speedsMatch[1] + ')');
 var window = {};                                          // the shared helpers attach themselves here
 (0, eval)(readFile(ROOT + 'pp-usage.js'));
 (0, eval)(readFile(ROOT + 'pp-answer.js'));
+(0, eval)(readFile(ROOT + 'pp-distractor.js'));   // Phase 4D: rBuildOptions delegates to it
 var PP_ANSWER = window.PP_ANSWER;                         // the REAL comparator decides typed verdicts
+var PP_DISTRACTOR = window.PP_DISTRACTOR;                 // the REAL option builder, as index.html binds it
 var ppMainAudioText = window.PP_USAGE.mainAudioText;      // index.html binds these the same way
 var ppHasMainAudio = window.PP_USAGE.hasMainAudio;
 
@@ -442,7 +444,7 @@ var R = (0, eval)('(' + rStateMatch[1] + ')');
 
 var MIXED = (new Function('$', 'document', 'show', 'R', 'LEVELS', 'poolFor', 'gShuffle',
   'ppEligibleFor', 'ppAppendUsageTo', 'ppVariantParts', 'ppProgressWritable', 'loadV2', 'saveV2',
-  'PP_ANSWER', 'PP_TYPED_INDEX', 'ppHasMainAudio', 'ppMainAudioText', 'G_AUDIO',
+  'PP_ANSWER', 'PP_TYPED_INDEX', 'ppHasMainAudio', 'ppMainAudioText', 'G_AUDIO', 'PP_DISTRACTOR',
   RNAMES.map(function (n) { return RSRC[n]; }).join('\n') + '\n' +
   // one wrapper so a test can watch the exact moment the next question renders
   'var __spy = null, __realRender = rRender;\n' +
@@ -464,7 +466,7 @@ var MIXED = (new Function('$', 'document', 'show', 'R', 'LEVELS', 'poolFor', 'gS
   '};'
 ))(el, fakeDoc, fakeShow, R, LEVELS, fakePoolFor, fakeShuffle,
    fakeEligible, fakeAppendUsage, ppVariantPartsStub, fakeProgressWritable, fakeLoadV2, fakeSaveV2,
-   PP_ANSWER, PP_TYPED_INDEX, ppHasMainAudio, ppMainAudioText, '<svg data-icon="audio"></svg>');
+   PP_ANSWER, PP_TYPED_INDEX, ppHasMainAudio, ppMainAudioText, '<svg data-icon="audio"></svg>', PP_DISTRACTOR);
 function activate(id) { return MIXED.handlers[id](); }
 
 // ---------- per-test setup ----------
@@ -505,9 +507,13 @@ function lastSrc() { var a = lastAudio(); return a ? a.src : '(no clip was creat
 function pressPlay() { if (play().disabled) return null; activate('rPlay'); return lastAudio(); }
 function opts() { return el('rOpts').children; }
 function q() { return R.qs[R.i]; }
+// Phase 4D: an option is a RECORD, so the right one is found by its retained flag
+// rather than by comparing its text with the card's gloss. Which options get built
+// is owned by tests/test_mixed_distractors.js; this file only needs to press the
+// right button.
 function correctBtn() {
   var cur = q(), list = opts();
-  for (var i = 0; i < cur.options.length; i++) if (cur.options[i] === cur.c.en) return list[i];
+  for (var i = 0; i < cur.options.length; i++) if (cur.options[i].correct === true) return list[i];
   throw new Error('fixture: no correct option in question ' + R.i);
 }
 // Answer the current multiple-choice-style question correctly, which is what builds
