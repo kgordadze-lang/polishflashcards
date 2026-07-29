@@ -278,6 +278,13 @@ var currentSpeed = 'normal';
 // handed in as parameters there), so the global settlement path reaches it via
 // this one-line delegate. index.html has a single definition; so does this file.
 function syncListeningAudioReadiness() { return LISTEN.syncReadiness(); }
+// Settlement refreshes the Mixed Quiz Play button too. That button's states, and the
+// whole Mixed Quiz audio lifecycle, are owned by tests/test_mixed_audio.js - this
+// file drives no Mixed Quiz screen, so the dependency is satisfied here by a no-op
+// with a counter, which is enough for the real settlement function to run and lets
+// the sections below keep asserting that settlement changes nothing else.
+var syncRoundCalls = 0;
+function syncRoundAudioReadiness() { syncRoundCalls++; }
 
 Object.keys(SRC).forEach(function (n) { (0, eval)(SRC[n]); });
 

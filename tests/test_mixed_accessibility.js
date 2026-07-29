@@ -226,15 +226,22 @@ eq('A3 exactly one completion focus target exists', countOf(INDEX, 'id="rDoneTit
 ok('A3 the completion heading still reads "Brawo!"',
    /id="rDoneTitle"[^>]*>Brawo!</.test(INDEX));
 
+// Phase 4C adds a third anchor: the question-type line, which a "listen" question
+// falls back to while the manifest is still loading and Play is closed.
+var TAG_TYPE = tagFor('rType');
+eq('A3 the question-type line is focusable by script only', attr(TAG_TYPE, 'tabindex'), '-1');
+eq('A3 exactly one question-type line exists', countOf(INDEX, 'id="rType"'), 1);
+ok('A3 the question-type line is not made a tab stop', attr(TAG_TYPE, 'tabindex') !== '0');
+ok('A3 the question-type line is not a control', /^<div\b/.test(TAG_TYPE));
 // The focus anchors may drop their ring - they are not tab stops - but no control
 // the learner can actually Tab to is allowed to lose its indicator.
 ok('A3 any ring suppression names the Mixed Quiz anchors and nothing else', (function () {
   var suppress = cssBlocks(':focus').filter(function (b) {
-    return /outline\s*:\s*(none|0)/.test(b.body) && /rPl|rDoneTitle/.test(b.sel);
+    return /outline\s*:\s*(none|0)/.test(b.body) && /rType|rPl|rDoneTitle/.test(b.sel);
   });
   if (!suppress.length) return true;                  // leaving the default ring on is a fine choice too
   return suppress.every(function (b) {
-    return b.sel.split(',').every(function (s) { return /^#(rPl|rDoneTitle):focus$/.test(s.trim()); });
+    return b.sel.split(',').every(function (s) { return /^#(rType|rPl|rDoneTitle):focus$/.test(s.trim()); });
   });
 })());
 ok('A3 the real Mixed Quiz controls keep a focus indicator', (function () {
@@ -435,9 +442,41 @@ function speakCardMain(card, btn) {
   var clip = audioMap[card.pl];
   if (clip) { new Audio(clip); } else { new SpeechSynthesisUtterance(card.pl); }
 }
+// Phase 4C gates the Play button on the shared manifest status, so this file needs
+// the real status model and the real settlement function - focus is the thing it
+// owns, and "settlement steals no focus" cannot be asserted against a stub of the
+// function that would do the stealing. Everything else about the manifest (parsing,
+// the single fetch, the fallback latch) stays owned by tests/test_audio_fallback.js,
+// and the whole Mixed Quiz audio lifecycle by tests/test_mixed_audio.js.
+var audioManifestStatus = 'ready';
+var syncListeningCalls = 0;
+function syncListeningAudioReadiness() { syncListeningCalls++; }
+function syncRoundAudioReadiness() { return MIXED.syncReadiness(); }
+// The real settlement function, and the real normalizer it keys the map with.
+['ppNormalize', 'settleAudioManifest'].forEach(function (n) { (0, eval)(extractFunction(INDEX, n)); });
+// A manifest that covers whatever the current fixture is using.
+function manifestFor(cards) {
+  var e = {}, i = 0;
+  cards.forEach(function (c) { e['e' + (i++)] = { pl: c.pl, file: 'audio/r-' + c.id + '.mp3' }; });
+  return { entries: e };
+}
+// stopAllAudio is reached by Phase 4C's boundary helpers. What it does to a real
+// clip is owned by tests/test_audio_fallback.js; here it only has to exist, and to
+// record that the boundary ran, so the focus assertions can run past it.
+var STOPS = 0;
+function stopAllAudio() { STOPS++; }
 
 var shown = [];
-function fakeShow(scr) { shown.push(scr); }
+// The `active` class moves the way index.html's showScreen moves it. Phase 4C's
+// readiness helper and playback guard both ask whether the Mixed Quiz screen is up,
+// so a fake show() that only logged the name would leave the Play button closed on
+// every question and every focus assertion below would be about the wrong state.
+var SCREENS = ['home', 'round', 'listen', 'study'];
+function fakeShow(scr) {
+  shown.push(scr);
+  SCREENS.forEach(function (s) { el(s).classList.remove('active'); });
+  el(scr).classList.add('active');
+}
 // gShuffle is deterministic and swappable: identity by default, so rBuildOptions
 // leaves the correct gloss LAST, and a reversing variant for the one case that
 // needs it first (a wrong LAST option, which is what proves the focus wrap).
@@ -515,9 +554,15 @@ function handlerExpr(id) {
 // PARAMETERS of a generated scope rather than planted as globals. Everything they
 // share with the counters above (speakCardMain, Audio) still resolves to the same
 // globals, so what runs is one system.
+// The last four are Phase 4C's: the Play button's readiness state, the guarded
+// playback entry point, and the two boundary helpers. rRender calls the first of
+// them and the controls route through the rest, so the compiled scope needs them for
+// the shipping code to run at all. What they do to AUDIO is asserted in
+// tests/test_mixed_audio.js; what they do to FOCUS is asserted here.
 var RNAMES = ['rBuildOptions', 'startRound', 'rSetBlocks',
               'rSetStatus', 'rAnnounceWrong', 'rAnnounceCorrect', 'rFocusNextOption',
-              'rRender', 'rPickOption', 'rRevealLetter', 'rCheckAnswer', 'rRecord', 'rShowDone'];
+              'rRender', 'rPickOption', 'rRevealLetter', 'rCheckAnswer', 'rRecord', 'rShowDone',
+              'syncRoundAudioReadiness', 'rPlayCurrent', 'rAdvance', 'rExit'];
 var RSRC = {};
 RNAMES.forEach(function (n) { RSRC[n] = extractFunction(INDEX, n); });
 var R_CONTROLS = ['rNext', 'rCheck', 'rHint', 'rPlay', 'rAgain', 'rBack', 'rBackBtn'];
@@ -535,6 +580,7 @@ var MIXED = (new Function('$', 'document', 'show', 'R', 'LEVELS', 'poolFor', 'gS
   '  startRound: function(a,b){ return startRound(a,b); },\n' +
   '  rRender: function(){ return rRender(); },\n' +
   '  rShowDone: function(){ return rShowDone(); },\n' +
+  '  syncReadiness: function(){ return syncRoundAudioReadiness(); },\n' +
   '  handlers: {\n' +
   R_CONTROLS.map(function (id) { return '    ' + id + ': (' + handlerExpr(id) + ')'; }).join(',\n') + '\n' +
   '  }\n' +
@@ -554,8 +600,15 @@ function reset(o) {
   CARDS = o.cards || PLAIN_CARDS;
   LEVELS[0].topics[0].cards = CARDS;
   SHUFFLE = o.shuffle || identity;
+  STOPS = 0; syncListeningCalls = 0;
+  // Default to a SETTLED manifest: every focus assertion written before Phase 4C
+  // describes a round the learner can actually play, and that is the ordinary case.
+  // `status: 'loading'` opts a test into the pre-settlement state instead, where the
+  // Play button is closed - and audioMap is empty then, which is literally what the
+  // app holds while the request is in flight.
+  audioManifestStatus = o.status || 'ready';
   audioMap = {};
-  CARDS.forEach(function (c) { audioMap[c.pl] = 'audio/r-' + c.id + '.mp3'; });
+  if (audioManifestStatus === 'ready') CARDS.forEach(function (c) { audioMap[c.pl] = 'audio/r-' + c.id + '.mp3'; });
   BODY = new FakeEl('body'); BODY.id = 'BODY'; DOM.BODY = BODY;
   ACTIVE = BODY;
   MIXED.startRound(0, 0);
@@ -888,6 +941,68 @@ eq('H5 every typed question opened in the input', landings.type, 2);
 eq('H5 every multiple-choice question opened on the Polish prompt', landings.mc, 2);
 eq('H5 a fully correct round autoplayed nothing', AUDIO_MADE.length + UTTER_MADE.length + SPOKEN.length, 0);
 
+// A listen question has TWO focus cases, because Phase 4C holds Play closed until
+// audio-manifest.json settles. The settled one is asserted above; this is the other.
+// Focusing a disabled button does nothing, so without an anchor the learner would be
+// dropped on <body> - which is the whole reason the question-type line is focusable.
+reset({ status: 'loading', at: 0 });
+eq('H6 the current question is a listen question', q().fmt, 'listen');
+ok('H6 Play is closed while the manifest is in flight', el('rPlay').disabled === true);
+ok('H6 focus did not land on the closed Play button', ACTIVE !== el('rPlay'));
+ok('H6 focus did not fall back to body', ACTIVE !== BODY);
+ok('H6 focus landed on the stable question prompt', ACTIVE === el('rType'));
+eq('H6 the prompt says what the question is', el('rType').textContent, 'What did you hear?');
+eq('H6 a loading question autoplayed nothing', AUDIO_MADE.length + UTTER_MADE.length + SPOKEN.length, 0);
+// Settlement lands whenever the network answers - long after rRender chose where to
+// put focus, and by then the learner may be anywhere on the question. It may open the
+// button; it may not move anybody.
+var settledFrom = ACTIVE, promptFocuses = el('rType').focusCount;
+settleAudioManifest(manifestFor(CARDS));
+ok('H7 settlement opened Play', el('rPlay').disabled === false);
+eq('H7 settlement restored the ordinary accessible name', el('rPlay').accName(), 'Play the Polish audio');
+ok('H7 settlement did not move focus', ACTIVE === settledFrom && ACTIVE === el('rType'));
+eq('H7 settlement did not even re-focus the anchor', el('rType').focusCount, promptFocuses);
+eq('H7 settlement never focused Play', el('rPlay').focusCount, 0);
+eq('H7 settlement autoplayed nothing', AUDIO_MADE.length + UTTER_MADE.length + SPOKEN.length, 0);
+eq('H7 settlement still refreshes the Listening button too', syncListeningCalls, 1);
+// ...and the same for every other place focus can legitimately be sitting when the
+// manifest finally answers. None of these may be pulled away.
+[['an option', 2, function () { opts()[0].focus(); return opts()[0]; }],
+ ['the typed input', 1, function () { el('rInput').focus(); return el('rInput'); }],
+ ['Next after a correct answer', 2, function () { press(correctBtn()); return el('rNext'); }],
+ ['the question prompt', 2, function () { return el('rPl'); }]
+].forEach(function (spot) {
+  reset({ status: 'loading', at: spot[1] });
+  var held = spot[2]();
+  eq('H8 focus is on ' + spot[0] + ' before settlement', ACTIVE, held);
+  var statusBefore = status().textContent;
+  settleAudioManifest(manifestFor(CARDS));
+  ok('H8 settlement leaves focus on ' + spot[0], ACTIVE === held);
+  eq('H8 settlement announces nothing over ' + spot[0], status().textContent, statusBefore);
+  eq('H8 settlement plays nothing while focus is on ' + spot[0],
+     AUDIO_MADE.length + UTTER_MADE.length + SPOKEN.length, 0);
+});
+// The completion heading is the last one: a round can finish while the request is
+// still in flight on a slow connection.
+reset({ status: 'loading' });
+R.i = R.qs.length; MIXED.rRender();
+eq('H9 completion focus landed on the heading', ACTIVE, el('rDoneTitle'));
+settleAudioManifest(manifestFor(CARDS));
+ok('H9 settlement leaves the completion heading focused', ACTIVE === el('rDoneTitle'));
+ok('H9 settlement leaves the hidden Play button closed', el('rPlay').disabled === true);
+eq('H9 settlement on the results screen played nothing',
+   AUDIO_MADE.length + UTTER_MADE.length + SPOKEN.length, 0);
+
+// Section I below reads the results screen that the H5 loop left behind, and the
+// loading cases above replaced it. Rebuild exactly that state - a whole round
+// answered correctly on a settled manifest - so completion is asserted against what
+// it was always asserted against.
+reset();
+for (var qj = 0; qj < PLAIN_CARDS.length; qj++) {
+  if (q().fmt === 'type') typeAndCheck(q().c.pl); else press(correctBtn());
+  activate('rNext');
+}
+
 // =========================================================================
 // I. COMPLETION
 // =========================================================================
@@ -1162,10 +1277,15 @@ var PLAYBACK = ['speakText', 'speakCardMain', 'stopAllAudio',
   eq('K6 ' + n + ' reaches no playback API',
      PLAYBACK.filter(function (p) { return hasCode(codeOnly(RSRC[n]), p); }), []);
 });
-// Mixed Quiz audio is Phase 4C: the Play button is still the only thing that plays,
-// and it is still wired to the same one-line handler.
-ok('K6 the Play button is still the only playback entry point',
-   /speakCardMain\(R\.qs\[R\.i\]\.c/.test(handlerExpr('rPlay')));
+// The Play button is still the only thing on a question that starts main-card audio.
+// Phase 4C moved its body into a named, guarded entry point - what that guard does is
+// asserted in tests/test_mixed_audio.js; all this file needs is that the button still
+// leads to speakCardMain and that nothing else in the render path does.
+ok('K6 the Play button is still the only playback entry point', (function () {
+  var wired = codeOnly(handlerExpr('rPlay')).trim();
+  var target = /^([A-Za-z_$][A-Za-z0-9_$]*)$/.test(wired) ? codeOnly(extractFunction(INDEX, wired)) : wired;
+  return /speakCardMain\(/.test(target) && /R\.qs\[R\.i\]/.test(target);
+})());
 
 // Phase 4D owns the distractor builder. This phase must not have touched it.
 var CODE_BUILD = codeOnly(RSRC.rBuildOptions);

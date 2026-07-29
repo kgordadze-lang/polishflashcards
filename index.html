@@ -647,13 +647,14 @@
      around a label nobody tabbed to. Every real control keeps its :focus-visible
      ring; this turns one off for two elements that cannot be reached by Tab. */
   #lPrompt:focus,#lDoneTitle:focus{outline:none}
-  /* The same pair for the Mixed Quiz: the Polish prompt a new "mc" question focuses,
-     and the completion heading. Both are tabindex="-1", so neither is a tab stop and
-     neither is keyboard-operable - focus only ever arrives because rRender or
-     rShowDone put it there. Kept as its own rule rather than folded into the
+  /* The same set for the Mixed Quiz: the question-type line a "listen" question
+     falls back to while Play is still loading, the Polish prompt a new "mc" question
+     focuses, and the completion heading. All three are tabindex="-1", so none is a
+     tab stop and none is keyboard-operable - focus only ever arrives because rRender
+     or rShowDone put it there. Kept as its own rule rather than folded into the
      Listening one, so each activity's anchors stay listed with that activity. Every
      real Mixed Quiz control keeps its :focus-visible ring. */
-  #rPl:focus,#rDoneTitle:focus{outline:none}
+  #rType:focus,#rPl:focus,#rDoneTitle:focus{outline:none}
   .q-prompt{font-size:22px;font-weight:800;line-height:1.35;letter-spacing:-.4px;color:var(--forest)}
   .q-prompt .blank{display:inline-block;min-width:56px;border-bottom:3px solid var(--emerald);margin:0 3px;vertical-align:middle;height:1.1em}
   .q-en{font-size:14px;color:var(--muted);font-weight:500;margin-top:8px}
@@ -1216,9 +1217,16 @@
     <div id="rMain" style="display:flex;flex-direction:column;flex:1">
       <div class="drill">
         <div class="drill-card">
-          <div class="d-type" id="rType"></div>
+          <!-- the one part of a question that never moves, and the only one present in
+               every format: when a "listen" question renders while the manifest is
+               still in flight and Play is unpressable, this is where focus goes.
+               tabindex="-1" is script-focusable without becoming a tab stop. -->
+          <div class="d-type" id="rType" tabindex="-1"></div>
           <div id="rMcq">
-            <button class="l-play" id="rPlay" aria-label="Play the Polish audio">
+            <!-- starts unpressable, exactly like Listening's: until audio-manifest.json
+                 settles, a press would hear the device voice for a phrase that has a
+                 real clip waiting. syncRoundAudioReadiness() owns this state from here on. -->
+            <button class="l-play" id="rPlay" aria-label="Polish audio is loading" aria-busy="true" disabled>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>
             </button>
             <!-- the multiple-choice question itself, and the one part of an "mc" question
@@ -2304,7 +2312,11 @@ function settleAudioManifest(manifest){
   /* A well-formed dictionary that yields nothing usable is still a manifest that
      LOADED - that is a settled answer ("ready", empty map), not a failure. */
   audioManifestStatus = usable ? "ready" : "unavailable";
+  /* Both activities that gate a Play button on the manifest are refreshed here, and
+     each owns only its own button. Neither renders, moves focus or starts a clip -
+     settlement changes what is PRESSABLE and nothing else. */
   syncListeningAudioReadiness();
+  syncRoundAudioReadiness();
 }
 
 /* Load the manifest once at startup - one request, no retry, no polling. Failure
@@ -3325,6 +3337,7 @@ function rBuildOptions(card, pool){
   return gShuffle(wrong.concat([card.en]));
 }
 function startRound(l, t){
+  stopAllAudio();   /* every entry into a round starts silent - the topic tile and "Practice again" both land here */
   R.li=l; R.ti=t;
   const topic = LEVELS[l].topics[t];
   /* Mixed quiz asks for typed production, so it follows the production rule and
@@ -3399,6 +3412,7 @@ function rFocusNextOption(box, from){
   return null;
 }
 function rRender(){
+  syncRoundAudioReadiness();              /* before the branch: the results screen needs it too */
   if(R.i >= R.qs.length){ rShowDone(); return; }
   $("rMain").style.display="flex"; $("rDone").style.display="none";
   const q=R.qs[R.i], c=q.c;
@@ -3436,10 +3450,66 @@ function rRender(){
      disabled above and may have been holding focus, which a browser answers by
      dropping focus to <body>. Each format lands on the thing that question is
      actually about - the typed input, the Play button, or the Polish being glossed -
-     and none of the three plays anything: this moves focus and nothing else. */
+     and none of them plays anything: this moves focus and nothing else.
+
+     A "listen" question has a second case: while the manifest is in flight Play is
+     unpressable, and focusing a disabled button does nothing - which is the case that
+     used to leave focus on <body>. The question-type line is the stable thing to hold
+     instead ("What did you hear?"), and it is not a control, so nothing is offered
+     that cannot yet be used. Settlement later opens Play but does NOT pull focus to
+     it; the learner tabs to it when they are ready. */
   if(q.fmt==="type"){ $("rInput").focus(); }
-  else if(q.fmt==="listen"){ const play=$("rPlay"); if(play && !play.disabled) play.focus(); }
+  else if(q.fmt==="listen"){ const play=$("rPlay"); if(play && !play.disabled) play.focus(); else $("rType").focus(); }
   else { $("rPl").focus(); }
+}
+/* Mixed Quiz is the other activity with a Play button that must not be pressed
+   before the manifest settles - one question format in three is "hear it and pick
+   the meaning". This owns that button's pressable state and nothing else, and there
+   are exactly two moments the answer can change: the question changed (rRender) or
+   the manifest settled (settleAudioManifest). Both call this; nothing polls, nothing
+   retries, nothing is remembered for later.
+
+   Unlike Listening's, this button is also HIDDEN for two thirds of the round, and a
+   hidden control that is still enabled is one a script - or a stale keyboard press -
+   can still reach. So "pressable" here means all of: the round screen is up, there is
+   a current question, and that question is a listen question. Anything else keeps it
+   disabled, and aria-busy is only ever "true" for a live listen question that really
+   is waiting on the manifest - never for a hidden button, which is not loading
+   anything.
+
+   The icon and the layout are untouched - only `disabled`, `aria-busy` and the label
+   move - so the button never resizes or jumps as it becomes pressable. It also moves
+   NO focus, deliberately: settlement lands whenever the network answers, long after
+   rRender chose a focus target, and by then the learner may be part-way down the
+   options or typing an answer. rRender is the only thing that places focus. */
+function syncRoundAudioReadiness(){
+  const btn = $("rPlay");
+  if(!btn) return;
+  const scr = $("round");
+  const q = R.i < R.qs.length ? R.qs[R.i] : null;    /* null on the results screen */
+  const live = !!q && q.fmt==="listen" && !!scr && scr.classList.contains("active");
+  const waiting = live && audioManifestStatus === "loading";
+  btn.disabled = !live || audioManifestStatus === "loading";
+  btn.setAttribute("aria-busy", waiting ? "true" : "false");
+  btn.setAttribute("aria-label", waiting ? "Polish audio is loading" : "Play the Polish audio");
+}
+/* The manifest check repeats what `disabled` already prevents, on purpose:
+   `disabled` stops mouse, touch and keyboard, but this function is also reachable
+   directly, and a press that slipped through before settlement must produce no clip
+   AND no device voice - not the wrong one of the two. The format and screen checks
+   are there for the same reason: rPlay is only hidden on the other two formats and
+   on the results screen, and `hidden` is not a gate a direct call has to pass.
+   Nothing is remembered for later either - by the time the manifest lands, an early
+   press is no longer inside the learner's gesture, and mobile browsers refuse audio
+   started outside one. The learner simply presses again once the button lights up. */
+function rPlayCurrent(){
+  if(audioManifestStatus === "loading") return;
+  if(R.i >= R.qs.length) return;
+  const q = R.qs[R.i];
+  if(q.fmt !== "listen") return;
+  const scr = $("round");
+  if(!scr || !scr.classList.contains("active")) return;
+  speakCardMain(q.c, $("rPlay"));
 }
 function rPickOption(btn, o, q, box){
   if(R.state!=="ask") return;
@@ -3572,18 +3642,40 @@ function rShowDone(){
      score is read first and acted on second, which is the order it is written in. */
   const title=$("rDoneTitle"); if(title) title.focus();
 }
-$("rBack").addEventListener("click", ()=>show("home"));
-$("rPlay").addEventListener("click", ()=>{ if(R.i<R.qs.length) speakCardMain(R.qs[R.i].c, $("rPlay")); });
+/* ---- Mixed Quiz boundaries: every way out of a question silences it first ----
+   A "listen" question is started with Play and answered as soon as the learner
+   recognises the word, usually while the clip is still running - and the answer
+   feedback carries audio buttons of its own, on EVERY format, so a live clip at the
+   moment they advance or leave is the ordinary case, not an edge one. Neither show()
+   nor rRender() touches audio, so without these calls the clip played on over the
+   next question, over the results screen, or over the home screen.
+
+   Cleanup is stopAllAudio(), not "stop what rPlay started": the example and
+   canonical-answer buttons in the feedback panel go through the same shared slot, and
+   from the boundary's point of view there is one thing playing, whoever started it.
+
+   The same call is what makes the abandoned clip's LATE signals stale, and no extra
+   guard is needed for them: stopAllAudio() releases currentAudio, and
+   playPreGenerated's settle() only cleans up or falls back while its own element is
+   still currentAudio. So the aborted play() rejection that pause() guarantees, plus
+   any error or ended that follows, speak nothing and cannot strip the "speaking"
+   class off whatever the learner starts next. */
+function rAdvance(){ stopAllAudio(); R.i++; rRender(); }
+function rExit(){ stopAllAudio(); show("home"); }
+$("rBack").addEventListener("click", rExit);
+$("rPlay").addEventListener("click", rPlayCurrent);
 $("rCheck").addEventListener("click", rCheckAnswer);
 $("rHint").addEventListener("click", rRevealLetter);
-$("rNext").addEventListener("click", ()=>{ R.i++; rRender(); });
+$("rNext").addEventListener("click", rAdvance);
 $("rInput").addEventListener("keydown", e=>{
   if(e.key!=="Enter") return;
   e.preventDefault();
-  if(R.state==="ask") rCheckAnswer(); else { R.i++; rRender(); }
+  /* Enter on a settled question is the keyboard's Next, so it takes the same
+     boundary - not a second copy of the same three statements. */
+  if(R.state==="ask") rCheckAnswer(); else rAdvance();
 });
-$("rAgain").addEventListener("click", ()=>startRound(R.li, R.ti));
-$("rBackBtn").addEventListener("click", ()=>show("home"));
+$("rAgain").addEventListener("click", ()=>startRound(R.li, R.ti));   /* startRound stops audio itself - no second call here */
+$("rBackBtn").addEventListener("click", rExit);
 
 /* ---------------- your data: backup & restore ----------------
    A backup is a plain JSON file of every popolsku-* localStorage key. Restore

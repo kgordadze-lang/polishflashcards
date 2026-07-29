@@ -249,7 +249,12 @@ var COMPILE = Function.apply(null, FREE.concat([
 
 // The Mixed Quiz's typed question, lifted the same way, so "the cue is Type It
 // only" is proved by RENDERING the other activity rather than by grepping it.
-var COMPILE_R = Function.apply(null, ['$', 'R', 'rShowDone', 'gShuffle', 'document'].concat([
+// syncRoundAudioReadiness joins the free list because rRender calls it: Phase 4C
+// gives the Mixed Quiz Play button a readiness state, refreshed once per render. It
+// is passed as a no-op here - this file renders the typed question to prove what the
+// PROMPT says, and the button's states are owned by tests/test_mixed_audio.js.
+var COMPILE_R = Function.apply(null, ['$', 'R', 'rShowDone', 'gShuffle', 'document',
+                                      'syncRoundAudioReadiness'].concat([
   bodyOf(INDEX, 'rSetBlocks') + '\n' + bodyOf(INDEX, 'rRender') + '\n' +
   'return { rRender:rRender };'
 ]));
@@ -630,7 +635,7 @@ ok('D7 PP_ANSWER still exposes its documented surface',
 (function () {
   var dom = makeDom();
   var R = { qs: [{ c: CUE_CARD, fmt: 'type', options: [] }], i: 0, state: 'ask', revealed: 0, attempted: false };
-  var api = COMPILE_R(dom.$, R, function () {}, function (a) { return a; }, DOCUMENT);
+  var api = COMPILE_R(dom.$, R, function () {}, function (a) { return a; }, DOCUMENT, function () {});
   api.rRender();
   eq('D8 Mixed Quiz shows card.en with no cue', dom.$('rEn').textContent, CUE_CARD.en);
   eq('D9 Mixed Quiz prompt contains no em dash separator', countOf(dom.$('rEn').textContent, SEP), 0);
