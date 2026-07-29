@@ -18,9 +18,9 @@
             { id:"a1-first-phrases-002", pl:"Dobry wieczór", en:"Good evening", hint:"Swap in for dzień dobry once it gets dark.", ex:"Dobry wieczór, stolik dla dwóch osób.", exEn:"Good evening, a table for two." },
             { id:"a1-first-phrases-003", pl:"Cześć", en:"Hi / Bye", hint:"Informal - for friends, not officials.", ex:"Cześć, dawno się nie widzieliśmy!", exEn:"Hi, long time no see!" },
             { id:"a1-first-phrases-004", pl:"Do widzenia", en:"Goodbye", hint:"The polite, all-purpose goodbye.", ex:"Do widzenia, do jutra!", exEn:"Goodbye, see you tomorrow!" },
-            { id:"a1-first-phrases-005", pl:"Na razie", en:"See you / Bye for now", hint:"Casual, between friends.", ex:"Na razie, muszę już iść.", exEn:"See you, I have to go now." },
+            { id:"a1-first-phrases-005", pl:"Na razie", en:"See you / Bye for now", senseGroups:["farewell-see-you"], hint:"Casual, between friends.", ex:"Na razie, muszę już iść.", exEn:"See you, I have to go now." },
             { id:"a1-first-phrases-006", pl:"Dziękuję", en:"Thank you", hint:"'Dzięki' is the casual short form.", ex:"Dziękuję za pomoc.", exEn:"Thank you for your help." },
-            { id:"a1-first-phrases-007", pl:"Proszę", en:"Please / Here you go / You're welcome", hint:"One word, several jobs.", ex:"Proszę, to dla ciebie.", exEn:"Here you go, this is for you." },
+            { id:"a1-first-phrases-007", pl:"Proszę", en:"Please / Here you go / You're welcome", senseGroups:["response-youre-welcome"], hint:"One word, several jobs.", ex:"Proszę, to dla ciebie.", exEn:"Here you go, this is for you." },
             { id:"a1-first-phrases-008", pl:"Przepraszam", en:"Sorry / Excuse me", hint:"Also to get someone's attention.", ex:"Przepraszam, gdzie jest wyjście?", exEn:"Excuse me, where is the exit?" },
             { id:"a1-first-phrases-009", pl:"Tak", en:"Yes", relatedIds:["a1-first-phrases-028"], relationType:"contrast", hint:"One of the two you'll say most often.", ex:"Tak, poproszę.", exEn:"Yes, please." },
             { id:"a1-first-phrases-028", pl:"Nie", en:"No", relatedIds:["a1-first-phrases-009"], relationType:"contrast", hint:"The other one you'll say most often.", ex:"Nie, dziękuję.", exEn:"No, thank you." },
@@ -31,17 +31,17 @@
             { id:"a1-first-phrases-014", cardType:"template", pl:"Mam na imię...", en:"My name is...", hint:"Follow with your first name.", ex:"Mam na imię Anna.", exEn:"My name is Anna.", pattern:"Mam na imię {imię}." },
             { id:"a1-first-phrases-015", pl:"Miło mi", en:"Nice to meet you", hint:"Short and natural when introduced.", ex:"Miło mi cię poznać.", exEn:"Nice to meet you." },
             { id:"a1-first-phrases-016", pl:"Jak się masz?", en:"How are you?", hint:"Informal. In Poland this is a real question, not a passing hello - ask it when you actually want to know, and expect a real answer. A common reply: 'dobrze' - good.", ex:"Cześć Marek, jak się masz?", exEn:"Hi Marek, how are you?" },
-            { id:"a1-first-phrases-017", pl:"Co słychać?", en:"What's up? / How's it going?", hint:"Casual and friendly. Reply lightly: 'wszystko dobrze' or 'po staremu' (same as always).", ex:"Hej, co słychać u ciebie?", exEn:"Hey, how's it going with you?" },
-            { id:"a1-first-phrases-018", pl:"Co tam?", en:"What's up? (very casual)", hint:"Breezy, among friends - lighter than 'jak się masz?'. Often answered with a shrug: 'nic nowego' (nothing new).", ex:"Co tam, Kasia?", exEn:"What's up, Kasia?" },
-            { id:"a1-first-phrases-019", pl:"Wszystko w porządku", en:"Everything's fine / All good", hint:"Also asked as a question to check on someone.", ex:"Wszystko w porządku, dziękuję.", exEn:"Everything's fine, thanks." },
+            { id:"a1-first-phrases-017", pl:"Co słychać?", en:"What's up? / How's it going?", senseGroups:["greeting-whats-up"], hint:"Casual and friendly. Reply lightly: 'wszystko dobrze' or 'po staremu' (same as always).", ex:"Hej, co słychać u ciebie?", exEn:"Hey, how's it going with you?" },
+            { id:"a1-first-phrases-018", pl:"Co tam?", en:"What's up? (very casual)", senseGroups:["greeting-whats-up"], hint:"Breezy, among friends - lighter than 'jak się masz?'. Often answered with a shrug: 'nic nowego' (nothing new).", ex:"Co tam, Kasia?", exEn:"What's up, Kasia?" },
+            { id:"a1-first-phrases-019", pl:"Wszystko w porządku", en:"Everything's fine / All good", senseGroups:["response-all-good"], hint:"Also asked as a question to check on someone.", ex:"Wszystko w porządku, dziękuję.", exEn:"Everything's fine, thanks." },
             { id:"a1-first-phrases-020", cardType:"template", pl:"Poproszę...", en:"I'd like... (ordering)", hint:"Softer than 'chcę'. 'Poproszę kawę' - a coffee, please.", ex:"Poproszę kawę i wodę.", exEn:"A coffee and a water, please.", pattern:"Poproszę {coś}." },
             { id:"a1-first-phrases-021", pl:"Ile to kosztuje?", en:"How much is it?", hint:"Your everyday shopping question.", ex:"Przepraszam, ile to kosztuje?", exEn:"Excuse me, how much is it?" },
             { id:"a1-first-phrases-022", pl:"Gdzie jest toaleta?", en:"Where is the toilet?", hint:"'Gdzie jest...' = where is... for anything.", ex:"Przepraszam, gdzie jest toaleta?", exEn:"Excuse me, where is the toilet?" },
-            { id:"a1-first-phrases-023", pl:"Nie ma za co", en:"You're welcome / Don't mention it", hint:"The natural reply when someone thanks you.", ex:"Dziękuję! - Nie ma za co.", exEn:"Thank you! - You're welcome." },
+            { id:"a1-first-phrases-023", pl:"Nie ma za co", en:"You're welcome / Don't mention it", senseGroups:["response-youre-welcome"], hint:"The natural reply when someone thanks you.", ex:"Dziękuję! - Nie ma za co.", exEn:"Thank you! - You're welcome." },
             { id:"a1-first-phrases-024", pl:"Smacznego!", en:"Enjoy your meal!", hint:"Said before eating - by staff, hosts, or anyone at the table.", ex:"Proszę bardzo, smacznego!", exEn:"Here you are, enjoy your meal!" },
             { id:"a1-first-phrases-025", pl:"Na zdrowie!", en:"Cheers! / Bless you!", hint:"A toast when drinking - and also what you say when someone sneezes.", ex:"Na zdrowie! Za nasze spotkanie!", exEn:"Cheers! To our meeting!" },
             { id:"a1-first-phrases-026", pl:"Powodzenia!", en:"Good luck!", hint:"For an exam, a trip, anything ahead.", ex:"Powodzenia na egzaminie!", exEn:"Good luck on the exam!" },
-            { id:"a1-first-phrases-027", pl:"Do zobaczenia", en:"See you (soon)", hint:"Warmer than 'do widzenia'; you expect to meet again.", ex:"Dziękuję za dziś, do zobaczenia!", exEn:"Thanks for today, see you!" }
+            { id:"a1-first-phrases-027", pl:"Do zobaczenia", en:"See you (soon)", senseGroups:["farewell-see-you"], hint:"Warmer than 'do widzenia'; you expect to meet again.", ex:"Dziękuję za dziś, do zobaczenia!", exEn:"Thanks for today, see you!" }
           ]
         },
         { id:"a1-numbers-prices",
@@ -65,7 +65,7 @@
             { id:"a1-numbers-prices-014", pl:"grosz", en:"grosz (a penny)", hint:"1/100 of a złoty.", ex:"To kosztuje dwa złote pięćdziesiąt groszy.", exEn:"It costs two zloty fifty." },
             { id:"a1-numbers-prices-015", pl:"Ile płacę?", en:"How much do I pay?", hint:"Ask this at the till.", ex:"Ile płacę za wszystko?", exEn:"How much do I pay for everything?" },
             { id:"a1-numbers-prices-016", pl:"Czy mogę zapłacić kartą?", en:"Can I pay by card?", hint:"Card is accepted almost everywhere.", ex:"Czy mogę zapłacić kartą?", exEn:"Can I pay by card?" },
-            { id:"a1-numbers-prices-017", pl:"gotówka", en:"cash", hint:"'gotówką' = in cash.", ex:"Płacę gotówką.", exEn:"I'm paying in cash." },
+            { id:"a1-numbers-prices-017", pl:"gotówka", en:"cash", senseGroups:["money-cash"], hint:"'gotówką' = in cash.", ex:"Płacę gotówką.", exEn:"I'm paying in cash." },
             { id:"a1-numbers-prices-018", pl:"razem", en:"together / in total", hint:"Useful when splitting or totalling.", ex:"Ile razem?", exEn:"How much in total?" },
             { id:"a1-numbers-prices-019", pl:"reszta", en:"change (money back)", hint:"Feminine noun. 'Reszty nie trzeba' uses the genitive of negation.", ex:"Reszty nie trzeba.", exEn:"Keep the change." },
             { id:"a1-numbers-prices-020", pl:"drogo", en:"expensive", typeItCue:"adverb: how much it costs", relatedIds:["a1-numbers-prices-021"], relationType:"contrast", hint:"Adverb: 'za drogo' = too expensive.", ex:"To za drogo!", exEn:"That's too expensive!" },
@@ -151,7 +151,7 @@
             { id:"a1-about-me-016", pl:"Skąd pan jest?", en:"Where are you from?", hint:"To a woman: 'Skąd pani jest?'", ex:"A skąd pan jest?", exEn:"And where are you from?" },
             { id:"a1-about-me-017", pl:"mój", en:"my (m / f)", acceptedAnswers:["moja"], variants:[{form:"mój",label:"m"},{form:"moja",label:"f"}], relationType:"gender-variant", hint:"Agrees with the noun's gender.", ex:"To jest mój telefon.", exEn:"This is my phone." },
             { id:"a1-about-me-018", pl:"Miłego dnia!", en:"Have a nice day!", hint:"Warm way to end a chat.", ex:"Dziękuję, miłego dnia!", exEn:"Thanks, have a nice day!" },
-            { id:"a1-about-me-019", pl:"Do zobaczenia", en:"See you (later)", hint:"Friendlier than 'do widzenia'.", ex:"Do zobaczenia jutro.", exEn:"See you tomorrow." },
+            { id:"a1-about-me-019", pl:"Do zobaczenia", en:"See you (later)", senseGroups:["farewell-see-you"], hint:"Friendlier than 'do widzenia'.", ex:"Do zobaczenia jutro.", exEn:"See you tomorrow." },
             { id:"a1-about-me-020", pl:"Nie ma problemu", en:"No problem", hint:"Very common reassurance.", ex:"Nie ma problemu!", exEn:"No problem!" },
             { id:"a1-about-me-021", pl:"numer telefonu", en:"phone number", hint:"Masculine phrase. 'Jaki masz numer?' = what's your number?", ex:"Zapiszę twój numer telefonu.", exEn:"I'll save your phone number." },
             { id:"a1-about-me-022", pl:"adres e-mail", en:"e-mail address", hint:"'małpa' (@) = the at sign, literally 'monkey'.", ex:"Podaj mi swój adres e-mail.", exEn:"Give me your e-mail address." },
@@ -161,7 +161,7 @@
             { id:"a1-about-me-026", pl:"nauczyciel", en:"teacher (m)", relatedIds:["a1-about-me-029"], relationType:"gender-variant", hint:"'Pracuję jako nauczyciel'.", ex:"On jest nauczycielem.", exEn:"He is a teacher." },
             { id:"a1-about-me-029", pl:"nauczycielka", en:"teacher (f)", relatedIds:["a1-about-me-026"], relationType:"gender-variant", hint:"The feminine form of 'nauczyciel'.", ex:"Moja mama jest nauczycielką.", exEn:"My mum is a teacher." },
             { id:"a1-about-me-027", pl:"lekarz", en:"doctor (m)", relatedIds:["a1-about-me-030"], relationType:"gender-variant", hint:"'iść do lekarza' = to go to the doctor.", ex:"On jest lekarzem w szpitalu.", exEn:"He is a doctor at the hospital." },
-            { id:"a1-about-me-030", pl:"lekarka", en:"doctor (f)", relatedIds:["a1-about-me-027"], relationType:"gender-variant", hint:"The feminine form of 'lekarz'.", ex:"Moja siostra jest lekarką.", exEn:"My sister is a doctor." },
+            { id:"a1-about-me-030", pl:"lekarka", en:"doctor (f)", relatedIds:["a1-about-me-027"], relationType:"gender-variant", senseGroups:["profession-doctor"], hint:"The feminine form of 'lekarz'.", ex:"Moja siostra jest lekarką.", exEn:"My sister is a doctor." },
             { id:"a1-about-me-028", pl:"kierowca", en:"driver", hint:"Masculine, but ends in -a. Same form for a woman.", ex:"Mój brat jest kierowcą autobusu.", exEn:"My brother is a bus driver." }
           ]
         },
@@ -184,7 +184,7 @@
             { id:"a1-morning-routine-012", pl:"jeść śniadanie", en:"to eat breakfast", pair:"jeść / zjeść śniadanie", hint:"Verb. 'Jem' = I eat.", ex:"Codziennie jem śniadanie w domu.", exEn:"I eat breakfast at home every day." },
             { id:"a1-morning-routine-013", pl:"Jestem głodny", en:"I am hungry", hint:"A woman says 'Jestem głodna'.", ex:"Rano zawsze jestem bardzo głodny.", exEn:"I am always very hungry in the morning." },
             { id:"a1-morning-routine-014", pl:"najpierw", en:"first", hint:"Used for sequencing actions.", ex:"Najpierw piję kawę, a potem jem.", exEn:"First I drink coffee, and then I eat." },
-            { id:"a1-morning-routine-015", pl:"potem", en:"then / later", hint:"Used to describe what happens next.", ex:"Jem śniadanie, a potem ubieram się.", exEn:"I eat breakfast, and then I get dressed." },
+            { id:"a1-morning-routine-015", pl:"potem", en:"then / later", senseGroups:["time-later"], hint:"Used to describe what happens next.", ex:"Jem śniadanie, a potem ubieram się.", exEn:"I eat breakfast, and then I get dressed." },
             { id:"a1-morning-routine-016", pl:"spieszyć się", en:"to be in a hurry", pair:"spieszyć się / pospieszyć się", hint:"Verb. 'Spieszę się' = I am in a hurry (a state). The perfective 'pospieszyć się' means to hurry up on one particular occasion: 'Pospiesz się!' = Hurry up!", ex:"Nie mam czasu na śniadanie, spieszę się do pracy.", exEn:"I don't have time for breakfast, I am in a hurry to work." },
             { id:"a1-morning-routine-017", pl:"wychodzić z domu", en:"to leave the house", pair:"wychodzić / wyjść z domu", hint:"Verb. 'Wychodzę' = I am leaving.", ex:"Wychodzę z domu o ósmej piętnaście.", exEn:"I leave the house at eight fifteen." }
           ]
@@ -249,7 +249,7 @@
             { id:"a1-days-time-019", pl:"o siódmej", en:"at seven (o'clock)", hint:"Times use ordinal numbers: o siódmej, o ósmej, o dziewiątej.", ex:"Wstaję o siódmej rano.", exEn:"I get up at seven in the morning." },
             { id:"a1-days-time-020", pl:"Która jest godzina?", en:"What time is it?", hint:"The everyday way to ask for the time.", ex:"Przepraszam, która jest godzina?", exEn:"Excuse me, what time is it?" },
             { id:"a1-days-time-021", pl:"teraz", en:"now", relatedIds:["a1-days-time-024"], relationType:"contrast", hint:"Two words you'll use constantly.", ex:"Teraz nie mam czasu.", exEn:"I don't have time now." },
-            { id:"a1-days-time-024", pl:"później", en:"later", relatedIds:["a1-days-time-021"], relationType:"contrast", hint:"The opposite of 'teraz'.", ex:"Porozmawiamy później.", exEn:"We'll talk later." },
+            { id:"a1-days-time-024", pl:"później", en:"later", relatedIds:["a1-days-time-021"], relationType:"contrast", senseGroups:["time-later"], hint:"The opposite of 'teraz'.", ex:"Porozmawiamy później.", exEn:"We'll talk later." },
             { id:"a1-days-time-022", pl:"zawsze", en:"always", relatedIds:["a1-days-time-025"], relationType:"contrast", hint:"Adverb of frequency.", ex:"Zawsze jem śniadanie.", exEn:"I always eat breakfast." },
             { id:"a1-days-time-025", pl:"nigdy", en:"never", relatedIds:["a1-days-time-022"], relationType:"contrast", hint:"'nigdy' pairs with 'nie': nigdy nie mam czasu.", ex:"Nigdy nie jem kolacji.", exEn:"I never eat supper." }
           ]
@@ -353,7 +353,7 @@
             { id:"a1-first-verbs-010", pl:"rozumieć", en:"to understand", pair:"rozumieć / zrozumieć", hint:"rozumiem, rozumiesz, rozumie.", ex:"Rozumiem, ale proszę mówić wolniej.", exEn:"I understand, but please speak more slowly." },
             { id:"a1-first-verbs-011", pl:"wiedzieć", en:"to know (a fact)", pair:"wiedzieć (impf only)", hint:"wiem, wiesz, wie. For facts; for people and places use 'znać'.", ex:"Nie wiem, gdzie to jest.", exEn:"I don't know where it is." },
             { id:"a1-first-verbs-012", pl:"znać", en:"to know (a person, place)", pair:"znać / poznać", hint:"znam, znasz, zna. 'Znam Warszawę' = I know Warsaw.", ex:"Czy znasz tę restaurację?", exEn:"Do you know this restaurant?" },
-            { id:"a1-first-verbs-013", pl:"jeść", en:"to eat", pair:"jeść / zjeść", hint:"jem, jesz, je. Irregular but essential.", ex:"Co jesz na śniadanie?", exEn:"What do you eat for breakfast?" },
+            { id:"a1-first-verbs-013", pl:"jeść", en:"to eat", pair:"jeść / zjeść", senseGroups:["verb-to-eat"], hint:"jem, jesz, je. Irregular but essential.", ex:"Co jesz na śniadanie?", exEn:"What do you eat for breakfast?" },
             { id:"a1-first-verbs-014", pl:"pić", en:"to drink", pair:"pić / wypić", hint:"piję, pijesz, pije.", ex:"Piję dużo wody.", exEn:"I drink a lot of water." },
             { id:"a1-first-verbs-015", pl:"kupować", en:"to buy", pair:"kupować / kupić", hint:"kupuję, kupujesz. Perfective 'kupić' for a single purchase.", ex:"Kupuję bilet w aplikacji.", exEn:"I buy a ticket in the app." },
             { id:"a1-first-verbs-016", pl:"mieszkać", en:"to live (reside)", pair:"mieszkać / zamieszkać", hint:"mieszkam, mieszkasz. 'Gdzie mieszkasz?' = where do you live?", ex:"Mieszkam w Warszawie od roku.", exEn:"I have lived in Warsaw for a year." },

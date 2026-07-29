@@ -26,9 +26,35 @@
 
      - the same HEARD PROMPT - they sound alike, so both answers are true;
      - the same VISIBLE LABEL - the same answer printed twice;
-     - the same stable id, or literally the same card object.
+     - the same stable id, or literally the same card object;
+     - the same AUTHORED SENSE GROUP - different sentences, one shared meaning.
 
-   All three are decided on a normalised key (below), never on raw text.
+   The first three are decided on a normalised key (below), never on raw text.
+
+   WHY THE FOURTH RULE IS AUTHORED AND NOT INFERRED
+   Normalising a whole string catches a gloss written twice with one bracket
+   moved. It cannot catch two DIFFERENT sentences that happen to share one true
+   meaning: the strings genuinely differ, and no fold of them will ever say
+   otherwise. What makes such a question unfair is a fact about MEANING - both
+   buttons hold a true answer to the one prompt - and meaning is not recoverable
+   from the characters.
+
+   Everything automatic that could be tried here is wrong in one of two
+   directions. Splitting on slashes, matching substrings or counting shared
+   words would fire on a masculine job title beside its feminine form, on an
+   adjective beside its own negation, on a bare verb beside every phrase built
+   from it. Those pairs are precisely the useful question, and refusing them
+   would teach less, not more. Tightening the heuristic until they survive drops
+   the real collisions along with them. An audit of every pair of cards that can
+   share a pool ran a deliberately generous net over the whole corpus: it caught
+   441 candidates, of which 23 were genuine. No rule over the text alone divides
+   those two sets, and this file is not the place to pretend otherwise - it holds
+   no word, no card id and no gloss from the data, and that is not an accident.
+
+   So the conflict is DECLARED instead, one narrow shared answer sense at a time,
+   by the person writing the glosses - `senseGroups: ["a-named-sense"]` - and
+   this file only reads it. It never guesses one, and a card that declares
+   nothing is governed by the three text rules exactly as before.
 
    WHAT IS NOT DECIDED HERE
    Which cards may be asked at all (pp-usage.js), which question comes next, how
@@ -104,7 +130,57 @@
   function defaultIdOf(card) {
     return card && typeof card.id === "string" ? card.id : "";
   }
+  /* The authored sense groups a card belongs to, or nothing. Reading `senseGroups`
+     off the card is the DEFAULT, so both call sites - Listening and the Mixed Quiz -
+     get the rule without either of them naming it, and neither has to keep its own
+     copy of what "these two mean the same thing" means. */
+  function defaultSenseOf(card) {
+    return card ? card.senseGroups : null;
+  }
   function identity(list) { return list; }
+
+  /* ---- sense-group keys ---------------------------------------------------
+     An authored key is an IDENTIFIER, not learner-facing text, so it is folded
+     by case and surrounding whitespace only. normalizeKey() is deliberately not
+     reused: it folds punctuation to spaces, which would make "a-named-sense"
+     and "a named sense" the same group and quietly widen what an editor wrote.
+
+     Everything else here is defensive rather than corrective. The runtime never
+     throws and never repairs: a value that is not an array, an entry that is not
+     a string, a blank entry, are all simply not restrictions, and the question is
+     built by the three text rules alone. That is the safe direction to fail -
+     the worst case is the question Phase 4D already shipped.
+
+     Being lenient here does NOT make malformed metadata acceptable in the
+     corpus; validate_content.py rejects every one of those shapes before it can
+     be committed. The two are deliberately different: the validator's job is to
+     stop bad data being authored, and this file's job is to keep a learner's
+     round working if any ever escapes it.
+
+     The returned array is always new, so a caller's `senseGroups` is never
+     handed out, reordered or written to. */
+  function senseSetOf(list) {
+    if (!Array.isArray(list)) return [];
+    var out = [], seen = Object.create(null);
+    for (var i = 0; i < list.length; i++) {
+      if (typeof list[i] !== "string") continue;
+      var k = list[i].trim().toLowerCase();
+      if (!k || seen[k]) continue;                     /* blank, or already counted */
+      seen[k] = true;
+      out.push(k);
+    }
+    return out;
+  }
+  /* Two option records conflict when their sense-group SETS intersect: one shared
+     key is enough, and a card may hold several because one gloss can overlap two
+     different neighbours in two different ways without those neighbours
+     overlapping each other. */
+  function sharesSense(a, b) {
+    for (var i = 0; i < a.length; i++) {
+      if (b.indexOf(a[i]) !== -1) return true;
+    }
+    return false;
+  }
 
   function fn(candidate, fallback) {
     return typeof candidate === "function" ? candidate : fallback;
@@ -116,7 +192,10 @@
 
      A record is { label, card, item, topic, id, correct }: the visible text PLUS
      the source it came from, because "which option is right" has to survive two
-     cards sharing a gloss.
+     cards sharing a gloss. Sense groups are read to DECIDE the set and are then
+     dropped: they are not part of a record, because nothing downstream renders,
+     scores or announces them, and putting them on one would invite a caller to
+     re-decide a question this builder has already answered.
 
      Nothing handed in is modified. `candidates` is only read, and every array
      returned is newly built, so a caller reshuffling the result cannot reach
@@ -143,6 +222,7 @@
     var labelOf = fn(s.labelOf, defaultLabelOf);
     var heardOf = fn(s.heardOf, defaultHeardOf);
     var idOf    = fn(s.idOf, defaultIdOf);
+    var senseOf = fn(s.senseOf, defaultSenseOf);
     var shuffle = fn(s.shuffle, identity);
 
     var total = Math.floor(s.count);
@@ -184,6 +264,9 @@
     var seenHeard = Object.create(null);
     var seenId    = Object.create(null);
     var seenCard  = [];
+    /* The answer's own groups, so "you are not another way of saying the answer"
+       covers the authored senses too and not only the printed string. */
+    var rightSenses = senseSetOf(senseOf(right.card));
 
     seenLabel[rightLabel] = true;
     seenHeard[rightHeard] = true;
@@ -219,7 +302,9 @@
       var hk = PP_DISTRACTOR.normalizeKey(heardOf(source));
       if (!lk || !hk) continue;                              /* nothing to show, or nothing to play */
       if (seenLabel[lk] || seenHeard[hk]) continue;          /* reads the same, or sounds the same */
-      usable.push({ rec: rec, l: lk, h: hk, id: rec.id, card: source });
+      var sk = senseSetOf(senseOf(source));
+      if (sharesSense(rightSenses, sk)) continue;            /* a declared second way of meaning it */
+      usable.push({ rec: rec, l: lk, h: hk, id: rec.id, card: source, s: sk });
     }
 
     return { options: shuffle([right].concat(chooseBest(usable, total - 1))), correct: right };
@@ -234,6 +319,15 @@
      and one gloss written two ways among four candidates, the greedy first pick
      collides with two of the remaining three and the learner gets three buttons
      where four were available.
+
+     Authored sense groups are a pair rule of exactly that shape, so they are
+     decided HERE, inside the search, and not by filtering chooseBest's answer
+     afterwards. A post-filter would be the greedy bug wearing a different hat:
+     it would drop a grouped option out of a finished set of four and hand back
+     three, when swapping that one candidate for the next ungrouped one would
+     have kept the question full. Because the rule lives in `compatible`, a
+     grouped candidate is simply backtracked over, and four options are still
+     found whenever four exist.
 
      So this searches instead. It looks for a full set of `want` candidates that
      are compatible with one another, and only when no such set exists does it
@@ -263,6 +357,12 @@
        - a branch is abandoned the moment too few candidates remain after the
          current position to finish the set.
 
+     Sense groups add no third pruning and need none. Both bounds above are still
+     upper bounds once a rule is ADDED - a further constraint can only make sets
+     smaller, never larger - and the countdown from `ceiling` to 1 already tries
+     every smaller size in turn. So the search stays exact for free: it simply
+     finds the largest set that satisfies four rules instead of three.
+
      Real pools settle in a handful of steps: production looks for three among a
      few hundred and the first three it tries almost always fit. */
   function compatible(chosen, cand) {
@@ -272,6 +372,7 @@
       if (c.l === cand.l) return false;                      /* the same answer printed twice */
       if (c.h === cand.h) return false;                      /* two ways of writing one clip */
       if (cand.id && c.id === cand.id) return false;         /* the same card by identity */
+      if (sharesSense(c.s, cand.s)) return false;            /* one declared sense, two buttons */
     }
     return true;
   }

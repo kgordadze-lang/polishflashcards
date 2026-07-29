@@ -845,6 +845,88 @@ var B_POOL = [
 })();
 
 // =========================================================================
+// F-SENSE. AUTHORED SENSE GROUPS - the builder's fourth pair rule
+// =========================================================================
+// Phase 4E. Two cards whose glosses and prompts genuinely differ can still share
+// one true meaning, and no fold of the text will ever say so. A card may declare
+// `senseGroups: ["a-key"]`, and cards sharing a key must not be offered together.
+//
+// What is asserted here is only that the SHARED BUILDER honours the declaration
+// in the four places it can matter. The metadata contract, the corpus sweeps and
+// the proof that no inference was added live in tests/test_sense_groups.js; the
+// Mixed Quiz's use of the same records lives in tests/test_mixed_distractors.js.
+(function () {
+  function c(id, pl, en, groups) {
+    var card = { id: id, pl: pl, en: en };
+    if (groups) card.senseGroups = groups;
+    return { c: card, topic: 'T' };
+  }
+  function build(pool, correct, shuffle) {
+    return D.buildOptions({ correct: correct || pool[0], candidates: pool, count: 4,
+                            shuffle: shuffle || KEEP, heardOf: U.mainAudioText });
+  }
+
+  // FS1. the answer versus a candidate.
+  var P1 = [c('fs-1a', 'p1', 'the answer', ['shared']), c('fs-1b', 'p2', 'said another way', ['shared']),
+            c('fs-1c', 'p3', 'alpha'), c('fs-1d', 'p4', 'beta'), c('fs-1e', 'p5', 'gamma')];
+  SEEDS.forEach(function (s) {
+    var b = build(P1, null, seededShuffle(s));
+    eq('FS1 seed ' + s + ': a candidate sharing the answer\'s group is refused',
+       ids(b).indexOf('fs-1b'), -1);
+    eq('FS1 seed ' + s + ': and the question is still full', b.options.length, 4);
+  });
+
+  // FS2. one distractor versus another, with the answer in no group at all.
+  var P2 = [c('fs-2a', 'p1', 'the answer'), c('fs-2b', 'p2', 'one phrasing', ['pair']),
+            c('fs-2c', 'p3', 'another phrasing', ['pair']), c('fs-2d', 'p4', 'alpha'), c('fs-2e', 'p5', 'beta')];
+  SEEDS.forEach(function (s) {
+    var got = ids(build(P2, null, seededShuffle(s)));
+    ok('FS2 seed ' + s + ': two grouped distractors never appear together',
+       !(got.indexOf('fs-2b') !== -1 && got.indexOf('fs-2c') !== -1));
+  });
+
+  // FS3. membership is a SET: one card, two groups, two independent conflicts.
+  var P3 = [c('fs-3a', 'p1', 'the answer', ['g1', 'g2']), c('fs-3b', 'p2', 'shares g1', ['g1']),
+            c('fs-3c', 'p3', 'shares g2', ['g2']), c('fs-3d', 'p4', 'shares g3', ['g3']),
+            c('fs-3e', 'p5', 'shares nothing')];
+  var b3 = ids(build(P3));
+  eq('FS3 a member of the first group is refused', b3.indexOf('fs-3b'), -1);
+  eq('FS3 a member of the second group is refused', b3.indexOf('fs-3c'), -1);
+  ok('FS3 an unrelated group is untouched', b3.indexOf('fs-3d') !== -1);
+  ok('FS3 an ungrouped card is untouched', b3.indexOf('fs-3e') !== -1);
+
+  // FS4. the rule is inside the exhaustive search, not a filter after it. The
+  // first candidate fits the answer and blocks the two that follow; a greedy
+  // fill returns three where four exist, so this is the assertion that a
+  // post-filter on chooseBest would fail.
+  var P4 = [c('fs-4a', 'p1', 'the answer'), c('fs-4b', 'p2', 'blocks two', ['g1', 'g2']),
+            c('fs-4c', 'p3', 'alpha', ['g1']), c('fs-4d', 'p4', 'beta', ['g2']), c('fs-4e', 'p5', 'gamma')];
+  var b4 = build(P4);
+  eq('FS4 the largest safe set is found, not the first one', b4.options.length, 4);
+  eq('FS4 the blocking candidate is backtracked over', ids(b4).indexOf('fs-4b'), -1);
+  eq('FS4 and the set that fits is the one returned', ids(b4).slice().sort(),
+     ['fs-4a', 'fs-4c', 'fs-4d', 'fs-4e']);
+  // An honestly short pool still degrades honestly.
+  var P5 = [c('fs-5a', 'p1', 'the answer'), c('fs-5b', 'p2', 'one', ['all']),
+            c('fs-5c', 'p3', 'two', ['all']), c('fs-5d', 'p4', 'three', ['all'])];
+  SEEDS.forEach(function (s) {
+    eq('FS4 seed ' + s + ': a pool of mutual conflicts collapses to two options',
+       build(P5, null, seededShuffle(s)).options.length, 2);
+  });
+
+  // FS5. malformed metadata restricts nothing and never throws.
+  var threw = null;
+  try {
+    var P6 = [c('fs-6a', 'p1', 'the answer'), c('fs-6b', 'p2', 'one'), c('fs-6c', 'p3', 'two'),
+              c('fs-6d', 'p4', 'three')];
+    P6[0].c.senseGroups = 'not-an-array';
+    P6[1].c.senseGroups = ['']; P6[2].c.senseGroups = [5, null]; P6[3].c.senseGroups = [];
+    eq('FS5 malformed metadata leaves the question full', build(P6).options.length, 4);
+  } catch (e) { threw = String(e); }
+  eq('FS5 malformed metadata never throws', threw, null);
+})();
+
+// =========================================================================
 // G. THE CURRENT CORPUS - discovered, reported, and swept
 // =========================================================================
 var VOCAB_SRC = LEVELS.filter(function (lv) {
@@ -895,16 +977,42 @@ function collisionGroups(items) {
 //   - a different source object from the answer, and from each other;
 //   - a different stable id, where ids exist;
 //   - a usable, unique normalised English label, never the answer's;
-//   - a usable, unique normalised heard prompt, never the answer's.
+//   - a usable, unique normalised heard prompt, never the answer's;
+//   - no AUTHORED SENSE GROUP in common, with the answer or with each other.
+//
+// The fourth rule arrived in Phase 4E and had to be taught here too, or this
+// would stop being a yardstick: it would predict four options for a question the
+// builder correctly answers with three, and G3 below would report the fix as the
+// defect. It is still derived from the documented rule rather than from the
+// builder - the group keys are read straight off the cards.
 //
 // It stops as soon as `want` is reached, so the usual case costs three picks.
 // The shared normalisation (normalizeKey) is the RULE, not the implementation -
 // re-deriving it here would only test that two copies of a regex agree.
-function mutuallySafeCapacity(correctItem, items, want) {
+function senseKeysOf(card) {
+  var raw = card && card.senseGroups;
+  if (!Array.isArray(raw)) return [];
+  var out = [], seen = {};
+  raw.forEach(function (g) {
+    if (typeof g !== 'string') return;
+    var k = g.trim().toLowerCase();
+    if (!k || seen[k]) return;
+    seen[k] = 1; out.push(k);
+  });
+  return out;
+}
+function sharesSense(a, b) {
+  return a.some(function (k) { return b.indexOf(k) !== -1; });
+}
+// `ignoreSense` answers one extra question and only that one: what could this
+// pool have supplied BEFORE Phase 4E? Comparing the two is how "authored groups
+// cost no current learner an option" is proved rather than hoped.
+function mutuallySafeCapacity(correctItem, items, want, ignoreSense) {
   var cCard = correctItem && correctItem.c;
   if (!cCard) return 0;
   var cLabel = key(cCard.en), cHeard = heardKeyOf(cCard), cId = cCard.id || '';
   if (!cLabel || !cHeard) return 0;
+  var cSense = ignoreSense ? [] : senseKeysOf(cCard);
 
   var cands = [];
   items.forEach(function (it) {
@@ -913,7 +1021,9 @@ function mutuallySafeCapacity(correctItem, items, want) {
     if (cId && card.id === cId) return;
     var l = key(card.en), h = heardKeyOf(card);
     if (!l || !h || l === cLabel || h === cHeard) return;
-    cands.push({ card: card, l: l, h: h, id: card.id || '' });
+    var s = ignoreSense ? [] : senseKeysOf(card);
+    if (sharesSense(cSense, s)) return;
+    cands.push({ card: card, l: l, h: h, id: card.id || '', s: s });
   });
 
   var chosen = [], best = 0;
@@ -923,6 +1033,7 @@ function mutuallySafeCapacity(correctItem, items, want) {
       if (chosen[i].l === cand.l) return false;
       if (chosen[i].h === cand.h) return false;
       if (cand.id && chosen[i].id === cand.id) return false;
+      if (sharesSense(chosen[i].s, cand.s)) return false;
     }
     return true;
   }
@@ -964,6 +1075,27 @@ function mutuallySafeCapacity(correctItem, items, want) {
                                  it('c3', 'k2', 'shared'), it('c4', 'k3', 'b')], 3), 3);
   eq('G-cap an unusable answer has no capacity',
      mutuallySafeCapacity({ c: { id: 'x', pl: '', en: 'no clip' }, topic: 'T' }, [it('c1', 'k1', 'one')], 3), 0);
+  // ...and the same for the fourth rule, so the yardstick cannot silently
+  // over-predict once a group is authored.
+  function sg(id, pl, en, groups) {
+    var c = { id: id, pl: pl, en: en, senseGroups: groups };
+    return { c: c, topic: 'T' };
+  }
+  var GC = { c: { id: 'cap-g', pl: 'k0', en: 'answer', senseGroups: ['g'] }, topic: 'T' };
+  eq('G-cap a candidate sharing the ANSWER\'s group does not count',
+     mutuallySafeCapacity(GC, [sg('c1', 'k1', 'one', ['g']), it('c2', 'k2', 'two'), it('c3', 'k3', 'three')], 3), 2);
+  eq('G-cap two candidates sharing EACH OTHER\'s group do not both count',
+     mutuallySafeCapacity(corr, [sg('c1', 'k1', 'one', ['g']), sg('c2', 'k2', 'two', ['g']),
+                                 it('c3', 'k3', 'three'), it('c4', 'k4', 'four')], 3), 3);
+  eq('G-cap a card in two groups can cost two later candidates',
+     mutuallySafeCapacity(corr, [sg('c1', 'k1', 'one', ['g1', 'g2']), sg('c2', 'k2', 'two', ['g1']),
+                                 sg('c3', 'k3', 'three', ['g2'])], 3), 2);
+  eq('G-cap unrelated groups never collide',
+     mutuallySafeCapacity(corr, [sg('c1', 'k1', 'one', ['g1']), sg('c2', 'k2', 'two', ['g2']),
+                                 sg('c3', 'k3', 'three', ['g3'])], 3), 3);
+  eq('G-cap malformed group metadata restricts nothing',
+     mutuallySafeCapacity(corr, [sg('c1', 'k1', 'one', 'g'), sg('c2', 'k2', 'two', 'g'),
+                                 sg('c3', 'k3', 'three', [])], 3), 3);
 })();
 
 var ALL_GROUPS = collisionGroups(ALL_POOL);
@@ -1116,6 +1248,31 @@ ALL_GROUPS.forEach(function (g) {
   eq('G3 no source card is used twice in one question', bad.source.slice(0, 5), []);
   eq('G3 every visible option has text', bad.empty.slice(0, 5), []);
   eq('G3 the option count equals the independently computed maximum', bad.count.slice(0, 5), []);
+})();
+
+// Phase 4E may not cost a learner an option. A group is a claim about two cards,
+// never about the size of a question: whenever the pool could fill four buttons
+// before the groups were authored, it must still fill four now. This compares the
+// two capacities directly, so a future group authored in a corner of the corpus
+// too thin to absorb it fails HERE, by name, instead of quietly shipping a
+// three-button question.
+(function () {
+  var regressed = [], grouped = 0, checked = 0;
+  POOLS.forEach(function (p) {
+    p.items.forEach(function (mine) {
+      checked++;
+      if (!senseKeysOf(mine.c).length) return;
+      grouped++;
+      var was = mutuallySafeCapacity(mine, p.items, 3, true);
+      var now = mutuallySafeCapacity(mine, p.items, 3);
+      if (Math.min(4, 1 + was) > Math.min(4, 1 + now)) {
+        regressed.push(p.name + '/' + mine.c.id + ': ' + Math.min(4, 1 + was) +
+                       ' options before grouping, ' + Math.min(4, 1 + now) + ' after');
+      }
+    });
+  });
+  info('Listening questions whose answer carries a sense group: ' + grouped + ' of ' + checked);
+  eq('G6 no authored sense group costs a Listening question an option', regressed.slice(0, 10), []);
 })();
 
 // The corpus has cards with no stable id or no gloss? Report it - the builder

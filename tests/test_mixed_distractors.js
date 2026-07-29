@@ -38,12 +38,30 @@
 //   - which cards may be asked at all: tests/test_typeit_eligibility.js and
 //     tests/test_activities.js
 //
-// AND WHAT IS STILL OUT OF SCOPE AFTER THIS PHASE
-// Two glosses that share a SENSE while differing as text - "What's up? / How's it
-// going?" beside "What's up? (very casual)" - are not synonyms this builder can
-// infer, and it deliberately does not try. Section J discovers and REPORTS today's
-// examples so the boundary is visible; removing them needs authored sense identity,
-// which is Phase 4E. Nothing here pretends they are fixed.
+// SEMANTIC OVERLAP, AND WHO OWNS IT NOW
+// Two glosses can share a SENSE while differing as text - "What's up? / How's it
+// going?" beside "What's up? (very casual)". No normalisation folds those, and the
+// builder still infers nothing from the words. Phase 4E answered them the only way
+// that works: a card may DECLARE `senseGroups: ["a-key"]`, and the shared builder
+// refuses to offer two cards that share a key. The reviewed overlaps are therefore
+// blocked today, here and in Listening alike.
+//
+// The boundary that matters for this file is which half of that it owns:
+//   - tests/test_sense_groups.js owns the SHARED CONTRACT - the metadata rules, the
+//     normalisation, set intersection, the maximum-safe-set proof, and the standing
+//     evidence that no substring, slash-splitting or token-overlap heuristic was
+//     ever added;
+//   - this file owns MIXED QUIZ INTEGRATION and corpus safety - that this activity
+//     inherits the rule through the shared default without asking for it, across
+//     every scope, both prompt identities, the fallback join and the retry.
+//
+// Being declared is the whole point, so most of what a text heuristic flags is
+// still free and must stay free. Gender variants, opposites and domain-marked pairs
+// are the questions worth asking, and pairs the audit judged uncertain were left
+// unannotated on purpose. Section J reports both sides of that split - bound versus
+// deliberately free - and section L pins the reviewed false positives as UNGROUPED,
+// asserting only that no metadata binds them, never that any seed must show them
+// side by side.
 ObjC.import('Foundation');
 
 function readFile(path) {
@@ -872,8 +890,32 @@ REAL_LEVELS.forEach(function (lv, li) {
   });
 });
 
+// The authored sense groups, read off the shipping cards exactly as the shared
+// builder reads them. Discovered every run, never listed here: the Mixed Quiz's
+// claim is "whatever the editors declared, this activity honours it", and a copy
+// of today's group list would only assert that the copy is up to date.
+function senseKeysOf(card) {
+  var raw = card && card.senseGroups;
+  if (!Array.isArray(raw)) return [];
+  var out = [], seen = {};
+  raw.forEach(function (g) {
+    if (typeof g !== 'string') return;
+    var k = g.trim().toLowerCase();
+    if (!k || seen[k]) return;
+    seen[k] = 1; out.push(k);
+  });
+  return out;
+}
+function repeatedSenseIn(options) {
+  var seen = {}, dups = [];
+  recs(options).forEach(function (o) {
+    senseKeysOf(o.card).forEach(function (k) { if (seen[k]) dups.push(k); else seen[k] = 1; });
+  });
+  return dups;
+}
+
 section('J the real-corpus sweep', function () {
-  var bad = { count: [], correct: [], card: [], id: [], source: [], label: [], prompt: [], empty: [], record: [] };
+  var bad = { count: [], correct: [], card: [], id: [], source: [], label: [], prompt: [], empty: [], record: [], sense: [] };
   var short = [], questions = 0, byCount = {}, mutated = [];
   var SNAPSHOT = {};
   SCOPES.forEach(function (s) {
@@ -909,6 +951,8 @@ section('J the real-corpus sweep', function () {
           if (right[0].card !== qq.c) bad.card.push(where + ' ' + qq.c.id);
           if (right[0].id !== qq.c.id) bad.id.push(where + ' ' + qq.c.id);
         }
+        var senseDups = repeatedSenseIn(qq.options);
+        if (senseDups.length) bad.sense.push(where + ' ' + qq.c.id + ' repeats ' + senseDups.join(','));
         var seenCard = [], seenId = {}, seenLabel = {}, seenPrompt = {};
         var promptOf = qq.fmt === 'listen' ? ppMainAudioText : function (card) { return card ? card.pl : ''; };
         qq.options.forEach(function (raw) {
@@ -951,12 +995,20 @@ section('J the real-corpus sweep', function () {
   eq('J3 typed questions never carry options', bad.count.slice(0, 5), []);
   eq('J3 every option is a retained record', bad.record.slice(0, 5), []);
   eq('J4 no source card was mutated by building a round', mutated.slice(0, 5), []);
+  eq('J6 no option set offers two cards from one authored sense group', bad.sense.slice(0, 5), []);
+  eq('J6 no option-bearing question underfills', short.slice(0, 10), []);
 });
 
-// Semantic sense overlap - DISCOVERED, reported, and deliberately not fixed here.
+// Semantic sense overlap - DISCOVERED, reported, and now partly ANSWERED.
 // The audit method: a gloss may name several senses at once, separated by a slash or
 // qualified in parentheses. Two cards whose FULL strings differ can still share one
 // of those senses, and no amount of normalising the full string will notice.
+//
+// Phase 4E answers the ones a human reviewed and declared. This heuristic is NOT
+// that review - it is the net the review was drawn from, and most of what it
+// catches is a false positive that must keep sharing questions. So the split is
+// reported both ways: how many candidates the net still holds, and how many of
+// them an editor has since bound with `senseGroups`.
 section('J the semantic-overlap report', function () {
   function senses(en) {
     return String(en).split('/').map(function (part) {
@@ -984,16 +1036,135 @@ section('J the semantic-overlap report', function () {
       }
     }
   });
+  function bound(p) {
+    var ka = senseKeysOf(p.a), kb = senseKeysOf(p.b);
+    return ka.some(function (k) { return kb.indexOf(k) !== -1; });
+  }
+  var authored = pairs.filter(bound), open = pairs.filter(function (p) { return !bound(p); });
   info('cards in one Mixed Quiz scope whose glosses differ as text but share a named sense: ' + pairs.length);
-  pairs.slice(0, 6).forEach(function (p) {
-    info('  still reachable (Phase 4E, not 4D): "' + p.a.en + '" beside "' + p.b.en + '"  [' + p.scope + ']');
+  info('  of those, now bound by an authored sense group: ' + authored.length);
+  authored.slice(0, 6).forEach(function (p) {
+    info('    answered in 4E: "' + p.a.en + '" beside "' + p.b.en + '"  [' + p.scope + ']');
   });
-  info('Phase 4D does NOT remove these: PP_DISTRACTOR compares whole normalised strings and');
-  info('cannot infer that two different sentences mean the same thing. Authored sense identity is Phase 4E.');
+  info('  of those, deliberately left free to share a question: ' + open.length);
+  open.slice(0, 6).forEach(function (p) {
+    info('    reviewed, not grouped: "' + p.a.en + '" beside "' + p.b.en + '"  [' + p.scope + ']');
+  });
+  info('The heuristic above is a REVIEW NET, never a rule: it fires on gender variants,');
+  info('opposites and domain-marked pairs that are exactly the questions worth asking.');
+  info('Only the pairs a human reviewed carry senseGroups, and only those are enforced.');
   // The honest claim about scope: these survive precisely because normalisation
   // cannot fold them, and nothing in this phase pretends otherwise.
   eq('J5 every reported pair is genuinely two different normalised strings',
      pairs.filter(function (p) { return nk(p.a.en) === nk(p.b.en); }).length, 0);
+});
+
+// =========================================================================
+// L. AUTHORED SENSE GROUPS, THROUGH THE MIXED QUIZ
+// =========================================================================
+// Integration only. The metadata contract, the normalisation rules, the
+// maximum-safe-set proof and "no inference was added" all belong to
+// tests/test_sense_groups.js; what is asserted here is that this activity - its
+// two prompt identities, its fallback join and its retry - inherits the rule
+// from the shared default without asking for it.
+section('L authored sense groups reach the Mixed Quiz', function () {
+  // Every pair an editor actually bound, in every scope that can present both.
+  var BY_KEY = {};
+  REAL_LEVELS.forEach(function (lv) {
+    lv.topics.forEach(function (t) {
+      (t.cards || []).forEach(function (c) {
+        senseKeysOf(c).forEach(function (k) { (BY_KEY[k] = BY_KEY[k] || []).push(c); });
+      });
+    });
+  });
+  var keys = Object.keys(BY_KEY).sort();
+  ok('L1 the corpus authors at least one sense group', keys.length > 0);
+
+  var together = [], retrySense = [], retryShort = [], typed = [], shortQ = [], rounds = 0;
+  SCOPES.forEach(function (s) {
+    var topic = REAL_LEVELS[s.li].topics[s.ti];
+    // Only the scopes that can actually present two members of one group.
+    var relevant = keys.filter(function (k) {
+      var ids = {}; BY_KEY[k].forEach(function (c) { ids[c.id] = 1; });
+      var pool = topic.cards.filter(function (c) { return ppEligibleFor(c, 'listen'); });
+      var n = 0, seen = {};
+      pool.forEach(function (c) { if (ids[c.id] && !seen[c.id]) { seen[c.id] = 1; n++; } });
+      return n >= 2;
+    });
+    if (!relevant.length) return;
+    SEEDS.forEach(function (seed) {
+      rounds++;
+      LEVELS.length = 0;
+      REAL_LEVELS.forEach(function (lv) { LEVELS.push(lv); });
+      POOL_FOR = realPoolFor;
+      DOM = {}; shown = []; HTML_WRITES = {};
+      SHUFFLE = seededShuffle(seed);
+      BODY = new FakeEl('body'); BODY.id = 'BODY'; DOM.BODY = BODY;
+      ACTIVE = BODY;
+      MIXED.startRound(s.li, s.ti);
+      var where = s.level + ' / ' + s.name + ' [seed ' + seed + ']';
+      var asked = R.qs.slice();
+      asked.forEach(function (qq) {
+        if (qq.fmt === 'type') {
+          if (qq.options.length) typed.push(where + ' ' + qq.c.id);
+          return;
+        }
+        if (qq.options.length !== 4) shortQ.push(where + ' ' + qq.c.id + ' -> ' + qq.options.length);
+        var dups = repeatedSenseIn(qq.options);
+        if (dups.length) together.push(where + ' ' + qq.c.id + ' repeats ' + dups.join(','));
+      });
+      // A missed question comes back once, rebuilt from the retained records.
+      var before = R.qs.length;
+      asked.forEach(function (qq) { MIXED.rRecord(qq, 'miss'); });
+      R.qs.slice(before).forEach(function (qq) {
+        if (qq.fmt === 'type') {
+          if (qq.options.length) typed.push(where + ' [retry] ' + qq.c.id);
+          return;
+        }
+        if (qq.options.length !== 4) retryShort.push(where + ' [retry] ' + qq.c.id + ' -> ' + qq.options.length);
+        var dups = repeatedSenseIn(qq.options);
+        if (dups.length) retrySense.push(where + ' [retry] ' + qq.c.id + ' repeats ' + dups.join(','));
+      });
+    });
+  });
+  info('authored groups discovered: ' + keys.length + '; rounds run in scopes that can present one: ' + rounds);
+  eq('L2 two members of one group never share a Mixed Quiz question', together.slice(0, 5), []);
+  eq('L2 every option-bearing question in those scopes still returns four', shortQ.slice(0, 5), []);
+  eq('L3 a requeued question is still group-safe', retrySense.slice(0, 5), []);
+  eq('L3 a requeued question keeps its four options', retryShort.slice(0, 5), []);
+  eq('L4 typed questions carry no options, first pass or retry', typed.slice(0, 5), []);
+});
+
+// The pairs the audit reviewed and deliberately left alone. The claim is about the
+// METADATA - that nothing binds them - and not that any seed must show them side by
+// side, which the builder never promises for any two cards.
+section('L reviewed false positives stay ungrouped', function () {
+  var LEFT_UNGROUPED = [
+    ['a1-about-me-024', 'a1-about-me-025', 'married vs single: opposites'],
+    ['a1-about-me-026', 'a1-about-me-029', 'teacher (m) vs teacher (f): both marked'],
+    ['a1-about-me-027', 'a1-about-me-030', 'doctor (m) vs doctor (f): both marked'],
+    ['a2-work-education-001', 'a2-work-education-015', 'teacher (m) vs teacher (f): both marked'],
+    ['b1-relationships-008', 'b1-relationships-024', 'fiance vs fiancee: both marked'],
+    ['a2-character-traits-025', 'a2-character-traits-026', 'patient vs impatient'],
+    ['b1-media-technology-006', 'b1-media-technology-007', 'to log in vs to log out'],
+    ['a2-ecology-009', 'a2-ecology-010', 'the material vs the drinking vessel, both named'],
+    ['a1-first-verbs-011', 'a1-first-verbs-012', 'to know a fact vs a person, both named']
+  ];
+  var BY_ID = {};
+  REAL_LEVELS.forEach(function (lv) {
+    lv.topics.forEach(function (t) { (t.cards || []).forEach(function (c) { BY_ID[c.id] = c; }); });
+  });
+  var missing = [], boundPairs = [];
+  LEFT_UNGROUPED.forEach(function (row) {
+    var a = BY_ID[row[0]], b = BY_ID[row[1]];
+    if (!a || !b) { missing.push(row[0] + ' / ' + row[1]); return; }
+    var ka = senseKeysOf(a), kb = senseKeysOf(b);
+    var shared = ka.filter(function (k) { return kb.indexOf(k) !== -1; });
+    if (shared.length) boundPairs.push(row[0] + ' / ' + row[1] + ' (' + row[2] + ') share ' + shared.join(','));
+  });
+  eq('L5 every reviewed false positive still exists', missing, []);
+  eq('L5 no reviewed false positive was bound by a sense group', boundPairs, []);
+  info('reviewed "do not group" pairs re-checked here: ' + LEFT_UNGROUPED.length);
 });
 
 // =========================================================================

@@ -17,6 +17,9 @@ Checks (fatal = non-zero exit):
     - `choose` drills: answer is one of the options
     - `build` drills: no duplicated answer tokens
     - scenario `goto` destinations all resolve; no unreachable scenes
+  SENSE GROUPS (Phase 4E, optional `senseGroups` metadata)
+    - non-empty array of unique, non-blank, untrimmed-free lowercase-kebab keys
+    - every group names at least two distinct cards
   MIGRATION MAPS (when pp-migrate.js is present)
     - PP_MIGRATE.LEGACY.topics values resolve to existing topic ids
     - PP_MIGRATE.LEGACY.cards[topicId] keys map to existing card id(s)
@@ -36,6 +39,13 @@ from pp_audio_rule import load_levels, fix_surrogates
 
 DATA_GLOB = "data-*.js"
 ID_RE = re.compile(r"^[a-z0-9-]+$")
+# Phase-4E authored sense groups. A key names ONE narrow shared answer sense, so it
+# is held to the same lowercase-kebab shape as an id: no leading/trailing/doubled
+# hyphen, no whitespace, nothing a copy-paste could smuggle in. The runtime
+# (pp-distractor.js) is deliberately forgiving about all of this so a learner's
+# round never breaks; that is exactly why the strictness has to live HERE, where a
+# malformed group can still be fixed instead of silently doing nothing.
+SENSE_GROUP_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 ALLOWED_RELATION = {"synonym", "contrast", "gender-variant", "number-variant", "aspect-pair", "register-variant"}
 # Phase-4 usage metadata. Absent means the schema default (neutral / general / active).
 ALLOWED_REGISTER = {"formal", "neutral", "informal", "slang", "vulgar"}
@@ -460,6 +470,7 @@ def main():
     card_ids = set()
     topic_ids = set()
     rel_map = {}          # card id -> set(relatedIds)  (for reciprocity)
+    sense_groups = {}     # sense-group key -> set(card ids)  (Phase 4E)
 
     # informational tallies
     slash_pl, ellipsis_pl, paren_pl, templates, recognition = [], [], [], [], []
@@ -518,6 +529,39 @@ def main():
                                 err(f"[acceptedAnswers] contains duplicates: {cid} {aa}")
                             if c.get("pl") in aa:
                                 err(f"[acceptedAnswers] duplicates canonical pl: {cid} {c.get('pl')!r}")
+                    # Phase-4E: "these answer choices must not appear together".
+                    # It says nothing else - not that the Polish is interchangeable,
+                    # not that Type It should accept either answer, not that the two
+                    # cards are duplicates or should merge.
+                    sg = c.get("senseGroups")
+                    if sg is not None:
+                        if not isinstance(sg, list) or not sg:
+                            err(f"[senseGroups] must be a non-empty array when present: {cid}")
+                        else:
+                            # ONE pass, and duplicate tracking that only ever sees
+                            # confirmed string keys. Hashing the raw array instead -
+                            # `set(sg)` - raises TypeError on an unhashable entry such
+                            # as {} or [], which killed the run with a traceback before
+                            # the "entries must be strings" error it had already
+                            # recorded could be printed. A validator must report bad
+                            # data, not crash on it, so every entry is rejected on its
+                            # own terms first and only a fully valid key reaches the
+                            # seen-set or the group membership map.
+                            seen_keys = set()
+                            for g in sg:
+                                if not isinstance(g, str):
+                                    err(f"[senseGroups] entries must be strings: {cid} {g!r}")
+                                elif not g.strip():
+                                    err(f"[senseGroups] entries must not be blank: {cid}")
+                                elif g != g.strip():
+                                    err(f"[senseGroups] entry has surrounding whitespace: {cid} {g!r}")
+                                elif not SENSE_GROUP_RE.match(g):
+                                    err(f"[senseGroups] key is not lowercase kebab-case: {cid} {g!r}")
+                                elif g in seen_keys:
+                                    err(f"[senseGroups] contains duplicate keys: {cid} {sg}")
+                                else:
+                                    seen_keys.add(g)
+                                    sense_groups.setdefault(g, set()).add(cid)
                     va = c.get("variants")
                     if va is not None:
                         if not isinstance(va, list) or not all(
@@ -587,6 +631,13 @@ def main():
                 for sk in keys:
                     if sk not in reach:
                         err(f"[scenario] unreachable scene {tid}/{sk}")
+
+    # a sense group is a statement about a PAIR, so one member is never a group -
+    # it is a typo in the second card's key, or an edit that removed the other side.
+    for gkey, members in sorted(sense_groups.items()):
+        if len(members) < 2:
+            err(f"[senseGroups] group {gkey!r} has only {len(members)} member "
+                f"({', '.join(sorted(members))}) - a group must name at least two distinct cards")
 
     # relatedIds resolve + reciprocity
     for cid, targets in rel_map.items():
@@ -694,6 +745,17 @@ def main():
         print("usage metadata: " + "  ".join(f"{k}={v}" for k, v in sorted(usage_tally.items())))
     if audio_tally:
         print("main-card audio: " + "  ".join(f"{k}={v}" for k, v in sorted(audio_tally.items())))
+    # Phase-4E: reported, never pinned. The number of groups is an editorial
+    # decision that is allowed to grow as glosses are reviewed, so asserting it
+    # here would only make honest content work fail the validator.
+    if sense_groups:
+        grouped_cards = set()
+        for members in sense_groups.values():
+            grouped_cards |= members
+        print(f"sense groups: {len(sense_groups)} group(s) over {len(grouped_cards)} card(s)")
+        for gkey, members in sorted(sense_groups.items()):
+            print(f"  {gkey}: " + ", ".join(sorted(members)))
+
     print(f"\ninfo: slash-pl={len(slash_pl)}  ellipsis-pl={len(ellipsis_pl)}  "
           f"paren-pl={len(paren_pl)}  templates={len(templates)}  recognition-only={len(recognition)}")
 
