@@ -87,6 +87,21 @@ function countOf(hay, needle) {
   while ((i = hay.indexOf(needle, i)) !== -1) { n++; i += needle.length; }
   return n;
 }
+function inputTag(id) {
+  var m = INDEX.match(new RegExp('<input\\b[^>]*\\bid="' + id + '"[^>]*>', 'i'));
+  return m ? m[0] : '';
+}
+function attrValue(tag, name) {
+  var m = tag.match(new RegExp('\\b' + name + '="([^"]*)"', 'i'));
+  return m ? m[1] : null;
+}
+
+var TYPE_INPUT_TAG = inputTag('tInput');
+eq('A0 the Type It Polish-answer input has an explicit accessible name',
+   attrValue(TYPE_INPUT_TAG, 'aria-label'), 'Enter the Polish answer');
+ok('A0 the placeholder remains a hint, not the input name',
+   attrValue(TYPE_INPUT_TAG, 'placeholder') !== null &&
+   attrValue(TYPE_INPUT_TAG, 'aria-label') !== attrValue(TYPE_INPUT_TAG, 'placeholder'));
 
 // =========================================================================
 // A SMALL REAL DOM

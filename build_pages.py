@@ -206,6 +206,21 @@ CSP = ('<meta http-equiv="Content-Security-Policy" content="default-src \'self\'
 esc = html.escape           # for plain-text fields
 # front/sub/points/explain/note legitimately contain <b>/<i> authored markup -
 # rendered as-is, same trust model as the app itself.
+_ESCAPED_BOLD_TAG = re.compile(r"&lt;(/?)b&gt;")
+
+
+def render_example_emphasis(text):
+    """Escape an authored table example, then restore only balanced <b> pairs."""
+    rendered = esc(text)
+    expect_closing = False
+    for match in _ESCAPED_BOLD_TAG.finditer(rendered):
+        is_closing = bool(match.group(1))
+        if is_closing != expect_closing:
+            return rendered
+        expect_closing = not expect_closing
+    if expect_closing:
+        return rendered
+    return rendered.replace("&lt;b&gt;", "<b>").replace("&lt;/b&gt;", "</b>")
 
 
 def head(title, desc, canon, ld):
@@ -267,7 +282,7 @@ def render_teach_card(item, audio_idx):
     if item.get("table"):
         rows = "".join(
             f'<tr><td>{r.get("g","")}</td><td lang="pl">{esc(r.get("e",""))}</td>'
-            f'<td lang="pl">{esc(r.get("ex",""))}</td></tr>'
+            f'<td lang="pl">{render_example_emphasis(r.get("ex",""))}</td></tr>'
             for r in item["table"])
         h.append('<table><thead><tr><th>Group</th><th>Ending</th><th>Example</th></tr></thead>'
                  f'<tbody>{rows}</tbody></table>')
@@ -286,7 +301,7 @@ def topic_page(level, topic, slug, audio_idx):
     desc = topic.get("desc", "")
     canon = f"{SITE}/grammar/{slug}/"
     title = f"{name} - Polish grammar explained | Po polsku"
-    meta_desc = (f"{desc}. Clear explanations with tables, native-audio examples, "
+    meta_desc = (f"{desc}. Clear explanations with tables, examples with Polish pronunciation audio, "
                  f"and free practice drills - {topic.get('chip','')} on Po polsku.")
     ld = {
         "@context": "https://schema.org",
@@ -314,7 +329,7 @@ def topic_page(level, topic, slug, audio_idx):
     body.append(f'<a class="cta" href="/">Practice this in the app - free, no account</a>')
     if drills:
         body.append(f'<p class="cta-sub">This page is a sample - the app has the full topic, '
-                     f'{drills} interactive drills, and native audio throughout.</p>')
+                     f'{drills} interactive drills, and Polish pronunciation audio throughout.</p>')
     body.append(FOOT.replace("{js}", PLAYER_JS))
     return "".join(body)
 
@@ -329,8 +344,6 @@ def vocab_card(c, audio_idx):
     h.append(f'<div class="ex" style="border-top:0;padding-top:0">{btn}'
              f'<div><h2 lang="pl" style="margin:0">{esc(pl)}</h2>'
              f'<div class="en" style="font-size:15px">{esc(en)}</div></div></div>')
-    if c.get("pair"):
-        h.append(f'<div class="note"><b>Aspect pair:</b> <span lang="pl">{esc(c["pair"])}</span></div>')
     if c.get("pair"):
         h.append(f'<div class="note"><b>Aspect pair:</b> <span lang="pl">{esc(c["pair"])}</span></div>')
     if c.get("hint"):
@@ -348,7 +361,7 @@ def vocab_page(topic, slug, page_title, audio_idx):
     title = f"{page_title} | Po polsku"
     n = len(topic.get("cards", []))
     meta_desc = (f"{desc} {n} expressions with meanings, usage notes, real example "
-                 f"sentences, and native Polish audio - free on Po polsku.")
+                 f"sentences, and Polish pronunciation audio - free on Po polsku.")
     ld = {
         "@context": "https://schema.org",
         "@type": "LearningResource",
@@ -382,7 +395,7 @@ def guide_page(topics_by_level, vocab_items):
     canon = f"{SITE}/guide/"
     title = "Polish guide - grammar, slang and idioms explained simply | Po polsku"
     meta_desc = ("Free Polish for learners: all seven cases, formal address, adjectives - plus real "
-                 "slang, idioms and proverbs. Tables, usage notes, and native-audio examples.")
+                 "slang, idioms and proverbs. Tables, usage notes, and examples with Polish pronunciation audio.")
     ld = {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
@@ -396,7 +409,7 @@ def guide_page(topics_by_level, vocab_items):
     body.append('<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> &rsaquo; Guide</nav>')
     body.append('<h1>Polish, explained simply</h1>')
     body.append('<p class="lede">Created by a foreigner who learned it the hard way - flashcards, '
-                'explanations, native audio. Each topic has interactive practice in the free app.</p>')
+                'explanations, and Polish pronunciation audio. Each topic has interactive practice in the free app.</p>')
     body.append('<div class="note" style="margin:16px 0 22px">These pages are a sample - a taste of each '
                 'topic. The full library, with every card, drill, and conversation, lives in the free app.</div>')
     for level_name, items in topics_by_level:
@@ -581,7 +594,7 @@ def main():
 
     n = write_sitemap(slugs, vslugs)
     print(f"\nDone. {len(slugs)} grammar pages + {len(vslugs)} vocabulary pages + /guide/ hub. "
-          f"sitemap.xml now lists {n} URLs. {with_audio} sentences/words carry native audio.")
+          f"sitemap.xml now lists {n} URLs. {with_audio} sentences/words carry pronunciation audio.")
 
 
 if __name__ == "__main__":

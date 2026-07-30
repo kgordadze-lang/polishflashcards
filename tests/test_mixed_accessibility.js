@@ -67,6 +67,21 @@ function eq(name, a, b) {
   ok(name + (sa === sb ? '' : '  (got ' + sa + ', want ' + sb + ')'), sa === sb);
 }
 function info(msg) { console.log('  [info] ' + msg); }
+function inputTag(id) {
+  var m = INDEX.match(new RegExp('<input\\b[^>]*\\bid="' + id + '"[^>]*>', 'i'));
+  return m ? m[0] : '';
+}
+function attrValue(tag, name) {
+  var m = tag.match(new RegExp('\\b' + name + '="([^"]*)"', 'i'));
+  return m ? m[1] : null;
+}
+
+var MIXED_INPUT_TAG = inputTag('rInput');
+eq('A0 the Mixed Quiz Polish-answer input has an explicit accessible name',
+   attrValue(MIXED_INPUT_TAG, 'aria-label'), 'Enter the Polish answer');
+ok('A0 the placeholder remains a hint, not the input name',
+   attrValue(MIXED_INPUT_TAG, 'placeholder') !== null &&
+   attrValue(MIXED_INPUT_TAG, 'aria-label') !== attrValue(MIXED_INPUT_TAG, 'placeholder'));
 
 // ---------- pull the real functions out of index.html ----------
 // Same brace scanner the other index.html suites use: skips comments and strings,
