@@ -905,6 +905,75 @@
               end:true
             }
           }
+        },
+        { id:"scenarios-healthcare-appointments",
+          name: "Umawianie wizyty w przychodni", emoji: "📅", kind: "convo", cefr: "A2",
+          desc: "Book, confirm, change or cancel a routine clinic appointment by phone",
+          role: "Pracownik rejestracji",
+          setting: "You phone a clinic to arrange, confirm, change or cancel a routine appointment.",
+          goal: "Arrange a routine appointment, confirm the details, and if needed change or cancel it in one coherent phone call. Every reply is a valid path.",
+          recap: [
+            "<b>w sprawie</b> + genitive — w sprawie wizyty",
+            "<b>termin</b> in this scenario means an available or agreed appointment date and time",
+            "<b>na</b> + accusative for a scheduled time — na wtorek, na godzinę dziesiątą",
+            "<b>czy mogę...?</b> makes a polite request about what the speaker can do"
+          ],
+          start: "contact",
+          scenes: {
+            contact: {
+              npc:"Dzień dobry, rejestracja przychodni. W czym mogę pomóc?", npcEn:"Hello, clinic reception. How can I help?",
+              options:[
+                { pl:"Dzień dobry, dzwonię w sprawie wizyty.", en:"Hello, I'm calling about an appointment.", goto:"appointment-type" },
+                { pl:"Czy mogę umówić się na wizytę kontrolną?", en:"Can I book a follow-up appointment?", goto:"appointment-type" }
+              ]
+            },
+            "appointment-type": {
+              npc:"Do jakiego lekarza ma być wizyta?", npcEn:"Which kind of doctor should the appointment be with?",
+              options:[
+                { pl:"Do lekarza rodzinnego, proszę.", en:"With a family doctor, please.", goto:"availability" },
+                { pl:"Do specjalisty. Mam skierowanie.", en:"With a specialist. I have a referral.", goto:"availability" }
+              ]
+            },
+            availability: {
+              npc:"Który dzień najbardziej pasuje?", npcEn:"Which day suits you best?",
+              options:[
+                { pl:"Czy są wolne terminy w piątek?", en:"Are any appointments available on Friday?", goto:"offer" },
+                { pl:"Jaki jest najbliższy wolny termin?", en:"What is the earliest available appointment?", goto:"offer" }
+              ]
+            },
+            offer: {
+              npc:"Najbliższy wolny termin jest w piątek o dziesiątej.", npcEn:"The earliest available appointment is Friday at ten.",
+              options:[
+                { pl:"Tak, ten termin mi pasuje.", en:"Yes, that time works for me.", goto:"confirmation" },
+                { pl:"Proszę powtórzyć godzinę.", en:"Please repeat the time.", goto:"clarification" }
+              ]
+            },
+            clarification: {
+              npc:"W piątek o dziesiątej.", npcEn:"On Friday at ten.",
+              options:[
+                { pl:"Czyli piątek o dziesiątej?", en:"So, Friday at ten?", goto:"confirmation" },
+                { pl:"Czy wizyta jest potwierdzona?", en:"Is the appointment confirmed?", goto:"confirmation" }
+              ]
+            },
+            confirmation: {
+              npc:"Potwierdzam wizytę na piątek o dziesiątej.", npcEn:"I'm confirming the appointment for Friday at ten.",
+              options:[
+                { pl:"Dziękuję.", en:"Thank you.", goto:"end" },
+                { pl:"Czy mogę przełożyć wizytę?", en:"Can I reschedule the appointment?", goto:"change" }
+              ]
+            },
+            change: {
+              npc:"Mogę przełożyć wizytę na czwartek o dziewiątej.", npcEn:"I can move the appointment to Thursday at nine.",
+              options:[
+                { pl:"Tak, proszę przełożyć wizytę.", en:"Yes, please reschedule the appointment.", goto:"end" },
+                { pl:"Muszę odwołać wizytę.", en:"I need to cancel the appointment.", goto:"end" }
+              ]
+            },
+            end: {
+              npc:"Dobrze, gotowe. Do widzenia.", npcEn:"All right, it's done. Goodbye.",
+              end:true
+            }
+          }
         }
       ]
     }

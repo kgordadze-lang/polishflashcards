@@ -1,6 +1,6 @@
 {
 "voice": "pl-PL-MarekNeural",
-"generatedAt": "2026-07-26T18:48:51.268706Z",
+"generatedAt": "2026-08-01T08:27:27.519443Z",
 "audioDir": "audio",
 "entries": {
 "000311d1288f": {
@@ -13302,6 +13302,214 @@
 "38335f98b620": {
 "pl": "Nazywają się Nowakowie.",
 "file": "audio/38335f98b620.mp3"
+},
+"f125579d53df": {
+"pl": "Czy to rejestracja przychodni?",
+"file": "audio/f125579d53df.mp3"
+},
+"3c5b2d92289e": {
+"pl": "Dzień dobry, czy to rejestracja przychodni?",
+"file": "audio/3c5b2d92289e.mp3"
+},
+"4f4ba0a469e2": {
+"pl": "Dzwonię w sprawie wizyty.",
+"file": "audio/4f4ba0a469e2.mp3"
+},
+"ae7f3ad81be5": {
+"pl": "Dzień dobry, dzwonię w sprawie wizyty.",
+"file": "audio/ae7f3ad81be5.mp3"
+},
+"476c6d329313": {
+"pl": "Czy mogę umówić się na wizytę?",
+"file": "audio/476c6d329313.mp3"
+},
+"59ed44cc0e6a": {
+"pl": "lekarz rodzinny",
+"file": "audio/59ed44cc0e6a.mp3"
+},
+"07fcb8227c59": {
+"pl": "Chcę umówić wizytę u lekarza rodzinnego.",
+"file": "audio/07fcb8227c59.mp3"
+},
+"5ec3f18fe0b6": {
+"pl": "Jaki jest najbliższy wolny termin?",
+"file": "audio/5ec3f18fe0b6.mp3"
+},
+"e63060fa793f": {
+"pl": "Jaki jest najbliższy wolny termin u lekarza rodzinnego?",
+"file": "audio/e63060fa793f.mp3"
+},
+"3d35860f0f5a": {
+"pl": "Czy są wolne terminy w piątek?",
+"file": "audio/3d35860f0f5a.mp3"
+},
+"da86cbd2332c": {
+"pl": "Czy są wolne terminy w piątek po południu?",
+"file": "audio/da86cbd2332c.mp3"
+},
+"957d1ed22513": {
+"pl": "Czy jest jakiś wolny termin po południu?",
+"file": "audio/957d1ed22513.mp3"
+},
+"ff6a8fa870b5": {
+"pl": "Najlepiej pasuje mi termin po południu.",
+"file": "audio/ff6a8fa870b5.mp3"
+},
+"e8ece1387f91": {
+"pl": "Czy jest inny termin?",
+"file": "audio/e8ece1387f91.mp3"
+},
+"7749b709340a": {
+"pl": "Czy jest inny termin w tym tygodniu?",
+"file": "audio/7749b709340a.mp3"
+},
+"451e3cbcfa4d": {
+"pl": "Czyli wtorek o dziesiątej?",
+"file": "audio/451e3cbcfa4d.mp3"
+},
+"2a2ba9c63051": {
+"pl": "Czyli wizyta jest we wtorek o dziesiątej?",
+"file": "audio/2a2ba9c63051.mp3"
+},
+"b169e412960b": {
+"pl": "Czy mogę przełożyć wizytę?",
+"file": "audio/b169e412960b.mp3"
+},
+"119aff315a5c": {
+"pl": "Czy mogę przełożyć wizytę na przyszły tydzień?",
+"file": "audio/119aff315a5c.mp3"
+},
+"1858ff99e83d": {
+"pl": "Muszę odwołać wizytę.",
+"file": "audio/1858ff99e83d.mp3"
+},
+"c5ed6a2e865d": {
+"pl": "Mam wizytę na godzinę dziesiątą.",
+"file": "audio/c5ed6a2e865d.mp3"
+},
+"a91ade2c812d": {
+"pl": "Dzień dobry, mam umówioną wizytę.",
+"file": "audio/a91ade2c812d.mp3"
+},
+"34c734d153cd": {
+"pl": "Na którą godzinę jest wizyta?",
+"file": "audio/34c734d153cd.mp3"
+},
+"f3854b56fb11": {
+"pl": "Proszę powiedzieć, na którą godzinę jest wizyta.",
+"file": "audio/f3854b56fb11.mp3"
+},
+"130c76fd95c3": {
+"pl": "Proszę usiąść i chwilę poczekać.",
+"file": "audio/130c76fd95c3.mp3"
+},
+"726410d624d7": {
+"pl": "Wizyta jest potwierdzona; proszę chwilę poczekać.",
+"file": "audio/726410d624d7.mp3"
+},
+"1ee946f32511": {
+"pl": "Czy na tę wizytę mam przynieść skierowanie?",
+"file": "audio/1ee946f32511.mp3"
+},
+"7dce7f211b11": {
+"pl": "Kiedy mogę umówić się na badanie?",
+"file": "audio/7dce7f211b11.mp3"
+},
+"63d253a2fc28": {
+"pl": "Chcę zapytać o termin badania.",
+"file": "audio/63d253a2fc28.mp3"
+},
+"049fd2c20cd5": {
+"pl": "Proszę powtórzyć godzinę.",
+"file": "audio/049fd2c20cd5.mp3"
+},
+"9382fe1bf6ac": {
+"pl": "Proszę powtórzyć, o której jest wizyta.",
+"file": "audio/9382fe1bf6ac.mp3"
+},
+"da060b9f4883": {
+"pl": "O którą godzinę chodzi?",
+"file": "audio/da060b9f4883.mp3"
+},
+"e35dae2f63ea": {
+"pl": "Przepraszam, o którą godzinę chodzi: dziewiątą czy dziesiątą?",
+"file": "audio/e35dae2f63ea.mp3"
+},
+"56fcc41b1cc6": {
+"pl": "Czy wizyta jest potwierdzona?",
+"file": "audio/56fcc41b1cc6.mp3"
+},
+"9ec310446133": {
+"pl": "Dzwonię, żeby sprawdzić, czy wizyta jest potwierdzona.",
+"file": "audio/9ec310446133.mp3"
+},
+"54d4f5d8a611": {
+"pl": "Dzień dobry, rejestracja przychodni. W czym mogę pomóc?",
+"file": "audio/54d4f5d8a611.mp3"
+},
+"4c8fd9ca2f95": {
+"pl": "Czy mogę umówić się na wizytę kontrolną?",
+"file": "audio/4c8fd9ca2f95.mp3"
+},
+"efbe912e167c": {
+"pl": "Do jakiego lekarza ma być wizyta?",
+"file": "audio/efbe912e167c.mp3"
+},
+"e55392be8347": {
+"pl": "Do lekarza rodzinnego, proszę.",
+"file": "audio/e55392be8347.mp3"
+},
+"2d7258060d00": {
+"pl": "Do specjalisty. Mam skierowanie.",
+"file": "audio/2d7258060d00.mp3"
+},
+"3db94dcba315": {
+"pl": "Który dzień najbardziej pasuje?",
+"file": "audio/3db94dcba315.mp3"
+},
+"c6bf2e584407": {
+"pl": "Najbliższy wolny termin jest w piątek o dziesiątej.",
+"file": "audio/c6bf2e584407.mp3"
+},
+"260a2913e667": {
+"pl": "Tak, ten termin mi pasuje.",
+"file": "audio/260a2913e667.mp3"
+},
+"ecae06069fc7": {
+"pl": "W piątek o dziesiątej.",
+"file": "audio/ecae06069fc7.mp3"
+},
+"fb172c4dd63d": {
+"pl": "Czyli piątek o dziesiątej?",
+"file": "audio/fb172c4dd63d.mp3"
+},
+"5edfb3b0968f": {
+"pl": "Potwierdzam wizytę na piątek o dziesiątej.",
+"file": "audio/5edfb3b0968f.mp3"
+},
+"7e75e665ff4f": {
+"pl": "Mogę przełożyć wizytę na czwartek o dziewiątej.",
+"file": "audio/7e75e665ff4f.mp3"
+},
+"6e0adde00830": {
+"pl": "Tak, proszę przełożyć wizytę.",
+"file": "audio/6e0adde00830.mp3"
+},
+"57d20fccb4be": {
+"pl": "Dobrze, gotowe. Do widzenia.",
+"file": "audio/57d20fccb4be.mp3"
+},
+"648733664d0b": {
+"pl": "Dzwonię, żeby odwołać wizytę na jutro.",
+"file": "audio/648733664d0b.mp3"
+},
+"1fed173109e1": {
+"pl": "Dzwonię w sprawie wizyty kontrolnej.",
+"file": "audio/1fed173109e1.mp3"
+},
+"e6063c6546c9": {
+"pl": "Dzień dobry, dzwonię w sprawie wizyty kontrolnej.",
+"file": "audio/e6063c6546c9.mp3"
 }
 }
 }
