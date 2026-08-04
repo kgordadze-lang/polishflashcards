@@ -227,6 +227,17 @@ var Audio = FakeAudio;
 var voiceHintCalls = 0;
 function voiceHint() { voiceHintCalls++; }             // real one touches localStorage + DOM
 
+// Phase 4B-3 gave the audio engine a shared status/retry surface (index.html
+// owns the element; tests/test_phase4b3_audio_resilience_range_storage.js drives
+// the real DOM behaviour). This suite has no document, so the two entry points
+// the engine calls are counted stubs here - counted, not silent, so a section
+// below can still say what the engine asked the surface to do.
+var audioStatusCalls = [];
+function showAudioStatus(kind, btn) { audioStatusCalls.push(kind); }
+function clearAudioStatus() { audioStatusCalls.push('clear'); }
+var audioRetryRequest = null;
+var currentUtterance = null;
+
 // A synchronous stand-in for the promise chain the manifest load builds. Same
 // reason as Thenable above - osascript drains no microtask queue - but this one
 // has to CHAIN, because the shipping code is fetch().then().then().catch(). Each
@@ -651,7 +662,16 @@ function FakeEl(tag) {
 // what lets lRender clear the option row and the feedback box between questions.
 Object.defineProperty(FakeEl.prototype, 'innerHTML', {
   get: function () { return this._html; },
-  set: function (v) { this._html = String(v); this.children = this._html ? [new FakeEl('parsed')] : []; }
+  set: function (v) {
+    this._html = String(v); this.children = [];
+    var button = this._html.match(/<button\b([^>]*class="mini-audio"[^>]*)>/);
+    if (button) {
+      var audio = new FakeEl('button'), attrs = /([a-zA-Z_:][\w:.-]*)\s*=\s*"([^"]*)"/g, m;
+      while ((m = attrs.exec(button[1])) !== null) audio.setAttribute(m[1], m[2]);
+      audio.className = audio.getAttribute('class') || '';
+      this.children.push(audio);
+    } else if (this._html) this.children = [new FakeEl('parsed')];
+  }
 });
 Object.defineProperty(FakeEl.prototype, 'childNodes', { get: function () { return this.children; } });
 // same accessor FakeBtn exposes, so either kind of button can be checked alike
@@ -670,6 +690,10 @@ FakeEl.prototype.click = function () { (this._on.click || []).forEach(function (
 FakeEl.prototype.querySelectorAll = function (sel) {
   var want = sel.replace('.', '');
   return this.children.filter(function (c) { return (' ' + c.className + ' ').indexOf(' ' + want + ' ') !== -1; });
+};
+FakeEl.prototype.querySelector = function (sel) {
+  var hits = this.querySelectorAll(sel);
+  return hits.length ? hits[0] : null;
 };
 
 var DOM = {};
@@ -708,6 +732,11 @@ function fakeShuffle(a) { return a.slice(); }            // deterministic: ident
 // pp-usage's labelling is owned by tests/test_activities.js; nothing here depends on it.
 function fakeAppendUsage() {}
 var G_AUDIO_STUB = '<svg data-icon="audio"></svg>';
+var PP_AUDIO_NAMES = (new Function(
+  extractFunction(INDEX, 'ppAudioControlName') + '\n' +
+  extractFunction(INDEX, 'ppSetAudioControlName') + '\n' +
+  'return { set: ppSetAudioControlName };'
+))();
 
 // ---------- reading the wiring out of index.html ----------
 // The click handler expression bound to a Listening control, whatever its shape.
@@ -751,6 +780,7 @@ LNAMES.forEach(function (n) { LSRC[n] = extractFunction(INDEX, n); });
 var L_RECENT_SRC = (INDEX.match(/const\s+L_RECENT\s*=[^;\n]*;/) || [])[0];
 if (!L_RECENT_SRC) throw new Error('extract: Listening previous-round memory L_RECENT not found in index.html');
 var LISTEN = (new Function('$', 'document', 'show', 'L', 'LEVELS', 'poolFor', 'gShuffle', 'ppAppendUsageTo', 'G_AUDIO',
+  'ppSetAudioControlName',
   L_RECENT_SRC + '\n' +
   LNAMES.map(function (n) { return LSRC[n]; }).join('\n') + '\n' +
   // one wrapper so a test can watch the moment the next question renders
@@ -766,7 +796,8 @@ var LISTEN = (new Function('$', 'document', 'show', 'L', 'LEVELS', 'poolFor', 'g
   L_CONTROLS.map(function (id) { return '    ' + id + ': (' + handlerExpr(id) + ')'; }).join(',\n') + '\n' +
   '  }\n' +
   '};'
-))(el, fakeDoc, fakeShow, L, LEVELS, fakePoolFor, fakeShuffle, fakeAppendUsage, G_AUDIO_STUB);
+))(el, fakeDoc, fakeShow, L, LEVELS, fakePoolFor, fakeShuffle, fakeAppendUsage, G_AUDIO_STUB,
+   PP_AUDIO_NAMES.set);
 // What actually runs when the control is activated: the expression itself, or
 // the single named function it delegates to. Inline body or named helper both
 // resolve - the assertion is about behaviour, not about which style was chosen.
@@ -1037,6 +1068,11 @@ var sayMatch = fbHtml.match(/data-say="([^"]*)"/);
 ok('T17 the correct answer offers the example clip', !!sayMatch);
 var sayText = decodeURIComponent(sayMatch[1]);
 eq('T17 the mini-audio plays the example sentence', sayText, 'Poproszę kawę.');
+eq('T17 the Listening example control has phrase-specific context',
+   el('lFbBox').querySelector('.mini-audio').getAttribute('aria-label'),
+   'Play example sentence: Poproszę kawę.');
+ok('T17 the Listening example control is not exposed as generic Play',
+   el('lFbBox').querySelector('.mini-audio').getAttribute('aria-label') !== 'Play');
 // exactly what the delegated [data-say] listener does with that button
 var mini = new FakeBtn('mini-audio');
 speakText(sayText, mini);
@@ -1115,7 +1151,8 @@ eq('T19A a fresh page starts out loading', audioManifestStatus, 'loading');
 ok('T19A the Play button is disabled while the manifest is loading', pb.disabled === true);
 eq('T19A the button reports itself busy', pb.getAttribute('aria-busy'), 'true');
 ok('T19A the label says the audio is loading', /loading/i.test(pb.getAttribute('aria-label') || ''));
-ok('T19A the loading label is not the ready label', pb.getAttribute('aria-label') !== 'Play the Polish audio');
+ok('T19A the loading label is not the ready label',
+   pb.getAttribute('aria-label') !== 'Play Polish audio for question 1 of 5');
 ok('T19A nothing autoplayed while loading', FakeAudio.created.length === 0 && synth.spoken.length === 0);
 ok('T19A the question itself rendered as usual',
    el('lOpts').children.length === 4 && el('lCountLbl').textContent === '1 / 5');
@@ -1149,7 +1186,8 @@ eq('T19C audioMap was rebuilt from the entries', audioMap['kawa'], L_CLIPS['kawa
 eq('T19C every usable entry made it in', Object.keys(audioMap).length, Object.keys(L_CLIPS).length);
 ok('T19C the button became pressable', el('lPlay').disabled === false);
 eq('T19C aria-busy was cleared', el('lPlay').getAttribute('aria-busy'), 'false');
-eq('T19C the shipped label was restored', el('lPlay').getAttribute('aria-label'), 'Play the Polish audio');
+eq('T19C the contextual label was restored', el('lPlay').getAttribute('aria-label'),
+   'Play Polish audio for question 1 of 5');
 ok('T19C settlement itself made no sound', FakeAudio.created.length === 0 && synth.spoken.length === 0);
 ok('T19C settlement claimed no button', speakBtn === null && currentAudio === null);
 eq('T19C settlement did not move the round', L.i, 0);
@@ -1210,8 +1248,8 @@ eq('T19C ... where a press uses the fallback voice exactly once', synth.spoken.l
   eq('T19J ' + what + ' builds no map', Object.keys(audioMap).length, 0);
   ok('T19J ' + what + ' still frees the button', el('lPlay').disabled === false);
   eq('T19J ' + what + ' clears aria-busy', el('lPlay').getAttribute('aria-busy'), 'false');
-  eq('T19J ' + what + ' restores the shipped label',
-     el('lPlay').getAttribute('aria-label'), 'Play the Polish audio');
+  eq('T19J ' + what + ' restores the contextual label',
+     el('lPlay').getAttribute('aria-label'), 'Play Polish audio for question 1 of 5');
   ok('T19J ' + what + ' plays nothing while settling',
      FakeAudio.created.length === 0 && synth.spoken.length === 0);
   ok('T19J ' + what + ': a later press is accepted', pressPlayButton());
@@ -1332,8 +1370,8 @@ ok('T19L the padded entry is reachable end-to-end from a real press',
   eq('T19D ' + what + ' leaves an empty map', Object.keys(audioMap).length, 0);
   ok('T19D ' + what + ' still frees the button', el('lPlay').disabled === false);
   eq('T19D ' + what + ' clears aria-busy', el('lPlay').getAttribute('aria-busy'), 'false');
-  eq('T19D ' + what + ' restores the shipped label',
-     el('lPlay').getAttribute('aria-label'), 'Play the Polish audio');
+  eq('T19D ' + what + ' restores the contextual label',
+     el('lPlay').getAttribute('aria-label'), 'Play Polish audio for question 1 of 5');
   ok('T19D ' + what + ' makes no sound while settling',
      FakeAudio.created.length === 0 && synth.spoken.length === 0);
   ok('T19D ' + what + ': a later press is accepted', pressPlayButton());
@@ -1471,8 +1509,8 @@ activate('lAgain');                                      // a fresh round, manif
   ok('T19H settled: question ' + (n + 1) + ' is pressable', el('lPlay').disabled === false);
   eq('T19H settled: question ' + (n + 1) + ' is not busy',
      el('lPlay').getAttribute('aria-busy'), 'false');
-  eq('T19H settled: question ' + (n + 1) + ' carries the shipped label',
-     el('lPlay').getAttribute('aria-label'), 'Play the Polish audio');
+  eq('T19H settled: question ' + (n + 1) + ' carries the contextual label',
+     el('lPlay').getAttribute('aria-label'), 'Play Polish audio for question ' + (n + 1) + ' of 5');
   ok('T19H settled: question ' + (n + 1) + ' autoplayed nothing', FakeAudio.created.length === n);
   ok('T19H settled: question ' + (n + 1) + ' plays on request', pressPlayButton());
   eq('T19H settled: question ' + (n + 1) + ' played its own clip', lastSrc(), L_CLIPS[word]);
@@ -1586,8 +1624,8 @@ var AUDIO_STARTERS = ['playPreGenerated', 'speakText(', 'speakFallback', 'speakC
 // the helper moves state, not structure
 ok('T20 the readiness helper toggles disabled', /\.disabled\s*=/.test(syncBody));
 ok('T20 the readiness helper sets aria-busy', syncBody.indexOf('aria-busy') !== -1);
-ok('T20 the readiness helper restores the shipped label',
-   syncBody.indexOf('Play the Polish audio') !== -1);
+ok('T20 the readiness helper restores the contextual label',
+   syncBody.indexOf('Play Polish audio') !== -1 && syncBody.indexOf('question') !== -1);
 ok('T20 the readiness helper leaves the icon and layout alone',
    syncBody.indexOf('innerHTML') === -1 && syncBody.indexOf('textContent') === -1 &&
    syncBody.indexOf('createElement') === -1 && syncBody.indexOf('style') === -1);

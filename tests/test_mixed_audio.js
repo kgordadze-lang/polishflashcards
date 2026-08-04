@@ -255,6 +255,17 @@ var SpeechSynthesisUtterance = FakeUtterance;
 var Audio = FakeAudio;
 function voiceHint() {}                                   // real one touches localStorage + DOM
 
+// Phase 4B-3 gave the audio engine a shared status/retry surface (index.html
+// owns the element; tests/test_phase4b3_audio_resilience_range_storage.js drives
+// the real DOM behaviour). This suite has no document, so the two entry points
+// the engine calls are counted stubs here - counted, not silent, so a section
+// below can still say what the engine asked the surface to do.
+var audioStatusCalls = [];
+function showAudioStatus(kind, btn) { audioStatusCalls.push(kind); }
+function clearAudioStatus() { audioStatusCalls.push('clear'); }
+var audioRetryRequest = null;
+var currentUtterance = null;
+
 // module-level state the extracted functions read and write
 var audioMap = {};
 var audioManifestStatus = 'loading';
@@ -585,7 +596,8 @@ settleAudioManifest(manifestEntries());
 eq('B1 the manifest settled ready', audioManifestStatus, 'ready');
 ok('B1 Play is enabled for the current listen question', play().disabled === false);
 eq('B1 Play no longer reports itself busy', play().getAttribute('aria-busy'), 'false');
-eq('B1 the accessible name is back to the ordinary one', play().accName(), 'Play the Polish audio');
+eq('B1 the accessible name is contextual once ready', play().accName(),
+   'Play Polish audio for the current question');
 eq('B2 settlement created no Audio object', FakeAudio.created.length, 0);
 eq('B2 settlement created no utterance', synth.spoken.length, 0);
 ok('B2 settlement started nothing at all', currentAudio === null && speakBtn === null);

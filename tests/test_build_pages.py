@@ -1,7 +1,425 @@
+import contextlib
+import hashlib
+import inspect
 import html
+import io
+import json
+import os
+import re
+import shutil
+import tempfile
 import unittest
+from html.parser import HTMLParser
+from pathlib import Path
 
 import build_pages
+
+
+ROOT = Path(build_pages.__file__).resolve().parent
+
+# The approved editorial copy for /guide/listening/, written out in full so a
+# reworded, reordered or silently dropped sentence fails instead of passing a
+# keyword count. Straight apostrophes and simple hyphens are part of the
+# contract - an em dash or a curly quote here is a real regression.
+LISTENING_INTRODUCTION = (
+    "Flashcards help you learn words. Getting used to the sound of Polish takes hours of "
+    "listening. These are three resources I keep coming back to because they cover different "
+    "stages of the same journey: clear learner-friendly Polish, real-life listening with plenty "
+    "of visual context, and natural Polish at full speed."
+)
+LISTENING_DISCLOSURE = (
+    "These are personal recommendations. None of the creators paid to be included here."
+)
+OLD_LISTENING_DISCLOSURE = (
+    "Neither of these paid me anything, and neither probably knows this page exists."
+)
+OLD_LISTENING_INTRODUCTION = (
+    "Flashcards help you learn words. Getting used to the sound of Polish takes hours of "
+    "listening. These are two resources I keep coming back to because they train different "
+    "skills: understanding clear, learner-friendly Polish and keeping up with natural Polish "
+    "at full speed."
+)
+
+# The copy-consistency correction: the page now carries three recommendations,
+# so the Guide hub card and the listening page's own description say three. One
+# generator variable feeds the meta description, the Open Graph description and
+# the structured-data description, so they cannot drift apart.
+LISTENING_TITLE = "Polish podcasts worth listening to | Po polsku"
+LISTENING_DESCRIPTION = (
+    "Three Polish listening resources that actually helped - from learner-friendly input to "
+    "natural Polish at full speed. Honest notes on what's free, what isn't, and what level "
+    "each works best for."
+)
+OLD_LISTENING_DESCRIPTION = (
+    "Two Polish podcasts that actually helped - one graded for learners, one made for native "
+    "speakers. Honest notes on what's free, what isn't, and what level each needs."
+)
+GUIDE_HUB_LISTENING_DESCRIPTION = "Three Polish listening resources that actually helped"
+OLD_GUIDE_HUB_LISTENING_DESCRIPTION = "Two Polish podcasts that actually helped"
+
+KAMIL_YOUTUBE = "https://www.youtube.com/@polishwithkamil"
+KAMIL_PATREON = "https://www.patreon.com/cw/polishwithkamil"
+KAMIL_RESOURCE_LINE = (
+    "youtube.com/@polishwithkamil · extra podcasts, transcripts and exercises on Patreon"
+)
+KAMIL_PARAGRAPHS = (
+    "Kamil teaches Polish through comprehensible input: everyday vlogs, short lessons, games "
+    "and interviews that help you understand the message without needing to know every word. "
+    "He speaks clearly and gives you plenty of visual context, but the Polish still feels "
+    "natural and connected to real situations.",
+    "The YouTube content is free. His Patreon adds a weekly slow-Polish podcast with full "
+    "transcripts and extra practice exercises.",
+)
+KAMIL_NOTE = (
+    "Good from beginner level onward. Start with the comprehensible-input videos and vlogs; "
+    "the interviews are a natural next step when you want faster, less predictable Polish."
+)
+
+# Real Polish and Ratio viva are frozen: the amendment may only insert a card
+# between them, so their headings, resource lines, links, prose and notes are
+# asserted in full rather than sampled.
+REAL_POLISH_CARD = {
+    "heading": "Real Polish",
+    "sub": "realpolish.pl · also on Spotify and YouTube",
+    "paragraphs": [
+        "Piotr records in Polish, slowly and clearly, about culture, history and ordinary life. "
+        "The idea is comprehensible input - you should understand most of it and be stretched by "
+        "the rest, which is a very different feeling from being lost.",
+        "The episodes are free. Transcripts and the extra study material are paid. I got a long "
+        "way on the free episodes alone, so start there and decide later.",
+    ],
+    "notes": [
+        "Works from roughly A2 onward. Below that it will feel fast - that is normal, and it is "
+        "worth coming back to in a month or two.",
+    ],
+    "links": [("https://realpolish.pl/", "_blank", "noopener", "realpolish.pl")],
+}
+RATIO_VIVA_CARD = {
+    "heading": "Ratio viva",
+    "sub": "youtube.com/@Ratio_viva · also on Spotify",
+    "paragraphs": [
+        "Not a learning channel at all. Nikodem makes short videos about psychology and the "
+        "thinking errors behind everyday decisions - made for Poles, at Polish speed. That is "
+        "exactly why it is useful: real pace, real vocabulary, nobody slowing down for you. "
+        "Closed captions are on, so you can read along when your ears give out.",
+    ],
+    "notes": [
+        "Harder than Real Polish. I treat it as the thing I graduate into, and I still pause it "
+        "constantly.",
+    ],
+    "links": [("https://www.youtube.com/@Ratio_viva", "_blank", "noopener",
+               "youtube.com/@Ratio_viva")],
+}
+KAMIL_CARD = {
+    "heading": "Polish with Kamil",
+    "sub": KAMIL_RESOURCE_LINE,
+    "paragraphs": list(KAMIL_PARAGRAPHS),
+    "notes": [KAMIL_NOTE],
+    "links": [(KAMIL_YOUTUBE, "_blank", "noopener", "youtube.com/@polishwithkamil"),
+              (KAMIL_PATREON, "_blank", "noopener", "Patreon")],
+}
+APPROVED_LISTENING_CARDS = [REAL_POLISH_CARD, KAMIL_CARD, RATIO_VIVA_CARD]
+
+
+class ListeningPageParser(HTMLParser):
+    """Read /guide/listening/ the way a reader meets it.
+
+    Recommendation cards in document order, each with its heading, resource
+    line, prose, note and links; plus any `.note` that sits outside a card,
+    which is where the disclosure lives.
+    """
+
+    VOID = {"meta", "link", "br", "img", "input", "hr", "source", "col"}
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.stack = []
+        self.cards = []
+        self.loose_notes = []
+        self.headings = []
+
+    @staticmethod
+    def _classes(attrs):
+        return set(attrs.get("class", "").split())
+
+    def _open_card(self):
+        for frame in reversed(self.stack):
+            if frame.get("card") is not None:
+                return frame["card"]
+        return None
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        classes = self._classes(attrs)
+        frame = {"tag": tag, "classes": classes, "attrs": attrs, "text": [], "card": None}
+        if tag == "div" and "card" in classes and self._open_card() is None:
+            frame["card"] = {"heading": None, "sub": None, "paragraphs": [],
+                             "notes": [], "links": []}
+            self.cards.append(frame["card"])
+        if tag not in self.VOID:
+            self.stack.append(frame)
+
+    def handle_endtag(self, tag):
+        while self.stack:
+            frame = self.stack.pop()
+            if frame["tag"] != tag:
+                continue
+            text = " ".join("".join(frame["text"]).split())
+            if self.stack:
+                self.stack[-1]["text"].append("".join(frame["text"]))
+            card = self._open_card()
+            if tag == "h2":
+                self.headings.append(text)
+                if card is not None:
+                    card["heading"] = text
+            elif tag == "p" and "sub" in frame["classes"] and card is not None:
+                card["sub"] = text
+            elif tag == "p" and not frame["classes"] and card is not None:
+                card["paragraphs"].append(text)
+            elif "note" in frame["classes"]:
+                if card is not None:
+                    card["notes"].append(text)
+                else:
+                    self.loose_notes.append((frame["tag"], text,
+                                             frame["attrs"].get("style")))
+            elif tag == "a" and card is not None:
+                card["links"].append((frame["attrs"].get("href"),
+                                      frame["attrs"].get("target"),
+                                      frame["attrs"].get("rel"), text))
+            break
+
+    def handle_data(self, data):
+        if self.stack:
+            self.stack[-1]["text"].append(data)
+
+
+class GeneratedPageAuditParser(HTMLParser):
+    """Small structural audit for committed, fully rendered learner pages."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.stack = []
+        self.ids = set()
+        self.duplicate_ids = []
+        self.main_count = 0
+        self.h1_count = 0
+        self.root_lang = None
+        self.nested_interactives = []
+        self.links = []
+        self.audio_names = []
+        self.polish_nodes = 0
+        self.title_depth = 0
+        self.title_text = []
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if tag == "html":
+            self.root_lang = attrs.get("lang")
+        if tag == "main":
+            self.main_count += 1
+        if tag == "h1":
+            self.h1_count += 1
+        if attrs.get("lang") == "pl":
+            self.polish_nodes += 1
+        element_id = attrs.get("id")
+        if element_id:
+            if element_id in self.ids:
+                self.duplicate_ids.append(element_id)
+            self.ids.add(element_id)
+        if tag in {"a", "button"}:
+            if any(open_tag in {"a", "button"} for open_tag in self.stack):
+                self.nested_interactives.append(tag)
+        if tag == "a":
+            self.links.append(attrs.get("href"))
+        if tag == "button" and "say" in attrs.get("class", "").split():
+            self.audio_names.append(attrs.get("aria-label"))
+        if tag == "title":
+            self.title_depth += 1
+        self.stack.append(tag)
+
+    def handle_endtag(self, tag):
+        if tag == "title" and self.title_depth:
+            self.title_depth -= 1
+        if tag in self.stack:
+            while self.stack:
+                if self.stack.pop() == tag:
+                    break
+
+    def handle_data(self, data):
+        if self.title_depth:
+            self.title_text.append(data)
+
+
+class GeneratedStyleSheet:
+    """The CSS a generated page actually ships, parsed into real declarations.
+
+    Phase 3B-1B's contract is a set of *rules*, not a set of strings, so the
+    tests match on parsed selectors and property values instead of grepping the
+    stylesheet text.
+    """
+
+    RULE = re.compile(r"([^{}]+)\{([^{}]*)\}")
+    MEDIA = re.compile(r"@media([^{]+)\{((?:[^{}]|\{[^{}]*\})*)\}")
+
+    def __init__(self, css):
+        self.source = css
+        body = re.sub(r"/\*.*?\*/", "", css, flags=re.S)
+        blocks = []
+        body = self.MEDIA.sub(lambda m: blocks.append((m.group(1).strip(), m.group(2))) or "", body)
+        self.top_level = {}
+        self.media = {}
+        for selector, declarations in self.RULE.findall(body):
+            self._add(self.top_level, selector, declarations)
+        for query, block in blocks:
+            for selector, declarations in self.RULE.findall(block):
+                self._add(self.media.setdefault(query, {}), selector, declarations)
+
+    @staticmethod
+    def _declarations(text):
+        parsed = {}
+        for chunk in text.split(";"):
+            if ":" not in chunk:
+                continue
+            prop, _, value = chunk.partition(":")
+            parsed[" ".join(prop.split()).lower()] = " ".join(value.split())
+        return parsed
+
+    def _add(self, target, selector, declarations):
+        parsed = self._declarations(declarations)
+        for one in selector.split(","):
+            one = " ".join(one.split())
+            if one:
+                target.setdefault(one, {}).update(parsed)
+
+    def value(self, selector, prop):
+        return self.top_level.get(selector, {}).get(prop)
+
+    def selectors_declaring(self, prop, value):
+        return {selector for selector, declarations in self.top_level.items()
+                if declarations.get(prop) == value}
+
+    def selectors_mentioning(self, needle):
+        return {selector for selector, declarations in self.top_level.items()
+                if any(needle in declared for declared in declarations.values())}
+
+    def every_rule(self):
+        for scope in (self.top_level, *self.media.values()):
+            for selector, declarations in scope.items():
+                yield selector, declarations
+
+
+class GeneratedStructureParser(HTMLParser):
+    """Record the emitted structure the shared CSS selectors have to match."""
+
+    VOID = {"meta", "link", "br", "img", "input", "hr", "source", "col"}
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.stack = []
+        self.viewports = []
+        self.top_anchors = []
+        self.ex_children = []
+        self.hub_anchor_children = []
+        self.inline_overflow = []
+        self.tables = []
+        self.cells_outside_th_td = []
+        self.styled_cells = []
+        self.script_text = []
+        self._script_depth = 0
+
+    def _classes(self, attrs):
+        return set(attrs.get("class", "").split())
+
+    def _open_names(self):
+        return [frame["tag"] for frame in self.stack]
+
+    def _in(self, class_name):
+        return any(class_name in frame["classes"] for frame in self.stack)
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        classes = self._classes(attrs)
+        if tag == "meta" and attrs.get("name") == "viewport":
+            self.viewports.append(attrs.get("content"))
+        if "overflow" in attrs.get("style", ""):
+            self.inline_overflow.append((tag, attrs.get("style")))
+        if self.stack:
+            self.stack[-1]["children"].append(tag)
+        frame = {"tag": tag, "classes": classes, "attrs": attrs, "children": [],
+                 "ancestors": self._open_names(),
+                 "ancestor_classes": [frozenset(f["classes"]) for f in self.stack]}
+        if tag == "a" and self._in("top"):
+            self.top_anchors.append(frame)
+        if tag == "a" and self._in("hub-list"):
+            self.hub_anchor_children.append(frame)
+        if tag == "table":
+            self.tables.append(frame)
+        if tag == "tr":
+            frame["cells"] = []
+        if tag in {"th", "td"}:
+            for open_frame in reversed(self.stack):
+                if open_frame["tag"] == "tr":
+                    open_frame["cells"].append(tag)
+                    break
+            if attrs.get("style") or classes:
+                self.styled_cells.append((tag, attrs))
+        if tag == "script":
+            self._script_depth += 1
+        if tag not in self.VOID:
+            self.stack.append(frame)
+
+    def handle_endtag(self, tag):
+        if tag == "script" and self._script_depth:
+            self._script_depth -= 1
+        while self.stack:
+            frame = self.stack.pop()
+            if frame["tag"] == tag:
+                if "ex" in frame["classes"]:
+                    self.ex_children.append(frame["children"])
+                if frame["tag"] == "tr":
+                    self.tables[-1].setdefault("rows", []).append(frame["cells"])
+                break
+
+    def handle_data(self, data):
+        if self._script_depth:
+            self.script_text.append(data)
+
+
+class GeneratedTableCellParser(HTMLParser):
+    """Capture effective language boundaries within generated table cells."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.language_stack = ["en"]
+        self.tag_stack = []
+        self.cells = []
+        self.current = None
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        self.tag_stack.append(tag)
+        self.language_stack.append(attrs.get("lang", self.language_stack[-1]))
+        if tag == "td":
+            self.current = {
+                "declared": attrs.get("lang"),
+                "text": [],
+                "segments": [],
+            }
+
+    def handle_endtag(self, tag):
+        if tag == "td":
+            self.current["text"] = "".join(self.current["text"])
+            self.cells.append(self.current)
+            self.current = None
+        if self.tag_stack:
+            self.tag_stack.pop()
+            self.language_stack.pop()
+
+    def handle_data(self, data):
+        if self.current is not None:
+            self.current["text"].append(data)
+            if data:
+                self.current["segments"].append((self.language_stack[-1], data))
 
 
 class ExampleEmphasisTests(unittest.TestCase):
@@ -55,10 +473,123 @@ class ExampleEmphasisTests(unittest.TestCase):
                 ],
             },
             {},
+            "mianownik-nominative",
+            2,
         )
         self.assertIn('<td lang="pl"><b>słowo</b></td>', rendered)
         self.assertNotIn("<img", rendered)
         self.assertIn("&lt;img onerror=&quot;alert(1)&quot;&gt;", rendered)
+
+
+class GeneratedTableLanguageTests(unittest.TestCase):
+    @staticmethod
+    def shipping_tables():
+        tables = {}
+        for level in build_pages.load_levels(build_pages.DATA_FILE):
+            for topic in level.get("topics", []):
+                if topic.get("kind") != "grammar":
+                    continue
+                slug = build_pages.slugify(topic["name"])
+                for teach_index, item in enumerate(topic.get("teach", [])):
+                    if item.get("table"):
+                        tables[(slug, teach_index)] = item["table"]
+        return tables
+
+    @staticmethod
+    def parsed_cell(slug, teach_index, row_index, field):
+        rows = GeneratedTableLanguageTests.shipping_tables()[(slug, teach_index)]
+        value = rows[row_index].get(field, "")
+        language = build_pages.table_cell_language(
+            slug, teach_index, row_index, field
+        )
+        parser = GeneratedTableCellParser()
+        parser.feed(build_pages.render_table_cell(value, language))
+        return value, language, parser.cells[0]
+
+    def assert_cell_language(self, identity, expected_text, expected_language):
+        value, language, cell = self.parsed_cell(*identity)
+        self.assertEqual(value, expected_text)
+        self.assertEqual(cell["text"], expected_text)
+        self.assertEqual(language, expected_language)
+        self.assertEqual(cell["declared"], "pl" if expected_language == "pl" else None)
+        self.assertTrue(all(segment_language == expected_language
+                            for segment_language, text in cell["segments"] if text))
+
+    def test_contract_exhaustively_covers_shipping_table_patterns(self):
+        tables = self.shipping_tables()
+        self.assertEqual(set(build_pages.TABLE_LANGUAGE_CONTRACT), set(tables))
+        self.assertEqual(len(tables), 83)
+
+        seen_overrides = set()
+        for (slug, teach_index), rows in tables.items():
+            polish_cells = 0
+            for row_index, row in enumerate(rows):
+                for field in ("g", "e", "ex"):
+                    value = row.get(field, "")
+                    language = build_pages.table_cell_language(
+                        slug, teach_index, row_index, field
+                    )
+                    parser = GeneratedTableCellParser()
+                    parser.feed(build_pages.render_table_cell(value, language))
+                    cell = parser.cells[0]
+                    visible_value = value.replace("<b>", "").replace("</b>", "")
+                    self.assertEqual(cell["text"], visible_value)
+                    override_key = (slug, teach_index, row_index, field)
+                    if override_key in build_pages.TABLE_CELL_LANGUAGE_OVERRIDES:
+                        seen_overrides.add(override_key)
+                    if language == "pl":
+                        polish_cells += 1
+                        self.assertEqual(cell["declared"], "pl")
+                    elif language == "en":
+                        self.assertIsNone(cell["declared"])
+                        self.assertNotIn("pl", [part[0] for part in cell["segments"]])
+                    else:
+                        self.assertIsNone(cell["declared"])
+                        self.assertEqual("".join(text for _, text in language), value)
+                        self.assertIn("pl", [part[0] for part in cell["segments"]])
+                        self.assertIn("en", [part[0] for part in cell["segments"]])
+            self.assertGreater(polish_cells, 0, (slug, teach_index))
+        self.assertEqual(seen_overrides, set(build_pages.TABLE_CELL_LANGUAGE_OVERRIDES))
+
+    def test_required_polish_and_english_cells_are_not_inverted(self):
+        polish = (
+            (("stopniowanie-comparison", 1, 0, "g"), "stary → starszy"),
+            (("stopniowanie-comparison", 1, 1, "g"), "młody → młodszy"),
+            (("zeby-so-that-want-to", 3, 0, "g"), "chcieć"),
+            (("biernik-accusative", 4, 0, "ex"),
+             "kot → kota, brat → brata, człowiek → człowieka"),
+        )
+        english = (
+            (("stopniowanie-comparison", 1, 0, "e"), "older"),
+            (("stopniowanie-comparison", 2, 0, "e"), "good → better"),
+            (("zeby-so-that-want-to", 3, 0, "e"), "to want"),
+            (("zeby-so-that-want-to", 3, 1, "e"), "to ask / request"),
+            (("zaimki-pronouns-determiners", 5, 0, "ex"), "'this my good cat'"),
+            (("biernik-accusative", 4, 0, "e"), "= Genitive"),
+        )
+        for identity, text in polish:
+            with self.subTest(identity=identity):
+                self.assert_cell_language(identity, text, "pl")
+        for identity, text in english:
+            with self.subTest(identity=identity):
+                self.assert_cell_language(identity, text, "en")
+
+    def test_mixed_cells_scope_fragments_without_marking_the_td_polish(self):
+        cases = (
+            (("wolacz-vocative", 2, 2, "ex"), "pani → pani (no change)"),
+            (("stopniowanie-comparison", 6, 0, "g"), "coraz + comparative"),
+            (("panowie-panie-panstwo-plural-formal-address", 1, 0, "g"),
+             "wy (informal)"),
+            (("ktory-relative-clauses", 3, 0, "g"), "z + Instrumental"),
+        )
+        for identity, expected in cases:
+            with self.subTest(identity=identity):
+                value, language, cell = self.parsed_cell(*identity)
+                self.assertEqual(value, expected)
+                self.assertIsInstance(language, tuple)
+                self.assertIsNone(cell["declared"])
+                self.assertIn("pl", [part[0] for part in cell["segments"]])
+                self.assertIn("en", [part[0] for part in cell["segments"]])
 
 
 class AspectPairTests(unittest.TestCase):
@@ -76,6 +607,1148 @@ class AspectPairTests(unittest.TestCase):
     def test_card_without_pair_has_no_pair_note(self):
         rendered = build_pages.vocab_card({"pl": "dom", "en": "house"}, {})
         self.assertNotIn("Aspect pair:", rendered)
+
+
+class LearningEndingTests(unittest.TestCase):
+    @staticmethod
+    def learner_pages():
+        return {
+            relative: markup
+            for relative, markup in GeneratedAccessibilityTests.expected_pages().items()
+            if relative not in GeneratedAccessibilityTests.REDIRECT_PAGES
+        }
+
+    @staticmethod
+    def visible_text(markup):
+        return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", markup))).strip()
+
+    def test_app_version_is_extracted_from_the_single_shipping_source(self):
+        index_source = (ROOT / "index.html").read_text(encoding="utf-8")
+        generator_source = Path(build_pages.__file__).read_text(encoding="utf-8")
+        self.assertEqual(build_pages.extract_app_version(index_source), "8.4")
+        self.assertEqual(build_pages.read_app_version(), "8.4")
+        self.assertNotIn('APP_VERSION = "8.4"', generator_source)
+        with self.assertRaisesRegex(RuntimeError, "APP_VERSION"):
+            build_pages.extract_app_version("const SOMETHING_ELSE = \"8.1\";")
+
+    def test_every_learner_page_has_the_exact_shared_ending_and_footer(self):
+        expected_lines = (
+            "Ready to keep learning?",
+            "Practice the same Polish with flashcards, drills, conversations, and listening.",
+            "Open the app",
+            "Genuinely free. No account. Works offline.",
+        )
+        # Phase 3 closeout removed the progress sentence and its Privacy link from the
+        # shared ending; the Privacy page and the /#privacy route are untouched.
+        removed_lines = (
+            "Your progress stays on this device and can be backed up anytime.",
+            "How progress works",
+        )
+        year = build_pages.datetime.date.today().year
+        expected_ending = build_pages.learning_ending()
+        footer = (f'<footer class="guide-footer"><a href="/">Po polsku</a> '
+                  f'&middot; v8.4 &middot; {year}</footer>')
+        pages = self.learner_pages()
+        self.assertEqual(len(pages), 31)
+        self.assertEqual(sum(relative.startswith("grammar/") for relative in pages), 23)
+        self.assertEqual(sum(relative.startswith("vocabulary/") for relative in pages), 6)
+        self.assertEqual(sum(relative.startswith("guide/") for relative in pages), 2)
+        for relative, markup in pages.items():
+            with self.subTest(page=relative):
+                self.assertEqual(markup.count(expected_ending), 1)
+                self.assertEqual(markup.count('class="guide-ending"'), 1)
+                for line in expected_lines:
+                    self.assertEqual(self.visible_text(markup).count(line), 1)
+                for line in removed_lines:
+                    self.assertNotIn(line, self.visible_text(markup))
+                self.assertEqual(
+                    markup.count('<a class="guide-primary" href="/">Open the app</a>'), 1
+                )
+                self.assertNotIn('guide-progress', markup)
+                self.assertNotIn('href="/#privacy"', markup)
+                self.assertNotIn('<a class="guide-primary" href="/#privacy">', markup)
+                self.assertNotIn("onclick=", markup)
+                self.assertEqual(markup.count(footer), 1)
+                parser = GeneratedPageAuditParser()
+                parser.feed(markup)
+                self.assertEqual(parser.duplicate_ids, [])
+
+    def test_old_promotional_endings_are_absent_from_generator_and_pages(self):
+        obsolete = (
+            'class="cta"',
+            'class="cta-sub"',
+            ".cta{",
+            ".cta-sub{",
+            "Practice this in the app - free, no account",
+            "Learn these as flashcards in the app - free, no account",
+            "Po polsku - free Polish flashcards with audio. No account, no tracking, works offline.",
+        )
+        sources = [Path(build_pages.__file__).read_text(encoding="utf-8")]
+        sources.extend(self.learner_pages().values())
+        for marker in obsolete:
+            with self.subTest(marker=marker):
+                self.assertTrue(all(marker not in source for source in sources))
+
+    def test_listening_copy_changes_only_the_approved_introduction_and_disclosure(self):
+        markup = build_pages.listening_page()
+        self.assertIn(LISTENING_INTRODUCTION, self.visible_text(markup))
+        self.assertIn(LISTENING_DISCLOSURE, self.visible_text(markup))
+        self.assertNotIn(OLD_LISTENING_DISCLOSURE, self.visible_text(markup))
+        self.assertNotIn(
+            "Neither of these paid me anything and probably neither knows this page exists. "
+            "They are just what worked.",
+            self.visible_text(markup),
+        )
+        self.assertIn(
+            "Piotr records in Polish, slowly and clearly, about culture, history and ordinary life.",
+            self.visible_text(markup),
+        )
+        self.assertIn(
+            "Not a learning channel at all. Nikodem makes short videos about psychology and the "
+            "thinking errors behind everyday decisions - made for Poles, at Polish speed.",
+            self.visible_text(markup),
+        )
+        self.assertIn(
+            '<a href="https://realpolish.pl/" target="_blank" rel="noopener">', markup
+        )
+        self.assertIn(
+            '<a href="https://www.youtube.com/@Ratio_viva" target="_blank" rel="noopener">',
+            markup,
+        )
+
+    def test_privacy_target_and_shared_style_are_present_on_topic_pages(self):
+        index_source = (ROOT / "index.html").read_text(encoding="utf-8")
+        self.assertIn('id="privacy"', index_source)
+        # Phase 3 closeout removed the ending's Privacy link. The screen, the site-menu
+        # entry and the direct /#privacy route are unchanged and asserted here instead.
+        self.assertNotIn('href="/#privacy"', build_pages.learning_ending())
+        self.assertIn('<section class="screen" id="privacy">', index_source)
+        self.assertIn('<li><a href="#privacy" data-app-screen="privacy">Privacy</a></li>',
+                      index_source)
+        self.assertIn('["about","privacy","contact","install"].includes(ppInitialScreen)',
+                      index_source)
+        self.assertIn(build_pages.LEARNING_ENDING_STYLE, build_pages.topic_page(
+            {"level": "A1"},
+            {"name": "Test", "desc": "Test", "chip": "Grammar A1", "teach": [], "drills": []},
+            "test",
+            {},
+        ))
+        self.assertIn(build_pages.LEARNING_ENDING_STYLE, build_pages.vocab_page(
+            {"name": "Test", "desc": "Test", "cards": []},
+            "test",
+            "Test",
+            {},
+        ))
+
+
+class GeneratedAccessibilityTests(unittest.TestCase):
+    REDIRECT_PAGES = {"grammar/index.html", "vocabulary/index.html"}
+
+    @staticmethod
+    def expected_pages():
+        levels = build_pages.load_levels(build_pages.DATA_FILE)
+        vocab_levels = build_pages.load_levels(build_pages.VOCAB_FILE)
+        audio_idx = build_pages.load_audio_index()
+        pages = {}
+        hub = []
+        for level in levels:
+            items = []
+            for topic in level.get("topics", []):
+                if topic.get("kind") != "grammar":
+                    continue
+                slug = build_pages.slugify(topic["name"])
+                pages[f"grammar/{slug}/index.html"] = build_pages.topic_page(
+                    level, topic, slug, audio_idx
+                )
+                items.append((topic["name"], topic.get("desc", ""), slug, topic.get("emoji", "")))
+            if items:
+                hub.append((level.get("level", ""), items))
+
+        vocab_items = []
+        for level in vocab_levels:
+            for topic in level.get("topics", []):
+                config = build_pages.VOCAB_PAGES.get(topic.get("name"))
+                if not config:
+                    continue
+                slug, page_title = config
+                pages[f"vocabulary/{slug}/index.html"] = build_pages.vocab_page(
+                    topic, slug, page_title, audio_idx
+                )
+                vocab_items.append(
+                    (page_title, topic.get("desc", ""), slug, topic.get("emoji", ""),
+                     len(topic.get("cards", [])))
+                )
+
+        pages["guide/index.html"] = build_pages.guide_page(hub, vocab_items)
+        pages["guide/listening/index.html"] = build_pages.listening_page()
+        pages["grammar/index.html"] = build_pages.redirect_stub("/guide/")
+        pages["vocabulary/index.html"] = build_pages.redirect_stub("/guide/")
+        return pages
+
+    @staticmethod
+    def expected_learner_identities():
+        identities = {}
+        for level in build_pages.load_levels(build_pages.DATA_FILE):
+            for topic in level.get("topics", []):
+                if topic.get("kind") != "grammar":
+                    continue
+                name = topic["name"]
+                slug = build_pages.slugify(name)
+                identities[f"grammar/{slug}/index.html"] = (
+                    f"{name} - Polish grammar explained | Po polsku",
+                    f"{build_pages.SITE}/grammar/{slug}/",
+                    name,
+                    topic.get("desc", ""),
+                )
+
+        for level in build_pages.load_levels(build_pages.VOCAB_FILE):
+            for topic in level.get("topics", []):
+                config = build_pages.VOCAB_PAGES.get(topic.get("name"))
+                if not config:
+                    continue
+                slug, page_title = config
+                identities[f"vocabulary/{slug}/index.html"] = (
+                    f"{page_title} | Po polsku",
+                    f"{build_pages.SITE}/vocabulary/{slug}/",
+                    page_title,
+                    topic.get("desc", ""),
+                )
+
+        identities["guide/index.html"] = (
+            "Polish guide - grammar, slang and idioms explained simply | Po polsku",
+            f"{build_pages.SITE}/guide/",
+            "Polish, explained simply",
+            "Built by a foreigner living in Poland and learning the language through everyday "
+            "life - with practical flashcards, clear explanations, pronunciation audio, and "
+            "free interactive practice for every topic.",
+        )
+        identities["guide/listening/index.html"] = (
+            "Polish podcasts worth listening to | Po polsku",
+            f"{build_pages.SITE}/guide/listening/",
+            "What else I listen to",
+            LISTENING_INTRODUCTION,
+        )
+        return identities
+
+    @staticmethod
+    def generated_tree_digest(root):
+        digest = hashlib.sha256()
+        paths = sorted(
+            path for path in root.rglob("*")
+            if path.is_file() and (path.suffix == ".html" or path.name == "sitemap.xml")
+        )
+        for path in paths:
+            digest.update(str(path.relative_to(root)).encode("utf-8"))
+            digest.update(b"\0")
+            digest.update(path.read_bytes())
+            digest.update(b"\0")
+        return digest.hexdigest()
+
+    # ------------------------------------------- pronunciation controls (4B-3)
+
+    # The exact markup the generator emits for a phrase with no pre-generated
+    # clip. tests/test_phase4b3_audio_resilience_range_storage.js pins the same
+    # string and drives the shipping page runtime with it, so "the generator
+    # emits this" and "the runtime handles this" are asserted against one shape.
+    MISSING_MAPPING_BUTTON = (
+        '<button class="say" data-audio="" data-pl="Nowe zdanie." type="button" '
+        'aria-label="Play Polish example: Nowe zdanie.">'
+    )
+
+    def test_a_mapped_phrase_still_leads_with_its_mp3(self):
+        rendered = build_pages.render_examples(
+            [{"pl": "Widzę Annę.", "en": "I see Anna."}],
+            {"Widzę Annę.": "/audio/5f3035cd2de2.mp3"},
+        )
+        self.assertIn('data-audio="/audio/5f3035cd2de2.mp3"', rendered)
+        self.assertIn('data-pl="Widzę Annę."', rendered)
+        self.assertIn('aria-label="Play Polish example: Widzę Annę."', rendered)
+        self.assertEqual(rendered.count('class="say"'), 1)
+
+    def test_an_unmapped_phrase_still_gets_a_control_with_a_blank_url(self):
+        """No clip is not the same as no pronunciation: the runtime speaks it."""
+        rendered = build_pages.render_examples(
+            [{"pl": "Nowe zdanie.", "en": "A new sentence."}], {}
+        )
+        self.assertIn(self.MISSING_MAPPING_BUTTON, rendered)
+        self.assertIn('data-audio=""', rendered)
+        self.assertNotIn("/audio/", rendered)          # no URL is ever invented
+        self.assertEqual(rendered.count('class="say"'), 1)
+
+    def test_an_unmapped_control_carries_the_normalized_polish(self):
+        phrase = "  Nowe   <b>zdanie</b>.  "
+        rendered = build_pages.render_examples([{"pl": phrase, "en": "x"}], {})
+        self.assertIn(f'data-pl="{build_pages.esc(build_pages.normalize(phrase))}"', rendered)
+        self.assertIn('data-pl="Nowe zdanie."', rendered)
+
+    def test_an_unmapped_control_keeps_its_contextual_name(self):
+        rendered = build_pages.render_examples([{"pl": "Nowe zdanie.", "en": "x"}], {})
+        self.assertIn('aria-label="Play Polish example: Nowe zdanie."', rendered)
+        rendered_vocab = build_pages.vocab_card({"pl": "Nowe słowo", "en": "x"}, {})
+        self.assertIn('aria-label="Play Polish pronunciation: Nowe słowo"', rendered_vocab)
+
+    def test_empty_polish_never_produces_a_meaningless_control(self):
+        for phrase in ("", "   ", "<b></b>", "\n\t"):
+            with self.subTest(phrase=repr(phrase)):
+                rendered = build_pages.render_examples([{"pl": phrase, "en": "x"}], {})
+                self.assertNotIn('class="say"', rendered)
+                self.assertNotIn("data-audio", rendered)
+                card = build_pages.vocab_card({"pl": phrase, "en": "x"}, {})
+                self.assertNotIn('class="say"', card)
+
+    def test_vocab_card_has_the_same_mapped_and_unmapped_behaviour(self):
+        mapped = build_pages.vocab_card(
+            {"pl": "kawa", "en": "coffee"}, {"kawa": "/audio/deadbeef.mp3"}
+        )
+        self.assertIn('data-audio="/audio/deadbeef.mp3"', mapped)
+        self.assertIn('data-pl="kawa"', mapped)
+        unmapped = build_pages.vocab_card({"pl": "kawa", "en": "coffee"}, {})
+        self.assertIn('<button class="say" data-audio="" data-pl="kawa" type="button"', unmapped)
+        self.assertNotIn("/audio/", unmapped)
+
+    def test_every_emitted_control_has_a_url_or_a_blank_url_and_never_a_missing_attribute(self):
+        pages = self.expected_pages()
+        pattern = re.compile(r'<button class="say"([^>]*)>')
+        seen = 0
+        for relative, markup in pages.items():
+            for attributes in pattern.findall(markup):
+                seen += 1
+                self.assertIn('data-audio="', attributes, relative)
+                self.assertIn('data-pl="', attributes, relative)
+                self.assertIn('type="button"', attributes, relative)
+                self.assertIn('aria-label="Play Polish', attributes, relative)
+                polish = re.search(r'data-pl="([^"]*)"', attributes).group(1)
+                self.assertNotEqual(polish.strip(), "", relative)
+        self.assertEqual(seen, 380)
+
+    def test_the_generator_no_longer_drops_a_control_when_a_mapping_is_missing(self):
+        """The shape of the defect, stated directly: the old code emitted "" here."""
+        source = inspect.getsource(build_pages.pronunciation_button)
+        self.assertIn('audio_idx.get(spoken, "")', source)
+        self.assertNotIn('if a else ""', inspect.getsource(build_pages.render_examples))
+        self.assertNotIn('if a else ""', inspect.getsource(build_pages.vocab_card))
+
+    def test_contextual_audio_names_are_text_safe(self):
+        phrase = 'Zażółć <gęślą> & "jaźń"'
+        rendered = build_pages.render_examples(
+            [{"pl": phrase, "en": "A test."}],
+            {build_pages.normalize(phrase): "/audio/example.mp3"},
+        )
+        self.assertIn('type="button"', rendered)
+        self.assertIn("Play Polish example:", html.unescape(rendered))
+        self.assertNotIn('aria-label="Play pronunciation"', rendered)
+        self.assertIn('lang="pl"', rendered)
+        self.assertNotIn("<gęślą>", rendered)
+
+    def test_shipping_generator_matches_every_committed_page(self):
+        expected = self.expected_pages()
+        committed = {
+            str(path.relative_to(ROOT)): path.read_text(encoding="utf-8")
+            for directory in ("grammar", "vocabulary", "guide")
+            for path in sorted((ROOT / directory).rglob("index.html"))
+        }
+        self.assertEqual(set(committed), set(expected))
+        self.assertEqual(committed, expected)
+
+    def test_every_learner_page_preserves_title_canonical_heading_and_normal_content(self):
+        pages = self.expected_pages()
+        identities = self.expected_learner_identities()
+        self.assertEqual(set(identities), set(pages) - self.REDIRECT_PAGES)
+        for relative, (title, canonical, heading, lede) in identities.items():
+            with self.subTest(page=relative):
+                markup = pages[relative]
+                self.assertEqual(markup.count(f"<title>{build_pages.esc(title)}</title>"), 1)
+                self.assertEqual(markup.count(f'<link rel="canonical" href="{canonical}">'), 1)
+                self.assertEqual(markup.count(f"<h1>{build_pages.esc(heading)}</h1>"), 1)
+                self.assertIn(f'<p class="lede">{build_pages.esc(lede)}</p>', markup)
+
+    def test_redirect_stubs_remain_minimal_and_have_no_learning_ending(self):
+        pages = self.expected_pages()
+        for relative in self.REDIRECT_PAGES:
+            with self.subTest(page=relative):
+                markup = pages[relative]
+                self.assertEqual(markup, build_pages.redirect_stub("/guide/"))
+                self.assertNotIn('class="guide-ending"', markup)
+                self.assertNotIn("Ready to keep learning?", markup)
+                self.assertNotIn("<footer", markup)
+                self.assertIn('<meta name="robots" content="noindex">', markup)
+
+    def test_topic_pages_preserve_audio_player_javascript(self):
+        topic_pages = {
+            relative: markup
+            for relative, markup in self.expected_pages().items()
+            if relative.startswith(("grammar/", "vocabulary/"))
+            and relative not in self.REDIRECT_PAGES
+        }
+        self.assertEqual(len(topic_pages), 29)
+        player = f"<script>{build_pages.PLAYER_JS}</script>"
+        for relative, markup in topic_pages.items():
+            with self.subTest(page=relative):
+                self.assertIn('class="say" data-audio', markup)
+                self.assertEqual(markup.count(player), 1)
+
+    def test_second_regeneration_is_byte_identical(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            temporary_root = Path(temporary)
+            for filename in (build_pages.DATA_FILE, build_pages.VOCAB_FILE,
+                             build_pages.AUDIO_MANIFEST):
+                shutil.copy2(ROOT / filename, temporary_root / filename)
+            previous = Path.cwd()
+            try:
+                os.chdir(temporary_root)
+                with contextlib.redirect_stdout(io.StringIO()):
+                    build_pages.main()
+                first = self.generated_tree_digest(temporary_root)
+                with contextlib.redirect_stdout(io.StringIO()):
+                    build_pages.main()
+                second = self.generated_tree_digest(temporary_root)
+            finally:
+                os.chdir(previous)
+            self.assertEqual(first, second)
+
+    def test_generated_pages_have_accessible_structure(self):
+        for relative, markup in self.expected_pages().items():
+            with self.subTest(page=relative):
+                parser = GeneratedPageAuditParser()
+                parser.feed(markup)
+                self.assertEqual(parser.root_lang, "en")
+                self.assertEqual(parser.main_count, 1)
+                self.assertTrue("".join(parser.title_text).strip())
+                self.assertEqual(parser.duplicate_ids, [])
+                self.assertEqual(parser.nested_interactives, [])
+                self.assertTrue(all(href and not href.lower().startswith("javascript:")
+                                    for href in parser.links))
+                self.assertTrue(all(name and name != "Play pronunciation"
+                                    for name in parser.audio_names))
+                if relative not in self.REDIRECT_PAGES:
+                    self.assertEqual(parser.h1_count, 1)
+                if (relative.startswith(("grammar/", "vocabulary/"))
+                        and relative not in self.REDIRECT_PAGES):
+                    self.assertGreater(parser.polish_nodes, 0)
+
+
+class GeneratedMobileContractTests(unittest.TestCase):
+    """MLG-3A-03 and MLG-3A-15.
+
+    Every learner-facing generated page ships one generator-owned stylesheet,
+    so the reflow, viewport and safe-area contracts are asserted once against
+    parsed CSS and once against the markup that CSS has to match.
+    """
+
+    SAFE_AREA_SIDES = ("top", "right", "bottom", "left")
+    EXPECTED_REDIRECT_STUB = (
+        '<!DOCTYPE html>\n'
+        '<html lang="en">\n'
+        '<head>\n'
+        '<meta charset="UTF-8">\n'
+        '<title>Po polsku guide</title>\n'
+        '<meta http-equiv="refresh" content="0; url=/guide/">\n'
+        '<link rel="canonical" href="https://popolsku.app/guide/">\n'
+        '<meta name="robots" content="noindex">\n'
+        '</head>\n'
+        '<body><main><p>Moved to <a href="/guide/">the Po polsku guide</a>.</p></main></body>\n'
+        '</html>\n'
+    )
+
+    @staticmethod
+    def learner_pages():
+        return LearningEndingTests.learner_pages()
+
+    @staticmethod
+    def style_block(markup):
+        blocks = re.findall(r"<style>(.*?)</style>", markup, re.S)
+        if len(blocks) != 1:
+            raise AssertionError(f"expected exactly one <style> block, found {len(blocks)}")
+        return blocks[0]
+
+    @classmethod
+    def structure(cls, markup):
+        parser = GeneratedStructureParser()
+        parser.feed(markup)
+        return parser
+
+    # ------------------------------------------------------- shared ownership
+
+    def test_one_generator_owned_stylesheet_serves_all_31_learner_pages(self):
+        """No per-template mobile fix: the contract exists in exactly one place."""
+        pages = self.learner_pages()
+        self.assertEqual(len(pages), 31)
+        shared = build_pages.STYLE + build_pages.LEARNING_ENDING_STYLE
+        blocks = {relative: self.style_block(markup) for relative, markup in pages.items()}
+        self.assertEqual(set(blocks.values()), {shared})
+        self.assertEqual(sum(relative.startswith("grammar/") for relative in pages), 23)
+        self.assertEqual(sum(relative.startswith("vocabulary/") for relative in pages), 6)
+        self.assertEqual(sum(relative.startswith("guide/") for relative in pages), 2)
+
+    # ------------------------------------------------------- viewport (3A-15)
+
+    def test_every_learner_page_declares_the_app_shell_viewport_exactly_once(self):
+        app_shell = (ROOT / "index.html").read_text(encoding="utf-8")
+        viewport = build_pages.extract_app_viewport(app_shell)
+        self.assertEqual(viewport, "width=device-width, initial-scale=1.0, viewport-fit=cover")
+        self.assertEqual(build_pages.read_app_viewport(), viewport)
+        directives = [part.strip() for part in viewport.split(",")]
+        self.assertIn("width=device-width", directives)
+        self.assertIn("initial-scale=1.0", directives)
+        self.assertIn("viewport-fit=cover", directives)
+
+        for relative, markup in self.learner_pages().items():
+            with self.subTest(page=relative):
+                parser = self.structure(markup)
+                self.assertEqual(parser.viewports, [viewport])
+                for blocked in build_pages.ZOOM_BLOCKING_VIEWPORT_DIRECTIVES:
+                    self.assertNotIn(blocked, viewport)
+                # no JavaScript viewport manipulation anywhere on the page
+                self.assertNotIn("viewport", "".join(parser.script_text))
+
+    def test_the_viewport_contract_refuses_an_unusable_app_shell_declaration(self):
+        good = '<meta name="viewport" content="width=device-width, initial-scale=1.0">'
+        self.assertEqual(build_pages.extract_app_viewport(good),
+                         "width=device-width, initial-scale=1.0")
+        rejected = (
+            "<html></html>",
+            '<meta name="viewport" content="initial-scale=1.0">',
+            '<meta name="viewport" content="width=device-width">',
+            '<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">',
+            '<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">',
+            '<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">',
+        )
+        for source in rejected:
+            with self.subTest(source=source):
+                with self.assertRaises(RuntimeError):
+                    build_pages.extract_app_viewport(source)
+
+    # ------------------------------------------------------ safe area (3A-15)
+
+    def test_safe_area_insets_are_applied_once_on_every_side(self):
+        for relative, markup in self.learner_pages().items():
+            with self.subTest(page=relative):
+                css = GeneratedStyleSheet(self.style_block(markup))
+                padding = css.value("body", "padding")
+                self.assertIsNotNone(padding)
+                for side in self.SAFE_AREA_SIDES:
+                    # every side, and every one with an explicit zero fallback
+                    self.assertIn(f"env(safe-area-inset-{side},0px)", padding)
+                    self.assertEqual(padding.count(f"safe-area-inset-{side}"), 1)
+                # exactly one rule carries insets, so nothing double-applies them
+                self.assertEqual(css.selectors_mentioning("safe-area-inset"), {"body"})
+                # ordinary spacing is untouched when every inset resolves to zero
+                self.assertEqual(css.value(".wrap", "padding"), "0 20px 48px")
+                self.assertEqual(css.value("footer", "padding"), "26px 0 0")
+                self.assertEqual(css.value(".guide-ending", "padding"), "20px")
+
+    def test_the_inset_carrier_cannot_widen_the_page(self):
+        """Insets sit on an auto-width, border-box block: padding never adds width."""
+        for relative, markup in self.learner_pages().items():
+            with self.subTest(page=relative):
+                css = GeneratedStyleSheet(self.style_block(markup))
+                self.assertEqual(css.value("*", "box-sizing"), "border-box")
+                self.assertIsNone(css.value("body", "width"))
+                self.assertIsNone(css.value("body", "min-width"))
+                self.assertEqual(css.value("body", "margin"), "0")
+                self.assertEqual(css.value(".wrap", "max-width"), "640px")
+                self.assertEqual(css.value(".wrap", "margin"), "0 auto")
+
+    # --------------------------------------------------------- reflow (3A-03)
+
+    def test_flexible_containers_can_shrink_and_the_rule_matches_the_markup(self):
+        for relative, markup in self.learner_pages().items():
+            with self.subTest(page=relative):
+                css = GeneratedStyleSheet(self.style_block(markup))
+                self.assertEqual(
+                    css.selectors_declaring("min-width", "0"),
+                    # Phase 4B-3 adds one more flex row with a fixed control and a
+                    # text child: the audio status message beside its retry button.
+                    {".top a>b", ".ex>div", ".hub-list a>span",
+                     ".audio-status .audio-status-msg"},
+                )
+                # the rows those selectors target really are flex rows …
+                self.assertEqual(css.value(".ex", "display"), "flex")
+                self.assertEqual(css.value(".hub-list a", "display"), "flex")
+                # … whose fixed children stay fixed and never need to shrink
+                self.assertEqual(css.value(".say", "flex"), "0 0 auto")
+                self.assertEqual(css.value(".say", "width"), "34px")
+                self.assertEqual(css.value(".logo-mark", "flex"), "0 0 auto")
+                self.assertEqual(css.value(".hub-list .ic", "flex"), "0 0 auto")
+
+                parser = self.structure(markup)
+                for anchor in parser.top_anchors:
+                    self.assertIn("display:flex", anchor["attrs"].get("style", ""))
+                    self.assertEqual(anchor["children"], ["span", "b"])
+                self.assertEqual(len(parser.top_anchors), 1)
+                for children in parser.ex_children:
+                    self.assertIn(children, (["button", "div"], ["div"]))
+                for anchor in parser.hub_anchor_children:
+                    self.assertEqual(anchor["children"], ["span", "span"])
+
+    def test_long_text_has_an_intentional_wrap_contract(self):
+        for relative, markup in self.learner_pages().items():
+            with self.subTest(page=relative):
+                css = GeneratedStyleSheet(self.style_block(markup))
+                # blocks break a too-long word only as a last resort …
+                self.assertEqual(css.value("body", "overflow-wrap"), "break-word")
+                # … and table cells lower their intrinsic minimum as well
+                self.assertEqual(css.value("th", "overflow-wrap"), "anywhere")
+                self.assertEqual(css.value("td", "overflow-wrap"), "anywhere")
+                for selector, declarations in css.every_rule():
+                    self.assertNotEqual(declarations.get("overflow-wrap"), "normal", selector)
+                    self.assertNotEqual(declarations.get("word-break"), "keep-all", selector)
+                    self.assertNotIn("nowrap", declarations.get("white-space", ""), selector)
+
+    def test_no_page_level_overflow_is_hidden_or_scrolled_away(self):
+        """The pages have to fit by reflowing - hiding or scrolling is not allowed."""
+        for relative, markup in self.learner_pages().items():
+            with self.subTest(page=relative):
+                css = GeneratedStyleSheet(self.style_block(markup))
+                for selector, declarations in css.every_rule():
+                    for prop in ("overflow", "overflow-x"):
+                        self.assertNotIn(declarations.get(prop),
+                                         {"hidden", "clip", "auto", "scroll"},
+                                         f"{selector} declares {prop}")
+                self.assertEqual(self.structure(markup).inline_overflow, [])
+
+    def test_every_grammar_table_reflows_as_a_real_table(self):
+        pages = {relative: markup for relative, markup in self.learner_pages().items()
+                 if relative.startswith("grammar/")}
+        self.assertEqual(len(pages), 23)
+        total = 0
+        for relative, markup in pages.items():
+            with self.subTest(page=relative):
+                parser = self.structure(markup)
+                self.assertGreater(len(parser.tables), 0)
+                total += len(parser.tables)
+                for table in parser.tables:
+                    # semantics preserved: still a table, still in a card
+                    self.assertEqual(table["children"], ["thead", "tbody"])
+                    self.assertIn("card", table["ancestor_classes"][-1])
+                    self.assertIn("main", table["ancestors"])
+                    # every cell is a th/td, so the shared cell rule reaches all of them
+                    header, *body_rows = table["rows"]
+                    self.assertEqual(header, ["th", "th", "th"])
+                    for row in body_rows:
+                        self.assertEqual(row, ["td", "td", "td"])
+                    # no wrapper turns the table into a local horizontal scroller
+                    self.assertNotIn("table-scroll", table["ancestor_classes"][-1])
+                # no cell overrides the shared contract with its own class or style
+                self.assertEqual(parser.styled_cells, [])
+        self.assertEqual(total, 83)
+
+    # ----------------------------------------------- content, SEO, boundaries
+
+    def test_generated_seo_and_navigation_metadata_survive_the_reflow_change(self):
+        pages = self.learner_pages()
+        for relative, markup in pages.items():
+            with self.subTest(page=relative):
+                self.assertEqual(markup.count('<html lang="en">'), 1)
+                self.assertEqual(markup.count('<meta name="description" content="'), 1)
+                self.assertEqual(markup.count('<link rel="canonical" href="'), 1)
+                self.assertEqual(markup.count('<script type="application/ld+json">'), 1)
+                self.assertEqual(markup.count('<meta property="og:url" content="'), 1)
+                self.assertEqual(markup.count('<nav class="crumbs" aria-label="Breadcrumb">'), 1)
+                self.assertIn('<a href="/">Home</a>', markup)
+                # learner pages must never pick up the redirect stubs' noindex
+                self.assertNotIn('<meta name="robots"', markup)
+        for relative in (relative for relative in pages
+                         if relative.startswith(("grammar/", "vocabulary/"))):
+            self.assertIn('<a href="/guide/">Guide</a>', pages[relative])
+        listening = pages["guide/listening/index.html"]
+        self.assertIn('<a href="https://realpolish.pl/" target="_blank" rel="noopener">', listening)
+        self.assertIn('<a href="https://www.youtube.com/@Ratio_viva" target="_blank" rel="noopener">',
+                      listening)
+        self.assertIn("Po polsku · v8.4 · 2026",
+                      LearningEndingTests.visible_text(pages["guide/index.html"]))
+
+    def test_redirect_stubs_stay_byte_identical_and_never_get_the_learner_layout(self):
+        for relative in GeneratedAccessibilityTests.REDIRECT_PAGES:
+            with self.subTest(page=relative):
+                committed = (ROOT / relative).read_text(encoding="utf-8")
+                self.assertEqual(committed, self.EXPECTED_REDIRECT_STUB)
+                self.assertEqual(committed, build_pages.redirect_stub("/guide/"))
+                for absent in ("viewport", "safe-area", "overflow-wrap", "min-width",
+                               "<style>", "guide-ending", "<footer"):
+                    self.assertNotIn(absent, committed)
+
+    def test_committed_sitemap_urls_and_order_are_unchanged(self):
+        expected = [f"{build_pages.SITE}/", f"{build_pages.SITE}/guide/",
+                    f"{build_pages.SITE}/guide/listening/"]
+        for level in build_pages.load_levels(build_pages.DATA_FILE):
+            for topic in level.get("topics", []):
+                if topic.get("kind") == "grammar":
+                    expected.append(f"{build_pages.SITE}/grammar/"
+                                    f"{build_pages.slugify(topic['name'])}/")
+        for level in build_pages.load_levels(build_pages.VOCAB_FILE):
+            for topic in level.get("topics", []):
+                config = build_pages.VOCAB_PAGES.get(topic.get("name"))
+                if config:
+                    expected.append(f"{build_pages.SITE}/vocabulary/{config[0]}/")
+        committed = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
+        self.assertEqual(re.findall(r"<loc>([^<]+)</loc>", committed), expected)
+        self.assertEqual(len(expected), 32)
+
+        # the generator still emits that exact sequence, so only <lastmod> can move
+        slugs = [url.rsplit("/grammar/", 1)[1].rstrip("/")
+                 for url in expected if "/grammar/" in url]
+        vocabulary_slugs = [url.rsplit("/vocabulary/", 1)[1].rstrip("/")
+                            for url in expected if "/vocabulary/" in url]
+        with tempfile.TemporaryDirectory() as temporary:
+            previous = Path.cwd()
+            try:
+                os.chdir(temporary)
+                build_pages.write_sitemap(slugs, vocabulary_slugs)
+                emitted = Path("sitemap.xml").read_text(encoding="utf-8")
+            finally:
+                os.chdir(previous)
+        self.assertEqual(re.findall(r"<loc>([^<]+)</loc>", emitted), expected)
+        self.assertEqual(
+            re.sub(r"<lastmod>[^<]*</lastmod>", "<lastmod/>", emitted),
+            re.sub(r"<lastmod>[^<]*</lastmod>", "<lastmod/>", committed),
+        )
+
+
+class ListeningRecommendationTests(unittest.TestCase):
+    """The Polish with Kamil amendment.
+
+    The page is generator-owned editorial copy, so every assertion here is on
+    exact strings, exact destinations and exact document order. Counting
+    keywords would pass a reordered page, a swapped link or a dropped
+    paragraph, which are precisely the regressions this amendment can cause.
+    """
+
+    EXPECTED_ORDER = ["Real Polish", "Polish with Kamil", "Ratio viva"]
+
+    @staticmethod
+    def markup():
+        return build_pages.listening_page()
+
+    @classmethod
+    def parsed(cls):
+        parser = ListeningPageParser()
+        parser.feed(cls.markup())
+        return parser
+
+    @staticmethod
+    def visible_text(markup):
+        return LearningEndingTests.visible_text(markup)
+
+    # --------------------------------------------------------- order and shape
+
+    def test_the_page_ships_exactly_three_recommendations_in_the_approved_order(self):
+        cards = self.parsed().cards
+        self.assertEqual(len(cards), 3)
+        self.assertEqual([card["heading"] for card in cards], self.EXPECTED_ORDER)
+
+    def test_polish_with_kamil_is_inserted_between_real_polish_and_ratio_viva(self):
+        markup = self.markup()
+        positions = [markup.index(f"<h2>{heading}</h2>") for heading in self.EXPECTED_ORDER]
+        self.assertEqual(positions, sorted(positions))
+        for heading in self.EXPECTED_ORDER:
+            with self.subTest(heading=heading):
+                self.assertEqual(markup.count(f"<h2>{heading}</h2>"), 1)
+        self.assertEqual(self.visible_text(markup).count("Polish with Kamil"), 1)
+
+    def test_every_recommendation_card_matches_its_approved_content_exactly(self):
+        cards = self.parsed().cards
+        for card, expected in zip(cards, APPROVED_LISTENING_CARDS):
+            with self.subTest(heading=expected["heading"]):
+                self.assertEqual(card["heading"], expected["heading"])
+                self.assertEqual(card["sub"], expected["sub"])
+                self.assertEqual(card["paragraphs"], expected["paragraphs"])
+                self.assertEqual(card["notes"], expected["notes"])
+                self.assertEqual(card["links"], expected["links"])
+
+    # ------------------------------------------------------------ new section
+
+    def test_the_approved_introduction_appears_once_as_one_semantic_paragraph(self):
+        markup = self.markup()
+        self.assertEqual(
+            markup.count(f'<p class="lede">{build_pages.esc(LISTENING_INTRODUCTION)}</p>'), 1
+        )
+        self.assertEqual(self.visible_text(markup).count(LISTENING_INTRODUCTION), 1)
+        self.assertNotIn(OLD_LISTENING_INTRODUCTION, self.visible_text(markup))
+
+    def test_the_kamil_links_point_at_the_approved_destinations_only(self):
+        card = self.parsed().cards[1]
+        self.assertEqual([href for href, _, _, _ in card["links"]],
+                         [KAMIL_YOUTUBE, KAMIL_PATREON])
+        markup = self.markup()
+        for url in (KAMIL_YOUTUBE, KAMIL_PATREON):
+            with self.subTest(url=url):
+                self.assertEqual(markup.count(f'href="{url}"'), 1)
+        # no near-miss destination: exact host and path, nothing appended
+        for wrong in ('href="https://www.youtube.com/@polishwithkamil/',
+                      'href="https://patreon.com/cw/polishwithkamil"',
+                      'href="https://www.patreon.com/polishwithkamil"',
+                      'href="http://www.youtube.com/@polishwithkamil"'):
+            with self.subTest(wrong=wrong):
+                self.assertNotIn(wrong, markup)
+
+    def test_the_kamil_links_use_the_established_external_link_conventions(self):
+        parser = self.parsed()
+        established = {(target, rel)
+                       for card in (parser.cards[0], parser.cards[2])
+                       for _, target, rel, _ in card["links"]}
+        self.assertEqual(established, {("_blank", "noopener")})
+        for href, target, rel, _ in parser.cards[1]["links"]:
+            with self.subTest(href=href):
+                self.assertEqual((target, rel), ("_blank", "noopener"))
+        self.assertIn(f'<a href="{KAMIL_YOUTUBE}" target="_blank" rel="noopener">', self.markup())
+        self.assertIn(f'<a href="{KAMIL_PATREON}" target="_blank" rel="noopener">', self.markup())
+
+    def test_the_resource_line_reads_exactly_as_approved_and_links_each_half(self):
+        card = self.parsed().cards[1]
+        self.assertEqual(card["sub"], KAMIL_RESOURCE_LINE)
+        self.assertEqual(self.visible_text(self.markup()).count(KAMIL_RESOURCE_LINE), 1)
+        youtube, patreon = card["links"]
+        self.assertEqual((youtube[3], youtube[0]), ("youtube.com/@polishwithkamil", KAMIL_YOUTUBE))
+        self.assertEqual((patreon[3], patreon[0]), ("Patreon", KAMIL_PATREON))
+
+    def test_both_approved_body_paragraphs_and_the_note_are_present_verbatim(self):
+        card = self.parsed().cards[1]
+        visible = self.visible_text(self.markup())
+        self.assertEqual(card["paragraphs"], list(KAMIL_PARAGRAPHS))
+        for paragraph in KAMIL_PARAGRAPHS:
+            with self.subTest(paragraph=paragraph[:40]):
+                self.assertEqual(visible.count(paragraph), 1)
+        self.assertEqual(card["notes"], [KAMIL_NOTE])
+        self.assertEqual(visible.count(KAMIL_NOTE), 1)
+
+    def test_the_new_section_stays_editorial_and_adds_no_promotional_markup(self):
+        markup = self.markup()
+        card_start = markup.index("<h2>Polish with Kamil</h2>")
+        card = markup[card_start:markup.index("<h2>Ratio viva</h2>")]
+        for forbidden in ("<img", "<svg", "badge", "banner", "logo", "sponsor",
+                          "partner", "collaborat", "endors", "affiliate",
+                          "$", "€", "PLN", "per month", "tier"):
+            with self.subTest(forbidden=forbidden):
+                self.assertNotIn(forbidden, card.lower())
+        self.assertNotIn("—", card)
+        self.assertNotIn("’", card)
+
+    # ------------------------------------------------------------- disclosure
+
+    def test_the_approved_disclosure_replaces_the_old_one_exactly_once(self):
+        markup = self.markup()
+        visible = self.visible_text(markup)
+        self.assertEqual(visible.count(LISTENING_DISCLOSURE), 1)
+        self.assertNotIn(OLD_LISTENING_DISCLOSURE, visible)
+        self.assertNotIn("Neither of these paid", markup)
+        self.assertNotIn("They are just what worked.", markup)
+        self.assertNotIn("knows this page exists", markup)
+
+    def test_the_disclosure_is_one_semantic_paragraph_at_its_established_hierarchy(self):
+        loose = self.parsed().loose_notes
+        self.assertEqual(loose, [("p", LISTENING_DISCLOSURE,
+                                  "margin:22px 0 4px;text-align:center")])
+        self.assertEqual(self.markup().count(
+            '<p class="note" style="margin:22px 0 4px;text-align:center">'), 1)
+
+    # --------------------------------- untouched page furniture and boundaries
+
+    def test_page_identity_seo_breadcrumb_and_language_metadata_are_untouched(self):
+        markup = self.markup()
+        expected = (
+            "<title>Polish podcasts worth listening to | Po polsku</title>",
+            '<link rel="canonical" href="https://popolsku.app/guide/listening/">',
+            f'<meta name="description" content="{build_pages.esc(LISTENING_DESCRIPTION)}">',
+            "<h1>What else I listen to</h1>",
+            '<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> &rsaquo; '
+            '<a href="/guide/">Guide</a> &rsaquo; What I listen to</nav>',
+            '<html lang="en">',
+            '<meta property="og:url" content="https://popolsku.app/guide/listening/">',
+        )
+        for fragment in expected:
+            with self.subTest(fragment=fragment[:48]):
+                self.assertEqual(markup.count(fragment), 1)
+        self.assertNotIn('<meta name="robots"', markup)
+        self.assertEqual(markup.count('"@type": "Article"'), 1)
+        self.assertEqual(markup.count('"headline": "What else I listen to"'), 1)
+        parser = GeneratedPageAuditParser()
+        parser.feed(markup)
+        self.assertEqual(parser.h1_count, 1)
+        self.assertEqual(parser.main_count, 1)
+        self.assertEqual(parser.duplicate_ids, [])
+        self.assertEqual(parser.nested_interactives, [])
+
+    def test_heading_hierarchy_stays_one_h1_over_flat_h2_sections(self):
+        markup = self.markup()
+        self.assertEqual(re.findall(r"<h([1-6])[ >]", markup),
+                         ["1", "2", "2", "2", "2"])
+        self.assertEqual(self.parsed().headings,
+                         self.EXPECTED_ORDER + ["Ready to keep learning?"])
+
+    def test_the_closing_card_and_footer_are_the_shared_unmodified_blocks(self):
+        markup = self.markup()
+        year = build_pages.datetime.date.today().year
+        self.assertEqual(markup.count(build_pages.learning_ending()), 1)
+        self.assertEqual(markup.count(
+            f'<footer class="guide-footer"><a href="/">Po polsku</a> '
+            f'&middot; v8.4 &middot; {year}</footer>'), 1)
+        self.assertTrue(markup.rstrip().endswith("</body></html>"))
+
+    def test_the_recommendation_never_leaks_onto_another_generated_page(self):
+        pages = GeneratedAccessibilityTests.expected_pages()
+        for relative, page in pages.items():
+            if relative == "guide/listening/index.html":
+                continue
+            with self.subTest(page=relative):
+                for marker in ("Polish with Kamil", KAMIL_YOUTUBE, KAMIL_PATREON,
+                               KAMIL_NOTE, LISTENING_DISCLOSURE, LISTENING_INTRODUCTION):
+                    self.assertNotIn(marker, page)
+        # the guide hub keeps its own single entry for the page, at the corrected wording
+        self.assertEqual(
+            pages["guide/index.html"].count(f'<span class="d">{GUIDE_HUB_LISTENING_DESCRIPTION}</span>'),
+            1,
+        )
+
+    # ----------------------------------------------------- generator ownership
+
+    def test_the_committed_page_is_exactly_what_the_generator_emits(self):
+        committed = (ROOT / "guide/listening/index.html").read_text(encoding="utf-8")
+        self.assertEqual(committed, self.markup())
+        self.assertIn(KAMIL_YOUTUBE, committed)
+        self.assertIn(KAMIL_PATREON, committed)
+        # the copy has exactly one home: the generator, never a second source
+        sources = [path for path in ROOT.rglob("*")
+                   if path.is_file() and path.suffix in {".py", ".js", ".json", ".html"}
+                   and "Polish with Kamil" in path.read_text(encoding="utf-8", errors="ignore")]
+        self.assertEqual(
+            sorted(str(path.relative_to(ROOT)) for path in sources),
+            ["build_pages.py", "guide/listening/index.html", "tests/test_build_pages.py"],
+        )
+
+    def test_regenerating_twice_leaves_the_listening_page_byte_identical(self):
+        first = self.markup()
+        self.assertEqual(first, build_pages.listening_page())
+        with tempfile.TemporaryDirectory() as temporary:
+            temporary_root = Path(temporary)
+            for filename in (build_pages.DATA_FILE, build_pages.VOCAB_FILE,
+                             build_pages.AUDIO_MANIFEST):
+                shutil.copy2(ROOT / filename, temporary_root / filename)
+            previous = Path.cwd()
+            try:
+                os.chdir(temporary_root)
+                digests = []
+                for _ in range(2):
+                    with contextlib.redirect_stdout(io.StringIO()):
+                        build_pages.main()
+                    page = temporary_root / "guide/listening/index.html"
+                    digests.append(hashlib.sha256(page.read_bytes()).hexdigest())
+                    self.assertEqual(page.read_text(encoding="utf-8"), first)
+            finally:
+                os.chdir(previous)
+        self.assertEqual(digests[0], digests[1])
+
+    def test_the_amendment_leaves_the_redirect_stubs_and_sitemap_alone(self):
+        for relative in GeneratedAccessibilityTests.REDIRECT_PAGES:
+            with self.subTest(page=relative):
+                self.assertEqual((ROOT / relative).read_text(encoding="utf-8"),
+                                 build_pages.redirect_stub("/guide/"))
+        committed = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
+        urls = re.findall(r"<loc>([^<]+)</loc>", committed)
+        self.assertEqual(len(urls), 32)
+        self.assertEqual(urls[:3], [f"{build_pages.SITE}/", f"{build_pages.SITE}/guide/",
+                                    f"{build_pages.SITE}/guide/listening/"])
+        self.assertEqual(len(set(urls)), 32)
+
+
+class ListeningDescriptionConsistencyTests(unittest.TestCase):
+    """The copy-consistency correction.
+
+    Three recommendations ship, so the Guide hub card and the listening page's
+    own description have to say three. The three description slots (meta, Open
+    Graph, structured data) come from one generator variable, so the tests pin
+    the exact string in each slot *and* pin that they stay identical to each
+    other - a drift between them is the regression worth catching.
+    """
+
+    @staticmethod
+    def pages():
+        return GeneratedAccessibilityTests.expected_pages()
+
+    @staticmethod
+    def hub_descriptions(markup):
+        """Every Guide hub card description, in document order."""
+        return re.findall(r'<span class="d">(.*?)</span>', markup)
+
+    # ------------------------------------------------------------- Guide hub
+
+    def test_the_guide_hub_card_uses_the_corrected_listening_description(self):
+        hub = self.pages()["guide/index.html"]
+        self.assertEqual(
+            hub.count('<li><a href="/guide/listening/">'), 1)
+        self.assertEqual(
+            hub.count(f'<span class="d">{GUIDE_HUB_LISTENING_DESCRIPTION}</span>'), 1)
+        self.assertIn(
+            f'<span class="t">What else I listen to</span><br>'
+            f'<span class="d">{GUIDE_HUB_LISTENING_DESCRIPTION}</span>', hub)
+
+    def test_the_old_guide_hub_phrase_is_gone_from_every_source_and_page(self):
+        for relative, markup in self.pages().items():
+            with self.subTest(page=relative):
+                self.assertNotIn(OLD_GUIDE_HUB_LISTENING_DESCRIPTION, markup)
+                self.assertNotIn("Two Polish podcasts", markup)
+        generator = Path(build_pages.__file__).read_text(encoding="utf-8")
+        self.assertNotIn(OLD_GUIDE_HUB_LISTENING_DESCRIPTION, generator)
+        self.assertNotIn(OLD_LISTENING_DESCRIPTION, generator)
+
+    def test_no_other_guide_hub_card_description_changes(self):
+        """Only the listening card is edited; every other one still comes
+        verbatim from the data files, so a stray hub edit fails here."""
+        hub = self.pages()["guide/index.html"]
+        descriptions = self.hub_descriptions(hub)
+        expected = []
+        for level in build_pages.load_levels(build_pages.DATA_FILE):
+            for topic in level.get("topics", []):
+                if topic.get("kind") == "grammar":
+                    expected.append(build_pages.esc(topic.get("desc", "")))
+        for level in build_pages.load_levels(build_pages.VOCAB_FILE):
+            for topic in level.get("topics", []):
+                config = build_pages.VOCAB_PAGES.get(topic.get("name"))
+                if config:
+                    expected.append(f'{build_pages.esc(topic.get("desc", ""))} '
+                                    f'({len(topic.get("cards", []))} expressions)')
+        expected.append(GUIDE_HUB_LISTENING_DESCRIPTION)
+        self.assertEqual(descriptions, expected)
+        self.assertEqual(len(descriptions), 30)
+        # the listening card is the last one and the only hand-authored string
+        self.assertEqual(descriptions[-1], GUIDE_HUB_LISTENING_DESCRIPTION)
+
+    # ------------------------------------------- listening page descriptions
+
+    def test_all_three_listening_description_slots_carry_the_exact_new_copy(self):
+        markup = self.pages()["guide/listening/index.html"]
+        escaped = build_pages.esc(LISTENING_DESCRIPTION)
+        self.assertEqual(
+            markup.count(f'<meta name="description" content="{escaped}">'), 1)
+        self.assertEqual(
+            markup.count(f'<meta property="og:description" content="{escaped}">'), 1)
+        structured = json.loads(re.search(
+            r'<script type="application/ld\+json">(.*?)</script>', markup, re.S).group(1))
+        self.assertEqual(structured["description"], LISTENING_DESCRIPTION)
+        # straight apostrophes survive: escaped in attributes, literal in JSON-LD
+        self.assertIn("what&#x27;s free, what isn&#x27;t", markup)
+        self.assertNotIn("’", LISTENING_DESCRIPTION)
+        self.assertNotIn("—", LISTENING_DESCRIPTION)
+
+    def test_the_three_description_slots_cannot_drift_apart(self):
+        markup = self.pages()["guide/listening/index.html"]
+        meta = re.search(r'<meta name="description" content="(.*?)">', markup).group(1)
+        opengraph = re.search(
+            r'<meta property="og:description" content="(.*?)">', markup).group(1)
+        structured = json.loads(re.search(
+            r'<script type="application/ld\+json">(.*?)</script>', markup, re.S).group(1))
+        self.assertEqual(html.unescape(meta), LISTENING_DESCRIPTION)
+        self.assertEqual(html.unescape(opengraph), LISTENING_DESCRIPTION)
+        self.assertEqual(structured["description"], LISTENING_DESCRIPTION)
+        self.assertEqual({html.unescape(meta), html.unescape(opengraph),
+                          structured["description"]}, {LISTENING_DESCRIPTION})
+
+    def test_the_descriptions_are_generator_owned_from_a_single_source(self):
+        generator = Path(build_pages.__file__).read_text(encoding="utf-8")
+        self.assertEqual(generator.count("Three Polish listening resources that actually helped"), 2)
+        for source in ROOT.rglob("*"):
+            if not source.is_file() or source.suffix not in {".py", ".js", ".json", ".html"}:
+                continue
+            relative = str(source.relative_to(ROOT))
+            if relative in {"build_pages.py", "guide/index.html",
+                            "guide/listening/index.html", "tests/test_build_pages.py"}:
+                continue
+            with self.subTest(source=relative):
+                text = source.read_text(encoding="utf-8", errors="ignore")
+                self.assertNotIn(GUIDE_HUB_LISTENING_DESCRIPTION, text)
+                self.assertNotIn(LISTENING_DESCRIPTION, text)
+
+    def test_the_page_title_is_unchanged_by_the_description_correction(self):
+        markup = self.pages()["guide/listening/index.html"]
+        self.assertEqual(markup.count(f"<title>{LISTENING_TITLE}</title>"), 1)
+        self.assertEqual(markup.count(f'<meta property="og:title" content="{LISTENING_TITLE}">'), 1)
+        self.assertNotIn("Three Polish listening resources", LISTENING_TITLE)
+        self.assertEqual(markup.count('"headline": "What else I listen to"'), 1)
+        self.assertEqual(markup.count("<h1>What else I listen to</h1>"), 1)
+
+    # ----------------------------------------------- boundaries and ownership
+
+    def test_the_correction_changes_only_the_two_expected_generated_pages(self):
+        """Every generated page except the Guide hub and the listening page is
+        free of both corrected strings, so the edit cannot have spread."""
+        for relative, markup in self.pages().items():
+            if relative in {"guide/index.html", "guide/listening/index.html"}:
+                continue
+            with self.subTest(page=relative):
+                self.assertNotIn(GUIDE_HUB_LISTENING_DESCRIPTION, markup)
+                self.assertNotIn(LISTENING_DESCRIPTION, markup)
+                self.assertNotIn("Three Polish listening resources", markup)
+
+    def test_the_previously_approved_amendment_survives_the_correction(self):
+        markup = self.pages()["guide/listening/index.html"]
+        parser = ListeningPageParser()
+        parser.feed(markup)
+        self.assertEqual([card["heading"] for card in parser.cards],
+                         ["Real Polish", "Polish with Kamil", "Ratio viva"])
+        for card, expected in zip(parser.cards, APPROVED_LISTENING_CARDS):
+            with self.subTest(heading=expected["heading"]):
+                self.assertEqual(card, {"heading": expected["heading"],
+                                        "sub": expected["sub"],
+                                        "paragraphs": expected["paragraphs"],
+                                        "notes": expected["notes"],
+                                        "links": expected["links"]})
+        visible = LearningEndingTests.visible_text(markup)
+        self.assertEqual(visible.count(LISTENING_INTRODUCTION), 1)
+        self.assertEqual(visible.count(LISTENING_DISCLOSURE), 1)
+        self.assertNotIn(OLD_LISTENING_DISCLOSURE, visible)
+
+    def test_canonicals_navigation_footer_and_closing_card_are_untouched(self):
+        pages = self.pages()
+        year = build_pages.datetime.date.today().year
+        footer = (f'<footer class="guide-footer"><a href="/">Po polsku</a> '
+                  f'&middot; v8.4 &middot; {year}</footer>')
+        canonicals = {
+            "guide/index.html": f"{build_pages.SITE}/guide/",
+            "guide/listening/index.html": f"{build_pages.SITE}/guide/listening/",
+        }
+        for relative, canonical in canonicals.items():
+            with self.subTest(page=relative):
+                markup = pages[relative]
+                self.assertEqual(
+                    markup.count(f'<link rel="canonical" href="{canonical}">'), 1)
+                self.assertEqual(markup.count(f'<meta property="og:url" content="{canonical}">'), 1)
+                self.assertEqual(markup.count(build_pages.learning_ending()), 1)
+                self.assertEqual(markup.count(footer), 1)
+                self.assertEqual(markup.count('<nav class="crumbs" aria-label="Breadcrumb">'), 1)
+                self.assertIn('<a href="/">Home</a>', markup)
+        self.assertIn('<a href="/guide/listening/">', pages["guide/index.html"])
+        self.assertIn('<a href="/guide/">Guide</a>', pages["guide/listening/index.html"])
+
+    def test_both_corrected_pages_match_their_committed_bytes(self):
+        for relative in ("guide/index.html", "guide/listening/index.html"):
+            with self.subTest(page=relative):
+                self.assertEqual((ROOT / relative).read_text(encoding="utf-8"),
+                                 self.pages()[relative])
+
+    def test_regenerating_twice_leaves_both_corrected_pages_byte_identical(self):
+        expected = {relative: self.pages()[relative]
+                    for relative in ("guide/index.html", "guide/listening/index.html")}
+        with tempfile.TemporaryDirectory() as temporary:
+            temporary_root = Path(temporary)
+            for filename in (build_pages.DATA_FILE, build_pages.VOCAB_FILE,
+                             build_pages.AUDIO_MANIFEST):
+                shutil.copy2(ROOT / filename, temporary_root / filename)
+            previous = Path.cwd()
+            try:
+                os.chdir(temporary_root)
+                digests = []
+                for _ in range(2):
+                    with contextlib.redirect_stdout(io.StringIO()):
+                        build_pages.main()
+                    run = {}
+                    for relative, markup in expected.items():
+                        emitted = (temporary_root / relative).read_text(encoding="utf-8")
+                        self.assertEqual(emitted, markup)
+                        run[relative] = hashlib.sha256(emitted.encode("utf-8")).hexdigest()
+                    digests.append(run)
+            finally:
+                os.chdir(previous)
+        self.assertEqual(digests[0], digests[1])
 
 
 if __name__ == "__main__":

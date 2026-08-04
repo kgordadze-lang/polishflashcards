@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#f8fafc">
 <title>Liczebniki (Numbers meet cases) - Polish grammar explained | Po polsku</title>
 <meta name="description" content="dwa piwa but pięć piw - the number rules Polish is infamous for. Clear explanations with tables, examples with Polish pronunciation audio, and free practice drills - Grammar A2 on Po polsku.">
@@ -28,9 +28,15 @@
 @font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:700;font-display:swap;src:url("/fonts/plus-jakarta-sans-v12-latin-700.woff2") format("woff2")}
 @font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:800;font-display:swap;src:url("/fonts/plus-jakarta-sans-v12-latin-800.woff2") format("woff2")}
 *{box-sizing:border-box}
+/* Safe-area contract: the insets live on <body> only - the same declaration the
+app shell uses - so nothing double-applies them, the centred .wrap keeps its
+own 20px gutter inside them, and a zero-inset device is byte-for-byte the old
+layout. Padding on an auto-width block can never widen the document. */
 body{margin:0;background:var(--bg);color:var(--forest);
 font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
--webkit-font-smoothing:antialiased;line-height:1.55}
+-webkit-font-smoothing:antialiased;line-height:1.55;overflow-wrap:break-word;
+padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px)
+        env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
 .wrap{max-width:640px;margin:0 auto;padding:0 20px 48px}
 a{color:var(--emerald)}a:hover{color:var(--sage-hover)}
 a:focus-visible,button:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
@@ -53,7 +59,13 @@ box-shadow:var(--shadow-sm);padding:22px 22px 18px;margin:0 0 16px}
 .card .sub{color:var(--muted);font-size:14.5px;margin:0 0 12px}
 .card ul{margin:0 0 12px;padding-left:20px}.card li{margin:4px 0}
 table{width:100%;border-collapse:collapse;font-size:14px;margin:0 0 12px}
-th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+/* Reflow contract: an auto-layout table cannot render narrower than the widest
+unbreakable word in each column, which is what pushed 11 grammar pages past the
+viewport at 320px. overflow-wrap:anywhere lowers that floor to one character, so
+the table reflows inside the card instead of widening the page - the row stays a
+real table row and no cell is clipped or hidden. */
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top;
+overflow-wrap:anywhere}
 th{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted)}
 .note,.explain{background:var(--cream);border-radius:var(--r-sm);padding:10px 14px;font-size:14px;margin:0 0 12px}
 .ex{display:flex;align-items:flex-start;gap:10px;border-top:1px dashed var(--border);padding:10px 0 2px}
@@ -63,10 +75,17 @@ th{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted
 color:var(--emerald);cursor:pointer;display:grid;place-items:center}
 .say svg{width:17px;height:17px}
 .say[data-playing]{background:var(--mint-bg)}
-.cta{display:block;text-align:center;background:var(--emerald);color:#fff;text-decoration:none;font-weight:700;
-padding:15px 20px;border-radius:var(--r-md);margin:26px 0 10px}
-.cta:hover{background:var(--sage-hover);color:#fff}
-.cta-sub{text-align:center;color:var(--muted);font-size:13px;margin:0 0 8px}
+/* Audio status and retry (MLG-4A-04): one live region, moved next to whichever
+control failed, holding the message and a single keyboard-operable retry. Laid
+out in flow, so it can never cover the sentence it is talking about. */
+.audio-status{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0 0;
+padding:9px 12px;border:1px solid var(--border);border-radius:var(--r-sm);background:var(--card);
+color:var(--forest);font-size:13.5px;font-weight:600;line-height:1.4;text-align:left}
+.audio-status[hidden]{display:none}
+.audio-status .audio-retry{flex:0 0 auto;border:1px solid var(--emerald);background:var(--card);
+color:var(--emerald);font:inherit;font-weight:700;padding:6px 12px;border-radius:999px;cursor:pointer}
+.audio-status .audio-retry:hover{background:var(--mint-bg)}
+.audio-status .audio-retry[hidden]{display:none}
 .hub-list{list-style:none;margin:20px 0;padding:0;display:flex;flex-direction:column;gap:10px}
 .hub-list a{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);
 border-radius:var(--r-md);box-shadow:var(--shadow-sm);padding:14px 16px;text-decoration:none;color:var(--forest)}
@@ -74,8 +93,28 @@ border-radius:var(--r-md);box-shadow:var(--shadow-sm);padding:14px 16px;text-dec
 .hub-list .ic{flex:0 0 auto;width:38px;height:38px;border-radius:12px;background:var(--cream);
 color:var(--emerald);display:grid;place-items:center}
 .hub-list .ic svg{width:19px;height:19px}
+/* Every flex row on a generated page has one fixed child (the 34px audio
+button, the 38px logo tile, the 38px hub icon, the retry button) and one text
+child. The text child needs min-width:0, or its automatic minimum size keeps it
+at min-content width and the row widens the page instead of wrapping. */
+.top a>b,.ex>div,.hub-list a>span,.audio-status .audio-status-msg{min-width:0}
 footer{color:var(--muted);font-size:13px;text-align:center;padding:26px 0 0}
 footer a{text-decoration:none}
+
+.guide-ending{margin:28px 0 0;padding:20px;background:var(--card);border:1px solid var(--border);
+border-radius:var(--r-md);box-shadow:var(--shadow-sm)}
+.guide-ending h2{font-size:20px;line-height:1.3;font-weight:800;letter-spacing:-.35px;margin:0 0 7px}
+.guide-ending-support{color:var(--muted);font-size:14.5px;margin:0 0 16px}
+.guide-primary{display:inline-flex;align-items:center;justify-content:center;background:var(--emerald);color:#fff;
+text-decoration:none;font-weight:700;padding:11px 17px;border-radius:var(--r-sm)}
+.guide-primary:hover{background:var(--sage-hover);color:#fff}
+.guide-reassurance{color:var(--forest);font-size:12.5px;font-weight:700;margin:14px 0 5px}
+footer.guide-footer{color:var(--muted);font-size:12px;font-weight:600;letter-spacing:.2px;
+text-align:center;padding:20px 0 0}
+@media (max-width:420px){
+  .guide-ending{padding:18px}
+  .guide-primary{display:flex;width:100%}
+}
 </style>
 </head>
 <body>
@@ -83,19 +122,117 @@ footer a{text-decoration:none}
 <header class="top"><a href="/" aria-label="Po polsku home" style="display:flex;align-items:center;gap:12px">
 <span class="logo-mark"><span class="lm-back"></span><span class="lm-kreska"></span><span class="lm-front">PL</span></span>
 <b>Po polsku</b></a></header>
-<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> &rsaquo; <a href="/guide/">Guide</a> &rsaquo; Liczebniki (Numbers meet cases)</nav><h1>Liczebniki (Numbers meet cases)</h1><p class="lede">dwa piwa but pięć piw - the number rules Polish is infamous for</p><span class="chip">Grammar A2</span><section class="card"><h2>The big three-way split</h2><p class="sub">Every Polish number belongs to one of three teams, and the team decides what happens to the noun.</p><ul><li><b>1</b> - singular, agreeing in gender: jeden bilet, jedna kawa, jedno piwo.</li><li><b>2, 3, 4</b> - plural Nominative, like English: dwa bilety, trzy kawy, cztery piwa.</li><li><b>5 and up</b> - Genitive plural, and the verb goes singular: pięć biletów, sześć kaw, dziesięć piw.</li><li>This is the single most famous rule in Polish. Once it clicks, ordering 'pięć piw' correctly feels like a superpower.</li></ul><div class="ex"><button class="say" data-audio="/audio/2772bc7292c2.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Dwa piwa poproszę.</div><div class="en">Two beers, please.</div></div></div><div class="ex"><button class="say" data-audio="/audio/d093eed8b628.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Pięć piw poproszę.</div><div class="en">Five beers, please.</div></div></div></section><section class="card"><h2>The pattern side by side</h2><p class="sub">Watch one word travel through all three teams.</p><table><thead><tr><th>Group</th><th>Ending</th><th>Example</th></tr></thead><tbody><tr><td>1</td><td lang="pl">jedno piwo / jedna kawa</td><td lang="pl">Jedno piwo poproszę.</td></tr><tr><td>2-4</td><td lang="pl">dwa piwa / dwie kawy</td><td lang="pl">Dwie kawy i trzy piwa.</td></tr><tr><td>5+</td><td lang="pl">pięć piw / pięć kaw</td><td lang="pl">Pięć piw dla nas!</td></tr></tbody></table><div class="note">Feminine nouns take <b>dwie</b>, not dwa: <b>dwie</b> kawy, <b>dwie</b> godziny. Masculine and neuter share <b>dwa</b>: dwa bilety, dwa okna.</div></section><section class="card"><h2>Compound numbers: the last word decides</h2><p class="sub">22, 34, 95 - only the final digit-word matters. With two famous traps.</p><ul><li>22 ends in 'dwa' → 2-4 team: dwadzieścia <b>dwa piwa</b>.</li><li>25 ends in 'pięć' → 5+ team: dwadzieścia <b>pięć piw</b>.</li><li>Trap 1: the teens <b>12, 13, 14</b> are single words, not compounds - they follow the 5+ rule: dwanaście <b>piw</b>.</li><li>Trap 2: numbers ending in <b>jeden</b> (21, 31...) also take the 5+ rule, and jeden never changes: dwadzieścia jeden <b>piw</b>.</li></ul><div class="ex"><button class="say" data-audio="/audio/42009e753783.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Mam dwadzieścia trzy lata.</div><div class="en">I am twenty-three years old.</div></div></div><div class="ex"><button class="say" data-audio="/audio/675256dbef2d.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Ona ma dwadzieścia jeden lat.</div><div class="en">She is twenty-one years old.</div></div></div></section><section class="card"><h2>Years of age: rok, lata, lat</h2><p class="sub">The word for 'year' follows the same three teams - and it's how everyone asks your age.</p><table><thead><tr><th>Group</th><th>Ending</th><th>Example</th></tr></thead><tbody><tr><td>1</td><td lang="pl">rok</td><td lang="pl">Mieszkam tu rok.</td></tr><tr><td>2-4</td><td lang="pl">lata</td><td lang="pl">On ma cztery lata.</td></tr><tr><td>5+</td><td lang="pl">lat</td><td lang="pl">Mam trzydzieści lat.</td></tr></tbody></table><div class="note"><b>Ile masz lat?</b> (how old are you?) uses lat because <b>ile</b> behaves like a 5+ number. So do <b>kilka</b> (a few), <b>wiele</b> (many), and <b>dużo</b>: kilka lat, dużo osób.</div></section><section class="card"><h2>Money: złote czy złotych?</h2><p class="sub">Prices are the rule's daily workout - you'll hear this at every till in Poland.</p><table><thead><tr><th>Group</th><th>Ending</th><th>Example</th></tr></thead><tbody><tr><td>1</td><td lang="pl">jeden złoty / jeden grosz</td><td lang="pl">To kosztuje jeden złoty.</td></tr><tr><td>2-4</td><td lang="pl">dwa złote / dwa grosze</td><td lang="pl">Dwa złote i trzy grosze.</td></tr><tr><td>5+</td><td lang="pl">pięć złotych / pięć groszy</td><td lang="pl">Pięć złotych poproszę.</td></tr><tr><td>compound</td><td lang="pl">dwadzieścia dwa złote</td><td lang="pl">To kosztuje dwadzieścia dwa złote.</td></tr><tr><td>teens trap</td><td lang="pl">czternaście złotych</td><td lang="pl">Bilet kosztuje czternaście złotych.</td></tr></tbody></table><div class="note">Cashiers speak fast, but they always follow the rule: 24,50 = 'dwadzieścia cztery złote pięćdziesiąt'. Listen for złote vs złotych - it tells you which team the number is on.</div></section><section class="card"><h2>Counting men: the special forms</h2><p class="sub">Groups that include men get their own number forms - the same masculine-personal theme as oni and wszyscy.</p><ul><li>Everyday way: <b>dwóch panów</b> czekało, <b>trzech studentów</b> przyszło, <b>pięciu mężczyzn</b> pracuje - Genitive plural and a singular verb.</li><li>Formal alternative for 2-4: <b>dwaj panowie</b> czekali, <b>trzej studenci</b> przyszli - Nominative with a plural verb. Both are correct.</li><li>From 5 up there's only one option: <b>pięciu</b> panów, <b>sześciu</b> kolegów.</li><li>Women and things never do this: dwie panie czekały, dwa autobusy przyjechały.</li></ul><div class="ex"><button class="say" data-audio="/audio/3e7a95268eb7.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Dwóch kolegów czekało na mnie.</div><div class="en">Two friends were waiting for me.</div></div></div><div class="ex"><button class="say" data-audio="/audio/b048ae627f15.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">W firmie pracuje pięciu programistów.</div><div class="en">Five programmers work at the company.</div></div></div></section><section class="card"><h2>Survival chunks with numbers</h2><p class="sub">Frozen phrases that hide the rule inside - use them whole from day one.</p><table><thead><tr><th>Group</th><th>Ending</th><th>Example</th></tr></thead><tbody><tr><td>twice / three times</td><td lang="pl">dwa razy / trzy razy</td><td lang="pl">Byłem tam dwa razy.</td></tr><tr><td>5+ times</td><td lang="pl">pięć razy</td><td lang="pl">Dzwoniłem pięć razy!</td></tr><tr><td>a few people</td><td lang="pl">kilka osób</td><td lang="pl">Przyszło tylko kilka osób.</td></tr><tr><td>in five minutes</td><td lang="pl">za pięć minut</td><td lang="pl">Będę za pięć minut.</td></tr><tr><td>a couple of days</td><td lang="pl">parę dni</td><td lang="pl">Wracam za parę dni.</td></tr></tbody></table><div class="note"><b>raz / razy / razy</b>: jeden raz, dwa razy, pięć razy - 'razy' happens to look the same for both teams, one less thing to worry about.</div></section><a class="cta" href="/">Practice this in the app - free, no account</a><p class="cta-sub">This page is a sample - the app has the full topic, 14 interactive drills, and Polish pronunciation audio throughout.</p><footer><a href="/">Po polsku</a> - free Polish flashcards with audio. No account, no tracking, works offline.</footer>
-</div>
-<script>
-document.addEventListener("click", function(e){
-  var b = e.target.closest("[data-audio]"); if(!b) return;
-  var cur = document.querySelector(".say[data-playing]");
-  if(cur){ delete cur.dataset.playing; }
-  if(window.__pp){ window.__pp.pause(); }
-  var a = new Audio(b.getAttribute("data-audio"));
-  window.__pp = a; b.dataset.playing = "1";
-  a.addEventListener("ended", function(){ delete b.dataset.playing; });
-  a.play().catch(function(){ delete b.dataset.playing; });
-});
-</script>
-</body>
-</html>
+<main>
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> &rsaquo; <a href="/guide/">Guide</a> &rsaquo; Liczebniki (Numbers meet cases)</nav><h1>Liczebniki (Numbers meet cases)</h1><p class="lede">dwa piwa but pięć piw - the number rules Polish is infamous for</p><span class="chip">Grammar A2</span><section class="card"><h2>The big three-way split</h2><p class="sub">Every Polish number belongs to one of three teams, and the team decides what happens to the noun.</p><ul><li><b>1</b> - singular, agreeing in gender: jeden bilet, jedna kawa, jedno piwo.</li><li><b>2, 3, 4</b> - plural Nominative, like English: dwa bilety, trzy kawy, cztery piwa.</li><li><b>5 and up</b> - Genitive plural, and the verb goes singular: pięć biletów, sześć kaw, dziesięć piw.</li><li>This is the single most famous rule in Polish. Once it clicks, ordering 'pięć piw' correctly feels like a superpower.</li></ul><div class="ex"><button class="say" data-audio="/audio/2772bc7292c2.mp3" data-pl="Dwa piwa poproszę." type="button" aria-label="Play Polish example: Dwa piwa poproszę."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Dwa piwa poproszę.</div><div class="en">Two beers, please.</div></div></div><div class="ex"><button class="say" data-audio="/audio/d093eed8b628.mp3" data-pl="Pięć piw poproszę." type="button" aria-label="Play Polish example: Pięć piw poproszę."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Pięć piw poproszę.</div><div class="en">Five beers, please.</div></div></div></section><section class="card"><h2>The pattern side by side</h2><p class="sub">Watch one word travel through all three teams.</p><table><thead><tr><th>Group</th><th>Ending</th><th>Example</th></tr></thead><tbody><tr><td>1</td><td lang="pl">jedno piwo / jedna kawa</td><td lang="pl">Jedno piwo poproszę.</td></tr><tr><td>2-4</td><td lang="pl">dwa piwa / dwie kawy</td><td lang="pl">Dwie kawy i trzy piwa.</td></tr><tr><td>5+</td><td lang="pl">pięć piw / pięć kaw</td><td lang="pl">Pięć piw dla nas!</td></tr></tbody></table><div class="note">Feminine nouns take <b>dwie</b>, not dwa: <b>dwie</b> kawy, <b>dwie</b> godziny. Masculine and neuter share <b>dwa</b>: dwa bilety, dwa okna.</div></section><section class="card"><h2>Compound numbers: the last word decides</h2><p class="sub">22, 34, 95 - only the final digit-word matters. With two famous traps.</p><ul><li>22 ends in 'dwa' → 2-4 team: dwadzieścia <b>dwa piwa</b>.</li><li>25 ends in 'pięć' → 5+ team: dwadzieścia <b>pięć piw</b>.</li><li>Trap 1: the teens <b>12, 13, 14</b> are single words, not compounds - they follow the 5+ rule: dwanaście <b>piw</b>.</li><li>Trap 2: numbers ending in <b>jeden</b> (21, 31...) also take the 5+ rule, and jeden never changes: dwadzieścia jeden <b>piw</b>.</li></ul><div class="ex"><button class="say" data-audio="/audio/42009e753783.mp3" data-pl="Mam dwadzieścia trzy lata." type="button" aria-label="Play Polish example: Mam dwadzieścia trzy lata."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Mam dwadzieścia trzy lata.</div><div class="en">I am twenty-three years old.</div></div></div><div class="ex"><button class="say" data-audio="/audio/675256dbef2d.mp3" data-pl="Ona ma dwadzieścia jeden lat." type="button" aria-label="Play Polish example: Ona ma dwadzieścia jeden lat."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Ona ma dwadzieścia jeden lat.</div><div class="en">She is twenty-one years old.</div></div></div></section><section class="card"><h2>Years of age: rok, lata, lat</h2><p class="sub">The word for 'year' follows the same three teams - and it's how everyone asks your age.</p><table><thead><tr><th>Group</th><th>Ending</th><th>Example</th></tr></thead><tbody><tr><td>1</td><td lang="pl">rok</td><td lang="pl">Mieszkam tu rok.</td></tr><tr><td>2-4</td><td lang="pl">lata</td><td lang="pl">On ma cztery lata.</td></tr><tr><td>5+</td><td lang="pl">lat</td><td lang="pl">Mam trzydzieści lat.</td></tr></tbody></table><div class="note"><b>Ile masz lat?</b> (how old are you?) uses lat because <b>ile</b> behaves like a 5+ number. So do <b>kilka</b> (a few), <b>wiele</b> (many), and <b>dużo</b>: kilka lat, dużo osób.</div></section><section class="card"><h2>Money: złote czy złotych?</h2><p class="sub">Prices are the rule's daily workout - you'll hear this at every till in Poland.</p><table><thead><tr><th>Group</th><th>Ending</th><th>Example</th></tr></thead><tbody><tr><td>1</td><td lang="pl">jeden złoty / jeden grosz</td><td lang="pl">To kosztuje jeden złoty.</td></tr><tr><td>2-4</td><td lang="pl">dwa złote / dwa grosze</td><td lang="pl">Dwa złote i trzy grosze.</td></tr><tr><td>5+</td><td lang="pl">pięć złotych / pięć groszy</td><td lang="pl">Pięć złotych poproszę.</td></tr><tr><td>compound</td><td lang="pl">dwadzieścia dwa złote</td><td lang="pl">To kosztuje dwadzieścia dwa złote.</td></tr><tr><td>teens trap</td><td lang="pl">czternaście złotych</td><td lang="pl">Bilet kosztuje czternaście złotych.</td></tr></tbody></table><div class="note">Cashiers speak fast, but they always follow the rule: 24,50 = 'dwadzieścia cztery złote pięćdziesiąt'. Listen for złote vs złotych - it tells you which team the number is on.</div></section><section class="card"><h2>Counting men: the special forms</h2><p class="sub">Groups that include men get their own number forms - the same masculine-personal theme as oni and wszyscy.</p><ul><li>Everyday way: <b>dwóch panów</b> czekało, <b>trzech studentów</b> przyszło, <b>pięciu mężczyzn</b> pracuje - Genitive plural and a singular verb.</li><li>Formal alternative for 2-4: <b>dwaj panowie</b> czekali, <b>trzej studenci</b> przyszli - Nominative with a plural verb. Both are correct.</li><li>From 5 up there's only one option: <b>pięciu</b> panów, <b>sześciu</b> kolegów.</li><li>Women and things never do this: dwie panie czekały, dwa autobusy przyjechały.</li></ul><div class="ex"><button class="say" data-audio="/audio/3e7a95268eb7.mp3" data-pl="Dwóch kolegów czekało na mnie." type="button" aria-label="Play Polish example: Dwóch kolegów czekało na mnie."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Dwóch kolegów czekało na mnie.</div><div class="en">Two friends were waiting for me.</div></div></div><div class="ex"><button class="say" data-audio="/audio/b048ae627f15.mp3" data-pl="W firmie pracuje pięciu programistów." type="button" aria-label="Play Polish example: W firmie pracuje pięciu programistów."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">W firmie pracuje pięciu programistów.</div><div class="en">Five programmers work at the company.</div></div></div></section><section class="card"><h2>Survival chunks with numbers</h2><p class="sub">Frozen phrases that hide the rule inside - use them whole from day one.</p><table><thead><tr><th>Group</th><th>Ending</th><th>Example</th></tr></thead><tbody><tr><td>twice / three times</td><td lang="pl">dwa razy / trzy razy</td><td lang="pl">Byłem tam dwa razy.</td></tr><tr><td>5+ times</td><td lang="pl">pięć razy</td><td lang="pl">Dzwoniłem pięć razy!</td></tr><tr><td>a few people</td><td lang="pl">kilka osób</td><td lang="pl">Przyszło tylko kilka osób.</td></tr><tr><td>in five minutes</td><td lang="pl">za pięć minut</td><td lang="pl">Będę za pięć minut.</td></tr><tr><td>a couple of days</td><td lang="pl">parę dni</td><td lang="pl">Wracam za parę dni.</td></tr></tbody></table><div class="note"><b>raz / razy / razy</b>: jeden raz, dwa razy, pięć razy - 'razy' happens to look the same for both teams, one less thing to worry about.</div></section><section class="guide-ending" aria-labelledby="guideEndingTitle"><h2 id="guideEndingTitle">Ready to keep learning?</h2><p class="guide-ending-support">Practice the same Polish with flashcards, drills, conversations, and listening.</p><a class="guide-primary" href="/">Open the app</a><p class="guide-reassurance">Genuinely free. No account. Works offline.</p></section></main><footer class="guide-footer"><a href="/">Po polsku</a> &middot; v8.4 &middot; 2026</footer></div><script>
+(function(){
+  var FALLBACK_MSG = "Using your device's voice.";
+  var FAILED_MSG = "Audio couldn't play. Check your connection, then try again.";
+  var RETRY_MSG = "Try again";
+  var token = 0, playing = null, marked = null, request = null;
+  var box = null, msg = null, retry = null, owner = null;
+  function host(){
+    if(box) return box;
+    box = document.createElement("div");
+    box.id = "pp-audio-status";
+    box.className = "audio-status";
+    box.setAttribute("role", "status");
+    box.setAttribute("aria-live", "polite");
+    box.setAttribute("aria-atomic", "true");
+    box.hidden = true;
+    msg = document.createElement("span");
+    msg.id = "pp-audio-status-msg";
+    msg.className = "audio-status-msg";
+    retry = document.createElement("button");
+    retry.id = "pp-audio-retry";
+    retry.className = "audio-retry";
+    retry.type = "button";
+    retry.textContent = RETRY_MSG;
+    retry.hidden = true; retry.disabled = true; retry.tabIndex = -1;
+    retry.addEventListener("click", function(e){ e.stopPropagation(); again(); });
+    box.appendChild(msg); box.appendChild(retry);
+    document.body.appendChild(box);
+    return box;
+  }
+  function clear(){
+    if(!box) return;
+    box.hidden = true;
+    msg.textContent = "";
+    retry.hidden = true; retry.disabled = true; retry.tabIndex = -1;
+    if(owner && owner.getAttribute && owner.getAttribute("aria-describedby") === "pp-audio-status-msg"){
+      owner.removeAttribute("aria-describedby");
+    }
+    owner = null;
+  }
+  function show(kind, btn){
+    var el = host();
+    if(btn && btn.insertAdjacentElement){ try{ btn.insertAdjacentElement("afterend", el); }catch(e){} }
+    var failed = kind === "failed";
+    msg.textContent = failed ? FAILED_MSG : FALLBACK_MSG;
+    retry.hidden = !failed; retry.disabled = !failed; retry.tabIndex = failed ? 0 : -1;
+    el.hidden = false;
+    owner = btn || null;
+    if(failed && btn && btn.setAttribute) btn.setAttribute("aria-describedby", "pp-audio-status-msg");
+  }
+  function unmark(){
+    if(marked && marked.dataset) delete marked.dataset.playing;
+    marked = null;
+  }
+  function stop(){
+    token++;
+    if(playing){ try{ playing.pause(); }catch(e){} playing = null; }
+    if(window.speechSynthesis){ try{ window.speechSynthesis.cancel(); }catch(e){} }
+    unmark();
+    clear();
+  }
+  function speak(text, btn, mine, afterFailedClip){
+    if(!text || !window.speechSynthesis || typeof window.SpeechSynthesisUtterance !== "function"){
+      show("failed", btn); return;
+    }
+    var u;
+    try{ u = new window.SpeechSynthesisUtterance(text); }
+    catch(e){ show("failed", btn); return; }
+    u.lang = "pl-PL";
+    u.onend = function(){ if(mine !== token) return; unmark(); };
+    u.onerror = function(){ if(mine !== token) return; unmark(); show("failed", btn); };
+    if(afterFailedClip) show("fallback", btn);
+    if(btn && btn.dataset){ marked = btn; btn.dataset.playing = "1"; }
+    try{ window.speechSynthesis.speak(u); }
+    catch(e){ unmark(); show("failed", btn); }
+  }
+  function play(btn){
+    stop();
+    var mine = token;
+    var url = btn.getAttribute("data-audio");
+    var text = btn.getAttribute("data-pl") || "";
+    request = { btn: btn, text: text };
+    if(!url){ speak(text, btn, mine, false); return; }
+    var a = new Audio(url);
+    playing = a; marked = btn; btn.dataset.playing = "1";
+    var settled = false;
+    function settle(){
+      if(settled) return false;
+      settled = true;
+      if(mine !== token) return false;
+      playing = null; unmark();
+      return true;
+    }
+    a.addEventListener("ended", function(){ settle(); });
+    a.addEventListener("error", function(){ if(settle()) speak(text, btn, mine, true); });
+    a.play().catch(function(){ if(settle()) speak(text, btn, mine, true); });
+  }
+  function again(){
+    if(!request) return;
+    var btn = request.btn;
+    if(btn && btn.focus){ try{ btn.focus(); }catch(e){} }
+    if(btn) play(btn);
+  }
+  document.addEventListener("click", function(e){
+    var b = e.target.closest("[data-audio]"); if(!b) return;
+    play(b);
+  });
+  /* Parked before it is ever needed: a live region has to exist before its text
+     changes for the change to be announced reliably. Same reason, same moment,
+     as the app shell. */
+  host();
+})();
+</script></body></html>

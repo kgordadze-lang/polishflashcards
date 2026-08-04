@@ -2,22 +2,22 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#f8fafc">
 <title>Polish podcasts worth listening to | Po polsku</title>
-<meta name="description" content="Two Polish podcasts that actually helped - one graded for learners, one made for native speakers. Honest notes on what&#x27;s free, what isn&#x27;t, and what level each needs.">
+<meta name="description" content="Three Polish listening resources that actually helped - from learner-friendly input to natural Polish at full speed. Honest notes on what&#x27;s free, what isn&#x27;t, and what level each works best for.">
 <link rel="canonical" href="https://popolsku.app/guide/listening/">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=17">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Po polsku">
 <meta property="og:url" content="https://popolsku.app/guide/listening/">
 <meta property="og:title" content="Polish podcasts worth listening to | Po polsku">
-<meta property="og:description" content="Two Polish podcasts that actually helped - one graded for learners, one made for native speakers. Honest notes on what&#x27;s free, what isn&#x27;t, and what level each needs.">
+<meta property="og:description" content="Three Polish listening resources that actually helped - from learner-friendly input to natural Polish at full speed. Honest notes on what&#x27;s free, what isn&#x27;t, and what level each works best for.">
 <meta property="og:image" content="https://popolsku.app/og-image.png?v=2">
 <meta name="twitter:card" content="summary_large_image">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self'; connect-src 'self'; media-src 'self'; base-uri 'self'; form-action 'self'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "What else I listen to", "description": "Two Polish podcasts that actually helped - one graded for learners, one made for native speakers. Honest notes on what's free, what isn't, and what level each needs.", "url": "https://popolsku.app/guide/listening/", "inLanguage": "en", "publisher": {"@type": "Organization", "name": "Po polsku", "url": "https://popolsku.app/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "What else I listen to", "description": "Three Polish listening resources that actually helped - from learner-friendly input to natural Polish at full speed. Honest notes on what's free, what isn't, and what level each works best for.", "url": "https://popolsku.app/guide/listening/", "inLanguage": "en", "publisher": {"@type": "Organization", "name": "Po polsku", "url": "https://popolsku.app/"}}</script>
 <style>
 :root{--bg:#f8fafc;--card:#ffffff;--forest:#1e293b;--mint-bg:#e0e7ff;--mint-text:#4338ca;
 --emerald:#4f46e5;--cream:#eef2ff;--logo-back:#a5b4fc;--sage-hover:#3730a3;--muted:#64748b;
@@ -28,9 +28,15 @@
 @font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:700;font-display:swap;src:url("/fonts/plus-jakarta-sans-v12-latin-700.woff2") format("woff2")}
 @font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:800;font-display:swap;src:url("/fonts/plus-jakarta-sans-v12-latin-800.woff2") format("woff2")}
 *{box-sizing:border-box}
+/* Safe-area contract: the insets live on <body> only - the same declaration the
+app shell uses - so nothing double-applies them, the centred .wrap keeps its
+own 20px gutter inside them, and a zero-inset device is byte-for-byte the old
+layout. Padding on an auto-width block can never widen the document. */
 body{margin:0;background:var(--bg);color:var(--forest);
 font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
--webkit-font-smoothing:antialiased;line-height:1.55}
+-webkit-font-smoothing:antialiased;line-height:1.55;overflow-wrap:break-word;
+padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px)
+        env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
 .wrap{max-width:640px;margin:0 auto;padding:0 20px 48px}
 a{color:var(--emerald)}a:hover{color:var(--sage-hover)}
 a:focus-visible,button:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
@@ -53,7 +59,13 @@ box-shadow:var(--shadow-sm);padding:22px 22px 18px;margin:0 0 16px}
 .card .sub{color:var(--muted);font-size:14.5px;margin:0 0 12px}
 .card ul{margin:0 0 12px;padding-left:20px}.card li{margin:4px 0}
 table{width:100%;border-collapse:collapse;font-size:14px;margin:0 0 12px}
-th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+/* Reflow contract: an auto-layout table cannot render narrower than the widest
+unbreakable word in each column, which is what pushed 11 grammar pages past the
+viewport at 320px. overflow-wrap:anywhere lowers that floor to one character, so
+the table reflows inside the card instead of widening the page - the row stays a
+real table row and no cell is clipped or hidden. */
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top;
+overflow-wrap:anywhere}
 th{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted)}
 .note,.explain{background:var(--cream);border-radius:var(--r-sm);padding:10px 14px;font-size:14px;margin:0 0 12px}
 .ex{display:flex;align-items:flex-start;gap:10px;border-top:1px dashed var(--border);padding:10px 0 2px}
@@ -63,10 +75,17 @@ th{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted
 color:var(--emerald);cursor:pointer;display:grid;place-items:center}
 .say svg{width:17px;height:17px}
 .say[data-playing]{background:var(--mint-bg)}
-.cta{display:block;text-align:center;background:var(--emerald);color:#fff;text-decoration:none;font-weight:700;
-padding:15px 20px;border-radius:var(--r-md);margin:26px 0 10px}
-.cta:hover{background:var(--sage-hover);color:#fff}
-.cta-sub{text-align:center;color:var(--muted);font-size:13px;margin:0 0 8px}
+/* Audio status and retry (MLG-4A-04): one live region, moved next to whichever
+control failed, holding the message and a single keyboard-operable retry. Laid
+out in flow, so it can never cover the sentence it is talking about. */
+.audio-status{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0 0;
+padding:9px 12px;border:1px solid var(--border);border-radius:var(--r-sm);background:var(--card);
+color:var(--forest);font-size:13.5px;font-weight:600;line-height:1.4;text-align:left}
+.audio-status[hidden]{display:none}
+.audio-status .audio-retry{flex:0 0 auto;border:1px solid var(--emerald);background:var(--card);
+color:var(--emerald);font:inherit;font-weight:700;padding:6px 12px;border-radius:999px;cursor:pointer}
+.audio-status .audio-retry:hover{background:var(--mint-bg)}
+.audio-status .audio-retry[hidden]{display:none}
 .hub-list{list-style:none;margin:20px 0;padding:0;display:flex;flex-direction:column;gap:10px}
 .hub-list a{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);
 border-radius:var(--r-md);box-shadow:var(--shadow-sm);padding:14px 16px;text-decoration:none;color:var(--forest)}
@@ -74,8 +93,28 @@ border-radius:var(--r-md);box-shadow:var(--shadow-sm);padding:14px 16px;text-dec
 .hub-list .ic{flex:0 0 auto;width:38px;height:38px;border-radius:12px;background:var(--cream);
 color:var(--emerald);display:grid;place-items:center}
 .hub-list .ic svg{width:19px;height:19px}
+/* Every flex row on a generated page has one fixed child (the 34px audio
+button, the 38px logo tile, the 38px hub icon, the retry button) and one text
+child. The text child needs min-width:0, or its automatic minimum size keeps it
+at min-content width and the row widens the page instead of wrapping. */
+.top a>b,.ex>div,.hub-list a>span,.audio-status .audio-status-msg{min-width:0}
 footer{color:var(--muted);font-size:13px;text-align:center;padding:26px 0 0}
 footer a{text-decoration:none}
+
+.guide-ending{margin:28px 0 0;padding:20px;background:var(--card);border:1px solid var(--border);
+border-radius:var(--r-md);box-shadow:var(--shadow-sm)}
+.guide-ending h2{font-size:20px;line-height:1.3;font-weight:800;letter-spacing:-.35px;margin:0 0 7px}
+.guide-ending-support{color:var(--muted);font-size:14.5px;margin:0 0 16px}
+.guide-primary{display:inline-flex;align-items:center;justify-content:center;background:var(--emerald);color:#fff;
+text-decoration:none;font-weight:700;padding:11px 17px;border-radius:var(--r-sm)}
+.guide-primary:hover{background:var(--sage-hover);color:#fff}
+.guide-reassurance{color:var(--forest);font-size:12.5px;font-weight:700;margin:14px 0 5px}
+footer.guide-footer{color:var(--muted);font-size:12px;font-weight:600;letter-spacing:.2px;
+text-align:center;padding:20px 0 0}
+@media (max-width:420px){
+  .guide-ending{padding:18px}
+  .guide-primary{display:flex;width:100%}
+}
 </style>
 </head>
 <body>
@@ -83,8 +122,5 @@ footer a{text-decoration:none}
 <header class="top"><a href="/" aria-label="Po polsku home" style="display:flex;align-items:center;gap:12px">
 <span class="logo-mark"><span class="lm-back"></span><span class="lm-kreska"></span><span class="lm-front">PL</span></span>
 <b>Po polsku</b></a></header>
-<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> &rsaquo; <a href="/guide/">Guide</a> &rsaquo; What I listen to</nav><h1>What else I listen to</h1><p class="lede">Flashcards get you words. Getting used to the sound of the language takes hours of listening, and these are the two things I keep going back to.</p><div class="card"><h2>Real Polish</h2><p class="sub"><a href="https://realpolish.pl/" target="_blank" rel="noopener">realpolish.pl</a> &middot; also on Spotify and YouTube</p><p>Piotr records in Polish, slowly and clearly, about culture, history and ordinary life. The idea is comprehensible input - you should understand most of it and be stretched by the rest, which is a very different feeling from being lost.</p><p>The episodes are free. Transcripts and the extra study material are paid. I got a long way on the free episodes alone, so start there and decide later.</p><div class="note">Works from roughly A2 onward. Below that it will feel fast - that is normal, and it is worth coming back to in a month or two.</div></div><div class="card"><h2>Ratio viva</h2><p class="sub"><a href="https://www.youtube.com/@Ratio_viva" target="_blank" rel="noopener">youtube.com/@Ratio_viva</a> &middot; also on Spotify</p><p>Not a learning channel at all. Nikodem makes short videos about psychology and the thinking errors behind everyday decisions - made for Poles, at Polish speed. That is exactly why it is useful: real pace, real vocabulary, nobody slowing down for you. Closed captions are on, so you can read along when your ears give out.</p><div class="note">Harder than Real Polish. I treat it as the thing I graduate into, and I still pause it constantly.</div></div><div class="note" style="margin:22px 0 4px;text-align:center">Neither of these paid me anything and probably neither knows this page exists. They are just what worked.</div><a class="cta" href="/">Open the app - flashcards, drills, conversations</a><p class="cta-sub">Free, no account, works offline.</p><footer><a href="/">Po polsku</a> - free Polish flashcards with audio. No account, no tracking, works offline.</footer>
-</div>
-<script></script>
-</body>
-</html>
+<main>
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> &rsaquo; <a href="/guide/">Guide</a> &rsaquo; What I listen to</nav><h1>What else I listen to</h1><p class="lede">Flashcards help you learn words. Getting used to the sound of Polish takes hours of listening. These are three resources I keep coming back to because they cover different stages of the same journey: clear learner-friendly Polish, real-life listening with plenty of visual context, and natural Polish at full speed.</p><div class="card"><h2>Real Polish</h2><p class="sub"><a href="https://realpolish.pl/" target="_blank" rel="noopener">realpolish.pl</a> &middot; also on Spotify and YouTube</p><p>Piotr records in Polish, slowly and clearly, about culture, history and ordinary life. The idea is comprehensible input - you should understand most of it and be stretched by the rest, which is a very different feeling from being lost.</p><p>The episodes are free. Transcripts and the extra study material are paid. I got a long way on the free episodes alone, so start there and decide later.</p><div class="note">Works from roughly A2 onward. Below that it will feel fast - that is normal, and it is worth coming back to in a month or two.</div></div><div class="card"><h2>Polish with Kamil</h2><p class="sub"><a href="https://www.youtube.com/@polishwithkamil" target="_blank" rel="noopener">youtube.com/@polishwithkamil</a> &middot; extra podcasts, transcripts and exercises on <a href="https://www.patreon.com/cw/polishwithkamil" target="_blank" rel="noopener">Patreon</a></p><p>Kamil teaches Polish through comprehensible input: everyday vlogs, short lessons, games and interviews that help you understand the message without needing to know every word. He speaks clearly and gives you plenty of visual context, but the Polish still feels natural and connected to real situations.</p><p>The YouTube content is free. His Patreon adds a weekly slow-Polish podcast with full transcripts and extra practice exercises.</p><div class="note">Good from beginner level onward. Start with the comprehensible-input videos and vlogs; the interviews are a natural next step when you want faster, less predictable Polish.</div></div><div class="card"><h2>Ratio viva</h2><p class="sub"><a href="https://www.youtube.com/@Ratio_viva" target="_blank" rel="noopener">youtube.com/@Ratio_viva</a> &middot; also on Spotify</p><p>Not a learning channel at all. Nikodem makes short videos about psychology and the thinking errors behind everyday decisions - made for Poles, at Polish speed. That is exactly why it is useful: real pace, real vocabulary, nobody slowing down for you. Closed captions are on, so you can read along when your ears give out.</p><div class="note">Harder than Real Polish. I treat it as the thing I graduate into, and I still pause it constantly.</div></div><p class="note" style="margin:22px 0 4px;text-align:center">These are personal recommendations. None of the creators paid to be included here.</p><section class="guide-ending" aria-labelledby="guideEndingTitle"><h2 id="guideEndingTitle">Ready to keep learning?</h2><p class="guide-ending-support">Practice the same Polish with flashcards, drills, conversations, and listening.</p><a class="guide-primary" href="/">Open the app</a><p class="guide-reassurance">Genuinely free. No account. Works offline.</p></section></main><footer class="guide-footer"><a href="/">Po polsku</a> &middot; v8.4 &middot; 2026</footer></div><script></script></body></html>

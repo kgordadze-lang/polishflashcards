@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#f8fafc">
 <title>Dopełniacz (Genitive) - Polish grammar explained | Po polsku</title>
 <meta name="description" content="The &#x27;of / no / from&#x27; case: absence, possession, quantity. Clear explanations with tables, examples with Polish pronunciation audio, and free practice drills - Grammar A1 on Po polsku.">
@@ -28,9 +28,15 @@
 @font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:700;font-display:swap;src:url("/fonts/plus-jakarta-sans-v12-latin-700.woff2") format("woff2")}
 @font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:800;font-display:swap;src:url("/fonts/plus-jakarta-sans-v12-latin-800.woff2") format("woff2")}
 *{box-sizing:border-box}
+/* Safe-area contract: the insets live on <body> only - the same declaration the
+app shell uses - so nothing double-applies them, the centred .wrap keeps its
+own 20px gutter inside them, and a zero-inset device is byte-for-byte the old
+layout. Padding on an auto-width block can never widen the document. */
 body{margin:0;background:var(--bg);color:var(--forest);
 font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
--webkit-font-smoothing:antialiased;line-height:1.55}
+-webkit-font-smoothing:antialiased;line-height:1.55;overflow-wrap:break-word;
+padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px)
+        env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
 .wrap{max-width:640px;margin:0 auto;padding:0 20px 48px}
 a{color:var(--emerald)}a:hover{color:var(--sage-hover)}
 a:focus-visible,button:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
@@ -53,7 +59,13 @@ box-shadow:var(--shadow-sm);padding:22px 22px 18px;margin:0 0 16px}
 .card .sub{color:var(--muted);font-size:14.5px;margin:0 0 12px}
 .card ul{margin:0 0 12px;padding-left:20px}.card li{margin:4px 0}
 table{width:100%;border-collapse:collapse;font-size:14px;margin:0 0 12px}
-th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+/* Reflow contract: an auto-layout table cannot render narrower than the widest
+unbreakable word in each column, which is what pushed 11 grammar pages past the
+viewport at 320px. overflow-wrap:anywhere lowers that floor to one character, so
+the table reflows inside the card instead of widening the page - the row stays a
+real table row and no cell is clipped or hidden. */
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top;
+overflow-wrap:anywhere}
 th{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted)}
 .note,.explain{background:var(--cream);border-radius:var(--r-sm);padding:10px 14px;font-size:14px;margin:0 0 12px}
 .ex{display:flex;align-items:flex-start;gap:10px;border-top:1px dashed var(--border);padding:10px 0 2px}
@@ -63,10 +75,17 @@ th{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted
 color:var(--emerald);cursor:pointer;display:grid;place-items:center}
 .say svg{width:17px;height:17px}
 .say[data-playing]{background:var(--mint-bg)}
-.cta{display:block;text-align:center;background:var(--emerald);color:#fff;text-decoration:none;font-weight:700;
-padding:15px 20px;border-radius:var(--r-md);margin:26px 0 10px}
-.cta:hover{background:var(--sage-hover);color:#fff}
-.cta-sub{text-align:center;color:var(--muted);font-size:13px;margin:0 0 8px}
+/* Audio status and retry (MLG-4A-04): one live region, moved next to whichever
+control failed, holding the message and a single keyboard-operable retry. Laid
+out in flow, so it can never cover the sentence it is talking about. */
+.audio-status{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0 0;
+padding:9px 12px;border:1px solid var(--border);border-radius:var(--r-sm);background:var(--card);
+color:var(--forest);font-size:13.5px;font-weight:600;line-height:1.4;text-align:left}
+.audio-status[hidden]{display:none}
+.audio-status .audio-retry{flex:0 0 auto;border:1px solid var(--emerald);background:var(--card);
+color:var(--emerald);font:inherit;font-weight:700;padding:6px 12px;border-radius:999px;cursor:pointer}
+.audio-status .audio-retry:hover{background:var(--mint-bg)}
+.audio-status .audio-retry[hidden]{display:none}
 .hub-list{list-style:none;margin:20px 0;padding:0;display:flex;flex-direction:column;gap:10px}
 .hub-list a{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);
 border-radius:var(--r-md);box-shadow:var(--shadow-sm);padding:14px 16px;text-decoration:none;color:var(--forest)}
@@ -74,8 +93,28 @@ border-radius:var(--r-md);box-shadow:var(--shadow-sm);padding:14px 16px;text-dec
 .hub-list .ic{flex:0 0 auto;width:38px;height:38px;border-radius:12px;background:var(--cream);
 color:var(--emerald);display:grid;place-items:center}
 .hub-list .ic svg{width:19px;height:19px}
+/* Every flex row on a generated page has one fixed child (the 34px audio
+button, the 38px logo tile, the 38px hub icon, the retry button) and one text
+child. The text child needs min-width:0, or its automatic minimum size keeps it
+at min-content width and the row widens the page instead of wrapping. */
+.top a>b,.ex>div,.hub-list a>span,.audio-status .audio-status-msg{min-width:0}
 footer{color:var(--muted);font-size:13px;text-align:center;padding:26px 0 0}
 footer a{text-decoration:none}
+
+.guide-ending{margin:28px 0 0;padding:20px;background:var(--card);border:1px solid var(--border);
+border-radius:var(--r-md);box-shadow:var(--shadow-sm)}
+.guide-ending h2{font-size:20px;line-height:1.3;font-weight:800;letter-spacing:-.35px;margin:0 0 7px}
+.guide-ending-support{color:var(--muted);font-size:14.5px;margin:0 0 16px}
+.guide-primary{display:inline-flex;align-items:center;justify-content:center;background:var(--emerald);color:#fff;
+text-decoration:none;font-weight:700;padding:11px 17px;border-radius:var(--r-sm)}
+.guide-primary:hover{background:var(--sage-hover);color:#fff}
+.guide-reassurance{color:var(--forest);font-size:12.5px;font-weight:700;margin:14px 0 5px}
+footer.guide-footer{color:var(--muted);font-size:12px;font-weight:600;letter-spacing:.2px;
+text-align:center;padding:20px 0 0}
+@media (max-width:420px){
+  .guide-ending{padding:18px}
+  .guide-primary{display:flex;width:100%}
+}
 </style>
 </head>
 <body>
@@ -83,19 +122,117 @@ footer a{text-decoration:none}
 <header class="top"><a href="/" aria-label="Po polsku home" style="display:flex;align-items:center;gap:12px">
 <span class="logo-mark"><span class="lm-back"></span><span class="lm-kreska"></span><span class="lm-front">PL</span></span>
 <b>Po polsku</b></a></header>
-<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> &rsaquo; <a href="/guide/">Guide</a> &rsaquo; Dopełniacz (Genitive)</nav><h1>Dopełniacz (Genitive)</h1><p class="lede">The &#x27;of / no / from&#x27; case: absence, possession, quantity</p><span class="chip">Grammar A1</span><section class="card"><h2>What the Genitive does</h2><p class="sub">The Genitive shows <b>absence, possession, or amount</b>. It answers <b>kogo? czego?</b> (of whom? of what?).</p><ul><li>Absence: <b>nie ma czasu</b> - there's no time</li><li>Possession: <b>samochód brata</b> - brother's car</li><li>Quantity: <b>szklanka wody</b> - a glass of water</li></ul><div class="ex"><button class="say" data-audio="/audio/220790d174eb.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Nie ma mleka.</div><div class="en">There&#x27;s no milk.</div></div></div><div class="ex"><button class="say" data-audio="/audio/d5696f766fff.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">To jest książka Anny.</div><div class="en">This is Anna&#x27;s book.</div></div></div></section><section class="card"><h2>Signals that trigger Genitive</h2><p class="sub">Memorize these triggers and half the work is done.</p><ul><li><b>nie ma</b> (there isn't) + Gen: <i>nie ma czasu</i></li><li><b>Negated verbs</b>: nie mam <b>samochodu</b>, nie widzę <b>Anny</b></li><li>Prepositions: <b>z, do, od, dla, bez, u, obok</b></li><li>Numbers <b>5+</b> and <b>dużo/mało/trochę/ile</b>: dużo <b>ludzi</b></li></ul><div class="note">The negation rule is crucial: in standard Polish a direct object that would be Accusative normally changes to Genitive when the verb is negated. <b>Mam czas</b> → <b>Nie mam czasu</b>. This applies to the <b>direct object</b> - a complement already required in another case normally stays in that case: <b>Pomagam mamie</b> → <b>Nie pomagam mamie</b>.</div><div class="ex"><button class="say" data-audio="/audio/5aa48fd5091e.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Jadę do Warszawy.</div><div class="en">I&#x27;m going to Warsaw.</div></div></div><div class="ex"><button class="say" data-audio="/audio/fcc7b0e2505f.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Kupuję kawę bez cukru.</div><div class="en">I&#x27;m buying coffee without sugar.</div></div></div></section><section class="card"><h2>Masculine singular: -a or -u</h2><p class="sub">The trickiest part of the Genitive - two possible endings.</p><table><thead><tr><th>Group</th><th>Ending</th><th>Example</th></tr></thead><tbody><tr><td>People & animals</td><td lang="pl">-a</td><td lang="pl">brat → brata, kot → kota</td></tr><tr><td>Tools, body parts, months</td><td lang="pl">-a</td><td lang="pl">nóż → noża, palec → palca, styczeń → stycznia</td></tr><tr><td>Abstract & uncountable</td><td lang="pl">-u</td><td lang="pl">czas → czasu, cukier → cukru, sport → sportu</td></tr></tbody></table><div class="explain">Rule of thumb: <b>-a</b> for living things, tools, body parts, months, and currencies. <b>-u</b> for abstracts, liquids, materials, and feelings. Some common words break the pattern (chleb → chleba, dom → domu) - just memorize them.</div><div class="ex"><button class="say" data-audio="/audio/2aef9c5b82dc.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Nie ma brata.</div><div class="en">Brother isn&#x27;t here.</div></div></div><div class="ex"><button class="say" data-audio="/audio/8afd11800628.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Nie ma cukru.</div><div class="en">There&#x27;s no sugar.</div></div></div></section><section class="card"><h2>Feminine singular: -y or -i</h2><p class="sub">Much simpler than masculine - just watch the last consonant.</p><table><thead><tr><th>Group</th><th>Ending</th><th>Example</th></tr></thead><tbody><tr><td>Default</td><td lang="pl">-y</td><td lang="pl">kawa → kawy, kobieta → kobiety</td></tr><tr><td>After k, g</td><td lang="pl">-i</td><td lang="pl">książka → książki, noga → nogi</td></tr><tr><td>After soft consonant</td><td lang="pl">-i</td><td lang="pl">ulica → ulicy, kuchnia → kuchni</td></tr></tbody></table><div class="explain">If the word ends in <b>-ka, -ga</b>, use <b>-i</b>. If it ends in a soft consonant (like -nia, -cia), you also usually get <b>-i</b>. Everything else takes <b>-y</b>.</div><div class="ex"><button class="say" data-audio="/audio/f01ba3d9ee50.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Szklanka wody, proszę.</div><div class="en">A glass of water, please.</div></div></div><div class="ex"><button class="say" data-audio="/audio/0ad844ba8ebd.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Nie ma książki.</div><div class="en">The book isn&#x27;t here.</div></div></div></section><section class="card"><h2>Neuter singular: -a</h2><p class="sub">Neuter nouns almost always take -a in the Genitive.</p><table><thead><tr><th>Group</th><th>Ending</th><th>Example</th></tr></thead><tbody><tr><td>-o → -a</td><td lang="pl">okno → okna</td><td lang="pl">Nie ma okna.</td></tr><tr><td>-e → -a</td><td lang="pl">mieszkanie → mieszkania</td><td lang="pl">Szukam mieszkania.</td></tr><tr><td>-ę → -ęcia / -enia</td><td lang="pl">dziecko → dziecka</td><td lang="pl">Nie mamy dziecka.</td></tr></tbody></table><div class="note">'Dziecko' is neuter and follows the -o → -a rule in the singular. Its plural is famously irregular (dzieci).</div><div class="ex"><button class="say" data-audio="/audio/5f39282db099.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Nie ma piwa.</div><div class="en">There&#x27;s no beer.</div></div></div><div class="ex"><button class="say" data-audio="/audio/c42db91093f9.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Kawa bez mleka.</div><div class="en">Coffee without milk.</div></div></div></section><section class="card"><h2>Plural Genitive: the trickiest form</h2><p class="sub">Plural Genitive endings depend on the gender and are notoriously varied.</p><table><thead><tr><th>Group</th><th>Ending</th><th>Example</th></tr></thead><tbody><tr><td>Masculine personal</td><td lang="pl">-ów</td><td lang="pl">studentów, Polaków, panów</td></tr><tr><td>Masc. non-personal</td><td lang="pl">-ów / -y / -i</td><td lang="pl">kotów, samochodów, dni</td></tr><tr><td>Feminine</td><td lang="pl">zero ending</td><td lang="pl">kobiet, książek, sióstr</td></tr><tr><td>Neuter</td><td lang="pl">zero ending</td><td lang="pl">okien, mieszkań, dzieci</td></tr></tbody></table><div class="explain">Feminine and neuter often <b>drop the final vowel</b>, sometimes inserting an <b>-e-</b>: książka → książek, okno → okien. This is called the fleeting vowel.</div><div class="ex"><button class="say" data-audio="/audio/2628bffe1489.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Pięciu studentów jest w klasie.</div><div class="en">Five students are in the class.</div></div></div><div class="ex"><button class="say" data-audio="/audio/1fe672b5593a.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Dużo książek na stole.</div><div class="en">Lots of books on the table.</div></div></div></section><section class="card"><h2>Watch out: negation flips Accusative to Genitive</h2><p class="sub">This is the #1 mistake foreigners make in Polish.</p><ul><li><b>Mam kawę.</b> (Acc) → <b>Nie mam kawy.</b> (Gen)</li><li><b>Widzę Annę.</b> (Acc) → <b>Nie widzę Anny.</b> (Gen)</li><li><b>Lubię pizzę.</b> (Acc) → <b>Nie lubię pizzy.</b> (Gen)</li></ul><div class="explain">Any verb whose direct object was Accusative switches that object to Genitive under negation. Treat it as the standard rule - it holds for the direct object of a negated verb. It does not touch objects that were already in another case (<b>Pomagam mamie</b> → <b>Nie pomagam mamie</b>, still Dative).</div><div class="ex"><button class="say" data-audio="/audio/01daa3ee5898.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Nie znam tego człowieka.</div><div class="en">I don&#x27;t know this person.</div></div></div><div class="ex"><button class="say" data-audio="/audio/3bf4af5839a5.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Nie piję kawy.</div><div class="en">I don&#x27;t drink coffee.</div></div></div></section><a class="cta" href="/">Practice this in the app - free, no account</a><p class="cta-sub">This page is a sample - the app has the full topic, 14 interactive drills, and Polish pronunciation audio throughout.</p><footer><a href="/">Po polsku</a> - free Polish flashcards with audio. No account, no tracking, works offline.</footer>
-</div>
-<script>
-document.addEventListener("click", function(e){
-  var b = e.target.closest("[data-audio]"); if(!b) return;
-  var cur = document.querySelector(".say[data-playing]");
-  if(cur){ delete cur.dataset.playing; }
-  if(window.__pp){ window.__pp.pause(); }
-  var a = new Audio(b.getAttribute("data-audio"));
-  window.__pp = a; b.dataset.playing = "1";
-  a.addEventListener("ended", function(){ delete b.dataset.playing; });
-  a.play().catch(function(){ delete b.dataset.playing; });
-});
-</script>
-</body>
-</html>
+<main>
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> &rsaquo; <a href="/guide/">Guide</a> &rsaquo; Dopełniacz (Genitive)</nav><h1>Dopełniacz (Genitive)</h1><p class="lede">The &#x27;of / no / from&#x27; case: absence, possession, quantity</p><span class="chip">Grammar A1</span><section class="card"><h2>What the Genitive does</h2><p class="sub">The Genitive shows <b>absence, possession, or amount</b>. It answers <b>kogo? czego?</b> (of whom? of what?).</p><ul><li>Absence: <b>nie ma czasu</b> - there's no time</li><li>Possession: <b>samochód brata</b> - brother's car</li><li>Quantity: <b>szklanka wody</b> - a glass of water</li></ul><div class="ex"><button class="say" data-audio="/audio/220790d174eb.mp3" data-pl="Nie ma mleka." type="button" aria-label="Play Polish example: Nie ma mleka."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Nie ma mleka.</div><div class="en">There&#x27;s no milk.</div></div></div><div class="ex"><button class="say" data-audio="/audio/d5696f766fff.mp3" data-pl="To jest książka Anny." type="button" aria-label="Play Polish example: To jest książka Anny."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">To jest książka Anny.</div><div class="en">This is Anna&#x27;s book.</div></div></div></section><section class="card"><h2>Signals that trigger Genitive</h2><p class="sub">Memorize these triggers and half the work is done.</p><ul><li><b>nie ma</b> (there isn't) + Gen: <i>nie ma czasu</i></li><li><b>Negated verbs</b>: nie mam <b>samochodu</b>, nie widzę <b>Anny</b></li><li>Prepositions: <b>z, do, od, dla, bez, u, obok</b></li><li>Numbers <b>5+</b> and <b>dużo/mało/trochę/ile</b>: dużo <b>ludzi</b></li></ul><div class="note">The negation rule is crucial: in standard Polish a direct object that would be Accusative normally changes to Genitive when the verb is negated. <b>Mam czas</b> → <b>Nie mam czasu</b>. This applies to the <b>direct object</b> - a complement already required in another case normally stays in that case: <b>Pomagam mamie</b> → <b>Nie pomagam mamie</b>.</div><div class="ex"><button class="say" data-audio="/audio/5aa48fd5091e.mp3" data-pl="Jadę do Warszawy." type="button" aria-label="Play Polish example: Jadę do Warszawy."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Jadę do Warszawy.</div><div class="en">I&#x27;m going to Warsaw.</div></div></div><div class="ex"><button class="say" data-audio="/audio/fcc7b0e2505f.mp3" data-pl="Kupuję kawę bez cukru." type="button" aria-label="Play Polish example: Kupuję kawę bez cukru."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Kupuję kawę bez cukru.</div><div class="en">I&#x27;m buying coffee without sugar.</div></div></div></section><section class="card"><h2>Masculine singular: -a or -u</h2><p class="sub">The trickiest part of the Genitive - two possible endings.</p><table><thead><tr><th>Group</th><th>Ending</th><th>Example</th></tr></thead><tbody><tr><td>People &amp; animals</td><td lang="pl">-a</td><td lang="pl">brat → brata, kot → kota</td></tr><tr><td>Tools, body parts, months</td><td lang="pl">-a</td><td lang="pl">nóż → noża, palec → palca, styczeń → stycznia</td></tr><tr><td>Abstract &amp; uncountable</td><td lang="pl">-u</td><td lang="pl">czas → czasu, cukier → cukru, sport → sportu</td></tr></tbody></table><div class="explain">Rule of thumb: <b>-a</b> for living things, tools, body parts, months, and currencies. <b>-u</b> for abstracts, liquids, materials, and feelings. Some common words break the pattern (chleb → chleba, dom → domu) - just memorize them.</div><div class="ex"><button class="say" data-audio="/audio/2aef9c5b82dc.mp3" data-pl="Nie ma brata." type="button" aria-label="Play Polish example: Nie ma brata."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Nie ma brata.</div><div class="en">Brother isn&#x27;t here.</div></div></div><div class="ex"><button class="say" data-audio="/audio/8afd11800628.mp3" data-pl="Nie ma cukru." type="button" aria-label="Play Polish example: Nie ma cukru."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Nie ma cukru.</div><div class="en">There&#x27;s no sugar.</div></div></div></section><section class="card"><h2>Feminine singular: -y or -i</h2><p class="sub">Much simpler than masculine - just watch the last consonant.</p><table><thead><tr><th>Group</th><th>Ending</th><th>Example</th></tr></thead><tbody><tr><td>Default</td><td lang="pl">-y</td><td lang="pl">kawa → kawy, kobieta → kobiety</td></tr><tr><td>After k, g</td><td lang="pl">-i</td><td lang="pl">książka → książki, noga → nogi</td></tr><tr><td>After soft consonant</td><td lang="pl">-i</td><td lang="pl">ulica → ulicy, kuchnia → kuchni</td></tr></tbody></table><div class="explain">If the word ends in <b>-ka, -ga</b>, use <b>-i</b>. If it ends in a soft consonant (like -nia, -cia), you also usually get <b>-i</b>. Everything else takes <b>-y</b>.</div><div class="ex"><button class="say" data-audio="/audio/f01ba3d9ee50.mp3" data-pl="Szklanka wody, proszę." type="button" aria-label="Play Polish example: Szklanka wody, proszę."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Szklanka wody, proszę.</div><div class="en">A glass of water, please.</div></div></div><div class="ex"><button class="say" data-audio="/audio/0ad844ba8ebd.mp3" data-pl="Nie ma książki." type="button" aria-label="Play Polish example: Nie ma książki."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Nie ma książki.</div><div class="en">The book isn&#x27;t here.</div></div></div></section><section class="card"><h2>Neuter singular: -a</h2><p class="sub">Neuter nouns almost always take -a in the Genitive.</p><table><thead><tr><th>Group</th><th>Ending</th><th>Example</th></tr></thead><tbody><tr><td lang="pl">-o → -a</td><td lang="pl">okno → okna</td><td lang="pl">Nie ma okna.</td></tr><tr><td lang="pl">-e → -a</td><td lang="pl">mieszkanie → mieszkania</td><td lang="pl">Szukam mieszkania.</td></tr><tr><td lang="pl">-ę → -ęcia / -enia</td><td lang="pl">dziecko → dziecka</td><td lang="pl">Nie mamy dziecka.</td></tr></tbody></table><div class="note">'Dziecko' is neuter and follows the -o → -a rule in the singular. Its plural is famously irregular (dzieci).</div><div class="ex"><button class="say" data-audio="/audio/5f39282db099.mp3" data-pl="Nie ma piwa." type="button" aria-label="Play Polish example: Nie ma piwa."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Nie ma piwa.</div><div class="en">There&#x27;s no beer.</div></div></div><div class="ex"><button class="say" data-audio="/audio/c42db91093f9.mp3" data-pl="Kawa bez mleka." type="button" aria-label="Play Polish example: Kawa bez mleka."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Kawa bez mleka.</div><div class="en">Coffee without milk.</div></div></div></section><section class="card"><h2>Plural Genitive: the trickiest form</h2><p class="sub">Plural Genitive endings depend on the gender and are notoriously varied.</p><table><thead><tr><th>Group</th><th>Ending</th><th>Example</th></tr></thead><tbody><tr><td>Masculine personal</td><td lang="pl">-ów</td><td lang="pl">studentów, Polaków, panów</td></tr><tr><td>Masc. non-personal</td><td lang="pl">-ów / -y / -i</td><td lang="pl">kotów, samochodów, dni</td></tr><tr><td>Feminine</td><td>zero ending</td><td lang="pl">kobiet, książek, sióstr</td></tr><tr><td>Neuter</td><td>zero ending</td><td lang="pl">okien, mieszkań, dzieci</td></tr></tbody></table><div class="explain">Feminine and neuter often <b>drop the final vowel</b>, sometimes inserting an <b>-e-</b>: książka → książek, okno → okien. This is called the fleeting vowel.</div><div class="ex"><button class="say" data-audio="/audio/2628bffe1489.mp3" data-pl="Pięciu studentów jest w klasie." type="button" aria-label="Play Polish example: Pięciu studentów jest w klasie."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Pięciu studentów jest w klasie.</div><div class="en">Five students are in the class.</div></div></div><div class="ex"><button class="say" data-audio="/audio/1fe672b5593a.mp3" data-pl="Dużo książek na stole." type="button" aria-label="Play Polish example: Dużo książek na stole."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Dużo książek na stole.</div><div class="en">Lots of books on the table.</div></div></div></section><section class="card"><h2>Watch out: negation flips Accusative to Genitive</h2><p class="sub">This is the #1 mistake foreigners make in Polish.</p><ul><li><b>Mam kawę.</b> (Acc) → <b>Nie mam kawy.</b> (Gen)</li><li><b>Widzę Annę.</b> (Acc) → <b>Nie widzę Anny.</b> (Gen)</li><li><b>Lubię pizzę.</b> (Acc) → <b>Nie lubię pizzy.</b> (Gen)</li></ul><div class="explain">Any verb whose direct object was Accusative switches that object to Genitive under negation. Treat it as the standard rule - it holds for the direct object of a negated verb. It does not touch objects that were already in another case (<b>Pomagam mamie</b> → <b>Nie pomagam mamie</b>, still Dative).</div><div class="ex"><button class="say" data-audio="/audio/01daa3ee5898.mp3" data-pl="Nie znam tego człowieka." type="button" aria-label="Play Polish example: Nie znam tego człowieka."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Nie znam tego człowieka.</div><div class="en">I don&#x27;t know this person.</div></div></div><div class="ex"><button class="say" data-audio="/audio/3bf4af5839a5.mp3" data-pl="Nie piję kawy." type="button" aria-label="Play Polish example: Nie piję kawy."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Nie piję kawy.</div><div class="en">I don&#x27;t drink coffee.</div></div></div></section><section class="guide-ending" aria-labelledby="guideEndingTitle"><h2 id="guideEndingTitle">Ready to keep learning?</h2><p class="guide-ending-support">Practice the same Polish with flashcards, drills, conversations, and listening.</p><a class="guide-primary" href="/">Open the app</a><p class="guide-reassurance">Genuinely free. No account. Works offline.</p></section></main><footer class="guide-footer"><a href="/">Po polsku</a> &middot; v8.4 &middot; 2026</footer></div><script>
+(function(){
+  var FALLBACK_MSG = "Using your device's voice.";
+  var FAILED_MSG = "Audio couldn't play. Check your connection, then try again.";
+  var RETRY_MSG = "Try again";
+  var token = 0, playing = null, marked = null, request = null;
+  var box = null, msg = null, retry = null, owner = null;
+  function host(){
+    if(box) return box;
+    box = document.createElement("div");
+    box.id = "pp-audio-status";
+    box.className = "audio-status";
+    box.setAttribute("role", "status");
+    box.setAttribute("aria-live", "polite");
+    box.setAttribute("aria-atomic", "true");
+    box.hidden = true;
+    msg = document.createElement("span");
+    msg.id = "pp-audio-status-msg";
+    msg.className = "audio-status-msg";
+    retry = document.createElement("button");
+    retry.id = "pp-audio-retry";
+    retry.className = "audio-retry";
+    retry.type = "button";
+    retry.textContent = RETRY_MSG;
+    retry.hidden = true; retry.disabled = true; retry.tabIndex = -1;
+    retry.addEventListener("click", function(e){ e.stopPropagation(); again(); });
+    box.appendChild(msg); box.appendChild(retry);
+    document.body.appendChild(box);
+    return box;
+  }
+  function clear(){
+    if(!box) return;
+    box.hidden = true;
+    msg.textContent = "";
+    retry.hidden = true; retry.disabled = true; retry.tabIndex = -1;
+    if(owner && owner.getAttribute && owner.getAttribute("aria-describedby") === "pp-audio-status-msg"){
+      owner.removeAttribute("aria-describedby");
+    }
+    owner = null;
+  }
+  function show(kind, btn){
+    var el = host();
+    if(btn && btn.insertAdjacentElement){ try{ btn.insertAdjacentElement("afterend", el); }catch(e){} }
+    var failed = kind === "failed";
+    msg.textContent = failed ? FAILED_MSG : FALLBACK_MSG;
+    retry.hidden = !failed; retry.disabled = !failed; retry.tabIndex = failed ? 0 : -1;
+    el.hidden = false;
+    owner = btn || null;
+    if(failed && btn && btn.setAttribute) btn.setAttribute("aria-describedby", "pp-audio-status-msg");
+  }
+  function unmark(){
+    if(marked && marked.dataset) delete marked.dataset.playing;
+    marked = null;
+  }
+  function stop(){
+    token++;
+    if(playing){ try{ playing.pause(); }catch(e){} playing = null; }
+    if(window.speechSynthesis){ try{ window.speechSynthesis.cancel(); }catch(e){} }
+    unmark();
+    clear();
+  }
+  function speak(text, btn, mine, afterFailedClip){
+    if(!text || !window.speechSynthesis || typeof window.SpeechSynthesisUtterance !== "function"){
+      show("failed", btn); return;
+    }
+    var u;
+    try{ u = new window.SpeechSynthesisUtterance(text); }
+    catch(e){ show("failed", btn); return; }
+    u.lang = "pl-PL";
+    u.onend = function(){ if(mine !== token) return; unmark(); };
+    u.onerror = function(){ if(mine !== token) return; unmark(); show("failed", btn); };
+    if(afterFailedClip) show("fallback", btn);
+    if(btn && btn.dataset){ marked = btn; btn.dataset.playing = "1"; }
+    try{ window.speechSynthesis.speak(u); }
+    catch(e){ unmark(); show("failed", btn); }
+  }
+  function play(btn){
+    stop();
+    var mine = token;
+    var url = btn.getAttribute("data-audio");
+    var text = btn.getAttribute("data-pl") || "";
+    request = { btn: btn, text: text };
+    if(!url){ speak(text, btn, mine, false); return; }
+    var a = new Audio(url);
+    playing = a; marked = btn; btn.dataset.playing = "1";
+    var settled = false;
+    function settle(){
+      if(settled) return false;
+      settled = true;
+      if(mine !== token) return false;
+      playing = null; unmark();
+      return true;
+    }
+    a.addEventListener("ended", function(){ settle(); });
+    a.addEventListener("error", function(){ if(settle()) speak(text, btn, mine, true); });
+    a.play().catch(function(){ if(settle()) speak(text, btn, mine, true); });
+  }
+  function again(){
+    if(!request) return;
+    var btn = request.btn;
+    if(btn && btn.focus){ try{ btn.focus(); }catch(e){} }
+    if(btn) play(btn);
+  }
+  document.addEventListener("click", function(e){
+    var b = e.target.closest("[data-audio]"); if(!b) return;
+    play(b);
+  });
+  /* Parked before it is ever needed: a live region has to exist before its text
+     changes for the change to be announced reliably. Same reason, same moment,
+     as the app shell. */
+  host();
+})();
+</script></body></html>

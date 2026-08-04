@@ -104,8 +104,17 @@
     padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   }
   .wrap{width:100%;max-width:560px;margin:0 auto;padding:0 20px;flex:1;display:flex;flex-direction:column}
-  .screen{display:none;flex:1;flex-direction:column;animation:fade .35s ease}
+  .app-main{width:100%;flex:1;display:flex;flex-direction:column}
+  /* MLG-3A-14: a screen fills the viewport, so the shared `fade` keyframe's outward
+     translateY(6px) pushed the screen's own bottom edge 6px past it and made the document
+     transiently scrollable by exactly that much on every screen entry. Measured 850 vs 844
+     at 390x844 and 902 vs 896 at 414x896, decaying to 0 as the transform eased out. The
+     entry is now opacity-only at the same .35s ease, so nothing crosses the viewport edge
+     and no containment or clipping is needed. `fade` itself is unchanged for the in-flow
+     elements that still use it. */
+  .screen{display:none;flex:1;flex-direction:column;animation:screenFade .35s ease}
   .screen.active{display:flex}
+  @keyframes screenFade{from{opacity:0}to{opacity:1}}
   @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
   /* ---------- header ---------- */
@@ -118,6 +127,41 @@
     display:grid;place-items:center;font-weight:800;font-size:14px;letter-spacing:-.5px;box-shadow:0 4px 10px rgba(30,27,75,.18)}
   .logo-mark .lm-kreska{position:absolute;top:6px;right:6px;width:9px;height:2.6px;border-radius:2px;background:var(--emerald);transform:rotate(-28deg);z-index:2}
   .logo b{font-size:17px;font-weight:700;letter-spacing:-.3px}
+  .site-menu-button{width:44px;height:44px;flex:0 0 auto;border:1px solid var(--border);border-radius:13px;
+    background:var(--card);color:var(--forest);display:grid;place-items:center;cursor:pointer;
+    box-shadow:var(--shadow-sm);transition:.16s;font-family:inherit}
+  .site-menu-button:hover{transform:translateY(-1px);box-shadow:var(--shadow);border-color:#d7e0e8}
+  .site-menu-button:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  .site-menu-button svg{width:23px;height:23px;pointer-events:none}
+
+  /* ---------- secondary site navigation drawer ---------- */
+  body.site-menu-open{overflow:hidden}
+  .site-drawer{position:fixed;inset:0 0 0 auto;width:min(88vw,370px);height:100dvh;max-width:370px;
+    max-height:none;margin:0 0 0 auto;padding:0;border:0;background:var(--card);color:var(--forest);
+    box-shadow:-16px 0 42px rgba(30,27,75,.2);overflow:hidden}
+  .site-drawer[open]{display:flex;flex-direction:column}
+  .site-drawer::backdrop{background:rgba(30,41,59,.38)}
+  .site-drawer-panel{min-height:0;flex:1;display:flex;flex-direction:column;overflow-y:auto;
+    overscroll-behavior:contain;padding:calc(20px + env(safe-area-inset-top))
+    calc(18px + env(safe-area-inset-right)) calc(20px + env(safe-area-inset-bottom)) 20px}
+  .site-drawer-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}
+  .site-drawer-head h2{font-size:22px;line-height:1.2;letter-spacing:-.4px;margin:0}
+  .site-drawer-close{width:44px;height:44px;flex:0 0 auto;border:1px solid var(--border);border-radius:13px;
+    background:var(--bg);color:var(--forest);display:grid;place-items:center;cursor:pointer;font-family:inherit}
+  .site-drawer-close:hover{background:var(--mint-bg);border-color:#c7d2fe}
+  .site-drawer-close:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  .site-drawer-close svg{width:21px;height:21px;pointer-events:none}
+  .site-nav-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+  .site-nav-list a,.site-nav-list button{width:100%;min-height:52px;border:1px solid var(--border);
+    border-radius:14px;background:var(--card);color:var(--forest);display:flex;align-items:center;
+    justify-content:space-between;gap:14px;padding:12px 14px;text-align:left;text-decoration:none;
+    font-family:inherit;font-size:15px;line-height:1.35;font-weight:700;cursor:pointer;box-shadow:var(--shadow-sm)}
+  .site-nav-list a:hover,.site-nav-list button:hover{background:var(--mint-bg);border-color:#c7d2fe;color:var(--sage-hover)}
+  .site-nav-list a:focus-visible,.site-nav-list button:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  .site-nav-detail{font-size:11px;line-height:1.25;font-weight:700;color:var(--muted);text-align:right}
+  .site-nav-list button:hover .site-nav-detail{color:var(--mint-text)}
+  .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;
+    overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 
   /* ---------- home hero ---------- */
   .hero{margin:26px 0 22px}
@@ -177,7 +221,17 @@
   .modes.searching .mode-tile[aria-pressed="true"] .mode-ic{background:var(--mint-bg);color:var(--mint-text)}
   /* category tabs (top-level nav): an inset segmented control on an accent-tinted track */
   .cat-seg{display:flex;gap:4px;background:var(--mint-bg);border-radius:15px;padding:4px;margin:0 0 20px}
-  .cat-btn{flex:1;text-align:center;font-family:inherit;font-size:14px;font-weight:700;color:var(--mint-text);
+  /* Each tab is flex:1 with the default min-width:auto, so at enlarged text a single-word
+     label ("Vocabulary" is 155px at 28px type) became the button's floor: the three tabs
+     needed 366px inside a 280px track and dragged the page 66px into horizontal scrolling
+     at 320px. min-width:0 is what removes the overflow; break-word then lets the label wrap
+     inside the 88px tab instead of being clipped. `anywhere` was measured to render this
+     identically - it only differs in intrinsic min-content sizing, which min-width:0 has
+     already made irrelevant here - so the narrower rule is used. Nothing natural can break
+     "Vocabulary" at 28px inside 88px; hyphens:auto was measured leaving it clipped at 155px.
+     The height is still driven by padding alone, so the touch target only grows.
+     No font size changes. */
+  .cat-btn{flex:1;min-width:0;overflow-wrap:break-word;text-align:center;font-family:inherit;font-size:14px;font-weight:700;color:var(--mint-text);
     background:transparent;border:none;padding:10px 0;border-radius:12px;cursor:pointer;transition:.18s}
   .cat-btn[aria-selected="true"]{background:var(--card);color:var(--forest);box-shadow:var(--shadow-sm)}
   .cat-btn:hover{color:var(--forest)}
@@ -192,18 +246,27 @@
   .th-main .th-blurb{font-weight:500;color:var(--muted)}
   .th-count{font-size:12.5px;color:var(--muted);font-weight:600;white-space:nowrap;flex:0 0 auto}
 
-  /* maturity gate modal (adult-language topics) */
-  .modal-overlay{position:fixed;inset:0;z-index:1000;background:rgba(15,23,42,.55);
-    display:flex;align-items:center;justify-content:center;padding:22px;animation:fade .2s}
-  .modal-overlay[hidden]{display:none}
+  /* ---------- maturity gate modal (adult-language topics) ----------
+     Same modal contract as the site drawer: a native <dialog> in the top layer with a
+     ::backdrop scrim, a dynamic-viewport height bound, an internally scrolling panel,
+     and safe-area padding, so both actions stay reachable at enlarged text sizes and
+     in short landscape instead of rendering below the fold. */
+  .modal-overlay{position:fixed;inset:0;z-index:1000;width:100%;max-width:100%;height:100%;max-height:100%;
+    margin:0;border:0;padding:0;background:none;color:inherit;overflow:hidden;display:none}
+  .modal-overlay[open]{display:flex;align-items:center;justify-content:center;animation:fade .2s;
+    padding:calc(22px + env(safe-area-inset-top)) calc(22px + env(safe-area-inset-right))
+            calc(22px + env(safe-area-inset-bottom)) calc(22px + env(safe-area-inset-left))}
+  .modal-overlay::backdrop{background:rgba(15,23,42,.55)}
   .modal-card{background:var(--card);border-radius:var(--r-lg);padding:26px 24px 22px;max-width:400px;width:100%;
-    box-shadow:0 20px 50px rgba(15,23,42,.3);text-align:center}
+    box-shadow:0 20px 50px rgba(15,23,42,.3);text-align:center;
+    max-height:calc(100dvh - 44px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    overflow-y:auto;overscroll-behavior:contain}
   .modal-ic{width:52px;height:52px;border-radius:15px;background:#fef3c7;color:#b45309;display:grid;place-items:center;margin:0 auto 15px}
   .modal-ic svg{width:27px;height:27px}
   .modal-card h3{font-size:19px;font-weight:800;color:var(--forest);margin:0 0 10px;letter-spacing:-.3px}
   .modal-card p{font-size:14px;line-height:1.55;color:var(--muted);margin:0 0 20px}
-  .modal-actions{display:flex;gap:10px}
-  .modal-btn{flex:1;border-radius:13px;padding:13px 0;font-family:inherit;font-size:14.5px;font-weight:700;cursor:pointer;transition:.15s;border:1px solid transparent}
+  .modal-actions{display:flex;gap:10px;flex-wrap:wrap}
+  .modal-btn{flex:1 1 45%;border-radius:13px;padding:13px 0;font-family:inherit;font-size:14.5px;font-weight:700;cursor:pointer;transition:.15s;border:1px solid transparent}
   .modal-btn.ghost{background:var(--card);border-color:var(--border);color:var(--forest)}
   .modal-btn.ghost:hover{border-color:#d7e0e8}
   .modal-btn.solid{background:var(--forest);color:var(--cream)}
@@ -331,11 +394,18 @@
   .chal-toggle svg{width:14px;height:14px}
   .chal-toggle.on{background:var(--forest);color:var(--cream);border-color:var(--forest)}
   /* veiled NPC bubbles in challenge mode */
-  .btext.veiled{cursor:pointer}
+  .bubble-speaker,.bubble-heading{font-size:11px;font-weight:800;letter-spacing:.45px;text-transform:uppercase;color:var(--muted);margin:0 0 5px}
+  .bubble-heading:focus-visible{outline:2px solid var(--emerald);outline-offset:3px;border-radius:4px}
   .btext.veiled .b-pl{filter:blur(6px);user-select:none;-webkit-user-select:none}
   .btext.veiled .b-en{display:none}
   .veil-cue{font-size:11px;color:var(--muted);margin-top:4px}
+  .veil-reveal{border:1px solid var(--border);background:#fff;color:var(--emerald);border-radius:10px;
+    padding:7px 10px;margin-top:8px;font:700 12px/1.35 inherit;text-align:left;cursor:pointer}
+  .veil-reveal:hover:not(:disabled){border-color:var(--emerald);color:var(--sage-hover)}
+  .veil-reveal:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  .veil-reveal:disabled{color:var(--muted);cursor:default}
   #cReply.challenge .ro-en{display:none}
+  .reply-options{display:flex;flex-direction:column;gap:10px}
   .peek-en{border:none;background:none;color:var(--emerald);font-size:12.5px;font-weight:700;cursor:pointer;
     font-family:inherit;padding:8px 2px 0;text-align:left}
   .peek-en:hover{color:var(--sage-hover)}
@@ -360,7 +430,7 @@
   .verdict.show{display:block;animation:fade .3s ease}
   .verdict.v-right{background:var(--ok-bg);border:1px solid var(--ok-border);color:var(--ok-text)}
   .verdict.v-almost{background:#fef9c3;border:1px solid #eab308;color:#854d0e}
-  .verdict.v-wrong{background:#fbeee8;border:1px solid var(--coral);color:var(--coral-hover)}
+  .verdict.v-wrong{background:#fbeee8;border:1px solid var(--coral);color:#934b32}
   .verdict .v-head{font-weight:800;margin-bottom:6px}
   .verdict .v-pl{font-size:18px;font-weight:800;color:var(--forest)}
   .verdict .v-row{display:flex;align-items:center;gap:10px}
@@ -386,7 +456,15 @@
   .back:hover{border-color:#d7e0e8}
   .back:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
   .sbar-title{flex:1;min-width:0}
-  .sbar-title b{display:block;font-size:15.5px;font-weight:700;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* The title wraps to at most two lines instead of being ellipsised on one. A single
+     nowrap line left the topic name 21-63% visible at 320px (5-14% at 200% text) because
+     the two 40px corner buttons and the speed chip claim the row first. Two lines are
+     enough for every shipping activity title; anything past them still ellipsises, so the
+     header can never grow without bound. Wide layouts are unaffected - titles that fit on
+     one line still render on one line. */
+  .sbar-title h1{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;
+    margin:0;font-size:15.5px;font-weight:700;letter-spacing:-.2px;line-height:1.25;
+    overflow-wrap:anywhere;overflow:hidden;text-overflow:ellipsis}
   .sbar-title span{font-size:12.5px;color:var(--muted);font-weight:500}
 
   .progress{display:flex;align-items:center;gap:11px;padding:8px 0 4px}
@@ -395,12 +473,30 @@
     background:linear-gradient(90deg,var(--emerald),var(--forest));transition:width .35s cubic-bezier(.2,.7,.2,1)}
   .p-count{font-size:12.5px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums;min-width:44px;text-align:right}
 
-  /* ---------- card ---------- */
-  .stage{flex:1;display:flex;align-items:center;justify-content:center;padding:16px 0 8px;min-height:452px}
-  .scene{width:100%;perspective:1600px}
-  .flip{position:relative;display:grid;width:100%;min-height:452px;transform-style:preserve-3d;
+  /* ---------- card ----------
+     The card floor is viewport-aware, not a fixed pixel height. A static 452px (430px
+     under 400px wide) floor made the activity screen taller than every short phone: the
+     shared .controls row landed 108px below the fold at 320x568 and 234-308px below it in
+     landscape, so the card and Prev/Shuffle/Next were never on screen together. clamp()
+     keeps the desktop size, tracks the dynamic viewport on phones, and never drops below a
+     legible card. min-height is only a floor - intrinsically taller content still grows the
+     card and the page still scrolls, so nothing is ever clipped. The 62dvh term still
+     reaches the full 452px on an ordinary desktop window, so desktop sizing is unchanged;
+     the narrow-width and short-viewport blocks below tighten it where the header is taller
+     or the screen is shorter. */
+  .stage{flex:1;display:flex;align-items:center;justify-content:center;padding:16px 0 8px;
+    min-height:clamp(272px,62dvh,452px)}
+  .scene{position:relative;width:100%;perspective:1600px}
+  .flip{position:relative;display:grid;width:100%;min-height:clamp(272px,62dvh,452px);transform-style:preserve-3d;
     transition:transform .55s cubic-bezier(.2,.75,.2,1);cursor:pointer}
   .flip.flipped{transform:rotateY(180deg)}
+  .flip-control{position:absolute;z-index:3;top:15px;left:50%;transform:translateX(-50%);
+    width:40px;height:40px;border:1px solid var(--border);border-radius:50%;background:#fff;color:var(--muted);
+    display:grid;place-items:center;cursor:pointer;box-shadow:var(--shadow-sm);transition:background .15s,color .15s,border-color .15s}
+  .flip-control:hover{border-color:var(--emerald);color:var(--emerald);background:var(--mint-bg)}
+  .flip-control:active{transform:translateX(-50%) scale(.94)}
+  .flip-control:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  .flip-control svg{width:18px;height:18px}
   /* Both faces share one grid cell, so the card is always exactly as tall as its
      taller face - no JS measuring, no internal scrolling, fonts can reflow freely. */
   .face{position:relative;grid-area:1/1;width:100%;box-sizing:border-box;
@@ -410,8 +506,17 @@
     display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px}
   .eyebrow{position:absolute;top:20px;left:22px;font-size:11px;font-weight:700;letter-spacing:.7px;
     text-transform:uppercase;color:#94a3b8}
-  .pl{font-size:36px;line-height:1.18;font-weight:800;letter-spacing:-.8px;color:var(--forest)}
-  .en{font-size:27px;line-height:1.2;font-weight:700;letter-spacing:-.4px;color:var(--forest)}
+  /* The card headline is the only text in the app set at display sizes, and a long Polish
+     podcast phrase is one unbreakable token at that scale: at 200% text #plText rendered
+     478px wide inside a 280px card and dragged the page 228px into horizontal scrolling at
+     320px. Both scales may now break inside a word and are bounded by the face, so the card
+     grows downwards instead of sideways. The direction toggle swaps the two containers, so
+     the Polish token can land in either one - the rule must cover both. Deliberately scoped
+     to these two card headlines: no other text in the app breaks mid-word. */
+  .pl{font-size:36px;line-height:1.18;font-weight:800;letter-spacing:-.8px;color:var(--forest);
+    max-width:100%;overflow-wrap:anywhere}
+  .en{font-size:27px;line-height:1.2;font-weight:700;letter-spacing:-.4px;color:var(--forest);
+    max-width:100%;overflow-wrap:anywhere}
   .hint{font-size:14px;color:var(--muted);line-height:1.5;max-width:34ch}
   .cue{position:absolute;bottom:20px;left:0;right:0;font-size:12px;color:#aebbc4;font-weight:500}
   /* direction toggle: when the front shows English, borrow the .en scale; when the
@@ -450,17 +555,25 @@
     cursor:pointer;color:#fff;transition:.16s;font-family:inherit}
   .fb.know{background:var(--sage)}
   .fb.know:hover{background:var(--sage-hover)}
-  .fb.still{background:var(--coral)}
-  .fb.still:hover{background:var(--coral-hover)}
+  .fb.still{background:#a8583e}
+  .fb.still:hover{background:#934b32}
   .fb:active{transform:translateY(1px)}
   .fb:focus-visible{outline:2px solid var(--forest);outline-offset:2px}
 
   /* ---------- bottom controls ---------- */
   .controls{display:flex;align-items:center;gap:11px;padding:14px 0 24px;max-width:420px;margin:0 auto;width:100%}
-  .ctrl{flex:1;border:1px solid var(--border);background:var(--card);color:var(--forest);
+  /* Like the category tabs, these are flex:1 items with the default min-width:auto, so at
+     enlarged text each button's icon-plus-label line became its floor: at 320px with 200%
+     text Prev(109.67) + Shuffle(56) + Next(113.19) + two 11px gaps needed 300.86px inside a
+     280px row and pushed the page 1px wide. Allowing the item to shrink is not enough on its
+     own - with min-width:0 alone the chevron is the only thing that can give, and it was
+     measured collapsing from 18px to 9.33px (Prev) and 5.81px (Next). Wrapping the button's
+     own content lets the icon and the label stack instead, at full size, and the button
+     grows downwards. No label, font size or fixed height changes. */
+  .ctrl{flex:1;min-width:0;border:1px solid var(--border);background:var(--card);color:var(--forest);
     border-radius:15px;padding:14px 10px;font-size:14.5px;font-weight:600;cursor:pointer;
     box-shadow:var(--shadow-sm);transition:.15s;font-family:inherit;
-    display:flex;align-items:center;justify-content:center;gap:7px}
+    display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:7px}
   .ctrl:hover{border-color:#d7e0e8;transform:translateY(-1px)}
   .ctrl:active{transform:translateY(0)}
   .ctrl:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
@@ -494,13 +607,13 @@
   .btn-primary:focus-visible,.btn-ghost:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
 
   /* ---------- footer ---------- */
-  footer{display:flex;flex-direction:column;align-items:center;gap:11px;padding:8px 0 22px;text-align:center}
+  footer{display:flex;flex-direction:column;align-items:center;gap:8px;padding:8px 0 18px;text-align:center}
   .foot-note{color:#94a3b8;font-size:12px;font-weight:500;line-height:1.5;max-width:340px}
   .foot-guides{margin:2px 0 4px;font-size:12px}
   .foot-guides a{color:#9aa8b8;text-decoration:none;font-weight:600;padding:4px 2px}
   .foot-guides a:hover{color:var(--emerald)}
   .foot-guides a:focus-visible{outline:2px solid var(--emerald);outline-offset:2px;border-radius:4px}
-  .foot-version{color:#b3bfcc;font-size:11px;font-weight:600;letter-spacing:.3px}
+  .foot-version{color:var(--muted);font-size:12px;font-weight:600;letter-spacing:.2px}
   .foot-guides .foot-version{font-size:12px}
   .foot-link{background:none;border:none;font-family:inherit;font-size:inherit;color:var(--emerald);
     font-weight:700;cursor:pointer;padding:0;vertical-align:baseline;
@@ -527,17 +640,9 @@
   .install-share{display:inline-block;width:17px;height:17px;vertical-align:-3px;color:var(--mint-text)}
   .install-note{margin-top:20px;font-size:13px;color:var(--muted);line-height:1.55}
 
-  /* ---------- add-to-home encouragement (chip / banner / post-win nudge) ----------
-     Three surfaces, one action (PP_A2HS.install): a passive header chip that's always
-     available when not installed, a proactive home banner shown after some engagement,
-     and an inline nudge on the completion screens. Banner + nudge respect a snooze;
-     the chip does not (it's an icon, not a nag). */
-  .pp-chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--border);background:var(--card);
-    color:var(--forest);font-family:inherit;font-size:12.5px;font-weight:700;letter-spacing:.1px;
-    padding:8px 13px 8px 11px;border-radius:999px;cursor:pointer;box-shadow:var(--shadow-sm);transition:.16s}
-  .pp-chip:hover{transform:translateY(-1px);box-shadow:var(--shadow);border-color:#d7e0e8}
-  .pp-chip:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
-  .pp-chip svg{width:15px;height:15px;color:var(--mint-text);flex:0 0 auto}
+  /* ---------- add-to-home encouragement (drawer / banner / post-win nudge) ----------
+     One installation function serves the persistent drawer item and the two existing
+     engagement-based prompts. Banner + nudge continue to respect their snooze. */
 
   .pp-banner{display:flex;align-items:center;gap:13px;margin:10px 0 2px;padding:14px 15px;
     background:var(--card);border:1px solid var(--border);border-radius:var(--r-md);
@@ -551,7 +656,10 @@
   .pp-add{flex:0 0 auto;border:none;background:var(--forest);color:var(--cream);font-family:inherit;
     font-size:13px;font-weight:700;padding:10px 15px;border-radius:12px;cursor:pointer;transition:.16s}
   .pp-add:hover{background:var(--forest-hover)}
-  .pp-x{flex:0 0 auto;border:none;background:none;color:var(--muted);cursor:pointer;padding:6px;
+  /* 40x40 dismiss target, up from 28x28, with more clear space from the Add button beside
+     it. Same glyph, same accessible name, same behaviour - only the hit area grows. */
+  .pp-x{flex:0 0 auto;border:none;background:none;color:var(--muted);cursor:pointer;padding:0;
+    width:40px;height:40px;margin-left:6px;display:grid;place-items:center;
     border-radius:9px;line-height:0;transition:.15s}
   .pp-x:hover{background:var(--mint-bg);color:var(--forest)}
   .pp-x svg{width:16px;height:16px}
@@ -584,6 +692,10 @@
   .privacy-list li::before{content:"";position:absolute;left:2px;top:8px;width:7px;height:7px;
     border-radius:50%;background:var(--emerald)}
   .privacy-list li b{color:var(--forest);font-weight:700}
+  .privacy-section{margin-top:20px;padding-top:20px;border-top:1px solid var(--border)}
+  .privacy-section:first-of-type{margin-top:0;padding-top:0;border-top:0}
+  .privacy-section h2{font-size:17px;line-height:1.3;font-weight:800;letter-spacing:-.25px;
+    color:var(--forest);margin:0 0 10px}
 
   /* ---------- about ---------- */
   .about-p{margin:0 0 14px;font-size:14.5px;line-height:1.62;color:var(--muted);font-weight:500}
@@ -596,6 +708,22 @@
     color:var(--muted);margin-bottom:10px}
   .about-link{color:var(--emerald);font-weight:700;text-decoration:underline;text-underline-offset:2px}
   .about-link:hover{color:var(--sage-hover)}
+  .contact-lead{margin:0 0 14px;font-size:18px;line-height:1.4;font-weight:800;
+    letter-spacing:-.25px;color:var(--forest)}
+  /* The address is one unbreakable token, so at enlarged text the button grew to 317px
+     inside a 232px card content box and dragged the whole page into horizontal scrolling.
+     It is now bounded by its parent and allowed to break the address across lines. Label,
+     mailto target and the 43px touch height are unchanged. */
+  .contact-email{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:4px;
+    max-width:100%;min-height:43px;text-align:center;overflow-wrap:anywhere;
+    padding:12px 16px;border-radius:12px;background:var(--emerald);color:#fff;text-decoration:none;
+    font-size:14px;font-weight:700;line-height:1.35}
+  /* Decorative envelope: the word "Email" is carried by the link's own aria-label, so the
+     icon is aria-hidden and inherits the link colour. It never shrinks; only the address
+     wraps. */
+  .contact-email svg{flex:0 0 auto;width:17px;height:17px}
+  .contact-email:hover{background:var(--sage-hover);color:#fff}
+  .contact-email:focus-visible{outline:2px solid var(--emerald);outline-offset:3px}
   .data-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
   .data-btn{border:1.5px solid var(--border);background:#fff;color:var(--forest);border-radius:12px;
     padding:11px 16px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s}
@@ -620,8 +748,16 @@
   .rule-list li{position:relative;padding-left:20px;font-size:13.5px;line-height:1.5;color:var(--muted)}
   .rule-list li::before{content:"";position:absolute;left:2px;top:7px;width:6px;height:6px;border-radius:50%;background:var(--emerald)}
   .rule-list li b{color:var(--forest);font-weight:700}
-  .end-table{width:100%;max-width:420px;table-layout:fixed;border:1px solid var(--border);border-radius:14px;border-collapse:separate;border-spacing:0;overflow:hidden;font-size:12.5px}
-  .end-table td{padding:11px 12px;vertical-align:middle;line-height:1.35}
+  /* No overflow:hidden. It was there to clip the rounded corners, but no cell paints a
+     background, so it clipped nothing except grammar text - 82 of the 109 shipping ending
+     tables lost cell content at 320px (worst 38px, "menedzer -> menedzerowie"). The radius
+     is kept; the cells wrap instead. overflow-wrap:anywhere is the deliberate contract: it
+     also gives every cell a real min-content width, so the table can always shrink to its
+     container and no ending table can push the page into horizontal scrolling. (break-word
+     reads better but does not bound min-content - measured, it renders the Celownik table
+     293.8px wide inside a 232px card at 320px, i.e. straight back out of the card.) */
+  .end-table{width:100%;max-width:420px;table-layout:fixed;border:1px solid var(--border);border-radius:14px;border-collapse:separate;border-spacing:0;font-size:12.5px}
+  .end-table td{padding:11px 12px;vertical-align:middle;line-height:1.35;overflow-wrap:anywhere}
   .end-table tr:not(:first-child) td{border-top:1px solid var(--border)}
   .end-table .g{width:30%;color:var(--muted);font-weight:600}
   .end-table .e{width:34%;color:var(--emerald);font-weight:800;font-size:14px;text-align:center}
@@ -631,7 +767,10 @@
   .ex-line .t{flex:1;min-width:0}
   .ex-line .p{font-size:14.5px;font-weight:700;color:var(--forest);line-height:1.35}
   .ex-line .e{font-size:12.5px;color:var(--muted);margin-top:2px}
-  .mini-audio{flex:0 0 auto;width:32px;height:32px;border-radius:50%;border:none;background:#fff;color:var(--mint-text);display:grid;place-items:center;cursor:pointer;box-shadow:0 2px 7px rgba(4,120,87,.16);transition:.15s}
+  /* 36x36, matching .ex-audio. This is the per-bubble audio control in Conversations and
+     the per-example control on grammar cards - tapped repeatedly, so it gets the same
+     target as the established example-audio button. Icon and behaviour are unchanged. */
+  .mini-audio{flex:0 0 auto;width:36px;height:36px;border-radius:50%;border:none;background:#fff;color:var(--mint-text);display:grid;place-items:center;cursor:pointer;box-shadow:0 2px 7px rgba(4,120,87,.16);transition:.15s}
   .mini-audio:hover{background:var(--emerald);color:#fff}
   .mini-audio:active{transform:scale(.93)}
   .mini-audio svg{width:15px;height:15px}
@@ -646,7 +785,11 @@
      Left alone the browser draws its default ring around them, which is a box
      around a label nobody tabbed to. Every real control keeps its :focus-visible
      ring; this turns one off for two elements that cannot be reached by Tab. */
+  #lPrompt{margin:0 0 14px}
   #lPrompt:focus,#lDoneTitle:focus{outline:none}
+  /* Type It starts and advances on its prompt rather than forcing focus into the
+     text field. Both anchors are script-only and never enter the Tab order. */
+  #tEn:focus,#tDoneTitle:focus{outline:none}
   /* The same set for the Mixed Quiz: the question-type line a "listen" question
      falls back to while Play is still loading, the Polish prompt a new "mc" question
      focuses, and the completion heading. All three are tabindex="-1", so none is a
@@ -654,11 +797,11 @@
      or rShowDone put it there. Kept as its own rule rather than folded into the
      Listening one, so each activity's anchors stay listed with that activity. Every
      real Mixed Quiz control keeps its :focus-visible ring. */
-  #rType:focus,#rPl:focus,#rDoneTitle:focus{outline:none}
+  #rType:focus,#rPl:focus,#rEn:focus,#rDoneTitle:focus{outline:none}
   /* Grammar's completion heading follows the same programmatic-focus pattern. It is
      not a tab stop; every option and control keeps its ordinary focus-visible ring. */
-  #gDoneTitle:focus{outline:none}
-  .q-prompt{font-size:22px;font-weight:800;line-height:1.35;letter-spacing:-.4px;color:var(--forest)}
+  #gQuestion:focus,#gDoneTitle:focus{outline:none}
+  .q-prompt{margin:0;font-size:22px;font-weight:800;line-height:1.35;letter-spacing:-.4px;color:var(--forest)}
   .q-prompt .blank{display:inline-block;min-width:56px;border-bottom:3px solid var(--emerald);margin:0 3px;vertical-align:middle;height:1.1em}
   .q-en{font-size:14px;color:var(--muted);font-weight:500;margin-top:8px}
   .opts{display:flex;flex-direction:column;gap:10px;margin-top:22px}
@@ -667,7 +810,7 @@
   .opt:disabled{cursor:default}
   .opt:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
   .opt.correct{background:var(--ok-bg);border-color:var(--ok-border);color:var(--ok-text)}
-  .opt.wrong{background:#fbeee8;border-color:var(--coral);color:var(--coral-hover)}
+  .opt.wrong{background:#fbeee8;border-color:var(--coral);color:#934b32}
   /* The result in WORDS, not in colour alone. It sits on its own line under the
      gloss, so a long English answer still wraps and nothing is pushed sideways at
      375px. Screen readers are served by the button's aria-label and by #lStatus,
@@ -685,7 +828,9 @@
   .build-row.shake{animation:shake .32s}
   @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
   .build-row.locked .wchip{background:var(--ok-bg);border-color:var(--ok-border);color:var(--ok-text);cursor:default;pointer-events:none}
-  .build-pool{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  /* 11px between chips, up from 8px. The pool is tapped word after word, so adjacent chips
+     need real clear space. The chips themselves keep their size, order and wrapping. */
+  .build-pool{display:flex;flex-wrap:wrap;gap:11px;margin-top:16px}
   .wchip{border:1.5px solid var(--border);background:#fff;color:var(--forest);border-radius:11px;padding:9px 14px;font-size:15px;font-weight:700;cursor:pointer;transition:.13s;font-family:inherit}
   .wchip:hover{border-color:var(--emerald);transform:translateY(-1px)}
   .wchip:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
@@ -707,7 +852,9 @@
   .score-ring{margin:20px 0 22px;font-size:40px;font-weight:800;letter-spacing:-1px;color:var(--forest)}
   .score-ring span.lbl{color:var(--muted);font-size:20px;font-weight:700}
 
-  @media (max-width:400px){ .pl{font-size:31px} .en{font-size:24px} .pl.dir-en{font-size:24px} .en.dir-pl{font-size:31px} .flip,.stage{min-height:430px} .hero h1{font-size:29px;letter-spacing:-.9px} }
+  /* The card's second fixed floor (430px) is gone: .flip/.stage now clamp against the
+     dynamic viewport at every width, so a narrow phone no longer gets its own hard floor. */
+  @media (max-width:400px){ .pl{font-size:31px} .en{font-size:24px} .pl.dir-en{font-size:24px} .en.dir-pl{font-size:31px} .hero h1{font-size:29px;letter-spacing:-.9px} }
   /* ---------- conversation (Rozmowy) ---------- */
   .thread{flex:1;overflow-y:auto;padding:10px 2px 8px;display:flex;flex-direction:column;gap:13px}
   .scene-card{background:linear-gradient(180deg,var(--cream),#fff);border:1px solid var(--border);border-radius:var(--r-md);padding:16px 17px;box-shadow:var(--shadow-sm)}
@@ -718,6 +865,7 @@
   .bubble{max-width:86%;border-radius:var(--r-md);padding:12px 14px;box-shadow:var(--shadow-sm);animation:pop .28s ease}
   @keyframes pop{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
   .bubble .brow{display:flex;align-items:flex-start;gap:10px}
+  .bubble-content{flex:1;min-width:0}
   .bubble .btext{flex:1;min-width:0}
   .bubble .b-pl{font-size:16px;font-weight:700;line-height:1.4;letter-spacing:-.2px}
   .bubble .b-en{font-size:12.5px;color:var(--muted);margin-top:3px;font-weight:500;line-height:1.4}
@@ -743,7 +891,7 @@
   .cdone{display:flex;flex-direction:column;align-items:center;text-align:center;padding:8px 0 4px}
   .cdone-badge{width:60px;height:60px;border-radius:50%;background:var(--mint-bg);color:var(--emerald);display:grid;place-items:center;margin-bottom:12px}
   .cdone-badge svg{width:28px;height:28px}
-  .cdone-t{font-size:21px;font-weight:800;letter-spacing:-.4px;color:var(--forest)}
+  .cdone-t{font-size:21px;font-weight:800;letter-spacing:-.4px;color:var(--forest);margin:0}
   .cdone-s{font-size:14px;color:var(--muted);line-height:1.5;margin:7px 0 18px;max-width:340px}
   .cdone-recap{text-align:left;width:100%;max-width:340px;background:var(--mint-bg);border-radius:14px;padding:14px 16px;margin:0 0 18px}
   .cdone-recap-h{font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--emerald);margin-bottom:9px}
@@ -775,18 +923,96 @@
   @keyframes speakPulse{50%{transform:scale(1.07)}}
   .fab.speaking,.ex-audio.speaking,.mini-audio.speaking{background:var(--emerald);color:#fff;animation:speakPulse .9s ease infinite}
 
+  /* Audio status and retry (MLG-4A-04). One element, moved next to whichever
+     control failed, so the message is read where the learner is looking. It is
+     laid out in flow so it can never cover an answer button, and it carries no
+     colour that reads as an error state on the activity itself. */
+  .audio-status{display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+    margin:10px 0 0;padding:9px 12px;border:1px solid var(--border);border-radius:12px;
+    background:var(--card);color:var(--forest);font-size:13.5px;font-weight:600;line-height:1.4;text-align:left}
+  .audio-status[hidden]{display:none}
+  .audio-status .audio-status-msg{min-width:0}
+  .audio-status .audio-retry{flex:0 0 auto;border:1px solid var(--emerald);background:var(--card);
+    color:var(--emerald);font:inherit;font-weight:700;padding:6px 12px;border-radius:999px;cursor:pointer}
+  .audio-status .audio-retry:hover{background:var(--mint-bg)}
+  .audio-status .audio-retry[hidden]{display:none}
+
   /* review count on topic cards */
   .t-count .review-n{font-style:normal;color:var(--coral-hover);font-weight:700}
 
-  /* toast (voice hint) */
-  .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:60;background:var(--forest);color:var(--cream);
-    padding:12px 16px;border-radius:14px;font-size:13px;font-weight:500;line-height:1.45;max-width:min(92vw,420px);
+  /* toast (voice hint)
+     A position:fixed element is laid out against the viewport and never inherits the
+     body's env(safe-area-inset-*) padding, so it carries its own insets to stay clear
+     of the home indicator and the gesture bar in standalone mode. */
+  .toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:60;
+    background:var(--forest);color:var(--cream);
+    padding:12px 16px;border-radius:14px;font-size:13px;font-weight:500;line-height:1.45;
+    max-width:calc(min(92vw,420px) - env(safe-area-inset-left) - env(safe-area-inset-right));
     box-shadow:var(--shadow);animation:fade .3s ease}
 
   @media (prefers-reduced-motion:reduce){
     .build-row.shake{animation:none}
     .flip,.screen,.done,.bubble,.hero h1,.hero h1 em,.hero-badge{transition:none;animation:none}
     .hero h1 em{background:none;-webkit-text-fill-color:var(--emerald)}
+  }
+  @media (max-width:400px){
+    .site-drawer{width:min(92vw,370px)}
+    .site-drawer-panel{padding-left:16px}
+    /* Activity header becomes a deliberate two-row grid. In one flex row the title was left
+       75px between .back (40), .speed-toggle (89, 130 at 200% text) and .back.home-btn (40).
+       Row 1 keeps Back, the title and Home in their usual corners; the speed control moves to
+       its own slim right-aligned row, mirroring the existing .dir-row. It is the same single
+       element repositioned - no second control, no icon-only fallback, no lost label. Headers
+       with no speed control (About, Contact, Install, Privacy) leave row 2 empty and keep
+       their original height, because the row gap rides on the control instead of the grid. */
+    .sbar{display:grid;grid-template-columns:auto minmax(0,1fr) auto;
+      grid-template-areas:"sbar-back sbar-title sbar-home" "sbar-speed sbar-speed sbar-speed";
+      align-items:center;column-gap:12px;row-gap:0}
+    .sbar > .back{grid-area:sbar-back}
+    .sbar > .back.home-btn{grid-area:sbar-home}
+    .sbar > .sbar-title{grid-area:sbar-title}
+    .sbar > .speed-toggle{grid-area:sbar-speed;justify-self:end;margin-top:8px}
+    /* Ending tables: give the text back the room the cell padding was taking. At 320px the
+       table is 230px wide, and 12px side padding spent 72px of that on gutters, leaving
+       32-50px of text per column. 7px side padding leaves 54-68px. Measured across all 109
+       shipping ending tables at 320px, this is the layout that needs the fewest mid-word
+       breaks: 286 of 1,389 cells (20.6%) versus 545 (39.2%) for the same table under auto
+       layout. The fixed 30/34/36 ratios are therefore kept - with overflow:hidden gone they
+       no longer clip anything, and they distribute the narrow row better than auto layout,
+       which collapses the first column to fit the widest one. */
+    .end-table td{padding:9px 7px}
+    /* The two-row header costs ~42px, so the card floor gives that back at these widths.
+       Still a clamp, not a second fixed floor. */
+    .stage,.flip{min-height:clamp(272px,52dvh,452px)}
+  }
+  /* Short viewports - every phone in landscape, and the shortest phones in portrait
+     (568px, iPhone SE class). The only height query in the sheet; 600px is the height at
+     which the activity screen's fixed vertical costs stop leaving room for both the card
+     and its control row. It trims those costs (header, direction row, progress, stage and
+     control padding, completion spacing) and lets the card floor track the viewport more
+     closely. Nothing is hidden, no text is resized, and min-height stays a floor, so a
+     card whose content is genuinely taller still grows and the page still scrolls. */
+  @media (max-height:600px){
+    .sbar{padding:12px 0 6px}
+    .dir-row{padding:0}
+    .progress{padding:6px 0 4px}
+    .stage{padding:8px 0 4px;min-height:clamp(150px,42dvh,452px)}
+    .flip{min-height:clamp(150px,42dvh,452px)}
+    .controls{padding:10px 0 16px}
+    .done{padding:12px 10px 24px}
+    .done-badge{width:56px;height:56px;margin-bottom:8px}
+    .stat-row{margin:14px 0 16px}
+  }
+  /* Narrow phones (iPhone SE class, 320-360px). One breakpoint, kept beside the 400px
+     rules above. The topic row wraps instead of splitting a ~280px card between the
+     emoji tile, the text column and the practice pill, which left the text column at
+     ~70px: titles broke over two lines, descriptions truncated mid-word and the meta
+     row overflowed its own box. The emoji tile keeps its 46px touch target. */
+  @media (max-width:360px){
+    .topic{flex-wrap:wrap;row-gap:11px}
+    .topic-main{flex:1 1 100%}
+    .pill-practice{flex:1 1 auto;justify-content:center}
+    .t-arrow{display:none}
   }
 </style>
 </head>
@@ -800,7 +1026,8 @@
     works without it.
   </div>
 </noscript>
-<div class="wrap">
+<div class="wrap" id="appShell">
+  <main class="app-main" id="appMain">
 
   <!-- ============ HOME ============ -->
   <section class="screen active" id="home">
@@ -813,9 +1040,10 @@
         </div>
         <b>Po polsku</b>
       </div>
-      <button class="pp-chip" id="ppChip" hidden data-a2hs-add aria-label="Add Po polsku to your home screen">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m8 11 4 4 4-4"/><path d="M4 21h16"/></svg>
-        Add app
+      <button class="site-menu-button" id="siteMenuButton" type="button" aria-label="Menu"
+              aria-expanded="false" aria-controls="siteDrawer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+             stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
     </div>
 
@@ -867,7 +1095,7 @@
       <button class="back" id="back" aria-label="Back to topics">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
-      <div class="sbar-title"><b id="studyTitle"></b><span id="studyLevel"></span></div>
+      <div class="sbar-title"><h1 id="studyTitle"></h1><span id="studyLevel"></span></div>
       <button class="speed-toggle" data-role="speed-toggle" aria-label="Toggle audio speed" title="Toggle audio speed">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
         <span class="speed-label">Normal</span>
@@ -893,7 +1121,7 @@
     <div id="cardView" style="display:flex;flex-direction:column;flex:1">
       <div class="stage">
         <div class="scene">
-          <div class="flip" id="flip" role="button" tabindex="0" aria-label="Show meaning">
+          <div class="flip" id="flip">
             <div class="face">
               <span class="eyebrow" id="eyebrow">Polish</span>
               <button class="fab" id="speak" aria-label="Play pronunciation">
@@ -905,7 +1133,7 @@
               <div class="hint" id="frontHint"></div>
               <div class="cue" id="frontCue">tap to see meaning</div>
             </div>
-            <div class="face back-face">
+            <div class="face back-face" aria-hidden="true" inert>
               <span class="eyebrow" id="backEyebrow">Meaning</span>
               <button class="fab" id="speakBack" aria-label="Play pronunciation" hidden>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>
@@ -937,6 +1165,9 @@
               <button class="btn-primary intro-start" id="introStart" hidden>Start learning</button>
             </div>
           </div>
+          <button class="flip-control" id="flipControl" type="button" aria-label="Show meaning" title="Show meaning">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3l4 4-4 4"/><path d="M21 7H7"/><path d="M7 21l-4-4 4-4"/><path d="M3 17h14"/></svg>
+          </button>
         </div>
       </div>
 
@@ -980,7 +1211,7 @@
       <button class="back" id="gBack" aria-label="Back">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
-      <div class="sbar-title"><b id="gTitle"></b><span id="gPhase"></span></div>
+      <div class="sbar-title"><h1 id="gTitle"></h1><span id="gPhase"></span></div>
       <button class="speed-toggle" data-role="speed-toggle" aria-label="Toggle audio speed" title="Toggle audio speed">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
         <span class="speed-label">Normal</span>
@@ -991,20 +1222,23 @@
     </div>
     <div class="progress" id="gProgress">
       <div class="track"><div class="fill" id="gFill"></div></div>
-      <div class="p-count" id="gCount" aria-live="polite">0 / 0</div>
+      <div class="p-count" id="gCount" aria-live="polite" aria-atomic="true">0 / 0</div>
     </div>
 
     <!-- learn -->
     <div id="gLearn" style="display:none;flex-direction:column;flex:1">
       <div class="stage"><div class="scene">
-        <div class="flip" id="gFlip" role="button" tabindex="0" aria-label="Reveal explanation">
+        <div class="flip" id="gFlip">
           <div class="face">
             <span class="eyebrow">Concept</span>
             <div class="front-q" id="gFront"></div>
             <div class="cue">tap to reveal</div>
           </div>
-          <div class="face back-face g-back" id="gBackFace"></div>
+          <div class="face back-face g-back" id="gBackFace" aria-hidden="true" inert></div>
         </div>
+        <button class="flip-control" id="gFlipControl" type="button" aria-label="Reveal explanation" title="Reveal explanation">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3l4 4-4 4"/><path d="M21 7H7"/><path d="M7 21l-4-4 4-4"/><path d="M3 17h14"/></svg>
+        </button>
       </div></div>
       <div class="controls">
         <button class="ctrl" id="gPrev">
@@ -1052,7 +1286,7 @@
       <button class="back" id="cBack" aria-label="Back to topics">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
-      <div class="sbar-title"><b id="cTitle"></b><span id="cLevel"></span></div>
+      <div class="sbar-title"><h1 id="cTitle" lang="pl"></h1><span id="cLevel"></span></div>
       <button class="speed-toggle" data-role="speed-toggle" aria-label="Toggle audio speed" title="Toggle audio speed">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
         <span class="speed-label">Normal</span>
@@ -1064,13 +1298,14 @@
     <div class="progress">
       <div class="track"><div class="fill" id="cFill"></div></div>
       <div class="p-count" id="cCount">0 / 0</div>
-      <button class="chal-toggle" id="cChallenge" aria-pressed="false" title="Challenge: hide translations - listen before revealing">
+      <button class="chal-toggle" id="cChallenge" type="button" aria-pressed="false" aria-label="Turn Challenge mode on: hide translations and listen before revealing" title="Challenge: hide translations - listen before revealing">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.7 5.1A9.6 9.6 0 0 1 12 5c7 0 10 7 10 7a13.2 13.2 0 0 1-1.7 2.7"/><path d="M6.6 6.6A13.5 13.5 0 0 0 2 12s3 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="m2 2 20 20"/></svg>
         <span>Challenge</span>
       </button>
     </div>
     <div class="thread" id="cThread"></div>
     <div class="reply" id="cReply"></div>
+    <div class="sr-only" id="cStatus" role="status" aria-live="polite" aria-atomic="true"></div>
   </section>
 
   <!-- ============ TYPE IT ============ -->
@@ -1079,7 +1314,7 @@
       <button class="back" id="tBack" aria-label="Back to topics">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
-      <div class="sbar-title"><b id="tTitle">Type it</b><span id="tLevelLbl"></span></div>
+      <div class="sbar-title"><h1 id="tTitle">Type it</h1><span id="tLevelLbl"></span></div>
       <button class="speed-toggle" data-role="speed-toggle" aria-label="Toggle audio speed" title="Toggle audio speed">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
         <span class="speed-label">Normal</span>
@@ -1090,22 +1325,24 @@
     </div>
     <div class="progress">
       <div class="track"><div class="fill" id="tFill"></div></div>
-      <div class="p-count" id="tCountLbl" aria-live="polite">0 / 0</div>
+      <div class="p-count" id="tCountLbl" aria-live="polite" aria-atomic="true">0 / 0</div>
     </div>
     <div id="tMain" style="display:flex;flex-direction:column;flex:1">
       <div class="drill">
         <div class="drill-card">
-          <div class="d-type">Type the Polish</div>
-          <div class="q-prompt" id="tEn"></div>
+          <div class="d-type" id="tInstruction">Type the Polish</div>
+          <h2 class="q-prompt" id="tEn" tabindex="-1"></h2>
           <div class="t-ctx" id="tCtx"></div>
           <div class="t-from" id="tFrom"></div>
-          <input class="t-input" id="tInput" type="text" lang="pl" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" aria-label="Enter the Polish answer" placeholder="Wpisz po polsku...">
+          <div class="sr-only" id="tInputHelp">Enter your answer in Polish, then press Check.</div>
+          <input class="t-input" id="tInput" type="text" lang="pl" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" aria-label="Enter the Polish answer" aria-labelledby="tInstruction tEn" aria-describedby="tInputHelp tCtx tHintLine" placeholder="Wpisz po polsku...">
           <div class="t-hintline" id="tHintLine" hidden></div>
           <div class="t-actions">
-            <button class="check-btn" id="tCheck">Check</button>
-            <button class="hint-reveal" id="tHint">Reveal a letter</button>
+            <button class="check-btn" id="tCheck" aria-controls="tVerdict tStatus">Check</button>
+            <button class="hint-reveal" id="tHint" aria-controls="tHintLine">Reveal a letter</button>
           </div>
-          <div class="verdict" id="tVerdict" aria-live="polite"></div>
+          <div class="verdict" id="tVerdict"></div>
+          <div class="sr-only" id="tStatus" role="status" aria-live="polite" aria-atomic="true"></div>
         </div>
         <div class="controls">
           <button class="ctrl" id="tNext" disabled>
@@ -1119,7 +1356,7 @@
       <div class="done-badge">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
       </div>
-      <h2>Brawo!</h2>
+      <h2 id="tDoneTitle" tabindex="-1">Brawo!</h2>
       <p id="tDoneMsg"></p>
       <div class="stat-row">
         <div class="stat"><b class="know-n" id="tScoreN">0</b><span>CORRECT</span></div>
@@ -1139,7 +1376,7 @@
       <button class="back" id="lBack" aria-label="Back to topics">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
-      <div class="sbar-title"><b id="lTitle">Listening</b><span id="lLevelLbl"></span></div>
+      <div class="sbar-title"><h1 id="lTitle">Listening</h1><span id="lLevelLbl"></span></div>
       <button class="speed-toggle" data-role="speed-toggle" aria-label="Toggle audio speed" title="Toggle audio speed">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
         <span class="speed-label">Normal</span>
@@ -1150,21 +1387,21 @@
     </div>
     <div class="progress">
       <div class="track"><div class="fill" id="lFill"></div></div>
-      <div class="p-count" id="lCountLbl" aria-live="polite">0 / 0</div>
+      <div class="p-count" id="lCountLbl" aria-live="polite" aria-atomic="true">0 / 0</div>
     </div>
     <div id="lMain" style="display:flex;flex-direction:column;flex:1">
       <div class="drill">
         <div class="drill-card">
           <!-- the one part of the question that never moves: when the manifest is still
                in flight and Play is unpressable, this is where a new question puts focus. -->
-          <div class="d-type" id="lPrompt" tabindex="-1">What did you hear?</div>
+          <h2 class="d-type" id="lPrompt" tabindex="-1">What did you hear?</h2>
           <!-- starts unpressable: until audio-manifest.json settles, a press would hear
                the device voice for a phrase that has a real clip waiting. syncListeningAudioReadiness() owns this state from here on. -->
           <button class="l-play" id="lPlay" aria-label="Polish audio is loading" aria-busy="true" disabled>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>
           </button>
           <div class="l-reveal" id="lReveal" lang="pl"></div>
-          <div class="opts" id="lOpts"></div>
+          <div class="opts" id="lOpts" role="group" aria-labelledby="lPrompt"></div>
           <!-- NOT a live region any more. What it holds is OPTIONAL - an example, a usage
                chip, a warning - so on an ordinary card it stayed empty and announced
                nothing, and on a rich card it raced lStatus below. It is now ordinary
@@ -1207,7 +1444,7 @@
       <button class="back" id="rBack" aria-label="Back">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
-      <div class="sbar-title"><b id="rTitle">Practice</b><span id="rSub"></span></div>
+      <div class="sbar-title"><h1 id="rTitle">Practice</h1><span id="rSub"></span></div>
       <button class="speed-toggle" data-role="speed-toggle" aria-label="Toggle audio speed" title="Toggle audio speed">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
         <span class="speed-label">Normal</span>
@@ -1218,7 +1455,7 @@
     </div>
     <div class="progress">
       <div class="track"><div class="fill" id="rFill"></div></div>
-      <div class="p-count" id="rCountLbl" aria-live="polite">0 / 0</div>
+      <div class="p-count" id="rCountLbl" aria-live="polite" aria-atomic="true">0 / 0</div>
     </div>
     <div id="rMain" style="display:flex;flex-direction:column;flex:1">
       <div class="drill">
@@ -1227,7 +1464,7 @@
                every format: when a "listen" question renders while the manifest is
                still in flight and Play is unpressable, this is where focus goes.
                tabindex="-1" is script-focusable without becoming a tab stop. -->
-          <div class="d-type" id="rType" tabindex="-1"></div>
+          <div class="d-type" id="rType" tabindex="-1" role="heading" aria-level="2"></div>
           <div id="rMcq">
             <!-- starts unpressable, exactly like Listening's: until audio-manifest.json
                  settles, a press would hear the device voice for a phrase that has a
@@ -1239,9 +1476,9 @@
                  that never moves - rRender focuses it so a new question starts on what
                  is being asked rather than on <body>. tabindex="-1" is script-focusable
                  without becoming a tab stop. -->
-            <div class="q-prompt" id="rPl" lang="pl" tabindex="-1" hidden></div>
+            <h2 class="q-prompt" id="rPl" lang="pl" tabindex="-1" hidden></h2>
             <div class="l-reveal" id="rReveal" lang="pl"></div>
-            <div class="opts" id="rOpts"></div>
+            <div class="opts" id="rOpts" role="group" aria-labelledby="rType"></div>
             <!-- NOT a live region any more. What it holds is OPTIONAL - an example, a
                  usage chip, a warning - so on an ordinary card it announced silence for
                  a correct answer, and on a rich card it announced example prose that
@@ -1250,21 +1487,22 @@
             <div class="fb-box" id="rFb"></div>
           </div>
           <div id="rTyped" hidden>
-            <div class="q-prompt" id="rEn"></div>
+            <h2 class="q-prompt" id="rEn" tabindex="-1"></h2>
             <div class="t-ctx" id="rCtx"></div>
-            <input class="t-input" id="rInput" type="text" lang="pl" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" aria-label="Enter the Polish answer" placeholder="Wpisz po polsku...">
+            <div class="sr-only" id="rInputHelp">Enter your answer in Polish, then press Check.</div>
+            <input class="t-input" id="rInput" type="text" lang="pl" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" aria-label="Enter the Polish answer" aria-labelledby="rType rEn" aria-describedby="rInputHelp rCtx rHintLine" placeholder="Wpisz po polsku...">
             <div class="t-hintline" id="rHintLine" hidden></div>
             <div class="t-actions">
-              <button class="check-btn" id="rCheck">Check</button>
-              <button class="hint-reveal" id="rHint">Reveal a letter</button>
+              <button class="check-btn" id="rCheck" aria-controls="rVerdict rStatus">Check</button>
+              <button class="hint-reveal" id="rHint" aria-controls="rHintLine">Reveal a letter</button>
             </div>
-            <div class="verdict" id="rVerdict" aria-live="polite"></div>
+            <div class="verdict" id="rVerdict"></div>
           </div>
           <!-- Outside both format blocks on purpose: #rMcq and #rTyped take turns being
                `hidden`, which removes them from the accessibility tree, and this region
-               has to be readable on every question. It carries the multiple-choice
-               result and the empty-typed-answer instruction; the typed verdict keeps
-               announcing from #rVerdict, so the two never say the same thing twice. -->
+               has to be readable on every question. It owns every concise result; the
+               rich visible feedback containers are ordinary content, so no format can
+               race a second announcement against it. -->
           <div class="sr-only" id="rStatus" role="status" aria-live="polite" aria-atomic="true"></div>
         </div>
         <div class="controls">
@@ -1302,7 +1540,7 @@
       <button class="back" id="backPrivacy" aria-label="Back to home">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
-      <div class="sbar-title"><b>Privacy Notice</b></div>
+      <div class="sbar-title"><h1>Privacy - your data stays yours</h1></div>
       <button class="back home-btn" aria-label="Home page">
         <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       </button>
@@ -1310,12 +1548,36 @@
 
     <div class="privacy-wrap">
       <div class="privacy-card">
-        <p class="privacy-intro"><span class="brand-pill">Po polsku</span> is designed to help you learn Polish, not to collect your personal information.</p>
-        <ul class="privacy-list">
-          <li><b>No Data Collection:</b> We do not ask for your email, we do not track your behavior, and we do not use marketing or analytics cookies.</li>
-          <li><b>Local Storage Only:</b> Any progress you make (like your flashcard scores) is saved locally on your own device. It is never transmitted to or stored on our servers.</li>
-          <li><b>Standard Server Logs:</b> Like almost all websites, our hosting and delivery providers - GitHub Pages (hosting) and Cloudflare (CDN and security) - temporarily log basic technical requests (such as IP addresses) strictly to ensure the website functions securely and reliably. We do not access or use this information to identify anyone.</li>
-        </ul>
+        <p class="privacy-intro">Po polsku is designed to help you learn Polish without requiring an account or building a learner profile.</p>
+
+        <div class="privacy-section">
+          <h2>Your learning data</h2>
+          <p class="about-p">Your progress, known words, and app settings are stored locally in your browser on this device. Po polsku does not send this learning data to an account or central database.</p>
+          <p class="about-p">Where supported, the app asks your browser to keep this storage persistently, but the browser decides whether to grant that request. Browser data can still be removed by you or by your browser or device, so a backup is the safest way to keep a separate copy.</p>
+        </div>
+
+        <div class="privacy-section">
+          <h2>Analytics and hosting</h2>
+          <p class="about-p">Po polsku does not use advertising, marketing cookies, or analytics tools.</p>
+          <p class="about-p">The site is delivered through GitHub Pages and Cloudflare, which may process standard technical request data needed to deliver and protect the site. Po polsku does not use this information to build learner profiles.</p>
+        </div>
+
+        <div class="privacy-section">
+          <h2>Pronunciation</h2>
+          <p class="about-p">Pronunciation normally uses pre-recorded audio provided with the app. If a clip cannot play, the app may use your browser’s built-in speech feature. That fallback is controlled by your browser or device.</p>
+        </div>
+
+        <div class="privacy-section">
+          <h2>Progress and backups</h2>
+          <p class="about-p">A backup downloads a JSON file containing your Po polsku progress and app data to a location you choose. Restoring a backup reads the file you select and applies it on this device.</p>
+          <p class="about-p"><a class="about-link" id="dataInstallLink" href="#install">Installing the app</a> can provide a more app-like and reliable experience, but it should not replace keeping a backup.</p>
+          <div class="data-actions">
+            <button class="data-btn" id="dataBackup">Back up my progress</button>
+            <button class="data-btn" id="dataRestore">Restore from backup</button>
+            <input type="file" id="dataFile" accept=".json,application/json" hidden>
+          </div>
+          <div class="data-status" id="dataStatus" aria-live="polite"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -1326,7 +1588,7 @@
       <button class="back" id="backAbout" aria-label="Back to home">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
-      <div class="sbar-title"><b>About</b></div>
+      <div class="sbar-title"><h1>About</h1></div>
       <button class="back home-btn" aria-label="Home page">
         <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       </button>
@@ -1334,33 +1596,30 @@
 
     <div class="privacy-wrap">
       <div class="privacy-card">
-        <p class="about-p">I’m a foreigner living in Poland, learning Polish alongside a master’s degree and the everyday challenge of actually using the language outside a textbook. Po polsku began as a simple tool to help me remember the words and phrases I kept needing in real life.</p>
-        <p class="about-p">It has since grown into a much more complete learning app, with practical vocabulary, grammar explanations and drills, listening and typing practice, mixed quizzes, conversations, pronunciation audio, and examples built around situations people genuinely encounter in Poland.</p>
-        <p class="about-p">A great deal of care goes into the content and into how the practice activities respond to learners. I regularly ask native Polish speakers around me, including my teacher, to check the accuracy, naturalness, and real-life relevance of words, sentences, and explanations. I also keep reviewing, testing, correcting, and improving the app as both my Polish and the project develop.</p>
-        <p class="about-p">Po polsku is completely free, requires no account, and keeps your learning data on your own device. It is an independent project built for learners who want Polish they can understand, remember, and actually use.</p>
+        <p class="about-p">I’m a foreigner living in Poland, learning Polish while studying for a master’s degree - and trying to use the language in everyday life, not just in a textbook. Po polsku began as a simple way to remember the words and phrases I kept needing in real situations.</p>
+        <p class="about-p">It has grown into a practical learning app with vocabulary, grammar, listening, typing, mixed quizzes, conversations, and pronunciation audio. I review and improve the content continuously, with help from native Polish speakers around me, including my teacher.</p>
+        <p class="about-p">Po polsku is completely free, requires no account, and keeps your learning progress on your device. It is built for learners who want Polish they can understand, remember, and actually use.</p>
+      </div>
+    </div>
+  </section>
 
-        <div class="about-contact">
-          <div class="about-contact-title">Your data stays yours</div>
-          <p class="about-p">Everything you do here - progress, known words, settings - is stored only on your device. Nothing is sent anywhere (no servers, no account).</p>
-          <p class="about-p">The app asks your browser to treat this data as important so it isn't cleared automatically when storage runs low. Most browsers agree silently; some may ask you to confirm.</p>
-          <p class="about-p">Browsers can still remove it - if you clear browsing data, or on iPhone when the site sits unopened in Safari for a week. <a class="about-link" id="dataInstallLink" href="#" role="button">Installing the app</a> to your home screen protects against that, and a backup puts a copy safely in your hands:</p>
-          <div class="data-actions">
-            <button class="data-btn" id="dataBackup">Back up my progress</button>
-            <button class="data-btn" id="dataRestore">Restore from backup</button>
-            <input type="file" id="dataFile" accept=".json,application/json" hidden>
-          </div>
-          <div class="data-status" id="dataStatus" aria-live="polite"></div>
-        </div>
+  <!-- ============ CONTACT ============ -->
+  <section class="screen" id="contact">
+    <div class="sbar">
+      <button class="back" id="backContact" aria-label="Back to home">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="sbar-title"><h1>Contact</h1></div>
+      <button class="back home-btn" aria-label="Home page">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </button>
+    </div>
 
-        <div class="about-contact">
-          <div class="about-contact-title">What else I listen to</div>
-          <p class="about-p">Flashcards get you words. Getting used to the sound of the language takes hours of listening, and a couple of podcasts did most of that work for me. <a class="about-link" href="guide/listening/">Here's what I listen to</a> - with honest notes on what's free, what isn't, and what level each one needs.</p>
-        </div>
-
-        <div class="about-contact">
-          <div class="about-contact-title">Contact</div>
-          <p class="about-p">Found something that does not sound right, have a suggestion from your own experience learning or speaking Polish, or want to see a topic added? I genuinely welcome corrections and ideas - reach out at <a class="about-link" href="mailto:hello@popolsku.app">hello@popolsku.app</a>.</p>
-        </div>
+    <div class="privacy-wrap">
+      <div class="privacy-card">
+        <h2 class="contact-lead">Have an idea, want to collaborate, or simply want to connect?</h2>
+        <p class="about-p">Po polsku is an independent and evolving project. I’m always open to thoughtful collaborations, useful resources, new ideas, and conversations about making Polish easier and more engaging to learn.</p>
+        <a class="contact-email" href="mailto:hello@popolsku.app" aria-label="Email hello@popolsku.app"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>hello@popolsku.app</a>
       </div>
     </div>
   </section>
@@ -1371,7 +1630,7 @@
       <button class="back" id="backInstall" aria-label="Back to home">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
-      <div class="sbar-title"><b>Install</b></div>
+      <div class="sbar-title"><h1>Install</h1></div>
       <button class="back home-btn" aria-label="Home page">
         <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       </button>
@@ -1414,30 +1673,58 @@
       </div>
     </div>
   </section>
+  </main>
 
   <footer>
-    <div class="foot-links">
-      <button class="foot-btn" id="openAbout">About</button>
-      <button class="foot-btn" id="openPrivacy">Privacy</button>
-      <button class="foot-btn" id="openInstall">Install</button>
-    </div>
-    <div class="foot-guides"><a href="guide/">Guide</a> <span class="foot-version">&middot; <span id="footVersion"></span></span></div>
+    <div class="foot-version">Po polsku · <span id="footVersion"></span> · <span id="footYear"></span></div>
   </footer>
 
-  <div class="modal-overlay" id="matureGate" hidden>
-    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="matureTitle" aria-describedby="matureBody">
-      <div class="modal-ic">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
-      </div>
-      <h3 id="matureTitle">Adult language ahead</h3>
-      <p id="matureBody">This topic teaches real Polish swearing and slang, including strong, vulgar words - each shown with what it means and how offensive it is. It's here to help you understand what you'll hear, not to encourage using it. Continue only if you're comfortable with explicit language.</p>
-      <div class="modal-actions">
-        <button class="modal-btn ghost" id="matureCancel">Not now</button>
-        <button class="modal-btn solid" id="matureContinue">I'm 18+, continue</button>
-      </div>
+</div>
+
+<!-- Modal overlays live outside #appShell: the shared contract marks the shell inert and
+     aria-hidden while an overlay is open, and a descendant overlay would inherit both. -->
+<dialog class="modal-overlay" id="matureGate" aria-labelledby="matureTitle" aria-describedby="matureBody">
+  <div class="modal-card">
+    <div class="modal-ic">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+    </div>
+    <h3 id="matureTitle">Adult language ahead</h3>
+    <p id="matureBody">This topic teaches real Polish swearing and slang, including strong, vulgar words - each shown with what it means and how offensive it is. It's here to help you understand what you'll hear, not to encourage using it. Continue only if you're comfortable with explicit language.</p>
+    <div class="modal-actions">
+      <button class="modal-btn ghost" id="matureCancel">Not now</button>
+      <button class="modal-btn solid" id="matureContinue">I'm 18+, continue</button>
     </div>
   </div>
-</div>
+</dialog>
+
+<dialog class="site-drawer" id="siteDrawer" aria-labelledby="siteMenuTitle">
+  <div class="site-drawer-panel">
+    <div class="site-drawer-head">
+      <h2 id="siteMenuTitle">Menu</h2>
+      <button class="site-drawer-close" id="siteMenuClose" type="button" aria-label="Close menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+             stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <nav aria-label="Site menu">
+      <ul class="site-nav-list">
+        <li><a href="#about" data-app-screen="about">About</a></li>
+        <li id="siteInstallItem">
+          <button id="siteInstall" type="button" data-a2hs-add aria-label="Install" aria-describedby="siteInstallStatus">
+            <span>Install</span><span class="site-nav-detail" id="siteInstallDetail" aria-hidden="true">Instructions</span>
+          </button>
+          <span class="sr-only" id="siteInstallStatus">Open installation instructions</span>
+        </li>
+        <li><a href="#privacy" data-app-screen="privacy">Privacy</a></li>
+        <li><a href="guide/listening/">What else I listen to</a></li>
+        <!-- Approved refinement: the /guide/ destination keeps its URL and page metadata;
+             only the menu label and its position in this list changed. -->
+        <li><a href="guide/">Explore more Polish</a></li>
+        <li><a href="#contact" data-app-screen="contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</dialog>
 
 <script src="data-a1.js"></script>
 <script src="data-a2.js"></script>
@@ -1458,8 +1745,9 @@
    Unrelated to CACHE in sw.js, which is a machine counter - bump both when
    you deploy, but they don't need to match.
    ========================================================================= */
-const APP_VERSION = "8.1";
+const APP_VERSION = "8.4";
 document.getElementById("footVersion").textContent = "v" + APP_VERSION;
+document.getElementById("footYear").textContent = String(new Date().getFullYear());
 
 /* =========================================================================
    LEVELS - loaded from the data-*.js files (window.PP_LEVELS).
@@ -1643,26 +1931,355 @@ function restoreProgress(l,t){
   (rec.still||[]).forEach(id=>{ if(idx[id]!==undefined) S.still.add(idx[id]); });
   (rec.known||[]).forEach(id=>{ if(idx[id]!==undefined) S.known.add(idx[id]); });
 }
-function showScreen(scr){
+var ppScreenReturnTargets = new Map();
+var ppNextScreenInvoker = null;
+var ppOverlayReturnTargets = new Map();
+var PP_INTERACTIVE_SELECTOR = [
+  "button", "a[href]", "input", "textarea", "select", "summary", "audio", "video",
+  "iframe", "object", "embed", "[contenteditable]", "[disabled]", "[aria-disabled='true']",
+  "[tabindex]:not([tabindex='-1'])", "[role='button']", "[role='link']", "[role='checkbox']",
+  "[role='switch']", "[role='radio']", "[role='option']", "[role='textbox']",
+  "[role='searchbox']", "[role='combobox']", "[role='slider']", "[role='spinbutton']",
+  "[role='menuitem']", "[role='menuitemcheckbox']", "[role='menuitemradio']", "[role='tab']",
+  "[role='treeitem']", "[role='gridcell']", "[role='menu']", "[role='menubar']",
+  "[role='listbox']", "[role='radiogroup']", "[role='tablist']", "[role='tree']",
+  "[role='grid']", "[role='toolbar']", "[role='application']"
+].join(",");
+
+function ppIsInteractiveTarget(target){
+  return !!(target && (target.isContentEditable || (target.closest && target.closest(PP_INTERACTIVE_SELECTOR))));
+}
+function ppIsHiddenOrInert(el){
+  for(let node=el; node && node!==document; node=node.parentElement){
+    if(node.hidden || node.inert) return true;
+    if(node.getAttribute && (node.getAttribute("aria-hidden")==="true" || node.getAttribute("hidden")!==null || node.getAttribute("inert")!==null)) return true;
+    if(node.style && (node.style.display==="none" || node.style.visibility==="hidden")) return true;
+    if(window.getComputedStyle){ const style=window.getComputedStyle(node); if(style.display==="none" || style.visibility==="hidden") return true; }
+    if(node.classList && node.classList.contains("screen") && !node.classList.contains("active")) return true;
+  }
+  return false;
+}
+function ppCanFocus(el){
+  if(!el || typeof el.focus!=="function" || !document.contains(el)) return false;
+  if(el.disabled || (el.getAttribute && el.getAttribute("aria-disabled")==="true")) return false;
+  return !ppIsHiddenOrInert(el);
+}
+function ppFocusElement(el){
+  if(!ppCanFocus(el)) return false;
+  try{ el.focus({preventScroll:true}); }
+  catch(e){ try{ el.focus(); }catch(err){ return false; } }
+  return document.activeElement===el;
+}
+/* Activity transitions share the same validity boundary as screen/overlay routing.
+   Keeping an already-valid target is not a second focus move; every other target is
+   rejected before focus() when it is disconnected, disabled, hidden, aria-hidden or
+   inert. Activity renderers use this instead of making their own partial checks. */
+function ppFocusActivityTarget(el){
+  if(!ppCanFocus(el)) return false;
+  if(document.activeElement===el) return true;
+  return ppFocusElement(el);
+}
+/* Focus itself must never scroll - every move in this app keeps preventScroll:true, so
+   an assistive-technology caret is never dragged by a layout side effect. The cost is
+   that a target enabled below the fold on a short phone takes focus with its focus ring
+   off the screen, which is what this repairs, and nothing more: it moves no focus and
+   chooses no target, it only brings the element the app has ALREADY focused into view.
+   block/inline "nearest" asks for the smallest movement that makes the element visible
+   and is a no-op once it is, so a settled question cannot scroll again; no `behavior` is
+   requested, so this correction is never animated. */
+function ppRevealFocusedTarget(el){
+  if(!el || typeof el.scrollIntoView!=="function") return false;
+  if(!ppCanFocus(el)) return false;             /* disabled, hidden, inert or detached: nothing to reveal */
+  try{ el.scrollIntoView({block:"nearest", inline:"nearest"}); }
+  catch(e){ return false; }
+  return true;
+}
+/* The two operations in the only safe order: focus first, then reveal whatever actually
+   took focus. A target rejected by the shared validity boundary is neither focused nor
+   revealed, and a later focus move in the same transition still gets the final say. */
+function ppFocusAndRevealActivityTarget(el){
+  if(!ppFocusActivityTarget(el)) return false;
+  ppRevealFocusedTarget(el);
+  return true;
+}
+/* Correction/hint actions keep their triggering native control when it is still
+   valid and meaningful. The fallback is used only after a render/disable/remove has
+   made that trigger unusable. */
+function ppKeepActivityFocusOr(fallback, triggers){
+  const current=document.activeElement;
+  const allowed=Array.isArray(triggers) ? triggers : [triggers];
+  if(allowed.indexOf(current)!==-1 && ppCanFocus(current) && ppIsInteractiveTarget(current)) return true;
+  return ppFocusActivityTarget(fallback);
+}
+/* One safe writer for the four immediate-feedback regions. Parts are appended as
+   text nodes or DOM nodes whose textContent has already been assigned; authored HTML
+   is never parsed here. An unchanged message is left alone so one state change cannot
+   be announced twice, while [] deterministically retires stale prior feedback. */
+function ppSetActivityStatus(box, parts){
+  if(!box) return false;
+  const safe=Array.isArray(parts) ? parts : [];
+  const next=safe.map(p=>typeof p==="string" ? p : (p && p.textContent)||"").join("");
+  if(box.textContent===next) return false;
+  box.textContent="";
+  safe.forEach(p=>box.appendChild(typeof p==="string" ? document.createTextNode(p) : p));
+  return true;
+}
+/* Typed activities share the same three concise result messages. The answer stays
+   in its own Polish-language node; the rich visible verdict is ordinary content and
+   therefore cannot race this single atomic announcement. */
+function ppAnnounceTypedActivityResult(box, verdict, pl){
+  const answer=document.createElement("span");
+  answer.setAttribute("lang","pl");
+  answer.textContent=pl;
+  const lead=verdict==="right" ? "Correct. The answer is "
+            : verdict==="almost" ? "Almost correct. Check the Polish spelling: "
+            : "Incorrect. The answer is ";
+  return ppSetActivityStatus(box,[lead,answer,". Next is ready."]);
+}
+/* Answer buttons remain native buttons. aria-pressed adds the transient selected
+   state without replacing native disabled semantics or inventing a radio contract
+   that would prevent retrying after a wrong choice. */
+function ppSetActivityOptionState(box, selected){
+  if(!box || !selected) return false;
+  box.querySelectorAll(".opt").forEach(btn=>
+    btn.setAttribute("aria-pressed", btn===selected ? "true" : "false"));
+  return true;
+}
+function ppScreenEntryTarget(screen){
+  if(!screen) return null;
+  const heading=screen.querySelector("h1");
+  if(heading) heading.setAttribute("tabindex", "-1");
+  return heading;
+}
+function ppCurrentScreen(){ return document.querySelector(".screen.active"); }
+function ppRememberScreenInvoker(scr){
+  const candidate=ppNextScreenInvoker || document.activeElement;
+  ppNextScreenInvoker=null;
+  if(scr && ppCanFocus(candidate) && ppIsInteractiveTarget(candidate)) ppScreenReturnTargets.set(scr, candidate);
+}
+function ppUseInvokerForNextScreen(candidate){
+  ppNextScreenInvoker = ppCanFocus(candidate) && ppIsInteractiveTarget(candidate) ? candidate : null;
+}
+function ppRouteScreenFocus(fromScreen, toScreen){
+  if(!toScreen || fromScreen===toScreen) return null;
+  const remembered=fromScreen && ppScreenReturnTargets.get(fromScreen.id);
+  if(remembered && ppCanFocus(remembered) && ppIsInteractiveTarget(remembered)){
+    ppScreenReturnTargets.delete(fromScreen.id);
+    return ppFocusElement(remembered) ? remembered : null;
+  }
+  const current=document.activeElement;
+  if(current && current.closest && current.closest(".screen")===toScreen && ppCanFocus(current)) return current;
+  const entry=ppScreenEntryTarget(toScreen);
+  return ppFocusElement(entry) ? entry : null;
+}
+/* ---------------- the app's one screen-scroll contract ----------------
+   App screens are sections of ONE document, so leaving a screen and coming back is not
+   a document load - but the browser still restores its own remembered offset on Back,
+   at a moment it chooses, against showScreen's own reset. Which of the two won was
+   engine- and timing-dependent, and when the browser won it also left the focus target
+   restored with preventScroll:true off the screen. So the browser's copy is turned off
+   where it is supported, and the app owns both halves: forward navigation starts the
+   destination at the top, Back puts a screen back exactly where it was left.
+   Offsets are keyed by screen id - the same stable identity ppScreenReturnTargets uses
+   beside them - and live for this page only, like those focus targets: no storage is
+   written, and no history entry is created or consumed here. */
+var ppScreenScrollOffsets = new Map();
+var ppScrollRestoreToken = 0;
+function ppUseManualScrollRestoration(){
+  if(!window.history || !("scrollRestoration" in window.history)) return false;   /* an engine without it keeps its own */
+  try{ window.history.scrollRestoration="manual"; }catch(e){ return false; }
+  return window.history.scrollRestoration==="manual";
+}
+function ppCurrentScrollY(){
+  if(typeof window.scrollY==="number") return window.scrollY;
+  if(typeof window.pageYOffset==="number") return window.pageYOffset;
+  return 0;
+}
+function ppRememberScreenScroll(id){
+  if(!id) return false;
+  ppScreenScrollOffsets.set(id, ppCurrentScrollY());
+  return true;
+}
+/* The offset is applied immediately, which is the whole contract on every ordinary
+   transition. The one deferred re-apply exists because a remembered offset can exceed
+   the destination's height until it has been laid out once - so it is an animation
+   frame, never a millisecond guess, and every navigation takes the token, which is how
+   a frame scheduled by an earlier navigation is prevented from moving a newer screen. */
+function ppApplyScreenScroll(scr, restore){
+  const target = restore ? (ppScreenScrollOffsets.get(scr) || 0) : 0;
+  const token = ++ppScrollRestoreToken;
+  window.scrollTo(0, target);
+  if(target && typeof window.requestAnimationFrame==="function"){
+    window.requestAnimationFrame(()=>{
+      if(token!==ppScrollRestoreToken) return;                     /* a newer navigation already placed the page */
+      if(ppCurrentScrollY()!==target) window.scrollTo(0, target);
+    });
+  }
+  return target;
+}
+/* ---------------- the app's one modal-overlay contract ----------------
+   Every modal overlay is a native <dialog> opened with showModal(), so the browser
+   owns the top layer, focus containment, Escape and Android Back. On top of that the
+   app adds explicit app-shell isolation (see ppIsolateSiteMenuBackground below) and
+   deterministic focus return to the control that opened the overlay.
+   Two modal layers are never stacked: opening is refused while another one is open.
+   Returns true when the overlay actually opened/closed; focus outcomes are reported
+   through the focus helpers rather than by changing that answer. */
+function ppOpenSharedOverlay(overlay, initialTarget){
+  if(!overlay || overlay.open || typeof overlay.showModal!=="function") return false;
+  if(ppSiteMenuIsOpen()) return false;                 /* never stack two modal layers */
+  const invoker=document.activeElement;
+  if(ppCanFocus(invoker) && ppIsInteractiveTarget(invoker)) ppOverlayReturnTargets.set(overlay.id, invoker);
+  else ppOverlayReturnTargets.delete(overlay.id);
+  try{ overlay.showModal(); }catch(e){ ppOverlayReturnTargets.delete(overlay.id); return false; }
+  if(!ppIsolateSiteMenuBackground()){
+    overlay.close();
+    ppOverlayReturnTargets.delete(overlay.id);
+    return false;
+  }
+  if(!ppFocusElement(initialTarget)){                  /* an unusable initial target leaves nothing open */
+    ppCloseSharedOverlay(overlay, false);
+    return false;
+  }
+  return true;
+}
+function ppTakeSharedOverlayInvoker(overlay){
+  if(!overlay) return null;
+  const invoker=ppOverlayReturnTargets.get(overlay.id) || null;
+  ppOverlayReturnTargets.delete(overlay.id);
+  return invoker;
+}
+function ppCloseSharedOverlay(overlay, restoreFocus){
+  if(!overlay || !overlay.open) return false;
+  const invoker=ppTakeSharedOverlayInvoker(overlay);
+  ppRestoreSiteMenuBackground();
+  overlay.close();
+  if(restoreFocus===false) return true;                /* the caller is routing focus itself */
+  if(invoker && ppCanFocus(invoker) && ppIsInteractiveTarget(invoker)) ppFocusElement(invoker);
+  else ppFocusElement(ppScreenEntryTarget(ppCurrentScreen()));
+  return true;
+}
+
+/* Shared background isolation for every modal overlay - the site menu drawer and the
+   adult-language gate both route through the two functions below. Native modal
+   inertness is not exposed consistently by assistive technologies yet, so the app
+   marks the shell inert and aria-hidden and locks body scrolling itself. Every prior
+   state is recorded and restored verbatim, and a second overlay cannot isolate over a
+   first one. The ppSiteMenu* names are the original owner's and are kept as the stable
+   entry points; the behavior is overlay-agnostic. */
+var ppSiteMenuBackground = null;
+function ppSiteMenuIsOpen(){
+  const drawer=$("siteDrawer");
+  return !!(drawer && drawer.open);
+}
+function ppIsolateSiteMenuBackground(){
+  const shell=$("appShell");
+  if(!shell || ppSiteMenuBackground) return false;
+  ppSiteMenuBackground = {
+    shell:shell,
+    inert:shell.inert,
+    hadInert:shell.hasAttribute("inert"),
+    inertValue:shell.getAttribute("inert"),
+    hadAriaHidden:shell.hasAttribute("aria-hidden"),
+    ariaHidden:shell.getAttribute("aria-hidden"),
+    bodyHadOpenClass:document.body.classList.contains("site-menu-open")
+  };
+  shell.inert=true;
+  shell.setAttribute("inert", "");
+  shell.setAttribute("aria-hidden", "true");
+  document.body.classList.add("site-menu-open");
+  return true;
+}
+function ppRestoreSiteMenuBackground(){
+  const state=ppSiteMenuBackground;
+  if(!state) return false;
+  const shell=state.shell;
+  shell.inert=state.inert;
+  if(state.hadInert) shell.setAttribute("inert", state.inertValue===null ? "" : state.inertValue);
+  else shell.removeAttribute("inert");
+  if(state.hadAriaHidden) shell.setAttribute("aria-hidden", state.ariaHidden===null ? "" : state.ariaHidden);
+  else shell.removeAttribute("aria-hidden");
+  if(!state.bodyHadOpenClass) document.body.classList.remove("site-menu-open");
+  ppSiteMenuBackground=null;
+  return true;
+}
+function ppOpenSiteMenu(){
+  const drawer=$("siteDrawer"), button=$("siteMenuButton"), close=$("siteMenuClose");
+  if(!drawer || !button || !close || drawer.open || typeof drawer.showModal!=="function") return false;
+  const mature=$("matureGate");
+  if(mature && mature.open) return false;          /* never stack two modal layers */
+  try{ drawer.showModal(); }catch(e){ return false; }
+  if(!ppIsolateSiteMenuBackground()){
+    drawer.close();
+    return false;
+  }
+  button.setAttribute("aria-expanded", "true");
+  if(document.activeElement!==close && !ppFocusElement(close)){
+    ppCloseSiteMenu(false);
+    return false;
+  }
+  return document.activeElement===close;
+}
+function ppCloseSiteMenu(restoreFocus){
+  const drawer=$("siteDrawer"), button=$("siteMenuButton");
+  if(!drawer || !drawer.open) return false;
+  if(button) button.setAttribute("aria-expanded", "false");
+  ppRestoreSiteMenuBackground();
+  drawer.close();
+  if(restoreFocus!==false && button && document.activeElement!==button) ppFocusElement(button);
+  return true;
+}
+function ppActivateSiteMenuScreen(link){
+  const scr=link && link.getAttribute("data-app-screen");
+  if(!scr || !$(scr) || !ppSiteMenuIsOpen()) return false;
+  ppUseInvokerForNextScreen($("siteMenuButton"));
+  ppCloseSiteMenu(false);
+  show(scr);
+  return true;
+}
+
+function showScreen(scr, deferFocus, restoreScroll){
+  /* `restoreScroll` is the Back half of the screen-scroll contract above, and exactly one
+     caller passes it. Everything else is forward navigation and still starts the
+     destination at the top, unchanged. */
+  const fromScreen=ppCurrentScreen();
+  const toScreen=$(scr);
+  if(fromScreen && fromScreen!==toScreen) ppRememberScreenScroll(fromScreen.id);   /* where the outgoing screen was left */
   document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  $(scr).classList.add("active");
-  const ft=document.querySelector("footer"); if(ft) ft.hidden = (scr!=="home");   /* About/Privacy + data note live on home only */
+  toScreen.classList.add("active");
+  const ft=document.querySelector("footer"); if(ft) ft.hidden = (scr!=="home");   /* the compact version footer lives on home only */
   if(scr==="home" && window.PP_A2HS) window.PP_A2HS.onHome();
-  window.scrollTo(0,0);
+  ppApplyScreenScroll(scr, restoreScroll===true);
+  if(!deferFocus) ppRouteScreenFocus(fromScreen, toScreen);   /* still preventScroll:true, so it cannot move what was just restored */
 }
 /* history-aware navigation: system back button pops to home instead of closing the app */
-function show(scr){
-  if($(scr).classList.contains("active")){ showScreen(scr); return; }   /* re-render same screen, no new entry */
+function show(scr, deferFocus){
+  if($(scr).classList.contains("active")){ showScreen(scr, deferFocus); return; }   /* re-render same screen, no new entry */
+  if(scr!=="home") ppRememberScreenInvoker(scr);
+  else ppNextScreenInvoker=null;
   if(scr==="home"){
-    if(history.state && history.state.scr && history.state.scr!=="home"){ history.back(); }
-    else showScreen("home");
+    if(history.state && history.state.scr && history.state.scr!=="home"){
+      if(history.state.direct){
+        history.replaceState({scr:"home"}, "", location.pathname + location.search);
+        showScreen("home", deferFocus);
+      }else history.back();
+    }
+    else showScreen("home", deferFocus);
     return;
   }
   history.pushState({scr:scr}, "", "#"+scr);
-  showScreen(scr);
+  showScreen(scr, deferFocus);
 }
-window.addEventListener("popstate", e=> showScreen((e.state && e.state.scr) || "home"));
-history.replaceState({scr:"home"}, "", location.pathname + location.search);
+ppUseManualScrollRestoration();     /* routing owns screen offsets from here on - see ppApplyScreenScroll */
+window.addEventListener("popstate", e=> showScreen((e.state && e.state.scr) || "home", false, true));
+const ppInitialScreen=location.hash.slice(1);
+if(["about","privacy","contact","install"].includes(ppInitialScreen) && $(ppInitialScreen)){
+  history.replaceState({scr:ppInitialScreen,direct:true}, "",
+    location.pathname + location.search + "#" + ppInitialScreen);
+  showScreen(ppInitialScreen);
+}else{
+  history.replaceState({scr:"home"}, "", location.pathname + location.search);
+}
 
 /* ---------------- home ---------------- */
 /* A level is "vocabulary" when all its topics are plain flashcard sets (no kind).
@@ -2026,21 +2643,59 @@ function setUsageMeta(card){
   ppSyncFaceA11y();
 }
 
-/* Both faces of the flip card exist in the DOM at once, so without this the
-   inactive face's usage summary and warning would still be exposed to assistive
-   tech - the learner would hear the usage twice, once per face. Keep it narrow:
-   only the three usage/warning elements are touched, and none of them contains a
-   focusable child, so no tab stop appears or disappears. */
+/* Shared card text is always assigned as text, never interpolated into markup.
+   The language is attached only to the element that contains that text, so the
+   surrounding English interface never inherits Polish pronunciation rules. */
+function ppSetSharedCardText(el, value, language){
+  if(!el) return;
+  el.textContent = value == null ? "" : String(value);
+  if(language) el.setAttribute("lang", language);
+  else el.removeAttribute("lang");
+}
+/* Shared card audio controls are named from the utterance they actually play.
+   Callers set the result through setAttribute, so learner text is never parsed as
+   HTML even when it contains quotes or angle brackets. */
+function ppAudioControlName(purpose, phrase){
+  const context = typeof phrase === "string" ? phrase.replace(/\s+/g, " ").trim() : "";
+  return context ? purpose + ": " + context : purpose;
+}
+function ppSetAudioControlName(button, purpose, phrase){
+  if(button) button.setAttribute("aria-label", ppAudioControlName(purpose, phrase));
+}
+/* Podcast introductions keep their ordinary crawlable anchor, exact destination,
+   target and rel contract. Only the accessible purpose and its association with
+   the already-rendered host/description become more specific. */
+function ppConfigurePodcastIntroLink(link, card, details){
+  if(!link) return false;
+  const available=!!(card && card.link);
+  link.hidden=!available;
+  if(!available){
+    link.removeAttribute("aria-label");
+    link.removeAttribute("aria-describedby");
+    return false;
+  }
+  link.href=card.link;
+  const episode=(card.en || "this podcast episode").replace(/\s+/g," ").trim();
+  link.setAttribute("aria-label",'Watch "'+episode+'" on YouTube (opens in a new tab)');
+  if(details && details.id) link.setAttribute("aria-describedby",details.id);
+  else link.removeAttribute("aria-describedby");
+  return true;
+}
+/* Both card faces remain in the DOM for the 3D layout. Only the painted face may
+   participate in either the accessibility tree or sequential focus navigation. */
+function ppSyncFlipFaces(flipEl){
+  if(!flipEl) return;
+  const faces = flipEl.querySelectorAll(".face");
+  const activeIndex = flipEl.classList.contains("flipped") ? 1 : 0;
+  faces.forEach((face, index) => {
+    const active = index === activeIndex;
+    face.inert = !active;
+    if(active){ face.removeAttribute("inert"); face.removeAttribute("aria-hidden"); }
+    else { face.setAttribute("inert", ""); face.setAttribute("aria-hidden", "true"); }
+  });
+}
 function ppSyncFaceA11y(){
-  const flipped = $("flip").classList.contains("flipped");
-  const set = (el, exposed) => {
-    if(!el) return;
-    if(exposed) el.removeAttribute("aria-hidden");
-    else el.setAttribute("aria-hidden", "true");
-  };
-  set($("usageFront"), !flipped);
-  set($("usageBack"), flipped);
-  set($("warnBox"), flipped);
+  ppSyncFlipFaces($("flip"));
 }
 function render(){
   if(S.pos >= S.queue.length){ showDone(); return; }
@@ -2066,11 +2721,13 @@ function render(){
     front.classList.add("intro-face"); back.classList.add("intro-face");
     $("speak").hidden = true; $("speakBack").hidden = true;
     $("eyebrow").textContent = "Podcast";
-    $("plText").textContent = c.pl;
+    ppSetSharedCardText($("plText"), c.pl, "pl");
+    $("plText").classList.remove("dir-en");
     $("frontHint").textContent = "Tap to open the episode";
     $("frontCue").textContent = "tap to flip";
     $("backEyebrow").textContent = "Episode";
-    $("enText").textContent = c.en;
+    ppSetSharedCardText($("enText"), c.en, null);
+    $("enText").classList.remove("dir-pl");
     $("backHint").innerHTML = "";
     if(c.host){
       const h = document.createElement("div"); h.className = "intro-host";
@@ -2081,8 +2738,7 @@ function render(){
       const d = document.createElement("div"); d.className = "intro-desc";
       d.textContent = c.hint; $("backHint").appendChild(d);
     }
-    const yl = $("ytLink");
-    if(c.link){ yl.hidden = false; yl.href = c.link; } else { yl.hidden = true; }
+    ppConfigurePodcastIntroLink($("ytLink"),c,$("backHint"));
     document.querySelector(".feedback").hidden = true;
     setUsageMeta(null);                         /* intro cards carry no usage metadata */
     $("pairLine").hidden = true;
@@ -2100,6 +2756,9 @@ function render(){
   $("ytLink").hidden = true;
   $("introStart").hidden = true;
   document.querySelector(".feedback").hidden = false;
+  const mainAudioText = ppMainAudioText(c);
+  ppSetAudioControlName($("speak"), "Play pronunciation", mainAudioText);
+  ppSetAudioControlName($("speakBack"), "Play pronunciation", mainAudioText);
   if(enFront()){
     /* English front, recall the Polish. Audio and hint move to the back so the
        front never gives the answer away. */
@@ -2108,12 +2767,10 @@ function render(){
     $("eyebrow").textContent = "English";
     $("backEyebrow").textContent = "Polish";
     $("frontCue").textContent = "tap to see Polish";
-    $("plText").textContent = c.en;
-    $("plText").removeAttribute("lang");
+    ppSetSharedCardText($("plText"), c.en, null);
     $("plText").classList.add("dir-en");
     $("frontHint").textContent = "";
-    $("enText").textContent = c.pl;
-    $("enText").setAttribute("lang", "pl");
+    ppSetSharedCardText($("enText"), c.pl, "pl");
     $("enText").classList.add("dir-pl");
     $("backHint").textContent = c.hint || "";
   } else {
@@ -2123,12 +2780,10 @@ function render(){
     $("eyebrow").textContent = "Polish";
     $("backEyebrow").textContent = "Meaning";
     $("frontCue").textContent = "tap to see meaning";
-    $("plText").textContent = c.pl;
-    $("plText").setAttribute("lang", "pl");
+    ppSetSharedCardText($("plText"), c.pl, "pl");
     $("plText").classList.remove("dir-en");
     $("frontHint").textContent = c.hint || "";
-    $("enText").textContent = c.en;
-    $("enText").removeAttribute("lang");
+    ppSetSharedCardText($("enText"), c.en, null);
     $("enText").classList.remove("dir-pl");
     $("backHint").textContent = c.hint || "";
   }
@@ -2149,8 +2804,9 @@ function render(){
        quotations, so this must never claim the speaker said it. Attribution wording
        here would be a provenance claim the data cannot support. */
     $("exLabel").textContent = isPodcast ? "Example in context" : "In everyday use";
-    $("exPl").textContent = c.ex;
-    $("exEn").textContent = c.exEn || "";
+    ppSetSharedCardText($("exPl"), c.ex, "pl");
+    ppSetSharedCardText($("exEn"), c.exEn || "", null);
+    ppSetAudioControlName($("speakEx"), "Play example sentence", c.ex);
   } else {
     $("exampleBox").style.display = "none";
   }
@@ -2162,7 +2818,8 @@ function flipLabel(){
   const flipped = $("flip").classList.contains("flipped");
   const label = enFront() ? (flipped ? "Show English" : "Show Polish")
                           : (flipped ? "Show Polish"  : "Show meaning");
-  $("flip").setAttribute("aria-label", label);
+  $("flipControl").setAttribute("aria-label", label);
+  $("flipControl").setAttribute("title", label);
   ppSyncFaceA11y();      /* called from render(), flip() and the direction toggle */
 }
 function flip(){ $("flip").classList.toggle("flipped"); flipLabel(); if(window.PP_A2HS && $("flip").classList.contains("flipped")) window.PP_A2HS.bump(); }
@@ -2245,8 +2902,10 @@ let audioMap = {};              /* normalized Polish text -> "audio/<hash>.mp3" 
    only "loading" holds playback back. */
 let audioManifestStatus = "loading";   /* "loading" | "ready" | "unavailable" */
 let currentAudio = null;        /* the <audio> element currently playing, if any */
+let currentUtterance = null;    /* the speech attempt allowed to report back, if any */
 let speakBtn = null;
 let plVoice = null;             /* speechSynthesis fallback voice, if any */
+let audioRetryRequest = null;   /* {text, btn} - what "Try again" re-attempts */
 
 /* Audio speed preference: 'normal' (0.9x) or 'slow' (0.7x). Persisted across sessions. */
 const SPEED_KEY = "popolsku-speed";
@@ -2335,10 +2994,114 @@ fetch("audio-manifest.json", { cache: "no-store" })
 
 function clearSpeaking(){ if(speakBtn){ speakBtn.classList.remove("speaking"); speakBtn=null; } }
 
+/* ---------------- shared audio status and retry (MLG-4A-04) ----------------
+   One policy for every pronunciation request, here and on every generated page:
+   the pre-generated clip first when there is one, ONE speech-synthesis fallback
+   if it fails, and - when neither can make a sound - a visible, politely
+   announced failure with a single keyboard-operable retry. Before this, a failed
+   clip on a device without speech synthesis was simply silence.
+
+   The three strings below are shared VERBATIM with the generated-page runtime
+   emitted by the page generator. Two surfaces that describe the same failure
+   differently are two failures to learn, so the wording is pinned by test on
+   both sides.
+
+   Nothing here touches score, question index, round state or focus. The status
+   is an announcement about audio, not an event in the activity. */
+const AUDIO_FALLBACK_MSG = "Using your device's voice.";
+const AUDIO_FAILED_MSG = "Audio couldn't play. Check your connection, then try again.";
+const AUDIO_RETRY_MSG = "Try again";
+
+let audioStatusEl = null, audioStatusMsgEl = null, audioRetryEl = null;
+let audioStatusOwner = null;    /* the control the visible status currently belongs to */
+
+/* Built once and reused. A live region has to exist before its text changes for
+   the change to be announced reliably, so this is created and parked in the
+   document at startup and then MOVED next to whichever control failed, rather
+   than being created at failure time. */
+function ppAudioStatusHost(){
+  if(audioStatusEl) return audioStatusEl;
+  const box = document.createElement("div");
+  box.id = "ppAudioStatus";
+  box.className = "audio-status";
+  box.setAttribute("role","status");
+  box.setAttribute("aria-live","polite");
+  /* atomic: the message and the retry label are one announcement, not two
+     fragments arriving separately. */
+  box.setAttribute("aria-atomic","true");
+  box.hidden = true;
+  const msg = document.createElement("span");
+  msg.id = "ppAudioStatusMsg";
+  msg.className = "audio-status-msg";
+  const retry = document.createElement("button");
+  retry.id = "ppAudioRetry";
+  retry.className = "audio-retry";
+  retry.type = "button";
+  retry.textContent = AUDIO_RETRY_MSG;
+  /* Hidden means gone from the keyboard, not merely invisible. */
+  retry.hidden = true; retry.disabled = true; retry.tabIndex = -1;
+  retry.addEventListener("click", e => { e.stopPropagation(); retryAudio(); });
+  box.appendChild(msg); box.appendChild(retry);
+  audioStatusEl = box; audioStatusMsgEl = msg; audioRetryEl = retry;
+  if(document.body) document.body.appendChild(box);
+  return box;
+}
+
+/* kind: "fallback" (speech is standing in for a clip that failed) or "failed"
+   (nothing can produce audio for this phrase). Never moves focus, never renders
+   an activity, never changes progress. */
+function showAudioStatus(kind, btn){
+  const box = ppAudioStatusHost();
+  if(btn && typeof btn.insertAdjacentElement === "function"){
+    try{ btn.insertAdjacentElement("afterend", box); }catch(e){}
+  } else if(document.body && !box.parentNode){ document.body.appendChild(box); }
+  const failed = kind === "failed";
+  audioStatusMsgEl.textContent = failed ? AUDIO_FAILED_MSG : AUDIO_FALLBACK_MSG;
+  audioRetryEl.hidden = !failed;
+  audioRetryEl.disabled = !failed;
+  audioRetryEl.tabIndex = failed ? 0 : -1;
+  box.hidden = false;
+  audioStatusOwner = btn || null;
+  /* The failure describes THAT control's phrase, so the control says so. */
+  if(failed && btn && typeof btn.setAttribute === "function") btn.setAttribute("aria-describedby","ppAudioStatusMsg");
+}
+
+/* Called whenever a new request starts, audio is stopped, an activity is left or
+   a retry succeeds - a stale failure must never outlive the attempt it described. */
+function clearAudioStatus(){
+  if(!audioStatusEl) return;
+  audioStatusEl.hidden = true;
+  audioStatusMsgEl.textContent = "";
+  audioRetryEl.hidden = true; audioRetryEl.disabled = true; audioRetryEl.tabIndex = -1;
+  if(audioStatusOwner && typeof audioStatusOwner.getAttribute === "function" &&
+     audioStatusOwner.getAttribute("aria-describedby") === "ppAudioStatusMsg"){
+    audioStatusOwner.removeAttribute("aria-describedby");
+  }
+  audioStatusOwner = null;
+}
+
+/* One retry is one fresh bounded attempt at the same phrase: the clip is tried
+   again (it is exactly what a recovered network fixes), then the same one-time
+   fallback policy runs. No polling, no automatic repeat, no second attempt per
+   activation. Focus is handed back to the control the learner started from
+   before the retry button disappears, so a keyboard user is never dropped on the
+   document - the only focus move in this whole feature, and it is a direct
+   result of the learner activating a button. */
+function retryAudio(){
+  const request = audioRetryRequest;
+  if(!request || !request.text) return;
+  const btn = request.btn;
+  if(btn && typeof btn.focus === "function"){ try{ btn.focus(); }catch(e){} }
+  speakText(request.text, btn);
+}
+
 function stopAllAudio(){
   if(currentAudio){ try{ currentAudio.pause(); }catch(e){} currentAudio=null; }
+  currentUtterance = null;                 /* a cancelled utterance may still report; it is no longer ours */
   if("speechSynthesis" in window) speechSynthesis.cancel();
   clearSpeaking();
+  clearAudioStatus();
+  audioRetryRequest = null;
 }
 
 function speakText(txt, btn){
@@ -2346,10 +3109,16 @@ function speakText(txt, btn){
   stopAllAudio();
   const key = ppNormalize(txt);
   const file = audioMap[key];
+  /* Remembered AFTER stopAllAudio() cleared the previous one: Retry always means
+     "this phrase", never the one before it. */
+  audioRetryRequest = { text: txt, btn: btn || null };
   if(file){
     playPreGenerated(file, btn, txt);
   } else {
-    speakFallback(txt, btn);
+    /* No clip for this phrase: speech is the first attempt, not a fallback from
+       a failure, so it is not announced as one. If there is no speech either,
+       speakFallback settles into the same visible failure and retry. */
+    speakFallback(txt, btn, false);
   }
 }
 
@@ -2394,9 +3163,10 @@ function playPreGenerated(file, btn, originalText){
     return true;
   }
   audio.onended = () => { settle(); };
-  /* MP3 missing / network hiccup - fall back to speechSynthesis so playback still happens */
-  audio.onerror = () => { if(settle()) speakFallback(originalText, btn); };
-  audio.play().catch(() => { if(settle()) speakFallback(originalText, btn); });
+  /* MP3 missing / network hiccup - fall back to speechSynthesis so playback still
+     happens, and say so, because the voice the learner hears is not Marek's. */
+  audio.onerror = () => { if(settle()) speakFallback(originalText, btn, true); };
+  audio.play().catch(() => { if(settle()) speakFallback(originalText, btn, true); });
 }
 
 /* The ONLY entry point for main-card audio. A card with nothing complete to say
@@ -2410,16 +3180,38 @@ function speakCardMain(card, btn){
   speakText(ppMainAudioText(card), btn);
 }
 
-function speakFallback(txt, btn){
-  if(!("speechSynthesis" in window)) return;
-  voiceHint();
-  const u = new SpeechSynthesisUtterance(txt);
-  u.lang = "pl-PL"; if(plVoice) u.voice = plVoice; u.rate = currentRate();
-  if(btn){
-    speakBtn = btn; btn.classList.add("speaking");
-    u.onend = clearSpeaking; u.onerror = clearSpeaking;
+/* afterFailedClip: true when this is the ONE fallback that follows a failed MP3,
+   false when the phrase simply has no clip and speech is the first attempt.
+   Either way, a device that cannot speak is the end of the line for this phrase
+   and says so instead of going quiet - that silent return was MLG-4A-04. */
+function speakFallback(txt, btn, afterFailedClip){
+  if(!("speechSynthesis" in window) || typeof SpeechSynthesisUtterance !== "function"){
+    showAudioStatus("failed", btn);
+    return;
   }
-  speechSynthesis.speak(u);
+  voiceHint();
+  let u;
+  try{ u = new SpeechSynthesisUtterance(txt); }
+  catch(e){ showAudioStatus("failed", btn); return; }
+  u.lang = "pl-PL"; if(plVoice) u.voice = plVoice; u.rate = currentRate();
+  /* Same ownership rule as currentAudio: only the live utterance may report.
+     A cancelled or superseded one firing late must not clear the new attempt's
+     button or announce a failure the learner already moved past. */
+  currentUtterance = u;
+  if(btn){ speakBtn = btn; btn.classList.add("speaking"); }
+  u.onend = () => { if(currentUtterance !== u) return; currentUtterance = null; clearSpeaking(); };
+  u.onerror = () => {
+    if(currentUtterance !== u) return;
+    currentUtterance = null; clearSpeaking();
+    showAudioStatus("failed", btn);     /* speech was the last route; nothing else to try */
+  };
+  if(afterFailedClip) showAudioStatus("fallback", btn);
+  try{ speechSynthesis.speak(u); }
+  catch(e){
+    if(currentUtterance === u) currentUtterance = null;
+    clearSpeaking();
+    showAudioStatus("failed", btn);
+  }
 }
 
 /* one-time heads-up if the device falls back to speechSynthesis AND has no Polish voice */
@@ -2431,6 +3223,9 @@ function voiceHint(){
     localStorage.setItem("popolsku-voicehint","1");
   }catch(e){ return; }
   const t=document.createElement("div"); t.className="toast";
+  t.setAttribute("role","status");
+  t.setAttribute("aria-live","polite");
+  t.setAttribute("aria-atomic","true");
   t.textContent="Playing with your device's fallback voice - audio may sound off. On iPhone: Settings > Accessibility > Spoken Content > Voices > Polish.";
   document.body.appendChild(t);
   setTimeout(()=>t.remove(), 8000);
@@ -2438,15 +3233,8 @@ function voiceHint(){
 
 
 /* ---------------- events ---------------- */
-$("flip").addEventListener("click", flip);
-/* Keyboard activation for the focused card. stopPropagation keeps the global
-   study-screen Space handler (document-level) from firing a second flip. */
-$("flip").addEventListener("keydown", e=>{
-  if(e.key === "Enter" || e.key === " "){
-    if(e.target !== e.currentTarget) return;    /* let inner buttons (audio, feedback) keep native behavior */
-    e.preventDefault(); e.stopPropagation(); flip();
-  }
-});
+$("flip").addEventListener("click", e=>{ if(!e.target.closest("button,a")) flip(); });
+$("flipControl").addEventListener("click", flip);
 $("speak").addEventListener("click", e=>{ e.stopPropagation(); speakCardMain(currentCard(), e.currentTarget); });
 $("speakBack").addEventListener("click", e=>{ e.stopPropagation(); speakCardMain(currentCard(), e.currentTarget); });
 $("dirToggle").addEventListener("click", e=>{
@@ -2467,16 +3255,36 @@ $("practiceStill").addEventListener("click", practiceStill);
 $("practiceSet").addEventListener("click", ()=>startRound(S.levelIdx, S.topicIdx));
 $("restart").addEventListener("click", restart);
 $("toTopics").addEventListener("click", ()=>show("home"));
-$("openPrivacy").addEventListener("click", ()=>show("privacy"));
 $("backPrivacy").addEventListener("click", ()=>show("home"));
-$("openAbout").addEventListener("click", ()=>show("about"));
 $("backAbout").addEventListener("click", ()=>show("home"));
-$("openInstall").addEventListener("click", ()=>show("install"));
+$("backContact").addEventListener("click", ()=>show("home"));
 $("backInstall").addEventListener("click", ()=>show("home"));
+
+/* Native button activation gives Enter and Space exactly one click. The Study
+   shortcut guard treats the button/dialog controls as interactive and ignores them. */
+$("siteMenuButton").addEventListener("click", ppOpenSiteMenu);
+$("siteMenuClose").addEventListener("click", ()=>ppCloseSiteMenu(true));
+$("siteDrawer").addEventListener("cancel", e=>{
+  if(ppCloseSiteMenu(true)) e.preventDefault();       /* Escape and Android Back close only the drawer */
+});
+$("siteDrawer").addEventListener("close", ()=>{
+  $("siteMenuButton").setAttribute("aria-expanded", "false");
+  ppRestoreSiteMenuBackground();                     /* safety for an unexpected native close */
+});
+$("siteDrawer").addEventListener("click", e=>{
+  if(e.target===$("siteDrawer")){ ppCloseSiteMenu(true); return; }  /* backdrop */
+  const link=e.target.closest && e.target.closest("a[href]");
+  if(!link) return;
+  if(link.hasAttribute("data-app-screen")){
+    e.preventDefault();
+    ppActivateSiteMenuScreen(link);
+  }else{
+    ppCloseSiteMenu(false);                           /* external normal navigation keeps its default */
+  }
+});
 
 /* ---------------- topic routing + adult-language gate (shown on EVERY open) ---------------- */
 let pendingTopic = null;
-let matureReturnFocus = null;   /* element to restore focus to when the gate closes */
 function routeTopic(li, ti, t){
   if(t.kind === "grammar") startGrammar(li, ti);
   else if(t.kind === "convo") startConvo(li, ti);
@@ -2487,41 +3295,54 @@ function routeTopic(li, ti, t){
 function openTopic(li, ti, t){
   if(t.mature){
     pendingTopic = {li, ti, t};
-    matureReturnFocus = document.activeElement;         /* usually the topic tile */
-    $("matureGate").hidden = false;
-    $("matureCancel").focus();                          /* safe default lands on "Not now" */
+    /* Fail closed: if the modal cannot open, the adult-language topic stays shut. */
+    if(!ppOpenSharedOverlay($("matureGate"), $("matureCancel"))) pendingTopic = null;  /* safe default lands on "Not now" */
     return;
   }   /* re-prompt every time; never persisted */
   routeTopic(li, ti, t);
 }
-function restoreMatureFocus(){
-  if(matureReturnFocus && document.contains(matureReturnFocus)){ try{ matureReturnFocus.focus(); }catch(e){} }
-  matureReturnFocus = null;
-}
-function closeMatureGate(){ pendingTopic = null; $("matureGate").hidden = true; restoreMatureFocus(); }
+function closeMatureGate(){ pendingTopic = null; return ppCloseSharedOverlay($("matureGate")); }
 $("matureContinue").addEventListener("click", ()=>{
-  const p = pendingTopic; pendingTopic = null; $("matureGate").hidden = true;
-  matureReturnFocus = null;                             /* continuing navigates away - nothing to restore */
+  const p = pendingTopic, invoker=ppTakeSharedOverlayInvoker($("matureGate"));
+  pendingTopic = null;
+  ppCloseSharedOverlay($("matureGate"), false);         /* no intermediate focus move before the activity */
+  ppUseInvokerForNextScreen(invoker);                   /* the topic tile remains the activity's return target */
   if(p) routeTopic(p.li, p.ti, p.t);
 });
 $("matureCancel").addEventListener("click", closeMatureGate);
+/* Escape, Android Back and the back gesture all arrive as the dialog's native cancel.
+   Consuming it only after a successful close leaves ordinary Back untouched, exactly
+   as the drawer does. Native modal focus containment replaces the old manual Tab trap. */
+$("matureGate").addEventListener("cancel", e=>{
+  if(closeMatureGate()) e.preventDefault();
+});
+$("matureGate").addEventListener("close", ()=>{
+  pendingTopic = null;
+  ppRestoreSiteMenuBackground();                        /* safety for an unexpected native close */
+});
 $("matureGate").addEventListener("click", e=>{ if(e.target === $("matureGate")) closeMatureGate(); });  /* tap backdrop */
-/* Focus trap: while the gate is open, Tab cycles between its two buttons. */
-$("matureGate").addEventListener("keydown", e=>{
-  if(e.key !== "Tab") return;
-  const first = $("matureCancel"), last = $("matureContinue");
-  if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
-  else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
-  else if(document.activeElement !== first && document.activeElement !== last){ e.preventDefault(); first.focus(); }
-});
-document.addEventListener("keydown", e=>{ if(e.key === "Escape" && !$("matureGate").hidden) closeMatureGate(); });
-document.addEventListener("keydown", e=>{
-  if(!$("study").classList.contains("active")) return;
-  if($("doneView").style.display!=="none") return;
-  if(e.key==="ArrowRight") advance();
-  else if(e.key==="ArrowLeft") goPrev();
-  else if(e.key===" "){ e.preventDefault(); flip(); }
-});
+function ppGlobalShortcutBlocked(e){
+  if(!e || e.defaultPrevented || e.repeat || e.isComposing) return true;
+  if(e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return true;
+  return ppIsHiddenOrInert(e.target) || ppIsInteractiveTarget(e.target);
+}
+function ppHandleStudyShortcut(e){
+  if(ppGlobalShortcutBlocked(e)) return false;
+  if(!$("study").classList.contains("active")) return false;
+  if($("doneView").style.display!=="none") return false;
+  const card=$("flip");
+  if(!card || card.dataset.leaving || !S.queue.length || S.pos<0 || S.pos>=S.queue.length) return false;
+  if(e.key==="ArrowRight"){ advance(); return true; }
+  if(e.key==="ArrowLeft" && S.pos>0){ goPrev(); return true; }
+  if(e.key===" " || e.key==="Spacebar"){ flip(); return true; }
+  return false;
+}
+function ppStudyShortcutKeydown(e){
+  if(!ppHandleStudyShortcut(e)) return false;
+  e.preventDefault();
+  return true;
+}
+document.addEventListener("keydown", ppStudyShortcutKeydown);
 
 /* ---------------- grammar (teach -> drill) ---------------- */
 const G = { topic:null, li:0, tpi:0, ti:0, di:0, results:[], attempted:false, state:"ask", build:{pool:[],row:[]} };
@@ -2529,7 +3350,7 @@ const G_AUDIO='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
 
 function gExampleHTML(ex){
   return '<div class="ex-line"><div class="t"><div class="p" lang="pl">'+ex.pl+'</div><div class="e">'+ex.en+'</div></div>'+
-         '<button class="mini-audio" data-say="'+encodeURIComponent(ex.pl)+'" aria-label="Play">'+G_AUDIO+'</button></div>';
+         '<button class="mini-audio" data-say="'+encodeURIComponent(ex.pl)+'">'+G_AUDIO+'</button></div>';
 }
 function gPhaseView(v){
   $("gLearn").style.display    = v==="learn"    ? "flex":"none";
@@ -2562,7 +3383,12 @@ function gRenderTeach(){
   if(t.explain)  b+='<div class="b-explain">'+t.explain+'</div>';
   if(t.note)     b+='<div class="b-note">'+t.note+'</div>';
   if(t.examples) b+=t.examples.map(gExampleHTML).join('');
-  $("gBackFace").innerHTML=b;
+  const back=$("gBackFace");
+  back.innerHTML=b;
+  if(t.examples && typeof ppSetAudioControlName==="function"){
+    back.querySelectorAll(".mini-audio").forEach((btn,i)=>
+      ppSetAudioControlName(btn,"Play example sentence",t.examples[i]&&t.examples[i].pl));
+  }
 }
 /* Card height is handled purely in CSS now: both faces share one grid cell, so the
    flip container is always as tall as its taller face. The old gFitCard() measuring
@@ -2604,17 +3430,21 @@ function gRenderDrill(){
 }
 function gSetStatus(parts){
   const box=$("gStatus"); if(!box) return;
+  if(typeof ppSetActivityStatus==="function"){ ppSetActivityStatus(box,parts); return; }
   box.textContent="";
   (parts||[]).forEach(p=>box.appendChild(typeof p==="string" ? document.createTextNode(p) : p));
 }
 function gAnnounceWrong(label){
-  gSetStatus([label+" is not correct. Try another answer."]);
+  const answer=document.createElement("span");
+  answer.setAttribute("lang","pl");
+  answer.textContent=label;
+  gSetStatus([answer," is not correct. Try another answer."]);
 }
 function gAnnounceCorrect(pl){
   const answer=document.createElement("span");
   answer.setAttribute("lang","pl");
   answer.textContent=pl;
-  gSetStatus(["Correct. The answer is ",answer,". Next is ready."]);
+  gSetStatus(["Correct. The answer is ",answer,". Explanation available below. Next is ready."]);
 }
 function gAnnounceBuildWrong(){
   gSetStatus(["That order is not correct. Adjust the highlighted words and try again."]);
@@ -2627,7 +3457,11 @@ function gFocusNextOption(box,from){
   const at=opts.indexOf(from);
   for(let k=1;k<=opts.length;k++){
     const next=opts[(at+k+opts.length)%opts.length];
-    if(next && !next.disabled){ next.focus(); return next; }
+    if(next && !next.disabled){
+      if(typeof ppFocusActivityTarget==="function"){
+        if(ppFocusActivityTarget(next)) return next;
+      } else { next.focus(); return next; }
+    }
   }
   return null;
 }
@@ -2635,17 +3469,20 @@ function gRenderChoose(c){
   const p=c.prompt.replace("___",'<span class="blank"></span>');
   const dt = c._case ? "Choose the right form \u00b7 <b>"+c._case+"</b>" : "Choose the right form";
   const card=$("gDrillCard");
-  card.innerHTML='<div class="d-type">'+dt+'</div><div class="q-prompt" lang="pl">'+p+'</div><div class="q-en">'+c.promptEn+'</div><div class="opts"></div><div class="fb-box" id="gFbBox"></div>';
+  card.innerHTML='<div class="d-type" id="gInstruction">'+dt+'</div><h2 class="q-prompt" id="gQuestion" lang="pl" tabindex="-1">'+p+'</h2><div class="q-en" id="gQuestionMeaning">'+c.promptEn+'</div><div class="opts" role="group" aria-labelledby="gInstruction gQuestion"></div><div class="fb-box" id="gFbBox"></div>';
   const box=card.querySelector(".opts");
   const buttons=gShuffle(c.options).map(o=>{
     const btn=document.createElement("button");
     btn.className="opt";
     btn.setAttribute("lang","pl");
+    btn.setAttribute("aria-pressed","false");
     btn.setAttribute("data-val",o);
     btn.textContent=o;
     btn.addEventListener("click",()=>{
       if(G.state!=="ask") return;
       const val=btn.getAttribute("data-val");
+      if(typeof ppSetActivityOptionState==="function") ppSetActivityOptionState(box,btn);
+      else buttons.forEach(b=>b.setAttribute("aria-pressed",b===btn?"true":"false"));
       if(val===c.answer){
         btn.classList.add("correct");
         btn.setAttribute("aria-label",val+", correct");
@@ -2656,7 +3493,8 @@ function gRenderChoose(c){
         gUpdateNextLabel();
         gAnnounceCorrect(c.answer);
         $("gDrillNext").disabled=false;
-        $("gDrillNext").focus();
+        if(typeof ppFocusActivityTarget==="function") ppFocusActivityTarget($("gDrillNext"));
+        else $("gDrillNext").focus();
       } else {
         btn.classList.add("wrong");
         btn.setAttribute("aria-label",val+", incorrect. Try again");
@@ -2669,14 +3507,20 @@ function gRenderChoose(c){
     box.appendChild(btn);
     return btn;
   });
-  const first=buttons.find(btn=>!btn.disabled);
-  if(first) first.focus();
+  const question=card.querySelector("#gQuestion");
+  if(typeof ppFocusActivityTarget==="function") ppFocusActivityTarget(question);
+  else {
+    const first=buttons.find(btn=>!btn.disabled);
+    if(first) first.focus();
+  }
 }
 function gChooseFeedback(c){
   const fb=$("gFbBox");
   fb.innerHTML='<div class="fb-good"><div class="t"><div class="p" lang="pl">'+c.full+'</div><div class="e">'+c.fullEn+'</div></div>'+
-    '<button class="mini-audio" data-say="'+encodeURIComponent(c.full)+'" aria-label="Play">'+G_AUDIO+'</button></div>'+
+    '<button class="mini-audio" data-say="'+encodeURIComponent(c.full)+'">'+G_AUDIO+'</button></div>'+
     '<div class="fb-explain">'+c.explain+'</div>';
+  if(typeof ppSetAudioControlName==="function")
+    ppSetAudioControlName(fb.querySelector(".mini-audio"),"Play answer",c.full);
   fb.classList.add("show");
 }
 function gBuildTokenKey(token){
@@ -2690,12 +3534,15 @@ function gRenderBuild(c){
   G.build.row=[];
   G.build.answer=c.answer;
   const dtb = c._case ? "Build the sentence \u00b7 <b>"+c._case+"</b>" : "Build the sentence";
-  $("gDrillCard").innerHTML='<div class="d-type">'+dtb+'</div><div class="q-prompt">'+c.promptEn+'</div>'+
-    '<div class="q-en">Tap the words in the right order</div>'+
-    '<div class="build-row" id="gBuildRow"></div><div class="build-pool" id="gBuildPool"></div>'+
+  $("gDrillCard").innerHTML='<div class="d-type" id="gInstruction">'+dtb+'</div><h2 class="q-prompt" id="gQuestion" tabindex="-1">'+c.promptEn+'</h2>'+
+    '<div class="q-en" id="gBuildInstruction">Tap the words in the right order</div>'+
+    '<div class="build-row" id="gBuildRow" role="group" aria-labelledby="gQuestion gBuildInstruction"></div><div class="build-pool" id="gBuildPool" role="group" aria-labelledby="gQuestion gBuildInstruction"></div>'+
     '<button class="check-btn" id="gCheckBtn" disabled>Check</button><div class="fb-box" id="gFbBox"></div>';
-  gPaintBuild({kind:"first-pool"});
+  const guardedFocus=typeof ppFocusActivityTarget==="function";
+  gPaintBuild(guardedFocus ? null : {kind:"first-pool"});
   $("gCheckBtn").addEventListener("click",()=>gCheckBuild(c));
+  const question=$("gQuestion");
+  if(guardedFocus) ppFocusActivityTarget(question);
 }
 function gPaintBuild(focusIntent){
   const row=$("gBuildRow"), pool=$("gBuildPool");
@@ -2706,9 +3553,9 @@ function gPaintBuild(focusIntent){
   row.innerHTML=G.build.row.map((t,i)=>{
     const ok = guide && gBuildTokenKey(t.w)===gBuildTokenKey(guide[i]);
     const surface = ok ? guide[i] : t.w;
-    return '<button class="wchip in-row'+(ok?" ok":"")+'" lang="pl" data-id="'+t.id+'">'+surface+'</button>';
+    return '<button class="wchip in-row'+(ok?" ok":"")+'" lang="pl" aria-pressed="true" data-id="'+t.id+'">'+surface+'</button>';
   }).join('');
-  pool.innerHTML=G.build.pool.map(t=>'<button class="wchip'+(t.used?" used":"")+'" lang="pl" data-id="'+t.id+'"'+(t.used?' disabled aria-hidden="true" tabindex="-1"':'')+'>'+t.w+'</button>').join('');
+  pool.innerHTML=G.build.pool.map(t=>'<button class="wchip'+(t.used?" used":"")+'" lang="pl" aria-pressed="false" data-id="'+t.id+'"'+(t.used?' disabled aria-hidden="true" tabindex="-1"':'')+'>'+t.w+'</button>').join('');
   row.querySelectorAll(".wchip").forEach(ch=>ch.addEventListener("click",()=>{
     if(G.state!=="ask") return;
     const id=ch.getAttribute("data-id"); const t=G.build.pool.find(x=>x.id===id);
@@ -2741,7 +3588,10 @@ function gPaintBuild(focusIntent){
     }
     if(!target&&cb&&!cb.disabled) target=cb;
   }
-  if(target) target.focus();
+  if(target){
+    if(typeof ppFocusActivityTarget==="function") ppFocusActivityTarget(target);
+    else target.focus();
+  }
 }
 function gCheckBuild(c){
   if(G.state!=="ask") return;
@@ -2764,18 +3614,23 @@ function gCheckBuild(c){
       ch.textContent=matchedOrder[i];
       ch.classList.remove("bad");
       ch.classList.add("ok");
+      ch.disabled=true;
+      ch.setAttribute("aria-label",matchedOrder[i]+", correct position");
     });
     settledRow.classList.add("locked");
     $("gBuildPool").style.display="none"; $("gCheckBtn").style.display="none";
     const fb=$("gFbBox");
     fb.innerHTML='<div class="fb-good"><div class="t"><div class="p" lang="pl">'+c.full+'</div><div class="e">'+c.fullEn+'</div></div>'+
-      '<button class="mini-audio" data-say="'+encodeURIComponent(c.full)+'" aria-label="Play">'+G_AUDIO+'</button></div>'+
+      '<button class="mini-audio" data-say="'+encodeURIComponent(c.full)+'">'+G_AUDIO+'</button></div>'+
       '<div class="fb-explain">'+c.explain+'</div>';
+    if(typeof ppSetAudioControlName==="function")
+      ppSetAudioControlName(fb.querySelector(".mini-audio"),"Play answer",c.full);
     fb.classList.add("show");
     gUpdateNextLabel();
     gAnnounceCorrect(c.full);
     $("gDrillNext").disabled=false;
-    $("gDrillNext").focus();
+    if(typeof ppFocusActivityTarget==="function") ppFocusActivityTarget($("gDrillNext"));
+    else $("gDrillNext").focus();
   } else {
     G.attempted=true; G.results[G.di]=false;
     G.state="ask";
@@ -2809,7 +3664,9 @@ function gCheckBuild(c){
     });
     if(firstBad){
       gAnnounceBuildWrong();
-      firstBad.focus();
+      if(incomplete) gPaintBuild({kind:"first-pool",guideOrder:guideOrder});
+      else if(typeof ppFocusActivityTarget==="function") ppFocusActivityTarget(firstBad);
+      else firstBad.focus();
       r.classList.add("shake"); setTimeout(()=>r.classList.remove("shake"),340);
     } else if(incomplete){
       gAnnounceBuildIncomplete();
@@ -2832,23 +3689,25 @@ function gShowDone(){
   $("gDoneMsg").textContent = score===total
     ? "Every answer right on the first try. This is clicking."
     : "Nice work through the set - "+retried+" drill"+(retried===1?"":"s")+" came back for a second pass and you cleared "+(retried===1?"it":"them")+".";
+  gSetStatus([]);
   gPhaseView("done");
-  $("gDoneTitle").focus();
+  if(typeof ppFocusActivityTarget==="function") ppFocusActivityTarget($("gDoneTitle"));
+  else $("gDoneTitle").focus();
 }
 
 /* grammar events */
 $("gBack").addEventListener("click", ()=>{ if($("gPractice").style.display!=="none"){ gRenderTeach(); gPhaseView("learn"); } else show("home"); });
 $("gPrev").addEventListener("click", ()=>{ if(G.ti>0){ G.ti--; gRenderTeach(); } });
 $("gNext").addEventListener("click", ()=>{ if(G.ti<G.topic.teach.length-1){ G.ti++; gRenderTeach(); } else gStartPractice(); });
-function gFlipLabel(){ $("gFlip").setAttribute("aria-label", $("gFlip").classList.contains("flipped") ? "Show concept" : "Reveal explanation"); }
+function gFlipLabel(){
+  const label = $("gFlip").classList.contains("flipped") ? "Show concept" : "Reveal explanation";
+  $("gFlipControl").setAttribute("aria-label", label);
+  $("gFlipControl").setAttribute("title", label);
+  ppSyncFlipFaces($("gFlip"));
+}
 function gFlipToggle(){ $("gFlip").classList.toggle("flipped"); gFlipLabel(); }
-$("gFlip").addEventListener("click", e=>{ if(e.target.closest("[data-say]")) return; gFlipToggle(); });
-$("gFlip").addEventListener("keydown", e=>{
-  if(e.key === "Enter" || e.key === " "){
-    if(e.target !== e.currentTarget) return;    /* inner audio buttons keep native behavior */
-    e.preventDefault(); e.stopPropagation(); gFlipToggle();
-  }
-});
+$("gFlip").addEventListener("click", e=>{ if(!e.target.closest("button,a")) gFlipToggle(); });
+$("gFlipControl").addEventListener("click", gFlipToggle);
 $("gDrillNext").addEventListener("click", gDrillAdvance);
 $("gAgain").addEventListener("click", gStartPractice);
 $("gReview").addEventListener("click", ()=>{ G.ti=0; gRenderTeach(); gPhaseView("learn"); });
@@ -2860,7 +3719,7 @@ document.addEventListener("click", e=>{ const b=e.target.closest("[data-say]"); 
 document.addEventListener("click", e=>{ if(e.target.closest(".home-btn")) show("home"); });
 
 /* ---------------- conversation (Rozmowy) ---------------- */
-const C = { topic:null, li:0, tpi:0, node:null, transcript:[], dist:{}, maxDist:1, challenge:false, curOptions:null };
+const C = { topic:null, li:0, tpi:0, node:null, transcript:[], rendered:0, dist:{}, maxDist:1, challenge:false, curOptions:null, transitioning:false };
 const C_CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
 
 /* shortest distance from every scene to an ending, via reverse BFS (cycle-safe) */
@@ -2877,41 +3736,144 @@ function cComputeDist(tp){
 function convoLen(t){ const d=cComputeDist(t); return d[t.start] || Object.keys(t.scenes).length; }
 
 function startConvo(l,t){
-  C.li=l; C.tpi=t; C.topic=LEVELS[l].topics[t]; C.node=C.topic.start; C.transcript=[];
+  C.li=l; C.tpi=t; C.topic=LEVELS[l].topics[t]; C.node=C.topic.start; C.transcript=[]; C.rendered=0;
+  C.curOptions=null; C.transitioning=false;
   C.dist=cComputeDist(C.topic);
   C.maxDist=Math.max(1, ...Object.values(C.dist));
   $("cTitle").textContent = C.topic.name;
-  $("cLevel").textContent = modeLabel(LEVELS[l]) + " \u00b7 " + C.topic.role;
-  show("convo");
-  cRenderNode();
+  const level=$("cLevel"); level.textContent=modeLabel(LEVELS[l])+" \u00b7 ";
+  const role=document.createElement("span"); role.setAttribute("lang","pl"); role.textContent=C.topic.role; level.appendChild(role);
+  show("convo",true);
+  cRenderNode(true);
 }
-function cBubbleHTML(m, idx){
+function cSetStatus(parts){
+  const box=$("cStatus");
+  if(typeof ppSetActivityStatus==="function") return ppSetActivityStatus(box,parts);
+  if(box) box.textContent=(parts||[]).join("");
+  return true;
+}
+function cBubbleSpeakerId(idx, current){ return current ? "cSceneHeading" : "cSpeaker"+idx; }
+/* Everything inside one bubble. Split out from cBubbleHTML so the bubble that stops
+   being the current scene can be re-rendered in place, on its own, without touching
+   any other turn - see cSettleThreadBubble. */
+function cBubbleInnerHTML(m, idx, current){
   /* Challenge mode: NPC lines arrive blurred (audio still plays) until tapped.
      Once revealed, a bubble stays revealed for the rest of the conversation. */
   const veiled = C.challenge && m.who==="npc" && !m.revealed;
-  const audio='<button class="mini-audio" data-say="'+encodeURIComponent(m.pl)+'" aria-label="Play">'+G_AUDIO+'</button>';
-  const cue = veiled ? '<div class="veil-cue">\u25b6 listen first \u00b7 tap to reveal</div>' : '';
-  const inner='<div class="btext'+(veiled?' veiled':'')+'" data-mi="'+idx+'"><div class="b-pl" lang="pl">'+m.pl+'</div><div class="b-en">'+m.en+'</div>'+cue+'</div>';
-  const row = m.who==="npc" ? '<div class="brow">'+inner+audio+'</div>' : '<div class="brow">'+audio+inner+'</div>';
-  let h='<div class="bubble '+m.who+'">'+row+'</div>';
+  const speaker=m.who==="npc" ? C.topic.role : "You";
+  const speakerHTML=m.who==="npc" ? '<span lang="pl">'+speaker+'</span>' : speaker;
+  const sceneNumber=C.transcript.slice(0,idx+1).filter(x=>x.who==="npc").length;
+  const speakerLine=current
+    ? '<h2 class="bubble-heading" id="cSceneHeading" tabindex="-1">Scene '+sceneNumber+': '+speakerHTML+'</h2>'
+    : '<div class="bubble-speaker" id="'+cBubbleSpeakerId(idx,current)+'">'+speakerHTML+'</div>';
+  const contentId="cBubbleContent"+idx;
+  const audio='<button class="mini-audio" type="button" data-mi="'+idx+'" data-say="'+encodeURIComponent(m.pl)+'">'+G_AUDIO+'</button>';
+  const cue = veiled ? '<div class="veil-cue">\u25b6 listen first \u00b7 reveal when ready</div>' : '';
+  const inner='<div class="btext'+(veiled?' veiled':'')+'" id="'+contentId+'"'+(veiled?' aria-hidden="true"':'')+'><div class="b-pl" lang="pl">'+m.pl+'</div><div class="b-en">'+m.en+'</div>'+cue+'</div>';
+  const reveal=veiled ? '<button class="veil-reveal" type="button" data-mi="'+idx+'" aria-expanded="false" aria-controls="'+contentId+'">Reveal this phrase and translation</button>' : '';
+  const content='<div class="bubble-content">'+inner+reveal+'</div>';
+  const row = m.who==="npc" ? '<div class="brow">'+content+audio+'</div>' : '<div class="brow">'+audio+content+'</div>';
+  return speakerLine+row;
+}
+function cBubbleHTML(m, idx, current){
+  /* The bubble carries its transcript index as a stable id, so an appended turn can be
+     found again later without re-reading the whole thread. */
+  let h='<div class="bubble '+m.who+'" id="cBubble'+idx+'" role="group" aria-labelledby="'+cBubbleSpeakerId(idx,current)+'">'+
+        cBubbleInnerHTML(m,idx,current)+'</div>';
   if(m.who==="you" && m.note) h+='<div class="you-note">'+m.note+'</div>';
   return h;
 }
-function cRenderThread(){
-  const el=$("cThread"), tp=C.topic;
-  let h='<div class="scene-card">'+
-    '<span class="scene-role">'+tp.role+'</span>'+
+function cThreadIntroHTML(tp){
+  return '<div class="scene-card">'+
+    '<span class="scene-role" lang="pl">'+tp.role+'</span>'+
     '<div class="scene-set">'+tp.setting+'</div>'+
     '<div class="scene-goal"><b>Your goal:</b> '+tp.goal+'</div></div>';
-  C.transcript.forEach((m,i)=> h+=cBubbleHTML(m,i));
-  el.innerHTML=h;
-  el.scrollTop=el.scrollHeight;
 }
-/* tap a veiled bubble to reveal it (stays revealed from then on) */
+function cThreadBubblesHTML(from){
+  const current=C.transcript.length-1;
+  let h='';
+  for(let i=from;i<C.transcript.length;i++)
+    h+=cBubbleHTML(C.transcript[i], i, i===current && C.transcript[i].who==="npc");
+  return h;
+}
+/* Names every audio control the thread currently holds, appended or not. Idempotent:
+   re-running it re-states the same names rather than adding anything. */
+function cNameThreadAudio(){
+  $("cThread").querySelectorAll(".mini-audio[data-mi]").forEach(btn=>{
+    const i=+btn.getAttribute("data-mi"), m=C.transcript[i];
+    if(!m) return;
+    const hidden=C.challenge && m.who==="npc" && !m.revealed;
+    if(typeof ppSetAudioControlName==="function"){
+      if(hidden) ppSetAudioControlName(btn,"Play hidden Polish phrase from "+C.topic.role+", scene "+C.transcript.slice(0,i+1).filter(x=>x.who==="npc").length,"");
+      else ppSetAudioControlName(btn,"Play Polish phrase",m.pl);
+    }
+  });
+}
+/* Full reset render - the whole transcript, from the scene card down. Used for opening
+   a conversation, restarting it, switching to another one, and for Challenge mode,
+   which really does redraw every existing bubble. C.rendered records how much of the
+   transcript the page now holds, which is what tells the append path below whether the
+   two are in step. */
+function cRenderThread(){
+  $("cThread").innerHTML=cThreadIntroHTML(C.topic)+cThreadBubblesHTML(0);
+  C.rendered=C.transcript.length;
+  cNameThreadAudio();
+}
+/* The scene that is no longer the current one goes back to exactly the settled markup a
+   full render emits: a plain speaker line instead of the single #cSceneHeading, and the
+   bubble's label pointed at it. One node is rewritten; every earlier turn is untouched. */
+function cSettleThreadBubble(i){
+  const m=C.transcript[i];
+  if(!m || m.who!=="npc") return false;                /* only an NPC scene is ever the current one */
+  const bubble=document.getElementById("cBubble"+i);
+  if(!bubble) return false;
+  bubble.setAttribute("aria-labelledby", cBubbleSpeakerId(i,false));
+  bubble.innerHTML=cBubbleInnerHTML(m,i,false);
+  return true;
+}
+/* Ordinary turn advancement. #cThread is not a bounded scroll container - its flex
+   ancestors have no bounded height - so the thread-scrolling line this replaces could
+   never move anything, and nothing brought a new turn into view. Rebuilding the whole
+   thread was the other half of the problem: replacing every node briefly shrank the
+   document below the current page offset and the browser answered by clamping the page
+   back to the top mid-turn. Appending leaves every existing node, id and listener - and
+   the page offset - exactly where they were. Anything that is not a plain continuation
+   of what the page already shows falls back to the reset render, so a reset state can
+   never be appended onto and a turn can never be rendered twice. */
+function cAdvanceThread(){
+  const from=C.rendered|0;
+  if(from<1 || from>=C.transcript.length || !document.getElementById("cBubble"+(from-1))){
+    cRenderThread(); return "reset";
+  }
+  cSettleThreadBubble(from-1);
+  $("cThread").insertAdjacentHTML("beforeend", cThreadBubblesHTML(from));
+  C.rendered=C.transcript.length;
+  cNameThreadAudio();
+  return "append";
+}
+/* The veiled content stays out of the accessibility tree until its native
+   disclosure button is activated. Native Enter/Space dispatch one click, and the
+   global shortcuts already ignore interactive targets, so one press reveals once. */
+function cRevealBubble(trigger){
+  if(!trigger || trigger.getAttribute("aria-expanded")==="true") return false;
+  const i=+trigger.getAttribute("data-mi"), m=C.transcript[i];
+  if(!m){ cSetStatus(["That phrase is no longer available."]); return false; }
+  const content=document.getElementById(trigger.getAttribute("aria-controls"));
+  if(!content){ cSetStatus(["That phrase is no longer available."]); return false; }
+  m.revealed=true;
+  content.removeAttribute("aria-hidden"); content.classList.remove("veiled");
+  const cue=content.querySelector(".veil-cue"); if(cue) cue.remove();
+  trigger.setAttribute("aria-expanded","true");
+  trigger.textContent="Phrase and translation revealed"; trigger.disabled=true;
+  const audio=$("cThread").querySelector('.mini-audio[data-mi="'+i+'"]');
+  if(audio && typeof ppSetAudioControlName==="function") ppSetAudioControlName(audio,"Play Polish phrase",m.pl);
+  cSetStatus(["Phrase and translation revealed."]);
+  if(typeof ppFocusActivityTarget==="function") ppFocusActivityTarget(audio || $("cSceneHeading"));
+  else if(audio) audio.focus();
+  return true;
+}
 $("cThread").addEventListener("click", e=>{
-  const b=e.target.closest(".btext.veiled"); if(!b) return;
-  const m=C.transcript[+b.getAttribute("data-mi")]; if(m) m.revealed=true;
-  cRenderThread();
+  const trigger=e.target.closest(".veil-reveal"); if(trigger) cRevealBubble(trigger);
 });
 function cProgress(){
   const d=C.dist[C.node];
@@ -2921,45 +3883,84 @@ function cProgress(){
   const atEnd=C.topic.scenes[C.node].end;
   $("cCount").textContent="Turn "+(turns+(atEnd?0:1));
 }
-function cRenderNode(){
+function cRenderNode(focusEntry){
   const node=C.topic.scenes[C.node];
   C.transcript.push({ who:"npc", pl:node.npc, en:node.npcEn });
-  cRenderThread(); cProgress();
+  cAdvanceThread(); cProgress(); cSetStatus([]);
   /* no autoplay in challenge mode - the bubble's play button lets the learner listen before revealing */
-  if(node.end || !node.options || !node.options.length){ C.curOptions=null; cShowDone(); return; }
+  if(node.end || !node.options || !node.options.length){ C.curOptions=null; cShowDone(focusEntry); return; }
   C.curOptions=node.options;
   cRenderOptions(node.options);
+  /* Bring the turn into view: the new reply choices first, then the new scene, so the
+     LAST reveal is the focused element's and a focus ring can never be left off-screen.
+     Neither call changes which element takes focus. */
+  if(typeof ppRevealFocusedTarget==="function") ppRevealFocusedTarget($("cReply"));
+  if(focusEntry){
+    if(typeof ppFocusActivityTarget==="function") ppFocusActivityTarget($("cSceneHeading"));
+    else $("cSceneHeading").focus();
+  }
+  if(typeof ppRevealFocusedTarget==="function") ppRevealFocusedTarget($("cSceneHeading"));
 }
 function cRenderOptions(options){
   const box=$("cReply");
   box.classList.toggle("challenge", C.challenge);
   const node=C.topic.scenes[C.node];
+  const nodeAtRender=C.node;
   let h = (node && node.tip && !C.challenge) ? '<div class="reply-tip">'+node.tip+'</div>' : '';
-  h+='<div class="reply-label">Your reply</div>';
+  h+='<div class="reply-label" id="cReplyLabel">Choose your reply</div><div class="reply-options" id="cReplyOptions" role="group" aria-labelledby="cReplyLabel">';
   options.forEach((o,i)=>{
-    h+='<button class="reply-opt" data-i="'+i+'"><span class="ro-pl">'+o.pl+'</span><span class="ro-en">'+o.en+'</span></button>';
+    h+='<button class="reply-opt" type="button" data-i="'+i+'"><span class="ro-pl" lang="pl">'+o.pl+'</span><span class="ro-en"'+(C.challenge?' aria-hidden="true"':'')+'>'+o.en+'</span></button>';
   });
-  if(C.challenge) h+='<button class="peek-en" id="cPeek">Show translations for this turn</button>';
+  h+='</div>';
+  if(C.challenge) h+='<button class="peek-en" id="cPeek" type="button" aria-expanded="false" aria-controls="cReplyOptions">Show translations for this turn</button>';
   box.innerHTML=h;
   const pk=$("cPeek");
-  if(pk) pk.addEventListener("click", ()=>{ box.classList.remove("challenge"); pk.remove(); });
+  if(pk) pk.addEventListener("click", ()=>cRevealChoiceTranslations(pk));
   box.querySelectorAll(".reply-opt").forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      const o=options[+btn.getAttribute("data-i")];
-      C.transcript.push({ who:"you", pl:o.pl, en:o.en, note:o.note });
-      box.innerHTML="";
-      C.node=o.goto;
-      cRenderNode();
-    });
+    btn.addEventListener("click",()=>cChooseOption(+btn.getAttribute("data-i"),nodeAtRender));
   });
 }
-function cShowDone(){
+function cRevealChoiceTranslations(trigger){
+  if(!trigger || trigger.getAttribute("aria-expanded")==="true") return false;
+  const box=$("cReply"); box.classList.remove("challenge");
+  box.querySelectorAll(".ro-en").forEach(el=>el.removeAttribute("aria-hidden"));
+  trigger.setAttribute("aria-expanded","true"); trigger.textContent="Translations shown"; trigger.disabled=true;
+  cSetStatus(["Reply translations revealed."]);
+  const first=box.querySelector(".reply-opt");
+  if(first){
+    if(typeof ppFocusActivityTarget==="function") ppFocusActivityTarget(first);
+    else first.focus();
+  }
+  return true;
+}
+function cChooseOption(index, expectedNode){
+  if(C.transitioning || !C.curOptions || (expectedNode && expectedNode!==C.node)) return false;
+  const o=C.curOptions[index];
+  if(!o){ cSetStatus(["That reply is no longer available."]); return false; }
+  C.transitioning=true;
+  try{
+    C.transcript.push({ who:"you", pl:o.pl, en:o.en, note:o.note });
+    C.curOptions=null; $("cReply").innerHTML=""; C.node=o.goto;
+    cRenderNode(true);
+    return true;
+  } finally { C.transitioning=false; }
+}
+/* Recap strings are mixed English and Polish. Their authored <b> phrases are
+   the only reliable Polish boundary in the frozen data, so scope those nodes
+   and deliberately leave the mixed list item under the English document. */
+function cScopeRecapLanguage(container){
+  if(!container) return 0;
+  const phrases=container.querySelectorAll(".cdone-recap li b");
+  phrases.forEach(phrase=>phrase.setAttribute("lang","pl"));
+  return phrases.length;
+}
+function cShowDone(focusEntry){
   $("cFill").style.width="100%";
   const box=$("cReply");
   box.innerHTML='<div class="cdone">'+
     '<div class="cdone-badge">'+C_CHECK+'</div>'+
-    '<div class="cdone-t">Rozmowa sko\u0144czona!</div>'+
-    '<div class="cdone-s">You made it through \u201C'+C.topic.name+'\u201D in Polish. Replay it to lock the phrases in, or head back for another.</div>'+
+    '<h2 class="cdone-t" id="cDoneTitle" tabindex="-1" lang="pl">Rozmowa sko\u0144czona!</h2>'+
+    '<div class="cdone-s" id="cDoneSummary"></div>'+
     ((C.topic.recap && C.topic.recap.length) ?
       '<div class="cdone-recap"><div class="cdone-recap-h">Key phrases to remember</div><ul>'+
       C.topic.recap.map(r=>'<li>'+r+'</li>').join('')+'</ul></div>' : '')+
@@ -2967,19 +3968,40 @@ function cShowDone(){
       '<button class="btn-primary" id="cAgain">Try again</button>'+
       '<button class="btn-ghost" id="cHome">Back to topics</button>'+
     '</div></div>';
+  const summary=$("cDoneSummary");
+  const before=document.createElement("span"); before.textContent="You made it through \u201C";
+  const topicName=document.createElement("span"); topicName.id="cDoneTopic";
+  topicName.setAttribute("lang","pl"); topicName.textContent=C.topic.name;
+  const after=document.createElement("span");
+  after.textContent="\u201D in Polish. Replay it to lock the phrases in, or head back for another.";
+  summary.appendChild(before); summary.appendChild(topicName); summary.appendChild(after);
+  cScopeRecapLanguage(box);
   $("cAgain").addEventListener("click", ()=>startConvo(C.li,C.tpi));
   $("cHome").addEventListener("click", ()=>show("home"));
   if(window.PP_A2HS){ window.PP_A2HS.bump(3); const n=window.PP_A2HS.nudgeHTML(); if(n) box.insertAdjacentHTML("beforeend", n); }
+  if(focusEntry){
+    if(typeof ppFocusAndRevealActivityTarget==="function") ppFocusAndRevealActivityTarget($("cDoneTitle"));
+    else if(typeof ppFocusActivityTarget==="function") ppFocusActivityTarget($("cDoneTitle"));
+    else $("cDoneTitle").focus();
+  }
 }
 $("cBack").addEventListener("click", ()=>show("home"));
+function cSyncChallengeControl(){
+  const btn=$("cChallenge");
+  btn.classList.toggle("on",C.challenge);
+  btn.setAttribute("aria-pressed",C.challenge?"true":"false");
+  btn.setAttribute("aria-label",C.challenge
+    ? "Turn Challenge mode off and show translations"
+    : "Turn Challenge mode on: hide translations and listen before revealing");
+}
 $("cChallenge").addEventListener("click", ()=>{
   C.challenge=!C.challenge;
-  $("cChallenge").classList.toggle("on", C.challenge);
-  $("cChallenge").setAttribute("aria-pressed", C.challenge?"true":"false");
+  cSyncChallengeControl();
   if(C.topic){
     cRenderThread();
     if(C.curOptions) cRenderOptions(C.curOptions);
   }
+  cSetStatus([C.challenge ? "Challenge mode on. Translations are hidden." : "Challenge mode off. Translations are shown."]);
 });
 
 /* ---------------- Type it (EN -> typed PL recall) ----------------
@@ -3020,7 +4042,7 @@ function startTypeit(l, t){
   T.qs=gShuffle(pool).slice(0,15).sort((a,b)=>a.c.pl.length-b.c.pl.length);
   T.i=0; T.right=0; T.almost=0; T.hinted=0;   /* "New round" routes here, so every counter restarts */
   $("tLevelLbl").textContent = T.topicRef.name + " \u00b7 " + T.qs.length + " words";
-  show("typeit"); tRender();
+  show("typeit", true); tRender();       /* tRender supplies this activity's stable entry focus */
 }
 function tRender(){
   if(T.i >= T.qs.length){ tShowDone(); return; }
@@ -3048,13 +4070,18 @@ function tRender(){
   $("tFrom").textContent="From: "+q.topic;
   const inp=$("tInput");
   inp.value=""; inp.disabled=false;
+  if(inp.removeAttribute) inp.removeAttribute("aria-invalid");
   $("tHintLine").hidden=true; $("tHintLine").textContent="";
   $("tHint").disabled=false;
+  if($("tHint").setAttribute) $("tHint").setAttribute("aria-label","Reveal a letter");
   $("tCheck").disabled=false;
   const v=$("tVerdict"); v.className="verdict"; v.innerHTML="";
+  if(typeof ppSetActivityStatus==="function") ppSetActivityStatus($("tStatus"),[]);
+  else $("tStatus").textContent="";
   $("tNext").disabled=true;
   $("tNextLabel").textContent = T.i===T.qs.length-1 ? "See results" : "Next";
-  inp.focus();
+  if(typeof ppFocusActivityTarget==="function") ppFocusActivityTarget($("tEn"));
+  else inp.focus();
 }
 function tRevealLetter(){
   const c=T.qs[T.i].c;
@@ -3062,12 +4089,22 @@ function tRevealLetter(){
   if(T.revealed < canon.length-1) T.revealed++;
   $("tHintLine").hidden=false;
   $("tHintLine").textContent="Starts with: "+canon.slice(0,T.revealed)+"\u2026";
-  $("tInput").focus();
+  if($("tHint").setAttribute) $("tHint").setAttribute("aria-label","Reveal another letter. "+$("tHintLine").textContent);
+  if(typeof ppKeepActivityFocusOr==="function") ppKeepActivityFocusOr($("tInput"),$("tHint"));
+  else if(typeof ppFocusActivityTarget==="function") ppFocusActivityTarget($("tInput"));
+  else $("tInput").focus();
 }
 function tCheckAnswer(){
   if(T.state!=="ask") return;
   const c=T.qs[T.i].c, val=$("tInput").value;
-  if(!PP_ANSWER.normalize(val)) { $("tInput").focus(); return; }
+  if(!PP_ANSWER.normalize(val)) {
+    if(typeof ppSetActivityStatus==="function") ppSetActivityStatus($("tStatus"),["Type the Polish answer first."]);
+    else $("tStatus").textContent="Type the Polish answer first.";
+    if(typeof ppKeepActivityFocusOr==="function") ppKeepActivityFocusOr($("tInput"),[$("tInput"),$("tCheck")]);
+    else if(typeof ppFocusActivityTarget==="function") ppFocusActivityTarget($("tInput"));
+    else $("tInput").focus();
+    return;
+  }
   const verdict=PP_ANSWER.classify(val, c, PP_TYPED_INDEX);
   T.state="done";
   /* Hint use is banked HERE, once, on the single accepted submission: the
@@ -3080,13 +4117,14 @@ function tCheckAnswer(){
   if(T.revealed>0) T.hinted++;
   if(verdict==="right") T.right++; else if(verdict==="almost") T.almost++;
   $("tInput").disabled=true; $("tCheck").disabled=true; $("tHint").disabled=true;
+  if($("tInput").setAttribute) $("tInput").setAttribute("aria-invalid",verdict==="right"?"false":"true");
   const v=$("tVerdict");
   /* Same main-audio rule as the flashcard: the button exists only when there is a
      complete utterance to play, so it is never a control that does nothing. The
      displayed `v-pl` below still shows the card's canonical `pl` either way.
      (ppEligibleFor already keeps templates out of this pool; this keeps the rule
      true structurally rather than by routing.) */
-  const audioBtn=ppHasMainAudio(c) ? '<button class="mini-audio" data-say="'+encodeURIComponent(ppMainAudioText(c))+'" aria-label="Play">'+G_AUDIO+'</button>' : "";
+  const audioBtn=ppHasMainAudio(c) ? '<button class="mini-audio" data-say="'+encodeURIComponent(ppMainAudioText(c))+'">'+G_AUDIO+'</button>' : "";
   const exHtml=c.ex ? '<div class="v-ex" lang="pl">'+c.ex+'</div><div class="v-exen">'+(c.exEn||"")+'</div>' : "";
   const head = verdict==="right" ? "Dobrze!"
              : verdict==="almost" ? "Almost - watch the \u0105, \u0119, \u00f3, \u017c\u2026"
@@ -3115,9 +4153,20 @@ function tCheckAnswer(){
     '<div class="v-row"><span class="v-pl" lang="pl"></span>'+audioBtn+'</div>'+altHtml+exHtml;
   v.querySelector(".v-pl").textContent=c.pl;
   if(alt){ v.querySelector(".v-altk").textContent=alt.label; v.querySelector(".v-altv").textContent=alt.value; }
+  if(typeof ppSetAudioControlName==="function")
+    ppSetAudioControlName(v.querySelector(".mini-audio"),"Play answer",ppMainAudioText(c));
   ppAppendUsageTo(v, c);                  /* so a slang answer is labelled before the learner reuses it */
   v.className="verdict show v-"+verdict;
-  $("tNext").disabled=false; $("tNext").focus();
+  if(typeof ppAnnounceTypedActivityResult==="function") ppAnnounceTypedActivityResult($("tStatus"),verdict,c.pl);
+  else $("tStatus").textContent=(verdict==="right"?"Correct. The answer is ":verdict==="almost"?"Almost correct. Check the Polish spelling: ":"Incorrect. The answer is ")+c.pl+". Next is ready.";
+  $("tNext").disabled=false;
+  /* Next is enabled first and focused second, exactly as before; the reveal is third,
+     on the same control, because on a short phone Next renders below the fold and the
+     focus ring landed off-screen. The T.state guard above makes a second submission a
+     no-op, so a settled question cannot scroll again. */
+  if(typeof ppFocusAndRevealActivityTarget==="function") ppFocusAndRevealActivityTarget($("tNext"));
+  else if(typeof ppFocusActivityTarget==="function") ppFocusActivityTarget($("tNext"));
+  else $("tNext").focus();
 }
 function tShowDone(){
   $("tMain").style.display="none"; $("tDone").style.display="flex";
@@ -3140,6 +4189,10 @@ function tShowDone(){
     + (miss>0 ? " "+miss+" to revisit." : "")
     + (hinted>0 ? (hinted===1 ? " You used a hint on 1 question."
                               : " You used hints on "+hinted+" questions.") : "");
+  if(typeof ppSetActivityStatus==="function") ppSetActivityStatus($("tStatus"),[]);
+  else $("tStatus").textContent="";
+  if(typeof ppFocusActivityTarget==="function") ppFocusActivityTarget($("tDoneTitle"));
+  else $("tDoneTitle").focus();
   if(window.PP_A2HS) window.PP_A2HS.bump(3);
 }
 $("tBack").addEventListener("click", ()=>show("home"));
@@ -3275,6 +4328,7 @@ function lSelectQuestions(pool, recentKeys, count, shuffle){
    screen and is rebuilt from scratch each time. */
 function lSetStatus(parts){
   const box=$("lStatus"); if(!box) return;
+  if(typeof ppSetActivityStatus==="function"){ ppSetActivityStatus(box,parts); return; }
   box.textContent="";                                  /* drops the previous announcement's nodes */
   (parts||[]).forEach(p=>box.appendChild(typeof p==="string" ? document.createTextNode(p) : p));
 }
@@ -3304,7 +4358,11 @@ function lFocusNextOption(box, from){
   const at=opts.indexOf(from);
   for(let k=1;k<=opts.length;k++){
     const next=opts[(at+k+opts.length)%opts.length];
-    if(next && !next.disabled){ next.focus(); return next; }
+    if(next && !next.disabled){
+      if(typeof ppFocusActivityTarget==="function"){
+        if(ppFocusActivityTarget(next)) return next;
+      } else { next.focus(); return next; }
+    }
   }
   return null;
 }
@@ -3314,9 +4372,15 @@ function lFocusNextOption(box, from){
    <body>. Neither branch plays anything: this moves focus and nothing else. */
 function lFocusQuestion(){
   const play=$("lPlay");
-  if(play && !play.disabled){ play.focus(); return play; }
+  if(play && !play.disabled){
+    if(typeof ppFocusActivityTarget==="function") return ppFocusActivityTarget(play) ? play : null;
+    play.focus(); return play;
+  }
   const prompt=$("lPrompt");
-  if(prompt){ prompt.focus(); return prompt; }
+  if(prompt){
+    if(typeof ppFocusActivityTarget==="function") return ppFocusActivityTarget(prompt) ? prompt : null;
+    prompt.focus(); return prompt;
+  }
   return null;
 }
 
@@ -3341,7 +4405,7 @@ function startListen(l, t){
   });
   L.i=0; L.results=[];
   $("lLevelLbl").textContent = L.topicRef.name + " \u00b7 " + L.qs.length + " questions";
-  show("listen"); lRender();
+  show("listen", true); lRender();       /* lRender supplies this activity's stable entry focus */
 }
 function lRender(){
   syncListeningAudioReadiness();          /* before the branch: the results screen needs it too */
@@ -3360,7 +4424,10 @@ function lRender(){
   q.options.forEach(o=>{
     const b=document.createElement("button");
     b.className="opt"; b.textContent=o.label;
+    b.setAttribute("aria-pressed","false");
     b.addEventListener("click", ()=>{
+      if(typeof ppSetActivityOptionState==="function") ppSetActivityOptionState(box,b);
+      else box.querySelectorAll(".opt").forEach(x=>x.setAttribute("aria-pressed",x===b?"true":"false"));
       if(o.correct){          /* the retained source, not a string match: two cards can share a gloss */
         b.classList.add("correct");
         b.setAttribute("aria-label", o.label + ", correct");   /* the state, not only the colour */
@@ -3368,13 +4435,16 @@ function lRender(){
         if(!L.attempted) L.results[L.i]=true;
         rv.textContent=q.c.pl; rv.classList.add("show");
         const exHtml=q.c.ex ? '<div class="fb-good"><div class="t"><div class="p" lang="pl">'+q.c.ex+'</div><div class="e">'+(q.c.exEn||"")+'</div></div>'+
-          '<button class="mini-audio" data-say="'+encodeURIComponent(q.c.ex)+'" aria-label="Play">'+G_AUDIO+'</button></div>' : "";
+          '<button class="mini-audio" data-say="'+encodeURIComponent(q.c.ex)+'">'+G_AUDIO+'</button></div>' : "";
         if(exHtml){ fb.innerHTML=exHtml; }
+        if(exHtml && typeof ppSetAudioControlName==="function")
+          ppSetAudioControlName(fb.querySelector(".mini-audio"),"Play example sentence",q.c.ex);
         ppAppendUsageTo(fb, q.c);          /* recognition-only cards stay in Listening, so label them here */
         if(fb.childNodes.length) fb.classList.add("show");
         lAnnounceCorrect(q.c.pl);        /* announced before Next moves, so the reader hears why it moved */
         $("lNext").disabled=false;
-        $("lNext").focus();              /* only ever after it is enabled - focus cannot land on a closed button */
+        if(typeof ppFocusActivityTarget==="function") ppFocusActivityTarget($("lNext"));
+        else $("lNext").focus();          /* only ever after it is enabled - focus cannot land on a closed button */
       } else {
         b.classList.add("wrong"); b.disabled=true;
         b.setAttribute("aria-label", o.label + ", incorrect. Try again");
@@ -3413,7 +4483,9 @@ function syncListeningAudioReadiness(){
      nobody can see. */
   btn.disabled = loading || L.i >= L.qs.length;
   btn.setAttribute("aria-busy", loading ? "true" : "false");
-  btn.setAttribute("aria-label", loading ? "Polish audio is loading" : "Play the Polish audio");
+  const at=Math.min(L.i+1,L.qs.length), total=L.qs.length;
+  const context=total ? " for question "+at+" of "+total : "";
+  btn.setAttribute("aria-label", loading ? "Polish audio is loading"+context : "Play Polish audio"+context);
 }
 
 /* Templates are already excluded from the Listening pool by ppEligibleFor, so this
@@ -3427,7 +4499,10 @@ function syncListeningAudioReadiness(){
    for later either; the learner simply presses again once the button lights up. */
 function lPlayCurrent(){
   if(audioManifestStatus === "loading") return;
-  if(L.i < L.qs.length) speakCardMain(L.qs[L.i].c, $("lPlay"));
+  if(L.i < L.qs.length){
+    speakCardMain(L.qs[L.i].c, $("lPlay"));
+    $("lPlay").setAttribute("aria-label","Replay Polish audio for question "+(L.i+1)+" of "+L.qs.length);
+  }
 }
 function lShowDone(){
   $("lMain").style.display="none"; $("lDone").style.display="flex";
@@ -3441,7 +4516,11 @@ function lShowDone(){
   /* Land on the result, not on "New round". The heading is the top of what just
      changed, and the two buttons stay after it in the ordinary tab order - so the
      score is read first and acted on second, which is the order it is written in. */
-  const title=$("lDoneTitle"); if(title) title.focus();
+  const title=$("lDoneTitle");
+  if(title){
+    if(typeof ppFocusActivityTarget==="function") ppFocusActivityTarget(title);
+    else title.focus();
+  }
   if(window.PP_A2HS) window.PP_A2HS.bump(3);
 }
 /* ---- Listening boundaries: every way out of a question silences it first ----
@@ -3565,8 +4644,8 @@ function startRound(l, t){
   R.originalTotal = R.qs.length;
   R.hinted = 0;
   $("rTitle").textContent = topic.name;
-  $("rSub").textContent = "Mixed quiz";
-  show("round"); rRender();
+  $("rSub").textContent = topic.kind==="podcast" ? "Podcast \u00b7 Mixed quiz" : "Mixed quiz";
+  show("round", true); rRender();        /* rRender supplies this activity's stable entry focus */
 }
 function rSetBlocks(fmt){
   $("rMcq").hidden   = fmt==="type";
@@ -3587,6 +4666,7 @@ function rSetBlocks(fmt){
    rebuilt from scratch each time. */
 function rSetStatus(parts){
   const box=$("rStatus"); if(!box) return;
+  if(typeof ppSetActivityStatus==="function"){ ppSetActivityStatus(box,parts); return; }
   box.textContent="";                                  /* drops the previous announcement's nodes */
   (parts||[]).forEach(p=>box.appendChild(typeof p==="string" ? document.createTextNode(p) : p));
 }
@@ -3615,7 +4695,11 @@ function rFocusNextOption(box, from){
   const at=opts.indexOf(from);
   for(let k=1;k<=opts.length;k++){
     const next=opts[(at+k+opts.length)%opts.length];
-    if(next && !next.disabled){ next.focus(); return next; }
+    if(next && !next.disabled){
+      if(typeof ppFocusActivityTarget==="function"){
+        if(ppFocusActivityTarget(next)) return next;
+      } else { next.focus(); return next; }
+    }
   }
   return null;
 }
@@ -3688,7 +4772,8 @@ function rRender(){
     $("rCountLbl").textContent=(R.i+1)+" / "+rOriginalTotal();
     $("rFill").style.width=rPct(R.i, rOriginalTotal())+"%";
   }
-  $("rStatus").textContent="";            /* the previous question's result must not linger */
+  if(typeof rSetStatus==="function") rSetStatus([]);
+  else $("rStatus").textContent="";         /* the previous question's result must not linger */
   $("rNext").disabled=true;
   /* The last RENDERED question, not the last original one: when misses were requeued the
      round is not over at question 15. Answering can move this again - see rSyncNextLabel. */
@@ -3706,14 +4791,18 @@ function rRender(){
     $("rCtx").textContent=c.exEn ? "Context: "+c.exEn : "";
     const inp=$("rInput");
     inp.value=""; inp.disabled=false;
+    if(inp.removeAttribute) inp.removeAttribute("aria-invalid");
     $("rHintLine").hidden=true; $("rHintLine").textContent="";
-    $("rHint").disabled=false; $("rCheck").disabled=false;
+    $("rHint").disabled=false;
+    if($("rHint").setAttribute) $("rHint").setAttribute("aria-label","Reveal a letter");
+    $("rCheck").disabled=false;
     const v=$("rVerdict"); v.className="verdict"; v.innerHTML="";
   } else {
     $("rPl").textContent = q.fmt==="mc" ? c.pl : "";
     const rv=$("rReveal"); rv.classList.remove("show"); rv.textContent="";
     const fb=$("rFb"); fb.classList.remove("show"); fb.innerHTML="";
     const box=$("rOpts"); box.innerHTML="";
+    box.setAttribute("aria-labelledby",q.fmt==="mc" ? "rType rPl" : "rType");
     /* textContent, never innerHTML: an English gloss is authored content and may
        carry an ampersand, a quote or an angle bracket. The whole RECORD is handed
        to rPickOption - the label is what the learner reads, not what decides the
@@ -3721,6 +4810,7 @@ function rRender(){
     q.options.forEach(o=>{
       const b=document.createElement("button");
       b.className="opt"; b.textContent=o.label;
+      b.setAttribute("aria-pressed","false");
       b.addEventListener("click", ()=> rPickOption(b, o, q, box));
       box.appendChild(b);
     });
@@ -3737,9 +4827,16 @@ function rRender(){
      instead ("What did you hear?"), and it is not a control, so nothing is offered
      that cannot yet be used. Settlement later opens Play but does NOT pull focus to
      it; the learner tabs to it when they are ready. */
-  if(q.fmt==="type"){ $("rInput").focus(); }
-  else if(q.fmt==="listen"){ const play=$("rPlay"); if(play && !play.disabled) play.focus(); else $("rType").focus(); }
-  else { $("rPl").focus(); }
+  if(typeof ppFocusActivityTarget==="function"){
+    if(q.fmt==="type") ppFocusActivityTarget($("rEn"));
+    else if(q.fmt==="listen"){
+      const play=$("rPlay"); ppFocusActivityTarget(play && !play.disabled ? play : $("rType"));
+    } else ppFocusActivityTarget($("rPl"));
+  } else {
+    if(q.fmt==="type"){ $("rInput").focus(); }
+    else if(q.fmt==="listen"){ const play=$("rPlay"); if(play && !play.disabled) play.focus(); else $("rType").focus(); }
+    else { $("rPl").focus(); }
+  }
 }
 /* Mixed Quiz is the other activity with a Play button that must not be pressed
    before the manifest settles - one question format in three is "hear it and pick
@@ -3770,7 +4867,11 @@ function syncRoundAudioReadiness(){
   const waiting = live && audioManifestStatus === "loading";
   btn.disabled = !live || audioManifestStatus === "loading";
   btn.setAttribute("aria-busy", waiting ? "true" : "false");
-  btn.setAttribute("aria-label", waiting ? "Polish audio is loading" : "Play the Polish audio");
+  const topic=LEVELS[R.li] && LEVELS[R.li].topics[R.ti];
+  const intro=topic && topic.kind==="podcast" ? topic.cards.find(c=>c.intro) : null;
+  const source=intro && intro.en ? ' from "'+intro.en+'"' : "";
+  const context=live ? source+" for the current question" : "";
+  btn.setAttribute("aria-label", waiting ? "Polish audio is loading" : "Play Polish audio"+context);
 }
 /* The manifest check repeats what `disabled` already prevents, on purpose:
    `disabled` stops mouse, touch and keyboard, but this function is also reachable
@@ -3789,9 +4890,16 @@ function rPlayCurrent(){
   const scr = $("round");
   if(!scr || !scr.classList.contains("active")) return;
   speakCardMain(q.c, $("rPlay"));
+  const pos=q.requeued ? rReviewPos() : {at:R.i+1,total:rOriginalTotal()};
+  const topic=LEVELS[R.li] && LEVELS[R.li].topics[R.ti];
+  const intro=topic && topic.kind==="podcast" ? topic.cards.find(c=>c.intro) : null;
+  const source=intro && intro.en ? ' from "'+intro.en+'"' : "";
+  $("rPlay").setAttribute("aria-label","Replay Polish audio"+source+" for "+(q.requeued?"review question ":"question ")+pos.at+" of "+pos.total);
 }
 function rPickOption(btn, o, q, box){
   if(R.state!=="ask") return;
+  if(typeof ppSetActivityOptionState==="function") ppSetActivityOptionState(box,btn);
+  else box.querySelectorAll(".opt").forEach(x=>x.setAttribute("aria-pressed",x===btn?"true":"false"));
   /* The retained flag, not a string match: two cards can share a gloss, and the one
      the learner pressed is the record that was built for that button. What is shown
      stays `o.label` throughout - the visible English is unchanged, it just no longer
@@ -3806,12 +4914,16 @@ function rPickOption(btn, o, q, box){
     if(q.fmt==="listen"){ $("rReveal").textContent=q.c.pl; $("rReveal").classList.add("show"); }
     const fb=$("rFb");
     const exHtml=q.c.ex ? '<div class="fb-good"><div class="t"><div class="p" lang="pl">'+q.c.ex+'</div><div class="e">'+(q.c.exEn||"")+'</div></div>'+
-      '<button class="mini-audio" data-say="'+encodeURIComponent(q.c.ex)+'" aria-label="Play">'+G_AUDIO+'</button></div>' : "";
+      '<button class="mini-audio" data-say="'+encodeURIComponent(q.c.ex)+'">'+G_AUDIO+'</button></div>' : "";
     if(exHtml){ fb.innerHTML=exHtml; }
+    if(exHtml && typeof ppSetAudioControlName==="function")
+      ppSetAudioControlName(fb.querySelector(".mini-audio"),"Play example sentence",q.c.ex);
     ppAppendUsageTo(fb, q.c);           /* the listen/mc formats need the labels too, not just typed */
     if(fb.childNodes.length) fb.classList.add("show");   /* example, chips or warning - any is enough */
     rAnnounceCorrect(q.c.pl);        /* announced before Next moves, so the reader hears why it moved */
-    $("rNext").disabled=false; $("rNext").focus();   /* only ever after it is enabled - focus cannot land on a closed button */
+    $("rNext").disabled=false;
+    if(typeof ppFocusActivityTarget==="function") ppFocusActivityTarget($("rNext"));
+    else $("rNext").focus();   /* only ever after it is enabled - focus cannot land on a closed button */
   } else {
     btn.classList.add("wrong"); btn.disabled=true;
     btn.setAttribute("aria-label", o.label + ", incorrect. Try again");
@@ -3826,7 +4938,10 @@ function rRevealLetter(){
   if(R.revealed < canon.length-1) R.revealed++;
   $("rHintLine").hidden=false;
   $("rHintLine").textContent="Starts with: "+canon.slice(0,R.revealed)+"\u2026";
-  $("rInput").focus();
+  if($("rHint").setAttribute) $("rHint").setAttribute("aria-label","Reveal another letter. "+$("rHintLine").textContent);
+  if(typeof ppKeepActivityFocusOr==="function") ppKeepActivityFocusOr($("rInput"),$("rHint"));
+  else if(typeof ppFocusActivityTarget==="function") ppFocusActivityTarget($("rInput"));
+  else $("rInput").focus();
 }
 function rCheckAnswer(){
   if(R.state!=="ask") return;
@@ -3836,8 +4951,11 @@ function rCheckAnswer(){
      pressing Check on an empty box is no longer a silent no-op for a reader who
      cannot see that the input is empty. */
   if(!PP_ANSWER.normalize(val)) {
-    $("rStatus").textContent="Type the Polish answer first.";
-    $("rInput").focus();
+    if(typeof rSetStatus==="function") rSetStatus(["Type the Polish answer first."]);
+    else $("rStatus").textContent="Type the Polish answer first.";
+    if(typeof ppKeepActivityFocusOr==="function") ppKeepActivityFocusOr($("rInput"),[$("rInput"),$("rCheck")]);
+    else if(typeof ppFocusActivityTarget==="function") ppFocusActivityTarget($("rInput"));
+    else $("rInput").focus();
     return;
   }
   const verdict=PP_ANSWER.classify(val, c, PP_TYPED_INDEX);
@@ -3846,7 +4964,8 @@ function rCheckAnswer(){
      owns what the answer WAS, so nothing is written here to replace it - leaving the
      instruction standing would contradict the verdict for anyone reading the page
      rather than listening to it announce. */
-  $("rStatus").textContent="";
+  if(typeof rSetStatus==="function") rSetStatus([]);
+  else $("rStatus").textContent="";
   /* Hint use is banked HERE, once, on the single accepted submission - the same place
      and the same rule Type It uses. The `R.state` guard above has already turned every
      repeat (Enter again, a second click, Enter-then-click) into a no-op and the blank
@@ -3864,13 +4983,14 @@ function rCheckAnswer(){
   rRecord(q, verdict==="wrong" ? "miss" : verdict);
   rSyncNextLabel();     /* rRecord may have appended a retry - re-ask before the button opens */
   $("rInput").disabled=true; $("rCheck").disabled=true; $("rHint").disabled=true;
+  if($("rInput").setAttribute) $("rInput").setAttribute("aria-invalid",verdict==="right"?"false":"true");
   const v=$("rVerdict");
   /* Same main-audio rule as the flashcard: the button exists only when there is a
      complete utterance to play, so it is never a control that does nothing. The
      displayed `v-pl` below still shows the card's canonical `pl` either way.
      (ppEligibleFor already keeps templates out of this pool; this keeps the rule
      true structurally rather than by routing.) */
-  const audioBtn=ppHasMainAudio(c) ? '<button class="mini-audio" data-say="'+encodeURIComponent(ppMainAudioText(c))+'" aria-label="Play">'+G_AUDIO+'</button>' : "";
+  const audioBtn=ppHasMainAudio(c) ? '<button class="mini-audio" data-say="'+encodeURIComponent(ppMainAudioText(c))+'">'+G_AUDIO+'</button>' : "";
   const exHtml=c.ex ? '<div class="v-ex" lang="pl">'+c.ex+'</div><div class="v-exen">'+(c.exEn||"")+'</div>' : "";
   const head = verdict==="right" ? "Dobrze!"
              : verdict==="almost" ? "Almost - watch the \u0105, \u0119, \u00f3, \u017c\u2026"
@@ -3889,9 +5009,20 @@ function rCheckAnswer(){
     '<div class="v-row"><span class="v-pl" lang="pl"></span>'+audioBtn+'</div>'+altHtml+exHtml;
   v.querySelector(".v-pl").textContent=c.pl;
   if(alt){ v.querySelector(".v-altk").textContent=alt.label; v.querySelector(".v-altv").textContent=alt.value; }
+  if(typeof ppSetAudioControlName==="function")
+    ppSetAudioControlName(v.querySelector(".mini-audio"),"Play answer",ppMainAudioText(c));
   ppAppendUsageTo(v, c);                  /* same labelling in the mixed quiz */
   v.className="verdict show v-"+verdict;
-  $("rNext").disabled=false; $("rNext").focus();
+  if(typeof ppAnnounceTypedActivityResult==="function") ppAnnounceTypedActivityResult($("rStatus"),verdict,c.pl);
+  else if(typeof rSetStatus==="function") rSetStatus([(verdict==="right"?"Correct. The answer is ":verdict==="almost"?"Almost correct. Check the Polish spelling: ":"Incorrect. The answer is ")+c.pl+". Next is ready."]);
+  else $("rStatus").textContent=(verdict==="right"?"Correct. The answer is ":verdict==="almost"?"Almost correct. Check the Polish spelling: ":"Incorrect. The answer is ")+c.pl+". Next is ready.";
+  $("rNext").disabled=false;
+  /* The typed format shares Type It's problem and its fix. The multiple-choice and
+     listening formats are deliberately NOT given this: they settle on the answered
+     option, which is already on screen. */
+  if(typeof ppFocusAndRevealActivityTarget==="function") ppFocusAndRevealActivityTarget($("rNext"));
+  else if(typeof ppFocusActivityTarget==="function") ppFocusActivityTarget($("rNext"));
+  else $("rNext").focus();
 }
 function rRecord(q, result){
   if(q.requeued) return;                     /* second passes never score or re-requeue */
@@ -3922,7 +5053,8 @@ function rShowDone(){
   const total = rOriginalTotal();
   $("rFill").style.width="100%";
   $("rCountLbl").textContent=total+" / "+total;
-  $("rStatus").textContent="";   /* the last question's result is over; the panel below says everything now */
+  if(typeof rSetStatus==="function") rSetStatus([]);
+  else $("rStatus").textContent=""; /* the last question's result is over; the panel below says everything now */
   /* `scored` still owns the ARITHMETIC - which questions have a first-try verdict, and
      what that verdict was - for the tiers and for the progress writeback below. */
   const scored = R.qs.filter(q=>!q.requeued);
@@ -3968,7 +5100,11 @@ function rShowDone(){
   /* Land on the result, not on "Practice again". The heading is the top of what just
      changed, and the two buttons stay after it in the ordinary tab order - so the
      score is read first and acted on second, which is the order it is written in. */
-  const title=$("rDoneTitle"); if(title) title.focus();
+  const title=$("rDoneTitle");
+  if(title){
+    if(typeof ppFocusActivityTarget==="function") ppFocusActivityTarget(title);
+    else title.focus();
+  }
 }
 /* ---- Mixed Quiz boundaries: every way out of a question silences it first ----
    A "listen" question is started with Play and answered as soon as the learner
@@ -4106,54 +5242,94 @@ window.addEventListener("focus", ppCheckFresh);
 ppCheckFresh();
 
 /* ---------------- add-to-home-screen encouragement ----------------
-   One action (install) behind three surfaces: the header chip, the home banner,
-   and the completion-screen nudge. On Android/desktop Chromium we capture
+   One action (install) behind the drawer item, home banner, completion nudge, and
+   instructions-screen shortcut. On Android/desktop Chromium we capture
    beforeinstallprompt and install in one tap; on iOS (no such event) we open the
    existing step-by-step instructions screen. Proactive surfaces (banner + nudge)
-   respect a snooze stored in localStorage; the chip is a passive icon and always
-   shows while the app isn't installed. */
+   retain their localStorage snooze; the drawer item remains available unless the
+   app is already installed. */
 const PP_A2HS = (function(){
   const KEY = "popolsku-a2hs";
   const THRESHOLD = 5;                 /* card reveals before the home banner may appear */
   const COOLDOWN = 10*24*60*60*1000;   /* 10 days between asks after a dismissal */
   let deferred = null;                 /* stored beforeinstallprompt event, if any */
+  let installing = false;              /* guards rapid/repeated activation while choice is pending */
+  let installedThisSession = false;    /* set only by this page's appinstalled event */
   let engagement = 0, engaged = false;
 
-  /* "Running as an installed app?" - no single signal is reliable across platforms, so
-     combine them. Chrome / Android / desktop expose display-mode; iOS Safari sets
-     navigator.standalone; macOS Safari "Add to Dock" apps report neither reliably (a
-     long-standing WebKit quirk where dock apps think they're in a tab), so we also flag
-     the ?pwa=1 marker that our manifest start_url launches with - it's present only when
-     the app is opened from its installed icon, never in a normal browser tab. */
+  /* Installation authority comes only from the current runtime environment. URL
+     markers and persisted booleans are not evidence: either can survive or be
+     opened independently of an installation. */
   const standalone = () =>
     matchMedia("(display-mode: standalone)").matches ||
-    matchMedia("(display-mode: minimal-ui)").matches ||
-    matchMedia("(display-mode: fullscreen)").matches ||
-    matchMedia("(display-mode: window-controls-overlay)").matches ||
-    window.navigator.standalone === true ||
-    new URLSearchParams(location.search).has("pwa");
+    window.navigator.standalone === true;
   const iOS = () =>
     /iphone|ipad|ipod/i.test(navigator.userAgent) ||
     (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);   /* iPadOS reports as Mac */
 
-  const read  = () => { try{ return JSON.parse(localStorage.getItem(KEY)) || {}; }catch(e){ return {}; } };
-  const write = s  => { try{ localStorage.setItem(KEY, JSON.stringify(s)); }catch(e){} };
+  const read  = () => {
+    try{
+      const s=JSON.parse(localStorage.getItem(KEY)) || {};
+      if(s && typeof s==="object") delete s.installed;
+      return s && typeof s==="object" ? s : {};
+    }catch(e){ return {}; }
+  };
+  const write = s  => {
+    try{
+      const clean=Object.assign({}, s);
+      delete clean.installed;
+      localStorage.setItem(KEY, JSON.stringify(clean));
+    }catch(e){}
+  };
+  function migrateLegacyInstalled(){
+    try{
+      const raw=localStorage.getItem(KEY);
+      if(!raw) return;
+      const s=JSON.parse(raw);
+      if(!s || typeof s!=="object" || !Object.prototype.hasOwnProperty.call(s,"installed")) return;
+      delete s.installed;
+      if(Object.keys(s).length) localStorage.setItem(KEY, JSON.stringify(s));
+      else if(typeof localStorage.removeItem==="function") localStorage.removeItem(KEY);
+      else localStorage.setItem(KEY, "{}");
+    }catch(e){}
+  }
 
   /* whether we're allowed to *proactively* ask (banner + post-win nudge) */
   function suppressed(){
-    if(standalone()) return true;
+    if(standalone() || installedThisSession) return true;
     const s = read();
-    if(s.installed) return true;
     if((s.dismissed||0) >= 2) return true;              /* asked twice, dismissed twice - stop */
     if(s.until && Date.now() < s.until) return true;    /* still in cooldown */
     return false;
   }
 
   const el = id => document.getElementById(id);
-  const showChip   = () => { const c=el("ppChip");   if(c && !standalone()) c.hidden=false; };
-  const hideChip   = () => { const c=el("ppChip");   if(c) c.hidden=true; };
   const hideBanner = () => { const b=el("ppBanner"); if(b) b.hidden=true; };
   function revealBanner(){ const b=el("ppBanner"); if(b) b.hidden = !(engaged && !suppressed()); }
+  function installState(){
+    if(standalone() || installedThisSession) return "installed";
+    if(deferred) return "prompt";
+    return iOS() ? "ios-instructions" : "instructions";
+  }
+  function syncMenuInstall(){
+    const item=el("siteInstallItem"), button=el("siteInstall"), detail=el("siteInstallDetail"), status=el("siteInstallStatus");
+    if(!item) return;
+    const state=installState();
+    const hidden=state==="installed";
+    item.hidden=hidden;
+    if(typeof item.setAttribute==="function") item.setAttribute("aria-hidden", hidden ? "true" : "false");
+    if(button){ button.disabled=hidden; button.tabIndex=hidden ? -1 : 0; }
+    if(state==="prompt"){
+      if(detail) detail.textContent="Ready";
+      if(status) status.textContent="Browser installation is available";
+    }else if(state==="ios-instructions"){
+      if(detail) detail.textContent="Instructions";
+      if(status) status.textContent="Open iPhone or iPad Home Screen instructions";
+    }else if(state==="instructions"){
+      if(detail) detail.textContent="Instructions";
+      if(status) status.textContent="Open installation instructions for supported browsers";
+    }
+  }
 
   function snooze(){
     const s = read();
@@ -4163,18 +5339,38 @@ const PP_A2HS = (function(){
     hideBanner();
     document.querySelectorAll(".pp-nudge").forEach(n=>n.remove());
   }
-  function markInstalled(){ const s = read(); s.installed = true; write(s); hideChip(); hideBanner(); }
+  function finalizeInstalled(){
+    installedThisSession=true;
+    deferred=null;
+    installing=false;
+    syncMenuInstall();
+    hideBanner();
+    const n=el("ppNative"); if(n) n.hidden=true;
+    document.querySelectorAll(".pp-nudge").forEach(n=>n.remove());
+  }
 
-  async function install(){
+  function install(){
+    if(installing) return "busy";
+    if(installState()==="installed"){ syncMenuInstall(); return "installed"; }
     if(deferred){                       /* Android / desktop Chromium: real one-tap install */
+      const promptEvent=deferred;
+      deferred=null;                   /* consume before awaiting, so two activations cannot prompt twice */
+      installing=true;
+      syncMenuInstall();
       hideBanner();
-      deferred.prompt();
-      try{ const { outcome } = await deferred.userChoice; if(outcome === "accepted") markInstalled(); }catch(e){}
-      deferred = null;
-      const n=el("ppNative"); if(n) n.hidden=true;
-      return;
+      let promptResult;
+      try{ promptResult=promptEvent.prompt(); }
+      catch(e){ promptResult=Promise.reject(e); }
+      return Promise.resolve(promptResult).then(()=>promptEvent.userChoice)
+        .catch(()=>null).then(()=>{
+        installing=false;
+        const n=el("ppNative"); if(n) n.hidden=true;
+        syncMenuInstall();
+        return "prompt";
+      });
     }
     show("install");                    /* iOS + anything else: show the instructions screen */
+    return iOS() ? "ios-instructions" : "instructions";
   }
 
   /* markup for the inline completion-screen nudge ("" when we shouldn't ask) */
@@ -4194,16 +5390,60 @@ const PP_A2HS = (function(){
      Chromium grants silently based on engagement heuristics; Safari grants for
      installed apps; a denial is harmless and we never re-ask within a session. */
   let persistAsked = false;
+  /* Bounded, non-learner-facing diagnostics. A denial is a normal outcome, not an
+     error to show anyone: it must never block audio, block installability, prompt
+     again, or let the app claim that cached audio is permanently safe. Nothing
+     here is rendered; it exists so "did the browser grant persistence?" can be
+     answered from the console instead of guessed at. `error` holds a short reason
+     string, never a raw exception object and never learner data. */
+  const persistState = { asked:false, supported:null, persisted:null, requested:false, granted:null, error:null };
+  window.ppStorageState = persistState;
+  /* Every step below is individually guarded, because every step can fail on some
+     real or synthetic implementation: navigator.storage can throw on access, each
+     method can be a throwing getter, each call can throw synchronously or reject,
+     and a partial implementation can return a plain boolean instead of a promise.
+     None of that is worth a single learner-visible pixel, and none of it may
+     escape as an unhandled rejection. */
   function requestPersist(){
-    if(persistAsked) return;
-    persistAsked = true;
-    try{
-      if(navigator.storage && navigator.storage.persist){
-        navigator.storage.persisted().then(already => {
-          if(!already) navigator.storage.persist().catch(()=>{});
-        }).catch(()=>{});
-      }
-    }catch(e){}
+    if(persistAsked) return persistState;          /* asked once per page, ever - no repeated prompts */
+    persistAsked = true; persistState.asked = true;
+    let storage = null;
+    try{ storage = navigator.storage || null; }
+    catch(e){ persistState.supported = false; persistState.error = "access"; return persistState; }
+    if(!storage){ persistState.supported = false; return persistState; }
+    /* Read both members behind their own guard: either can be a throwing getter. */
+    let persisted = null, persist = null;
+    try{ persisted = storage.persisted; persist = storage.persist; }
+    catch(e){ persistState.supported = false; persistState.error = "method-access"; return persistState; }
+    if(typeof persisted !== "function" || typeof persist !== "function"){
+      persistState.supported = false;
+      return persistState;
+    }
+    persistState.supported = true;
+    let query;
+    try{ query = persisted.call(storage); }
+    catch(e){ persistState.error = "persisted-threw"; return persistState; }
+    /* Promise.resolve() also absorbs an implementation that answers with a plain
+       boolean, and the trailing rejection handler is the backstop: whatever the
+       chain does, it settles quietly. */
+    Promise.resolve(query).then(already => {
+      persistState.persisted = already === true;
+      if(already === true){ persistState.granted = true; return undefined; }
+      persistState.requested = true;
+      let ask;
+      try{ ask = persist.call(storage); }
+      catch(e){ persistState.granted = false; persistState.error = "persist-threw"; return undefined; }
+      return Promise.resolve(ask).then(granted => {
+        persistState.granted = granted === true;
+      }, () => {
+        persistState.granted = false; persistState.error = "persist-rejected";
+      });
+    }, () => {
+      persistState.error = "persisted-rejected";
+    }).catch(() => {
+      persistState.error = "persist-chain";
+    });
+    return persistState;
   }
 
   function bump(n){
@@ -4211,32 +5451,46 @@ const PP_A2HS = (function(){
     if(engagement >= THRESHOLD && !engaged){ engaged = true; requestPersist(); }
     else if(engagement >= THRESHOLD){ engaged = true; }
   }
-  function onHome(){ revealBanner(); }
+  function onHome(){ syncMenuInstall(); revealBanner(); }
 
   function init(){
-    if(standalone()){ hideChip(); hideBanner(); requestPersist(); return; }   /* installed = clear intent; protect their storage now */
-    showChip();
+    migrateLegacyInstalled();
+    syncMenuInstall();
 
     window.addEventListener("beforeinstallprompt", e=>{
       e.preventDefault();               /* suppress Chrome's default infobar; we drive install ourselves */
-      deferred = e;
-      showChip();
-      const n=el("ppNative"); if(n && !suppressed()) n.hidden=false;
+      deferred = standalone() || installedThisSession ? null : e;
+      syncMenuInstall();
+      const n=el("ppNative"); if(n) n.hidden=suppressed();
     });
     window.addEventListener("appinstalled", ()=>{
-      markInstalled(); deferred=null;
+      finalizeInstalled();
       const t=document.createElement("div"); t.className="toast";
       t.textContent="Gotowe! Open Po polsku from your home screen any time.";
       document.body.appendChild(t); setTimeout(()=>t.remove(), 6000);
     });
 
+    if(standalone()){ hideBanner(); requestPersist(); return; }   /* installed = clear intent; protect their storage now */
+
     document.addEventListener("click", e=>{
-      if(e.target.closest("[data-a2hs-add]"))     { install(); return; }
+      const add=e.target.closest("[data-a2hs-add]");
+      if(add){
+        const fromMenu=add.closest("#siteDrawer");
+        if(fromMenu){
+          e.preventDefault();
+          const state=installState();
+          if(state==="ios-instructions" || state==="instructions")
+            ppUseInvokerForNextScreen(el("siteMenuButton"));
+          ppCloseSiteMenu(state==="prompt" || state==="installed");
+        }
+        install();
+        return;
+      }
       if(e.target.closest("[data-a2hs-dismiss]")) { snooze();  return; }
     });
   }
 
-  return { init, install, snooze, bump, onHome, nudgeHTML };
+  return { init, install, installState, syncMenuInstall, snooze, bump, onHome, nudgeHTML };
 })();
 window.PP_A2HS = PP_A2HS;
 PP_A2HS.init();
@@ -4251,6 +5505,7 @@ $("search").addEventListener("keydown", e=>{ if(e.key === "Escape" && S.query){ 
 $("searchClear").addEventListener("click", ()=>{ clearSearch(); renderLevels(); renderTopics(); $("search").focus(); });
 
 /* ---------------- init ---------------- */
+ppAudioStatusHost();             /* park the audio live region before anything can need it */
 renderLevels(); renderTopics();
 ppShowRecoveryBanner();          /* only shows if progress is in read-only recovery mode */
 </script>

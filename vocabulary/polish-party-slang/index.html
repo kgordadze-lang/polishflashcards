@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#f8fafc">
 <title>Polish urban and party slang | Po polsku</title>
 <meta name="description" content="Urban and party slang for nights out and the day after. 10 expressions with meanings, usage notes, real example sentences, and Polish pronunciation audio - free on Po polsku.">
@@ -28,9 +28,15 @@
 @font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:700;font-display:swap;src:url("/fonts/plus-jakarta-sans-v12-latin-700.woff2") format("woff2")}
 @font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:800;font-display:swap;src:url("/fonts/plus-jakarta-sans-v12-latin-800.woff2") format("woff2")}
 *{box-sizing:border-box}
+/* Safe-area contract: the insets live on <body> only - the same declaration the
+app shell uses - so nothing double-applies them, the centred .wrap keeps its
+own 20px gutter inside them, and a zero-inset device is byte-for-byte the old
+layout. Padding on an auto-width block can never widen the document. */
 body{margin:0;background:var(--bg);color:var(--forest);
 font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
--webkit-font-smoothing:antialiased;line-height:1.55}
+-webkit-font-smoothing:antialiased;line-height:1.55;overflow-wrap:break-word;
+padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px)
+        env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
 .wrap{max-width:640px;margin:0 auto;padding:0 20px 48px}
 a{color:var(--emerald)}a:hover{color:var(--sage-hover)}
 a:focus-visible,button:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
@@ -53,7 +59,13 @@ box-shadow:var(--shadow-sm);padding:22px 22px 18px;margin:0 0 16px}
 .card .sub{color:var(--muted);font-size:14.5px;margin:0 0 12px}
 .card ul{margin:0 0 12px;padding-left:20px}.card li{margin:4px 0}
 table{width:100%;border-collapse:collapse;font-size:14px;margin:0 0 12px}
-th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+/* Reflow contract: an auto-layout table cannot render narrower than the widest
+unbreakable word in each column, which is what pushed 11 grammar pages past the
+viewport at 320px. overflow-wrap:anywhere lowers that floor to one character, so
+the table reflows inside the card instead of widening the page - the row stays a
+real table row and no cell is clipped or hidden. */
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top;
+overflow-wrap:anywhere}
 th{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted)}
 .note,.explain{background:var(--cream);border-radius:var(--r-sm);padding:10px 14px;font-size:14px;margin:0 0 12px}
 .ex{display:flex;align-items:flex-start;gap:10px;border-top:1px dashed var(--border);padding:10px 0 2px}
@@ -63,10 +75,17 @@ th{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted
 color:var(--emerald);cursor:pointer;display:grid;place-items:center}
 .say svg{width:17px;height:17px}
 .say[data-playing]{background:var(--mint-bg)}
-.cta{display:block;text-align:center;background:var(--emerald);color:#fff;text-decoration:none;font-weight:700;
-padding:15px 20px;border-radius:var(--r-md);margin:26px 0 10px}
-.cta:hover{background:var(--sage-hover);color:#fff}
-.cta-sub{text-align:center;color:var(--muted);font-size:13px;margin:0 0 8px}
+/* Audio status and retry (MLG-4A-04): one live region, moved next to whichever
+control failed, holding the message and a single keyboard-operable retry. Laid
+out in flow, so it can never cover the sentence it is talking about. */
+.audio-status{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0 0;
+padding:9px 12px;border:1px solid var(--border);border-radius:var(--r-sm);background:var(--card);
+color:var(--forest);font-size:13.5px;font-weight:600;line-height:1.4;text-align:left}
+.audio-status[hidden]{display:none}
+.audio-status .audio-retry{flex:0 0 auto;border:1px solid var(--emerald);background:var(--card);
+color:var(--emerald);font:inherit;font-weight:700;padding:6px 12px;border-radius:999px;cursor:pointer}
+.audio-status .audio-retry:hover{background:var(--mint-bg)}
+.audio-status .audio-retry[hidden]{display:none}
 .hub-list{list-style:none;margin:20px 0;padding:0;display:flex;flex-direction:column;gap:10px}
 .hub-list a{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);
 border-radius:var(--r-md);box-shadow:var(--shadow-sm);padding:14px 16px;text-decoration:none;color:var(--forest)}
@@ -74,8 +93,28 @@ border-radius:var(--r-md);box-shadow:var(--shadow-sm);padding:14px 16px;text-dec
 .hub-list .ic{flex:0 0 auto;width:38px;height:38px;border-radius:12px;background:var(--cream);
 color:var(--emerald);display:grid;place-items:center}
 .hub-list .ic svg{width:19px;height:19px}
+/* Every flex row on a generated page has one fixed child (the 34px audio
+button, the 38px logo tile, the 38px hub icon, the retry button) and one text
+child. The text child needs min-width:0, or its automatic minimum size keeps it
+at min-content width and the row widens the page instead of wrapping. */
+.top a>b,.ex>div,.hub-list a>span,.audio-status .audio-status-msg{min-width:0}
 footer{color:var(--muted);font-size:13px;text-align:center;padding:26px 0 0}
 footer a{text-decoration:none}
+
+.guide-ending{margin:28px 0 0;padding:20px;background:var(--card);border:1px solid var(--border);
+border-radius:var(--r-md);box-shadow:var(--shadow-sm)}
+.guide-ending h2{font-size:20px;line-height:1.3;font-weight:800;letter-spacing:-.35px;margin:0 0 7px}
+.guide-ending-support{color:var(--muted);font-size:14.5px;margin:0 0 16px}
+.guide-primary{display:inline-flex;align-items:center;justify-content:center;background:var(--emerald);color:#fff;
+text-decoration:none;font-weight:700;padding:11px 17px;border-radius:var(--r-sm)}
+.guide-primary:hover{background:var(--sage-hover);color:#fff}
+.guide-reassurance{color:var(--forest);font-size:12.5px;font-weight:700;margin:14px 0 5px}
+footer.guide-footer{color:var(--muted);font-size:12px;font-weight:600;letter-spacing:.2px;
+text-align:center;padding:20px 0 0}
+@media (max-width:420px){
+  .guide-ending{padding:18px}
+  .guide-primary{display:flex;width:100%}
+}
 </style>
 </head>
 <body>
@@ -83,19 +122,117 @@ footer a{text-decoration:none}
 <header class="top"><a href="/" aria-label="Po polsku home" style="display:flex;align-items:center;gap:12px">
 <span class="logo-mark"><span class="lm-back"></span><span class="lm-kreska"></span><span class="lm-front">PL</span></span>
 <b>Po polsku</b></a></header>
-<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> &rsaquo; <a href="/guide/">Guide</a> &rsaquo; Polish urban and party slang</nav><h1>Polish urban and party slang</h1><p class="lede">Urban and party slang for nights out and the day after.</p><span class="chip">B1</span><section class="card"><div class="ex" style="border-top:0;padding-top:0"><button class="say" data-audio="/audio/91539d60d782.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><h2 lang="pl" style="margin:0">słoik</h2><div class="en" style="font-size:15px">out-of-towner (dismissive)</div></div></div><div class="note">Literally 'a jar', from the jars of home food people bring back from their parents'. Especially associated with Warsaw, though understood more broadly. It is dismissive and class-coded - a put-down rather than a joke - so it is better recognised than actively used.</div><div class="ex"><button class="say" data-audio="/audio/a9f8e327e113.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">W weekend miasto jest puste, słoiki wyjechały do domu.</div><div class="en">On weekends the city empties out, the &#x27;jars&#x27; went home.</div></div></div></section><section class="card"><div class="ex" style="border-top:0;padding-top:0"><button class="say" data-audio="/audio/4c9e39d69dd3.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><h2 lang="pl" style="margin:0">wbić</h2><div class="en" style="font-size:15px">to drop by / roll up</div></div></div><div class="note"><b>Aspect pair:</b> <span lang="pl">wbijać / wbić</span></div><div class="note">Literally 'to hammer in'. Arriving somewhere casually.</div><div class="ex"><button class="say" data-audio="/audio/a37de8780b8b.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Mogę do ciebie wbić po pracy?</div><div class="en">Can I drop by yours after work?</div></div></div></section><section class="card"><div class="ex" style="border-top:0;padding-top:0"><button class="say" data-audio="/audio/fca532120fde.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><h2 lang="pl" style="margin:0">ustawka</h2><div class="en" style="font-size:15px">an arranged fight / a staged set-up</div></div></div><div class="note">Careful: for most Poles 'ustawka' first means an arranged fight between rival football fans. Outside that sense it describes something staged or rigged - a media or political set-up. It is never a neutral word for meeting friends: for that say 'umawiamy się', 'spotykamy się' or 'spotkanie'.</div><div class="ex"><button class="say" data-audio="/audio/16655e9a7687.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Policja spodziewała się ustawki kibiców.</div><div class="en">The police expected an arranged fight between football fans.</div></div></div></section><section class="card"><div class="ex" style="border-top:0;padding-top:0"><button class="say" data-audio="/audio/2a04caa37920.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><h2 lang="pl" style="margin:0">melanż</h2><div class="en" style="font-size:15px">a wild party</div></div></div><div class="note">A heavy night out or big party.</div><div class="ex"><button class="say" data-audio="/audio/7018550155f0.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">To był niezły melanż, nic nie pamiętam.</div><div class="en">That was a wild party, I remember nothing.</div></div></div></section><section class="card"><div class="ex" style="border-top:0;padding-top:0"><button class="say" data-audio="/audio/c593ed8b2ce2.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><h2 lang="pl" style="margin:0">domówka</h2><div class="en" style="font-size:15px">house party</div></div></div><div class="note">A party at someone's flat rather than a club.</div><div class="ex"><button class="say" data-audio="/audio/bb9999a89a32.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Robimy domówkę w sobotę, wpadniesz?</div><div class="en">We&#x27;re throwing a house party Saturday, coming?</div></div></div></section><section class="card"><div class="ex" style="border-top:0;padding-top:0"><button class="say" data-audio="/audio/4ae131b9a0d8.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><h2 lang="pl" style="margin:0">kac</h2><div class="en" style="font-size:15px">a hangover</div></div></div><div class="note">The base word. Pairs with 'mieć' - 'mam kaca'.</div><div class="ex"><button class="say" data-audio="/audio/133d61485f09.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Mam dziś straszliwego kaca.</div><div class="en">I&#x27;ve got a terrible hangover today.</div></div></div></section><section class="card"><div class="ex" style="border-top:0;padding-top:0"><button class="say" data-audio="/audio/f40523c3103e.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><h2 lang="pl" style="margin:0">kac morderca</h2><div class="en" style="font-size:15px">a killer hangover</div></div></div><div class="note">The day after a 'melanż'. Peak suffering.</div><div class="ex"><button class="say" data-audio="/audio/615e0ddaa724.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Nie krzycz, mam kaca mordercę.</div><div class="en">Don&#x27;t shout, I&#x27;ve got a killer hangover.</div></div></div></section><section class="card"><div class="ex" style="border-top:0;padding-top:0"><button class="say" data-audio="/audio/40318524102f.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><h2 lang="pl" style="margin:0">na mieście</h2><div class="en" style="font-size:15px">out in town</div></div></div><div class="note">Out and about in the city. 'Spotkajmy się na mieście.'</div><div class="ex"><button class="say" data-audio="/audio/c3586f812f2b.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Zjedzmy coś na mieście.</div><div class="en">Let&#x27;s grab something to eat out in town.</div></div></div></section><section class="card"><div class="ex" style="border-top:0;padding-top:0"><button class="say" data-audio="/audio/5b91327b5c30.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><h2 lang="pl" style="margin:0">lecieć</h2><div class="en" style="font-size:15px">to dash off</div></div></div><div class="note"><b>Aspect pair:</b> <span lang="pl">lecieć / polecieć</span></div><div class="note">To head out quickly. 'Muszę lecieć' = gotta run.</div><div class="ex"><button class="say" data-audio="/audio/479e00089607.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Muszę lecieć, mam autobus.</div><div class="en">I&#x27;ve got to run, my bus is coming.</div></div></div></section><section class="card"><div class="ex" style="border-top:0;padding-top:0"><button class="say" data-audio="/audio/240e577e481f.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><h2 lang="pl" style="margin:0">spadać</h2><div class="en" style="font-size:15px">to bounce / head off</div></div></div><div class="note">To leave. 'Spadam' = I'm out of here.</div><div class="ex"><button class="say" data-audio="/audio/f472d37b9a97.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Spadam, robi się późno.</div><div class="en">I&#x27;m off, it&#x27;s getting late.</div></div></div></section><a class="cta" href="/">Learn these as flashcards in the app - free, no account</a><p class="cta-sub">The full set of expressions for this topic, plus flashcard practice and full offline mode.</p><footer><a href="/">Po polsku</a> - free Polish flashcards with audio. No account, no tracking, works offline.</footer>
-</div>
-<script>
-document.addEventListener("click", function(e){
-  var b = e.target.closest("[data-audio]"); if(!b) return;
-  var cur = document.querySelector(".say[data-playing]");
-  if(cur){ delete cur.dataset.playing; }
-  if(window.__pp){ window.__pp.pause(); }
-  var a = new Audio(b.getAttribute("data-audio"));
-  window.__pp = a; b.dataset.playing = "1";
-  a.addEventListener("ended", function(){ delete b.dataset.playing; });
-  a.play().catch(function(){ delete b.dataset.playing; });
-});
-</script>
-</body>
-</html>
+<main>
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> &rsaquo; <a href="/guide/">Guide</a> &rsaquo; Polish urban and party slang</nav><h1>Polish urban and party slang</h1><p class="lede">Urban and party slang for nights out and the day after.</p><span class="chip">B1</span><section class="card"><div class="ex" style="border-top:0;padding-top:0"><button class="say" data-audio="/audio/91539d60d782.mp3" data-pl="słoik" type="button" aria-label="Play Polish pronunciation: słoik"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><h2 lang="pl" style="margin:0">słoik</h2><div class="en" style="font-size:15px">out-of-towner (dismissive)</div></div></div><div class="note">Literally 'a jar', from the jars of home food people bring back from their parents'. Especially associated with Warsaw, though understood more broadly. It is dismissive and class-coded - a put-down rather than a joke - so it is better recognised than actively used.</div><div class="ex"><button class="say" data-audio="/audio/a9f8e327e113.mp3" data-pl="W weekend miasto jest puste, słoiki wyjechały do domu." type="button" aria-label="Play Polish example: W weekend miasto jest puste, słoiki wyjechały do domu."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">W weekend miasto jest puste, słoiki wyjechały do domu.</div><div class="en">On weekends the city empties out, the &#x27;jars&#x27; went home.</div></div></div></section><section class="card"><div class="ex" style="border-top:0;padding-top:0"><button class="say" data-audio="/audio/4c9e39d69dd3.mp3" data-pl="wbić" type="button" aria-label="Play Polish pronunciation: wbić"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><h2 lang="pl" style="margin:0">wbić</h2><div class="en" style="font-size:15px">to drop by / roll up</div></div></div><div class="note"><b>Aspect pair:</b> <span lang="pl">wbijać / wbić</span></div><div class="note">Literally 'to hammer in'. Arriving somewhere casually.</div><div class="ex"><button class="say" data-audio="/audio/a37de8780b8b.mp3" data-pl="Mogę do ciebie wbić po pracy?" type="button" aria-label="Play Polish example: Mogę do ciebie wbić po pracy?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Mogę do ciebie wbić po pracy?</div><div class="en">Can I drop by yours after work?</div></div></div></section><section class="card"><div class="ex" style="border-top:0;padding-top:0"><button class="say" data-audio="/audio/fca532120fde.mp3" data-pl="ustawka" type="button" aria-label="Play Polish pronunciation: ustawka"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><h2 lang="pl" style="margin:0">ustawka</h2><div class="en" style="font-size:15px">an arranged fight / a staged set-up</div></div></div><div class="note">Careful: for most Poles 'ustawka' first means an arranged fight between rival football fans. Outside that sense it describes something staged or rigged - a media or political set-up. It is never a neutral word for meeting friends: for that say 'umawiamy się', 'spotykamy się' or 'spotkanie'.</div><div class="ex"><button class="say" data-audio="/audio/16655e9a7687.mp3" data-pl="Policja spodziewała się ustawki kibiców." type="button" aria-label="Play Polish example: Policja spodziewała się ustawki kibiców."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Policja spodziewała się ustawki kibiców.</div><div class="en">The police expected an arranged fight between football fans.</div></div></div></section><section class="card"><div class="ex" style="border-top:0;padding-top:0"><button class="say" data-audio="/audio/2a04caa37920.mp3" data-pl="melanż" type="button" aria-label="Play Polish pronunciation: melanż"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><h2 lang="pl" style="margin:0">melanż</h2><div class="en" style="font-size:15px">a wild party</div></div></div><div class="note">A heavy night out or big party.</div><div class="ex"><button class="say" data-audio="/audio/7018550155f0.mp3" data-pl="To był niezły melanż, nic nie pamiętam." type="button" aria-label="Play Polish example: To był niezły melanż, nic nie pamiętam."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">To był niezły melanż, nic nie pamiętam.</div><div class="en">That was a wild party, I remember nothing.</div></div></div></section><section class="card"><div class="ex" style="border-top:0;padding-top:0"><button class="say" data-audio="/audio/c593ed8b2ce2.mp3" data-pl="domówka" type="button" aria-label="Play Polish pronunciation: domówka"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><h2 lang="pl" style="margin:0">domówka</h2><div class="en" style="font-size:15px">house party</div></div></div><div class="note">A party at someone's flat rather than a club.</div><div class="ex"><button class="say" data-audio="/audio/bb9999a89a32.mp3" data-pl="Robimy domówkę w sobotę, wpadniesz?" type="button" aria-label="Play Polish example: Robimy domówkę w sobotę, wpadniesz?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Robimy domówkę w sobotę, wpadniesz?</div><div class="en">We&#x27;re throwing a house party Saturday, coming?</div></div></div></section><section class="card"><div class="ex" style="border-top:0;padding-top:0"><button class="say" data-audio="/audio/4ae131b9a0d8.mp3" data-pl="kac" type="button" aria-label="Play Polish pronunciation: kac"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><h2 lang="pl" style="margin:0">kac</h2><div class="en" style="font-size:15px">a hangover</div></div></div><div class="note">The base word. Pairs with 'mieć' - 'mam kaca'.</div><div class="ex"><button class="say" data-audio="/audio/133d61485f09.mp3" data-pl="Mam dziś straszliwego kaca." type="button" aria-label="Play Polish example: Mam dziś straszliwego kaca."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Mam dziś straszliwego kaca.</div><div class="en">I&#x27;ve got a terrible hangover today.</div></div></div></section><section class="card"><div class="ex" style="border-top:0;padding-top:0"><button class="say" data-audio="/audio/f40523c3103e.mp3" data-pl="kac morderca" type="button" aria-label="Play Polish pronunciation: kac morderca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><h2 lang="pl" style="margin:0">kac morderca</h2><div class="en" style="font-size:15px">a killer hangover</div></div></div><div class="note">The day after a 'melanż'. Peak suffering.</div><div class="ex"><button class="say" data-audio="/audio/615e0ddaa724.mp3" data-pl="Nie krzycz, mam kaca mordercę." type="button" aria-label="Play Polish example: Nie krzycz, mam kaca mordercę."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Nie krzycz, mam kaca mordercę.</div><div class="en">Don&#x27;t shout, I&#x27;ve got a killer hangover.</div></div></div></section><section class="card"><div class="ex" style="border-top:0;padding-top:0"><button class="say" data-audio="/audio/40318524102f.mp3" data-pl="na mieście" type="button" aria-label="Play Polish pronunciation: na mieście"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><h2 lang="pl" style="margin:0">na mieście</h2><div class="en" style="font-size:15px">out in town</div></div></div><div class="note">Out and about in the city. 'Spotkajmy się na mieście.'</div><div class="ex"><button class="say" data-audio="/audio/c3586f812f2b.mp3" data-pl="Zjedzmy coś na mieście." type="button" aria-label="Play Polish example: Zjedzmy coś na mieście."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Zjedzmy coś na mieście.</div><div class="en">Let&#x27;s grab something to eat out in town.</div></div></div></section><section class="card"><div class="ex" style="border-top:0;padding-top:0"><button class="say" data-audio="/audio/5b91327b5c30.mp3" data-pl="lecieć" type="button" aria-label="Play Polish pronunciation: lecieć"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><h2 lang="pl" style="margin:0">lecieć</h2><div class="en" style="font-size:15px">to dash off</div></div></div><div class="note"><b>Aspect pair:</b> <span lang="pl">lecieć / polecieć</span></div><div class="note">To head out quickly. 'Muszę lecieć' = gotta run.</div><div class="ex"><button class="say" data-audio="/audio/479e00089607.mp3" data-pl="Muszę lecieć, mam autobus." type="button" aria-label="Play Polish example: Muszę lecieć, mam autobus."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Muszę lecieć, mam autobus.</div><div class="en">I&#x27;ve got to run, my bus is coming.</div></div></div></section><section class="card"><div class="ex" style="border-top:0;padding-top:0"><button class="say" data-audio="/audio/240e577e481f.mp3" data-pl="spadać" type="button" aria-label="Play Polish pronunciation: spadać"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><h2 lang="pl" style="margin:0">spadać</h2><div class="en" style="font-size:15px">to bounce / head off</div></div></div><div class="note">To leave. 'Spadam' = I'm out of here.</div><div class="ex"><button class="say" data-audio="/audio/f472d37b9a97.mp3" data-pl="Spadam, robi się późno." type="button" aria-label="Play Polish example: Spadam, robi się późno."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Spadam, robi się późno.</div><div class="en">I&#x27;m off, it&#x27;s getting late.</div></div></div></section><section class="guide-ending" aria-labelledby="guideEndingTitle"><h2 id="guideEndingTitle">Ready to keep learning?</h2><p class="guide-ending-support">Practice the same Polish with flashcards, drills, conversations, and listening.</p><a class="guide-primary" href="/">Open the app</a><p class="guide-reassurance">Genuinely free. No account. Works offline.</p></section></main><footer class="guide-footer"><a href="/">Po polsku</a> &middot; v8.4 &middot; 2026</footer></div><script>
+(function(){
+  var FALLBACK_MSG = "Using your device's voice.";
+  var FAILED_MSG = "Audio couldn't play. Check your connection, then try again.";
+  var RETRY_MSG = "Try again";
+  var token = 0, playing = null, marked = null, request = null;
+  var box = null, msg = null, retry = null, owner = null;
+  function host(){
+    if(box) return box;
+    box = document.createElement("div");
+    box.id = "pp-audio-status";
+    box.className = "audio-status";
+    box.setAttribute("role", "status");
+    box.setAttribute("aria-live", "polite");
+    box.setAttribute("aria-atomic", "true");
+    box.hidden = true;
+    msg = document.createElement("span");
+    msg.id = "pp-audio-status-msg";
+    msg.className = "audio-status-msg";
+    retry = document.createElement("button");
+    retry.id = "pp-audio-retry";
+    retry.className = "audio-retry";
+    retry.type = "button";
+    retry.textContent = RETRY_MSG;
+    retry.hidden = true; retry.disabled = true; retry.tabIndex = -1;
+    retry.addEventListener("click", function(e){ e.stopPropagation(); again(); });
+    box.appendChild(msg); box.appendChild(retry);
+    document.body.appendChild(box);
+    return box;
+  }
+  function clear(){
+    if(!box) return;
+    box.hidden = true;
+    msg.textContent = "";
+    retry.hidden = true; retry.disabled = true; retry.tabIndex = -1;
+    if(owner && owner.getAttribute && owner.getAttribute("aria-describedby") === "pp-audio-status-msg"){
+      owner.removeAttribute("aria-describedby");
+    }
+    owner = null;
+  }
+  function show(kind, btn){
+    var el = host();
+    if(btn && btn.insertAdjacentElement){ try{ btn.insertAdjacentElement("afterend", el); }catch(e){} }
+    var failed = kind === "failed";
+    msg.textContent = failed ? FAILED_MSG : FALLBACK_MSG;
+    retry.hidden = !failed; retry.disabled = !failed; retry.tabIndex = failed ? 0 : -1;
+    el.hidden = false;
+    owner = btn || null;
+    if(failed && btn && btn.setAttribute) btn.setAttribute("aria-describedby", "pp-audio-status-msg");
+  }
+  function unmark(){
+    if(marked && marked.dataset) delete marked.dataset.playing;
+    marked = null;
+  }
+  function stop(){
+    token++;
+    if(playing){ try{ playing.pause(); }catch(e){} playing = null; }
+    if(window.speechSynthesis){ try{ window.speechSynthesis.cancel(); }catch(e){} }
+    unmark();
+    clear();
+  }
+  function speak(text, btn, mine, afterFailedClip){
+    if(!text || !window.speechSynthesis || typeof window.SpeechSynthesisUtterance !== "function"){
+      show("failed", btn); return;
+    }
+    var u;
+    try{ u = new window.SpeechSynthesisUtterance(text); }
+    catch(e){ show("failed", btn); return; }
+    u.lang = "pl-PL";
+    u.onend = function(){ if(mine !== token) return; unmark(); };
+    u.onerror = function(){ if(mine !== token) return; unmark(); show("failed", btn); };
+    if(afterFailedClip) show("fallback", btn);
+    if(btn && btn.dataset){ marked = btn; btn.dataset.playing = "1"; }
+    try{ window.speechSynthesis.speak(u); }
+    catch(e){ unmark(); show("failed", btn); }
+  }
+  function play(btn){
+    stop();
+    var mine = token;
+    var url = btn.getAttribute("data-audio");
+    var text = btn.getAttribute("data-pl") || "";
+    request = { btn: btn, text: text };
+    if(!url){ speak(text, btn, mine, false); return; }
+    var a = new Audio(url);
+    playing = a; marked = btn; btn.dataset.playing = "1";
+    var settled = false;
+    function settle(){
+      if(settled) return false;
+      settled = true;
+      if(mine !== token) return false;
+      playing = null; unmark();
+      return true;
+    }
+    a.addEventListener("ended", function(){ settle(); });
+    a.addEventListener("error", function(){ if(settle()) speak(text, btn, mine, true); });
+    a.play().catch(function(){ if(settle()) speak(text, btn, mine, true); });
+  }
+  function again(){
+    if(!request) return;
+    var btn = request.btn;
+    if(btn && btn.focus){ try{ btn.focus(); }catch(e){} }
+    if(btn) play(btn);
+  }
+  document.addEventListener("click", function(e){
+    var b = e.target.closest("[data-audio]"); if(!b) return;
+    play(b);
+  });
+  /* Parked before it is ever needed: a live region has to exist before its text
+     changes for the change to be announced reliably. Same reason, same moment,
+     as the app shell. */
+  host();
+})();
+</script></body></html>

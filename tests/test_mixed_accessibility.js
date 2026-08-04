@@ -256,7 +256,7 @@ ok('A3 any ring suppression names the Mixed Quiz anchors and nothing else', (fun
   });
   if (!suppress.length) return true;                  // leaving the default ring on is a fine choice too
   return suppress.every(function (b) {
-    return b.sel.split(',').every(function (s) { return /^#(rType|rPl|rDoneTitle):focus$/.test(s.trim()); });
+    return b.sel.split(',').every(function (s) { return /^#(rType|rPl|rEn|rDoneTitle):focus$/.test(s.trim()); });
   });
 })());
 ok('A3 the real Mixed Quiz controls keep a focus indicator', (function () {
@@ -281,15 +281,15 @@ eq('A4 rFb is not a status or alert region either', attr(TAG_FB, 'role'), null);
 ok('A4 rFb is still the visible feedback panel',
    (attr(TAG_FB, 'class') || '').indexOf('fb-box') !== -1);
 eq('A4 the Mixed Quiz screen has exactly one status region', countOf(ROUND_SCREEN, 'role="status"'), 1);
-eq('A4 the Mixed Quiz screen has exactly one atomic region', countOf(ROUND_SCREEN, 'aria-atomic="true"'), 1);
-// Three polite regions remain, and they answer three different questions: how far
-// through the round, the typed verdict, and the immediate result. They cannot fire
-// together - a typed submission writes one, a multiple-choice answer the other.
-ok('A4 the remaining polite regions are the counter, the typed verdict and the status',
-   countOf(ROUND_SCREEN, 'aria-live="polite"') === 3 &&
+eq('A4 progress and feedback are the two atomic regions', countOf(ROUND_SCREEN, 'aria-atomic="true"'), 2);
+// Two polite regions remain, and they answer different questions: how far through
+// the round and the one immediate result. Rich typed feedback is ordinary content,
+// so it cannot race the concise status message.
+ok('A4 the remaining polite regions are the counter and the status',
+   countOf(ROUND_SCREEN, 'aria-live="polite"') === 2 &&
    ROUND_SCREEN.indexOf('id="rCountLbl" aria-live="polite"') !== -1 &&
-   attr(tagFor('rVerdict'), 'aria-live') === 'polite');
-ok('A4 the typed verdict region was left alone', attr(tagFor('rVerdict'), 'role') === null);
+   attr(tagFor('rVerdict'), 'aria-live') === null);
+ok('A4 the typed verdict is ordinary visible content', attr(tagFor('rVerdict'), 'role') === null);
 
 // The visible, non-colour cue. Words, driven off the classes the code already sets.
 var CUE_CORRECT = cssBlocks('.opt.correct::after');
@@ -390,10 +390,9 @@ Object.defineProperty(FakeEl.prototype, 'innerHTML', {
     while ((m = re.exec(this._html)) !== null) {
       if (m[1].toLowerCase() === 'br') continue;
       var kid = new FakeEl(m[1]);
-      var cm = m[2].match(/\sclass\s*=\s*"([^"]*)"/);
-      if (cm) kid.className = cm[1];
-      var lm = m[2].match(/\slang\s*=\s*"([^"]*)"/);
-      if (lm) kid.setAttribute('lang', lm[1]);
+      var attrs = /([a-zA-Z_:][\w:.-]*)\s*=\s*"([^"]*)"/g, am;
+      while ((am = attrs.exec(m[2])) !== null) kid.setAttribute(am[1], am[2]);
+      if (kid.getAttribute('class') !== null) kid.className = kid.getAttribute('class');
       this.children.push(kid);
     }
   }
@@ -445,6 +444,11 @@ var PP_ANSWER = window.PP_ANSWER;                               // the REAL comp
 var PP_DISTRACTOR = window.PP_DISTRACTOR;                       // the REAL option builder, as index.html binds it
 var ppMainAudioText = window.PP_USAGE.mainAudioText;            // index.html binds them the same way
 var ppHasMainAudio = window.PP_USAGE.hasMainAudio;
+var PP_AUDIO_NAMES = (new Function(
+  extractFunction(INDEX, 'ppAudioControlName') + '\n' +
+  extractFunction(INDEX, 'ppSetAudioControlName') + '\n' +
+  'return { set: ppSetAudioControlName };'
+))();
 
 // Audio appears here only as a counter. What speakCardMain actually does is owned
 // by tests/test_audio_fallback.js; this stand-in exists so that "the render path
@@ -596,6 +600,7 @@ var PP_TYPED_INDEX = PP_ANSWER.buildIndex(PLAIN_CARDS.concat(NASTY_CARDS));
 var MIXED = (new Function('$', 'document', 'show', 'R', 'LEVELS', 'poolFor', 'gShuffle',
   'ppEligibleFor', 'ppAppendUsageTo', 'ppVariantParts', 'ppProgressWritable', 'loadV2', 'saveV2',
   'PP_ANSWER', 'PP_TYPED_INDEX', 'ppHasMainAudio', 'ppMainAudioText', 'G_AUDIO', 'PP_DISTRACTOR',
+  'ppSetAudioControlName',
   RNAMES.map(function (n) { return RSRC[n]; }).join('\n') + '\n' +
   'return {\n' +
   '  startRound: function(a,b){ return startRound(a,b); },\n' +
@@ -608,7 +613,8 @@ var MIXED = (new Function('$', 'document', 'show', 'R', 'LEVELS', 'poolFor', 'gS
   '};'
 ))(el, fakeDoc, fakeShow, R, LEVELS, fakePoolFor, fakeShuffle,
    fakeEligible, fakeAppendUsage, ppVariantPartsStub, fakeProgressWritable, fakeLoadV2, fakeSaveV2,
-   PP_ANSWER, PP_TYPED_INDEX, ppHasMainAudio, ppMainAudioText, '<svg data-icon="audio"></svg>', PP_DISTRACTOR);
+   PP_ANSWER, PP_TYPED_INDEX, ppHasMainAudio, ppMainAudioText, '<svg data-icon="audio"></svg>', PP_DISTRACTOR,
+   PP_AUDIO_NAMES.set);
 function activate(id) { return MIXED.handlers[id](); }
 
 // ---------- per-test setup ----------
@@ -830,9 +836,26 @@ eq('E8 the listen format reveals the Polish answer', el('rReveal').textContent, 
 ok('E8 ... and shows it', el('rReveal').classList.contains('show'));
 ok('E8 the example feedback panel still fills for a card that has one',
    el('rFb').innerHTML.indexOf('Poprosz') !== -1 && el('rFb').classList.contains('show'));
+eq('E8 Mixed listening example audio has phrase-specific context',
+   el('rFb').querySelector('.mini-audio').getAttribute('aria-label'),
+   'Play example sentence: ' + R.qs[0].c.ex);
+eq('E8 Mixed listening example audio keeps the exact engine phrase',
+   decodeURIComponent(el('rFb').querySelector('.mini-audio').getAttribute('data-say')), R.qs[0].c.ex);
 ok('E8 the status still announces the result independently of that panel',
    /^Correct\./.test(status().textContent) && status().textContent.indexOf(R.qs[0].c.pl) !== -1);
 ok('E8 focus still moved to Next', ACTIVE === el('rNext'));
+var MC_EX_CARDS = PLAIN_CARDS.map(function (card) {
+  var copy = Object.assign({}, card);
+  if (copy.id === 'm3') { copy.ex = 'To jest woda.'; copy.exEn = 'This is water.'; }
+  return copy;
+});
+reset({ cards: MC_EX_CARDS, at: 2 });
+press(correctBtn());
+eq('E8 Mixed multiple-choice example audio has phrase-specific context',
+   el('rFb').querySelector('.mini-audio').getAttribute('aria-label'),
+   'Play example sentence: To jest woda.');
+eq('E8 Mixed multiple-choice example audio keeps the exact engine phrase',
+   decodeURIComponent(el('rFb').querySelector('.mini-audio').getAttribute('data-say')), 'To jest woda.');
 // The point of the whole phase: an ORDINARY card, with no example and no usage
 // label, still says something.
 reset({ at: 2 });                              // woda: no ex, no usage, no warning
@@ -884,7 +907,22 @@ eq('G1 ... and opens Next', el('rNext').disabled, false);
 ok('G1 ... and focus moves to Next', ACTIVE === el('rNext'));
 eq('G1 ... and the visible verdict still shows the Polish',
    (el('rVerdict').querySelector('.v-pl') || {}).textContent, typedCard.pl);
-eq('G1 ... and the status was not used to repeat the verdict', status().textContent, '');
+eq('G1 ... and the status owns one concise verdict', status().textContent,
+   'Correct. The answer is mąka. Next is ready.');
+eq('G1 Mixed typed-answer audio has phrase-specific context',
+   el('rVerdict').querySelector('.mini-audio').getAttribute('aria-label'),
+   'Play answer: ' + typedCard.pl);
+eq('G1 Mixed typed-answer audio keeps the exact engine phrase',
+   decodeURIComponent(el('rVerdict').querySelector('.mini-audio').getAttribute('data-say')), typedCard.pl);
+
+reset({ cards: NASTY_CARDS, at: 1 });
+var unsafeTyped = R.qs[1].c.pl;
+typeAndCheck(unsafeTyped);
+eq('G1 HTML-like Mixed answer stays literal in the contextual audio name',
+   el('rVerdict').querySelector('.mini-audio').getAttribute('aria-label'),
+   'Play answer: ' + unsafeTyped);
+eq('G1 HTML-like Mixed answer keeps the exact encoded engine phrase',
+   decodeURIComponent(el('rVerdict').querySelector('.mini-audio').getAttribute('data-say')), unsafeTyped);
 
 reset({ at: 1 });
 typeAndCheck('maka');                          // the same word without its diacritic
@@ -892,7 +930,8 @@ ok('G2 a diacritic slip reads as almost', el('rVerdict').className.indexOf('v-al
 eq('G2 ... and scores almost', R.qs[1].result, 'almost');
 ok('G2 ... and focus moves to Next', ACTIVE === el('rNext'));
 eq('G2 ... and creates no requeue', R.qs.length, PLAIN_CARDS.length);
-eq('G2 ... and the status stayed out of it', status().textContent, '');
+eq('G2 ... and the status owns one concise verdict', status().textContent,
+   'Almost correct. Check the Polish spelling: mąka. Next is ready.');
 
 reset({ at: 1 });
 typeAndCheck('herbata');                       // a different word entirely
@@ -900,7 +939,8 @@ ok('G3 a wrong answer reads as wrong', el('rVerdict').className.indexOf('v-wrong
 eq('G3 ... and scores missed', R.qs[1].result, 'miss');
 ok('G3 ... and focus moves to Next', ACTIVE === el('rNext'));
 eq('G3 ... and creates exactly one requeue', R.qs.length, PLAIN_CARDS.length + 1);
-eq('G3 ... and the status stayed out of it', status().textContent, '');
+eq('G3 ... and the status owns one concise verdict', status().textContent,
+   'Incorrect. The answer is mąka. Next is ready.');
 
 // Blank submission: everything about it is unchanged except that it now says why.
 ['', '   ', '\t \n'].forEach(function (blank) {
@@ -930,7 +970,8 @@ eq('G7 ... and scores right', R.qs[1].result, 'right');
 ok('G7 ... and focus moves to Next', ACTIVE === el('rNext'));
 // The instruction must not outlive the thing it was asking for: left standing it
 // would contradict the verdict for anyone reading the page rather than listening.
-eq('G7 ... and retires the blank instruction', status().textContent, '');
+eq('G7 ... and replaces the blank instruction with the result', status().textContent,
+   'Correct. The answer is mąka. Next is ready.');
 eq('G8 the typed path started no audio', AUDIO_MADE.length + UTTER_MADE.length + SPOKEN.length, 0);
 
 // =========================================================================
@@ -993,7 +1034,8 @@ eq('H6 a loading question autoplayed nothing', AUDIO_MADE.length + UTTER_MADE.le
 var settledFrom = ACTIVE, promptFocuses = el('rType').focusCount;
 settleAudioManifest(manifestFor(CARDS));
 ok('H7 settlement opened Play', el('rPlay').disabled === false);
-eq('H7 settlement restored the ordinary accessible name', el('rPlay').accName(), 'Play the Polish audio');
+eq('H7 settlement restored the contextual accessible name', el('rPlay').accName(),
+   'Play Polish audio for the current question');
 ok('H7 settlement did not move focus', ACTIVE === settledFrom && ACTIVE === el('rType'));
 eq('H7 settlement did not even re-focus the anchor', el('rType').focusCount, promptFocuses);
 eq('H7 settlement never focused Play', el('rPlay').focusCount, 0);
@@ -1285,7 +1327,8 @@ var BLANK_ARM = (function () {
 })();
 ok('K5 the blank guard is still the same PP_ANSWER.normalize test',
    hasCode(CODE_CHECK, 'if(!PP_ANSWER.normalize(val))'));
-ok('K5 the blank guard writes the status region', BLANK_ARM.indexOf(squash('rStatus')) !== -1);
+ok('K5 the blank guard writes through the status owner',
+   BLANK_ARM.indexOf(squash('rSetStatus')) !== -1 || BLANK_ARM.indexOf(squash('rStatus')) !== -1);
 ok('K5 ... with the authored instruction', BLANK_ARM.indexOf(squash('Type the Polish answer first.')) !== -1);
 ok('K5 ... and returns focus to the input', BLANK_ARM.indexOf(squash('$("rInput").focus()')) !== -1);
 ok('K5 ... and still returns before anything is scored', BLANK_ARM.indexOf('return;') !== -1);
@@ -1294,17 +1337,19 @@ ok('K5 ... and still scores, settles and requeues nothing',
    BLANK_ARM.indexOf(squash('disabled=false')) === -1);
 ok('K5 the typed verdict still classifies through the shared comparator',
    hasCode(CODE_CHECK, 'PP_ANSWER.classify(val, c, PP_TYPED_INDEX)'));
-ok('K5 a settled typed answer clears the instruction rather than replacing it',
+ok('K5 a settled typed answer clears the stale instruction before announcing its result',
    (function () {
      var hay = squash(CODE_CHECK), at = hay.indexOf(squash('PP_ANSWER.classify('));
      var tail = hay.slice(at);
-     return tail.indexOf(squash('$("rStatus").textContent=""')) !== -1 &&
-            tail.indexOf(squash('rAnnounce')) === -1;
+     return (tail.indexOf(squash('rSetStatus([])')) !== -1 ||
+             tail.indexOf(squash('$("rStatus").textContent=""')) !== -1) &&
+            tail.indexOf(squash('ppAnnounceTypedActivityResult')) !== -1;
    })());
 ok('K5 the typed verdict still banks through rRecord',
    hasCode(CODE_CHECK, 'rRecord(q, verdict==="wrong" ? "miss" : verdict)'));
-ok('K5 the typed verdict still ends on Next',
-   hasCode(CODE_CHECK, '$("rNext").disabled=false; $("rNext").focus()'));
+ok('K5 the typed verdict still opens Next and routes focus there',
+   hasCode(CODE_CHECK, '$("rNext").disabled=false') &&
+   CODE_CHECK.indexOf('rNext') < CODE_CHECK.lastIndexOf('ppFocusActivityTarget'));
 
 // No autoplay anywhere on the render, focus, status or completion path - neither by
 // calling a playback helper nor by constructing playback directly. Deliberately
@@ -1349,6 +1394,42 @@ ok('K7 the round still builds one option set per question',
 ok('K7 the requeue rule is unchanged',
    hasCode(codeOnly(RSRC.rRecord), 'if(q.requeued) return;') &&
    hasCode(codeOnly(RSRC.rRecord), 'if(result==="miss")'));
+
+// =========================================================================
+// L. PODCAST-ONLY FORMAT PATHS - same focus/feedback contract, no typing
+// =========================================================================
+// Phase 2B owns the residual branch in startRound. Drive that branch through the
+// same full shipping harness used above so the podcast restriction cannot bypass
+// option state, answer focus, advance, completion or restart behavior.
+var priorKind = LEVELS[0].topics[0].kind;
+LEVELS[0].topics[0].kind = 'podcast';
+reset();
+eq('L1 podcast context is exposed beside the episode title', el('rSub').textContent, 'Podcast · Mixed quiz');
+ok('L1 podcast rounds contain only listening and multiple choice',
+   R.qs.length > 0 && R.qs.every(function (question) {
+     return question.fmt === 'listen' || question.fmt === 'mc';
+   }));
+eq('L1 podcast rounds contain no typed prompt',
+   R.qs.filter(function (question) { return question.fmt === 'type'; }).length, 0);
+eq('L2 podcast question zero is listening', R.qs[0].fmt, 'listen');
+eq('L2 listening focus starts on Play', ACTIVE, el('rPlay'));
+var podcastAnswer = correctBtn();
+press(podcastAnswer);
+eq('L3 the podcast option exposes selected state', podcastAnswer.getAttribute('aria-pressed'), 'true');
+eq('L3 the podcast result is scored through the unchanged record path', R.qs[0].result, 'right');
+eq('L3 a correct podcast answer focuses enabled Next', ACTIVE, el('rNext'));
+activate('rNext');
+eq('L4 podcast question one is multiple choice', R.qs[1].fmt, 'mc');
+eq('L4 advance focuses the new Polish prompt', ACTIVE, el('rPl'));
+eq('L4 stale answer status is cleared on advance', status().textContent, '');
+R.i = R.qs.length; MIXED.rRender();
+eq('L5 podcast completion focuses the result heading', ACTIVE, el('rDoneTitle'));
+eq('L5 podcast completion clears the last feedback status', status().textContent, '');
+activate('rAgain');
+eq('L6 podcast restart returns to recognition-only formats',
+   R.qs.every(function (question) { return question.fmt !== 'type'; }), true);
+eq('L6 podcast restart focuses the first playable question', ACTIVE, el('rPlay'));
+LEVELS[0].topics[0].kind = priorKind;
 
 info('assertions run against the shipping Mixed Quiz code in index.html');
 info('fake DOM models: focus() on a disabled or hidden element is a no-op; disabling the focused element hands focus to <body>');

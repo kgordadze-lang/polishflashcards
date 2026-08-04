@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#f8fafc">
 <title>Przeczenie (Negation) - Polish grammar explained | Po polsku</title>
 <meta name="description" content="Nigdy nic nikomu nie mówię - why Polish stacks its negatives. Clear explanations with tables, examples with Polish pronunciation audio, and free practice drills - Grammar B1 on Po polsku.">
@@ -28,9 +28,15 @@
 @font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:700;font-display:swap;src:url("/fonts/plus-jakarta-sans-v12-latin-700.woff2") format("woff2")}
 @font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:800;font-display:swap;src:url("/fonts/plus-jakarta-sans-v12-latin-800.woff2") format("woff2")}
 *{box-sizing:border-box}
+/* Safe-area contract: the insets live on <body> only - the same declaration the
+app shell uses - so nothing double-applies them, the centred .wrap keeps its
+own 20px gutter inside them, and a zero-inset device is byte-for-byte the old
+layout. Padding on an auto-width block can never widen the document. */
 body{margin:0;background:var(--bg);color:var(--forest);
 font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
--webkit-font-smoothing:antialiased;line-height:1.55}
+-webkit-font-smoothing:antialiased;line-height:1.55;overflow-wrap:break-word;
+padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px)
+        env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
 .wrap{max-width:640px;margin:0 auto;padding:0 20px 48px}
 a{color:var(--emerald)}a:hover{color:var(--sage-hover)}
 a:focus-visible,button:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
@@ -53,7 +59,13 @@ box-shadow:var(--shadow-sm);padding:22px 22px 18px;margin:0 0 16px}
 .card .sub{color:var(--muted);font-size:14.5px;margin:0 0 12px}
 .card ul{margin:0 0 12px;padding-left:20px}.card li{margin:4px 0}
 table{width:100%;border-collapse:collapse;font-size:14px;margin:0 0 12px}
-th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+/* Reflow contract: an auto-layout table cannot render narrower than the widest
+unbreakable word in each column, which is what pushed 11 grammar pages past the
+viewport at 320px. overflow-wrap:anywhere lowers that floor to one character, so
+the table reflows inside the card instead of widening the page - the row stays a
+real table row and no cell is clipped or hidden. */
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top;
+overflow-wrap:anywhere}
 th{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted)}
 .note,.explain{background:var(--cream);border-radius:var(--r-sm);padding:10px 14px;font-size:14px;margin:0 0 12px}
 .ex{display:flex;align-items:flex-start;gap:10px;border-top:1px dashed var(--border);padding:10px 0 2px}
@@ -63,10 +75,17 @@ th{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted
 color:var(--emerald);cursor:pointer;display:grid;place-items:center}
 .say svg{width:17px;height:17px}
 .say[data-playing]{background:var(--mint-bg)}
-.cta{display:block;text-align:center;background:var(--emerald);color:#fff;text-decoration:none;font-weight:700;
-padding:15px 20px;border-radius:var(--r-md);margin:26px 0 10px}
-.cta:hover{background:var(--sage-hover);color:#fff}
-.cta-sub{text-align:center;color:var(--muted);font-size:13px;margin:0 0 8px}
+/* Audio status and retry (MLG-4A-04): one live region, moved next to whichever
+control failed, holding the message and a single keyboard-operable retry. Laid
+out in flow, so it can never cover the sentence it is talking about. */
+.audio-status{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0 0;
+padding:9px 12px;border:1px solid var(--border);border-radius:var(--r-sm);background:var(--card);
+color:var(--forest);font-size:13.5px;font-weight:600;line-height:1.4;text-align:left}
+.audio-status[hidden]{display:none}
+.audio-status .audio-retry{flex:0 0 auto;border:1px solid var(--emerald);background:var(--card);
+color:var(--emerald);font:inherit;font-weight:700;padding:6px 12px;border-radius:999px;cursor:pointer}
+.audio-status .audio-retry:hover{background:var(--mint-bg)}
+.audio-status .audio-retry[hidden]{display:none}
 .hub-list{list-style:none;margin:20px 0;padding:0;display:flex;flex-direction:column;gap:10px}
 .hub-list a{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);
 border-radius:var(--r-md);box-shadow:var(--shadow-sm);padding:14px 16px;text-decoration:none;color:var(--forest)}
@@ -74,8 +93,28 @@ border-radius:var(--r-md);box-shadow:var(--shadow-sm);padding:14px 16px;text-dec
 .hub-list .ic{flex:0 0 auto;width:38px;height:38px;border-radius:12px;background:var(--cream);
 color:var(--emerald);display:grid;place-items:center}
 .hub-list .ic svg{width:19px;height:19px}
+/* Every flex row on a generated page has one fixed child (the 34px audio
+button, the 38px logo tile, the 38px hub icon, the retry button) and one text
+child. The text child needs min-width:0, or its automatic minimum size keeps it
+at min-content width and the row widens the page instead of wrapping. */
+.top a>b,.ex>div,.hub-list a>span,.audio-status .audio-status-msg{min-width:0}
 footer{color:var(--muted);font-size:13px;text-align:center;padding:26px 0 0}
 footer a{text-decoration:none}
+
+.guide-ending{margin:28px 0 0;padding:20px;background:var(--card);border:1px solid var(--border);
+border-radius:var(--r-md);box-shadow:var(--shadow-sm)}
+.guide-ending h2{font-size:20px;line-height:1.3;font-weight:800;letter-spacing:-.35px;margin:0 0 7px}
+.guide-ending-support{color:var(--muted);font-size:14.5px;margin:0 0 16px}
+.guide-primary{display:inline-flex;align-items:center;justify-content:center;background:var(--emerald);color:#fff;
+text-decoration:none;font-weight:700;padding:11px 17px;border-radius:var(--r-sm)}
+.guide-primary:hover{background:var(--sage-hover);color:#fff}
+.guide-reassurance{color:var(--forest);font-size:12.5px;font-weight:700;margin:14px 0 5px}
+footer.guide-footer{color:var(--muted);font-size:12px;font-weight:600;letter-spacing:.2px;
+text-align:center;padding:20px 0 0}
+@media (max-width:420px){
+  .guide-ending{padding:18px}
+  .guide-primary{display:flex;width:100%}
+}
 </style>
 </head>
 <body>
@@ -83,19 +122,117 @@ footer a{text-decoration:none}
 <header class="top"><a href="/" aria-label="Po polsku home" style="display:flex;align-items:center;gap:12px">
 <span class="logo-mark"><span class="lm-back"></span><span class="lm-kreska"></span><span class="lm-front">PL</span></span>
 <b>Po polsku</b></a></header>
-<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> &rsaquo; <a href="/guide/">Guide</a> &rsaquo; Przeczenie (Negation)</nav><h1>Przeczenie (Negation)</h1><p class="lede">Nigdy nic nikomu nie mówię - why Polish stacks its negatives</p><span class="chip">Grammar B1</span><section class="card"><h2>nie goes directly before the verb</h2><p class="sub">One position to learn - and no don't / doesn't / didn't to memorise.</p><ul><li><b>Nie</b> mam czasu. <b>Nie</b> wiem. <b>Nie</b> lubię poniedziałków.</li><li>It stays glued to the verb even in questions: Czy ty <b>nie widzisz</b>?</li><li>Compare English's don't / doesn't / didn't / won't - Polish has one word for all of it.</li><li><b>Nie</b> can also negate a single word instead of the verb, and then it stands in front of that word: <i>Nie dziś, tylko jutro.</i></li></ul><div class="ex"><button class="say" data-audio="/audio/2c47b14f4b5d.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Nie rozumiem tego pytania.</div><div class="en">I don&#x27;t understand this question.</div></div></div><div class="ex"><button class="say" data-audio="/audio/cd8997a186bb.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Ona nie pracuje w piątki.</div><div class="en">She doesn&#x27;t work on Fridays.</div></div></div></section><section class="card"><h2>Negatives stack - and they must</h2><p class="sub">In English two negatives cancel. In Polish they team up, and skipping one is an error.</p><ul><li>Nigdy <b>nie</b> palę - I never smoke. The nie is not optional.</li><li>They pile up freely: <b>Nigdy nikomu nic nie</b> mówię - I never tell anyone anything. Four negatives, one meaning.</li><li>The trap runs in reverse for English speakers: <i>Nigdy palę</i> (missing nie) sounds as wrong to Poles as 'I never don't smoke' does to you.</li></ul><div class="ex"><button class="say" data-audio="/audio/2021e857b20f.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Nikt nic nie powiedział.</div><div class="en">Nobody said anything.</div></div></div><div class="ex"><button class="say" data-audio="/audio/7085b6cd3625.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Nigdy nigdzie nie wychodzę wieczorem.</div><div class="en">I never go out anywhere in the evening.</div></div></div></section><section class="card"><h2>The ni- family</h2><p class="sub">The negative words all start with ni- - and they decline through the cases like everything else.</p><table><thead><tr><th>Group</th><th>Ending</th><th>Example</th></tr></thead><tbody><tr><td>nikt → nikogo, nikomu</td><td lang="pl">nobody</td><td lang="pl">Nie znam tu nikogo.</td></tr><tr><td>nic → niczego, niczym</td><td lang="pl">nothing</td><td lang="pl">Nic nie widzę.</td></tr><tr><td>nigdy</td><td lang="pl">never</td><td lang="pl">Nigdy tam nie byłem.</td></tr><tr><td>nigdzie</td><td lang="pl">nowhere</td><td lang="pl">Nigdzie nie mogę znaleźć kluczy.</td></tr><tr><td>żaden / żadna / żadne</td><td lang="pl">no / none</td><td lang="pl">Nie mam żadnych pytań.</td></tr></tbody></table><div class="note"><b>Nikogo nie było w domu</b> - nobody was home. After nie było, the person goes to the Genitive: the genitive-of-negation you met in Dopełniacz, working overtime.</div></section><section class="card"><h2>Negation changes the case</h2><p class="sub">The Dopełniacz reminder: a negated verb pushes its object from Accusative into Genitive.</p><ul><li>Mam czas → Nie mam <b>czasu</b>. Lubię kawę → Nie lubię <b>kawy</b>.</li><li>There is / there isn't: Jest mleko → <b>Nie ma mleka</b>.</li><li>This only touches direct objects. Other cases stay put: Nie ufam <b>mu</b> (still Dative).</li></ul><div class="ex"><button class="say" data-audio="/audio/d2a5ac44625b.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Nie mam dzisiaj czasu.</div><div class="en">I don&#x27;t have time today.</div></div></div><div class="ex"><button class="say" data-audio="/audio/813e7ddeed84.mp3" aria-label="Play pronunciation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">W lodówce nie ma mleka.</div><div class="en">There&#x27;s no milk in the fridge.</div></div></div></section><section class="card"><h2>ani... ani, jeszcze nie, już nie</h2><p class="sub">Three finishing touches that make your negatives sound native.</p><table><thead><tr><th>Group</th><th>Ending</th><th>Example</th></tr></thead><tbody><tr><td>neither... nor</td><td lang="pl">ani... ani</td><td lang="pl">Nie lubię ani kawy, ani herbaty.</td></tr><tr><td>not yet</td><td lang="pl">jeszcze nie</td><td lang="pl">Jeszcze nie jadłem.</td></tr><tr><td>not anymore</td><td lang="pl">już nie</td><td lang="pl">Już tam nie pracuję.</td></tr><tr><td>not at all</td><td lang="pl">w ogóle nie</td><td lang="pl">W ogóle nie rozumiem.</td></tr><tr><td>almost never</td><td lang="pl">prawie nigdy</td><td lang="pl">Prawie nigdy nie choruję.</td></tr></tbody></table><div class="note"><b>jeszcze nie</b> vs <b>już nie</b> is the pair worth drilling: jeszcze nie = hasn't happened yet; już nie = happened, but stopped. <i>Jeszcze nie jem</i> (I'm not eating yet) vs <i>Już nie jem</i> (I've stopped eating).</div></section><a class="cta" href="/">Practice this in the app - free, no account</a><p class="cta-sub">This page is a sample - the app has the full topic, 12 interactive drills, and Polish pronunciation audio throughout.</p><footer><a href="/">Po polsku</a> - free Polish flashcards with audio. No account, no tracking, works offline.</footer>
-</div>
-<script>
-document.addEventListener("click", function(e){
-  var b = e.target.closest("[data-audio]"); if(!b) return;
-  var cur = document.querySelector(".say[data-playing]");
-  if(cur){ delete cur.dataset.playing; }
-  if(window.__pp){ window.__pp.pause(); }
-  var a = new Audio(b.getAttribute("data-audio"));
-  window.__pp = a; b.dataset.playing = "1";
-  a.addEventListener("ended", function(){ delete b.dataset.playing; });
-  a.play().catch(function(){ delete b.dataset.playing; });
-});
-</script>
-</body>
-</html>
+<main>
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> &rsaquo; <a href="/guide/">Guide</a> &rsaquo; Przeczenie (Negation)</nav><h1>Przeczenie (Negation)</h1><p class="lede">Nigdy nic nikomu nie mówię - why Polish stacks its negatives</p><span class="chip">Grammar B1</span><section class="card"><h2>nie goes directly before the verb</h2><p class="sub">One position to learn - and no don't / doesn't / didn't to memorise.</p><ul><li><b>Nie</b> mam czasu. <b>Nie</b> wiem. <b>Nie</b> lubię poniedziałków.</li><li>It stays glued to the verb even in questions: Czy ty <b>nie widzisz</b>?</li><li>Compare English's don't / doesn't / didn't / won't - Polish has one word for all of it.</li><li><b>Nie</b> can also negate a single word instead of the verb, and then it stands in front of that word: <i>Nie dziś, tylko jutro.</i></li></ul><div class="ex"><button class="say" data-audio="/audio/2c47b14f4b5d.mp3" data-pl="Nie rozumiem tego pytania." type="button" aria-label="Play Polish example: Nie rozumiem tego pytania."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Nie rozumiem tego pytania.</div><div class="en">I don&#x27;t understand this question.</div></div></div><div class="ex"><button class="say" data-audio="/audio/cd8997a186bb.mp3" data-pl="Ona nie pracuje w piątki." type="button" aria-label="Play Polish example: Ona nie pracuje w piątki."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Ona nie pracuje w piątki.</div><div class="en">She doesn&#x27;t work on Fridays.</div></div></div></section><section class="card"><h2>Negatives stack - and they must</h2><p class="sub">In English two negatives cancel. In Polish they team up, and skipping one is an error.</p><ul><li>Nigdy <b>nie</b> palę - I never smoke. The nie is not optional.</li><li>They pile up freely: <b>Nigdy nikomu nic nie</b> mówię - I never tell anyone anything. Four negatives, one meaning.</li><li>The trap runs in reverse for English speakers: <i>Nigdy palę</i> (missing nie) sounds as wrong to Poles as 'I never don't smoke' does to you.</li></ul><div class="ex"><button class="say" data-audio="/audio/2021e857b20f.mp3" data-pl="Nikt nic nie powiedział." type="button" aria-label="Play Polish example: Nikt nic nie powiedział."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Nikt nic nie powiedział.</div><div class="en">Nobody said anything.</div></div></div><div class="ex"><button class="say" data-audio="/audio/7085b6cd3625.mp3" data-pl="Nigdy nigdzie nie wychodzę wieczorem." type="button" aria-label="Play Polish example: Nigdy nigdzie nie wychodzę wieczorem."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Nigdy nigdzie nie wychodzę wieczorem.</div><div class="en">I never go out anywhere in the evening.</div></div></div></section><section class="card"><h2>The ni- family</h2><p class="sub">The negative words all start with ni- - and they decline through the cases like everything else.</p><table><thead><tr><th>Group</th><th>Ending</th><th>Example</th></tr></thead><tbody><tr><td lang="pl">nikt → nikogo, nikomu</td><td>nobody</td><td lang="pl">Nie znam tu nikogo.</td></tr><tr><td lang="pl">nic → niczego, niczym</td><td>nothing</td><td lang="pl">Nic nie widzę.</td></tr><tr><td lang="pl">nigdy</td><td>never</td><td lang="pl">Nigdy tam nie byłem.</td></tr><tr><td lang="pl">nigdzie</td><td>nowhere</td><td lang="pl">Nigdzie nie mogę znaleźć kluczy.</td></tr><tr><td lang="pl">żaden / żadna / żadne</td><td>no / none</td><td lang="pl">Nie mam żadnych pytań.</td></tr></tbody></table><div class="note"><b>Nikogo nie było w domu</b> - nobody was home. After nie było, the person goes to the Genitive: the genitive-of-negation you met in Dopełniacz, working overtime.</div></section><section class="card"><h2>Negation changes the case</h2><p class="sub">The Dopełniacz reminder: a negated verb pushes its object from Accusative into Genitive.</p><ul><li>Mam czas → Nie mam <b>czasu</b>. Lubię kawę → Nie lubię <b>kawy</b>.</li><li>There is / there isn't: Jest mleko → <b>Nie ma mleka</b>.</li><li>This only touches direct objects. Other cases stay put: Nie ufam <b>mu</b> (still Dative).</li></ul><div class="ex"><button class="say" data-audio="/audio/d2a5ac44625b.mp3" data-pl="Nie mam dzisiaj czasu." type="button" aria-label="Play Polish example: Nie mam dzisiaj czasu."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">Nie mam dzisiaj czasu.</div><div class="en">I don&#x27;t have time today.</div></div></div><div class="ex"><button class="say" data-audio="/audio/813e7ddeed84.mp3" data-pl="W lodówce nie ma mleka." type="button" aria-label="Play Polish example: W lodówce nie ma mleka."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><div><div class="pl" lang="pl">W lodówce nie ma mleka.</div><div class="en">There&#x27;s no milk in the fridge.</div></div></div></section><section class="card"><h2>ani... ani, jeszcze nie, już nie</h2><p class="sub">Three finishing touches that make your negatives sound native.</p><table><thead><tr><th>Group</th><th>Ending</th><th>Example</th></tr></thead><tbody><tr><td>neither... nor</td><td lang="pl">ani... ani</td><td lang="pl">Nie lubię ani kawy, ani herbaty.</td></tr><tr><td>not yet</td><td lang="pl">jeszcze nie</td><td lang="pl">Jeszcze nie jadłem.</td></tr><tr><td>not anymore</td><td lang="pl">już nie</td><td lang="pl">Już tam nie pracuję.</td></tr><tr><td>not at all</td><td lang="pl">w ogóle nie</td><td lang="pl">W ogóle nie rozumiem.</td></tr><tr><td>almost never</td><td lang="pl">prawie nigdy</td><td lang="pl">Prawie nigdy nie choruję.</td></tr></tbody></table><div class="note"><b>jeszcze nie</b> vs <b>już nie</b> is the pair worth drilling: jeszcze nie = hasn't happened yet; już nie = happened, but stopped. <i>Jeszcze nie jem</i> (I'm not eating yet) vs <i>Już nie jem</i> (I've stopped eating).</div></section><section class="guide-ending" aria-labelledby="guideEndingTitle"><h2 id="guideEndingTitle">Ready to keep learning?</h2><p class="guide-ending-support">Practice the same Polish with flashcards, drills, conversations, and listening.</p><a class="guide-primary" href="/">Open the app</a><p class="guide-reassurance">Genuinely free. No account. Works offline.</p></section></main><footer class="guide-footer"><a href="/">Po polsku</a> &middot; v8.4 &middot; 2026</footer></div><script>
+(function(){
+  var FALLBACK_MSG = "Using your device's voice.";
+  var FAILED_MSG = "Audio couldn't play. Check your connection, then try again.";
+  var RETRY_MSG = "Try again";
+  var token = 0, playing = null, marked = null, request = null;
+  var box = null, msg = null, retry = null, owner = null;
+  function host(){
+    if(box) return box;
+    box = document.createElement("div");
+    box.id = "pp-audio-status";
+    box.className = "audio-status";
+    box.setAttribute("role", "status");
+    box.setAttribute("aria-live", "polite");
+    box.setAttribute("aria-atomic", "true");
+    box.hidden = true;
+    msg = document.createElement("span");
+    msg.id = "pp-audio-status-msg";
+    msg.className = "audio-status-msg";
+    retry = document.createElement("button");
+    retry.id = "pp-audio-retry";
+    retry.className = "audio-retry";
+    retry.type = "button";
+    retry.textContent = RETRY_MSG;
+    retry.hidden = true; retry.disabled = true; retry.tabIndex = -1;
+    retry.addEventListener("click", function(e){ e.stopPropagation(); again(); });
+    box.appendChild(msg); box.appendChild(retry);
+    document.body.appendChild(box);
+    return box;
+  }
+  function clear(){
+    if(!box) return;
+    box.hidden = true;
+    msg.textContent = "";
+    retry.hidden = true; retry.disabled = true; retry.tabIndex = -1;
+    if(owner && owner.getAttribute && owner.getAttribute("aria-describedby") === "pp-audio-status-msg"){
+      owner.removeAttribute("aria-describedby");
+    }
+    owner = null;
+  }
+  function show(kind, btn){
+    var el = host();
+    if(btn && btn.insertAdjacentElement){ try{ btn.insertAdjacentElement("afterend", el); }catch(e){} }
+    var failed = kind === "failed";
+    msg.textContent = failed ? FAILED_MSG : FALLBACK_MSG;
+    retry.hidden = !failed; retry.disabled = !failed; retry.tabIndex = failed ? 0 : -1;
+    el.hidden = false;
+    owner = btn || null;
+    if(failed && btn && btn.setAttribute) btn.setAttribute("aria-describedby", "pp-audio-status-msg");
+  }
+  function unmark(){
+    if(marked && marked.dataset) delete marked.dataset.playing;
+    marked = null;
+  }
+  function stop(){
+    token++;
+    if(playing){ try{ playing.pause(); }catch(e){} playing = null; }
+    if(window.speechSynthesis){ try{ window.speechSynthesis.cancel(); }catch(e){} }
+    unmark();
+    clear();
+  }
+  function speak(text, btn, mine, afterFailedClip){
+    if(!text || !window.speechSynthesis || typeof window.SpeechSynthesisUtterance !== "function"){
+      show("failed", btn); return;
+    }
+    var u;
+    try{ u = new window.SpeechSynthesisUtterance(text); }
+    catch(e){ show("failed", btn); return; }
+    u.lang = "pl-PL";
+    u.onend = function(){ if(mine !== token) return; unmark(); };
+    u.onerror = function(){ if(mine !== token) return; unmark(); show("failed", btn); };
+    if(afterFailedClip) show("fallback", btn);
+    if(btn && btn.dataset){ marked = btn; btn.dataset.playing = "1"; }
+    try{ window.speechSynthesis.speak(u); }
+    catch(e){ unmark(); show("failed", btn); }
+  }
+  function play(btn){
+    stop();
+    var mine = token;
+    var url = btn.getAttribute("data-audio");
+    var text = btn.getAttribute("data-pl") || "";
+    request = { btn: btn, text: text };
+    if(!url){ speak(text, btn, mine, false); return; }
+    var a = new Audio(url);
+    playing = a; marked = btn; btn.dataset.playing = "1";
+    var settled = false;
+    function settle(){
+      if(settled) return false;
+      settled = true;
+      if(mine !== token) return false;
+      playing = null; unmark();
+      return true;
+    }
+    a.addEventListener("ended", function(){ settle(); });
+    a.addEventListener("error", function(){ if(settle()) speak(text, btn, mine, true); });
+    a.play().catch(function(){ if(settle()) speak(text, btn, mine, true); });
+  }
+  function again(){
+    if(!request) return;
+    var btn = request.btn;
+    if(btn && btn.focus){ try{ btn.focus(); }catch(e){} }
+    if(btn) play(btn);
+  }
+  document.addEventListener("click", function(e){
+    var b = e.target.closest("[data-audio]"); if(!b) return;
+    play(b);
+  });
+  /* Parked before it is ever needed: a live region has to exist before its text
+     changes for the change to be announced reliably. Same reason, same moment,
+     as the app shell. */
+  host();
+})();
+</script></body></html>

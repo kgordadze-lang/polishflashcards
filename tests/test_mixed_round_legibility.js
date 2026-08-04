@@ -644,13 +644,13 @@ ok('F1 it was not promoted to an alert or a status region',
    attr(tagFor('rCountLbl'), 'role') === null);
 ok('F1 it was not made atomic-only or assertive',
    attr(tagFor('rCountLbl'), 'aria-live') !== 'assertive');
-// the phase added NO second progress region to compete with it
-eq('F2 the screen still has exactly three polite regions',
-   countOf(ROUND_SCREEN, 'aria-live="polite"'), 3);
+// the phase adds no second progress region; rich typed feedback is no longer live
+eq('F2 the screen has exactly two polite regions',
+   countOf(ROUND_SCREEN, 'aria-live="polite"'), 2);
 eq('F2 the screen still has exactly one status region', countOf(ROUND_SCREEN, 'role="status"'), 1);
-ok('F2 the three polite regions are still the counter, the typed verdict and the status',
+ok('F2 the two polite regions are the counter and the shared status',
    ROUND_SCREEN.indexOf('id="rCountLbl" aria-live="polite"') !== -1 &&
-   attr(tagFor('rVerdict'), 'aria-live') === 'polite' &&
+   attr(tagFor('rVerdict'), 'aria-live') === null &&
    attr(tagFor('rStatus'), 'aria-live') === 'polite');
 ok('F2 no new progress node was added to the screen',
    ROUND_SCREEN.indexOf('rReviewLbl') === -1 && ROUND_SCREEN.indexOf('rPhase') === -1 &&

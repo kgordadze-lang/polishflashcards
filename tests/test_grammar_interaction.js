@@ -278,12 +278,12 @@ ok('B3 gDoneTitle is the existing h2', /^<h2\b/.test(TAG_DONE));
 eq('B3 exactly one gDoneTitle exists', countOf(INDEX, 'id="gDoneTitle"'), 1);
 eq('B3 gDoneTitle is script-focusable only', attr(TAG_DONE, 'tabindex'), '-1');
 ok('B3 completion wording remains Brawo!', /id="gDoneTitle"[^>]*>Brawo!</.test(INDEX));
-ok('B4 only the Grammar completion anchor loses its decorative focus outline', (function () {
+ok('B4 only the Grammar question/completion anchors lose their decorative focus outline', (function () {
   var rules = cssBlocks('#gDoneTitle:focus').filter(function (b) {
     return /outline\s*:\s*(none|0)/.test(b.body);
   });
   return rules.length >= 1 && rules.every(function (b) {
-    return b.sel.split(',').every(function (s) { return /^#gDoneTitle:focus$/.test(s.trim()); });
+    return b.sel.split(',').every(function (s) { return /^#(gQuestion|gDoneTitle):focus$/.test(s.trim()); });
   });
 })());
 ok('B4 real Grammar controls retain focus indicators',
@@ -305,6 +305,8 @@ function decodeHtmlText(s) {
 }
 function FakeEl(tag) {
   this.tag = tag || 'div';
+  this.tagName = this.tag.toUpperCase();
+  this.nodeType = 1;
   this.id = '';
   this.className = '';
   this.classes = {};
@@ -313,6 +315,8 @@ function FakeEl(tag) {
   this.style = {};
   this.children = [];
   this.parentNode = null;
+  this.inert = false;
+  this.connected = true;
   this._own = '';
   this._html = '';
   this._htmlText = null;
@@ -326,6 +330,10 @@ function FakeEl(tag) {
     contains: function (c) { return classHas(self, c); }
   };
 }
+Object.defineProperty(FakeEl.prototype, 'parentElement', {
+  get: function () { return this.parentNode; },
+  set: function (node) { this.parentNode = node; }
+});
 Object.defineProperty(FakeEl.prototype, 'disabled', {
   get: function () { return this._disabled; },
   set: function (v) {
@@ -365,10 +373,21 @@ Object.defineProperty(FakeEl.prototype, 'innerHTML', {
     this._html = String(v);
     this._own = '';
     this._htmlText = decodeHtmlText(this._html);
+    this.children.forEach(function (child) { child.parentNode = null; });
     this.children = [];
     if (this.id) HTML_WRITES[this.id] = (HTML_WRITES[this.id] || 0) + 1;
 
     if (this.id === 'gDrillCard') {
+      ['gInstruction', 'gQuestion', 'gQuestionMeaning', 'gBuildInstruction'].forEach(function (id) {
+        var dm = this._html.match(new RegExp(
+          '<([a-zA-Z][\\w-]*)\\b([^>]*\\bid\\s*=\\s*"' + id + '"[^>]*)>'
+        ));
+        if (dm) {
+          var dynamic = new FakeEl(dm[1]);
+          parseAttrs(dm[2], dynamic);
+          this.appendChild(register(dynamic));
+        }
+      }, this);
       var opts = null;
       var om = this._html.match(/<div\b([^>]*\bclass\s*=\s*"[^"]*\bopts\b[^"]*"[^>]*)>/);
       if (om) {
@@ -451,6 +470,7 @@ FakeEl.prototype.setAttribute = function (k, v) {
 FakeEl.prototype.getAttribute = function (k) {
   return Object.prototype.hasOwnProperty.call(this._attrs, k) ? this._attrs[k] : null;
 };
+FakeEl.prototype.removeAttribute = function (k) { delete this._attrs[k]; };
 FakeEl.prototype.addEventListener = function (type, fn) {
   (this._on[type] = this._on[type] || []).push(fn);
 };
@@ -470,6 +490,15 @@ FakeEl.prototype.focus = function () {
   if (this.disabled || this.isHidden()) return;
   this.focusCount++;
   ACTIVE = this;
+};
+FakeEl.prototype.closest = function (selector) {
+  for (var node = this; node; node = node.parentElement) {
+    var tag = node.tag.toLowerCase();
+    if ((tag === 'button' && selector.indexOf('button') !== -1) ||
+        (tag === 'input' && selector.indexOf('input') !== -1) ||
+        (node.getAttribute('role') && selector.indexOf('[role=') !== -1)) return node;
+  }
+  return null;
 };
 FakeEl.prototype.querySelectorAll = function (selector) {
   var out = [];
@@ -508,9 +537,27 @@ var fakeDocument = {
   createTextNode: function (text) {
     return { nodeType: 3, textContent: String(text), parentNode: null };
   },
+  contains: function (node) {
+    if (!node || node.connected === false) return false;
+    for (var at = node; at; at = at.parentElement) if (at === BODY) return true;
+    return false;
+  },
   get activeElement() { return ACTIVE; },
   get body() { return BODY; }
 };
+var fakeWindow = { getComputedStyle: function (node) {
+  return { display: node.style.display || 'block', visibility: node.style.visibility || 'visible' };
+} };
+
+var ACTIVITY_HELPER_NAMES = [
+  'ppIsInteractiveTarget', 'ppIsHiddenOrInert', 'ppCanFocus', 'ppFocusElement',
+  'ppFocusActivityTarget', 'ppKeepActivityFocusOr', 'ppSetActivityStatus',
+  'ppSetActivityOptionState', 'ppAudioControlName', 'ppSetAudioControlName'
+];
+var ACTIVITY_HELPERS = (new Function('document', 'window', 'PP_INTERACTIVE_SELECTOR',
+  ACTIVITY_HELPER_NAMES.map(function (name) { return extractFunction(INDEX, name); }).join('\n') +
+  '\nreturn {' + ACTIVITY_HELPER_NAMES.map(function (name) { return name + ':' + name; }).join(',') + '};'
+))(fakeDocument, fakeWindow, 'button,input,[role="button"]');
 
 var G_STATE_MATCH = INDEX.match(/const\s+G\s*=\s*(\{[^\n]*\})\s*;/);
 if (!G_STATE_MATCH) throw new Error('extract: Grammar state object G not found');
@@ -542,13 +589,18 @@ function stopAllAudio() {}
 function identityShuffle(a) { return a.slice(); }
 function noMix() {}
 function immediateTimer(fn) { fn(); }
-function grammarRuntime(shuffle, sampleMix) {
+function grammarRuntime(shuffle, sampleMix, withSharedHelpers) {
+  var helpers = withSharedHelpers ? ACTIVITY_HELPERS : {};
   return (new Function(
     '$', 'document', 'G', 'G_AUDIO', 'gShuffle', 'gSampleMix', 'setTimeout',
+    'ppFocusActivityTarget', 'ppKeepActivityFocusOr', 'ppSetActivityStatus',
+    'ppSetActivityOptionState', 'ppSetAudioControlName',
     GNAMES.map(function (n) { return GSRC[n]; }).join('\n') +
     '\nreturn {' + GNAMES.map(function (n) { return n + ':' + n; }).join(',') + '};'
   ))(el, fakeDocument, G, '<svg class="audio-icon"></svg>',
-     shuffle, sampleMix || noMix, immediateTimer);
+     shuffle, sampleMix || noMix, immediateTimer,
+     helpers.ppFocusActivityTarget, helpers.ppKeepActivityFocusOr, helpers.ppSetActivityStatus,
+     helpers.ppSetActivityOptionState, helpers.ppSetAudioControlName);
 }
 function controlledShippingShuffle(initialValues) {
   var values = initialValues ? initialValues.slice() : [0];
@@ -1130,9 +1182,10 @@ ok('K6 gDrillAdvance retains the same advance-or-done branch',
 ok('K6 gUpdateNextLabel retains future-retry prediction',
    hasCode(CODE_G.gUpdateNextLabel,
      'const willRequeue=G.results[G.di]===false&&!G.queue[G.di]._requeue'));
-ok('K7 build initial paint carries an explicit first-pool focus intent',
-   hasCode(CODE_G.gRenderBuild, 'gPaintBuild({kind:"first-pool"})') ||
-   hasCode(CODE_G.gRenderBuild, "gPaintBuild({kind:'first-pool'})"));
+ok('K7 build initial paint chooses the prompt with a legacy first-pool fallback',
+   CODE_G.gRenderBuild.indexOf('gQuestion') !== -1 &&
+   CODE_G.gRenderBuild.indexOf('ppFocusActivityTarget') !== -1 &&
+   CODE_G.gRenderBuild.indexOf('first-pool') !== -1);
 ok('K7 build placement and removal repaint with stable-id focus intents',
    CODE_G.gPaintBuild.indexOf('data-id') !== -1 &&
    CODE_G.gPaintBuild.indexOf('after-pool') !== -1 &&
@@ -1909,12 +1962,14 @@ ok('X4 gShowDone retains original-only positional scoring',
    hasCode(CODE_G.gShowDone, 'const total=G.queue.filter(d=>!d._requeue).length') &&
    hasCode(CODE_G.gShowDone,
      'const score=G.queue.reduce((n,d,i)=>n+((!d._requeue&&G.results[i]===true)?1:0),0)'));
-ok('X5 Phase 4G choose construction and initial focus remain wired',
+ok('X5 choose construction and Phase 2A prompt-first focus remain wired',
    hasCode(CODE_G.gRenderChoose, 'document.createElement("button")') &&
    CODE_G.gRenderChoose.indexOf('addEventListener') !== -1 &&
-   hasCode(CODE_G.gRenderChoose, 'if(first)first.focus()'));
-ok('X5 Phase 4H build focus and Phase 4J exact keyed matching remain wired',
-   hasCode(CODE_G.gRenderBuild, 'gPaintBuild({kind:"first-pool"})') &&
+   CODE_G.gRenderChoose.indexOf('gQuestion') !== -1 &&
+   CODE_G.gRenderChoose.indexOf('ppFocusActivityTarget') !== -1);
+ok('X5 Phase 2A build prompt focus and Phase 4J exact keyed matching remain wired',
+   CODE_G.gRenderBuild.indexOf('gQuestion') !== -1 &&
+   CODE_G.gRenderBuild.indexOf('first-pool') !== -1 &&
    hasCode(CODE_G.gCheckBuild, 'const validOrders=[c.answer].concat(accepted)') &&
    CODE_G.gCheckBuild.indexOf('gBuildTokenKey') !== -1);
 
@@ -2268,7 +2323,125 @@ ok('AD3 wrong-position guidance considers all valid orders through narrow keys',
 ok('AD3 canonical-only drills retain one valid order',
    hasCode(CODE_G.gCheckBuild, 'const validOrders=[c.answer].concat(accepted)'));
 
+// =========================================================================
+// AE. PHASE 2A REVIEW CORRECTIONS — REAL SHARED-HELPER SHIPPING BRANCH
+// =========================================================================
+var SHARED_GRAMMAR = grammarRuntime(identityShuffle, noMix, true);
+function startShared(drills) {
+  resetDom(SHARED_GRAMMAR);
+  resetG(topicOf(drills));
+  SHARED_GRAMMAR.gStartPractice();
+}
+
+var aeWrong = build('ae-complete-wrong', ['A', 'B', 'C']);
+startShared([aeWrong]);
+ok('AE1 helper-aware build starts on the stable question entry target',
+   ACTIVE === el('gQuestion') && ACTIVE !== BODY && el('gQuestion').focusCount === 1);
+eq('AE1 new-question transition focuses no answer tile',
+   poolButtons().reduce(function (n, button) { return n + button.focusCount; }, 0), 0);
+var aeWrongIds = authoredPoolIds();
+placeTiles([aeWrongIds[1], aeWrongIds[0], aeWrongIds[2]]);
+var aeFirstMismatch = rowButtons()[0];
+var aeWrongCandidates = rowButtons().concat(poolButtons()).concat([el('gDrillNext')]);
+var aeWrongBefore = aeWrongCandidates.map(function (node) { return node.focusCount; });
+press(el('gCheckBtn'));
+ok('AE2 complete wrong order focuses the first mismatched row tile',
+   ACTIVE === aeFirstMismatch && ACTIVE !== BODY);
+eq('AE2 complete wrong order makes one final helper focus move',
+   aeWrongCandidates.reduce(function (n, node, i) {
+     return n + (node.focusCount - aeWrongBefore[i]);
+   }, 0), 1);
+eq('AE2 complete wrong order keeps shipping score/result state unchanged',
+   [G.results[0], G.attempted, G.state], [false, true, 'ask']);
+
+var aeIncomplete = build('ae-incomplete', ['pierwszy', 'drugi', 'trzeci']);
+startShared([aeIncomplete]);
+placeTile(authoredPoolIds()[0]);
+press(el('gCheckBtn'));
+var aeUnused = unusedPoolButtons();
+ok('AE3 incomplete order focuses the first still-available pool tile after repaint',
+   aeUnused.length > 0 && ACTIVE === aeUnused[0] && ACTIVE !== BODY);
+eq('AE3 incomplete order has one final focus destination',
+   aeUnused.reduce(function (n, button) { return n + button.focusCount; }, 0), 1);
+eq('AE3 incomplete order keeps shipping score/result state unchanged',
+   [G.results[0], G.attempted, G.state], [false, true, 'ask']);
+
+var aeCorrect = build('ae-correct', ['To', 'jest', 'dobrze']);
+startShared([aeCorrect]);
+placeTiles(authoredPoolIds());
+press(el('gCheckBtn'));
+ok('AE4 correct order focuses the enabled Next control',
+   ACTIVE === el('gDrillNext') && ACTIVE !== BODY && !el('gDrillNext').disabled);
+eq('AE4 correct order makes one final focus move to Next', el('gDrillNext').focusCount, 1);
+eq('AE4 correct order keeps shipping score/result state unchanged',
+   [G.results[0], G.attempted, G.state], [true, false, 'done']);
+var aeBuildAudio = el('gFbBox').querySelector('.mini-audio');
+eq('AE4 Grammar build feedback audio has phrase-specific context',
+   aeBuildAudio.getAttribute('aria-label'), 'Play answer: ' + aeCorrect.full);
+eq('AE4 Grammar build feedback keeps the exact engine phrase',
+   decodeURIComponent(aeBuildAudio.getAttribute('data-say')), aeCorrect.full);
+
+var aeUnsafeWrong = '<b>zły</b> & "gorszy"';
+var aeChoose = choose('ae-choose', ['dobry', aeUnsafeWrong], 'dobry');
+startShared([aeChoose]);
+ok('AE5 helper-aware choose starts on the stable question entry target',
+   ACTIVE === el('gQuestion') && ACTIVE !== BODY);
+press(byValue(aeUnsafeWrong));
+eq('AE5 shared selected-state helper marks only the chosen wrong option',
+   optionButtons().map(function (button) { return button.getAttribute('aria-pressed'); }),
+   ['false', 'true']);
+eq('AE5 wrong learner text remains literal in the atomic status',
+   status().textContent, aeUnsafeWrong + ' is not correct. Try another answer.');
+eq('AE5 wrong status keeps one Polish-language learner node',
+   status().children.filter(function (node) {
+     return node.nodeType === 1 && node.getAttribute('lang') === 'pl' && node.textContent === aeUnsafeWrong;
+   }).length, 1);
+ok('AE5 wrong choose answer moves to the next enabled option, never BODY',
+   ACTIVE === byValue('dobry') && ACTIVE !== BODY);
+press(byValue('dobry'));
+eq('AE5 corrected choose answer retains first-attempt miss scoring', G.results[0], false);
+ok('AE5 corrected choose answer focuses enabled Next', ACTIVE === el('gDrillNext') && ACTIVE !== BODY);
+var aeChooseAudio = el('gFbBox').querySelector('.mini-audio');
+eq('AE5 Grammar choose feedback audio has phrase-specific context',
+   aeChooseAudio.getAttribute('aria-label'), 'Play answer: ' + aeChoose.full);
+eq('AE5 Grammar choose feedback keeps the exact engine phrase',
+   decodeURIComponent(aeChooseAudio.getAttribute('data-say')), aeChoose.full);
+
+var aeActiveBeforeInvalid = ACTIVE;
+var aeDetached = new FakeEl('button');
+eq('AE6 shared helper rejects a disconnected Grammar candidate',
+   ACTIVITY_HELPERS.ppFocusActivityTarget(aeDetached), false);
+var aeHidden = add(BODY, 'aeHidden', 'button'); aeHidden.hidden = true;
+eq('AE6 shared helper rejects a hidden Grammar candidate',
+   ACTIVITY_HELPERS.ppFocusActivityTarget(aeHidden), false);
+ok('AE6 invalid candidates leave the valid active target unchanged', ACTIVE === aeActiveBeforeInvalid);
+var aeTrigger = add(BODY, 'aeTrigger', 'button'), aeFallback = add(BODY, 'aeFallback', 'button');
+aeTrigger.focus();
+ok('AE6 injected preserve-trigger helper recognizes a valid native Grammar trigger',
+   ACTIVITY_HELPERS.ppKeepActivityFocusOr(aeFallback, aeTrigger));
+ok('AE6 preserving a valid trigger adds no fallback focus move',
+   ACTIVE === aeTrigger && aeFallback.focusCount === 0);
+
+var AE_EXAMPLE_HTML = (new Function('G_AUDIO',
+  extractFunction(INDEX, 'gExampleHTML') + '\nreturn gExampleHTML;'
+))('<svg class="audio-icon"></svg>');
+var AE_RENDER_TEACH = (new Function('$', 'G', 'gFlipLabel', 'gExampleHTML', 'ppSetAudioControlName',
+  extractFunction(INDEX, 'gRenderTeach') + '\nreturn gRenderTeach;'
+))(el, G, function () {}, AE_EXAMPLE_HTML, ACTIVITY_HELPERS.ppSetAudioControlName);
+var aeExamplePhrase = '<tag>żółw</tag> & "cytat"';
+resetDom(SHARED_GRAMMAR);
+resetG({ teach: [{ front: 'Front', examples: [{ pl: aeExamplePhrase, en: 'example' }] }], drills: [] });
+G.ti = 0;
+AE_RENDER_TEACH();
+var aeExampleAudio = el('gBackFace').querySelector('.mini-audio');
+eq('AE7 Grammar teaching example audio safely keeps phrase-specific context',
+   aeExampleAudio.getAttribute('aria-label'), 'Play example sentence: ' + aeExamplePhrase);
+eq('AE7 Grammar teaching example audio keeps the exact encoded engine phrase',
+   decodeURIComponent(aeExampleAudio.getAttribute('data-say')), aeExamplePhrase);
+
+
 info('assertions drive the shipping Grammar functions extracted from index.html');
+info('helper-aware correction cases inject the shipping focus/status/option/audio helpers into the real Grammar functions');
 info('fake DOM models disabled-focus -> BODY, hidden-focus no-op, textContent vs innerHTML, and aria-label names');
 
 console.log('Grammar interaction tests: ' + PASS + ' passed, ' + FAIL + ' failed.');
