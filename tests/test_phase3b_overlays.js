@@ -208,8 +208,18 @@ ok('B3 the actions keep a proportional basis so they can wrap under enlarged tex
   ok('B4 the open dialog pads the ' + side + ' safe-area inset',
      (decl(OVERLAY_OPEN, 'padding') || '').indexOf('env(safe-area-inset-' + side + ')') !== -1);
 });
-ok('B4 the drawer keeps its own safe-area padding contract unchanged',
-   (decl(ruleBody('.site-drawer-panel'), 'padding') || '').indexOf('env(safe-area-inset-top)') !== -1);
+// The gate still fills the viewport, so its safe areas belong in its own padding. The drawer
+// no longer touches any screen edge: it is a floating panel whose top and right gaps carry
+// the insets themselves, and whose height bound reserves the vertical ones. Its panel padding
+// is therefore purely visual now - the safe-area contract moved outward, it did not go away.
+ok('B4 the drawer clears the top and right system UI from its own offsets',
+   (decl(ruleBody('.site-drawer'), 'top') || '').indexOf('env(safe-area-inset-top)') !== -1 &&
+   (decl(ruleBody('.site-drawer'), 'right') || '').indexOf('env(safe-area-inset-right)') !== -1);
+ok('B4 the drawer height bound reserves both vertical safe areas',
+   (decl(ruleBody('.site-drawer'), 'max-height') || '').indexOf('env(safe-area-inset-top)') !== -1 &&
+   (decl(ruleBody('.site-drawer'), 'max-height') || '').indexOf('env(safe-area-inset-bottom)') !== -1);
+ok('B4 the drawer no longer double-counts those insets inside the panel padding',
+   (decl(ruleBody('.site-drawer-panel'), 'padding') || '').indexOf('env(safe-area-inset') === -1);
 
 // -------------------------------------------------------------------------
 // C. Execute the shipping overlay contract against a realistic fake DOM.

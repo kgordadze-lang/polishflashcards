@@ -100,6 +100,26 @@ function section(id) {
   var end = INDEX.indexOf('</section>', start);
   return start === -1 || end === -1 ? '' : INDEX.slice(start, end + 10);
 }
+// Every declaration block written for one selector, in source order, wherever it sits -
+// top level, inside a media query, or inside an @supports refinement. Used to read the
+// drawer's visual contract without asserting whole declaration strings.
+function styleRules(selector) {
+  var src = INDEX.replace(/\/\*[\s\S]*?\*\//g, ''), needle = selector + '{', out = [], at = -1;
+  while ((at = src.indexOf(needle, at + 1)) !== -1) {
+    if (at !== 0 && !/[\s{};]/.test(src.charAt(at - 1))) continue;   // not a whole selector
+    var open = at + needle.length;
+    out.push(src.slice(open, src.indexOf('}', open)));
+  }
+  return out;
+}
+function prop(body, name) {
+  var m = body && body.match(new RegExp('(?:^|;)\\s*' + name + '\\s*:\\s*([^;]+)', 'i'));
+  return m ? m[1].trim() : null;
+}
+function alphaOf(color) {
+  var m = String(color).match(/rgba\([^)]*,\s*(\.\d+|\d*\.?\d+)\s*\)/);
+  return m ? parseFloat(m[1]) : null;
+}
 
 // -------------------------------------------------------------------------
 // A. Shipping menu structure, semantics, destinations, and primary controls.
@@ -134,8 +154,54 @@ ok('A3 Close is a native labelled button', /^<button\b/.test(tagFor(INDEX, 'site
 ok('A3 the drawer can scroll internally', /\.site-drawer-panel\s*\{[^}]*overflow-y:auto/.test(INDEX));
 ok('A3 top, right, and bottom safe-area insets are present',
    /safe-area-inset-top/.test(INDEX) && /safe-area-inset-right/.test(INDEX) && /safe-area-inset-bottom/.test(INDEX));
-ok('A3 drawer height follows the dynamic viewport rather than a fixed pixel height', /height:100dvh/.test(INDEX));
 ok('A3 drawer width remains bounded and avoids horizontal overflow', /width:min\(88vw,370px\)/.test(INDEX));
+
+// The approved visual refinement turns the drawer from a nearly full-height side sheet into
+// a content-sized floating glass panel. These assertions pin what that refinement has to keep
+// - an inset panel bounded by the dynamic viewport that can still scroll, and a surface that
+// stays readable when the browser cannot blur - without freezing exact pixel values or
+// reproducing whole declarations as strings.
+var DRAWER_RULES = styleRules('.site-drawer');
+var DRAWER_BASE = DRAWER_RULES[0] || '';
+var DRAWER_GLASS = DRAWER_RULES.filter(function (b) { return /backdrop-filter/.test(b); })[0] || '';
+var DRAWER_PANEL = styleRules('.site-drawer-panel')[0] || '';
+var DRAWER_SCRIM = styleRules('.site-drawer::backdrop')[0] || '';
+ok('A3 the drawer floats free of the top and right edges',
+   /^calc\(/.test(prop(DRAWER_BASE, 'top') || '') && /^calc\(/.test(prop(DRAWER_BASE, 'right') || ''));
+ok('A3 each visible gap carries its own safe-area inset, so the panel clears system UI',
+   (prop(DRAWER_BASE, 'top') || '').indexOf('env(safe-area-inset-top)') !== -1 &&
+   (prop(DRAWER_BASE, 'right') || '').indexOf('env(safe-area-inset-right)') !== -1);
+ok('A3 the bottom and left edges are released so the panel cannot be stretched by the UA',
+   prop(DRAWER_BASE, 'bottom') === 'auto' && prop(DRAWER_BASE, 'left') === 'auto');
+ok('A3 the drawer is content-sized, never unconditionally full height',
+   prop(DRAWER_BASE, 'height') === 'auto' && !/height:100dvh/.test(DRAWER_BASE));
+ok('A3 the one height bound follows the dynamic viewport, not the legacy 100vh',
+   /100dvh/.test(prop(DRAWER_BASE, 'max-height') || '') && !/\b100vh\b/.test(DRAWER_BASE));
+ok('A3 the height bound leaves both vertical safe areas out of the panel',
+   (prop(DRAWER_BASE, 'max-height') || '').indexOf('env(safe-area-inset-top)') !== -1 &&
+   (prop(DRAWER_BASE, 'max-height') || '').indexOf('env(safe-area-inset-bottom)') !== -1);
+ok('A3 the panel may shrink inside that bound, so short viewports scroll instead of clipping',
+   prop(DRAWER_PANEL, 'min-height') === '0' && /^\S+\s+1\s/.test(prop(DRAWER_PANEL, 'flex') || '') &&
+   prop(DRAWER_PANEL, 'overflow-y') === 'auto' && prop(DRAWER_PANEL, 'overscroll-behavior') === 'contain');
+ok('A3 the panel keeps bottom padding of its own so the last item is not flush to the edge',
+   (prop(DRAWER_PANEL, 'padding') || '').split(/\s+/).length >= 3);
+ok('A3 the corners are rounded up from the shared large-radius token, not squared off',
+   /var\(--r-lg\)/.test(prop(DRAWER_BASE, 'border-radius') || '') &&
+   /\+\s*\d/.test(prop(DRAWER_BASE, 'border-radius') || ''));
+ok('A3 the panel is clipped to its own rounded box and keeps a soft border and layered shadow',
+   prop(DRAWER_BASE, 'overflow') === 'hidden' && /var\(--border\)/.test(prop(DRAWER_BASE, 'border') || '') &&
+   (prop(DRAWER_BASE, 'box-shadow') || '').split('rgba').length - 1 >= 2);
+ok('A3 the unblurred fallback surface is the opaque card colour, so text stays readable',
+   prop(DRAWER_BASE, 'background') === 'var(--card)');
+ok('A3 the glass surface is layered on only behind an @supports backdrop-filter test',
+   DRAWER_GLASS !== '' && /@supports[^{]*backdrop-filter/.test(INDEX.replace(/\/\*[\s\S]*?\*\//g, '')));
+ok('A3 the glass rule ships the -webkit- prefix alongside the standard property',
+   /(^|;)\s*-webkit-backdrop-filter\s*:/.test(DRAWER_GLASS) && /(^|;)\s*backdrop-filter\s*:/.test(DRAWER_GLASS));
+ok('A3 the translucent surface stays strongly opaque rather than dramatically transparent',
+   alphaOf(prop(DRAWER_GLASS, 'background')) !== null && alphaOf(prop(DRAWER_GLASS, 'background')) >= 0.8);
+ok('A3 the backdrop keeps a scrim that separates the panel without going visually heavy',
+   alphaOf(prop(DRAWER_SCRIM, 'background')) !== null &&
+   alphaOf(prop(DRAWER_SCRIM, 'background')) >= 0.3 && alphaOf(prop(DRAWER_SCRIM, 'background')) <= 0.6);
 
 // The approved refinement renames the Guide menu label to "Explore more Polish" and
 // moves it near the bottom. The /guide/ destination, its page, and its SEO are untouched.
@@ -652,7 +718,7 @@ ok('E4 Guide does not depend on drawer JavaScript for destination content',
 ok('F1 app version is the 8.4 release', /const APP_VERSION = "8\.4"/.test(INDEX));
 // Phase 4B-2 moves the app-shell cache to v57 so the revised navigation contract
 // is isolated from the Phase 4B-1 shell while open tabs remain on their old worker.
-ok('F1 app-shell cache is the Phase 4B-3 revision', /const CACHE = "popolsku-v58"/.test(SW));
+ok('F1 app-shell cache is the current shell revision', /const CACHE = "popolsku-v59"/.test(SW));
 ok('F1 audio cache remains popolsku-audio', /const AUDIO_CACHE = "popolsku-audio"/.test(SW));
 ok('F1 schema version remains 2', /PP_MIGRATE\.SCHEMA_VERSION = 2/.test(MIGRATE));
 ok('F1 content migration revision remains 2', /PP_MIGRATE\.CONTENT_MIGRATION_REVISION = 2/.test(MIGRATE));

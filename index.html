@@ -134,16 +134,43 @@
   .site-menu-button:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
   .site-menu-button svg{width:23px;height:23px;pointer-events:none}
 
-  /* ---------- secondary site navigation drawer ---------- */
+  /* ---------- secondary site navigation drawer ----------
+     A content-sized floating panel, not a full-height side sheet. It stays anchored to the
+     top-right corner behind a visible gap, and that gap - not the panel's padding - is what
+     carries the safe-area insets now that the drawer no longer touches any screen edge. The
+     panel's own padding is therefore purely visual, and the drawer ends shortly below the
+     last menu item instead of stretching toward the bottom of the viewport.
+
+     Height is intrinsic; the only bound is a dynamic-viewport max-height, and that bound is
+     what turns the panel into an internally scrolling one exactly when it has to - short
+     viewports, landscape, enlarged text - without a breakpoint of its own. `bottom` and
+     `left` are reset explicitly because Chrome's `dialog:modal` UA rule sets
+     inset-block-end:0, which would stretch an auto-height dialog top-to-bottom again. */
   body.site-menu-open{overflow:hidden}
-  .site-drawer{position:fixed;inset:0 0 0 auto;width:min(88vw,370px);height:100dvh;max-width:370px;
-    max-height:none;margin:0 0 0 auto;padding:0;border:0;background:var(--card);color:var(--forest);
-    box-shadow:-16px 0 42px rgba(30,27,75,.2);overflow:hidden}
+  .site-drawer{position:fixed;top:calc(12px + env(safe-area-inset-top));
+    right:calc(12px + env(safe-area-inset-right));bottom:auto;left:auto;
+    width:min(88vw,370px);height:auto;
+    max-width:min(370px,calc(100vw - 24px - env(safe-area-inset-left) - env(safe-area-inset-right)));
+    max-height:calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    margin:0;padding:0;border:1px solid var(--border);border-radius:calc(var(--r-lg) + 4px);
+    background:var(--card);color:var(--forest);
+    box-shadow:0 1px 2px rgba(30,27,75,.05), 0 10px 24px rgba(30,27,75,.12),
+      0 28px 64px rgba(30,27,75,.22);overflow:hidden}
   .site-drawer[open]{display:flex;flex-direction:column}
-  .site-drawer::backdrop{background:rgba(30,41,59,.38)}
-  .site-drawer-panel{min-height:0;flex:1;display:flex;flex-direction:column;overflow-y:auto;
-    overscroll-behavior:contain;padding:calc(20px + env(safe-area-inset-top))
-    calc(18px + env(safe-area-inset-right)) calc(20px + env(safe-area-inset-bottom)) 20px}
+  .site-drawer::backdrop{background:rgba(15,23,42,.42)}
+  /* Soft glass, applied only where the browser can actually blur what is behind the panel.
+     The base rule above stays on the fully opaque --card surface, so a browser without
+     backdrop-filter keeps solid white and full text contrast rather than a washed-out
+     translucent panel. Every menu label sits on its own solid --card row either way, so the
+     page underneath never reaches the text; .86 leaves the heading well clear of 4.5:1 over
+     the scrim. */
+  @supports ((backdrop-filter:blur(20px)) or (-webkit-backdrop-filter:blur(20px))){
+    .site-drawer{background:rgba(255,255,255,.86);
+      -webkit-backdrop-filter:blur(20px) saturate(150%);backdrop-filter:blur(20px) saturate(150%)}
+    .site-drawer::backdrop{-webkit-backdrop-filter:blur(1px);backdrop-filter:blur(1px)}
+  }
+  .site-drawer-panel{min-height:0;flex:1 1 auto;display:flex;flex-direction:column;overflow-y:auto;
+    overscroll-behavior:contain;padding:18px 18px 20px}
   .site-drawer-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}
   .site-drawer-head h2{font-size:22px;line-height:1.2;letter-spacing:-.4px;margin:0}
   .site-drawer-close{width:44px;height:44px;flex:0 0 auto;border:1px solid var(--border);border-radius:13px;
@@ -957,7 +984,7 @@
   }
   @media (max-width:400px){
     .site-drawer{width:min(92vw,370px)}
-    .site-drawer-panel{padding-left:16px}
+    .site-drawer-panel{padding:18px 16px 20px}
     /* Activity header becomes a deliberate two-row grid. In one flex row the title was left
        75px between .back (40), .speed-toggle (89, 130 at 200% text) and .back.home-btn (40).
        Row 1 keeps Back, the title and Home in their usual corners; the speed control moves to

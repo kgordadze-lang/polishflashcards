@@ -622,8 +622,8 @@ eq('G1 APP_VERSION is the 8.4 release', (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)
 // The app-shell cache revision moved to v56 in Phase 4B-1: the hardened worker
 // stages its shell in a new cache so an open tab keeps being served the release
 // it was loaded with. The audio cache name below stays pinned forever.
-eq('G1 the app-shell cache name is the Phase 4B-3 revision',
-   (SW.match(/CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-v58');
+eq('G1 the app-shell cache name is the current shell revision',
+   (SW.match(/CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-v59');
 eq('G1 the audio cache name is unchanged', (SW.match(/AUDIO_CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-audio');
 eq('G1 the storage schema version is unchanged',
    (MIGRATE.match(/SCHEMA_VERSION\s*=\s*(\d+)/) || [])[1], '2');
