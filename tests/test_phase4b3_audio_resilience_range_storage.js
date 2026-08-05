@@ -537,7 +537,7 @@ function audioSeed(url, response) { var s = {}; s[AUDIO] = {}; s[AUDIO][url] = r
 // =========================================================================
 // R. MLG-4A-05 - the Range contract
 // =========================================================================
-eq('R0 the shell cache is the current shell revision', SHELL, 'popolsku-v60');
+eq('R0 the shell cache is the current shell revision', SHELL, 'popolsku-v61');
 eq('R0 the audio cache name is unchanged', AUDIO, 'popolsku-audio');
 
 // --- the grammar this worker accepts, and what it refuses to guess about ---
@@ -1988,9 +1988,9 @@ ok('W4 the existing one-time voice hint is untouched',
    INDEX.indexOf("Playing with your device's fallback voice") !== -1 &&
    countOf(INDEX, 'function voiceHint(') === 1);
 
-eq('W5 APP_VERSION is the 8.5 release', (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.5');
+eq('W5 APP_VERSION is the 8.6 release', (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.6');
 eq('W5 the shell cache is the current shell revision',
-   (SW_SRC.match(/const CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-v60');
+   (SW_SRC.match(/const CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-v61');
 eq('W5 the audio cache name is unchanged',
    (SW_SRC.match(/const AUDIO_CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-audio');
 eq('W5 the storage schema is unchanged',

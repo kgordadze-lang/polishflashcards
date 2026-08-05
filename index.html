@@ -1567,7 +1567,7 @@
       <button class="back" id="backPrivacy" aria-label="Back to home">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
-      <div class="sbar-title"><h1>Privacy - your data stays yours</h1></div>
+      <div class="sbar-title"><h1>Privacy</h1></div>
       <button class="back home-btn" aria-label="Home page">
         <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       </button>
@@ -1578,25 +1578,31 @@
         <p class="privacy-intro">Po polsku is designed to help you learn Polish without requiring an account or building a learner profile.</p>
 
         <div class="privacy-section">
-          <h2>Your learning data</h2>
-          <p class="about-p">Your progress, known words, and app settings are stored locally in your browser on this device. Po polsku does not send this learning data to an account or central database.</p>
+          <h2>In short</h2>
+          <ul class="privacy-list">
+            <li>You can use Po polsku without an account or personal profile.</li>
+            <li>Your progress and settings stay in your browser on this device unless you export a backup yourself.</li>
+            <li>The app does not send your progress or settings to Po polsku.</li>
+            <li>Po polsku does not use advertising, marketing cookies, or analytics tools.</li>
+            <li>Core app files can be saved for offline use. Other pages are saved when you visit them, and pronunciation clips as you play them.</li>
+            <li>Links to other websites, and your browser’s own speech feature, involve services Po polsku does not control.</li>
+          </ul>
+        </div>
+
+        <div class="privacy-section">
+          <h2>What is stored on your device</h2>
+          <p class="about-p">Po polsku saves your learning progress - which cards you have marked as known or still learning - along with a few settings: playback speed, which side of a card you see first, whether a one-time pronunciation hint has already been shown, and whether you have dismissed the install prompt. All of it is stored by your browser on this device. Po polsku does not send this learning data to an account or central database.</p>
+          <p class="about-p">There is no account or automatic synchronisation. Progress stored in one browser or device does not automatically appear in another, although you can move it yourself with a backup.</p>
           <p class="about-p">Where supported, the app asks your browser to keep this storage persistently, but the browser decides whether to grant that request. Browser data can still be removed by you or by your browser or device, so a backup is the safest way to keep a separate copy.</p>
+          <p class="about-p">Po polsku has no built-in button that erases everything. Removing your data is done through your browser’s own site-data controls, described further down.</p>
         </div>
 
         <div class="privacy-section">
-          <h2>Analytics and hosting</h2>
-          <p class="about-p">Po polsku does not use advertising, marketing cookies, or analytics tools.</p>
-          <p class="about-p">The site is delivered through GitHub Pages and Cloudflare, which may process standard technical request data needed to deliver and protect the site. Po polsku does not use this information to build learner profiles.</p>
-        </div>
-
-        <div class="privacy-section">
-          <h2>Pronunciation</h2>
-          <p class="about-p">Pronunciation normally plays a pronunciation-audio clip supplied with the app. If a clip cannot play, the app may use your browser’s built-in speech feature. That fallback is controlled by your browser or device.</p>
-        </div>
-
-        <div class="privacy-section">
-          <h2>Progress and backups</h2>
-          <p class="about-p">A backup downloads a JSON file containing your Po polsku progress and app data to a location you choose. Restoring a backup reads the file you select and applies it on this device.</p>
+          <h2>Backups and restoring</h2>
+          <p class="about-p">Backing up builds a JSON file and asks your browser to download it. The file holds your progress and the settings saved under Po polsku’s own storage keys, together with the app version and the date it was exported. It contains no name, no email address, and no identifier for you or your device.</p>
+          <p class="about-p">One setting is left out: the card direction you choose while studying. Everything that records your actual progress is included. Cached app files and saved pronunciation clips are not part of a backup either - a backup is your progress, not the app.</p>
+          <p class="about-p">The file is created on your device and goes wherever you save it. Po polsku does not receive it, because the app has no upload step. If you share the file, you decide with whom.</p>
+          <p class="about-p">Restoring reads a file you pick and asks you to confirm before anything changes. The confirmation shows the backup’s date and how many words it counts as known and still to review. Confirming replaces the Po polsku progress and the included settings on this device. If the file is not valid, or the restore cannot be completed, your existing local data is left unchanged.</p>
           <p class="about-p"><a class="about-link" id="dataInstallLink" href="#install">Installing the app</a> can provide a more app-like and reliable experience, but it should not replace keeping a backup.</p>
           <div class="data-actions">
             <button class="data-btn" id="dataBackup">Back up my progress</button>
@@ -1604,6 +1610,50 @@
             <input type="file" id="dataFile" accept=".json,application/json" hidden>
           </div>
           <div class="data-status" id="dataStatus" aria-live="polite"></div>
+        </div>
+
+        <div class="privacy-section">
+          <h2>Clearing Po polsku’s data</h2>
+          <p class="about-p">Clearing Po polsku’s site data in your browser removes locally stored progress, settings, downloaded app files, and cached pronunciation clips. It is a full reset: Po polsku has no server-side copy of this data, so export a backup first if you want to keep your progress.</p>
+        </div>
+
+        <div class="privacy-section">
+          <h2>Offline use and saved files</h2>
+          <p class="about-p">On supported browsers, Po polsku saves its core app files after your first visit so the main app can work offline. These are the app page, its scripts and lesson data, and - where the browser can store them - the fonts and icons.</p>
+          <p class="about-p">The separate guide, grammar, and vocabulary pages on this site are saved as you visit them. A page you have never opened will not be there offline.</p>
+          <p class="about-p">Pronunciation clips are saved one at a time, as you play them. A clip you have never played needs a connection the first time. Clips you have already played stay saved across app updates, so if you play a lot of audio you may end up with a few tens of megabytes stored on the device.</p>
+          <p class="about-p">Installing Po polsku to your home screen does not change any of this. It does not download every page or every pronunciation clip in advance.</p>
+        </div>
+
+        <div class="privacy-section">
+          <h2>Requests to the network and hosting</h2>
+          <p class="about-p">Every request the app itself makes goes to this site’s own address: the app files, the lesson data, and the pronunciation clips. The app does not load third-party scripts or analytics. Two things sit outside this, and both are covered below: links you choose to open, and your browser’s own speech feature.</p>
+          <p class="about-p">Loading any web page still involves ordinary network information. The hosting service that delivers popolsku.app receives the usual details that come with a web request: your IP address, browser and user-agent information, which file was requested, and when. Network providers that carry the connection see more limited connection metadata, because the connection itself is encrypted. That is how the web works rather than something specific to Po polsku. Po polsku’s own code does not add a learner profile, an application-assigned identifier, or an analytics payload to these requests.</p>
+        </div>
+
+        <div class="privacy-section">
+          <h2>Pronunciation and browser speech</h2>
+          <p class="about-p">Pronunciation normally plays a pronunciation-audio clip supplied with the app. If a clip cannot play, the app may use your browser’s built-in speech feature. That fallback is controlled by your browser or device.</p>
+          <p class="about-p">When that fallback runs, the Polish text is handed to your browser’s speech system. Some browsers and operating systems produce the speech entirely on the device, and some send the text to their own servers. Which of the two applies is decided by your browser, your operating system, or their provider, and is outside Po polsku’s control.</p>
+          <p class="about-p">The app does not access your microphone, record your voice, or send voice recordings. Po polsku has no speech input of any kind.</p>
+        </div>
+
+        <div class="privacy-section">
+          <h2>Advertising, cookies, and analytics</h2>
+          <p class="about-p">Po polsku does not use advertising, marketing cookies, or analytics tools.</p>
+          <p class="about-p">The app’s own code does not set cookies and contains no analytics, telemetry, or tracking code, and there is no third-party script anywhere in it. The app does not create a persistent user or device identifier. Your progress is recorded against the content itself - which card, in which topic - and never against a profile of you.</p>
+        </div>
+
+        <div class="privacy-section">
+          <h2>Links to other websites</h2>
+          <p class="about-p">Parts of Po polsku link out to other websites, such as the podcast episodes behind the listening sets and the recommendations in the guide. Opening one takes you off Po polsku, and from that point the other site’s own privacy practices apply.</p>
+          <p class="about-p">Po polsku does not send your learning progress to those destinations. The destination may receive ordinary request information, including which site you came from, depending on your browser and privacy settings.</p>
+        </div>
+
+        <div class="privacy-section">
+          <h2>Questions about privacy</h2>
+          <p class="about-p">If anything on this page is unclear, the <a class="about-link" id="dataContactLink" href="#contact">Contact</a> page has the address to write to. Contact opens your email app. Messages are handled through email and are not stored by the Po polsku application.</p>
+          <p class="about-p">This page describes how Po polsku works today. Last updated 5 August 2026.</p>
         </div>
       </div>
     </div>
@@ -1772,7 +1822,7 @@
    Unrelated to CACHE in sw.js, which is a machine counter - bump both when
    you deploy, but they don't need to match.
    ========================================================================= */
-const APP_VERSION = "8.5";
+const APP_VERSION = "8.6";
 document.getElementById("footVersion").textContent = "v" + APP_VERSION;
 document.getElementById("footYear").textContent = String(new Date().getFullYear());
 
@@ -5236,6 +5286,7 @@ $("dataFile").addEventListener("change", e=>{
   rd.readAsText(f);
 });
 $("dataInstallLink").addEventListener("click", e=>{ e.preventDefault(); show("install"); });
+$("dataContactLink").addEventListener("click", e=>{ e.preventDefault(); show("contact"); });
 
 /* ---------------- installable: service worker + keep the installed app fresh ---------------- */
 const ppFresh = { tag:null, reg:null, reloading:false };

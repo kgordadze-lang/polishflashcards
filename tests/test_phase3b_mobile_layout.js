@@ -354,7 +354,7 @@ ok('D5 no header control is hidden at narrow widths',
 [['<h1 id="tTitle">Type it</h1>', 'Type it'],
  ['<h1 id="lTitle">Listening</h1>', 'Listening'],
  ['<h1 id="rTitle">Practice</h1>', 'Practice'],
- ['<h1>Privacy - your data stays yours</h1>', 'Privacy'],
+ ['<h1>Privacy</h1>', 'Privacy'],
  ['<h1>About</h1>', 'About'], ['<h1>Contact</h1>', 'Contact'],
  ['<h1>Install</h1>', 'Install']].forEach(function (pair) {
   eq('D6 the ' + pair[1] + ' header title is unchanged', countOf(INDEX, pair[0]), 1);
@@ -588,7 +588,7 @@ eq('J2 no visibility:hidden was introduced anywhere in the sheet',
    DECL_BLOCKS.filter(function (b) { return (decl(b.body, 'visibility') || '') === 'hidden'; }).length, 0);
 eq('J3 no generated-page code was pulled into the app shell', /build_pages/.test(INDEX), false);
 eq('J3 the app version this phase must not touch is intact',
-   (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.5');
+   (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.6');
 // The three approved touch-target changes are the only dimension changes in the diff: no
 // other control gained width/height/padding under the new responsive blocks.
 eq('J4 no control was resized inside the new responsive blocks',

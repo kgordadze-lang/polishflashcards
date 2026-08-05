@@ -607,8 +607,11 @@ eq('F6 Privacy is still reachable from the site menu',
    countOf(INDEX, '<li><a href="#privacy" data-app-screen="privacy">Privacy</a></li>'), 1);
 ok('F6 direct /#privacy routing is unchanged',
    INDEX.indexOf('["about","privacy","contact","install"].includes(ppInitialScreen)') !== -1);
-ok('F6 the Privacy heading learners land on is unchanged',
-   INDEX.indexOf('Privacy - your data stays yours') !== -1);
+// Priority 6 Phase 2 (amendment) narrows this heading to a plain factual label. Phase 3
+// closeout's concern is that the Privacy destination still has a heading learners land
+// on, which it does - the slogan itself was never this suite's contract.
+ok('F6 the Privacy heading learners land on is present',
+   INDEX.indexOf('<h1>Privacy</h1>') !== -1);
 ok('F6 the Privacy page still explains progress and backup',
    INDEX.indexOf('Back up progress') !== -1 || INDEX.indexOf('Back up') !== -1);
 eq('F6 no other in-app link was removed alongside the ending link',
@@ -618,12 +621,12 @@ eq('F6 no other in-app link was removed alongside the ending link',
 // =========================================================================
 // G. Regression boundaries.
 // =========================================================================
-eq('G1 APP_VERSION is the 8.5 release', (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.5');
+eq('G1 APP_VERSION is the 8.6 release', (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.6');
 // The app-shell cache revision moved to v56 in Phase 4B-1: the hardened worker
 // stages its shell in a new cache so an open tab keeps being served the release
 // it was loaded with. The audio cache name below stays pinned forever.
 eq('G1 the app-shell cache name is the current shell revision',
-   (SW.match(/CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-v60');
+   (SW.match(/CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-v61');
 eq('G1 the audio cache name is unchanged', (SW.match(/AUDIO_CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-audio');
 eq('G1 the storage schema version is unchanged',
    (MIGRATE.match(/SCHEMA_VERSION\s*=\s*(\d+)/) || [])[1], '2');
@@ -658,7 +661,7 @@ eq('G2 no scroll listener, visualViewport handler or smooth scroll was introduce
 
 // Learner-visible wording outside the three approved refinements is pinned.
 ['Type the Polish answer first.', 'Choose your reply', 'Dobrze!', 'Not this time',
- 'Privacy - your data stays yours', 'tap to see meaning', 'Play pronunciation',
+ '<h1>Privacy</h1>', 'tap to see meaning', 'Play pronunciation',
  'Have an idea, want to collaborate, or simply want to connect?'].forEach(function (s) {
   ok('G3 unchanged learner string: ' + s, INDEX.indexOf(s) !== -1);
 });

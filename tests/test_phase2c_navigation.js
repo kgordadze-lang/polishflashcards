@@ -300,22 +300,95 @@ eq('B1 About no longer duplicates Privacy copy', countOf(ABOUT, 'Your data stays
 eq('B1 About no longer duplicates listening recommendations', countOf(ABOUT, 'What else I listen to'), 0);
 eq('B1 About no longer duplicates Contact', countOf(ABOUT, '>Contact<'), 0);
 ok('B1 About still states the project purpose and free model', ABOUT.indexOf('Po polsku began') !== -1 && ABOUT.indexOf('genuinely free') !== -1);
-ok('B2 Privacy has the exact approved destination heading', PRIVACY.indexOf('<h1>Privacy - your data stays yours</h1>') !== -1);
-eq('B2 Privacy has the exact four semantic subsection headings', elementTexts(PRIVACY, 'h2', ''),
-   ['Your learning data', 'Analytics and hosting', 'Pronunciation', 'Progress and backups']);
+// The Phase 2 amendment narrows the destination heading to a plain factual label: the
+// previous slogan claimed more than the detailed sections below it support, because
+// hosting requests, external links, email contact and browser speech all involve other
+// parties. Pinned exactly, and pinned against the slogan returning.
+eq('B2 Privacy has the exact approved destination heading',
+   [countOf(PRIVACY, '<h1>Privacy</h1>'), countOf(INDEX, 'your data stays yours')], [1, 0]);
+eq('B2 Privacy has the exact ten semantic subsection headings', elementTexts(PRIVACY, 'h2', ''), [
+  'In short',
+  'What is stored on your device',
+  'Backups and restoring',
+  'Clearing Po polsku’s data',
+  'Offline use and saved files',
+  'Requests to the network and hosting',
+  'Pronunciation and browser speech',
+  'Advertising, cookies, and analytics',
+  'Links to other websites',
+  'Questions about privacy'
+]);
 eq('B2 Privacy has the exact approved introduction', elementTexts(PRIVACY, 'p', 'privacy-intro'), [
   'Po polsku is designed to help you learn Polish without requiring an account or building a learner profile.'
 ]);
-var APPROVED_PRIVACY = [
-  'Your progress, known words, and app settings are stored locally in your browser on this device. Po polsku does not send this learning data to an account or central database.',
-  'Where supported, the app asks your browser to keep this storage persistently, but the browser decides whether to grant that request. Browser data can still be removed by you or by your browser or device, so a backup is the safest way to keep a separate copy.',
+// Priority 6 Phase 2 (risks R-08, R-09, R-16 - privacy findings P-1, P-2, P-3, P-6, P-7, P-8,
+// P-9 - claims C-017, C-018) restructures Privacy into two levels: a concise summary list
+// followed by the detailed factual sections. Both levels are pinned verbatim, because this
+// is the document users rely on most for trust and every sentence in it is a factual claim
+// about observable behaviour.
+var APPROVED_PRIVACY_SUMMARY = [
+  'You can use Po polsku without an account or personal profile.',
+  'Your progress and settings stay in your browser on this device unless you export a backup yourself.',
+  'The app does not send your progress or settings to Po polsku.',
   'Po polsku does not use advertising, marketing cookies, or analytics tools.',
-  'The site is delivered through GitHub Pages and Cloudflare, which may process standard technical request data needed to deliver and protect the site. Po polsku does not use this information to build learner profiles.',
+  'Core app files can be saved for offline use. Other pages are saved when you visit them, and pronunciation clips as you play them.',
+  'Links to other websites, and your browser’s own speech feature, involve services Po polsku does not control.'
+];
+eq('B2 Privacy leads with the exact approved summary', elementTexts(PRIVACY, 'li', ''), APPROVED_PRIVACY_SUMMARY);
+var APPROVED_PRIVACY = [
+  'Po polsku saves your learning progress - which cards you have marked as known or still learning - along with a few settings: playback speed, which side of a card you see first, whether a one-time pronunciation hint has already been shown, and whether you have dismissed the install prompt. All of it is stored by your browser on this device. Po polsku does not send this learning data to an account or central database.',
+  'There is no account or automatic synchronisation. Progress stored in one browser or device does not automatically appear in another, although you can move it yourself with a backup.',
+  'Where supported, the app asks your browser to keep this storage persistently, but the browser decides whether to grant that request. Browser data can still be removed by you or by your browser or device, so a backup is the safest way to keep a separate copy.',
+  'Po polsku has no built-in button that erases everything. Removing your data is done through your browser’s own site-data controls, described further down.',
+  'Backing up builds a JSON file and asks your browser to download it. The file holds your progress and the settings saved under Po polsku’s own storage keys, together with the app version and the date it was exported. It contains no name, no email address, and no identifier for you or your device.',
+  'One setting is left out: the card direction you choose while studying. Everything that records your actual progress is included. Cached app files and saved pronunciation clips are not part of a backup either - a backup is your progress, not the app.',
+  'The file is created on your device and goes wherever you save it. Po polsku does not receive it, because the app has no upload step. If you share the file, you decide with whom.',
+  'Restoring reads a file you pick and asks you to confirm before anything changes. The confirmation shows the backup’s date and how many words it counts as known and still to review. Confirming replaces the Po polsku progress and the included settings on this device. If the file is not valid, or the restore cannot be completed, your existing local data is left unchanged.',
+  'Installing the app can provide a more app-like and reliable experience, but it should not replace keeping a backup.',
+  'Clearing Po polsku’s site data in your browser removes locally stored progress, settings, downloaded app files, and cached pronunciation clips. It is a full reset: Po polsku has no server-side copy of this data, so export a backup first if you want to keep your progress.',
+  'On supported browsers, Po polsku saves its core app files after your first visit so the main app can work offline. These are the app page, its scripts and lesson data, and - where the browser can store them - the fonts and icons.',
+  'The separate guide, grammar, and vocabulary pages on this site are saved as you visit them. A page you have never opened will not be there offline.',
+  'Pronunciation clips are saved one at a time, as you play them. A clip you have never played needs a connection the first time. Clips you have already played stay saved across app updates, so if you play a lot of audio you may end up with a few tens of megabytes stored on the device.',
+  'Installing Po polsku to your home screen does not change any of this. It does not download every page or every pronunciation clip in advance.',
+  'Every request the app itself makes goes to this site’s own address: the app files, the lesson data, and the pronunciation clips. The app does not load third-party scripts or analytics. Two things sit outside this, and both are covered below: links you choose to open, and your browser’s own speech feature.',
+  'Loading any web page still involves ordinary network information. The hosting service that delivers popolsku.app receives the usual details that come with a web request: your IP address, browser and user-agent information, which file was requested, and when. Network providers that carry the connection see more limited connection metadata, because the connection itself is encrypted. That is how the web works rather than something specific to Po polsku. Po polsku’s own code does not add a learner profile, an application-assigned identifier, or an analytics payload to these requests.',
   'Pronunciation normally plays a pronunciation-audio clip supplied with the app. If a clip cannot play, the app may use your browser’s built-in speech feature. That fallback is controlled by your browser or device.',
-  'A backup downloads a JSON file containing your Po polsku progress and app data to a location you choose. Restoring a backup reads the file you select and applies it on this device.',
-  'Installing the app can provide a more app-like and reliable experience, but it should not replace keeping a backup.'
+  'When that fallback runs, the Polish text is handed to your browser’s speech system. Some browsers and operating systems produce the speech entirely on the device, and some send the text to their own servers. Which of the two applies is decided by your browser, your operating system, or their provider, and is outside Po polsku’s control.',
+  'The app does not access your microphone, record your voice, or send voice recordings. Po polsku has no speech input of any kind.',
+  'Po polsku does not use advertising, marketing cookies, or analytics tools.',
+  'The app’s own code does not set cookies and contains no analytics, telemetry, or tracking code, and there is no third-party script anywhere in it. The app does not create a persistent user or device identifier. Your progress is recorded against the content itself - which card, in which topic - and never against a profile of you.',
+  'Parts of Po polsku link out to other websites, such as the podcast episodes behind the listening sets and the recommendations in the guide. Opening one takes you off Po polsku, and from that point the other site’s own privacy practices apply.',
+  'Po polsku does not send your learning progress to those destinations. The destination may receive ordinary request information, including which site you came from, depending on your browser and privacy settings.',
+  'If anything on this page is unclear, the Contact page has the address to write to. Contact opens your email app. Messages are handled through email and are not stored by the Po polsku application.',
+  'This page describes how Po polsku works today. Last updated 5 August 2026.'
 ];
 eq('B2 Privacy contains the exact approved subsection copy', elementTexts(PRIVACY, 'p', 'about-p'), APPROVED_PRIVACY);
+// Phase 2 ships factual transparency only: legal review was unavailable, so the page must
+// not assert a legal characterisation or an unverifiable absolute. These are the phrases the
+// phase was explicitly forbidden to publish (and Cloudflare, which claim C-017 could not
+// verify from the repository). This guard is what keeps a future copy edit from quietly
+// reintroducing one.
+var FORBIDDEN_PRIVACY_WORDING = [
+  'GDPR', 'legally compliant', 'legal basis', 'data controller', 'data processor',
+  'certified', 'fully private', 'completely anonymous', 'anonymous', 'no personal data',
+  'zero privacy impact', 'no consent required', 'nothing leaves your device',
+  'no tracking', 'no cookies', 'Cloudflare'
+];
+FORBIDDEN_PRIVACY_WORDING.forEach(function (phrase) {
+  eq('B2 Privacy does not claim: ' + phrase, countOf(PRIVACY.toLowerCase(), phrase.toLowerCase()), 0);
+});
+// P-5 terminology, locked in Phase 1, must survive the Phase 2 rewrite.
+eq('B2 Privacy keeps the approved pronunciation-audio terminology',
+   [countOf(PRIVACY, 'pronunciation-audio clip supplied with the app'), countOf(PRIVACY, 'pre-recorded')], [1, 0]);
+// P-8: the effect of clearing site data, and P-1/C-018: backups exclude one setting.
+ok('B2 Privacy states what clearing site data removes',
+   PRIVACY.indexOf('removes locally stored progress, settings, downloaded app files, and cached pronunciation clips') !== -1);
+ok('B2 Privacy does not overstate backup coverage',
+   PRIVACY.indexOf('One setting is left out') !== -1 && countOf(PRIVACY, 'progress and app data') === 0);
+// P-7 and P-9: a dated page and a named contact route, without adding a second contact method.
+ok('B2 Privacy carries an exact last-updated date', /Last updated \d{1,2} [A-Z][a-z]+ \d{4}\./.test(PRIVACY));
+ok('B2 the Privacy contact route points at the existing Contact screen',
+   /id="dataContactLink" href="#contact"/.test(PRIVACY) && countOf(PRIVACY, 'mailto:') === 0);
 ok('B2 Privacy owns the existing backup and restore controls',
    PRIVACY.indexOf('id="dataBackup"') !== -1 && PRIVACY.indexOf('id="dataRestore"') !== -1 && PRIVACY.indexOf('id="dataFile"') !== -1);
 ok('B2 the install cross-link is now a normal stable anchor',
@@ -693,9 +766,10 @@ GUIDE_PAGES.forEach(function (page) {
      countOf(markup, 'Open the app - flashcards, drills, conversations'), 0);
   eq('E3 ' + name + ' removes the old duplicate footer marketing sentence',
      countOf(markup, 'free Polish flashcards with audio. No account, no tracking, works offline.'), 0);
-  // Priority 6 Phase 1 bumps APP_VERSION to 8.5 without running the generator, so the
-  // committed pages still carry v8.4 in their footer. The skew is a deliberate,
-  // recorded Phase 1 decision and is closed by the Phase 3 regeneration.
+  // Priority 6 Phase 2 bumps APP_VERSION to 8.6 without running the generator, so the
+  // committed pages still carry v8.4 in their footer. The skew began in Phase 1 and is a
+  // deliberate, recorded decision, closed by the Phase 3 regeneration. The committed value
+  // is pinned to v8.4 and the app value to v8.6, so the skew stays exactly this wide.
   ok('E3 ' + name + ' renders the derived version and build year',
      markup.indexOf('&middot; v8.4 &middot; ' + new Date().getFullYear() + '</footer>') !== -1);
 });
@@ -704,11 +778,11 @@ ok('E3 the Guide Privacy URL is recognized as a direct app-screen destination',
    INDEX.indexOf('showScreen(ppInitialScreen)') !== -1);
 ok('E3 generated footer reads APP_VERSION and derives the build year',
    BUILD.indexOf('def read_app_version()') !== -1 && BUILD.indexOf('datetime.date.today().year') !== -1);
-// The bare substring '8.5' also occurs in inline SVG path coordinates in the generator,
+// The bare substring '8.6' also occurs in inline SVG path coordinates in the generator,
 // so the version literal is pinned in the three forms a duplicated version could
 // actually take: the rendered footer label and either quoted assignment style.
 eq('E3 generator does not duplicate the current version literal',
-   countOf(BUILD, 'v8.5') + countOf(BUILD, '"8.5"') + countOf(BUILD, "'8.5'"), 0);
+   countOf(BUILD, 'v8.6') + countOf(BUILD, '"8.6"') + countOf(BUILD, "'8.6'"), 0);
 ok('E3 one generator-owned ending and footer cover Guide, grammar and vocabulary pages',
    BUILD.indexOf('LEARNING_ENDING_STYLE =') !== -1 &&
    BUILD.indexOf('def learning_ending():') !== -1 &&
@@ -731,10 +805,10 @@ ok('E4 Guide does not depend on drawer JavaScript for destination content',
 // -------------------------------------------------------------------------
 // F. Cross-phase safeguard and regression boundaries.
 // -------------------------------------------------------------------------
-ok('F1 app version is the 8.5 release', /const APP_VERSION = "8\.5"/.test(INDEX));
+ok('F1 app version is the 8.6 release', /const APP_VERSION = "8\.6"/.test(INDEX));
 // Phase 4B-2 moves the app-shell cache to v57 so the revised navigation contract
 // is isolated from the Phase 4B-1 shell while open tabs remain on their old worker.
-ok('F1 app-shell cache is the current shell revision', /const CACHE = "popolsku-v60"/.test(SW));
+ok('F1 app-shell cache is the current shell revision', /const CACHE = "popolsku-v61"/.test(SW));
 ok('F1 audio cache remains popolsku-audio', /const AUDIO_CACHE = "popolsku-audio"/.test(SW));
 ok('F1 schema version remains 2', /PP_MIGRATE\.SCHEMA_VERSION = 2/.test(MIGRATE));
 ok('F1 content migration revision remains 2', /PP_MIGRATE\.CONTENT_MIGRATION_REVISION = 2/.test(MIGRATE));

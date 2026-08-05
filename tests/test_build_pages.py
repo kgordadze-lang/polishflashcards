@@ -17,12 +17,12 @@ import build_pages
 
 ROOT = Path(build_pages.__file__).resolve().parent
 
-# Priority 6 Phase 1 accepted version skew.
+# Priority 6 accepted version skew (opened in Phase 1, widened by Phase 2).
 #
-# Phase 1 is a public-copy change to index.html plus the service-worker cache bump. It
+# Phase 2 is a public-copy change to index.html plus the service-worker cache bump. It
 # deliberately does not run build_pages.py, because any run rewrites all 31 generated
 # pages and resets every <lastmod> in sitemap.xml. learning_footer() bakes APP_VERSION
-# into every generated page, so bumping APP_VERSION to 8.5 without regenerating leaves
+# into every generated page, so bumping APP_VERSION to 8.6 without regenerating leaves
 # the committed pages carrying v8.4 in their footer.
 #
 # The skew is cosmetic, deliberate and temporary; the Phase 3 regeneration closes it.
@@ -662,9 +662,9 @@ class LearningEndingTests(unittest.TestCase):
     def test_app_version_is_extracted_from_the_single_shipping_source(self):
         index_source = (ROOT / "index.html").read_text(encoding="utf-8")
         generator_source = Path(build_pages.__file__).read_text(encoding="utf-8")
-        self.assertEqual(build_pages.extract_app_version(index_source), "8.5")
-        self.assertEqual(build_pages.read_app_version(), "8.5")
-        self.assertNotIn('APP_VERSION = "8.5"', generator_source)
+        self.assertEqual(build_pages.extract_app_version(index_source), "8.6")
+        self.assertEqual(build_pages.read_app_version(), "8.6")
+        self.assertNotIn('APP_VERSION = "8.6"', generator_source)
         with self.assertRaisesRegex(RuntimeError, "APP_VERSION"):
             build_pages.extract_app_version("const SOMETHING_ELSE = \"8.1\";")
 
@@ -684,7 +684,7 @@ class LearningEndingTests(unittest.TestCase):
         year = build_pages.datetime.date.today().year
         expected_ending = build_pages.learning_ending()
         footer = (f'<footer class="guide-footer"><a href="/">Po polsku</a> '
-                  f'&middot; v8.5 &middot; {year}</footer>')
+                  f'&middot; v8.6 &middot; {year}</footer>')
         pages = self.learner_pages()
         self.assertEqual(len(pages), 31)
         self.assertEqual(sum(relative.startswith("grammar/") for relative in pages), 23)
@@ -1296,7 +1296,7 @@ class GeneratedMobileContractTests(unittest.TestCase):
         self.assertIn('<a href="https://realpolish.pl/" target="_blank" rel="noopener">', listening)
         self.assertIn('<a href="https://www.youtube.com/@Ratio_viva" target="_blank" rel="noopener">',
                       listening)
-        self.assertIn("Po polsku · v8.5 · 2026",
+        self.assertIn("Po polsku · v8.6 · 2026",
                       LearningEndingTests.visible_text(pages["guide/index.html"]))
 
     def test_redirect_stubs_stay_byte_identical_and_never_get_the_learner_layout(self):
@@ -1523,7 +1523,7 @@ class ListeningRecommendationTests(unittest.TestCase):
         self.assertEqual(markup.count(build_pages.learning_ending()), 1)
         self.assertEqual(markup.count(
             f'<footer class="guide-footer"><a href="/">Po polsku</a> '
-            f'&middot; v8.5 &middot; {year}</footer>'), 1)
+            f'&middot; v8.6 &middot; {year}</footer>'), 1)
         self.assertTrue(markup.rstrip().endswith("</body></html>"))
 
     def test_the_recommendation_never_leaks_onto_another_generated_page(self):
@@ -1743,7 +1743,7 @@ class ListeningDescriptionConsistencyTests(unittest.TestCase):
         pages = self.pages()
         year = build_pages.datetime.date.today().year
         footer = (f'<footer class="guide-footer"><a href="/">Po polsku</a> '
-                  f'&middot; v8.5 &middot; {year}</footer>')
+                  f'&middot; v8.6 &middot; {year}</footer>')
         canonicals = {
             "guide/index.html": f"{build_pages.SITE}/guide/",
             "guide/listening/index.html": f"{build_pages.SITE}/guide/listening/",
