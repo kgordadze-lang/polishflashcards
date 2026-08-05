@@ -588,7 +588,7 @@ eq('J2 no visibility:hidden was introduced anywhere in the sheet',
    DECL_BLOCKS.filter(function (b) { return (decl(b.body, 'visibility') || '') === 'hidden'; }).length, 0);
 eq('J3 no generated-page code was pulled into the app shell', /build_pages/.test(INDEX), false);
 eq('J3 the app version this phase must not touch is intact',
-   (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.4');
+   (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.5');
 // The three approved touch-target changes are the only dimension changes in the diff: no
 // other control gained width/height/padding under the new responsive blocks.
 eq('J4 no control was resized inside the new responsive blocks',

@@ -282,15 +282,24 @@ ok('A6 the home logo and Menu remain siblings in the same top row',
 var ABOUT = section('about'), PRIVACY = section('privacy'), CONTACT = section('contact');
 var APPROVED_ABOUT = [
   'I’m a foreigner living in Poland, learning Polish while studying for a master’s degree - and trying to use the language in everyday life, not just in a textbook. Po polsku began as a simple way to remember the words and phrases I kept needing in real situations.',
-  'It has grown into a practical learning app with vocabulary, grammar, listening, typing, mixed quizzes, conversations, and pronunciation audio. I review and improve the content continuously, with help from native Polish speakers around me, including my teacher.',
-  'Po polsku is completely free, requires no account, and keeps your learning progress on your device. It is built for learners who want Polish they can understand, remember, and actually use.'
+  'It has grown into a practical learning app with vocabulary, grammar, listening, typing, mixed quizzes, conversations, and pronunciation audio. I review and improve the content continuously. New major content releases follow a structured linguistic and audio-review process.',
+  'Po polsku is genuinely free, requires no account, and keeps your learning progress on your device. It is built for learners who want Polish they can understand, remember, and actually use - so you can take part in everyday life in Poland more confidently and independently.'
 ];
+// Priority 6 Phase 1 (claim C-011, risk R-01) replaced the people-based quality sentence
+// with the approved process wording, and aligned "completely free" to the approved
+// "genuinely free" proof point (claim C-002, risk R-18). This guard is deliberately
+// narrow - it pins only the two phrases Phase 1 removed, so it cannot stand in the way of
+// legitimate future About wording. The verbatim three-paragraph contract below is what
+// actually protects this copy.
+eq('B1 About no longer carries the removed people-based quality phrasing',
+   [countOf(ABOUT, 'including my teacher'), countOf(ABOUT, 'native Polish speakers around me')],
+   [0, 0]);
 eq('B1 About contains the exact approved three paragraphs', elementTexts(ABOUT, 'p', 'about-p'), APPROVED_ABOUT);
 eq('B1 About no longer contains separated subsection cards', countOf(ABOUT, 'class="about-contact"'), 0);
 eq('B1 About no longer duplicates Privacy copy', countOf(ABOUT, 'Your data stays yours'), 0);
 eq('B1 About no longer duplicates listening recommendations', countOf(ABOUT, 'What else I listen to'), 0);
 eq('B1 About no longer duplicates Contact', countOf(ABOUT, '>Contact<'), 0);
-ok('B1 About still states the project purpose and free model', ABOUT.indexOf('Po polsku began') !== -1 && ABOUT.indexOf('completely free') !== -1);
+ok('B1 About still states the project purpose and free model', ABOUT.indexOf('Po polsku began') !== -1 && ABOUT.indexOf('genuinely free') !== -1);
 ok('B2 Privacy has the exact approved destination heading', PRIVACY.indexOf('<h1>Privacy - your data stays yours</h1>') !== -1);
 eq('B2 Privacy has the exact four semantic subsection headings', elementTexts(PRIVACY, 'h2', ''),
    ['Your learning data', 'Analytics and hosting', 'Pronunciation', 'Progress and backups']);
@@ -302,7 +311,7 @@ var APPROVED_PRIVACY = [
   'Where supported, the app asks your browser to keep this storage persistently, but the browser decides whether to grant that request. Browser data can still be removed by you or by your browser or device, so a backup is the safest way to keep a separate copy.',
   'Po polsku does not use advertising, marketing cookies, or analytics tools.',
   'The site is delivered through GitHub Pages and Cloudflare, which may process standard technical request data needed to deliver and protect the site. Po polsku does not use this information to build learner profiles.',
-  'Pronunciation normally uses pre-recorded audio provided with the app. If a clip cannot play, the app may use your browser’s built-in speech feature. That fallback is controlled by your browser or device.',
+  'Pronunciation normally plays a pronunciation-audio clip supplied with the app. If a clip cannot play, the app may use your browser’s built-in speech feature. That fallback is controlled by your browser or device.',
   'A backup downloads a JSON file containing your Po polsku progress and app data to a location you choose. Restoring a backup reads the file you select and applies it on this device.',
   'Installing the app can provide a more app-like and reliable experience, but it should not replace keeping a backup.'
 ];
@@ -684,6 +693,9 @@ GUIDE_PAGES.forEach(function (page) {
      countOf(markup, 'Open the app - flashcards, drills, conversations'), 0);
   eq('E3 ' + name + ' removes the old duplicate footer marketing sentence',
      countOf(markup, 'free Polish flashcards with audio. No account, no tracking, works offline.'), 0);
+  // Priority 6 Phase 1 bumps APP_VERSION to 8.5 without running the generator, so the
+  // committed pages still carry v8.4 in their footer. The skew is a deliberate,
+  // recorded Phase 1 decision and is closed by the Phase 3 regeneration.
   ok('E3 ' + name + ' renders the derived version and build year',
      markup.indexOf('&middot; v8.4 &middot; ' + new Date().getFullYear() + '</footer>') !== -1);
 });
@@ -692,7 +704,11 @@ ok('E3 the Guide Privacy URL is recognized as a direct app-screen destination',
    INDEX.indexOf('showScreen(ppInitialScreen)') !== -1);
 ok('E3 generated footer reads APP_VERSION and derives the build year',
    BUILD.indexOf('def read_app_version()') !== -1 && BUILD.indexOf('datetime.date.today().year') !== -1);
-eq('E3 generator does not duplicate the current version literal', countOf(BUILD, '8.4'), 0);
+// The bare substring '8.5' also occurs in inline SVG path coordinates in the generator,
+// so the version literal is pinned in the three forms a duplicated version could
+// actually take: the rendered footer label and either quoted assignment style.
+eq('E3 generator does not duplicate the current version literal',
+   countOf(BUILD, 'v8.5') + countOf(BUILD, '"8.5"') + countOf(BUILD, "'8.5'"), 0);
 ok('E3 one generator-owned ending and footer cover Guide, grammar and vocabulary pages',
    BUILD.indexOf('LEARNING_ENDING_STYLE =') !== -1 &&
    BUILD.indexOf('def learning_ending():') !== -1 &&
@@ -715,10 +731,10 @@ ok('E4 Guide does not depend on drawer JavaScript for destination content',
 // -------------------------------------------------------------------------
 // F. Cross-phase safeguard and regression boundaries.
 // -------------------------------------------------------------------------
-ok('F1 app version is the 8.4 release', /const APP_VERSION = "8\.4"/.test(INDEX));
+ok('F1 app version is the 8.5 release', /const APP_VERSION = "8\.5"/.test(INDEX));
 // Phase 4B-2 moves the app-shell cache to v57 so the revised navigation contract
 // is isolated from the Phase 4B-1 shell while open tabs remain on their old worker.
-ok('F1 app-shell cache is the current shell revision', /const CACHE = "popolsku-v59"/.test(SW));
+ok('F1 app-shell cache is the current shell revision', /const CACHE = "popolsku-v60"/.test(SW));
 ok('F1 audio cache remains popolsku-audio', /const AUDIO_CACHE = "popolsku-audio"/.test(SW));
 ok('F1 schema version remains 2', /PP_MIGRATE\.SCHEMA_VERSION = 2/.test(MIGRATE));
 ok('F1 content migration revision remains 2', /PP_MIGRATE\.CONTENT_MIGRATION_REVISION = 2/.test(MIGRATE));

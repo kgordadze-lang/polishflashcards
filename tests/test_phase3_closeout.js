@@ -618,12 +618,12 @@ eq('F6 no other in-app link was removed alongside the ending link',
 // =========================================================================
 // G. Regression boundaries.
 // =========================================================================
-eq('G1 APP_VERSION is the 8.4 release', (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.4');
+eq('G1 APP_VERSION is the 8.5 release', (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.5');
 // The app-shell cache revision moved to v56 in Phase 4B-1: the hardened worker
 // stages its shell in a new cache so an open tab keeps being served the release
 // it was loaded with. The audio cache name below stays pinned forever.
 eq('G1 the app-shell cache name is the current shell revision',
-   (SW.match(/CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-v59');
+   (SW.match(/CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-v60');
 eq('G1 the audio cache name is unchanged', (SW.match(/AUDIO_CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-audio');
 eq('G1 the storage schema version is unchanged',
    (MIGRATE.match(/SCHEMA_VERSION\s*=\s*(\d+)/) || [])[1], '2');
@@ -665,9 +665,12 @@ eq('G2 no scroll listener, visualViewport handler or smooth scroll was introduce
 eq('G3 the removed ending copy exists nowhere in the app shell either',
    countOf(INDEX, 'Your progress stays on this device and can be backed up anytime.') +
    countOf(INDEX, 'How progress works'), 0);
+// Priority 6 Phase 1 (risk R-04) keeps the approved H1 and rewrites only the supporting
+// sentence, which now carries the positioning. The search copy is unchanged.
 eq('G3 the Home hero and search copy are unchanged',
    [countOf(INDEX, '<h1>Learn the Polish<br>you\'ll <em>actually</em> use.</h1>'),
-    countOf(INDEX, 'Search topics')], [1, 2]);
+    countOf(INDEX, 'Everyday vocabulary, useful grammar, conversation practice, and Polish pronunciation audio for real life in Poland.'),
+    countOf(INDEX, 'Search topics')], [1, 1, 2]);
 eq('G4 no generated-page code leaked into the app shell', /build_pages/.test(INDEX), false);
 eq('G4 the app shell declares no new media breakpoint',
    TOP_RULES.filter(function (r) { return /^@media/.test(r.prelude); })
