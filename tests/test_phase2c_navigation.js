@@ -425,23 +425,43 @@ eq('B3 the four approved reasons are the Contact headings, in order',
    elementTexts(CONTACT, 'h2', ''),
    ['Report a mistake in the content', 'Something is not working',
     'Suggest a topic or phrase', 'Something else']);
+// Refined in the follow-up copy review. F-3's goal - technical context without implying a
+// request for personal data - is now served by asking the reporter to check a screenshot
+// for private content themselves, rather than asserting that device/browser detail cannot
+// be personal (a claim the earlier wording made and this revision withdraws).
 eq('B3 Contact has the exact approved supporting copy', elementTexts(CONTACT, 'p', 'about-p'), [
-  'Po polsku is made by one person, and email is the only channel - there is no form and no account. Pick whichever reason fits below; each link opens your email app with a subject already filled in. Every link goes to the same address, so you can also write to it directly.',
-  'Translations, spelling, and pronunciation clips can all be wrong, and there are a great many of them. If something looks off, it helps to include the topic name, the Polish phrase, and what is wrong with it.',
-  'For anything broken - audio that will not play, a page that will not load - it helps to know what you were doing, which device and browser you use, and the version shown at the bottom of the home screen. That is technical context, not personal information. A screenshot is welcome but never needed.',
-  'If a word or phrase you needed is missing, tell me what you were trying to say and where you needed it. Not everything can be added, but suggestions are welcome.',
+  'Choose the option that fits best. Each link opens your email app with a subject already filled in. They all use the same address, which you can also copy and use directly.',
+  'If you spot an issue with a translation, spelling, or pronunciation clip, please include the topic name, the Polish phrase, and what seems wrong.',
+  'It helps to include what you were doing, your device and browser, and the version shown at the bottom of the Home screen. A screenshot can help, but please check that it does not contain anything private.',
+  'If a word or phrase you needed is missing, tell me what you were trying to say and where you needed it. I cannot add everything, but suggestions are always welcome.',
   'Po polsku is an independent and evolving project. I’m always open to thoughtful collaborations, useful resources, new ideas, and conversations about making Polish easier and more engaging to learn.'
 ]);
-// F-3 asked for technical context without implying a request for personal data, and for
-// screenshots to be optional and never required.
-ok('B3 the technical-issue block says what it asks for is not personal data',
-   CONTACT.indexOf('That is technical context, not personal information.') !== -1);
-ok('B3 a screenshot is offered as optional and never as a requirement',
-   CONTACT.indexOf('A screenshot is welcome but never needed.') !== -1);
+// Withdrawn wording (copy review) must not remain anywhere in public Contact copy, and
+// must not be replaced by another claim that technical detail or a screenshot cannot
+// contain personal or private information - the revision asks the reporter to check
+// instead of asserting it on their behalf.
+['That is technical context, not personal information.',
+ 'Translations, spelling, and pronunciation clips can all be wrong',
+ 'there are a great many of them',
+ 'Po polsku is made by one person, and email is the only channel',
+ 'Pick whichever reason fits below'].forEach(function (phrase) {
+  eq('B3 withdrawn wording is absent: ' + phrase, countOf(CONTACT, phrase), 0);
+});
+eq('B3 no replacement claim asserts technical detail or a screenshot is free of personal data',
+   ['does not contain anything personal', 'contains no personal', 'is not personal information',
+    'not private information', 'does not include anything private', 'cannot contain personal',
+    'free of personal', 'free of private'].reduce(function (n, s) {
+     return n + countOf(visibleText(CONTACT).toLowerCase(), s.toLowerCase()); }, 0), 0);
+// The technical-issue guidance now asks the reporter to check, rather than asserting the
+// content is safe on their behalf.
+ok('B3 the technical-issue block asks the reporter to check for private content',
+   CONTACT.indexOf('please check that it does not contain anything private') !== -1);
+ok('B3 a screenshot is offered as helpful, not as a requirement',
+   CONTACT.indexOf('A screenshot can help') !== -1 && countOf(CONTACT, 'screenshot is required') === 0);
 // The learner is told the address works on its own, because a mailto: link does nothing
 // on a device with no mail client configured.
 ok('B3 the address is usable without an email client',
-   CONTACT.indexOf('you can also write to it directly') !== -1 &&
+   CONTACT.indexOf('you can also copy and use directly') !== -1 &&
    countOf(CONTACT, '</svg>hello@popolsku.app</a>') === 4);
 eq('B3 Contact makes no claim about who reads a message or how fast',
    ['native speaker', 'professional', 'expert', 'reply within', 'response time',
@@ -1121,6 +1141,33 @@ eq('H3 Privacy still routes to Contact instead of carrying its own address',
    [countOf(PRIVACY, 'mailto:'), countOf(PRIVACY, 'id="dataContactLink" href="#contact"')], [0, 1]);
 eq('H4 the generated pages gained no contact route, so no second surface can drift',
    [countOf(BUILD, 'mailto:'), countOf(GUIDE, 'mailto:'), countOf(LISTENING, 'mailto:')], [0, 0, 0]);
+// The visible address is a plain text node inside a real <a>, not an image, canvas or
+// obfuscated construction, so it can be selected and copied like any other text - and the
+// whole route is static markup, so Contact works with JavaScript disabled.
+eq('H5 the visible address is plain, selectable text in every link',
+   countOf(CONTACT, '</svg>hello@popolsku.app</a>'), 4);
+eq('H5 the address is not built, split or obfuscated by script',
+   [countOf(CONTACT, 'String.fromCharCode'), countOf(CONTACT, 'atob('), countOf(CONTACT, '&#'),
+    countOf(CONTACT, 'data-email'), countOf(CONTACT, '.join(')], [0, 0, 0, 0, 0]);
+eq('H5 Contact is entirely static markup, so no script has to run to see or copy it',
+   countOf(CONTACT, '<script'), 0);
+eq('H5 the Contact copy is static markup, not written in by script at runtime',
+   INDEX.split('\n').filter(function (l) {
+     return (l.indexOf('.innerHTML') !== -1 || l.indexOf('.textContent') !== -1) &&
+            /contact-lead|contact-email|"contact"|#contact/.test(l);
+   }).length, 0);
+eq('H5 the approved lead sentence is present exactly once, as literal markup',
+   countOf(INDEX, '<p class="contact-lead">Spotted a mistake, hit a problem, or have an idea?</p>'), 1);
+// This review only refines wording. No new submission channel of any kind may appear.
+// ("analytics", "telemetry" and "tracking" are checked for actual code, not the word -
+// the app's own Privacy copy uses those words to disclaim having any.)
+eq('H6 no form, endpoint, backend, or third-party submission channel',
+   [countOf(INDEX, '<form'), countOf(INDEX, 'fetch("http'), countOf(INDEX, 'XMLHttpRequest'),
+    countOf(INDEX, 'navigator.sendBeacon'), countOf(INDEX, 'WebSocket')], [0, 0, 0, 0, 0]);
+eq('H6 no analytics, telemetry or tracking code, and no cookie',
+   [countOf(INDEX, 'gtag('), countOf(INDEX, 'ga('), countOf(INDEX, 'googletagmanager'),
+    countOf(INDEX, 'plausible('), countOf(INDEX, 'mixpanel'), countOf(INDEX, 'document.cookie')],
+   [0, 0, 0, 0, 0, 0]);
 
 // -------------------------------------------------------------------------
 // I. Storage footprint after Priority 6 Phase 4.
