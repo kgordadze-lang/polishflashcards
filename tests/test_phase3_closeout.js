@@ -519,11 +519,13 @@ eq('E3 the approved introduction appears on the Guide hub and nowhere else',
 eq('E3 the approved introduction did not leak into the app shell',
    countOf(INDEX, APPROVED_INTRO) + countOf(INDEX, 'Built by a foreigner'), 0);
 // Metadata derived from nothing changed here must be byte-identical.
-eq('E4 the Guide title is unchanged',
+// Priority 6 Phase 3 (risk R-06) renames the destination. The descriptive tail of the
+// title - the part that carries search intent - is deliberately kept.
+eq('E4 the Guide title carries the approved destination name and its descriptive tail',
    (GUIDE.match(/<title>([^<]+)<\/title>/) || [])[1],
-   'Polish guide - grammar, slang and idioms explained simply | Po polsku');
-eq('E4 the Guide h1 is unchanged',
-   (GUIDE.match(/<h1>([^<]+)<\/h1>/) || [])[1], 'Polish, explained simply');
+   'Explore more Polish - Polish grammar, slang and idioms explained simply | Po polsku');
+eq('E4 the Guide h1 is the approved destination name',
+   (GUIDE.match(/<h1>([^<]+)<\/h1>/) || [])[1], 'Explore more Polish');
 var GUIDE_DESC = 'Free Polish for learners: all seven cases, formal address, adjectives - plus real ' +
   'slang, idioms and proverbs. Tables, usage notes, and examples with Polish pronunciation audio.';
 eq('E4 the Guide meta description is unchanged',

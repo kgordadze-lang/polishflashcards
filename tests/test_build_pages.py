@@ -862,9 +862,10 @@ class GeneratedAccessibilityTests(unittest.TestCase):
                 )
 
         identities["guide/index.html"] = (
-            "Polish guide - grammar, slang and idioms explained simply | Po polsku",
+            f"{build_pages.GUIDE_NAME} - Polish grammar, slang and idioms explained "
+            "simply | Po polsku",
             f"{build_pages.SITE}/guide/",
-            "Polish, explained simply",
+            build_pages.GUIDE_NAME,
             "Built by a foreigner living in Poland and learning the language through everyday "
             "life - with practical flashcards, clear explanations, pronunciation audio, and "
             "free interactive practice for every topic.",
@@ -1092,12 +1093,13 @@ class GeneratedMobileContractTests(unittest.TestCase):
         '<html lang="en">\n'
         '<head>\n'
         '<meta charset="UTF-8">\n'
-        '<title>Po polsku guide</title>\n'
+        f'<title>{build_pages.GUIDE_NAME}</title>\n'
         '<meta http-equiv="refresh" content="0; url=/guide/">\n'
         '<link rel="canonical" href="https://popolsku.app/guide/">\n'
         '<meta name="robots" content="noindex">\n'
         '</head>\n'
-        '<body><main><p>Moved to <a href="/guide/">the Po polsku guide</a>.</p></main></body>\n'
+        f'<body><main><p>Moved to <a href="/guide/">{build_pages.GUIDE_NAME}</a>.'
+        '</p></main></body>\n'
         '</html>\n'
     )
 
@@ -1301,7 +1303,7 @@ class GeneratedMobileContractTests(unittest.TestCase):
                 self.assertNotIn('<meta name="robots"', markup)
         for relative in (relative for relative in pages
                          if relative.startswith(("grammar/", "vocabulary/"))):
-            self.assertIn('<a href="/guide/">Guide</a>', pages[relative])
+            self.assertIn(f'<a href="/guide/">{build_pages.GUIDE_NAME}</a>', pages[relative])
         listening = pages["guide/listening/index.html"]
         self.assertIn('<a href="https://realpolish.pl/" target="_blank" rel="noopener">', listening)
         self.assertIn('<a href="https://www.youtube.com/@Ratio_viva" target="_blank" rel="noopener">',
@@ -1515,7 +1517,8 @@ class ListeningRecommendationTests(unittest.TestCase):
             f'<meta name="description" content="{build_pages.esc(LISTENING_DESCRIPTION)}">',
             "<h1>What else I listen to</h1>",
             '<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> &rsaquo; '
-            '<a href="/guide/">Guide</a> &rsaquo; What I listen to</nav>',
+            f'<a href="/guide/">{build_pages.GUIDE_NAME}</a> &rsaquo; '
+            'What else I listen to</nav>',
             '<html lang="en">',
             '<meta property="og:url" content="https://popolsku.app/guide/listening/">',
         )
@@ -1779,7 +1782,8 @@ class ListeningDescriptionConsistencyTests(unittest.TestCase):
                 self.assertEqual(markup.count('<nav class="crumbs" aria-label="Breadcrumb">'), 1)
                 self.assertIn('<a href="/">Home</a>', markup)
         self.assertIn('<a href="/guide/listening/">', pages["guide/index.html"])
-        self.assertIn('<a href="/guide/">Guide</a>', pages["guide/listening/index.html"])
+        self.assertIn(f'<a href="/guide/">{build_pages.GUIDE_NAME}</a>',
+                      pages["guide/listening/index.html"])
 
     def test_both_corrected_pages_match_their_committed_bytes(self):
         # Phase 3 regenerated, so this is exact equality again - no skew allowance.
@@ -1996,6 +2000,87 @@ class GeneratorSafetyTests(unittest.TestCase):
         self.assertRegex(str(build_pages.BUILD_YEAR), r"^20\d\d$")
         self.assertIn(f"&middot; {build_pages.BUILD_YEAR}</footer>",
                       build_pages.learning_footer())
+
+
+class DestinationNameTests(unittest.TestCase):
+    """Priority 6 Phase 3 commit (a): risk R-06, Explore more Polish G-1/G-2/G-4/G-5/G-6.
+
+    The destination had three public names - a menu label, a title and a heading -
+    and 33 pages still called it "Guide". One name now reaches every surface, while
+    the /guide/ URL, its canonical and its sitemap entry deliberately do not move.
+    """
+
+    @staticmethod
+    def pages():
+        return GeneratedAccessibilityTests.expected_pages()
+
+    def test_the_public_name_reaches_every_surface_it_owns(self):
+        hub = self.pages()["guide/index.html"]
+        self.assertEqual(hub.count(f"<h1>{build_pages.GUIDE_NAME}</h1>"), 1)
+        self.assertEqual(
+            hub.count(f"<title>{build_pages.GUIDE_NAME} - Polish grammar, slang and "
+                      "idioms explained simply | Po polsku</title>"), 1)
+        self.assertEqual(structured_entity(hub, "CollectionPage")["name"],
+                         build_pages.GUIDE_NAME)
+        for relative in GeneratedAccessibilityTests.REDIRECT_PAGES:
+            with self.subTest(page=relative):
+                stub = self.pages()[relative]
+                self.assertEqual(stub.count(f"<title>{build_pages.GUIDE_NAME}</title>"), 1)
+                self.assertEqual(
+                    stub.count(f'<a href="/guide/">{build_pages.GUIDE_NAME}</a>'), 1)
+        app_shell = (ROOT / "index.html").read_text(encoding="utf-8")
+        # the drawer label was already the approved name; the no-script fallback is new
+        self.assertEqual(app_shell.count(f'<a href="guide/">{build_pages.GUIDE_NAME}</a>'), 1)
+        self.assertEqual(
+            app_shell.count(f'<a href="guide/" style="color:#4f46e5">'
+                            f'{build_pages.GUIDE_NAME}</a>'), 1)
+
+    def test_the_old_name_is_gone_from_every_public_surface(self):
+        """"Guide" as a destination name, not as an ordinary English word: the
+        surfaces checked here are the ones that named the destination."""
+        for relative, markup in self.pages().items():
+            with self.subTest(page=relative):
+                self.assertNotIn("&rsaquo; Guide", markup)
+                self.assertNotIn('<a href="/guide/">Guide</a>', markup)
+                self.assertNotIn("Po polsku guide", markup)
+                self.assertNotIn("Polish, explained simply", markup)
+        app_shell = (ROOT / "index.html").read_text(encoding="utf-8")
+        self.assertNotIn("grammar &amp; vocabulary guide", app_shell)
+
+    def test_the_listening_breadcrumb_matches_its_own_heading(self):
+        listening = self.pages()["guide/listening/index.html"]
+        trail = structured_entity(listening, "BreadcrumbList")["itemListElement"]
+        self.assertEqual([item["name"] for item in trail],
+                         ["Home", build_pages.GUIDE_NAME, "What else I listen to"])
+        self.assertEqual(listening.count("<h1>What else I listen to</h1>"), 1)
+        self.assertNotIn("What I listen to</nav>", listening)
+        # the deliberate SEO title variant is not the destination's name and stays
+        self.assertEqual(listening.count(f"<title>{LISTENING_TITLE}</title>"), 1)
+
+    def test_the_url_canonical_and_sitemap_entry_did_not_move(self):
+        """Renaming is a wording change: no URL, redirect or sitemap entry moves."""
+        outputs, _summary, _notes = build_pages.build_outputs(str(ROOT))
+        self.assertIn("guide/index.html", outputs)
+        self.assertIn("guide/listening/index.html", outputs)
+        self.assertIn(f'<link rel="canonical" href="{build_pages.SITE}/guide/">',
+                      outputs["guide/index.html"])
+        for stub in GeneratedAccessibilityTests.REDIRECT_PAGES:
+            self.assertIn('<meta http-equiv="refresh" content="0; url=/guide/">',
+                          outputs[stub])
+            self.assertIn(f'<link rel="canonical" href="{build_pages.SITE}/guide/">',
+                          outputs[stub])
+        urls = re.findall(r"<loc>([^<]+)</loc>", outputs["sitemap.xml"])
+        self.assertEqual(urls.count(f"{build_pages.SITE}/guide/"), 1)
+        self.assertEqual(urls.count(f"{build_pages.SITE}/guide/listening/"), 1)
+
+    def test_every_internal_link_on_every_page_resolves_to_a_committed_file(self):
+        """A rename that broke a link would be worse than the inconsistency it fixed."""
+        for relative, markup in self.pages().items():
+            for href in re.findall(r'href="(/[^"]*)"', markup):
+                path = href.split("#")[0].split("?")[0]
+                target = ROOT / (path.lstrip("/") + ("index.html" if path.endswith("/") else ""))
+                with self.subTest(page=relative, href=href):
+                    self.assertTrue(target.is_file(), f"{relative} -> {href}")
 
 
 class GeneratedStructuredDataTests(unittest.TestCase):

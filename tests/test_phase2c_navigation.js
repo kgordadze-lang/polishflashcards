@@ -738,27 +738,35 @@ var GUIDE_BREADCRUMB_PAGES = (function () {
   pages.push(LISTENING);
   return pages;
 })();
-eq('E1 Guide document title remains exact',
+// Priority 6 Phase 3 (risk R-06) resolves the destination's three public names into
+// one. The URL, canonical and sitemap entry are deliberately unchanged - only wording.
+eq('E1 Guide document title carries the approved destination name',
    (GUIDE.match(/<title>([^<]+)<\/title>/) || [])[1],
-   'Polish guide - grammar, slang and idioms explained simply | Po polsku');
+   'Explore more Polish - Polish grammar, slang and idioms explained simply | Po polsku');
 eq('E1 Guide canonical remains exact', attr((GUIDE.match(/<link rel="canonical"[^>]*>/) || [''])[0], 'href'), 'https://popolsku.app/guide/');
 eq('E1 Guide has one clear main heading', (GUIDE.match(/<h1\b/g) || []).length, 1);
-ok('E1 Guide main heading remains meaningful', GUIDE.indexOf('<h1>Polish, explained simply</h1>') !== -1);
+ok('E1 Guide main heading is the approved destination name',
+   GUIDE.indexOf('<h1>Explore more Polish</h1>') !== -1);
 ok('E1 Guide learner-facing content is rendered in HTML', GUIDE.indexOf('Grammar Cases') !== -1 && GUIDE.indexOf('Slang &amp; idioms') !== -1);
 eq('E1 Guide has no noindex directive', countOf(GUIDE.toLowerCase(), 'noindex'), 0);
 ok('E1 Guide remains a standalone generated page', BUILD.indexOf('def guide_page(') !== -1 && BUILD.indexOf('guide/index.html') !== -1);
-eq('E1 the approved menu label did not leak into the Guide pages or the generator',
-   countOf(GUIDE, 'Explore more Polish') + countOf(LISTENING, 'Explore more Polish') + countOf(BUILD, 'Explore more Polish'), 0);
+eq('E1 the destination name reaches the hub, the listening page and the generator',
+   [countOf(GUIDE, 'Explore more Polish') > 0, countOf(LISTENING, 'Explore more Polish') > 0,
+    countOf(BUILD, 'GUIDE_NAME = "Explore more Polish"')], [true, true, 1]);
+eq('E1 the superseded destination names are gone from the public surface',
+   countOf(GUIDE, 'Polish, explained simply') + countOf(GUIDE, 'Polish guide') +
+   countOf(LISTENING, '&rsaquo; Guide') + countOf(INDEX, 'grammar &amp; vocabulary guide'), 0);
 // Phase 3 renders the breadcrumb markup and its BreadcrumbList from one trail, so the
 // destination name is asserted on the pages themselves rather than on a generator literal.
-ok('E1 generated breadcrumbs and back-links still use the Guide page name',
-   countOf(GUIDE_BREADCRUMB_PAGES.join(''), '<a href="/guide/">Guide</a>') === 30 &&
-   LISTENING.indexOf('href="/guide/">Guide</a>') !== -1);
+ok('E1 generated breadcrumbs and back-links use the approved destination name',
+   countOf(GUIDE_BREADCRUMB_PAGES.join(''), '<a href="/guide/">Explore more Polish</a>') === 30 &&
+   countOf(GUIDE_BREADCRUMB_PAGES.join(''), '<a href="/guide/">Guide</a>') === 0);
 ok('E1 generated pages retain their independent logo-only header',
    /<header class="top"><a href="\/" aria-label="Po polsku home"/.test(GUIDE) && GUIDE.indexOf('siteDrawer') === -1);
 eq('E1 generated-page source has no Add app control', countOf(BUILD, 'ppChip'), 0);
 ok('E2 Guide keeps its listening recommendation link', GUIDE.indexOf('href="/guide/listening/"') !== -1);
-ok('E2 listening page links back to Guide', LISTENING.indexOf('href="/guide/">Guide</a>') !== -1);
+ok('E2 listening page links back to the destination hub',
+   LISTENING.indexOf('href="/guide/">Explore more Polish</a>') !== -1);
 eq('E2 listening canonical remains exact',
    attr((LISTENING.match(/<link rel="canonical"[^>]*>/) || [''])[0], 'href'), 'https://popolsku.app/guide/listening/');
 eq('E2 listening page title remains meaningful',

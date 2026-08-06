@@ -83,6 +83,13 @@ SOCIAL_IMAGE_URL = f"{SITE}/{SOCIAL_IMAGE_FILE}?v=2"
 # outside them is ever written or deleted.
 GENERATED_DIRS = ("grammar", "vocabulary", "guide")
 
+# The destination's one public name. The URL deliberately stays /guide/ - it has
+# whatever authority it has accrued, and nobody navigates by path - but the title,
+# heading, structured data, breadcrumbs, stubs and the app shell's no-script
+# fallback all say this, so a reader and a crawler meet the same destination.
+GUIDE_NAME = "Explore more Polish"
+GUIDE_PATH = "/guide/"
+
 # The footer year. It is a declared release marker, not a clock reading: a
 # generated page must be reproducible from its sources alone, and the previous
 # clock-derived year silently rewrote all 31 pages every new year.
@@ -817,7 +824,7 @@ def topic_page(level, topic, slug, audio_idx):
         "isAccessibleForFree": True,
         "provider": {"@type": "Organization", "name": "Po polsku", "url": SITE + "/"},
     }
-    crumbs, crumb_ld = breadcrumbs(("Home", "/"), ("Guide", "/guide/"), (name, canon))
+    crumbs, crumb_ld = breadcrumbs(("Home", "/"), (GUIDE_NAME, GUIDE_PATH), (name, canon))
     body = [head(title, meta_desc, canon, [ld, crumb_ld], LEARNING_ENDING_STYLE)]
     body.append(crumbs)
     body.append(f'<h1>{esc(name)}</h1>')
@@ -869,7 +876,7 @@ def vocab_page(topic, slug, page_title, audio_idx):
         "isAccessibleForFree": True,
         "provider": {"@type": "Organization", "name": "Po polsku", "url": SITE + "/"},
     }
-    crumbs, crumb_ld = breadcrumbs(("Home", "/"), ("Guide", "/guide/"), (page_title, canon))
+    crumbs, crumb_ld = breadcrumbs(("Home", "/"), (GUIDE_NAME, GUIDE_PATH), (page_title, canon))
     body = [head(title, meta_desc, canon, [ld, crumb_ld], LEARNING_ENDING_STYLE)]
     body.append(crumbs)
     body.append(f'<h1>{esc(page_title)}</h1>')
@@ -884,22 +891,22 @@ def vocab_page(topic, slug, page_title, audio_idx):
 
 def guide_page(topics_by_level, vocab_items):
     canon = f"{SITE}/guide/"
-    title = "Polish guide - grammar, slang and idioms explained simply | Po polsku"
+    title = f"{GUIDE_NAME} - Polish grammar, slang and idioms explained simply | Po polsku"
     meta_desc = ("Free Polish for learners: all seven cases, formal address, adjectives - plus real "
                  "slang, idioms and proverbs. Tables, usage notes, and examples with Polish pronunciation audio.")
     ld = {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
-        "name": "Polish guide",
+        "name": GUIDE_NAME,
         "description": meta_desc,
         "url": canon,
         "inLanguage": "en",
         "provider": {"@type": "Organization", "name": "Po polsku", "url": SITE + "/"},
     }
-    crumbs, crumb_ld = breadcrumbs(("Home", "/"), ("Guide", canon))
+    crumbs, crumb_ld = breadcrumbs(("Home", "/"), (GUIDE_NAME, canon))
     body = [head(title, meta_desc, canon, [ld, crumb_ld], LEARNING_ENDING_STYLE)]
     body.append(crumbs)
-    body.append('<h1>Polish, explained simply</h1>')
+    body.append(f'<h1>{esc(GUIDE_NAME)}</h1>')
     body.append('<p class="lede">Built by a foreigner living in Poland and learning the language '
                 'through everyday life - with practical flashcards, clear explanations, pronunciation '
                 'audio, and free interactive practice for every topic.</p>')
@@ -951,8 +958,8 @@ def listening_page():
         "inLanguage": "en",
         "publisher": {"@type": "Organization", "name": "Po polsku", "url": SITE + "/"},
     }
-    crumbs, crumb_ld = breadcrumbs(("Home", "/"), ("Guide", "/guide/"),
-                                   ("What I listen to", canon))
+    crumbs, crumb_ld = breadcrumbs(("Home", "/"), (GUIDE_NAME, GUIDE_PATH),
+                                   ("What else I listen to", canon))
     body = [head(title, meta_desc, canon, [ld, crumb_ld], LEARNING_ENDING_STYLE)]
     body.append(crumbs)
     body.append('<h1>What else I listen to</h1>')
@@ -1018,12 +1025,12 @@ def redirect_stub(target):
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Po polsku guide</title>
+<title>{esc(GUIDE_NAME)}</title>
 <meta http-equiv="refresh" content="0; url={target}">
 <link rel="canonical" href="{SITE}{target}">
 <meta name="robots" content="noindex">
 </head>
-<body><main><p>Moved to <a href="{target}">the Po polsku guide</a>.</p></main></body>
+<body><main><p>Moved to <a href="{target}">{esc(GUIDE_NAME)}</a>.</p></main></body>
 </html>
 """
 
