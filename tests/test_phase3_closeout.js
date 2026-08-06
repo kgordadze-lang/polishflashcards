@@ -6,8 +6,8 @@
 //   B  podcast card #plText     the 200%-text overflow of the card headline.
 //   C  Home .cat-btn            the 200%-text overflow of the category tabs.
 //   C2 activity .ctrl row       the 200%-text 1px page overflow (corrective pass).
-//   D  Contact email control    visible "Email" replaced by a decorative inline envelope,
-//                               with the accessible name declared explicitly.
+//   D  Contact email control    the icon, focus and touch-target contract for the single
+//                               approved mailto: action (Priority 6 Phase 4C).
 //   E  Guide introduction       the approved replacement copy, generator-owned.
 //   F  shared Guide ending      the two removed elements, across every generated page.
 //   G  regression boundaries    version, caches, migration, Phase 3B-2B behaviour, wording.
@@ -423,65 +423,36 @@ eq('C7 the dynamic control labels are unchanged',
 // =========================================================================
 // D. Contact email control.
 // =========================================================================
-// Priority 6 Phase 4 (risk R-07, feedback F-1/F-2/F-3) turns the single collaboration
-// action into four named reasons. Every contract this section established is preserved and
-// now applies to each of the four controls, not just one: same component, same icon rule,
-// same explicit accessible name, same label-in-name guarantee. What changed is the count
-// and the query string. There is still exactly one contact *address* and one contact
-// *method* - four entry points to it, each carrying only a subject.
+// Priority 6 Phase 4 (risk R-07, feedback F-1/F-2/F-3) turned the single collaboration
+// action into four named-reason actions, each carrying its own subject. Priority 6
+// Phase 4C consolidates those four back into one plain action below a compact reason
+// list: same component, same icon rule, same touch-target contract - but the accessible
+// name now comes from the link's own visible text instead of a separate aria-label, and
+// the route carries no query string at all. There is still exactly one contact *address*
+// and one contact *method*, with one entry point to it.
 var CONTACT_LINKS = INDEX.match(/<a class="contact-email"[\s\S]*?<\/a>/g) || [];
 var CONTACT_LINK = CONTACT_LINKS[0] || '';
 var CONTACT_HREFS = CONTACT_LINKS.map(function (a) { return (a.match(/href="([^"]*)"/) || [])[1]; });
-var CONTACT_NAMES = CONTACT_LINKS.map(function (a) { return (a.match(/aria-label="([^"]*)"/) || [])[1]; });
-eq('D1 the four approved contact actions exist', CONTACT_LINKS.length, 4);
-eq('D1 exactly four contact actions exist', countOf(INDEX, 'class="contact-email"'), 4);
-eq('D1 every href is byte-identical to its approved destination', CONTACT_HREFS,
-   ['mailto:hello@popolsku.app?subject=Correction',
-    'mailto:hello@popolsku.app?subject=Technical%20issue',
-    'mailto:hello@popolsku.app?subject=Suggestion',
-    'mailto:hello@popolsku.app?subject=Hello']);
-eq('D1 every action resolves to the one approved address',
-   CONTACT_HREFS.filter(function (h) { return h.indexOf('mailto:hello@popolsku.app?subject=') === 0; }).length, 4);
+eq('D1 exactly one approved contact action exists', CONTACT_LINKS.length, 1);
+eq('D1 exactly one contact action exists', countOf(INDEX, 'class="contact-email"'), 1);
+eq('D1 the href is byte-identical to the approved bare destination', CONTACT_HREFS,
+   ['mailto:hello@popolsku.app']);
 eq('D1 no second contact address exists anywhere in the app shell',
    countOf(INDEX, 'mailto:') - countOf(INDEX, 'mailto:hello@popolsku.app'), 0);
-eq('D1 the subject is the only parameter, and no body or recipient is prefilled',
-   CONTACT_HREFS.filter(function (h) {
-     return h.split('?')[1].split('&').length === 1 && h.indexOf('body=') === -1 &&
-            h.indexOf('cc=') === -1 && h.indexOf('bcc=') === -1;
-   }).length, 4);
-eq('D1 no learner data, progress or storage value is placed in a contact URL',
+eq('D1 the route carries no query string, so no subject, body, cc or bcc can be prefilled',
+   CONTACT_HREFS.filter(function (h) { return h.indexOf('?') !== -1; }), []);
+eq('D1 no learner data, progress or storage value is placed in the contact URL',
    CONTACT_HREFS.filter(function (h) {
      return /popolsku-|progress|know|still|level|topic|card|streak|score|localStorage/.test(h);
    }), []);
-eq('D1 every space in a subject is percent-encoded rather than raw',
-   CONTACT_HREFS.filter(function (h) { return / /.test(h); }), []);
-eq('D1 the visible address is unchanged on every action',
-   CONTACT_LINKS.filter(function (a) {
-     return countOf(a, '</svg>hello@popolsku.app</a>') === 1; }).length, 4);
-// The accessible name is an explicit label on each link. This is the shipping contract:
-// it does not depend on how any engine treats clip-hidden text.
-eq('D2 every accessible name is declared explicitly and exactly', CONTACT_NAMES,
-   ['Email hello@popolsku.app about a correction',
-    'Email hello@popolsku.app about a technical issue',
-    'Email hello@popolsku.app with a suggestion',
-    'Email hello@popolsku.app about something else']);
-eq('D2 the four accessible names are distinct, so links are told apart out of context',
-   CONTACT_NAMES.filter(function (n, i) { return CONTACT_NAMES.indexOf(n) === i; }).length, 4);
-eq('D2 exactly one aria-label exists on each control',
-   CONTACT_LINKS.filter(function (a) { return countOf(a, 'aria-label=') === 1; }).length, 4);
-eq('D2 the visible word Email is gone from every link',
-   CONTACT_LINKS.map(visibleText),
-   ['hello@popolsku.app', 'hello@popolsku.app', 'hello@popolsku.app', 'hello@popolsku.app']);
-eq('D2 no hidden duplicate of the word can exist inside any link',
-   CONTACT_LINKS.filter(function (a) {
-     return countOf(a, 'sr-only') === 0 && countOf(a, '<span') === 0 &&
-            countOf(a.replace(/aria-label="[^"]*"/, ''), 'Email') === 0; }).length, 4);
-eq('D2 nothing else contributes a name to any control',
-   CONTACT_LINKS.filter(function (a) {
-     return countOf(a, 'aria-labelledby') === 0 && countOf(a, 'aria-describedby') === 0 &&
-            countOf(a, 'title=') === 0; }).length, 4);
-eq('D2 the visible address is contained in every accessible name, so label matches name',
-   CONTACT_NAMES.filter(function (n) { return n.indexOf('hello@popolsku.app') !== -1; }).length, 4);
+// The accessible name now comes from the link's own visible text: no separate aria-label
+// has to be kept in sync with it.
+eq('D2 no aria-label overrides the accessible name', countOf(CONTACT_LINK, 'aria-label='), 0);
+eq('D2 the visible text is the approved "Email hello@popolsku.app" label, and nothing else',
+   CONTACT_LINKS.map(visibleText), ['Email hello@popolsku.app']);
+eq('D2 nothing else contributes a name to the control',
+   [countOf(CONTACT_LINK, 'aria-labelledby'), countOf(CONTACT_LINK, 'aria-describedby'),
+    countOf(CONTACT_LINK, 'title=')], [0, 0, 0]);
 // The shared .sr-only utility is untouched and still used by the live regions and helps.
 ok('D2 the shared .sr-only utility still exists', rulesTouching('.sr-only', WIDE).length >= 1);
 ok('D2 .sr-only is still off screen rather than removed from the accessibility tree',
@@ -492,29 +463,22 @@ ok('D2 .sr-only is still off screen rather than removed from the accessibility t
 ok('D2 .sr-only is still in use elsewhere in the app',
    countOf(INDEX, 'class="sr-only"') >= 7);
 
-eq('D3 exactly one inline icon exists in each link',
-   CONTACT_LINKS.filter(function (a) { return countOf(a, '<svg') === 1; }).length, 4);
-eq('D3 the icon is hidden from assistive technology on every link',
-   CONTACT_LINKS.filter(function (a) { return /<svg[^>]*aria-hidden="true"/.test(a); }).length, 4);
-eq('D3 the icon is not focusable on any link',
-   CONTACT_LINKS.filter(function (a) { return /<svg[^>]*focusable="false"/.test(a); }).length, 4);
-eq('D3 the icon follows the link colour on every link',
-   CONTACT_LINKS.filter(function (a) { return /<svg[^>]*stroke="currentColor"/.test(a); }).length, 4);
-eq('D3 the icon is an envelope drawn inline, not an image, sprite or remote asset',
-   CONTACT_LINKS.filter(function (a) {
-     return countOf(a, '<img') === 0 && countOf(a, '<use') === 0 && countOf(a, 'http') === 0 &&
-            countOf(a, 'background-image') === 0 && countOf(a, '<rect') === 1 &&
-            countOf(a, '<path') === 1; }).length, 4);
-eq('D3 the only URL in each control is its own mailto destination',
-   CONTACT_LINKS.map(function (a) { return (a.match(/href="([^"]*)"/g) || []).length; }),
-   [1, 1, 1, 1]);
-eq('D3 no emoji was used as the icon',
-   CONTACT_LINKS.filter(function (a) { return /[←-⯿\uD83C-\uDBFF]/.test(a); }), []);
+eq('D3 exactly one inline icon exists in the link', countOf(CONTACT_LINK, '<svg'), 1);
+ok('D3 the icon is hidden from assistive technology', /<svg[^>]*aria-hidden="true"/.test(CONTACT_LINK));
+ok('D3 the icon is not focusable', /<svg[^>]*focusable="false"/.test(CONTACT_LINK));
+ok('D3 the icon follows the link colour', /<svg[^>]*stroke="currentColor"/.test(CONTACT_LINK));
+ok('D3 the icon is an envelope drawn inline, not an image, sprite or remote asset',
+   countOf(CONTACT_LINK, '<img') === 0 && countOf(CONTACT_LINK, '<use') === 0 &&
+   countOf(CONTACT_LINK, 'http') === 0 && countOf(CONTACT_LINK, 'background-image') === 0 &&
+   countOf(CONTACT_LINK, '<rect') === 1 && countOf(CONTACT_LINK, '<path') === 1);
+eq('D3 the only URL in the control is its own mailto destination',
+   (CONTACT_LINK.match(/href="([^"]*)"/g) || []).length, 1);
+ok('D3 no emoji was used as the icon', !/[←-⯿\uD83C-\uDBFF]/.test(CONTACT_LINK));
 
 eq('D4 the touch height and type scale are preserved',
    [declFor('.contact-email', WIDE, 'min-height'), declFor('.contact-email', WIDE, 'font-size'),
     declFor('.contact-email', WIDE, 'padding')], ['43px', '14px', '12px 16px']);
-eq('D4 the address may still wrap safely at enlarged text',
+eq('D4 the label may still wrap safely at enlarged text',
    [declFor('.contact-email', WIDE, 'overflow-wrap'), declFor('.contact-email', WIDE, 'max-width')],
    ['anywhere', '100%']);
 ok('D4 the focus state is unchanged',
@@ -522,18 +486,17 @@ ok('D4 the focus state is unchanged',
 eq('D4 the icon never shrinks and never wraps on its own',
    [declFor('.contact-email svg', WIDE, 'flex'), declFor('.contact-email svg', WIDE, 'width'),
     declFor('.contact-email svg', WIDE, 'height')], ['0 0 auto', '17px', '17px']);
-// Priority 6 Phase 4 (feedback F-2) replaces the collaboration-first lead with a
-// learner-first one and demotes the lead from a heading to a lead-in sentence, so the
-// four reasons are the only headings a screen-reader user meets under Contact's h1.
+// Priority 6 Phase 4 (feedback F-2) replaced the collaboration-first lead with a
+// learner-first one. Phase 4C keeps that lead and replaces the four reason headings that
+// used to sit under it with one compact semantic list.
 eq('D5 the contact lead is the approved learner-first line',
    countOf(INDEX, '<p class="contact-lead">Spotted a mistake, hit a problem, or have an idea?</p>'), 1);
 eq('D5 the old collaboration-first lead is gone',
    countOf(INDEX, 'Have an idea, want to collaborate, or simply want to connect?'), 0);
-// Feedback R-5: the collaboration invitation is kept, demoted to the fourth reason.
-ok('D5 the collaboration paragraph is unchanged',
-   INDEX.indexOf('Po polsku is an independent and evolving project.') !== -1 &&
-   INDEX.indexOf('making Polish easier and more engaging to learn.') !== -1);
-eq('D5 no other contact method was added', countOf(INDEX, 'mailto:'), 4);
+// Feedback R-5: the collaboration invitation is kept, as the fourth reason in the list.
+ok('D5 the collaboration reason is unchanged',
+   INDEX.indexOf('Collaborations, useful resources, ideas, or general feedback are always welcome.') !== -1);
+eq('D5 no other contact method was added', countOf(INDEX, 'mailto:'), 1);
 eq('D5 no form, widget, survey or submission channel was introduced',
    [countOf(INDEX, '<form'), countOf(INDEX, 'XMLHttpRequest'),
     countOf(INDEX, 'navigator.sendBeacon'), countOf(INDEX, 'WebSocket')], [0, 0, 0, 0]);
@@ -674,30 +637,30 @@ ok('F6 the Privacy heading learners land on is present',
 ok('F6 the Privacy page still explains progress and backup',
    INDEX.indexOf('Back up progress') !== -1 || INDEX.indexOf('Back up') !== -1);
 // This guard is against a destination being *removed*. Priority 6 Phase 4 (risk R-20)
-// adds the footer links row, so each in-app destination is now reachable from two
-// surfaces rather than one. The guard is restated per surface, which keeps it a removal
-// check on both instead of a bare total that a future edit could satisfy by accident.
+// added a footer links row, so each in-app destination was briefly reachable from two
+// surfaces; Priority 6 Phase 4C removes that row again (the drawer already owns these
+// destinations), so each is back to being reachable from the drawer alone.
 eq('F6 no other in-app link was removed alongside the ending link',
    [countOf(INDEX, 'data-app-screen="about"'), countOf(INDEX, 'data-app-screen="contact"'),
-    countOf(INDEX, 'data-app-screen="privacy"')], [2, 2, 2]);
+    countOf(INDEX, 'data-app-screen="privacy"')], [1, 1, 1]);
 eq('F6 the drawer still owns one route to each in-app destination',
    [countOf(INDEX, '<li><a href="#about" data-app-screen="about">About</a></li>'),
     countOf(INDEX, '<li><a href="#contact" data-app-screen="contact">Contact</a></li>'),
     countOf(INDEX, '<li><a href="#privacy" data-app-screen="privacy">Privacy</a></li>')], [1, 1, 1]);
-eq('F6 the footer links row owns the other route to each in-app destination',
+eq('F6 the footer no longer owns a competing route to any in-app destination',
    [countOf(INDEX, '<a href="#about" data-app-screen="about">About</a>\n'),
     countOf(INDEX, '<a href="#contact" data-app-screen="contact">Contact</a>\n'),
-    countOf(INDEX, '<a href="#privacy" data-app-screen="privacy">Privacy</a>\n')], [1, 1, 1]);
+    countOf(INDEX, '<a href="#privacy" data-app-screen="privacy">Privacy</a>\n')], [0, 0, 0]);
 
 // =========================================================================
 // G. Regression boundaries.
 // =========================================================================
-eq('G1 APP_VERSION is the 8.8 release', (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.8');
+eq('G1 APP_VERSION is the 8.9 release', (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.9');
 // The app-shell cache revision moved to v56 in Phase 4B-1: the hardened worker
 // stages its shell in a new cache so an open tab keeps being served the release
 // it was loaded with. The audio cache name below stays pinned forever.
 eq('G1 the app-shell cache name is the current shell revision',
-   (SW.match(/CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-v63');
+   (SW.match(/CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-v64');
 eq('G1 the audio cache name is unchanged', (SW.match(/AUDIO_CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-audio');
 eq('G1 the storage schema version is unchanged',
    (MIGRATE.match(/SCHEMA_VERSION\s*=\s*(\d+)/) || [])[1], '2');
@@ -732,10 +695,12 @@ eq('G2 no scroll listener, visualViewport handler or smooth scroll was introduce
 
 // Learner-visible wording outside the three approved refinements is pinned.
 // The Contact lead moved in Priority 6 Phase 4 (feedback F-2) and is pinned in section D
-// above; the collaboration sentence it used to introduce is pinned there too.
+// above; the collaboration reason it used to introduce is pinned there too. Priority 6
+// Phase 4C folds the old two-sentence collaboration paragraph into one compact list item,
+// so "Po polsku is an independent and evolving project." is intentionally no longer part
+// of the approved copy and is not pinned here.
 ['Type the Polish answer first.', 'Choose your reply', 'Dobrze!', 'Not this time',
- '<h1>Privacy</h1>', 'tap to see meaning', 'Play pronunciation',
- 'Po polsku is an independent and evolving project.'].forEach(function (s) {
+ '<h1>Privacy</h1>', 'tap to see meaning', 'Play pronunciation'].forEach(function (s) {
   ok('G3 unchanged learner string: ' + s, INDEX.indexOf(s) !== -1);
 });
 eq('G3 the removed ending copy exists nowhere in the app shell either',

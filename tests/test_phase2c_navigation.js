@@ -258,20 +258,21 @@ eq('A4 the approved Guide label is exact and occurs once in the menu',
 eq('A4 the old visible Guide menu label is absent', countOf(NAV, '>Guide<'), 0);
 eq('A4 the renamed item still points at the unchanged guide/ destination',
    countOf(NAV, 'href="guide/"'), 1);
-// Priority 6 Phase 4 (risk R-20 / activation A-6 / feedback F-4) adds the footer links
-// row, so the app shell now reaches guide/ from three places. Counting alone would stop
-// being informative, so each occurrence is pinned to the surface that owns it: the
-// <noscript> fallback, the new footer row, and the drawer item. The Phase 3 contract this
-// guards - one approved label, one destination, no competing second Guide link - is
-// unchanged, and no occurrence uses any other URL or label.
-eq('A4 the app shell reaches guide/ from exactly the three approved surfaces',
-   countOf(INDEX, 'href="guide/"'), 3);
+// Priority 6 Phase 4 (risk R-20 / activation A-6 / feedback F-4) added a footer links
+// row, so the app shell briefly reached guide/ from three places; Phase 4C removes that
+// row, so the app shell is back to two. Counting alone would stop being informative, so
+// each occurrence is pinned to the surface that owns it: the <noscript> fallback and the
+// drawer item. The Phase 3 contract this guards - one approved label, one destination, no
+// competing second Guide link - is unchanged, and no occurrence uses any other URL or
+// label.
+eq('A4 the app shell reaches guide/ from exactly the two approved surfaces',
+   countOf(INDEX, 'href="guide/"'), 2);
 eq('A4 every Guide link in the app shell carries the one approved label',
-   countOf(INDEX, '>Explore more Polish</a>'), 3);
+   countOf(INDEX, '>Explore more Polish</a>'), 2);
 eq('A4 the noscript fallback owns one of them',
    countOf(INDEX, '<a href="guide/" style="color:#4f46e5">Explore more Polish</a>'), 1);
-eq('A4 the footer links row owns one of them',
-   countOf(FOOT, '<a href="guide/">Explore more Polish</a>'), 1);
+eq('A4 the footer no longer owns a competing occurrence',
+   countOf(FOOT, '<a href="guide/">Explore more Polish</a>'), 0);
 eq('A4 Explore more Polish sits near the bottom, with only Contact after it',
    (NAV.slice(NAV.indexOf('>Explore more Polish</a>')).match(/<li\b/g) || []).length, 1);
 eq('A4 Privacy is the only data/privacy menu destination', countOf(NAV, '>Privacy</a>'), 1);
@@ -413,38 +414,39 @@ ok('B2 Privacy owns the existing backup and restore controls',
    PRIVACY.indexOf('id="dataBackup"') !== -1 && PRIVACY.indexOf('id="dataRestore"') !== -1 && PRIVACY.indexOf('id="dataFile"') !== -1);
 ok('B2 the install cross-link is now a normal stable anchor',
    /id="dataInstallLink" href="#install"/.test(PRIVACY) && PRIVACY.indexOf('role="button"') === -1);
-// Priority 6 Phase 4 (risk R-07, feedback F-1/F-2/F-3). Contact previously addressed
-// collaborators only, so a learner with a wrong translation or broken audio had nothing
-// written for them and no idea what to include. Four named reasons now carry the page,
-// with the collaboration invitation kept verbatim as the fourth (feedback R-5). The lead
-// became a lead-in sentence rather than a heading, so the reasons are the only headings
-// under Contact's h1.
+// Priority 6 Phase 4C: the four repeated reasons, each with its own button and prefilled
+// subject, made the page long and heavy. One concise reason list now sits above a single
+// plain address, with the collaboration invitation kept as the fourth item (feedback R-5).
+// The lead stays a lead-in sentence, so the list is the only structure under Contact's h1.
 eq('B3 Contact has the exact approved learner-first lead',
    elementTexts(CONTACT, 'p', 'contact-lead'), ['Spotted a mistake, hit a problem, or have an idea?']);
-eq('B3 the four approved reasons are the Contact headings, in order',
-   elementTexts(CONTACT, 'h2', ''),
-   ['Report a mistake in the content', 'Something is not working',
-    'Suggest a topic or phrase', 'Something else']);
-// Refined in the follow-up copy review. F-3's goal - technical context without implying a
-// request for personal data - is now served by asking the reporter to check a screenshot
-// for private content themselves, rather than asserting that device/browser detail cannot
-// be personal (a claim the earlier wording made and this revision withdraws).
-eq('B3 Contact has the exact approved supporting copy', elementTexts(CONTACT, 'p', 'about-p'), [
-  'Choose the option that fits best. Each link opens your email app with a subject already filled in. They all use the same address, which you can also copy and use directly.',
-  'If you spot an issue with a translation, spelling, or pronunciation clip, please include the topic name, the Polish phrase, and what seems wrong.',
-  'It helps to include what you were doing, your device and browser, and the version shown at the bottom of the Home screen. A screenshot can help, but please check that it does not contain anything private.',
-  'If a word or phrase you needed is missing, tell me what you were trying to say and where you needed it. I cannot add everything, but suggestions are always welcome.',
-  'Po polsku is an independent and evolving project. I’m always open to thoughtful collaborations, useful resources, new ideas, and conversations about making Polish easier and more engaging to learn.'
+eq('B3 Contact has the exact approved introductory sentence',
+   elementTexts(CONTACT, 'p', 'about-p'), ['Email me about any of the following:']);
+eq('B3 Contact no longer carries the withdrawn four-heading structure',
+   elementTexts(CONTACT, 'h2', ''), []);
+// The four reasons are a real semantic list, not four repeated sections or cards.
+eq('B3 the reasons are a real semantic unordered list', countOf(CONTACT, '<ul class="privacy-list">'), 1);
+eq('B3 the list holds exactly four items', countOf(CONTACT, '<li>'), 4);
+eq('B3 the four approved reasons are the Contact list items, in order', elementTexts(CONTACT, 'li', ''), [
+  'A content mistake: Include the topic name, the Polish phrase, and what seems wrong.',
+  'A technical problem: Include what you were doing, your device and browser, and the version shown at the bottom of the Home screen. Add a screenshot if useful, but check that it contains nothing private.',
+  'A missing topic or phrase: Explain what you were trying to say and where you needed it.',
+  'Something else: Collaborations, useful resources, ideas, or general feedback are always welcome.'
 ]);
-// Withdrawn wording (copy review) must not remain anywhere in public Contact copy, and
-// must not be replaced by another claim that technical detail or a screenshot cannot
-// contain personal or private information - the revision asks the reporter to check
-// instead of asserting it on their behalf.
+// Each label is visually distinct (bold), so the reasons scan quickly without becoming
+// four separate cards or dividers.
+eq('B3 each of the four labels is marked up as visually distinct',
+   (CONTACT.match(/<li><strong>/g) || []).length, 4);
+// Withdrawn wording (earlier copy reviews) must not remain anywhere in public Contact copy,
+// and must not be replaced by another claim that technical detail or a screenshot cannot
+// contain personal or private information.
 ['That is technical context, not personal information.',
  'Translations, spelling, and pronunciation clips can all be wrong',
  'there are a great many of them',
  'Po polsku is made by one person, and email is the only channel',
- 'Pick whichever reason fits below'].forEach(function (phrase) {
+ 'Pick whichever reason fits below',
+ 'Choose the option that fits best',
+ 'a subject already filled in'].forEach(function (phrase) {
   eq('B3 withdrawn wording is absent: ' + phrase, countOf(CONTACT, phrase), 0);
 });
 eq('B3 no replacement claim asserts technical detail or a screenshot is free of personal data',
@@ -452,37 +454,33 @@ eq('B3 no replacement claim asserts technical detail or a screenshot is free of 
     'not private information', 'does not include anything private', 'cannot contain personal',
     'free of personal', 'free of private'].reduce(function (n, s) {
      return n + countOf(visibleText(CONTACT).toLowerCase(), s.toLowerCase()); }, 0), 0);
-// The technical-issue guidance now asks the reporter to check, rather than asserting the
+// The technical-problem guidance asks the reporter to check, rather than asserting the
 // content is safe on their behalf.
-ok('B3 the technical-issue block asks the reporter to check for private content',
-   CONTACT.indexOf('please check that it does not contain anything private') !== -1);
-ok('B3 a screenshot is offered as helpful, not as a requirement',
-   CONTACT.indexOf('A screenshot can help') !== -1 && countOf(CONTACT, 'screenshot is required') === 0);
-// The learner is told the address works on its own, because a mailto: link does nothing
-// on a device with no mail client configured.
-ok('B3 the address is usable without an email client',
-   CONTACT.indexOf('you can also copy and use directly') !== -1 &&
-   countOf(CONTACT, '</svg>hello@popolsku.app</a>') === 4);
+ok('B3 the technical-problem guidance asks the reporter to check for private content',
+   CONTACT.indexOf('check that it contains nothing private') !== -1);
+ok('B3 a screenshot is offered as useful, not as a requirement',
+   CONTACT.indexOf('Add a screenshot if useful') !== -1 && countOf(CONTACT, 'screenshot is required') === 0);
 eq('B3 Contact makes no claim about who reads a message or how fast',
    ['native speaker', 'professional', 'expert', 'reply within', 'response time',
     'we will', 'guaranteed'].reduce(function (n, s) {
      return n + countOf(visibleText(CONTACT).toLowerCase(), s); }, 0), 0);
-// Phase 3 closeout: the visible word "Email" became a decorative inline envelope, and the
-// accessible name is now declared explicitly on the link, so only the address is visible.
-// tests/test_phase3_closeout.js section D owns the icon and accessible-name contract.
-eq('B3 each reason carries a prominent normal mailto action with its approved subject',
+// Priority 6 Phase 4C removes the four repeated buttons and their prefilled subjects: one
+// plain mailto: action now follows the list, with no query string of any kind.
+// tests/test_phase3_closeout.js section D owns the icon contract.
+eq('B3 exactly one contact action carries the approved bare mailto route',
    (CONTACT.match(/<a class="contact-email" href="([^"]*)"/g) || []),
-   ['<a class="contact-email" href="mailto:hello@popolsku.app?subject=Correction"',
-    '<a class="contact-email" href="mailto:hello@popolsku.app?subject=Technical%20issue"',
-    '<a class="contact-email" href="mailto:hello@popolsku.app?subject=Suggestion"',
-    '<a class="contact-email" href="mailto:hello@popolsku.app?subject=Hello"']);
-ok('B3 each contact action still carries the label Email before the visible address',
-   countOf(CONTACT, 'aria-label="Email hello@popolsku.app') === 4 &&
-   countOf(CONTACT, '</svg>hello@popolsku.app</a>') === 4);
-eq('B3 the one contact address is the only one in the app shell, on four entry points',
-   [countOf(INDEX, 'mailto:hello@popolsku.app'), countOf(INDEX, 'mailto:')], [4, 4]);
-eq('B3 the contact actions all live on the Contact screen',
-   countOf(CONTACT, 'class="contact-email"'), 4);
+   ['<a class="contact-email" href="mailto:hello@popolsku.app"']);
+eq('B3 the mailto route carries no subject, body, cc or bcc parameter',
+   countOf(CONTACT, 'mailto:hello@popolsku.app?'), 0);
+var CONTACT_EMAIL_LINK = (CONTACT.match(/<a class="contact-email"[\s\S]*?<\/a>/) || [''])[0];
+eq('B3 the button visibly says exactly "Email hello@popolsku.app"',
+   visibleText(CONTACT_EMAIL_LINK), 'Email hello@popolsku.app');
+eq('B3 the accessible name comes from the visible text, not a separate aria-label',
+   countOf(CONTACT_EMAIL_LINK, 'aria-label='), 0);
+eq('B3 the one contact address is the only one in the app shell, on its one entry point',
+   [countOf(INDEX, 'mailto:hello@popolsku.app'), countOf(INDEX, 'mailto:')], [1, 1]);
+eq('B3 exactly one contact action lives on the Contact screen',
+   countOf(CONTACT, 'class="contact-email"'), 1);
 ok('B4 listening recommendations retain their separate generated destination',
    /<h1>What else I listen to<\/h1>/.test(LISTENING));
 ok('B4 listening page has the exact approved introduction', visibleText(LISTENING).indexOf(
@@ -920,10 +918,10 @@ ok('E4 Guide does not depend on drawer JavaScript for destination content',
 // -------------------------------------------------------------------------
 // F. Cross-phase safeguard and regression boundaries.
 // -------------------------------------------------------------------------
-ok('F1 app version is the 8.8 release', /const APP_VERSION = "8\.8"/.test(INDEX));
-// Phase 4B-2 moves the app-shell cache to v57 so the revised navigation contract
-// is isolated from the Phase 4B-1 shell while open tabs remain on their old worker.
-ok('F1 app-shell cache is the current shell revision', /const CACHE = "popolsku-v63"/.test(SW));
+ok('F1 app version is the 8.9 release', /const APP_VERSION = "8\.9"/.test(INDEX));
+// Phase 4C bumps the app-shell cache to v64 so the revised Contact and footer contract
+// is isolated from the Phase 4 shell while open tabs remain on their old worker.
+ok('F1 app-shell cache is the current shell revision', /const CACHE = "popolsku-v64"/.test(SW));
 ok('F1 audio cache remains popolsku-audio', /const AUDIO_CACHE = "popolsku-audio"/.test(SW));
 ok('F1 schema version remains 2', /PP_MIGRATE\.SCHEMA_VERSION = 2/.test(MIGRATE));
 ok('F1 content migration revision remains 2', /PP_MIGRATE\.CONTENT_MIGRATION_REVISION = 2/.test(MIGRATE));
@@ -952,167 +950,54 @@ ok('F3 the drawer explicitly refuses modal stacking',
 eq('F3 no generated template was given the app drawer', countOf(BUILD, 'siteDrawer'), 0);
 
 // -------------------------------------------------------------------------
-// G. Footer links row (Priority 6 Phase 4 - risk R-20, activation A-6, feedback F-4).
+// G. Footer links row removed (Priority 6 Phase 4C).
 //
-// About, Privacy, Explore more Polish and Contact were reachable only by opening the
-// drawer, which put the two trust pages and the correction route two interactions away.
-// The row is ordinary markup in the existing footer: no new state, no new storage key,
-// no first-visit detection, nothing dismissible, and nothing that runs on load.
+// Priority 6 Phase 4 added a footer row duplicating About, Privacy, Explore more Polish
+// and Contact one interaction shallower than the drawer. Phase 4C removes that row: the
+// drawer already owns these destinations, and the duplicate made the shell heavier for
+// no accessibility gain no assistive technology could not already reach through the
+// drawer. The version line is the footer's only remaining content.
 // -------------------------------------------------------------------------
-ok('G1 the footer row exists and is a real navigation landmark', /^<nav\b/.test(FOOT_NAV));
-eq('G1 the row has an accessible name that distinguishes it from the site menu',
-   [attr(FOOT_NAV, 'aria-label'), attr(NAV, 'aria-label')], ['About this site', 'Site menu']);
-eq('G1 the approved destinations appear in the approved order',
-   (FOOT_NAV.match(/<a [^>]*>([^<]+)<\/a>/g) || []).map(function (a) {
-     return a.replace(/<[^>]+>/g, ''); }),
-   ['About', 'Privacy', 'Explore more Polish', 'Contact']);
-eq('G1 every destination is a real anchor with a real href',
-   (FOOT_NAV.match(/<a href="[^"]+"/g) || []),
-   ['<a href="#about"', '<a href="#privacy"', '<a href="guide/"', '<a href="#contact"']);
-eq('G1 the row introduces no clickable generic container',
-   countOf(FOOT_NAV, '<div') + countOf(FOOT_NAV, 'onclick') + countOf(FOOT_NAV, 'role="button"'), 0);
-eq('G1 the row adds no ARIA where native HTML already carries the semantics',
-   countOf(FOOT_NAV, 'role="link"') + countOf(FOOT_NAV, 'tabindex'), 0);
-eq('G1 the separators are decorative and hidden from assistive technology',
-   countOf(FOOT_NAV, '<span class="foot-sep" aria-hidden="true">·</span>'), 3);
-ok('G1 the version line is unchanged and still sits after the row',
-   FOOT.indexOf('foot-guides') < FOOT.indexOf('foot-version') &&
-   FOOT.indexOf('Po polsku · <span id="footVersion"></span> · <span id="footYear"></span>') !== -1);
-eq('G1 the row adds no second contact address and no email action',
-   countOf(FOOT, 'mailto:'), 0);
-// The rule set existed unused. Bringing it into service, it must not overflow a 320px
-// screen and must not ship the original #9aa8b8, which sat at roughly 2.3:1 on --bg.
-var FOOT_CSS = (INDEX.match(/\.foot-guides\{[^}]*\}/) || [''])[0];
-var FOOT_LINK_CSS = (INDEX.match(/\.foot-guides a\{[^}]*\}/) || [''])[0];
-ok('G2 the row wraps instead of forcing horizontal overflow',
-   /flex-wrap:wrap/.test(FOOT_CSS) && /max-width:340px/.test(FOOT_CSS));
-var FOOT_SEP_CSS = (INDEX.match(/\.foot-sep\{[^}]*\}/) || [''])[0];
-ok('G2 the link colour is the shared muted token, not an unvalidated literal',
-   /color:var\(--muted\)/.test(FOOT_LINK_CSS) && /color:var\(--muted\)/.test(FOOT_SEP_CSS) &&
-   countOf(FOOT_CSS, '#') + countOf(FOOT_LINK_CSS, '#') + countOf(FOOT_SEP_CSS, '#') === 0);
-ok('G2 each link carries a declared tap height rather than the original 4px padding',
-   /min-height:36px/.test(FOOT_LINK_CSS) && !/padding:4px 2px/.test(FOOT_LINK_CSS));
-ok('G2 focus remains visible on every link',
-   INDEX.indexOf('.foot-guides a:focus-visible{outline:2px solid var(--emerald)') !== -1);
-eq('G2 the row introduces no animation or transition',
-   countOf(FOOT_CSS, 'transition') + countOf(FOOT_CSS, 'animation') +
-   countOf(FOOT_LINK_CSS, 'transition') + countOf(FOOT_LINK_CSS, 'animation'), 0);
-
-// Execute the shipping handler against a deterministic DOM.
-var FOOT_BLOCK_START = INDEX.indexOf('$("footGuides").addEventListener("click"');
-var FOOT_BLOCK_END = INDEX.indexOf('\n});', FOOT_BLOCK_START);
-if (FOOT_BLOCK_START === -1 || FOOT_BLOCK_END === -1) throw new Error('footer links handler not found');
-var FOOT_BLOCK = INDEX.slice(FOOT_BLOCK_START, FOOT_BLOCK_END + 4);
-function FootLink(screen, href) {
-  this.href = href; this.screen = screen;
-  this.closest = function (sel) {
-    return (sel === 'a[data-app-screen]' && screen) ? this : null;
-  };
-  this.getAttribute = function (name) { return name === 'data-app-screen' ? screen : null; };
-}
-var footRow = { contains:function (el) { return el && el.inRow !== false; }, handler:null,
-                addEventListener:function (type, fn) { if (type === 'click') this.handler = fn; } };
-var footShown = [], footInvokers = [];
-var footIds = { footGuides:footRow, about:{}, privacy:{}, contact:{}, install:{} };
-Function('$','show','ppUseInvokerForNextScreen', FOOT_BLOCK)(
-  function (id) { return footIds[id] || null; },
-  function (scr) { footShown.push(scr); },
-  function (el) { footInvokers.push(el); });
-ok('G3 the handler is registered on the row, not on each link', footRow.handler !== null);
-function footClick(target, extra) {
-  var ev = { target:target, prevented:false, defaultPrevented:false, button:0,
-             metaKey:false, ctrlKey:false, shiftKey:false, altKey:false,
-             preventDefault:function () { this.prevented = true; } };
-  Object.keys(extra || {}).forEach(function (k) { ev[k] = extra[k]; });
-  footRow.handler(ev);
-  return ev;
-}
-var aboutEv = footClick(new FootLink('about', '#about'));
-eq('G3 a plain click routes through the app instead of reloading the document',
-   [aboutEv.prevented, footShown.slice(-1)[0]], [true, 'about']);
-eq('G3 the activated link is registered so Back can return focus to it',
-   footInvokers.slice(-1)[0] instanceof FootLink, true);
-footClick(new FootLink('privacy', '#privacy'));
-footClick(new FootLink('contact', '#contact'));
-eq('G3 every in-app destination routes to its own screen',
-   footShown, ['about', 'privacy', 'contact']);
-var guideEv = footClick(new FootLink(null, 'guide/'));
-eq('G3 Explore more Polish keeps ordinary navigation',
-   [guideEv.prevented, footShown.length], [false, 3]);
-[['metaKey'], ['ctrlKey'], ['shiftKey'], ['altKey']].forEach(function (pair) {
-  var mod = {}; mod[pair[0]] = true;
-  var ev = footClick(new FootLink('about', '#about'), mod);
-  eq('G3 ' + pair[0] + ' click is left to the browser', [ev.prevented, footShown.length], [false, 3]);
-});
-var middle = footClick(new FootLink('about', '#about'), { button:1 });
-eq('G3 middle-click is left to the browser', [middle.prevented, footShown.length], [false, 3]);
-var handled = footClick(new FootLink('about', '#about'), { defaultPrevented:true });
-eq('G3 an already-handled event is not handled twice', [handled.prevented, footShown.length], [false, 3]);
-var outside = new FootLink('about', '#about'); outside.inRow = false;
-footClick(outside);
-eq('G3 a link outside the row is ignored', footShown.length, 3);
-var unknown = footClick(new FootLink('nosuchscreen', '#nosuchscreen'));
-eq('G3 an unknown screen falls back to ordinary navigation rather than a dead click',
-   [unknown.prevented, footShown.length], [false, 3]);
-var separator = footClick({ closest:function () { return null; } });
-eq('G3 clicking a separator does nothing', [separator.prevented, footShown.length], [false, 3]);
-// The row must stay inert with respect to learning: no storage, no progress, no audio.
-eq('G4 the footer handler does not touch localStorage', countOf(FOOT_BLOCK, 'localStorage'), 0);
-eq('G4 the footer handler starts no audio',
-   countOf(FOOT_BLOCK, 'stopAllAudio') + countOf(FOOT_BLOCK, 'playPreGenerated') +
-   countOf(FOOT_BLOCK, 'speechSynthesis') + countOf(FOOT_BLOCK, 'Audio('), 0);
-['S.', 'G.', 'C.', 'T.', 'L.', 'R.'].forEach(function (prefix) {
-  eq('G4 the footer handler does not mutate activity namespace ' + prefix,
-     countOf(FOOT_BLOCK, prefix), 0);
-});
-eq('G4 the row adds no new persistent state of any kind',
-   [countOf(INDEX, 'sessionStorage.'), countOf(INDEX, 'indexedDB'), countOf(INDEX, 'document.cookie')],
-   [0, 0, 0]);
-eq('G4 no first-visit or onboarding flag was introduced',
-   countOf(INDEX, 'popolsku-firstvisit') + countOf(INDEX, 'popolsku-onboard') +
-   countOf(INDEX, 'popolsku-seen') + countOf(INDEX, 'popolsku-tour'), 0);
-eq('G4 the footer row is not rendered by the generated-page templates',
+eq('G1 the footer row markup no longer exists', FOOT_NAV, '');
+eq('G1 the footer landmark and its id are gone', countOf(INDEX, 'foot-guides') + countOf(INDEX, 'footGuides'), 0);
+eq('G1 the decorative separators are gone', countOf(INDEX, 'foot-sep'), 0);
+eq('G1 the footer now renders only the version line',
+   FOOT.replace(/\s+/g, ''), '<footer><divclass="foot-version">Popolsku·<spanid="footVersion"></span>·<spanid="footYear"></span></div></footer>');
+eq('G1 the row added no second contact address, and none remains', countOf(FOOT, 'mailto:'), 0);
+// The rule set that styled the row (Priority 6 Phase 4, risk R-20) is dead code once the
+// row is gone, so it left with the row rather than being kept unused.
+eq('G2 the row-specific stylesheet rules are gone',
+   countOf(INDEX, '.foot-guides') + countOf(INDEX, '.foot-sep{'), 0);
+ok('G2 the shared version-line style is still declared',
+   INDEX.indexOf('.foot-version{color:var(--muted)') !== -1);
+// The click-delegation handler that routed the row through show() is gone with it -
+// nothing in the shipped script still references the removed row.
+eq('G3 the footer row click handler no longer exists in the shipped script',
+   countOf(INDEX, '$("footGuides")'), 0);
+eq('G3 the footer row is not rendered by the generated-page templates',
    countOf(BUILD, 'foot-guides') + countOf(BUILD, 'footGuides'), 0);
+// The drawer/menu is the one navigation surface left, and section A already pins its
+// structure, destinations and behaviour untouched by this removal.
+ok('G4 the drawer menu still carries all five destinations the footer row duplicated',
+   ['About', 'Privacy', 'guide/listening/', 'guide/', 'Contact'].every(function (needle) {
+     return NAV.indexOf(needle) !== -1; }));
 
 // -------------------------------------------------------------------------
-// H. Feedback route (Priority 6 Phase 4 - risk R-07, feedback F-1/F-2/F-3/F-4).
+// H. Feedback route (Priority 6 Phase 4C simplification of risk R-07 / feedback F-1..F-4).
 //
-// The route is four mailto: links to the existing address. Decoding each one proves the
-// learner gets an ordinary, editable message with nothing of theirs prefilled, and that
-// the subject survives as a real subject rather than as literal percent-escapes.
+// The route is one bare mailto: link to the existing address, with no query string at
+// all. This is a narrower contract than Phase 4's four subject-tagged routes: nothing of
+// the learner's is prefilled, so there is nothing to decode or re-encode.
 // -------------------------------------------------------------------------
 var FEEDBACK_HREFS = (CONTACT.match(/href="(mailto:[^"]*)"/g) || [])
   .map(function (h) { return h.slice(6, -1); });
-eq('H1 every reason has its own route', FEEDBACK_HREFS.length, 4);
-var FEEDBACK_PARSED = FEEDBACK_HREFS.map(function (href) {
-  var parts = href.split('?');
-  var params = {};
-  (parts[1] || '').split('&').filter(Boolean).forEach(function (pair) {
-    var kv = pair.split('=');
-    params[decodeURIComponent(kv[0])] = decodeURIComponent(kv.slice(1).join('='));
-  });
-  return { address: parts[0].replace(/^mailto:/, ''), params: params };
-});
-eq('H1 every route reaches the one existing approved address',
-   FEEDBACK_PARSED.map(function (p) { return p.address; }),
-   ['hello@popolsku.app', 'hello@popolsku.app', 'hello@popolsku.app', 'hello@popolsku.app']);
-eq('H1 each subject decodes to the approved wording',
-   FEEDBACK_PARSED.map(function (p) { return p.params.subject; }),
-   ['Correction', 'Technical issue', 'Suggestion', 'Hello']);
-eq('H1 the subject is the only parameter on every route',
-   FEEDBACK_PARSED.map(function (p) { return Object.keys(p.params); }),
-   [['subject'], ['subject'], ['subject'], ['subject']]);
-eq('H1 no message body is prefilled, so what the learner sends stays theirs to write',
-   FEEDBACK_PARSED.filter(function (p) { return p.params.body !== undefined; }), []);
-eq('H1 no extra recipient is hidden on any route',
-   FEEDBACK_PARSED.filter(function (p) {
-     return p.params.cc !== undefined || p.params.bcc !== undefined; }), []);
-eq('H1 re-encoding each decoded subject reproduces the shipped href exactly',
-   FEEDBACK_PARSED.map(function (p) {
-     return 'mailto:' + p.address + '?subject=' + encodeURIComponent(p.params.subject); }),
-   FEEDBACK_HREFS);
-// A raw space in a mailto: query is what makes a subject arrive truncated or literal in
-// some clients, so the encoding is asserted rather than assumed.
+eq('H1 the Contact screen carries exactly one feedback route', FEEDBACK_HREFS.length, 1);
+eq('H1 the route reaches the one approved address, with no query string',
+   FEEDBACK_HREFS, ['mailto:hello@popolsku.app']);
+eq('H1 the route carries no subject, body, cc or bcc parameter',
+   FEEDBACK_HREFS.filter(function (h) { return h.indexOf('?') !== -1; }), []);
+// A raw space in a mailto: is what makes some clients choke, so the absence of any
+// query content is asserted rather than assumed.
 eq('H1 no route carries a raw space, newline or quote',
    FEEDBACK_HREFS.filter(function (h) { return /[\s"'<>]/.test(h); }), []);
 // Nothing about the learner may ride along in a URL that leaves the app.
@@ -1132,20 +1017,22 @@ eq('H2 no route is built at runtime from application state',
 eq('H2 every mailto: in the shell is a literal markup href',
    countOf(INDEX, 'href="mailto:'), countOf(INDEX, 'mailto:'));
 eq('H2 the Contact screen holds no script of its own', countOf(CONTACT, '<script'), 0);
-// F-4: the route is reachable without opening the drawer, and Privacy still points at
-// the Contact screen rather than growing a competing mailto: of its own.
-eq('H3 Contact is reachable from both the drawer and the footer row',
-   [countOf(NAV, 'data-app-screen="contact"'), countOf(FOOT_NAV, 'data-app-screen="contact"')],
-   [1, 1]);
+// Phase 4C removes the footer row, so the drawer is now the only navigation surface that
+// reaches Contact; Privacy still points at the Contact screen rather than growing a
+// competing mailto: of its own.
+eq('H3 Contact is reachable from the drawer menu',
+   countOf(NAV, 'data-app-screen="contact"'), 1);
+eq('H3 the footer no longer duplicates Contact as a separate navigation surface',
+   countOf(FOOT, 'data-app-screen="contact"'), 0);
 eq('H3 Privacy still routes to Contact instead of carrying its own address',
    [countOf(PRIVACY, 'mailto:'), countOf(PRIVACY, 'id="dataContactLink" href="#contact"')], [0, 1]);
 eq('H4 the generated pages gained no contact route, so no second surface can drift',
    [countOf(BUILD, 'mailto:'), countOf(GUIDE, 'mailto:'), countOf(LISTENING, 'mailto:')], [0, 0, 0]);
-// The visible address is a plain text node inside a real <a>, not an image, canvas or
+// The visible label is a plain text node inside a real <a>, not an image, canvas or
 // obfuscated construction, so it can be selected and copied like any other text - and the
 // whole route is static markup, so Contact works with JavaScript disabled.
-eq('H5 the visible address is plain, selectable text in every link',
-   countOf(CONTACT, '</svg>hello@popolsku.app</a>'), 4);
+eq('H5 the visible label is plain, selectable text in the link',
+   countOf(CONTACT, '</svg>Email hello@popolsku.app</a>'), 1);
 eq('H5 the address is not built, split or obfuscated by script',
    [countOf(CONTACT, 'String.fromCharCode'), countOf(CONTACT, 'atob('), countOf(CONTACT, '&#'),
     countOf(CONTACT, 'data-email'), countOf(CONTACT, '.join(')], [0, 0, 0, 0, 0]);
@@ -1158,9 +1045,9 @@ eq('H5 the Contact copy is static markup, not written in by script at runtime',
    }).length, 0);
 eq('H5 the approved lead sentence is present exactly once, as literal markup',
    countOf(INDEX, '<p class="contact-lead">Spotted a mistake, hit a problem, or have an idea?</p>'), 1);
-// This review only refines wording. No new submission channel of any kind may appear.
-// ("analytics", "telemetry" and "tracking" are checked for actual code, not the word -
-// the app's own Privacy copy uses those words to disclaim having any.)
+// This review only refines structure and wording. No new submission channel of any kind
+// may appear. ("analytics", "telemetry" and "tracking" are checked for actual code, not
+// the word - the app's own Privacy copy uses those words to disclaim having any.)
 eq('H6 no form, endpoint, backend, or third-party submission channel',
    [countOf(INDEX, '<form'), countOf(INDEX, 'fetch("http'), countOf(INDEX, 'XMLHttpRequest'),
     countOf(INDEX, 'navigator.sendBeacon'), countOf(INDEX, 'WebSocket')], [0, 0, 0, 0, 0]);
@@ -1170,12 +1057,13 @@ eq('H6 no analytics, telemetry or tracking code, and no cookie',
    [0, 0, 0, 0, 0, 0]);
 
 // -------------------------------------------------------------------------
-// I. Storage footprint after Priority 6 Phase 4.
+// I. Storage footprint after Priority 6 Phase 4 / 4C.
 //
-// The phase was designed to need no persistent state: the footer row is always present
-// for everyone, and the feedback route is four static hrefs. Nothing distinguishes a
-// first visit from a later one, so nothing has to be stored, exported, restored or
-// described on the Privacy page. These assertions are what keep that true.
+// The phase was designed to need no persistent state: the footer (with or without the
+// links row Phase 4C removes) is always present for everyone, and the feedback route is
+// static hrefs with nothing prefilled. Nothing distinguishes a first visit from a later
+// one, so nothing has to be stored, exported, restored or described on the Privacy page.
+// These assertions are what keep that true.
 // -------------------------------------------------------------------------
 var STORAGE_KEYS = (INDEX.match(/localStorage\.(?:get|set|remove)Item\(\s*"([^"]+)"/g) || [])
   .map(function (m) { return m.replace(/.*"([^"]+)"?$/, '$1'); });
@@ -1251,8 +1139,7 @@ ok('J2 it comes after the existing Search control', AT_SEARCH_END < AT_HINT);
 ok('J2 it comes before the level and topic entry interface', AT_HINT < AT_CATSEG);
 ok('J2 it sits above the topic list and the subfilter too',
    AT_HINT < HOME.indexOf('id="subFilter"') && AT_HINT < HOME.indexOf('<div class="topics" id="topics">'));
-eq('J2 it is not in the footer, and the footer row is unchanged',
-   [countOf(FOOT, START_SENTENCE), countOf(FOOT, 'start-hint')], [0, 0]);
+eq('J2 it is not in the footer', [countOf(FOOT, START_SENTENCE), countOf(FOOT, 'start-hint')], [0, 0]);
 ['study', 'grammar', 'convo', 'typeit', 'listen', 'round', 'privacy', 'about', 'contact',
  'install'].forEach(function (id) {
   eq('J2 it is not rendered on the ' + id + ' screen', countOf(section(id), START_SENTENCE), 0);

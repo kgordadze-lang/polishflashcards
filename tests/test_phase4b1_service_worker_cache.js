@@ -608,15 +608,15 @@ var SHELL = API.CACHE, AUDIO = API.AUDIO_CACHE;
 // =========================================================================
 // A. Cache names and cleanup
 // =========================================================================
-eq('A1 the app-shell cache is popolsku-v63', API.CACHE, 'popolsku-v63');
+eq('A1 the app-shell cache is popolsku-v64', API.CACHE, 'popolsku-v64');
 eq('A1 the audio cache is unchanged', API.AUDIO_CACHE, 'popolsku-audio');
 eq('A1 the shell cleanup matcher is numeric-only', String(API.SHELL_CACHE_PATTERN), '/^popolsku-v[0-9]+$/');
 ok('A1 the source declares the shell cache exactly once',
-   countOf(SW_CODE, 'const CACHE = "popolsku-v63"') === 1 &&
-   countOf(SW_CODE, 'popolsku-v55') === 0 && countOf(SW_CODE, '"popolsku-v57"') === 0 &&
-   countOf(SW_CODE, '"popolsku-v58"') === 0 && countOf(SW_CODE, '"popolsku-v59"') === 0 &&
-   countOf(SW_CODE, '"popolsku-v60"') === 0 && countOf(SW_CODE, '"popolsku-v61"') === 0 &&
-   countOf(SW_CODE, '"popolsku-v62"') === 0);
+   countOf(SW_CODE, 'const CACHE = "popolsku-v64"') === 1 &&
+   countOf(SW_CODE, 'popolsku-v56') === 0 && countOf(SW_CODE, '"popolsku-v58"') === 0 &&
+   countOf(SW_CODE, '"popolsku-v59"') === 0 && countOf(SW_CODE, '"popolsku-v60"') === 0 &&
+   countOf(SW_CODE, '"popolsku-v61"') === 0 && countOf(SW_CODE, '"popolsku-v62"') === 0 &&
+   countOf(SW_CODE, '"popolsku-v63"') === 0);
 ok('A1 the source declares the audio cache exactly once',
    countOf(SW_CODE, 'const AUDIO_CACHE = "popolsku-audio"') === 1);
 eq('A1 the canonical root key is the deployed root', API.ROOT_KEY, ORIGIN + '/');
@@ -655,18 +655,18 @@ eq('A1 the canonical root key is the deployed root', API.ROOT_KEY, ORIGIN + '/')
 // Cleanup predicate, exhaustively.
 [
   // deleted: a real numbered shell cache that is not the current one - including
-  // popolsku-v62, the shell this release supersedes, and popolsku-v630, which merely
+  // popolsku-v63, the shell this release supersedes, and popolsku-v640, which merely
   // starts with the current name and must not survive a naive prefix match
   ['popolsku-v1', true], ['popolsku-v50', true], ['popolsku-v54', true], ['popolsku-v55', true],
   ['popolsku-v58', true], ['popolsku-v59', true], ['popolsku-v60', true], ['popolsku-v61', true],
-  ['popolsku-v62', true],
-  ['popolsku-v590', true], ['popolsku-v630', true],
+  ['popolsku-v62', true], ['popolsku-v63', true],
+  ['popolsku-v590', true], ['popolsku-v640', true],
   ['popolsku-v7', true], ['popolsku-v0', true],
   // preserved: the current shell, the audio cache, and everything that merely
   // begins with the same letters
-  ['popolsku-v63', false], ['popolsku-audio', false],
+  ['popolsku-v64', false], ['popolsku-audio', false],
   ['popolsku-video', false], ['popolsku-vocabulary', false], ['popolsku-vectors', false],
-  ['popolsku-v63-beta', false], ['popolsku-v', false], ['popolsku-v63.1', false],
+  ['popolsku-v64-beta', false], ['popolsku-v', false], ['popolsku-v64.1', false],
   ['popolsku-va', false], ['popolsku-v-56', false], ['popolsku-a2hs', false],
   ['unrelated-tool-cache', false], ['workbox-precache', false], ['workbox-runtime', false],
   ['', false], ['popolsku', false], ['xpopolsku-v55', false], ['popolsku-v55 ', false]
@@ -681,19 +681,19 @@ eq('A4 a non-string cache name is never deleted',
   var worker = makeWorker({ seed: {
     'popolsku-v53': {}, 'popolsku-v54': {}, 'popolsku-v55': {}, 'popolsku-v58': {},
     'popolsku-v59': {}, 'popolsku-v60': {}, 'popolsku-v61': {}, 'popolsku-v62': {},
-    'popolsku-v63': {},
+    'popolsku-v63': {}, 'popolsku-v64': {},
     'popolsku-audio': {}, 'popolsku-a2hs-backup': {},
     'some-other-cache': {}, 'popolsku-video': {}, 'popolsku-vocabulary': {},
-    'popolsku-vectors': {}, 'popolsku-v63-beta': {}, 'popolsku-v': {}
+    'popolsku-vectors': {}, 'popolsku-v64-beta': {}, 'popolsku-v': {}
   } });
   runActivate(worker);
   eq('A5 every obsolete shell cache is removed in one activation',
      worker.caches.deleted.slice().sort(),
      ['popolsku-v53', 'popolsku-v54', 'popolsku-v55', 'popolsku-v58', 'popolsku-v59',
-      'popolsku-v60', 'popolsku-v61', 'popolsku-v62']);
+      'popolsku-v60', 'popolsku-v61', 'popolsku-v62', 'popolsku-v63']);
   eq('A5 the surviving cache names are exactly the protected ones',
      worker.caches.names.slice().sort(),
-     ['popolsku-a2hs-backup', 'popolsku-audio', 'popolsku-v', 'popolsku-v63', 'popolsku-v63-beta',
+     ['popolsku-a2hs-backup', 'popolsku-audio', 'popolsku-v', 'popolsku-v64', 'popolsku-v64-beta',
       'popolsku-vectors', 'popolsku-video', 'popolsku-vocabulary', 'some-other-cache']);
 })();
 
@@ -912,7 +912,7 @@ ok('C1 index.html still registers the worker without a skip-waiting handshake',
   eq('C4 activation succeeds', act.results[0].state, 'fulfilled');
   eq('C4 activation removes the superseded shell', worker.caches.deleted, ['popolsku-v55']);
   eq('C4 activation keeps the new shell and the audio cache',
-     worker.caches.names.slice().sort(), ['popolsku-audio', 'popolsku-v63']);
+     worker.caches.names.slice().sort(), ['popolsku-audio', 'popolsku-v64']);
   eq('C4 activation still does not claim anyone', worker.self.claimCalls, 0);
 })();
 
@@ -1042,7 +1042,7 @@ eq('D1 the static allowlist is derived from the precache inventory',
 
 // A generated page is cached under its own directory key, never over the shell.
 (function () {
-  var worker = makeWorker({ seed: { 'popolsku-v63': { 'https://popolsku.app/': seeded('https://popolsku.app/', 'shell') } } });
+  var worker = makeWorker({ seed: { 'popolsku-v64': { 'https://popolsku.app/': seeded('https://popolsku.app/', 'shell') } } });
   runFetch(worker, nav(ORIGIN + '/grammar/biernik-accusative/'));
   eq('D5 the generated page gets its own key',
      inv(worker, SHELL), [ORIGIN + '/', ORIGIN + '/grammar/biernik-accusative/']);
@@ -1054,7 +1054,7 @@ eq('D1 the static allowlist is derived from the precache inventory',
 // unvisited generated route. Root still uses only the canonical root shell.
 (function () {
   var worker = makeWorker({
-    seed: { 'popolsku-v63': {
+    seed: { 'popolsku-v64': {
       'https://popolsku.app/': seeded('https://popolsku.app/', 'shell'),
       'https://popolsku.app/guide/': seeded('https://popolsku.app/guide/', 'guide')
     } },
@@ -1074,7 +1074,7 @@ eq('D1 the static allowlist is derived from the precache inventory',
 // Non-navigation requests never receive the HTML shell.
 (function () {
   var worker = makeWorker({
-    seed: { 'popolsku-v63': { 'https://popolsku.app/': seeded('https://popolsku.app/', 'shell') } },
+    seed: { 'popolsku-v64': { 'https://popolsku.app/': seeded('https://popolsku.app/', 'shell') } },
     route: function () { return { reject: new TypeError('offline') }; }
   });
   [get(ORIGIN + '/data-a1.js'), get(ORIGIN + '/audio-manifest.json'),
@@ -1097,7 +1097,7 @@ eq('D1 the static allowlist is derived from the precache inventory',
   eq('D8 ' + row[0] + ' returns the network response', respState(online), 'fulfilled');
 
   var offline = makeWorker({
-    seed: { 'popolsku-v63': (function () { var s = {}; s[ORIGIN + row[1]] = seeded(ORIGIN + row[1], 'cached-' + row[0]); return s; })() },
+    seed: { 'popolsku-v64': (function () { var s = {}; s[ORIGIN + row[1]] = seeded(ORIGIN + row[1], 'cached-' + row[0]); return s; })() },
     route: function () { return { reject: new TypeError('offline') }; }
   });
   var run = runFetch(offline, get(ORIGIN + row[1] + '?v=4'));
@@ -1124,7 +1124,7 @@ eq('D1 the static allowlist is derived from the precache inventory',
 
 // Static asset strategy: cache-first into the shell cache, query-tolerant.
 (function () {
-  var worker = makeWorker({ seed: { 'popolsku-v63': {
+  var worker = makeWorker({ seed: { 'popolsku-v64': {
     'https://popolsku.app/favicon.svg': seeded('https://popolsku.app/favicon.svg', 'precached-favicon') } } });
   var run = runFetch(worker, get(ORIGIN + '/favicon.svg?v=17'));
   eq('E0 the query-bearing favicon is served by the precached entry',
@@ -1290,7 +1290,7 @@ eq('E4 canonicalPath is a pure path rule',
 // One warmed shell entry serves every root variant offline.
 (function () {
   var worker = makeWorker({
-    seed: { 'popolsku-v63': { 'https://popolsku.app/': seeded('https://popolsku.app/', 'shell') } },
+    seed: { 'popolsku-v64': { 'https://popolsku.app/': seeded('https://popolsku.app/', 'shell') } },
     route: function () { return { reject: new TypeError('offline') }; }
   });
   [ORIGIN + '/', ORIGIN + '/index.html', ORIGIN + '/?pwa=1', ORIGIN + '/?pwa=0'].forEach(function (url) {
@@ -1320,14 +1320,14 @@ eq('E4 canonicalPath is a pure path rule',
 // F. Runtime cache-write lifetime
 // =========================================================================
 var WRITE_BRANCHES = [
-  { name: 'navigation', request: nav(ORIGIN + '/'), cache: 'popolsku-v63', key: ORIGIN + '/' },
-  { name: 'generated page', request: nav(ORIGIN + '/guide/'), cache: 'popolsku-v63', key: ORIGIN + '/guide/' },
-  { name: 'data file', request: get(ORIGIN + '/data-a1.js'), cache: 'popolsku-v63', key: ORIGIN + '/data-a1.js' },
-  { name: 'audio manifest', request: get(ORIGIN + '/audio-manifest.json'), cache: 'popolsku-v63', key: ORIGIN + '/audio-manifest.json' },
+  { name: 'navigation', request: nav(ORIGIN + '/'), cache: 'popolsku-v64', key: ORIGIN + '/' },
+  { name: 'generated page', request: nav(ORIGIN + '/guide/'), cache: 'popolsku-v64', key: ORIGIN + '/guide/' },
+  { name: 'data file', request: get(ORIGIN + '/data-a1.js'), cache: 'popolsku-v64', key: ORIGIN + '/data-a1.js' },
+  { name: 'audio manifest', request: get(ORIGIN + '/audio-manifest.json'), cache: 'popolsku-v64', key: ORIGIN + '/audio-manifest.json' },
   { name: 'mp3', request: get(ORIGIN + '/audio/ab12ef34.mp3'), cache: 'popolsku-audio', key: ORIGIN + '/audio/ab12ef34.mp3' },
-  { name: 'static asset', request: get(ORIGIN + '/pp-answer.js'), cache: 'popolsku-v63', key: ORIGIN + '/pp-answer.js' },
-  { name: 'font', request: get(ORIGIN + '/fonts/plus-jakarta-sans-v12-latin-regular.woff2'), cache: 'popolsku-v63', key: ORIGIN + '/fonts/plus-jakarta-sans-v12-latin-regular.woff2' },
-  { name: 'web app manifest', request: get(ORIGIN + '/manifest.json'), cache: 'popolsku-v63', key: ORIGIN + '/manifest.json' }
+  { name: 'static asset', request: get(ORIGIN + '/pp-answer.js'), cache: 'popolsku-v64', key: ORIGIN + '/pp-answer.js' },
+  { name: 'font', request: get(ORIGIN + '/fonts/plus-jakarta-sans-v12-latin-regular.woff2'), cache: 'popolsku-v64', key: ORIGIN + '/fonts/plus-jakarta-sans-v12-latin-regular.woff2' },
+  { name: 'web app manifest', request: get(ORIGIN + '/manifest.json'), cache: 'popolsku-v64', key: ORIGIN + '/manifest.json' }
 ];
 
 WRITE_BRANCHES.forEach(function (branch) {
@@ -1419,7 +1419,7 @@ WRITE_BRANCHES.forEach(function (branch) {
 // Cache-first branches must not schedule a write when the cache already answers.
 [
   { name: 'mp3', request: get(ORIGIN + '/audio/ab12ef34.mp3'), cache: 'popolsku-audio', key: ORIGIN + '/audio/ab12ef34.mp3' },
-  { name: 'static asset', request: get(ORIGIN + '/pp-answer.js'), cache: 'popolsku-v63', key: ORIGIN + '/pp-answer.js' }
+  { name: 'static asset', request: get(ORIGIN + '/pp-answer.js'), cache: 'popolsku-v64', key: ORIGIN + '/pp-answer.js' }
 ].forEach(function (branch) {
   var seed = {};
   seed[branch.cache] = {};
@@ -1442,7 +1442,7 @@ WRITE_BRANCHES.forEach(function (branch) {
      [worker.self.ppSwState.writes.scheduled, worker.self.ppSwState.writes.succeeded],
      [WRITE_BRANCHES.length, WRITE_BRANCHES.length]);
   eq('F8 writes landed in exactly the two application caches',
-     worker.caches.names.slice().sort(), ['popolsku-audio', 'popolsku-v63']);
+     worker.caches.names.slice().sort(), ['popolsku-audio', 'popolsku-v64']);
   ok('F8 the source has no unbound cache write',
      SW_CODE.indexOf('.then(c => c.put(') === -1 && countOf(SW_CODE, 'cache.put(') === 3);
   eq('F8 waitUntil is only reached through the shared keepAlive helper',
@@ -1456,28 +1456,28 @@ WRITE_BRANCHES.forEach(function (branch) {
   var worker = makeWorker();
   var event = new FetchEvent(get(ORIGIN + '/pp-answer.js'));
   var response = typed(ORIGIN + '/pp-answer.js', { label: 'direct' });
-  var scheduled = worker.api.cacheWrite(event, 'popolsku-v63', ORIGIN + '/pp-answer.js', response);
+  var scheduled = worker.api.cacheWrite(event, 'popolsku-v64', ORIGIN + '/pp-answer.js', response);
   eq('F9 a cacheable response schedules a write', scheduled, true);
   eq('F9 the write is bound to the event', event.waits.length, 1);
   eq('F9 the source response body is left alone', response.bodyUsed, false);
   eq('F9 exactly one clone was taken', response.cloneCount, 1);
   drain();
-  eq('F9 the write landed', inv(worker, 'popolsku-v63'), [ORIGIN + '/pp-answer.js']);
+  eq('F9 the write landed', inv(worker, 'popolsku-v64'), [ORIGIN + '/pp-answer.js']);
 
   var event2 = new FetchEvent(get(ORIGIN + '/pp-answer.js'));
   eq('F9 a null key schedules nothing',
-     worker.api.cacheWrite(event2, 'popolsku-v63', null, typed(ORIGIN + '/pp-answer.js')), false);
+     worker.api.cacheWrite(event2, 'popolsku-v64', null, typed(ORIGIN + '/pp-answer.js')), false);
   eq('F9 an uncacheable response schedules nothing',
-     worker.api.cacheWrite(event2, 'popolsku-v63', ORIGIN + '/x', typed(ORIGIN + '/x', { status: 404, ok: false })), false);
+     worker.api.cacheWrite(event2, 'popolsku-v64', ORIGIN + '/x', typed(ORIGIN + '/x', { status: 404, ok: false })), false);
   eq('F9 neither attempt touched the event', event2.waits.length, 0);
 
   // An event that can no longer be extended must not break the response path.
   var hostile = { waitUntil: function () { throw new Error('InvalidStateError'); } };
-  var late = worker.api.cacheWrite(hostile, 'popolsku-v63', ORIGIN + '/pp-usage.js', typed(ORIGIN + '/pp-usage.js'));
+  var late = worker.api.cacheWrite(hostile, 'popolsku-v64', ORIGIN + '/pp-usage.js', typed(ORIGIN + '/pp-usage.js'));
   drain();
   eq('F9 a rejected waitUntil is contained', late, true);
   ok('F9 the write still completed',
-     inv(worker, 'popolsku-v63').indexOf(ORIGIN + '/pp-usage.js') !== -1);
+     inv(worker, 'popolsku-v64').indexOf(ORIGIN + '/pp-usage.js') !== -1);
 })();
 
 // =========================================================================
@@ -1751,9 +1751,9 @@ eq('I1 every application read goes through it', countOf(SW_CODE, 'cacheMatch('),
 // 1-3: an unrelated cache created FIRST holding the same key must never win.
 [
   { name: 'root shell key', seedKey: ORIGIN + '/', request: nav(ORIGIN + '/'),
-    ownCache: 'popolsku-v63' },
+    ownCache: 'popolsku-v64' },
   { name: 'static asset key', seedKey: ORIGIN + '/pp-answer.js', request: get(ORIGIN + '/pp-answer.js'),
-    ownCache: 'popolsku-v63' },
+    ownCache: 'popolsku-v64' },
   { name: 'MP3 key', seedKey: ORIGIN + '/audio/ab12ef34.mp3', request: get(ORIGIN + '/audio/ab12ef34.mp3'),
     ownCache: 'popolsku-audio' }
 ].forEach(function (row) {
@@ -1790,9 +1790,9 @@ eq('I1 every application read goes through it', countOf(SW_CODE, 'cacheMatch('),
 (function () {
   var shared = ORIGIN + '/audio/ab12ef34.mp3';
   var shellSide = ORIGIN + '/pp-usage.js';
-  var seed = { 'popolsku-v63': {}, 'popolsku-audio': {} };
-  seed['popolsku-v63'][shared] = seeded(shared, 'shell-copy');
-  seed['popolsku-v63'][shellSide] = seeded(shellSide, 'shell-script');
+  var seed = { 'popolsku-v64': {}, 'popolsku-audio': {} };
+  seed['popolsku-v64'][shared] = seeded(shared, 'shell-copy');
+  seed['popolsku-v64'][shellSide] = seeded(shellSide, 'shell-script');
   seed['popolsku-audio'][shared] = seeded(shared, 'audio-copy');
   seed['popolsku-audio'][shellSide] = seeded(shellSide, 'audio-script');
   var worker = makeWorker({ seed: seed, route: function () { return { reject: new TypeError('offline') }; } });
@@ -1806,9 +1806,9 @@ eq('I1 every application read goes through it', countOf(SW_CODE, 'cacheMatch('),
 // 6: a Range request for a warm clip also reads only the audio cache.
 (function () {
   var clip = ORIGIN + '/audio/ab12ef34.mp3';
-  var seed = { 'unrelated-tool-cache': {}, 'popolsku-v63': {}, 'popolsku-audio': {} };
+  var seed = { 'unrelated-tool-cache': {}, 'popolsku-v64': {}, 'popolsku-audio': {} };
   seed['unrelated-tool-cache'][clip] = seeded(clip, 'intruder');
-  seed['popolsku-v63'][clip] = seeded(clip, 'shell-copy');
+  seed['popolsku-v64'][clip] = seeded(clip, 'shell-copy');
   seed['popolsku-audio'][clip] = seeded(clip, 'audio-copy');
   var worker = makeWorker({ seed: seed, route: function () { return { reject: new TypeError('offline') }; } });
   var run = runFetch(worker, get(clip, { headers: { Range: 'bytes=0-' } }));
@@ -1821,7 +1821,7 @@ eq('I1 every application read goes through it', countOf(SW_CODE, 'cacheMatch('),
 // 7: a failing named read is contained by the existing strategy.
 (function () {
   var openFail = makeWorker({
-    seed: { 'popolsku-v63': {} },
+    seed: { 'popolsku-v64': {} },
     route: function () { return { reject: new TypeError('offline') }; }
   });
   openFail.caches.openBehavior = function (name) {
@@ -1854,7 +1854,7 @@ eq('I1 every application read goes through it', countOf(SW_CODE, 'cacheMatch('),
   runFetch(worker, get(ORIGIN + '/sitemap.xml'));
   eq('I7 no branch ever used the unnamed CacheStorage lookup', worker.caches.globalMatches, 0);
   eq('I7 writes still landed in exactly the two application caches',
-     worker.caches.names.slice().sort(), ['popolsku-audio', 'popolsku-v63']);
+     worker.caches.names.slice().sort(), ['popolsku-audio', 'popolsku-v64']);
 })();
 
 // =========================================================================
@@ -1870,7 +1870,7 @@ var CLIP = ORIGIN + '/audio/ab12ef34.mp3';
 var CLIP2 = ORIGIN + '/audio/000311d1288f.mp3';
 
 function audioSeed(response) { var o = {}; o[CLIP] = response; return { 'popolsku-audio': o }; }
-function shellSeed(key, response) { var o = {}; o[key] = response; return { 'popolsku-v63': o }; }
+function shellSeed(key, response) { var o = {}; o[key] = response; return { 'popolsku-v64': o }; }
 function inherited(key, type, label) {
   var opts = { url: key, label: label || 'inherited' };
   if (type !== null) opts.headers = { 'Content-Type': type };
@@ -2067,7 +2067,7 @@ function inherited(key, type, label) {
 // entry cannot be laundered through it (and is left for validation on a root read).
 (function () {
   var worker = makeWorker({
-    seed: { 'popolsku-v63': {
+    seed: { 'popolsku-v64': {
       'https://popolsku.app/': inherited(ORIGIN + '/', 'application/json', 'junk-shell'),
       'https://popolsku.app/guide/': seeded(ORIGIN + '/guide/', 'guide')
     } },
@@ -2150,9 +2150,9 @@ ok('J14 the diagnostics are bounded',
 // =========================================================================
 // G. Regression boundaries
 // =========================================================================
-eq('G1 APP_VERSION is the 8.8 release', (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.8');
+eq('G1 APP_VERSION is the 8.9 release', (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.9');
 eq('G1 the app-shell cache is the new revision',
-   (SW_SRC.match(/CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-v63');
+   (SW_SRC.match(/CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-v64');
 eq('G1 the audio cache name is unchanged',
    (SW_SRC.match(/AUDIO_CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-audio');
 eq('G1 the storage schema version is unchanged',
@@ -2188,7 +2188,7 @@ ok('G4 conversation rendering is untouched',
    countOf(INDEX, 'function cRenderThread(') === 1 && countOf(INDEX, 'function cRenderNode(') === 1 &&
    countOf(INDEX, 'function cThreadBubblesHTML(') === 1);
 eq('G5 the worker is the only file that mentions the shell cache revision',
-   [countOf(INDEX, 'popolsku-v63'), countOf(MANIFEST, 'popolsku-v63'), countOf(BUILD, 'popolsku-v63')],
+   [countOf(INDEX, 'popolsku-v64'), countOf(MANIFEST, 'popolsku-v64'), countOf(BUILD, 'popolsku-v64')],
    [0, 0, 0]);
 ok('G5 no learner-visible copy lives in the worker',
    SW_SRC.indexOf('You are offline') === -1 && SW_SRC.indexOf('Update available') === -1 &&

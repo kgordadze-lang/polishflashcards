@@ -471,16 +471,16 @@ ok('G1 focus styling is still declared', blocksFor('.contact-email:focus-visible
 // an explicit aria-label. The mailto target, the reflow contract above and the 43px touch
 // height are unchanged; tests/test_phase3_closeout.js section D owns the icon and name
 // contract.
-// Priority 6 Phase 4 (risk R-07) turns the one action into four named reasons. They share
-// this single rule set, so the MLG-3A-08 reflow contract asserted above covers all four:
-// what matters here is that every one of them is the hardened component rather than a
-// second, unhardened copy of it, and that the address is still the unbreakable token the
-// reflow rule was written for.
-eq('G2 every contact action is the hardened component, not a second copy of it',
+// Priority 6 Phase 4 (risk R-07) turned the one action into four named reasons; Priority 6
+// Phase 4C consolidates them back into one. It shares this single rule set, so the
+// MLG-3A-08 reflow contract asserted above still applies: what matters here is that the
+// action is still the hardened component rather than an unhardened copy of it, and that
+// the label is still the unbreakable token the reflow rule was written for.
+eq('G2 the one contact action is the hardened component, with no query string',
    [countOf(INDEX, 'class="contact-email"'),
-    countOf(INDEX, '<a class="contact-email" href="mailto:hello@popolsku.app?subject=')], [4, 4]);
-eq('G2 the visible address is unchanged on every action',
-   countOf(INDEX, '</svg>hello@popolsku.app</a>'), 4);
+    countOf(INDEX, '<a class="contact-email" href="mailto:hello@popolsku.app">')], [1, 1]);
+eq('G2 the visible label is the approved "Email hello@popolsku.app" text',
+   countOf(INDEX, '</svg>Email hello@popolsku.app</a>'), 1);
 eq('G2 no second contact address was introduced',
    countOf(INDEX, 'mailto:') - countOf(INDEX, 'mailto:hello@popolsku.app'), 0);
 
@@ -596,7 +596,7 @@ eq('J2 no visibility:hidden was introduced anywhere in the sheet',
    DECL_BLOCKS.filter(function (b) { return (decl(b.body, 'visibility') || '') === 'hidden'; }).length, 0);
 eq('J3 no generated-page code was pulled into the app shell', /build_pages/.test(INDEX), false);
 eq('J3 the app version this phase must not touch is intact',
-   (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.8');
+   (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.9');
 // The three approved touch-target changes are the only dimension changes in the diff: no
 // other control gained width/height/padding under the new responsive blocks.
 eq('J4 no control was resized inside the new responsive blocks',

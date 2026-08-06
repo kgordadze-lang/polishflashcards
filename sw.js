@@ -23,7 +23,7 @@
    index.html: a technical cache revision (a worker/caching change with no
    learner-visible difference) bumps this alone, and a release that changes what
    the learner sees bumps APP_VERSION. Either may move without the other. */
-const CACHE = "popolsku-v63";
+const CACHE = "popolsku-v64";
 const AUDIO_CACHE = "popolsku-audio";
 
 /* ------------------------------------------------------------------ *

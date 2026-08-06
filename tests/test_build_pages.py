@@ -30,7 +30,7 @@ LD_BLOCK_RE = re.compile(r'<script type="application/ld\+json">(.*?)</script>', 
 
 # The Priority 6 Phase 3 release. Pinned once here so a bump is a one-line change and
 # a *skew* between the app shell and the committed pages is still a failure.
-APP_VERSION = "8.8"
+APP_VERSION = "8.9"
 
 # Priority 6 Phase 3 (privacy P-4, risk R-15) harmonises the generated pages' outbound
 # links with the in-app one: noreferrer as well as noopener, so leaving the site does
@@ -2181,14 +2181,14 @@ class DestinationNameTests(unittest.TestCase):
                     stub.count(f'<a href="/guide/">{build_pages.GUIDE_NAME}</a>'), 1)
         app_shell = (ROOT / "index.html").read_text(encoding="utf-8")
         # The drawer label was already the approved name; the no-script fallback arrived in
-        # Phase 3. Priority 6 Phase 4 (risk R-20) adds the footer links row, so the app
-        # shell now names the destination on three surfaces. Each is pinned to the surface
-        # that owns it, and the approved name is the only label any of them uses.
-        self.assertEqual(app_shell.count(f'<a href="guide/">{build_pages.GUIDE_NAME}</a>'), 2)
+        # Phase 3. Priority 6 Phase 4 (risk R-20) added a footer links row that duplicated
+        # the drawer's destinations one interaction shallower; Phase 4C removed that row
+        # again (the drawer already owns these destinations), so the app shell is back to
+        # naming the destination on two surfaces. Each is pinned to the surface that owns
+        # it, and the approved name is the only label either of them uses.
+        self.assertEqual(app_shell.count(f'<a href="guide/">{build_pages.GUIDE_NAME}</a>'), 1)
         self.assertEqual(
             app_shell.count(f'<li><a href="guide/">{build_pages.GUIDE_NAME}</a></li>'), 1)
-        self.assertEqual(
-            app_shell.count(f'      <a href="guide/">{build_pages.GUIDE_NAME}</a>\n'), 1)
         self.assertEqual(
             app_shell.count(f'<a href="guide/" style="color:#4f46e5">'
                             f'{build_pages.GUIDE_NAME}</a>'), 1)
