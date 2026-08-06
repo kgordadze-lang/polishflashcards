@@ -1707,9 +1707,39 @@
 
     <div class="privacy-wrap">
       <div class="privacy-card">
-        <h2 class="contact-lead">Have an idea, want to collaborate, or simply want to connect?</h2>
-        <p class="about-p">Po polsku is an independent and evolving project. I’m always open to thoughtful collaborations, useful resources, new ideas, and conversations about making Polish easier and more engaging to learn.</p>
-        <a class="contact-email" href="mailto:hello@popolsku.app" aria-label="Email hello@popolsku.app"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>hello@popolsku.app</a>
+        <!-- Priority 6 Phase 4 (risk R-07, feedback F-1/F-2/F-3): the page used to address
+             collaborators only, so a learner who found a wrong translation or whose audio
+             would not play had nothing written for them. Four named reasons now sit above
+             the collaboration invitation, which is kept verbatim as the fourth. Each is the
+             same address with a subject already set, which is what makes the messages
+             sortable later. No form, no backend, no body template: nothing about the
+             learner or their progress is placed in the URL. -->
+        <p class="contact-lead">Spotted a mistake, hit a problem, or have an idea?</p>
+        <p class="about-p">Po polsku is made by one person, and email is the only channel - there is no form and no account. Pick whichever reason fits below; each link opens your email app with a subject already filled in. Every link goes to the same address, so you can also write to it directly.</p>
+
+        <div class="privacy-section">
+          <h2>Report a mistake in the content</h2>
+          <p class="about-p">Translations, spelling, and pronunciation clips can all be wrong, and there are a great many of them. If something looks off, it helps to include the topic name, the Polish phrase, and what is wrong with it.</p>
+          <a class="contact-email" href="mailto:hello@popolsku.app?subject=Correction" aria-label="Email hello@popolsku.app about a correction"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>hello@popolsku.app</a>
+        </div>
+
+        <div class="privacy-section">
+          <h2>Something is not working</h2>
+          <p class="about-p">For anything broken - audio that will not play, a page that will not load - it helps to know what you were doing, which device and browser you use, and the version shown at the bottom of the home screen. That is technical context, not personal information. A screenshot is welcome but never needed.</p>
+          <a class="contact-email" href="mailto:hello@popolsku.app?subject=Technical%20issue" aria-label="Email hello@popolsku.app about a technical issue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>hello@popolsku.app</a>
+        </div>
+
+        <div class="privacy-section">
+          <h2>Suggest a topic or phrase</h2>
+          <p class="about-p">If a word or phrase you needed is missing, tell me what you were trying to say and where you needed it. Not everything can be added, but suggestions are welcome.</p>
+          <a class="contact-email" href="mailto:hello@popolsku.app?subject=Suggestion" aria-label="Email hello@popolsku.app with a suggestion"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>hello@popolsku.app</a>
+        </div>
+
+        <div class="privacy-section">
+          <h2>Something else</h2>
+          <p class="about-p">Po polsku is an independent and evolving project. I’m always open to thoughtful collaborations, useful resources, new ideas, and conversations about making Polish easier and more engaging to learn.</p>
+          <a class="contact-email" href="mailto:hello@popolsku.app?subject=Hello" aria-label="Email hello@popolsku.app about something else"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>hello@popolsku.app</a>
+        </div>
       </div>
     </div>
   </section>
@@ -1849,7 +1879,7 @@
    Unrelated to CACHE in sw.js, which is a machine counter - bump both when
    you deploy, but they don't need to match.
    ========================================================================= */
-const APP_VERSION = "8.7";
+const APP_VERSION = "8.8";
 document.getElementById("footVersion").textContent = "v" + APP_VERSION;
 document.getElementById("footYear").textContent = String(new Date().getFullYear());
 

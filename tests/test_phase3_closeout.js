@@ -423,30 +423,65 @@ eq('C7 the dynamic control labels are unchanged',
 // =========================================================================
 // D. Contact email control.
 // =========================================================================
-var CONTACT_LINK = (INDEX.match(/<a class="contact-email"[\s\S]*?<\/a>/) || [''])[0];
-ok('D1 the contact action still exists', CONTACT_LINK !== '');
-eq('D1 the mailto destination is unchanged',
-   countOf(INDEX, '<a class="contact-email" href="mailto:hello@popolsku.app" '), 1);
-eq('D1 the href value is byte-identical',
-   (CONTACT_LINK.match(/href="([^"]*)"/) || [])[1], 'mailto:hello@popolsku.app');
-eq('D1 exactly one contact action exists', countOf(INDEX, 'class="contact-email"'), 1);
-eq('D1 the visible address is unchanged', countOf(CONTACT_LINK, '</svg>hello@popolsku.app</a>'), 1);
-// The accessible name is an explicit label on the link. This is the shipping contract:
+// Priority 6 Phase 4 (risk R-07, feedback F-1/F-2/F-3) turns the single collaboration
+// action into four named reasons. Every contract this section established is preserved and
+// now applies to each of the four controls, not just one: same component, same icon rule,
+// same explicit accessible name, same label-in-name guarantee. What changed is the count
+// and the query string. There is still exactly one contact *address* and one contact
+// *method* - four entry points to it, each carrying only a subject.
+var CONTACT_LINKS = INDEX.match(/<a class="contact-email"[\s\S]*?<\/a>/g) || [];
+var CONTACT_LINK = CONTACT_LINKS[0] || '';
+var CONTACT_HREFS = CONTACT_LINKS.map(function (a) { return (a.match(/href="([^"]*)"/) || [])[1]; });
+var CONTACT_NAMES = CONTACT_LINKS.map(function (a) { return (a.match(/aria-label="([^"]*)"/) || [])[1]; });
+eq('D1 the four approved contact actions exist', CONTACT_LINKS.length, 4);
+eq('D1 exactly four contact actions exist', countOf(INDEX, 'class="contact-email"'), 4);
+eq('D1 every href is byte-identical to its approved destination', CONTACT_HREFS,
+   ['mailto:hello@popolsku.app?subject=Correction',
+    'mailto:hello@popolsku.app?subject=Technical%20issue',
+    'mailto:hello@popolsku.app?subject=Suggestion',
+    'mailto:hello@popolsku.app?subject=Hello']);
+eq('D1 every action resolves to the one approved address',
+   CONTACT_HREFS.filter(function (h) { return h.indexOf('mailto:hello@popolsku.app?subject=') === 0; }).length, 4);
+eq('D1 no second contact address exists anywhere in the app shell',
+   countOf(INDEX, 'mailto:') - countOf(INDEX, 'mailto:hello@popolsku.app'), 0);
+eq('D1 the subject is the only parameter, and no body or recipient is prefilled',
+   CONTACT_HREFS.filter(function (h) {
+     return h.split('?')[1].split('&').length === 1 && h.indexOf('body=') === -1 &&
+            h.indexOf('cc=') === -1 && h.indexOf('bcc=') === -1;
+   }).length, 4);
+eq('D1 no learner data, progress or storage value is placed in a contact URL',
+   CONTACT_HREFS.filter(function (h) {
+     return /popolsku-|progress|know|still|level|topic|card|streak|score|localStorage/.test(h);
+   }), []);
+eq('D1 every space in a subject is percent-encoded rather than raw',
+   CONTACT_HREFS.filter(function (h) { return / /.test(h); }), []);
+eq('D1 the visible address is unchanged on every action',
+   CONTACT_LINKS.filter(function (a) {
+     return countOf(a, '</svg>hello@popolsku.app</a>') === 1; }).length, 4);
+// The accessible name is an explicit label on each link. This is the shipping contract:
 // it does not depend on how any engine treats clip-hidden text.
-eq('D2 the accessible name is declared explicitly and exactly',
-   (CONTACT_LINK.match(/aria-label="([^"]*)"/) || [])[1], 'Email hello@popolsku.app');
-eq('D2 exactly one aria-label exists on the control', countOf(CONTACT_LINK, 'aria-label='), 1);
-eq('D2 the visible word Email is gone from the link',
-   visibleText(CONTACT_LINK), 'hello@popolsku.app');
-eq('D2 no hidden duplicate of the word can exist inside the link',
-   [countOf(CONTACT_LINK, 'sr-only'), countOf(CONTACT_LINK, '<span'),
-    countOf(CONTACT_LINK.replace(/aria-label="[^"]*"/, ''), 'Email')], [0, 0, 0]);
-eq('D2 nothing else contributes a name to the control',
-   [countOf(CONTACT_LINK, 'aria-labelledby'), countOf(CONTACT_LINK, 'aria-describedby'),
-    countOf(CONTACT_LINK, 'title=')], [0, 0, 0]);
-eq('D2 the visible address is contained in the accessible name, so the label matches the name',
-   ((CONTACT_LINK.match(/aria-label="([^"]*)"/) || [])[1] || '').indexOf('hello@popolsku.app') !== -1,
-   true);
+eq('D2 every accessible name is declared explicitly and exactly', CONTACT_NAMES,
+   ['Email hello@popolsku.app about a correction',
+    'Email hello@popolsku.app about a technical issue',
+    'Email hello@popolsku.app with a suggestion',
+    'Email hello@popolsku.app about something else']);
+eq('D2 the four accessible names are distinct, so links are told apart out of context',
+   CONTACT_NAMES.filter(function (n, i) { return CONTACT_NAMES.indexOf(n) === i; }).length, 4);
+eq('D2 exactly one aria-label exists on each control',
+   CONTACT_LINKS.filter(function (a) { return countOf(a, 'aria-label=') === 1; }).length, 4);
+eq('D2 the visible word Email is gone from every link',
+   CONTACT_LINKS.map(visibleText),
+   ['hello@popolsku.app', 'hello@popolsku.app', 'hello@popolsku.app', 'hello@popolsku.app']);
+eq('D2 no hidden duplicate of the word can exist inside any link',
+   CONTACT_LINKS.filter(function (a) {
+     return countOf(a, 'sr-only') === 0 && countOf(a, '<span') === 0 &&
+            countOf(a.replace(/aria-label="[^"]*"/, ''), 'Email') === 0; }).length, 4);
+eq('D2 nothing else contributes a name to any control',
+   CONTACT_LINKS.filter(function (a) {
+     return countOf(a, 'aria-labelledby') === 0 && countOf(a, 'aria-describedby') === 0 &&
+            countOf(a, 'title=') === 0; }).length, 4);
+eq('D2 the visible address is contained in every accessible name, so label matches name',
+   CONTACT_NAMES.filter(function (n) { return n.indexOf('hello@popolsku.app') !== -1; }).length, 4);
 // The shared .sr-only utility is untouched and still used by the live regions and helps.
 ok('D2 the shared .sr-only utility still exists', rulesTouching('.sr-only', WIDE).length >= 1);
 ok('D2 .sr-only is still off screen rather than removed from the accessibility tree',
@@ -457,19 +492,24 @@ ok('D2 .sr-only is still off screen rather than removed from the accessibility t
 ok('D2 .sr-only is still in use elsewhere in the app',
    countOf(INDEX, 'class="sr-only"') >= 7);
 
-eq('D3 exactly one inline icon exists in the link', countOf(CONTACT_LINK, '<svg'), 1);
-ok('D3 the icon is hidden from assistive technology', /<svg[^>]*aria-hidden="true"/.test(CONTACT_LINK));
-ok('D3 the icon is not focusable', /<svg[^>]*focusable="false"/.test(CONTACT_LINK));
-ok('D3 the icon follows the link colour', /<svg[^>]*stroke="currentColor"/.test(CONTACT_LINK));
+eq('D3 exactly one inline icon exists in each link',
+   CONTACT_LINKS.filter(function (a) { return countOf(a, '<svg') === 1; }).length, 4);
+eq('D3 the icon is hidden from assistive technology on every link',
+   CONTACT_LINKS.filter(function (a) { return /<svg[^>]*aria-hidden="true"/.test(a); }).length, 4);
+eq('D3 the icon is not focusable on any link',
+   CONTACT_LINKS.filter(function (a) { return /<svg[^>]*focusable="false"/.test(a); }).length, 4);
+eq('D3 the icon follows the link colour on every link',
+   CONTACT_LINKS.filter(function (a) { return /<svg[^>]*stroke="currentColor"/.test(a); }).length, 4);
 eq('D3 the icon is an envelope drawn inline, not an image, sprite or remote asset',
-   [countOf(CONTACT_LINK, '<img'), countOf(CONTACT_LINK, '<use'),
-    countOf(CONTACT_LINK, 'http'), countOf(CONTACT_LINK, 'background-image'),
-    countOf(CONTACT_LINK, '<rect'), countOf(CONTACT_LINK, '<path')],
-   [0, 0, 0, 0, 1, 1]);
-eq('D3 the only URL in the control is the mailto destination',
-   (CONTACT_LINK.match(/href="([^"]*)"/g) || []), ['href="mailto:hello@popolsku.app"']);
+   CONTACT_LINKS.filter(function (a) {
+     return countOf(a, '<img') === 0 && countOf(a, '<use') === 0 && countOf(a, 'http') === 0 &&
+            countOf(a, 'background-image') === 0 && countOf(a, '<rect') === 1 &&
+            countOf(a, '<path') === 1; }).length, 4);
+eq('D3 the only URL in each control is its own mailto destination',
+   CONTACT_LINKS.map(function (a) { return (a.match(/href="([^"]*)"/g) || []).length; }),
+   [1, 1, 1, 1]);
 eq('D3 no emoji was used as the icon',
-   /[←-⯿\uD83C-\uDBFF]/.test(CONTACT_LINK), false);
+   CONTACT_LINKS.filter(function (a) { return /[←-⯿\uD83C-\uDBFF]/.test(a); }), []);
 
 eq('D4 the touch height and type scale are preserved',
    [declFor('.contact-email', WIDE, 'min-height'), declFor('.contact-email', WIDE, 'font-size'),
@@ -482,13 +522,30 @@ ok('D4 the focus state is unchanged',
 eq('D4 the icon never shrinks and never wraps on its own',
    [declFor('.contact-email svg', WIDE, 'flex'), declFor('.contact-email svg', WIDE, 'width'),
     declFor('.contact-email svg', WIDE, 'height')], ['0 0 auto', '17px', '17px']);
-// The rest of the Contact screen is untouched.
-eq('D5 the contact heading is unchanged',
-   countOf(INDEX, '<h2 class="contact-lead">Have an idea, want to collaborate, or simply want to connect?</h2>'), 1);
+// Priority 6 Phase 4 (feedback F-2) replaces the collaboration-first lead with a
+// learner-first one and demotes the lead from a heading to a lead-in sentence, so the
+// four reasons are the only headings a screen-reader user meets under Contact's h1.
+eq('D5 the contact lead is the approved learner-first line',
+   countOf(INDEX, '<p class="contact-lead">Spotted a mistake, hit a problem, or have an idea?</p>'), 1);
+eq('D5 the old collaboration-first lead is gone',
+   countOf(INDEX, 'Have an idea, want to collaborate, or simply want to connect?'), 0);
+// Feedback R-5: the collaboration invitation is kept, demoted to the fourth reason.
 ok('D5 the collaboration paragraph is unchanged',
    INDEX.indexOf('Po polsku is an independent and evolving project.') !== -1 &&
    INDEX.indexOf('making Polish easier and more engaging to learn.') !== -1);
-eq('D5 no other contact method was added', countOf(INDEX, 'mailto:'), 1);
+eq('D5 no other contact method was added', countOf(INDEX, 'mailto:'), 4);
+eq('D5 no form, widget, survey or submission channel was introduced',
+   [countOf(INDEX, '<form'), countOf(INDEX, 'XMLHttpRequest'),
+    countOf(INDEX, 'navigator.sendBeacon'), countOf(INDEX, 'WebSocket')], [0, 0, 0, 0]);
+// The two pre-existing fetches are the audio manifest and the connectivity HEAD probe.
+// Both are relative, so the feedback route added no endpoint and nothing left the origin.
+eq('D5 the app still makes only its two same-origin fetches',
+   (INDEX.match(/fetch\(\s*["'][^"']*["']/g) || []),
+   ['fetch("audio-manifest.json"', 'fetch("./"']);
+eq('D5 the contact route promises no response time, tracking or ticketing',
+   ['ticket', 'we will reply', 'within 24', 'within 48', 'guarantee', 'support team',
+    'live chat'].reduce(function (n, s) {
+     return n + countOf(visibleText(INDEX).toLowerCase(), s); }, 0), 0);
 
 // =========================================================================
 // E. Approved Guide introduction.
@@ -635,12 +692,12 @@ eq('F6 the footer links row owns the other route to each in-app destination',
 // =========================================================================
 // G. Regression boundaries.
 // =========================================================================
-eq('G1 APP_VERSION is the 8.7 release', (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.7');
+eq('G1 APP_VERSION is the 8.8 release', (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.8');
 // The app-shell cache revision moved to v56 in Phase 4B-1: the hardened worker
 // stages its shell in a new cache so an open tab keeps being served the release
 // it was loaded with. The audio cache name below stays pinned forever.
 eq('G1 the app-shell cache name is the current shell revision',
-   (SW.match(/CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-v62');
+   (SW.match(/CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-v63');
 eq('G1 the audio cache name is unchanged', (SW.match(/AUDIO_CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-audio');
 eq('G1 the storage schema version is unchanged',
    (MIGRATE.match(/SCHEMA_VERSION\s*=\s*(\d+)/) || [])[1], '2');
@@ -674,9 +731,11 @@ eq('G2 no scroll listener, visualViewport handler or smooth scroll was introduce
    [0, 0, 0, 0]);
 
 // Learner-visible wording outside the three approved refinements is pinned.
+// The Contact lead moved in Priority 6 Phase 4 (feedback F-2) and is pinned in section D
+// above; the collaboration sentence it used to introduce is pinned there too.
 ['Type the Polish answer first.', 'Choose your reply', 'Dobrze!', 'Not this time',
  '<h1>Privacy</h1>', 'tap to see meaning', 'Play pronunciation',
- 'Have an idea, want to collaborate, or simply want to connect?'].forEach(function (s) {
+ 'Po polsku is an independent and evolving project.'].forEach(function (s) {
   ok('G3 unchanged learner string: ' + s, INDEX.indexOf(s) !== -1);
 });
 eq('G3 the removed ending copy exists nowhere in the app shell either',

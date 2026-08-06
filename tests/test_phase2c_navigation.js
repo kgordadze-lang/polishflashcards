@@ -413,20 +413,56 @@ ok('B2 Privacy owns the existing backup and restore controls',
    PRIVACY.indexOf('id="dataBackup"') !== -1 && PRIVACY.indexOf('id="dataRestore"') !== -1 && PRIVACY.indexOf('id="dataFile"') !== -1);
 ok('B2 the install cross-link is now a normal stable anchor',
    /id="dataInstallLink" href="#install"/.test(PRIVACY) && PRIVACY.indexOf('role="button"') === -1);
-eq('B3 Contact has the exact approved lead', elementTexts(CONTACT, 'h2', 'contact-lead'),
-   ['Have an idea, want to collaborate, or simply want to connect?']);
-eq('B3 Contact has the exact approved supporting paragraph', elementTexts(CONTACT, 'p', 'about-p'), [
+// Priority 6 Phase 4 (risk R-07, feedback F-1/F-2/F-3). Contact previously addressed
+// collaborators only, so a learner with a wrong translation or broken audio had nothing
+// written for them and no idea what to include. Four named reasons now carry the page,
+// with the collaboration invitation kept verbatim as the fourth (feedback R-5). The lead
+// became a lead-in sentence rather than a heading, so the reasons are the only headings
+// under Contact's h1.
+eq('B3 Contact has the exact approved learner-first lead',
+   elementTexts(CONTACT, 'p', 'contact-lead'), ['Spotted a mistake, hit a problem, or have an idea?']);
+eq('B3 the four approved reasons are the Contact headings, in order',
+   elementTexts(CONTACT, 'h2', ''),
+   ['Report a mistake in the content', 'Something is not working',
+    'Suggest a topic or phrase', 'Something else']);
+eq('B3 Contact has the exact approved supporting copy', elementTexts(CONTACT, 'p', 'about-p'), [
+  'Po polsku is made by one person, and email is the only channel - there is no form and no account. Pick whichever reason fits below; each link opens your email app with a subject already filled in. Every link goes to the same address, so you can also write to it directly.',
+  'Translations, spelling, and pronunciation clips can all be wrong, and there are a great many of them. If something looks off, it helps to include the topic name, the Polish phrase, and what is wrong with it.',
+  'For anything broken - audio that will not play, a page that will not load - it helps to know what you were doing, which device and browser you use, and the version shown at the bottom of the home screen. That is technical context, not personal information. A screenshot is welcome but never needed.',
+  'If a word or phrase you needed is missing, tell me what you were trying to say and where you needed it. Not everything can be added, but suggestions are welcome.',
   'Po polsku is an independent and evolving project. I’m always open to thoughtful collaborations, useful resources, new ideas, and conversations about making Polish easier and more engaging to learn.'
 ]);
+// F-3 asked for technical context without implying a request for personal data, and for
+// screenshots to be optional and never required.
+ok('B3 the technical-issue block says what it asks for is not personal data',
+   CONTACT.indexOf('That is technical context, not personal information.') !== -1);
+ok('B3 a screenshot is offered as optional and never as a requirement',
+   CONTACT.indexOf('A screenshot is welcome but never needed.') !== -1);
+// The learner is told the address works on its own, because a mailto: link does nothing
+// on a device with no mail client configured.
+ok('B3 the address is usable without an email client',
+   CONTACT.indexOf('you can also write to it directly') !== -1 &&
+   countOf(CONTACT, '</svg>hello@popolsku.app</a>') === 4);
+eq('B3 Contact makes no claim about who reads a message or how fast',
+   ['native speaker', 'professional', 'expert', 'reply within', 'response time',
+    'we will', 'guaranteed'].reduce(function (n, s) {
+     return n + countOf(visibleText(CONTACT).toLowerCase(), s); }, 0), 0);
 // Phase 3 closeout: the visible word "Email" became a decorative inline envelope, and the
 // accessible name is now declared explicitly on the link, so only the address is visible.
 // tests/test_phase3_closeout.js section D owns the icon and accessible-name contract.
-ok('B3 Contact has the prominent normal mailto action with exact destination',
-   CONTACT.indexOf('<a class="contact-email" href="mailto:hello@popolsku.app" ') !== -1);
-ok('B3 the contact action still carries the label Email before the visible address',
-   CONTACT.indexOf('aria-label="Email hello@popolsku.app"') !== -1 &&
-   CONTACT.indexOf('</svg>hello@popolsku.app</a>') !== -1);
-eq('B3 the contact email occurs once in the app shell', countOf(INDEX, 'mailto:hello@popolsku.app'), 1);
+eq('B3 each reason carries a prominent normal mailto action with its approved subject',
+   (CONTACT.match(/<a class="contact-email" href="([^"]*)"/g) || []),
+   ['<a class="contact-email" href="mailto:hello@popolsku.app?subject=Correction"',
+    '<a class="contact-email" href="mailto:hello@popolsku.app?subject=Technical%20issue"',
+    '<a class="contact-email" href="mailto:hello@popolsku.app?subject=Suggestion"',
+    '<a class="contact-email" href="mailto:hello@popolsku.app?subject=Hello"']);
+ok('B3 each contact action still carries the label Email before the visible address',
+   countOf(CONTACT, 'aria-label="Email hello@popolsku.app') === 4 &&
+   countOf(CONTACT, '</svg>hello@popolsku.app</a>') === 4);
+eq('B3 the one contact address is the only one in the app shell, on four entry points',
+   [countOf(INDEX, 'mailto:hello@popolsku.app'), countOf(INDEX, 'mailto:')], [4, 4]);
+eq('B3 the contact actions all live on the Contact screen',
+   countOf(CONTACT, 'class="contact-email"'), 4);
 ok('B4 listening recommendations retain their separate generated destination',
    /<h1>What else I listen to<\/h1>/.test(LISTENING));
 ok('B4 listening page has the exact approved introduction', visibleText(LISTENING).indexOf(
@@ -837,11 +873,11 @@ ok('E3 the Guide Privacy URL is recognized as a direct app-screen destination',
 ok('E3 generated footer reads APP_VERSION and a declared build year',
    BUILD.indexOf('def read_app_version()') !== -1 &&
    /^BUILD_YEAR = 20\d\d$/m.test(BUILD) && BUILD.indexOf('datetime.date.today().year') === -1);
-// The bare substring '8.7' also occurs in inline SVG path coordinates in the generator,
+// The bare substring '8.8' also occurs in inline SVG path coordinates in the generator,
 // so the version literal is pinned in the three forms a duplicated version could
 // actually take: the rendered footer label and either quoted assignment style.
 eq('E3 generator does not duplicate the current version literal',
-   countOf(BUILD, 'v8.7') + countOf(BUILD, '"8.7"') + countOf(BUILD, "'8.7'"), 0);
+   countOf(BUILD, 'v8.8') + countOf(BUILD, '"8.8"') + countOf(BUILD, "'8.8'"), 0);
 ok('E3 one generator-owned ending and footer cover Guide, grammar and vocabulary pages',
    BUILD.indexOf('LEARNING_ENDING_STYLE =') !== -1 &&
    BUILD.indexOf('def learning_ending():') !== -1 &&
@@ -864,10 +900,10 @@ ok('E4 Guide does not depend on drawer JavaScript for destination content',
 // -------------------------------------------------------------------------
 // F. Cross-phase safeguard and regression boundaries.
 // -------------------------------------------------------------------------
-ok('F1 app version is the 8.7 release', /const APP_VERSION = "8\.7"/.test(INDEX));
+ok('F1 app version is the 8.8 release', /const APP_VERSION = "8\.8"/.test(INDEX));
 // Phase 4B-2 moves the app-shell cache to v57 so the revised navigation contract
 // is isolated from the Phase 4B-1 shell while open tabs remain on their old worker.
-ok('F1 app-shell cache is the current shell revision', /const CACHE = "popolsku-v62"/.test(SW));
+ok('F1 app-shell cache is the current shell revision', /const CACHE = "popolsku-v63"/.test(SW));
 ok('F1 audio cache remains popolsku-audio', /const AUDIO_CACHE = "popolsku-audio"/.test(SW));
 ok('F1 schema version remains 2', /PP_MIGRATE\.SCHEMA_VERSION = 2/.test(MIGRATE));
 ok('F1 content migration revision remains 2', /PP_MIGRATE\.CONTENT_MIGRATION_REVISION = 2/.test(MIGRATE));
@@ -1017,6 +1053,121 @@ eq('G4 no first-visit or onboarding flag was introduced',
    countOf(INDEX, 'popolsku-seen') + countOf(INDEX, 'popolsku-tour'), 0);
 eq('G4 the footer row is not rendered by the generated-page templates',
    countOf(BUILD, 'foot-guides') + countOf(BUILD, 'footGuides'), 0);
+
+// -------------------------------------------------------------------------
+// H. Feedback route (Priority 6 Phase 4 - risk R-07, feedback F-1/F-2/F-3/F-4).
+//
+// The route is four mailto: links to the existing address. Decoding each one proves the
+// learner gets an ordinary, editable message with nothing of theirs prefilled, and that
+// the subject survives as a real subject rather than as literal percent-escapes.
+// -------------------------------------------------------------------------
+var FEEDBACK_HREFS = (CONTACT.match(/href="(mailto:[^"]*)"/g) || [])
+  .map(function (h) { return h.slice(6, -1); });
+eq('H1 every reason has its own route', FEEDBACK_HREFS.length, 4);
+var FEEDBACK_PARSED = FEEDBACK_HREFS.map(function (href) {
+  var parts = href.split('?');
+  var params = {};
+  (parts[1] || '').split('&').filter(Boolean).forEach(function (pair) {
+    var kv = pair.split('=');
+    params[decodeURIComponent(kv[0])] = decodeURIComponent(kv.slice(1).join('='));
+  });
+  return { address: parts[0].replace(/^mailto:/, ''), params: params };
+});
+eq('H1 every route reaches the one existing approved address',
+   FEEDBACK_PARSED.map(function (p) { return p.address; }),
+   ['hello@popolsku.app', 'hello@popolsku.app', 'hello@popolsku.app', 'hello@popolsku.app']);
+eq('H1 each subject decodes to the approved wording',
+   FEEDBACK_PARSED.map(function (p) { return p.params.subject; }),
+   ['Correction', 'Technical issue', 'Suggestion', 'Hello']);
+eq('H1 the subject is the only parameter on every route',
+   FEEDBACK_PARSED.map(function (p) { return Object.keys(p.params); }),
+   [['subject'], ['subject'], ['subject'], ['subject']]);
+eq('H1 no message body is prefilled, so what the learner sends stays theirs to write',
+   FEEDBACK_PARSED.filter(function (p) { return p.params.body !== undefined; }), []);
+eq('H1 no extra recipient is hidden on any route',
+   FEEDBACK_PARSED.filter(function (p) {
+     return p.params.cc !== undefined || p.params.bcc !== undefined; }), []);
+eq('H1 re-encoding each decoded subject reproduces the shipped href exactly',
+   FEEDBACK_PARSED.map(function (p) {
+     return 'mailto:' + p.address + '?subject=' + encodeURIComponent(p.params.subject); }),
+   FEEDBACK_HREFS);
+// A raw space in a mailto: query is what makes a subject arrive truncated or literal in
+// some clients, so the encoding is asserted rather than assumed.
+eq('H1 no route carries a raw space, newline or quote',
+   FEEDBACK_HREFS.filter(function (h) { return /[\s"'<>]/.test(h); }), []);
+// Nothing about the learner may ride along in a URL that leaves the app.
+eq('H2 no route carries progress, storage, identifiers or device data',
+   FEEDBACK_HREFS.filter(function (h) {
+     return /popolsku-|pp-card-dir|localStorage|progress|known|levelIdx|topic=|userAgent|id=/.test(h);
+   }), []);
+// Every mailto: in the shell is a literal href in markup. If one were ever assembled in
+// script, learner state could reach the URL without any of the assertions above noticing.
+eq('H2 no route is built at runtime from application state',
+   INDEX.split('\n').filter(function (line) {
+     return line.indexOf('mailto:') !== -1 &&
+            (/mailto:[^"]*"\s*\+/.test(line) || /\+\s*"[^"]*mailto:/.test(line) ||
+             line.indexOf('encodeURIComponent') !== -1 || /\$\{/.test(line) ||
+             /\.href\s*=/.test(line));
+   }), []);
+eq('H2 every mailto: in the shell is a literal markup href',
+   countOf(INDEX, 'href="mailto:'), countOf(INDEX, 'mailto:'));
+eq('H2 the Contact screen holds no script of its own', countOf(CONTACT, '<script'), 0);
+// F-4: the route is reachable without opening the drawer, and Privacy still points at
+// the Contact screen rather than growing a competing mailto: of its own.
+eq('H3 Contact is reachable from both the drawer and the footer row',
+   [countOf(NAV, 'data-app-screen="contact"'), countOf(FOOT_NAV, 'data-app-screen="contact"')],
+   [1, 1]);
+eq('H3 Privacy still routes to Contact instead of carrying its own address',
+   [countOf(PRIVACY, 'mailto:'), countOf(PRIVACY, 'id="dataContactLink" href="#contact"')], [0, 1]);
+eq('H4 the generated pages gained no contact route, so no second surface can drift',
+   [countOf(BUILD, 'mailto:'), countOf(GUIDE, 'mailto:'), countOf(LISTENING, 'mailto:')], [0, 0, 0]);
+
+// -------------------------------------------------------------------------
+// I. Storage footprint after Priority 6 Phase 4.
+//
+// The phase was designed to need no persistent state: the footer row is always present
+// for everyone, and the feedback route is four static hrefs. Nothing distinguishes a
+// first visit from a later one, so nothing has to be stored, exported, restored or
+// described on the Privacy page. These assertions are what keep that true.
+// -------------------------------------------------------------------------
+var STORAGE_KEYS = (INDEX.match(/localStorage\.(?:get|set|remove)Item\(\s*"([^"]+)"/g) || [])
+  .map(function (m) { return m.replace(/.*"([^"]+)"?$/, '$1'); });
+var ALL_KEYS = ['popolsku-progress-v1', 'popolsku-progress-v1-backup', 'popolsku-progress-v2',
+                'popolsku-progress-v2-recovery', 'popolsku-progress-v2-unmapped',
+                'popolsku-speed', 'popolsku-voicehint', 'popolsku-a2hs', 'pp-card-dir'];
+eq('I1 the migration module still declares exactly the five progress keys',
+   ['v1', 'v1backup', 'v2', 'v2recovery', 'unmapped'].filter(function (k) {
+     return new RegExp(k + ':\\s*"popolsku-').test(MIGRATE); }).length, 5);
+eq('I1 every literal storage key the shell touches is one of the nine known keys',
+   STORAGE_KEYS.filter(function (k) { return ALL_KEYS.indexOf(k) === -1; }), []);
+eq('I1 the nine-key footprint did not grow',
+   ALL_KEYS.length, 9);
+eq('I2 no first-visit, onboarding, dismissal or seen flag was added',
+   ['firstvisit', 'first-visit', 'onboard', 'seen', 'tour', 'welcome', 'intro', 'visited',
+    'activation', 'nudge-dismissed'].reduce(function (n, s) {
+     return n + countOf(INDEX, 'popolsku-' + s) + countOf(INDEX, 'pp-' + s); }, 0), 0);
+eq('I2 no timestamp, counter or identifier was introduced for the new surfaces',
+   [countOf(FOOT, 'Date.now'), countOf(FOOT, 'crypto.randomUUID'),
+    countOf(CONTACT, 'Date.now'), countOf(CONTACT, 'crypto.randomUUID')], [0, 0, 0, 0]);
+eq('I3 no alternative storage mechanism was introduced',
+   [countOf(INDEX, 'sessionStorage.'), countOf(INDEX, 'indexedDB'), countOf(INDEX, 'openDatabase'),
+    countOf(INDEX, 'document.cookie'), countOf(INDEX, 'navigator.storage.estimate()')].slice(0, 4),
+   [0, 0, 0, 0]);
+// The Privacy page enumerates the non-progress settings by name. Adding a key without
+// updating that sentence would make a published privacy statement inaccurate, so the
+// enumeration is pinned against the phase that could most easily have broken it.
+ok('I4 the Privacy storage inventory still names exactly the settings that exist',
+   PRIVACY.indexOf('playback speed, which side of a card you see first, whether a one-time ' +
+                   'pronunciation hint has already been shown, and whether you have dismissed ' +
+                   'the install prompt') !== -1);
+eq('I4 Privacy needed no new stored-item disclosure for this phase',
+   ['onboarding', 'guidance', 'tour', 'welcome message', 'whether you have seen'].reduce(
+     function (n, s) { return n + countOf(visibleText(PRIVACY).toLowerCase(), s); }, 0), 0);
+// The one pre-existing "first visit" mention is the offline explanation, not a stored item.
+eq('I4 the only first-visit wording in Privacy is the existing offline sentence',
+   countOf(visibleText(PRIVACY), 'after your first visit so the main app can work offline'), 1);
+eq('I5 the backup envelope still covers the same prefix, so restore behaviour is unchanged',
+   countOf(MIGRATE, 'snapshotPrefix(storage, "popolsku-")'), 1);
 
 console.log('Phase 2C navigation tests: ' + PASS + ' passed, ' + FAIL + ' failed.');
 console.log('  [info] shipping drawer and install-state helpers run against deterministic modal, focus, inert, history and platform state');
