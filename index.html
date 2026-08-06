@@ -364,6 +364,12 @@
   .search-clear:hover{background:#c7d2fe}
   .search-clear:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
   .search-meta{font-size:12.5px;font-weight:600;color:var(--muted);margin:-4px 0 14px}
+  /* Starting-point guidance (Priority 6 Phase 4, activation A-3). Ordinary secondary text
+     on the same scale and colour token as .th-hint, so it reads as guidance rather than as
+     a control. It is shown to everyone on every visit: no first-visit state, nothing to
+     dismiss, nothing to store. var(--muted) on --bg is the established secondary-text
+     contrast used across the home screen. */
+  .start-hint{font-size:12.5px;color:var(--muted);line-height:1.45;margin:-4px 0 14px}
   .search-meta em{font-style:normal;color:var(--emerald);font-weight:700}
   .no-results{border:1px dashed var(--border);border-radius:var(--r-md);padding:24px 18px;text-align:center;
     color:var(--muted);font-size:14px;font-weight:500;line-height:1.55}
@@ -1107,6 +1113,13 @@
       <input id="search" type="search" inputmode="search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search topics - e.g. food, home" aria-label="Search topics across all levels">
       <button class="search-clear" id="searchClear" type="button" aria-label="Clear search" hidden>&times;</button>
     </div>
+
+    <!-- Approved starting-point guidance (activation A-3). A plain paragraph between the
+         search control and the level/topic navigation it describes: no dialog, banner,
+         toast or tooltip, nothing dismissible, and the same sentence for a first-time and
+         a returning learner. "Search" here is ordinary prose naming the control above it,
+         deliberately not a second interactive route to it. -->
+    <p class="start-hint" id="startHint">Start with any topic below, or use Search to find something specific.</p>
 
     <div class="cat-seg" id="catSeg" role="tablist" aria-label="Browse category"></div>
     <div id="subFilter"></div>

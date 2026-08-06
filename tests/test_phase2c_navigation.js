@@ -1169,6 +1169,108 @@ eq('I4 the only first-visit wording in Privacy is the existing offline sentence'
 eq('I5 the backup envelope still covers the same prefix, so restore behaviour is unchanged',
    countOf(MIGRATE, 'snapshotPrefix(storage, "popolsku-")'), 1);
 
+// -------------------------------------------------------------------------
+// J. Starting-point guidance (Priority 6 Phase 4 - activation A-3).
+//
+// 15 A1 topics were presented as equals with nothing telling a learner where to begin.
+// The resolution is one approved sentence, shown to everyone on every visit. The
+// activation audit recommended exactly that over a first-visit-only treatment, because
+// per-visitor state would carry privacy implications this build deliberately avoids.
+// -------------------------------------------------------------------------
+var START_SENTENCE = 'Start with any topic below, or use Search to find something specific.';
+var HOME = section('home');
+var START_TAG = tagFor(INDEX, 'startHint');
+var START_EL = (HOME.match(/<p class="start-hint" id="startHint">[\s\S]*?<\/p>/) || [''])[0];
+eq('J1 the approved sentence appears exactly once in the app shell',
+   countOf(INDEX, START_SENTENCE), 1);
+eq('J1 it lives on the Home screen', countOf(HOME, START_SENTENCE), 1);
+eq('J1 it is an ordinary semantic paragraph', /^<p\b/.test(START_TAG), true);
+eq('J1 the visible text is the approved sentence and nothing else',
+   visibleText(START_EL), START_SENTENCE);
+eq('J1 the approved hero strings are byte-identical',
+   ["Learn the Polish<br>you'll <em>actually</em> use.",
+    'Everyday vocabulary, useful grammar, conversation practice, and Polish pronunciation ' +
+    'audio for real life in Poland.',
+    'Genuinely free', 'No account required'].map(function (s) { return countOf(HOME, s); }),
+   [1, 1, 1, 1]);
+// Position: after the search control it refers to, before the navigation it describes.
+var AT_SEARCH = HOME.indexOf('<div class="search">');
+var AT_SEARCH_END = HOME.indexOf('</div>', HOME.indexOf('id="searchClear"'));
+var AT_HINT = HOME.indexOf(START_SENTENCE);
+var AT_CATSEG = HOME.indexOf('<div class="cat-seg" id="catSeg"');
+ok('J2 every anchor for the position contract is present',
+   [AT_SEARCH, AT_SEARCH_END, AT_HINT, AT_CATSEG].every(function (i) { return i !== -1; }));
+ok('J2 it comes after the existing Search control', AT_SEARCH_END < AT_HINT);
+ok('J2 it comes before the level and topic entry interface', AT_HINT < AT_CATSEG);
+ok('J2 it sits above the topic list and the subfilter too',
+   AT_HINT < HOME.indexOf('id="subFilter"') && AT_HINT < HOME.indexOf('<div class="topics" id="topics">'));
+eq('J2 it is not in the footer, and the footer row is unchanged',
+   [countOf(FOOT, START_SENTENCE), countOf(FOOT, 'start-hint')], [0, 0]);
+['study', 'grammar', 'convo', 'typeit', 'listen', 'round', 'privacy', 'about', 'contact',
+ 'install'].forEach(function (id) {
+  eq('J2 it is not rendered on the ' + id + ' screen', countOf(section(id), START_SENTENCE), 0);
+});
+// Not a control: the word "Search" is prose naming the input above, not a second route to it.
+eq('J3 the paragraph carries no interactive element or handler',
+   [countOf(START_EL, '<a '), countOf(START_EL, '<button'), countOf(START_EL, 'href'),
+    countOf(START_EL, 'onclick'), countOf(START_EL, 'tabindex'),
+    countOf(START_EL, 'role='), countOf(START_EL, 'contenteditable')], [0, 0, 0, 0, 0, 0, 0]);
+eq('J3 no script listens to it', countOf(INDEX, 'startHint'), 1);
+eq('J3 it has no dismiss, close or hide mechanism',
+   [countOf(START_EL, 'dismiss'), countOf(START_EL, 'close'), countOf(START_EL, 'hidden'),
+    countOf(INDEX, 'startHint").hidden'), countOf(INDEX, 'startHint").remove')], [0, 0, 0, 0, 0]);
+eq('J3 it is not a dialog, overlay, banner, toast or tooltip',
+   [countOf(START_EL, 'dialog'), countOf(START_EL, 'modal'), countOf(START_EL, 'overlay'),
+    countOf(START_EL, 'toast'), countOf(START_EL, 'title='), countOf(START_EL, 'popover')],
+   [0, 0, 0, 0, 0, 0]);
+eq('J3 it is not announced as a live region and takes no focus',
+   [countOf(START_EL, 'aria-live'), countOf(START_EL, 'role="status"'),
+    countOf(START_EL, 'role="alert"'), countOf(START_EL, 'autofocus'),
+    countOf(INDEX, 'startHint").focus')], [0, 0, 0, 0, 0]);
+// It is inert markup, so it cannot read storage, navigate, sound, or move progress. The
+// single occurrence of the id asserted above is the markup itself: there is no second
+// reference anywhere in script for any of these to hang off.
+// The id occurs exactly once (J3), and that one occurrence is the markup attribute. No
+// script can therefore reach the paragraph at all, which is what makes every behavioural
+// guarantee below structural rather than a promise: nothing to listen, store, navigate,
+// sound, or mutate progress with.
+eq('J4 the only occurrence of the id is the markup attribute itself',
+   [countOf(INDEX, 'startHint'), countOf(INDEX, 'id="startHint">')], [1, 1]);
+eq('J4 no line that mentions the paragraph also does anything',
+   INDEX.split('\n').filter(function (line) {
+     return line.indexOf('startHint') !== -1 &&
+            ['addEventListener', 'localStorage', 'show(', 'history.', 'speechSynthesis',
+             'startRound', 'openTopic', '.focus(', '.remove(', '.hidden']
+              .some(function (s) { return line.indexOf(s) !== -1; });
+   }), []);
+eq('J4 the guidance added no storage key, first-visit flag or counter',
+   ['popolsku-start', 'popolsku-hint', 'popolsku-firstvisit', 'popolsku-seen',
+    'pp-start-hint', 'startHintSeen'].reduce(function (n, s) {
+     return n + countOf(INDEX, s); }, 0), 0);
+// Layout: a plain block paragraph on the shared secondary-text scale, with no width or
+// nowrap rule that could force page-level horizontal overflow at 320px or at 200% text.
+var START_CSS = (INDEX.match(/\.start-hint\{[^}]*\}/) || [''])[0];
+var TH_HINT_CSS = (INDEX.match(/\.th-hint\{[^}]*\}/) || [''])[0];
+ok('J5 the guidance has its own rule', START_CSS !== '');
+eq('J5 it uses the established secondary-text contrast token, not a literal colour',
+   [/color:var\(--muted\)/.test(START_CSS), countOf(START_CSS, '#')], [true, 0]);
+eq('J5 it matches the existing home-screen hint type scale exactly',
+   [(START_CSS.match(/font-size:([^;}]+)/) || [])[1],
+    (TH_HINT_CSS.match(/font-size:([^;}]+)/) || [])[1]], ['12.5px', '12.5px']);
+eq('J5 nothing prevents it from wrapping or lets it exceed its column',
+   [/white-space:\s*nowrap/.test(START_CSS), /width:/.test(START_CSS),
+    /position:\s*(?:absolute|fixed)/.test(START_CSS), /overflow-x/.test(START_CSS)],
+   [false, false, false, false]);
+eq('J5 it introduces no animation, transition or transform',
+   [countOf(START_CSS, 'animation'), countOf(START_CSS, 'transition'),
+    countOf(START_CSS, 'transform')], [0, 0, 0]);
+eq('J5 it is not hidden at any breakpoint, so it never depends on viewport width',
+   (INDEX.match(/\.start-hint[^{]*\{[^}]*\}/g) || []).filter(function (r) {
+     return /display:\s*none/.test(r); }), []);
+eq('J6 the generated pages did not gain the app-shell guidance',
+   [countOf(BUILD, START_SENTENCE), countOf(BUILD, 'start-hint'),
+    countOf(GUIDE, START_SENTENCE), countOf(LISTENING, START_SENTENCE)], [0, 0, 0, 0]);
+
 console.log('Phase 2C navigation tests: ' + PASS + ' passed, ' + FAIL + ' failed.');
 console.log('  [info] shipping drawer and install-state helpers run against deterministic modal, focus, inert, history and platform state');
 console.log('  [info] real dialog top-layer rendering, key synthesis, Android Back, screen readers, zoom and safe areas remain manual');
