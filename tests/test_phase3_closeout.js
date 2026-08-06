@@ -556,12 +556,12 @@ var ENDING = '<section class="guide-ending" aria-labelledby="guideEndingTitle">'
   '<p class="guide-ending-support">Practice the same Polish with flashcards, drills, ' +
   'conversations, and listening.</p>' +
   '<a class="guide-primary" href="/">Open the app</a>' +
-  '<p class="guide-reassurance">Genuinely free. No account. Works offline.</p>' +
+  '<p class="guide-reassurance">Genuinely free. No account required.</p>' +
   '</section>';
 var KEPT = ['Ready to keep learning?',
             'Practice the same Polish with flashcards, drills, conversations, and listening.',
             'Open the app',
-            'Genuinely free. No account. Works offline.'];
+            'Genuinely free. No account required.'];
 var REMOVED = ['Your progress stays on this device and can be backed up anytime.',
                'How progress works'];
 
@@ -623,12 +623,12 @@ eq('F6 no other in-app link was removed alongside the ending link',
 // =========================================================================
 // G. Regression boundaries.
 // =========================================================================
-eq('G1 APP_VERSION is the 8.6 release', (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.6');
+eq('G1 APP_VERSION is the 8.7 release', (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.7');
 // The app-shell cache revision moved to v56 in Phase 4B-1: the hardened worker
 // stages its shell in a new cache so an open tab keeps being served the release
 // it was loaded with. The audio cache name below stays pinned forever.
 eq('G1 the app-shell cache name is the current shell revision',
-   (SW.match(/CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-v61');
+   (SW.match(/CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-v62');
 eq('G1 the audio cache name is unchanged', (SW.match(/AUDIO_CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-audio');
 eq('G1 the storage schema version is unchanged',
    (MIGRATE.match(/SCHEMA_VERSION\s*=\s*(\d+)/) || [])[1], '2');
@@ -672,10 +672,13 @@ eq('G3 the removed ending copy exists nowhere in the app shell either',
    countOf(INDEX, 'How progress works'), 0);
 // Priority 6 Phase 1 (risk R-04) keeps the approved H1 and rewrites only the supporting
 // sentence, which now carries the positioning. The search copy is unchanged.
+// Priority 6 Phase 3 (SEO S-1) leaves this approved copy alone and points the meta,
+// Open Graph and Twitter descriptions at it, so the supporting sentence now appears
+// four times: once visibly in the hero and once in each of the three description slots.
 eq('G3 the Home hero and search copy are unchanged',
    [countOf(INDEX, '<h1>Learn the Polish<br>you\'ll <em>actually</em> use.</h1>'),
     countOf(INDEX, 'Everyday vocabulary, useful grammar, conversation practice, and Polish pronunciation audio for real life in Poland.'),
-    countOf(INDEX, 'Search topics')], [1, 1, 2]);
+    countOf(INDEX, 'Search topics')], [1, 4, 2]);
 eq('G4 no generated-page code leaked into the app shell', /build_pages/.test(INDEX), false);
 eq('G4 the app shell declares no new media breakpoint',
    TOP_RULES.filter(function (r) { return /^@media/.test(r.prelude); })

@@ -28,6 +28,15 @@ ROOT = Path(build_pages.__file__).resolve().parent
 FOOTER_VERSION_RE = re.compile(r"&middot; v\d+(?:\.\d+)* &middot;")
 LD_BLOCK_RE = re.compile(r'<script type="application/ld\+json">(.*?)</script>', re.S)
 
+# The Priority 6 Phase 3 release. Pinned once here so a bump is a one-line change and
+# a *skew* between the app shell and the committed pages is still a failure.
+APP_VERSION = "8.7"
+
+# Priority 6 Phase 3 (privacy P-4, risk R-15) harmonises the generated pages' outbound
+# links with the in-app one: noreferrer as well as noopener, so leaving the site does
+# not hand the destination this site's URL.
+EXTERNAL_LINK_REL = "noopener noreferrer"
+
 
 def structured_data(markup):
     """The page's JSON-LD, parsed. Every generated page emits one array."""
@@ -74,8 +83,28 @@ LISTENING_INTRODUCTION = (
     "stages of the same journey: clear learner-friendly Polish, real-life listening with plenty "
     "of visual context, and natural Polish at full speed."
 )
-LISTENING_DISCLOSURE = (
-    "These are personal recommendations. None of the creators paid to be included here."
+# Priority 6 Phase 3 (claim C-020, risk R-12), as approved in human copy review. The
+# payment sentence rests on founder knowledge rather than on anything this repository
+# can verify, so it stays exactly that narrow. The closing sentence states what
+# inclusion means - the founder's to state - and closes the partnership/endorsement
+# inference the disclosure previously left open, without claiming anything about what
+# the creators have or have not done.
+LISTENING_PAYMENT_SENTENCES = (
+    "These are personal recommendations. None of the creators paid to be included."
+)
+LISTENING_IMPLICATION_SENTENCE = (
+    "Inclusion does not indicate a formal partnership with Po polsku or an "
+    "endorsement of the app."
+)
+LISTENING_DISCLOSURE = f"{LISTENING_PAYMENT_SENTENCES} {LISTENING_IMPLICATION_SENTENCE}"
+
+# The installed-app description, approved in human copy review. It is pinned exactly
+# rather than sampled for phrases: it is public copy, and manifest.json and the app
+# shell's WebApplication entity must not drift apart.
+APP_DESCRIPTION = (
+    "Practical Polish for real life in Poland, with everyday vocabulary, useful grammar, "
+    "conversation practice, and pronunciation audio. Genuinely free. No account required. "
+    "Core app files can be saved for offline use."
 )
 OLD_LISTENING_DISCLOSURE = (
     "Neither of these paid me anything, and neither probably knows this page exists."
@@ -139,7 +168,7 @@ REAL_POLISH_CARD = {
         "Works from roughly A2 onward. Below that it will feel fast - that is normal, and it is "
         "worth coming back to in a month or two.",
     ],
-    "links": [("https://realpolish.pl/", "_blank", "noopener", "realpolish.pl")],
+    "links": [("https://realpolish.pl/", "_blank", EXTERNAL_LINK_REL, "realpolish.pl")],
 }
 RATIO_VIVA_CARD = {
     "heading": "Ratio viva",
@@ -154,7 +183,7 @@ RATIO_VIVA_CARD = {
         "Harder than Real Polish. I treat it as the thing I graduate into, and I still pause it "
         "constantly.",
     ],
-    "links": [("https://www.youtube.com/@Ratio_viva", "_blank", "noopener",
+    "links": [("https://www.youtube.com/@Ratio_viva", "_blank", EXTERNAL_LINK_REL,
                "youtube.com/@Ratio_viva")],
 }
 KAMIL_CARD = {
@@ -162,8 +191,8 @@ KAMIL_CARD = {
     "sub": KAMIL_RESOURCE_LINE,
     "paragraphs": list(KAMIL_PARAGRAPHS),
     "notes": [KAMIL_NOTE],
-    "links": [(KAMIL_YOUTUBE, "_blank", "noopener", "youtube.com/@polishwithkamil"),
-              (KAMIL_PATREON, "_blank", "noopener", "Patreon")],
+    "links": [(KAMIL_YOUTUBE, "_blank", EXTERNAL_LINK_REL, "youtube.com/@polishwithkamil"),
+              (KAMIL_PATREON, "_blank", EXTERNAL_LINK_REL, "Patreon")],
 }
 APPROVED_LISTENING_CARDS = [REAL_POLISH_CARD, KAMIL_CARD, RATIO_VIVA_CARD]
 
@@ -672,9 +701,9 @@ class LearningEndingTests(unittest.TestCase):
     def test_app_version_is_extracted_from_the_single_shipping_source(self):
         index_source = (ROOT / "index.html").read_text(encoding="utf-8")
         generator_source = Path(build_pages.__file__).read_text(encoding="utf-8")
-        self.assertEqual(build_pages.extract_app_version(index_source), "8.6")
-        self.assertEqual(build_pages.read_app_version(), "8.6")
-        self.assertNotIn('APP_VERSION = "8.6"', generator_source)
+        self.assertEqual(build_pages.extract_app_version(index_source), APP_VERSION)
+        self.assertEqual(build_pages.read_app_version(), APP_VERSION)
+        self.assertNotIn(f'APP_VERSION = "{APP_VERSION}"', generator_source)
         with self.assertRaisesRegex(RuntimeError, "APP_VERSION"):
             build_pages.extract_app_version("const SOMETHING_ELSE = \"8.1\";")
 
@@ -683,7 +712,7 @@ class LearningEndingTests(unittest.TestCase):
             "Ready to keep learning?",
             "Practice the same Polish with flashcards, drills, conversations, and listening.",
             "Open the app",
-            "Genuinely free. No account. Works offline.",
+            "Genuinely free. No account required.",
         )
         # Phase 3 closeout removed the progress sentence and its Privacy link from the
         # shared ending; the Privacy page and the /#privacy route are untouched.
@@ -691,10 +720,10 @@ class LearningEndingTests(unittest.TestCase):
             "Your progress stays on this device and can be backed up anytime.",
             "How progress works",
         )
-        year = build_pages.BUILD_YEAR
+        version, year = build_pages.read_app_version(), build_pages.BUILD_YEAR
         expected_ending = build_pages.learning_ending()
         footer = (f'<footer class="guide-footer"><a href="/">Po polsku</a> '
-                  f'&middot; v8.6 &middot; {year}</footer>')
+                  f'&middot; v{version} &middot; {year}</footer>')
         pages = self.learner_pages()
         self.assertEqual(len(pages), 31)
         self.assertEqual(sum(relative.startswith("grammar/") for relative in pages), 23)
@@ -756,10 +785,10 @@ class LearningEndingTests(unittest.TestCase):
             self.visible_text(markup),
         )
         self.assertIn(
-            '<a href="https://realpolish.pl/" target="_blank" rel="noopener">', markup
+            '<a href="https://realpolish.pl/" target="_blank" rel="noopener noreferrer">', markup
         )
         self.assertIn(
-            '<a href="https://www.youtube.com/@Ratio_viva" target="_blank" rel="noopener">',
+            '<a href="https://www.youtube.com/@Ratio_viva" target="_blank" rel="noopener noreferrer">',
             markup,
         )
 
@@ -1305,10 +1334,11 @@ class GeneratedMobileContractTests(unittest.TestCase):
                          if relative.startswith(("grammar/", "vocabulary/"))):
             self.assertIn(f'<a href="/guide/">{build_pages.GUIDE_NAME}</a>', pages[relative])
         listening = pages["guide/listening/index.html"]
-        self.assertIn('<a href="https://realpolish.pl/" target="_blank" rel="noopener">', listening)
-        self.assertIn('<a href="https://www.youtube.com/@Ratio_viva" target="_blank" rel="noopener">',
+        self.assertIn('<a href="https://realpolish.pl/" target="_blank" rel="noopener noreferrer">', listening)
+        self.assertIn('<a href="https://www.youtube.com/@Ratio_viva" target="_blank" rel="noopener noreferrer">',
                       listening)
-        self.assertIn("Po polsku · v8.6 · 2026",
+        self.assertIn(f"Po polsku · v{build_pages.read_app_version()} "
+                      f"· {build_pages.BUILD_YEAR}",
                       LearningEndingTests.visible_text(pages["guide/index.html"]))
 
     def test_redirect_stubs_stay_byte_identical_and_never_get_the_learner_layout(self):
@@ -1452,12 +1482,12 @@ class ListeningRecommendationTests(unittest.TestCase):
         established = {(target, rel)
                        for card in (parser.cards[0], parser.cards[2])
                        for _, target, rel, _ in card["links"]}
-        self.assertEqual(established, {("_blank", "noopener")})
+        self.assertEqual(established, {("_blank", EXTERNAL_LINK_REL)})
         for href, target, rel, _ in parser.cards[1]["links"]:
             with self.subTest(href=href):
-                self.assertEqual((target, rel), ("_blank", "noopener"))
-        self.assertIn(f'<a href="{KAMIL_YOUTUBE}" target="_blank" rel="noopener">', self.markup())
-        self.assertIn(f'<a href="{KAMIL_PATREON}" target="_blank" rel="noopener">', self.markup())
+                self.assertEqual((target, rel), ("_blank", EXTERNAL_LINK_REL))
+        self.assertIn(f'<a href="{KAMIL_YOUTUBE}" target="_blank" rel="noopener noreferrer">', self.markup())
+        self.assertIn(f'<a href="{KAMIL_PATREON}" target="_blank" rel="noopener noreferrer">', self.markup())
 
     def test_the_resource_line_reads_exactly_as_approved_and_links_each_half(self):
         card = self.parsed().cards[1]
@@ -1544,11 +1574,11 @@ class ListeningRecommendationTests(unittest.TestCase):
 
     def test_the_closing_card_and_footer_are_the_shared_unmodified_blocks(self):
         markup = self.markup()
-        year = build_pages.BUILD_YEAR
+        version, year = build_pages.read_app_version(), build_pages.BUILD_YEAR
         self.assertEqual(markup.count(build_pages.learning_ending()), 1)
         self.assertEqual(markup.count(
             f'<footer class="guide-footer"><a href="/">Po polsku</a> '
-            f'&middot; v8.6 &middot; {year}</footer>'), 1)
+            f'&middot; v{version} &middot; {year}</footer>'), 1)
         self.assertTrue(markup.rstrip().endswith("</body></html>"))
 
     def test_the_recommendation_never_leaks_onto_another_generated_page(self):
@@ -1764,9 +1794,9 @@ class ListeningDescriptionConsistencyTests(unittest.TestCase):
 
     def test_canonicals_navigation_footer_and_closing_card_are_untouched(self):
         pages = self.pages()
-        year = build_pages.BUILD_YEAR
+        version, year = build_pages.read_app_version(), build_pages.BUILD_YEAR
         footer = (f'<footer class="guide-footer"><a href="/">Po polsku</a> '
-                  f'&middot; v8.6 &middot; {year}</footer>')
+                  f'&middot; v{version} &middot; {year}</footer>')
         canonicals = {
             "guide/index.html": f"{build_pages.SITE}/guide/",
             "guide/listening/index.html": f"{build_pages.SITE}/guide/listening/",
@@ -2000,6 +2030,127 @@ class GeneratorSafetyTests(unittest.TestCase):
         self.assertRegex(str(build_pages.BUILD_YEAR), r"^20\d\d$")
         self.assertIn(f"&middot; {build_pages.BUILD_YEAR}</footer>",
                       build_pages.learning_footer())
+
+
+class PublicWordingTests(unittest.TestCase):
+    """Priority 6 Phase 3 commit (c): claims C-003, C-008, C-020; risks R-03, R-12, R-19.
+
+    Three claim corrections that all live outside index.html and were therefore
+    deferred out of Phases 1 and 2: the generated pages' offline promise, the
+    installed-app description, and the recommendation disclosure.
+    """
+
+    @staticmethod
+    def pages():
+        return GeneratedAccessibilityTests.expected_pages()
+
+    # The app shell's Install screen has room to state the limits in full, so that is
+    # where the qualification lives. Nothing else may compress it into a promise.
+    INSTALL_OFFLINE_QUALIFICATION = "After your first visit the app works offline."
+
+    def test_no_generated_page_promises_offline_use(self):
+        """C-003/R-03: generated pages are network-first and are not precached, so
+        the surface a search visitor lands on was the one making the claim least
+        true. The qualification lives on Install and Privacy, which have room."""
+        self.assertEqual(
+            build_pages.learning_ending().count(
+                '<p class="guide-reassurance">Genuinely free. No account required.</p>'), 1)
+        for relative, markup in self.pages().items():
+            with self.subTest(page=relative):
+                visible = LearningEndingTests.visible_text(markup)
+                self.assertNotIn("Works offline", visible)
+                self.assertNotIn("works offline", visible)
+                self.assertNotIn("Works offline once installed", markup)
+        # and the app shell keeps the accurate, roomier statement
+        app_shell = (ROOT / "index.html").read_text(encoding="utf-8")
+        self.assertIn(self.INSTALL_OFFLINE_QUALIFICATION, app_shell)
+        self.assertIn("Pronunciation clips are saved as you play them", app_shell)
+
+    def test_the_installed_app_description_is_the_approved_copy(self):
+        """C-008/R-19: the manifest was the one surface saying "audio" rather than
+        "pronunciation audio", and the one place offline was unqualified."""
+        manifest = json.loads((ROOT / "manifest.json").read_text(encoding="utf-8"))
+        self.assertEqual(manifest["description"], APP_DESCRIPTION)
+        # the app's own structured data describes the app the same way. The app shell
+        # carries one entity and no visible breadcrumb, so it stays a single object
+        # rather than the array the generated pages need.
+        app_shell = (ROOT / "index.html").read_text(encoding="utf-8")
+        application = json.loads(LD_BLOCK_RE.search(app_shell).group(1))
+        self.assertEqual(application["@type"], "WebApplication")
+        self.assertEqual(application["description"], APP_DESCRIPTION)
+
+    def test_the_installed_app_description_claims_no_more_than_it_can(self):
+        """The description names what is genuinely saved for offline use. It must not
+        say the application works offline: generated pages are not precached, and a
+        clip that has not been played is not stored either."""
+        self.assertIn("Core app files can be saved for offline use.", APP_DESCRIPTION)
+        for overreach in (self.INSTALL_OFFLINE_QUALIFICATION, "works offline",
+                          "flashcards with audio", "No account, works offline",
+                          "A1-B1", "A1", "B1", "every page", "all your"):
+            with self.subTest(overreach=overreach):
+                self.assertNotIn(overreach, APP_DESCRIPTION)
+        for approved in ("Practical Polish for real life in Poland",
+                         "pronunciation audio", "Genuinely free.", "No account required."):
+            with self.subTest(approved=approved):
+                self.assertIn(approved, APP_DESCRIPTION)
+        # the positioning it opens with is the app shell's own visible hero language
+        # (compared case-insensitively: the hero opens the sentence, the description
+        # carries the same words mid-sentence)
+        app_shell = (ROOT / "index.html").read_text(encoding="utf-8")
+        hero = re.search(r'<p class="hero-sub">(.*?)</p>', app_shell).group(1).lower()
+        for shared in ("real life in poland", "everyday vocabulary", "useful grammar",
+                       "conversation practice", "pronunciation audio"):
+            with self.subTest(phrase=shared):
+                self.assertIn(shared, hero)
+                self.assertIn(shared, APP_DESCRIPTION.lower())
+
+    def test_the_app_shell_metadata_says_what_the_page_visibly_says(self):
+        """The meta, Open Graph and Twitter descriptions had drifted from the hero
+        sentence Phase 1 approved, so search and social showed superseded copy."""
+        app_shell = (ROOT / "index.html").read_text(encoding="utf-8")
+        hero = re.search(r'<p class="hero-sub">(.*?)</p>', app_shell).group(1)
+        title = re.search(r"<title>(.*?)</title>", app_shell).group(1)
+        for tag in (f'<meta name="description" content="{hero}">',
+                    f'<meta property="og:description" content="{hero}">',
+                    f'<meta name="twitter:description" content="{hero}">',
+                    f'<meta property="og:title" content="{title}">',
+                    f'<meta name="twitter:title" content="{title}">'):
+            with self.subTest(tag=tag):
+                self.assertEqual(app_shell.count(tag), 1)
+        self.assertIn("for real life in Poland", hero)
+        self.assertNotIn("phrases from real podcasts", app_shell)
+
+    def test_the_recommendation_disclosure_adds_only_the_implication_sentence(self):
+        """C-020/R-12: the payment sentence is a fact about other people that this
+        repository cannot verify, so it is left exactly as the founder published it.
+        The added sentence states what inclusion means, which is the founder's to say."""
+        listening = LearningEndingTests.visible_text(
+            self.pages()["guide/listening/index.html"])
+        self.assertEqual(listening.count(LISTENING_PAYMENT_SENTENCES), 1)
+        self.assertEqual(listening.count(LISTENING_IMPLICATION_SENTENCE), 1)
+        self.assertEqual(listening.count(LISTENING_DISCLOSURE), 1)
+        # the wordings the partnership review explicitly rejected
+        for rejected in ("none of them is a partner", "has reviewed", "endorses",
+                         "in partnership with", "sponsored", "recommends Po polsku",
+                         "knows this page exists"):
+            with self.subTest(rejected=rejected):
+                self.assertNotIn(rejected, listening)
+
+    def test_every_outbound_link_leaves_without_handing_over_the_referrer(self):
+        """P-4/R-15: the generated pages' links carried noopener only, while the
+        in-app link already carried noreferrer as well."""
+        outbound = 0
+        for relative, markup in self.pages().items():
+            for tag in re.findall(r'<a [^>]*href="https?://[^"]*"[^>]*>', markup):
+                outbound += 1
+                with self.subTest(page=relative, link=tag):
+                    self.assertIn(f'rel="{EXTERNAL_LINK_REL}"', tag)
+                    self.assertIn('target="_blank"', tag)
+        self.assertEqual(outbound, 4)
+        app_shell = (ROOT / "index.html").read_text(encoding="utf-8")
+        for tag in re.findall(r'<a [^>]*target="_blank"[^>]*>', app_shell):
+            with self.subTest(link=tag):
+                self.assertIn(f'rel="{EXTERNAL_LINK_REL}"', tag)
 
 
 class DestinationNameTests(unittest.TestCase):

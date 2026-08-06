@@ -695,14 +695,24 @@ def read_app_viewport():
 
 
 def learning_ending():
-    """Shared calm closing card for every learner-facing generated page."""
+    """Shared calm closing card for every learner-facing generated page.
+
+    The offline proof point was removed here in Priority 6 Phase 3 (claim C-003,
+    risk R-03). Generated pages are network-first and are not precached, and a
+    clip that has never been played is not stored either - so this line sat on
+    the surface where "works offline" was least true, and is often the only
+    surface a visitor arriving from search ever sees. No phrase this short can
+    carry the three real limits, so the accurate qualification stays on Install
+    and Privacy, where there is room for it, and this line claims only what is
+    unconditionally true.
+    """
     return (
         '<section class="guide-ending" aria-labelledby="guideEndingTitle">'
         '<h2 id="guideEndingTitle">Ready to keep learning?</h2>'
         '<p class="guide-ending-support">Practice the same Polish with flashcards, drills, '
         'conversations, and listening.</p>'
         '<a class="guide-primary" href="/">Open the app</a>'
-        '<p class="guide-reassurance">Genuinely free. No account. Works offline.</p>'
+        '<p class="guide-reassurance">Genuinely free. No account required.</p>'
         '</section>'
     )
 
@@ -970,7 +980,7 @@ def listening_page():
 
     body.append('<div class="card">')
     body.append('<h2>Real Polish</h2>')
-    body.append('<p class="sub"><a href="https://realpolish.pl/" target="_blank" rel="noopener">realpolish.pl</a> '
+    body.append('<p class="sub"><a href="https://realpolish.pl/" target="_blank" rel="noopener noreferrer">realpolish.pl</a> '
                 '&middot; also on Spotify and YouTube</p>')
     body.append('<p>Piotr records in Polish, slowly and clearly, about culture, history and ordinary '
                 'life. The idea is comprehensible input - you should understand most of it and be '
@@ -984,9 +994,9 @@ def listening_page():
     body.append('<div class="card">')
     body.append('<h2>Polish with Kamil</h2>')
     body.append('<p class="sub"><a href="https://www.youtube.com/@polishwithkamil" target="_blank" '
-                'rel="noopener">youtube.com/@polishwithkamil</a> &middot; extra podcasts, transcripts '
+                'rel="noopener noreferrer">youtube.com/@polishwithkamil</a> &middot; extra podcasts, transcripts '
                 'and exercises on <a href="https://www.patreon.com/cw/polishwithkamil" target="_blank" '
-                'rel="noopener">Patreon</a></p>')
+                'rel="noopener noreferrer">Patreon</a></p>')
     body.append('<p>Kamil teaches Polish through comprehensible input: everyday vlogs, short lessons, '
                 'games and interviews that help you understand the message without needing to know '
                 'every word. He speaks clearly and gives you plenty of visual context, but the Polish '
@@ -1000,7 +1010,7 @@ def listening_page():
 
     body.append('<div class="card">')
     body.append('<h2>Ratio viva</h2>')
-    body.append('<p class="sub"><a href="https://www.youtube.com/@Ratio_viva" target="_blank" rel="noopener">'
+    body.append('<p class="sub"><a href="https://www.youtube.com/@Ratio_viva" target="_blank" rel="noopener noreferrer">'
                 'youtube.com/@Ratio_viva</a> &middot; also on Spotify</p>')
     body.append('<p>Not a learning channel at all. Nikodem makes short videos about psychology and '
                 'the thinking errors behind everyday decisions - made for Poles, at Polish speed. '
@@ -1010,8 +1020,17 @@ def listening_page():
                 'and I still pause it constantly.</div>')
     body.append('</div>')
 
+    # Approved wording (claim C-020, risk R-12). The payment sentence rests on founder
+    # knowledge, not on anything this repository can verify, so it says only that and
+    # is not widened. The closing sentence is different in kind - it states what
+    # inclusion means, which is the founder's to state - and it closes the gap the
+    # partnership review found: a reader could otherwise infer a partnership or an
+    # endorsement from three creators being named here. It deliberately does not claim
+    # that no creator has reviewed the app, that none has any other relationship with
+    # the founder, or that any of them endorses it.
     body.append('<p class="note" style="margin:22px 0 4px;text-align:center">These are personal '
-                'recommendations. None of the creators paid to be included here.</p>')
+                'recommendations. None of the creators paid to be included. Inclusion does not '
+                'indicate a formal partnership with Po polsku or an endorsement of the app.</p>')
     body.append(learning_ending())
     body.append(learning_footer())
     return "".join(body)

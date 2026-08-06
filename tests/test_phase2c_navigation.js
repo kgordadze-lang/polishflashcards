@@ -411,12 +411,21 @@ ok('B4 listening recommendations retain their separate generated destination',
    /<h1>What else I listen to<\/h1>/.test(LISTENING));
 ok('B4 listening page has the exact approved introduction', visibleText(LISTENING).indexOf(
    'Flashcards help you learn words. Getting used to the sound of Polish takes hours of listening. These are three resources I keep coming back to because they cover different stages of the same journey: clear learner-friendly Polish, real-life listening with plenty of visual context, and natural Polish at full speed.') !== -1);
+// Priority 6 Phase 3 (privacy P-4, risk R-15) harmonises these links with the in-app
+// one: noreferrer as well as noopener, so the destination is not handed this site's URL.
 ok('B4 Real Polish wording and external-link behavior remain present',
-   LISTENING.indexOf('Real Polish') !== -1 && /href="https:\/\/realpolish\.pl\/" target="_blank" rel="noopener"/.test(LISTENING));
+   LISTENING.indexOf('Real Polish') !== -1 && /href="https:\/\/realpolish\.pl\/" target="_blank" rel="noopener noreferrer"/.test(LISTENING));
 ok('B4 Ratio viva wording and external-link behavior remain present',
-   LISTENING.indexOf('Ratio viva') !== -1 && /href="https:\/\/www\.youtube\.com\/@Ratio_viva" target="_blank" rel="noopener"/.test(LISTENING));
+   LISTENING.indexOf('Ratio viva') !== -1 && /href="https:\/\/www\.youtube\.com\/@Ratio_viva" target="_blank" rel="noopener noreferrer"/.test(LISTENING));
+// Priority 6 Phase 3 (claim C-020) keeps the payment sentence as narrow as it has to be
+// and adds only what inclusion on this page does NOT mean.
 ok('B4 listening page has the exact approved disclosure', visibleText(LISTENING).indexOf(
-   'These are personal recommendations. None of the creators paid to be included here.') !== -1);
+   'These are personal recommendations. None of the creators paid to be included. ' +
+   'Inclusion does not indicate a formal partnership with Po polsku or an ' +
+   'endorsement of the app.') !== -1);
+eq('B4 the disclosure claims nothing about what the creators have done',
+   ['has reviewed', 'have reviewed', 'endorses', 'in partnership with', 'sponsored']
+     .reduce(function (n, s) { return n + countOf(visibleText(LISTENING), s); }, 0), 0);
 eq('B4 removed listening sentence is absent', countOf(LISTENING, 'They are just what worked.'), 0);
 eq('B4 listening recommendations are not duplicated in the app About screen', countOf(ABOUT, 'Real Polish'), 0);
 ok('B5 app footer derives version and runtime year without a second value',
@@ -779,7 +788,7 @@ GUIDE_PAGES.forEach(function (page) {
   eq('E3 ' + name + ' has one shared compact ending', countOf(markup, 'class="guide-ending"'), 1);
   ['Ready to keep learning?',
    'Practice the same Polish with flashcards, drills, conversations, and listening.',
-   'Genuinely free. No account. Works offline.'].forEach(function (line) {
+   'Genuinely free. No account required.'].forEach(function (line) {
     ok('E3 ' + name + ' keeps exact ending copy: ' + line, text.indexOf(line) !== -1);
   });
   ok('E3 ' + name + ' has one normal primary app link',
@@ -808,11 +817,11 @@ ok('E3 the Guide Privacy URL is recognized as a direct app-screen destination',
 ok('E3 generated footer reads APP_VERSION and a declared build year',
    BUILD.indexOf('def read_app_version()') !== -1 &&
    /^BUILD_YEAR = 20\d\d$/m.test(BUILD) && BUILD.indexOf('datetime.date.today().year') === -1);
-// The bare substring '8.6' also occurs in inline SVG path coordinates in the generator,
+// The bare substring '8.7' also occurs in inline SVG path coordinates in the generator,
 // so the version literal is pinned in the three forms a duplicated version could
 // actually take: the rendered footer label and either quoted assignment style.
 eq('E3 generator does not duplicate the current version literal',
-   countOf(BUILD, 'v8.6') + countOf(BUILD, '"8.6"') + countOf(BUILD, "'8.6'"), 0);
+   countOf(BUILD, 'v8.7') + countOf(BUILD, '"8.7"') + countOf(BUILD, "'8.7'"), 0);
 ok('E3 one generator-owned ending and footer cover Guide, grammar and vocabulary pages',
    BUILD.indexOf('LEARNING_ENDING_STYLE =') !== -1 &&
    BUILD.indexOf('def learning_ending():') !== -1 &&
@@ -835,10 +844,10 @@ ok('E4 Guide does not depend on drawer JavaScript for destination content',
 // -------------------------------------------------------------------------
 // F. Cross-phase safeguard and regression boundaries.
 // -------------------------------------------------------------------------
-ok('F1 app version is the 8.6 release', /const APP_VERSION = "8\.6"/.test(INDEX));
+ok('F1 app version is the 8.7 release', /const APP_VERSION = "8\.7"/.test(INDEX));
 // Phase 4B-2 moves the app-shell cache to v57 so the revised navigation contract
 // is isolated from the Phase 4B-1 shell while open tabs remain on their old worker.
-ok('F1 app-shell cache is the current shell revision', /const CACHE = "popolsku-v61"/.test(SW));
+ok('F1 app-shell cache is the current shell revision', /const CACHE = "popolsku-v62"/.test(SW));
 ok('F1 audio cache remains popolsku-audio', /const AUDIO_CACHE = "popolsku-audio"/.test(SW));
 ok('F1 schema version remains 2', /PP_MIGRATE\.SCHEMA_VERSION = 2/.test(MIGRATE));
 ok('F1 content migration revision remains 2', /PP_MIGRATE\.CONTENT_MIGRATION_REVISION = 2/.test(MIGRATE));
