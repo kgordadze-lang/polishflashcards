@@ -2167,12 +2167,12 @@ ok('G2 index.html still links the manifest and the versioned favicon',
 ok('G3 the audio contract is unchanged',
    INDEX.indexOf('fetch("audio-manifest.json", { cache: "no-store" })') !== -1 &&
    /data-audio="\/audio\/[a-f0-9]+\.mp3"/.test(GEN_PAGE));
-// GEN_PAGE is a committed generated page. Priority 6 Phase 2 bumps APP_VERSION to 8.6
-// without regenerating, so the committed footer still reads v8.4 - the accepted version
-// skew opened in Phase 1, closed by the Phase 3 regeneration.
-ok('G3 the generated page output is unchanged',
+// GEN_PAGE is a committed generated page. Priority 6 Phase 3 regenerated every page, so
+// the Phase 1/2 footer skew is closed: the committed footer carries the app's own version.
+ok('G3 the generated page output is unchanged and carries the shipping version',
    GEN_PAGE.indexOf('<link rel="canonical" href="https://popolsku.app/grammar/biernik-accusative/">') !== -1 &&
-   GEN_PAGE.indexOf('v8.4') !== -1);
+   GEN_PAGE.indexOf('&middot; v' + (INDEX.match(/const APP_VERSION = "([^"]+)"/) || [])[1] +
+                    ' &middot;') !== -1);
 ok('G3 build_pages.py still derives the version it always did', countOf(BUILD, 'read_app_version()') === 2);
 ok('G4 Phase 3 focus and scroll behaviour is untouched',
    countOf(INDEX, 'function ppRevealFocusedTarget(') === 1 &&

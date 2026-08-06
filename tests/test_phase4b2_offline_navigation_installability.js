@@ -309,7 +309,7 @@ ok('D4 URL query markers are absent from installation authority',A2HS_SOURCE.ind
 ok('D4 persisted installed state is never read or written as authority',A2HS_SOURCE.indexOf('read().installed')===-1&&A2HS_SOURCE.indexOf('s.installed = true')===-1);
 ok('D4 current-session appinstalled authority is explicit',A2HS_SOURCE.indexOf('installedThisSession=true')!==-1);
 ok('D4 appinstalled finalizer explicitly clears the deferred prompt',/function finalizeInstalled\(\)\{[^}]*deferred=null;[^}]*\}/.test(A2HS_SOURCE));
-ok('D5 manifest/build/generated-content production inputs are not part of the implementation contract',MANIFEST.indexOf('"start_url": "./?pwa=1"')!==-1&&BUILD.indexOf('def write_sitemap(')!==-1);
+ok('D5 manifest/build/generated-content production inputs are not part of the implementation contract',MANIFEST.indexOf('"start_url": "./?pwa=1"')!==-1&&BUILD.indexOf('def sitemap_document(')!==-1);
 
 console.log('Phase 4B-2 offline navigation/installability tests: '+PASS+' passed, '+FAIL+' failed.');
 LOG.forEach(function(line){console.log(line);});

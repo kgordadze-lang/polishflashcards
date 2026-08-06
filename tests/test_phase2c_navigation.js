@@ -720,6 +720,24 @@ eq('D8 installation stays on the single delegated add-action owner', countOf(IND
 // -------------------------------------------------------------------------
 // E. Guide SEO, generated-page boundary, and stable internal links.
 // -------------------------------------------------------------------------
+// Both release markers are read from their single source, so the footer assertion
+// below fails on a skew between app and generated pages rather than on a bumped value.
+var APP_VERSION = (INDEX.match(/const APP_VERSION = "([^"]+)"/) || [])[1];
+var BUILD_YEAR = (BUILD.match(/^BUILD_YEAR = (\d{4})$/m) || [])[1];
+// The 30 committed pages whose breadcrumb links back to the destination hub: 23 grammar,
+// 6 vocabulary and the listening page. The hub itself names the destination unlinked.
+var GUIDE_BREADCRUMB_PAGES = (function () {
+  var manager = $.NSFileManager.defaultManager, pages = [];
+  ['grammar', 'vocabulary'].forEach(function (dir) {
+    var names = ObjC.deepUnwrap(manager.contentsOfDirectoryAtPathError(ROOT + dir, null)) || [];
+    names.sort().forEach(function (name) {
+      var page = ROOT + dir + '/' + name + '/index.html';
+      if (manager.fileExistsAtPath(page)) pages.push(readFile(page));
+    });
+  });
+  pages.push(LISTENING);
+  return pages;
+})();
 eq('E1 Guide document title remains exact',
    (GUIDE.match(/<title>([^<]+)<\/title>/) || [])[1],
    'Polish guide - grammar, slang and idioms explained simply | Po polsku');
@@ -731,8 +749,11 @@ eq('E1 Guide has no noindex directive', countOf(GUIDE.toLowerCase(), 'noindex'),
 ok('E1 Guide remains a standalone generated page', BUILD.indexOf('def guide_page(') !== -1 && BUILD.indexOf('guide/index.html') !== -1);
 eq('E1 the approved menu label did not leak into the Guide pages or the generator',
    countOf(GUIDE, 'Explore more Polish') + countOf(LISTENING, 'Explore more Polish') + countOf(BUILD, 'Explore more Polish'), 0);
+// Phase 3 renders the breadcrumb markup and its BreadcrumbList from one trail, so the
+// destination name is asserted on the pages themselves rather than on a generator literal.
 ok('E1 generated breadcrumbs and back-links still use the Guide page name',
-   countOf(BUILD, '<a href="/guide/">Guide</a>') === 3 && LISTENING.indexOf('href="/guide/">Guide</a>') !== -1);
+   countOf(GUIDE_BREADCRUMB_PAGES.join(''), '<a href="/guide/">Guide</a>') === 30 &&
+   LISTENING.indexOf('href="/guide/">Guide</a>') !== -1);
 ok('E1 generated pages retain their independent logo-only header',
    /<header class="top"><a href="\/" aria-label="Po polsku home"/.test(GUIDE) && GUIDE.indexOf('siteDrawer') === -1);
 eq('E1 generated-page source has no Add app control', countOf(BUILD, 'ppChip'), 0);
@@ -766,18 +787,19 @@ GUIDE_PAGES.forEach(function (page) {
      countOf(markup, 'Open the app - flashcards, drills, conversations'), 0);
   eq('E3 ' + name + ' removes the old duplicate footer marketing sentence',
      countOf(markup, 'free Polish flashcards with audio. No account, no tracking, works offline.'), 0);
-  // Priority 6 Phase 2 bumps APP_VERSION to 8.6 without running the generator, so the
-  // committed pages still carry v8.4 in their footer. The skew began in Phase 1 and is a
-  // deliberate, recorded decision, closed by the Phase 3 regeneration. The committed value
-  // is pinned to v8.4 and the app value to v8.6, so the skew stays exactly this wide.
-  ok('E3 ' + name + ' renders the derived version and build year',
-     markup.indexOf('&middot; v8.4 &middot; ' + new Date().getFullYear() + '</footer>') !== -1);
+  // Priority 6 Phase 3 regenerated the pages, so the footer version is the app's own
+  // again: the Phase 1/2 skew is closed and the committed value is pinned exactly.
+  ok('E3 ' + name + ' renders the derived version and declared build year',
+     markup.indexOf('&middot; v' + APP_VERSION + ' &middot; ' + BUILD_YEAR + '</footer>') !== -1);
 });
 ok('E3 the Guide Privacy URL is recognized as a direct app-screen destination',
    INDEX.indexOf('["about","privacy","contact","install"].includes(ppInitialScreen)') !== -1 &&
    INDEX.indexOf('showScreen(ppInitialScreen)') !== -1);
-ok('E3 generated footer reads APP_VERSION and derives the build year',
-   BUILD.indexOf('def read_app_version()') !== -1 && BUILD.indexOf('datetime.date.today().year') !== -1);
+// Phase 3 made generated output reproducible: the footer year is a declared constant,
+// not a clock reading, so identical sources cannot produce different bytes on a new year.
+ok('E3 generated footer reads APP_VERSION and a declared build year',
+   BUILD.indexOf('def read_app_version()') !== -1 &&
+   /^BUILD_YEAR = 20\d\d$/m.test(BUILD) && BUILD.indexOf('datetime.date.today().year') === -1);
 // The bare substring '8.6' also occurs in inline SVG path coordinates in the generator,
 // so the version literal is pinned in the three forms a duplicated version could
 // actually take: the rendered footer label and either quoted assignment style.

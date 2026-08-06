@@ -12,20 +12,44 @@ into the app to practice.
 Run it from the project root whenever data-grammar.js changes:
 
     pip install json5
-    python3 build_pages.py
+    python3 build_pages.py          # write mode: updates only what actually changed
+    python3 build_pages.py --check  # read-only: reports drift, writes nothing
+    python3 build_pages.py --help   # read-only: usage
 
 Then commit the regenerated  grammar/  folder and  sitemap.xml.
 No cache bump needed for page-content changes (pages are network-first),
 but the FIRST deploy that introduces /grammar/ must ship together with the
 sw.js navigate-handler fix - see the deploy notes.
+
+Determinism contract (Priority 6 Phase 3, SEO S-9 / risk R-13)
+--------------------------------------------------------------
+Identical sources must produce identical bytes, so the generator reads no clock
+while rendering a page. The footer year is BUILD_YEAR, a deliberate constant
+next to the other release markers, not datetime.date.today(). The only date the
+generator computes is a sitemap <lastmod>, and only for a URL whose rendered
+bytes actually differ from the committed page: running the generator can no
+longer tell crawlers that all 32 URLs changed today. The app shell's own entry
+is not generator-rendered, so its <lastmod> is carried forward from the
+committed sitemap and is the one field a human sets deliberately when
+index.html changes materially.
+
+The consequence to know about: a published date for an unchanged page is
+trusted, so --check reports the sitemap's URL set, order and structure as drift
+but treats an already-published <lastmod> as correct by construction.
+
+Unknown arguments fail without writing, and --help and --check never touch a
+file, so generator drift can be checked against a clean working tree.
 """
 
+import argparse
 import datetime
+import difflib
 import html
 import json
 import os
 import re
-import shutil
+import struct
+import sys
 import unicodedata
 
 # The data-file parser and ppNormalize() equivalent live in pp_audio_rule.py, which
@@ -50,6 +74,19 @@ VOCAB_PAGES = { k.encode().decode("unicode_escape") if "\\u" in k else k: v for 
 AUDIO_MANIFEST = "audio-manifest.json"
 OUT_DIR = "grammar"
 SITE = "https://popolsku.app"
+SITEMAP_FILE = "sitemap.xml"
+SOCIAL_IMAGE_FILE = "og-image.png"
+SOCIAL_IMAGE_URL = f"{SITE}/{SOCIAL_IMAGE_FILE}?v=2"
+
+# Every directory this script owns end to end. Anything inside them that the
+# build does not produce is stale output and is removed in write mode; nothing
+# outside them is ever written or deleted.
+GENERATED_DIRS = ("grammar", "vocabulary", "guide")
+
+# The footer year. It is a declared release marker, not a clock reading: a
+# generated page must be reproducible from its sources alone, and the previous
+# clock-derived year silently rewrote all 31 pages every new year.
+BUILD_YEAR = 2026
 
 # The app shell owns the viewport contract; generated pages read it rather than
 # restating it, so the two surfaces cannot drift apart again (MLG-3A-15). The
@@ -543,7 +580,28 @@ def render_table_cell(value, language):
     return "<td>" + "".join(parts) + "</td>"
 
 
+def social_image_dimensions():
+    """The shared preview image's real pixel size, read from its PNG header.
+
+    Declaring a size a scraper then finds to be wrong is worse than declaring
+    none, so the numbers are derived from the committed asset instead of being
+    restated by hand. Reading the file is deterministic - it is a committed
+    input like any data file - and it is read from the repository the script
+    lives in, not the current directory, exactly like the app shell.
+    """
+    with open(_repo_path(SOCIAL_IMAGE_FILE), "rb") as image:
+        header = image.read(24)
+    if header[:8] != b"\x89PNG\r\n\x1a\n" or header[12:16] != b"IHDR":
+        raise RuntimeError(f"{SOCIAL_IMAGE_FILE} is not a PNG with a leading IHDR chunk")
+    width, height = struct.unpack(">II", header[16:24])
+    return width, height
+
+
 def head(title, desc, canon, ld, extra_style=""):
+    """One page head. `ld` is the page's complete list of structured-data
+    entities, emitted as a single JSON-LD array so a page can carry both its own
+    type and its BreadcrumbList without a second script block."""
+    image_width, image_height = social_image_dimensions()
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -556,11 +614,18 @@ def head(title, desc, canon, ld, extra_style=""):
 <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=17">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Po polsku">
+<meta property="og:locale" content="en_US">
 <meta property="og:url" content="{canon}">
 <meta property="og:title" content="{esc(title)}">
 <meta property="og:description" content="{esc(desc)}">
-<meta property="og:image" content="{SITE}/og-image.png?v=2">
+<meta property="og:image" content="{SOCIAL_IMAGE_URL}">
+<meta property="og:image:width" content="{image_width}">
+<meta property="og:image:height" content="{image_height}">
+<meta property="og:image:type" content="image/png">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{esc(title)}">
+<meta name="twitter:description" content="{esc(desc)}">
+<meta name="twitter:image" content="{SOCIAL_IMAGE_URL}">
 {CSP}
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
@@ -599,9 +664,14 @@ def extract_app_viewport(source):
     return viewport
 
 
+def _repo_path(name):
+    """A committed input, resolved next to this script rather than in the cwd."""
+    return os.path.join(os.path.dirname(os.path.abspath(__file__)), name)
+
+
 def read_app_shell(purpose="the app shell contract"):
     """The app shell is the single source of truth for version and viewport."""
-    app_source = os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html")
+    app_source = _repo_path("index.html")
     try:
         with open(app_source, encoding="utf-8") as source_file:
             return source_file.read()
@@ -633,9 +703,32 @@ def learning_ending():
 def learning_footer(js=""):
     """Shared versioned footer, preserving optional page-specific JavaScript."""
     version = esc(read_app_version())
-    year = datetime.date.today().year
     return (f'</main><footer class="guide-footer"><a href="/">Po polsku</a> &middot; '
-            f'v{version} &middot; {year}</footer></div><script>{js}</script></body></html>')
+            f'v{version} &middot; {BUILD_YEAR}</footer></div><script>{js}</script></body></html>')
+
+
+def breadcrumbs(*trail):
+    """The visible breadcrumb nav and its BreadcrumbList, from one trail.
+
+    Each item is (label, path); the last item is the current page and is
+    rendered as plain text, so it carries no `item` in the structured data.
+    Rendering both from the same tuple is the point: the markup a reader sees
+    and the markup a crawler reads cannot say different things about where the
+    page sits (SEO S-4, destination-naming audit G-7).
+    """
+    links = []
+    items = []
+    for position, (label, path) in enumerate(trail, start=1):
+        last = position == len(trail)
+        links.append(esc(label) if last else f'<a href="{path}">{esc(label)}</a>')
+        item = {"@type": "ListItem", "position": position, "name": label}
+        if not last:
+            item["item"] = f"{SITE}{path}"
+        items.append(item)
+    nav = ('<nav class="crumbs" aria-label="Breadcrumb">'
+           + " &rsaquo; ".join(links) + "</nav>")
+    return nav, {"@context": "https://schema.org", "@type": "BreadcrumbList",
+                 "itemListElement": items}
 
 
 def audio_control_name(purpose, phrase):
@@ -724,10 +817,9 @@ def topic_page(level, topic, slug, audio_idx):
         "isAccessibleForFree": True,
         "provider": {"@type": "Organization", "name": "Po polsku", "url": SITE + "/"},
     }
-    body = [head(title, meta_desc, canon, ld, LEARNING_ENDING_STYLE)]
-    body.append('<nav class="crumbs" aria-label="Breadcrumb">'
-                '<a href="/">Home</a> &rsaquo; <a href="/guide/">Guide</a> '
-                f'&rsaquo; {esc(name)}</nav>')
+    crumbs, crumb_ld = breadcrumbs(("Home", "/"), ("Guide", "/guide/"), (name, canon))
+    body = [head(title, meta_desc, canon, [ld, crumb_ld], LEARNING_ENDING_STYLE)]
+    body.append(crumbs)
     body.append(f'<h1>{esc(name)}</h1>')
     body.append(f'<p class="lede">{esc(desc)}</p>')
     body.append(f'<span class="chip">{esc(topic.get("chip",""))}</span>')
@@ -777,10 +869,9 @@ def vocab_page(topic, slug, page_title, audio_idx):
         "isAccessibleForFree": True,
         "provider": {"@type": "Organization", "name": "Po polsku", "url": SITE + "/"},
     }
-    body = [head(title, meta_desc, canon, ld, LEARNING_ENDING_STYLE)]
-    body.append('<nav class="crumbs" aria-label="Breadcrumb">'
-                '<a href="/">Home</a> &rsaquo; <a href="/guide/">Guide</a> '
-                f'&rsaquo; {esc(page_title)}</nav>')
+    crumbs, crumb_ld = breadcrumbs(("Home", "/"), ("Guide", "/guide/"), (page_title, canon))
+    body = [head(title, meta_desc, canon, [ld, crumb_ld], LEARNING_ENDING_STYLE)]
+    body.append(crumbs)
     body.append(f'<h1>{esc(page_title)}</h1>')
     body.append(f'<p class="lede">{esc(desc)}</p>')
     body.append('<span class="chip">B1</span>')
@@ -805,8 +896,9 @@ def guide_page(topics_by_level, vocab_items):
         "inLanguage": "en",
         "provider": {"@type": "Organization", "name": "Po polsku", "url": SITE + "/"},
     }
-    body = [head(title, meta_desc, canon, ld, LEARNING_ENDING_STYLE)]
-    body.append('<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> &rsaquo; Guide</nav>')
+    crumbs, crumb_ld = breadcrumbs(("Home", "/"), ("Guide", canon))
+    body = [head(title, meta_desc, canon, [ld, crumb_ld], LEARNING_ENDING_STYLE)]
+    body.append(crumbs)
     body.append('<h1>Polish, explained simply</h1>')
     body.append('<p class="lede">Built by a foreigner living in Poland and learning the language '
                 'through everyday life - with practical flashcards, clear explanations, pronunciation '
@@ -859,9 +951,10 @@ def listening_page():
         "inLanguage": "en",
         "publisher": {"@type": "Organization", "name": "Po polsku", "url": SITE + "/"},
     }
-    body = [head(title, meta_desc, canon, ld, LEARNING_ENDING_STYLE)]
-    body.append('<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> &rsaquo; '
-                '<a href="/guide/">Guide</a> &rsaquo; What I listen to</nav>')
+    crumbs, crumb_ld = breadcrumbs(("Home", "/"), ("Guide", "/guide/"),
+                                   ("What I listen to", canon))
+    body = [head(title, meta_desc, canon, [ld, crumb_ld], LEARNING_ENDING_STYLE)]
+    body.append(crumbs)
     body.append('<h1>What else I listen to</h1>')
     body.append('<p class="lede">Flashcards help you learn words. Getting used to the sound of Polish '
                 'takes hours of listening. These are three resources I keep coming back to because they '
@@ -935,31 +1028,87 @@ def redirect_stub(target):
 """
 
 
-def write_sitemap(slugs, vslugs=()):
-    today = datetime.date.today().isoformat()
-    urls = ([f"{SITE}/", f"{SITE}/guide/", f"{SITE}/guide/listening/"]
+def sitemap_urls(slugs, vslugs=()):
+    """Every indexable URL, in the committed order. The two redirect stubs are
+    noindex and deliberately absent."""
+    return ([f"{SITE}/", f"{SITE}/guide/", f"{SITE}/guide/listening/"]
             + [f"{SITE}/grammar/{s}/" for s in slugs]
             + [f"{SITE}/vocabulary/{s}/" for s in vslugs])
+
+
+def sitemap_document(urls, lastmods):
+    """The sitemap, rendered from an explicit date per URL."""
     items = "".join(
-        f"  <url>\n    <loc>{u}</loc>\n    <lastmod>{today}</lastmod>\n  </url>\n" for u in urls)
-    xml = ('<?xml version="1.0" encoding="UTF-8"?>\n'
-           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-           f'{items}</urlset>\n')
-    open("sitemap.xml", "w", encoding="utf-8").write(xml)
-    return len(urls)
+        f"  <url>\n    <loc>{u}</loc>\n    <lastmod>{lastmods[u]}</lastmod>\n  </url>\n"
+        for u in urls)
+    return ('<?xml version="1.0" encoding="UTF-8"?>\n'
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+            f'{items}</urlset>\n')
 
-# ---------------------------------------------------------------- main
 
-def main():
+def sitemap_page_path(url):
+    """The generated file whose bytes back a sitemap URL, or None for the app
+    shell - which this generator does not render."""
+    relative = url[len(SITE):].strip("/")
+    return f"{relative}/index.html" if relative else None
+
+
+def committed_lastmods(root="."):
+    """The dates the committed sitemap currently publishes, keyed by URL."""
+    try:
+        with open(os.path.join(root, SITEMAP_FILE), encoding="utf-8") as sitemap:
+            xml = sitemap.read()
+    except OSError:
+        return {}
+    return dict(re.findall(r"<loc>([^<]+)</loc>\s*<lastmod>([^<]+)</lastmod>", xml))
+
+
+def resolve_lastmods(urls, documents, root=".", today=None):
+    """A date per URL that moves only when that URL's page really changed.
+
+    A <lastmod> that jumps to today on every build teaches crawlers to ignore
+    the field (SEO S-9), so a URL keeps its published date unless the bytes the
+    generator now renders differ from the bytes committed for it. The app shell
+    is not rendered here, so its date is carried forward unchanged and is set
+    deliberately by hand when index.html changes materially.
+    """
+    today = today or datetime.date.today().isoformat()
+    published = committed_lastmods(root)
+    dates = {}
+    for url in urls:
+        path = sitemap_page_path(url)
+        if path is None:
+            dates[url] = published.get(url, today)
+            continue
+        committed = read_text(os.path.join(root, path))
+        unchanged = committed is not None and committed == documents.get(path)
+        dates[url] = published[url] if unchanged and url in published else today
+    return dates
+
+
+# ---------------------------------------------------------------- outputs
+
+def read_text(path):
+    """The file's text, or None when it does not exist."""
+    try:
+        with open(path, encoding="utf-8") as existing:
+            return existing.read()
+    except OSError:
+        return None
+
+
+def render_documents():
+    """Every generator-owned HTML document, keyed by repository-relative path.
+
+    Pure: it reads sources and returns strings. Nothing here writes, deletes or
+    depends on what is already committed, which is what lets --check render a
+    whole build without touching the working tree.
+    """
     levels = load_levels(DATA_FILE)
     vocab_levels = load_levels(VOCAB_FILE)
     audio_idx = load_audio_index()
 
-    if os.path.isdir(OUT_DIR):
-        shutil.rmtree(OUT_DIR)          # full rebuild - output is derived, never hand-edited
-    os.makedirs(OUT_DIR)
-
-    slugs, hub, with_audio = [], [], 0
+    documents, notes, slugs, hub, with_audio = {}, [], [], [], 0
     for level in levels:
         items = []
         for topic in level.get("topics", []):
@@ -969,21 +1118,17 @@ def main():
             if slug in slugs:
                 raise SystemExit(f"slug collision: {slug}")
             slugs.append(slug)
-            os.makedirs(f"{OUT_DIR}/{slug}")
             page = topic_page(level, topic, slug, audio_idx)
-            open(f"{OUT_DIR}/{slug}/index.html", "w", encoding="utf-8").write(page)
+            documents[f"{OUT_DIR}/{slug}/index.html"] = page
             n_audio = page.count('class="say" data-audio')
             with_audio += n_audio
             items.append((topic["name"], topic.get("desc", ""), slug, topic.get("emoji", "")))
-            print(f"  + /grammar/{slug}/  ({len(topic.get('teach',[]))} sections, {n_audio} audio examples)")
+            notes.append(f"  /grammar/{slug}/  "
+                         f"({len(topic.get('teach', []))} sections, {n_audio} audio examples)")
         if items:
             hub.append((level.get("level", ""), items))
 
-
     # ---- vocabulary pages (slang / idioms / proverbs) ----
-    if os.path.isdir("vocabulary"):
-        shutil.rmtree("vocabulary")
-    os.makedirs("vocabulary")
     vslugs, vitems = [], []
     for level in vocab_levels:
         for topic in level.get("topics", []):
@@ -993,30 +1138,132 @@ def main():
             if topic.get("mature"):
                 raise SystemExit(f"refusing to build page for mature topic: {topic['name']}")
             slug, page_title = cfg
-            os.makedirs(f"vocabulary/{slug}")
             page = vocab_page(topic, slug, page_title, audio_idx)
-            open(f"vocabulary/{slug}/index.html", "w", encoding="utf-8").write(page)
+            documents[f"vocabulary/{slug}/index.html"] = page
             n_audio = page.count('class="say" data-audio')
             with_audio += n_audio
             vslugs.append(slug)
             vitems.append((page_title, topic.get("desc", ""), slug, topic.get("emoji", ""),
                            len(topic.get("cards", []))))
-            print(f"  + /vocabulary/{slug}/  ({len(topic.get('cards',[]))} expressions, {n_audio} audio clips)")
-    # merged hub + redirect stubs for the old hub URLs
-    if os.path.isdir("guide"):
-        shutil.rmtree("guide")
-    os.makedirs("guide")
-    open("guide/index.html", "w", encoding="utf-8").write(guide_page(hub, vitems))
-    os.makedirs("guide/listening")
-    open("guide/listening/index.html", "w", encoding="utf-8").write(listening_page())
-    print("  + /guide/listening/  (recommendations)")
-    open(f"{OUT_DIR}/index.html", "w", encoding="utf-8").write(redirect_stub("/guide/"))
-    open("vocabulary/index.html", "w", encoding="utf-8").write(redirect_stub("/guide/"))
+            notes.append(f"  /vocabulary/{slug}/  "
+                         f"({len(topic.get('cards', []))} expressions, {n_audio} audio clips)")
 
-    n = write_sitemap(slugs, vslugs)
-    print(f"\nDone. {len(slugs)} grammar pages + {len(vslugs)} vocabulary pages + /guide/ hub. "
-          f"sitemap.xml now lists {n} URLs. {with_audio} sentences/words carry pronunciation audio.")
+    # merged hub + redirect stubs for the old hub URLs
+    documents["guide/index.html"] = guide_page(hub, vitems)
+    documents["guide/listening/index.html"] = listening_page()
+    notes.append("  /guide/listening/  (recommendations)")
+    documents[f"{OUT_DIR}/index.html"] = redirect_stub("/guide/")
+    documents["vocabulary/index.html"] = redirect_stub("/guide/")
+    return documents, slugs, vslugs, with_audio, notes
+
+
+def build_outputs(root="."):
+    """Every generator-owned file, sitemap included, rendered in memory."""
+    documents, slugs, vslugs, with_audio, notes = render_documents()
+    urls = sitemap_urls(slugs, vslugs)
+    outputs = dict(documents)
+    outputs[SITEMAP_FILE] = sitemap_document(urls, resolve_lastmods(urls, documents, root))
+    summary = (f"{len(slugs)} grammar pages + {len(vslugs)} vocabulary pages + /guide/ hub. "
+               f"sitemap.xml lists {len(urls)} URLs. "
+               f"{with_audio} sentences/words carry pronunciation audio.")
+    return outputs, summary, notes
+
+
+def stale_outputs(outputs, root="."):
+    """Files inside the generated directories that this build does not produce."""
+    stale = []
+    for directory in GENERATED_DIRS:
+        for current, _directories, filenames in os.walk(os.path.join(root, directory)):
+            for filename in filenames:
+                relative = os.path.relpath(os.path.join(current, filename), root)
+                if relative not in outputs:
+                    stale.append(relative)
+    return sorted(stale)
+
+
+def drift_report(outputs, root="."):
+    """Differences between the committed tree and this build. Read-only."""
+    problems = []
+    for relative in sorted(outputs):
+        committed = read_text(os.path.join(root, relative))
+        if committed is None:
+            problems.append(f"missing: {relative}")
+            continue
+        if committed == outputs[relative]:
+            continue
+        diff = list(difflib.unified_diff(
+            committed.splitlines(), outputs[relative].splitlines(),
+            fromfile=f"committed/{relative}", tofile=f"generated/{relative}", lineterm="", n=0))
+        problems.append(f"differs: {relative}\n" + "\n".join(f"    {line}" for line in diff[:12]))
+    problems.extend(f"not produced by the generator: {relative}"
+                    for relative in stale_outputs(outputs, root))
+    return problems
+
+
+def write_outputs(outputs, root="."):
+    """Write only what actually differs, and remove only stale generated files."""
+    created, updated, removed = [], [], []
+    for relative in sorted(outputs):
+        target = os.path.join(root, relative)
+        committed = read_text(target)
+        if committed == outputs[relative]:
+            continue                                   # byte-identical: leave it alone
+        os.makedirs(os.path.dirname(target) or ".", exist_ok=True)
+        with open(target, "w", encoding="utf-8") as destination:
+            destination.write(outputs[relative])
+        (updated if committed is not None else created).append(relative)
+    for relative in stale_outputs(outputs, root):
+        os.remove(os.path.join(root, relative))
+        removed.append(relative)
+    for directory in GENERATED_DIRS:                    # prune directories left empty
+        for current, _directories, _files in sorted(
+                os.walk(os.path.join(root, directory), topdown=False)):
+            if not os.listdir(current):
+                os.rmdir(current)
+    return created, updated, removed
+
+# ---------------------------------------------------------------- main
+
+def parse_args(argv):
+    """Explicit arguments only. Anything else exits non-zero without writing."""
+    parser = argparse.ArgumentParser(
+        prog="build_pages.py",
+        description="Build the crawlable Po polsku pages, stubs and sitemap.",
+        epilog="Without --check the generator writes only the files that actually changed.")
+    parser.add_argument("--check", action="store_true",
+                        help="read-only: report drift between the committed tree and a fresh "
+                             "build, write nothing, and exit non-zero if they differ")
+    return parser.parse_args(argv)
+
+
+def main(argv=()):
+    args = parse_args(list(argv))
+    outputs, summary, notes = build_outputs()
+
+    if args.check:
+        problems = drift_report(outputs)
+        if problems:
+            print("build_pages.py --check: committed output is NOT current.\n")
+            for problem in problems:
+                print(problem)
+            print(f"\n{len(problems)} generator-owned path(s) differ. "
+                  "Run  python3 build_pages.py  and commit the result.")
+            return 1
+        print(f"build_pages.py --check: committed output is current. {summary}")
+        return 0
+
+    for note in notes:
+        print(note)
+    created, updated, removed = write_outputs(outputs)
+    for label, paths in (("created", created), ("updated", updated), ("removed", removed)):
+        for relative in paths:
+            print(f"  {label}: {relative}")
+    changed = len(created) + len(updated) + len(removed)
+    print(f"\nDone. {summary}")
+    print("No file changed - the committed output was already current."
+          if not changed else f"{changed} file(s) changed.")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main(sys.argv[1:]))
