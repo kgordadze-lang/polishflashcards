@@ -639,10 +639,20 @@
   /* ---------- footer ---------- */
   footer{display:flex;flex-direction:column;align-items:center;gap:8px;padding:8px 0 18px;text-align:center}
   .foot-note{color:#94a3b8;font-size:12px;font-weight:500;line-height:1.5;max-width:340px}
-  .foot-guides{margin:2px 0 4px;font-size:12px}
-  .foot-guides a{color:#9aa8b8;text-decoration:none;font-weight:600;padding:4px 2px}
+  /* Footer links row (Priority 6 Phase 4, risk R-20 / activation A-6 / feedback F-4):
+     About, Privacy, Explore more Polish and Contact were reachable only by opening the
+     drawer. The rule set below already existed unused; bringing it into service it gained
+     a wrapping flex row (so four labels never force horizontal scrolling at 320px or when
+     text is enlarged), a taller tap area, and var(--muted) in place of the original
+     #9aa8b8, which sat at about 2.3:1 on --bg. --muted is the colour the version line
+     beside it already uses. */
+  .foot-guides{margin:2px 0 4px;font-size:12px;display:flex;flex-wrap:wrap;
+    align-items:center;justify-content:center;gap:0 2px;max-width:340px}
+  .foot-guides a{color:var(--muted);text-decoration:none;font-weight:600;padding:6px;
+    display:inline-flex;align-items:center;min-height:36px}
   .foot-guides a:hover{color:var(--emerald)}
   .foot-guides a:focus-visible{outline:2px solid var(--emerald);outline-offset:2px;border-radius:4px}
+  .foot-sep{color:var(--muted);font-size:12px;opacity:.55}
   .foot-version{color:var(--muted);font-size:12px;font-weight:600;letter-spacing:.2px}
   .foot-guides .foot-version{font-size:12px}
   .foot-link{background:none;border:none;font-family:inherit;font-size:inherit;color:var(--emerald);
@@ -1756,6 +1766,20 @@
   </main>
 
   <footer>
+    <!-- The same four destinations the drawer already offers, one interaction shallower.
+         The separators are decorative and hidden; the app screens keep a real href so
+         middle-click, right-click and deep links behave normally, and a click handler
+         routes them through show() so the SPA history contract is unchanged. Explore more
+         Polish is an ordinary navigation and keeps its default. -->
+    <nav class="foot-guides" id="footGuides" aria-label="About this site">
+      <a href="#about" data-app-screen="about">About</a>
+      <span class="foot-sep" aria-hidden="true">·</span>
+      <a href="#privacy" data-app-screen="privacy">Privacy</a>
+      <span class="foot-sep" aria-hidden="true">·</span>
+      <a href="guide/">Explore more Polish</a>
+      <span class="foot-sep" aria-hidden="true">·</span>
+      <a href="#contact" data-app-screen="contact">Contact</a>
+    </nav>
     <div class="foot-version">Po polsku · <span id="footVersion"></span> · <span id="footYear"></span></div>
   </footer>
 
@@ -5290,6 +5314,21 @@ $("dataFile").addEventListener("change", e=>{
 });
 $("dataInstallLink").addEventListener("click", e=>{ e.preventDefault(); show("install"); });
 $("dataContactLink").addEventListener("click", e=>{ e.preventDefault(); show("contact"); });
+
+/* Footer links row. Delegated so the row stays declarative markup. Only in-app screens
+   are intercepted; a modified click (new tab, new window, download) keeps the browser's
+   own behaviour, and the link is registered as the invoker so Back returns focus to it
+   rather than to the top of home. No learner state is read or written here. */
+$("footGuides").addEventListener("click", e=>{
+  if(e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  const link = e.target.closest && e.target.closest("a[data-app-screen]");
+  if(!link || !$("footGuides").contains(link)) return;
+  const scr = link.getAttribute("data-app-screen");
+  if(!$(scr)) return;
+  e.preventDefault();
+  ppUseInvokerForNextScreen(link);
+  show(scr);
+});
 
 /* ---------------- installable: service worker + keep the installed app fresh ---------------- */
 const ppFresh = { tag:null, reg:null, reloading:false };

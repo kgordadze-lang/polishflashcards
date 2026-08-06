@@ -2180,11 +2180,20 @@ class DestinationNameTests(unittest.TestCase):
                 self.assertEqual(
                     stub.count(f'<a href="/guide/">{build_pages.GUIDE_NAME}</a>'), 1)
         app_shell = (ROOT / "index.html").read_text(encoding="utf-8")
-        # the drawer label was already the approved name; the no-script fallback is new
-        self.assertEqual(app_shell.count(f'<a href="guide/">{build_pages.GUIDE_NAME}</a>'), 1)
+        # The drawer label was already the approved name; the no-script fallback arrived in
+        # Phase 3. Priority 6 Phase 4 (risk R-20) adds the footer links row, so the app
+        # shell now names the destination on three surfaces. Each is pinned to the surface
+        # that owns it, and the approved name is the only label any of them uses.
+        self.assertEqual(app_shell.count(f'<a href="guide/">{build_pages.GUIDE_NAME}</a>'), 2)
+        self.assertEqual(
+            app_shell.count(f'<li><a href="guide/">{build_pages.GUIDE_NAME}</a></li>'), 1)
+        self.assertEqual(
+            app_shell.count(f'      <a href="guide/">{build_pages.GUIDE_NAME}</a>\n'), 1)
         self.assertEqual(
             app_shell.count(f'<a href="guide/" style="color:#4f46e5">'
                             f'{build_pages.GUIDE_NAME}</a>'), 1)
+        self.assertEqual(app_shell.count('href="guide/"'),
+                         app_shell.count(f'>{build_pages.GUIDE_NAME}</a>'))
 
     def test_the_old_name_is_gone_from_every_public_surface(self):
         """"Guide" as a destination name, not as an ordinary English word: the

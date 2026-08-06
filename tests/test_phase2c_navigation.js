@@ -131,6 +131,14 @@ var DRAWER = INDEX.slice(DRAWER_START, DRAWER_END + 9);
 var NAV_START = DRAWER.indexOf('<nav aria-label="Site menu">');
 var NAV_END = DRAWER.indexOf('</nav>', NAV_START);
 var NAV = DRAWER.slice(NAV_START, NAV_END + 6);
+// Priority 6 Phase 4: the footer links row. Sliced the same way as the drawer nav so the
+// two navigation surfaces can be asserted independently of each other.
+var FOOT_START = INDEX.indexOf('<footer>');
+var FOOT_END = INDEX.indexOf('</footer>', FOOT_START);
+var FOOT = FOOT_START === -1 ? '' : INDEX.slice(FOOT_START, FOOT_END + 9);
+var FOOT_NAV_START = FOOT.indexOf('<nav class="foot-guides" id="footGuides"');
+var FOOT_NAV_END = FOOT.indexOf('</nav>', FOOT_NAV_START);
+var FOOT_NAV = FOOT_NAV_START === -1 ? '' : FOOT.slice(FOOT_NAV_START, FOOT_NAV_END + 6);
 ok('A1 Menu is a native button', /^<button\b/.test(MENU_BUTTON));
 eq('A1 Menu has the exact accessible name', attr(MENU_BUTTON, 'aria-label'), 'Menu');
 eq('A1 Menu is collapsed initially', attr(MENU_BUTTON, 'aria-expanded'), 'false');
@@ -250,8 +258,20 @@ eq('A4 the approved Guide label is exact and occurs once in the menu',
 eq('A4 the old visible Guide menu label is absent', countOf(NAV, '>Guide<'), 0);
 eq('A4 the renamed item still points at the unchanged guide/ destination',
    countOf(NAV, 'href="guide/"'), 1);
-eq('A4 the refinement added no second Guide link to the app shell',
-   countOf(INDEX, 'href="guide/"'), 2);
+// Priority 6 Phase 4 (risk R-20 / activation A-6 / feedback F-4) adds the footer links
+// row, so the app shell now reaches guide/ from three places. Counting alone would stop
+// being informative, so each occurrence is pinned to the surface that owns it: the
+// <noscript> fallback, the new footer row, and the drawer item. The Phase 3 contract this
+// guards - one approved label, one destination, no competing second Guide link - is
+// unchanged, and no occurrence uses any other URL or label.
+eq('A4 the app shell reaches guide/ from exactly the three approved surfaces',
+   countOf(INDEX, 'href="guide/"'), 3);
+eq('A4 every Guide link in the app shell carries the one approved label',
+   countOf(INDEX, '>Explore more Polish</a>'), 3);
+eq('A4 the noscript fallback owns one of them',
+   countOf(INDEX, '<a href="guide/" style="color:#4f46e5">Explore more Polish</a>'), 1);
+eq('A4 the footer links row owns one of them',
+   countOf(FOOT, '<a href="guide/">Explore more Polish</a>'), 1);
 eq('A4 Explore more Polish sits near the bottom, with only Contact after it',
    (NAV.slice(NAV.indexOf('>Explore more Polish</a>')).match(/<li\b/g) || []).length, 1);
 eq('A4 Privacy is the only data/privacy menu destination', countOf(NAV, '>Privacy</a>'), 1);
@@ -874,6 +894,129 @@ ok('F3 the maturity overlay keeps its existing shared focus architecture',
 ok('F3 the drawer explicitly refuses modal stacking',
    hasCode(extractFunction(INDEX, 'ppOpenSiteMenu'), 'if(mature && mature.open) return false'));
 eq('F3 no generated template was given the app drawer', countOf(BUILD, 'siteDrawer'), 0);
+
+// -------------------------------------------------------------------------
+// G. Footer links row (Priority 6 Phase 4 - risk R-20, activation A-6, feedback F-4).
+//
+// About, Privacy, Explore more Polish and Contact were reachable only by opening the
+// drawer, which put the two trust pages and the correction route two interactions away.
+// The row is ordinary markup in the existing footer: no new state, no new storage key,
+// no first-visit detection, nothing dismissible, and nothing that runs on load.
+// -------------------------------------------------------------------------
+ok('G1 the footer row exists and is a real navigation landmark', /^<nav\b/.test(FOOT_NAV));
+eq('G1 the row has an accessible name that distinguishes it from the site menu',
+   [attr(FOOT_NAV, 'aria-label'), attr(NAV, 'aria-label')], ['About this site', 'Site menu']);
+eq('G1 the approved destinations appear in the approved order',
+   (FOOT_NAV.match(/<a [^>]*>([^<]+)<\/a>/g) || []).map(function (a) {
+     return a.replace(/<[^>]+>/g, ''); }),
+   ['About', 'Privacy', 'Explore more Polish', 'Contact']);
+eq('G1 every destination is a real anchor with a real href',
+   (FOOT_NAV.match(/<a href="[^"]+"/g) || []),
+   ['<a href="#about"', '<a href="#privacy"', '<a href="guide/"', '<a href="#contact"']);
+eq('G1 the row introduces no clickable generic container',
+   countOf(FOOT_NAV, '<div') + countOf(FOOT_NAV, 'onclick') + countOf(FOOT_NAV, 'role="button"'), 0);
+eq('G1 the row adds no ARIA where native HTML already carries the semantics',
+   countOf(FOOT_NAV, 'role="link"') + countOf(FOOT_NAV, 'tabindex'), 0);
+eq('G1 the separators are decorative and hidden from assistive technology',
+   countOf(FOOT_NAV, '<span class="foot-sep" aria-hidden="true">·</span>'), 3);
+ok('G1 the version line is unchanged and still sits after the row',
+   FOOT.indexOf('foot-guides') < FOOT.indexOf('foot-version') &&
+   FOOT.indexOf('Po polsku · <span id="footVersion"></span> · <span id="footYear"></span>') !== -1);
+eq('G1 the row adds no second contact address and no email action',
+   countOf(FOOT, 'mailto:'), 0);
+// The rule set existed unused. Bringing it into service, it must not overflow a 320px
+// screen and must not ship the original #9aa8b8, which sat at roughly 2.3:1 on --bg.
+var FOOT_CSS = (INDEX.match(/\.foot-guides\{[^}]*\}/) || [''])[0];
+var FOOT_LINK_CSS = (INDEX.match(/\.foot-guides a\{[^}]*\}/) || [''])[0];
+ok('G2 the row wraps instead of forcing horizontal overflow',
+   /flex-wrap:wrap/.test(FOOT_CSS) && /max-width:340px/.test(FOOT_CSS));
+var FOOT_SEP_CSS = (INDEX.match(/\.foot-sep\{[^}]*\}/) || [''])[0];
+ok('G2 the link colour is the shared muted token, not an unvalidated literal',
+   /color:var\(--muted\)/.test(FOOT_LINK_CSS) && /color:var\(--muted\)/.test(FOOT_SEP_CSS) &&
+   countOf(FOOT_CSS, '#') + countOf(FOOT_LINK_CSS, '#') + countOf(FOOT_SEP_CSS, '#') === 0);
+ok('G2 each link carries a declared tap height rather than the original 4px padding',
+   /min-height:36px/.test(FOOT_LINK_CSS) && !/padding:4px 2px/.test(FOOT_LINK_CSS));
+ok('G2 focus remains visible on every link',
+   INDEX.indexOf('.foot-guides a:focus-visible{outline:2px solid var(--emerald)') !== -1);
+eq('G2 the row introduces no animation or transition',
+   countOf(FOOT_CSS, 'transition') + countOf(FOOT_CSS, 'animation') +
+   countOf(FOOT_LINK_CSS, 'transition') + countOf(FOOT_LINK_CSS, 'animation'), 0);
+
+// Execute the shipping handler against a deterministic DOM.
+var FOOT_BLOCK_START = INDEX.indexOf('$("footGuides").addEventListener("click"');
+var FOOT_BLOCK_END = INDEX.indexOf('\n});', FOOT_BLOCK_START);
+if (FOOT_BLOCK_START === -1 || FOOT_BLOCK_END === -1) throw new Error('footer links handler not found');
+var FOOT_BLOCK = INDEX.slice(FOOT_BLOCK_START, FOOT_BLOCK_END + 4);
+function FootLink(screen, href) {
+  this.href = href; this.screen = screen;
+  this.closest = function (sel) {
+    return (sel === 'a[data-app-screen]' && screen) ? this : null;
+  };
+  this.getAttribute = function (name) { return name === 'data-app-screen' ? screen : null; };
+}
+var footRow = { contains:function (el) { return el && el.inRow !== false; }, handler:null,
+                addEventListener:function (type, fn) { if (type === 'click') this.handler = fn; } };
+var footShown = [], footInvokers = [];
+var footIds = { footGuides:footRow, about:{}, privacy:{}, contact:{}, install:{} };
+Function('$','show','ppUseInvokerForNextScreen', FOOT_BLOCK)(
+  function (id) { return footIds[id] || null; },
+  function (scr) { footShown.push(scr); },
+  function (el) { footInvokers.push(el); });
+ok('G3 the handler is registered on the row, not on each link', footRow.handler !== null);
+function footClick(target, extra) {
+  var ev = { target:target, prevented:false, defaultPrevented:false, button:0,
+             metaKey:false, ctrlKey:false, shiftKey:false, altKey:false,
+             preventDefault:function () { this.prevented = true; } };
+  Object.keys(extra || {}).forEach(function (k) { ev[k] = extra[k]; });
+  footRow.handler(ev);
+  return ev;
+}
+var aboutEv = footClick(new FootLink('about', '#about'));
+eq('G3 a plain click routes through the app instead of reloading the document',
+   [aboutEv.prevented, footShown.slice(-1)[0]], [true, 'about']);
+eq('G3 the activated link is registered so Back can return focus to it',
+   footInvokers.slice(-1)[0] instanceof FootLink, true);
+footClick(new FootLink('privacy', '#privacy'));
+footClick(new FootLink('contact', '#contact'));
+eq('G3 every in-app destination routes to its own screen',
+   footShown, ['about', 'privacy', 'contact']);
+var guideEv = footClick(new FootLink(null, 'guide/'));
+eq('G3 Explore more Polish keeps ordinary navigation',
+   [guideEv.prevented, footShown.length], [false, 3]);
+[['metaKey'], ['ctrlKey'], ['shiftKey'], ['altKey']].forEach(function (pair) {
+  var mod = {}; mod[pair[0]] = true;
+  var ev = footClick(new FootLink('about', '#about'), mod);
+  eq('G3 ' + pair[0] + ' click is left to the browser', [ev.prevented, footShown.length], [false, 3]);
+});
+var middle = footClick(new FootLink('about', '#about'), { button:1 });
+eq('G3 middle-click is left to the browser', [middle.prevented, footShown.length], [false, 3]);
+var handled = footClick(new FootLink('about', '#about'), { defaultPrevented:true });
+eq('G3 an already-handled event is not handled twice', [handled.prevented, footShown.length], [false, 3]);
+var outside = new FootLink('about', '#about'); outside.inRow = false;
+footClick(outside);
+eq('G3 a link outside the row is ignored', footShown.length, 3);
+var unknown = footClick(new FootLink('nosuchscreen', '#nosuchscreen'));
+eq('G3 an unknown screen falls back to ordinary navigation rather than a dead click',
+   [unknown.prevented, footShown.length], [false, 3]);
+var separator = footClick({ closest:function () { return null; } });
+eq('G3 clicking a separator does nothing', [separator.prevented, footShown.length], [false, 3]);
+// The row must stay inert with respect to learning: no storage, no progress, no audio.
+eq('G4 the footer handler does not touch localStorage', countOf(FOOT_BLOCK, 'localStorage'), 0);
+eq('G4 the footer handler starts no audio',
+   countOf(FOOT_BLOCK, 'stopAllAudio') + countOf(FOOT_BLOCK, 'playPreGenerated') +
+   countOf(FOOT_BLOCK, 'speechSynthesis') + countOf(FOOT_BLOCK, 'Audio('), 0);
+['S.', 'G.', 'C.', 'T.', 'L.', 'R.'].forEach(function (prefix) {
+  eq('G4 the footer handler does not mutate activity namespace ' + prefix,
+     countOf(FOOT_BLOCK, prefix), 0);
+});
+eq('G4 the row adds no new persistent state of any kind',
+   [countOf(INDEX, 'sessionStorage.'), countOf(INDEX, 'indexedDB'), countOf(INDEX, 'document.cookie')],
+   [0, 0, 0]);
+eq('G4 no first-visit or onboarding flag was introduced',
+   countOf(INDEX, 'popolsku-firstvisit') + countOf(INDEX, 'popolsku-onboard') +
+   countOf(INDEX, 'popolsku-seen') + countOf(INDEX, 'popolsku-tour'), 0);
+eq('G4 the footer row is not rendered by the generated-page templates',
+   countOf(BUILD, 'foot-guides') + countOf(BUILD, 'footGuides'), 0);
 
 console.log('Phase 2C navigation tests: ' + PASS + ' passed, ' + FAIL + ' failed.');
 console.log('  [info] shipping drawer and install-state helpers run against deterministic modal, focus, inert, history and platform state');

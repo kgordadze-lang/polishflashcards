@@ -616,9 +616,21 @@ ok('F6 the Privacy heading learners land on is present',
    INDEX.indexOf('<h1>Privacy</h1>') !== -1);
 ok('F6 the Privacy page still explains progress and backup',
    INDEX.indexOf('Back up progress') !== -1 || INDEX.indexOf('Back up') !== -1);
+// This guard is against a destination being *removed*. Priority 6 Phase 4 (risk R-20)
+// adds the footer links row, so each in-app destination is now reachable from two
+// surfaces rather than one. The guard is restated per surface, which keeps it a removal
+// check on both instead of a bare total that a future edit could satisfy by accident.
 eq('F6 no other in-app link was removed alongside the ending link',
    [countOf(INDEX, 'data-app-screen="about"'), countOf(INDEX, 'data-app-screen="contact"'),
-    countOf(INDEX, 'data-app-screen="privacy"')], [1, 1, 1]);
+    countOf(INDEX, 'data-app-screen="privacy"')], [2, 2, 2]);
+eq('F6 the drawer still owns one route to each in-app destination',
+   [countOf(INDEX, '<li><a href="#about" data-app-screen="about">About</a></li>'),
+    countOf(INDEX, '<li><a href="#contact" data-app-screen="contact">Contact</a></li>'),
+    countOf(INDEX, '<li><a href="#privacy" data-app-screen="privacy">Privacy</a></li>')], [1, 1, 1]);
+eq('F6 the footer links row owns the other route to each in-app destination',
+   [countOf(INDEX, '<a href="#about" data-app-screen="about">About</a>\n'),
+    countOf(INDEX, '<a href="#contact" data-app-screen="contact">Contact</a>\n'),
+    countOf(INDEX, '<a href="#privacy" data-app-screen="privacy">Privacy</a>\n')], [1, 1, 1]);
 
 // =========================================================================
 // G. Regression boundaries.
