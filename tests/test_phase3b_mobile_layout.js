@@ -478,9 +478,9 @@ ok('G1 focus styling is still declared', blocksFor('.contact-email:focus-visible
 // the label is still the unbreakable token the reflow rule was written for.
 eq('G2 the one contact action is the hardened component, with no query string',
    [countOf(INDEX, 'class="contact-email"'),
-    countOf(INDEX, '<a class="contact-email" href="mailto:hello@popolsku.app">')], [1, 1]);
-eq('G2 the visible label is the approved "Email hello@popolsku.app" text',
-   countOf(INDEX, '</svg>Email hello@popolsku.app</a>'), 1);
+    countOf(INDEX, '<a class="contact-email" href="mailto:hello@popolsku.app" aria-label="Email hello@popolsku.app">')], [1, 1]);
+eq('G2 the visible label is the approved "hello@popolsku.app" text',
+   countOf(INDEX, '</svg>hello@popolsku.app</a>'), 1);
 eq('G2 no second contact address was introduced',
    countOf(INDEX, 'mailto:') - countOf(INDEX, 'mailto:hello@popolsku.app'), 0);
 
@@ -596,7 +596,7 @@ eq('J2 no visibility:hidden was introduced anywhere in the sheet',
    DECL_BLOCKS.filter(function (b) { return (decl(b.body, 'visibility') || '') === 'hidden'; }).length, 0);
 eq('J3 no generated-page code was pulled into the app shell', /build_pages/.test(INDEX), false);
 eq('J3 the app version this phase must not touch is intact',
-   (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.9');
+   (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.10');
 // The three approved touch-target changes are the only dimension changes in the diff: no
 // other control gained width/height/padding under the new responsive blocks.
 eq('J4 no control was resized inside the new responsive blocks',

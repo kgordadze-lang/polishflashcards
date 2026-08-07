@@ -473,10 +473,12 @@ eq('B3 exactly one contact action carries the approved bare mailto route',
 eq('B3 the mailto route carries no subject, body, cc or bcc parameter',
    countOf(CONTACT, 'mailto:hello@popolsku.app?'), 0);
 var CONTACT_EMAIL_LINK = (CONTACT.match(/<a class="contact-email"[\s\S]*?<\/a>/) || [''])[0];
-eq('B3 the button visibly says exactly "Email hello@popolsku.app"',
-   visibleText(CONTACT_EMAIL_LINK), 'Email hello@popolsku.app');
-eq('B3 the accessible name comes from the visible text, not a separate aria-label',
-   countOf(CONTACT_EMAIL_LINK, 'aria-label='), 0);
+eq('B3 the button visibly says exactly "hello@popolsku.app"',
+   visibleText(CONTACT_EMAIL_LINK), 'hello@popolsku.app');
+eq('B3 the visible label does not carry a standalone "Email " prefix',
+   countOf(visibleText(CONTACT_EMAIL_LINK), 'Email '), 0);
+eq('B3 the accessible name is restored via aria-label now the visible word "Email" is gone',
+   attr(CONTACT_EMAIL_LINK, 'aria-label'), 'Email hello@popolsku.app');
 eq('B3 the one contact address is the only one in the app shell, on its one entry point',
    [countOf(INDEX, 'mailto:hello@popolsku.app'), countOf(INDEX, 'mailto:')], [1, 1]);
 eq('B3 exactly one contact action lives on the Contact screen',
@@ -918,10 +920,10 @@ ok('E4 Guide does not depend on drawer JavaScript for destination content',
 // -------------------------------------------------------------------------
 // F. Cross-phase safeguard and regression boundaries.
 // -------------------------------------------------------------------------
-ok('F1 app version is the 8.9 release', /const APP_VERSION = "8\.9"/.test(INDEX));
-// Phase 4C bumps the app-shell cache to v64 so the revised Contact and footer contract
-// is isolated from the Phase 4 shell while open tabs remain on their old worker.
-ok('F1 app-shell cache is the current shell revision', /const CACHE = "popolsku-v64"/.test(SW));
+ok('F1 app version is the 8.10 release', /const APP_VERSION = "8\.10"/.test(INDEX));
+// Phase 4D bumps the app-shell cache to v65 so the contact CTA polish is isolated
+// from the Phase 4C shell while open tabs remain on their old worker.
+ok('F1 app-shell cache is the current shell revision', /const CACHE = "popolsku-v65"/.test(SW));
 ok('F1 audio cache remains popolsku-audio', /const AUDIO_CACHE = "popolsku-audio"/.test(SW));
 ok('F1 schema version remains 2', /PP_MIGRATE\.SCHEMA_VERSION = 2/.test(MIGRATE));
 ok('F1 content migration revision remains 2', /PP_MIGRATE\.CONTENT_MIGRATION_REVISION = 2/.test(MIGRATE));
@@ -1032,7 +1034,7 @@ eq('H4 the generated pages gained no contact route, so no second surface can dri
 // obfuscated construction, so it can be selected and copied like any other text - and the
 // whole route is static markup, so Contact works with JavaScript disabled.
 eq('H5 the visible label is plain, selectable text in the link',
-   countOf(CONTACT, '</svg>Email hello@popolsku.app</a>'), 1);
+   countOf(CONTACT, '</svg>hello@popolsku.app</a>'), 1);
 eq('H5 the address is not built, split or obfuscated by script',
    [countOf(CONTACT, 'String.fromCharCode'), countOf(CONTACT, 'atob('), countOf(CONTACT, '&#'),
     countOf(CONTACT, 'data-email'), countOf(CONTACT, '.join(')], [0, 0, 0, 0, 0]);

@@ -30,7 +30,7 @@ LD_BLOCK_RE = re.compile(r'<script type="application/ld\+json">(.*?)</script>', 
 
 # The Priority 6 Phase 3 release. Pinned once here so a bump is a one-line change and
 # a *skew* between the app shell and the committed pages is still a failure.
-APP_VERSION = "8.9"
+APP_VERSION = "8.10"
 
 # Priority 6 Phase 3 (privacy P-4, risk R-15) harmonises the generated pages' outbound
 # links with the in-app one: noreferrer as well as noopener, so leaving the site does

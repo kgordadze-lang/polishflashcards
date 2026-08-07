@@ -445,11 +445,14 @@ eq('D1 no learner data, progress or storage value is placed in the contact URL',
    CONTACT_HREFS.filter(function (h) {
      return /popolsku-|progress|know|still|level|topic|card|streak|score|localStorage/.test(h);
    }), []);
-// The accessible name now comes from the link's own visible text: no separate aria-label
-// has to be kept in sync with it.
-eq('D2 no aria-label overrides the accessible name', countOf(CONTACT_LINK, 'aria-label='), 0);
-eq('D2 the visible text is the approved "Email hello@popolsku.app" label, and nothing else',
-   CONTACT_LINKS.map(visibleText), ['Email hello@popolsku.app']);
+// Priority 6 Phase 4D drops the visible word "Email" so the button reads as a plain
+// address, and restores the accessible name via aria-label so screen reader users still
+// hear "Email hello@popolsku.app" rather than the bare address alone.
+eq('D2 the visible text is the approved "hello@popolsku.app" label, and nothing else',
+   CONTACT_LINKS.map(visibleText), ['hello@popolsku.app']);
+eq('D2 the accessible name is restored via aria-label',
+   (CONTACT_LINK.match(/\saria-label="([^"]*)"/) || [])[1], 'Email hello@popolsku.app');
+eq('D2 exactly one aria-label is declared on the control', countOf(CONTACT_LINK, 'aria-label='), 1);
 eq('D2 nothing else contributes a name to the control',
    [countOf(CONTACT_LINK, 'aria-labelledby'), countOf(CONTACT_LINK, 'aria-describedby'),
     countOf(CONTACT_LINK, 'title=')], [0, 0, 0]);
@@ -486,6 +489,13 @@ ok('D4 the focus state is unchanged',
 eq('D4 the icon never shrinks and never wraps on its own',
    [declFor('.contact-email svg', WIDE, 'flex'), declFor('.contact-email svg', WIDE, 'width'),
     declFor('.contact-email svg', WIDE, 'height')], ['0 0 auto', '17px', '17px']);
+// Priority 6 Phase 4D (live 8.9 smoke review): the final bullet crowded the CTA, so a
+// deliberate but modest gap now separates the list from the button. The four bullets
+// keep their own unchanged 16px rhythm; only the space above the CTA grew.
+eq('D4 the CTA has deliberate, modest separation from the reason list above it',
+   declFor('.contact-email', WIDE, 'margin-top'), '20px');
+eq('D4 spacing between the four bullet items is unchanged',
+   declFor('.privacy-list', WIDE, 'gap'), '16px');
 // Priority 6 Phase 4 (feedback F-2) replaced the collaboration-first lead with a
 // learner-first one. Phase 4C keeps that lead and replaces the four reason headings that
 // used to sit under it with one compact semantic list.
@@ -655,12 +665,12 @@ eq('F6 the footer no longer owns a competing route to any in-app destination',
 // =========================================================================
 // G. Regression boundaries.
 // =========================================================================
-eq('G1 APP_VERSION is the 8.9 release', (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.9');
+eq('G1 APP_VERSION is the 8.10 release', (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.10');
 // The app-shell cache revision moved to v56 in Phase 4B-1: the hardened worker
 // stages its shell in a new cache so an open tab keeps being served the release
 // it was loaded with. The audio cache name below stays pinned forever.
 eq('G1 the app-shell cache name is the current shell revision',
-   (SW.match(/CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-v64');
+   (SW.match(/CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-v65');
 eq('G1 the audio cache name is unchanged', (SW.match(/AUDIO_CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-audio');
 eq('G1 the storage schema version is unchanged',
    (MIGRATE.match(/SCHEMA_VERSION\s*=\s*(\d+)/) || [])[1], '2');

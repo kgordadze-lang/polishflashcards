@@ -743,9 +743,11 @@
     letter-spacing:-.25px;color:var(--forest)}
   /* The address is one unbreakable token, so at enlarged text the button grew to 317px
      inside a 232px card content box and dragged the whole page into horizontal scrolling.
-     It is now bounded by its parent and allowed to break the address across lines. Label,
-     mailto target and the 43px touch height are unchanged. */
-  .contact-email{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:4px;
+     It is now bounded by its parent and allowed to break the address across lines. The
+     mailto target and the 43px touch height are unchanged; the visible label was later
+     simplified in Phase 4D (see the aria-label note below) but remains bound by the same
+     wrap rule. */
+  .contact-email{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:20px;
     max-width:100%;min-height:43px;text-align:center;overflow-wrap:anywhere;
     padding:12px 16px;border-radius:12px;background:var(--emerald);color:#fff;text-decoration:none;
     font-size:14px;font-weight:700;line-height:1.35}
@@ -1718,7 +1720,7 @@
           <li><strong>A missing topic or phrase:</strong> Explain what you were trying to say and where you needed it.</li>
           <li><strong>Something else:</strong> Collaborations, useful resources, ideas, or general feedback are always welcome.</li>
         </ul>
-        <a class="contact-email" href="mailto:hello@popolsku.app"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>Email hello@popolsku.app</a>
+        <a class="contact-email" href="mailto:hello@popolsku.app" aria-label="Email hello@popolsku.app"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>hello@popolsku.app</a>
       </div>
     </div>
   </section>
@@ -1844,7 +1846,7 @@
    Unrelated to CACHE in sw.js, which is a machine counter - bump both when
    you deploy, but they don't need to match.
    ========================================================================= */
-const APP_VERSION = "8.9";
+const APP_VERSION = "8.10";
 document.getElementById("footVersion").textContent = "v" + APP_VERSION;
 document.getElementById("footYear").textContent = String(new Date().getFullYear());
 
