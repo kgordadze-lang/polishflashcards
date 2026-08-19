@@ -1,0 +1,766 @@
+{
+  "artifactStatus": "priority-7-exercise-fixture-synthetic-nonrelease",
+  "releaseAuthorized": false,
+  "fixtureNotice": "SYNTHETIC-NONRELEASE: test-only synthetic grammar-choose mechanics records. Invented verbs, invented frames, invented answers. Every identifier here is test-scoped (p7-fixture-...) and is deliberately OUTSIDE the reserved vp-x-... exercise family, so nothing in this file can be mistaken for, or reused as, a real Priority 7 exercise identity. Nothing here is authored content, nothing here was reviewed, nothing here may reach a learner, and no statement in it is a claim about Polish. Learner-facing strings that mix languages are authored as explicit {text, lang} fragments, because the record is where the language of its own strings is known - deriving it in code would be the consumer inventing a linguistic claim. The wrapper is load-bearing: the mechanics adapter refuses this document whole, and only the test harness unwraps it.",
+  "syntheticExercises": {
+    "fixtureFormat": 1,
+    "items": [
+      {
+        "exerciseId": "p7-fixture-x-choose-01-single-case",
+        "patternRef": "p7-fixture-pattern-fikcjonowac-direct-slot",
+        "activityType": "grammar-choose",
+        "order": 1,
+        "prompt": [
+          {
+            "text": "Fikcjonuje ___ .",
+            "lang": "pl"
+          }
+        ],
+        "promptEn": "SYNTHETIC-NONRELEASE: one invented frame, one slot.",
+        "options": [
+          {
+            "value": "opt-01-accusative",
+            "label": [
+              {
+                "text": "kogo? co?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Accusative"
+              }
+            ]
+          },
+          {
+            "value": "opt-01-genitive",
+            "label": [
+              {
+                "text": "kogo? czego?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Genitive"
+              }
+            ]
+          },
+          {
+            "value": "opt-01-instrumental",
+            "label": [
+              {
+                "text": "kim? czym?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Instrumental"
+              }
+            ]
+          }
+        ],
+        "answerValue": "opt-01-accusative",
+        "feedbackStructure": [
+          {
+            "text": "fikcjonowac",
+            "lang": "pl"
+          },
+          {
+            "text": " + "
+          },
+          {
+            "text": "kogo? co?",
+            "lang": "pl"
+          },
+          {
+            "text": " · Accusative"
+          }
+        ],
+        "feedbackExplanation": "SYNTHETIC-NONRELEASE: inside this fixture the invented frame fills one slot."
+      },
+      {
+        "exerciseId": "p7-fixture-x-choose-02-preposition-case",
+        "patternRef": "p7-fixture-pattern-metodowac-topic-slot",
+        "activityType": "grammar-choose",
+        "order": 2,
+        "prompt": [
+          {
+            "text": "Metoduje o ___ .",
+            "lang": "pl"
+          }
+        ],
+        "promptEn": "SYNTHETIC-NONRELEASE: the preposition is part of the slot, not a slot of its own.",
+        "cue": "Preposition + case",
+        "options": [
+          {
+            "value": "opt-02-o-accusative",
+            "label": [
+              {
+                "text": "o kogo? o co?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Accusative"
+              }
+            ]
+          },
+          {
+            "value": "opt-02-o-locative",
+            "label": [
+              {
+                "text": "o kim? o czym?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Locative"
+              }
+            ]
+          },
+          {
+            "value": "opt-02-w-locative",
+            "label": [
+              {
+                "text": "w kim? w czym?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Locative"
+              }
+            ]
+          }
+        ],
+        "answerValue": "opt-02-o-locative",
+        "feedbackStructure": [
+          {
+            "text": "metodowac",
+            "lang": "pl"
+          },
+          {
+            "text": " + "
+          },
+          {
+            "text": "o kim? o czym?",
+            "lang": "pl"
+          },
+          {
+            "text": " · Locative"
+          }
+        ],
+        "feedbackExplanation": "SYNTHETIC-NONRELEASE: the preposition stays bonded to its slot in this fixture."
+      },
+      {
+        "exerciseId": "p7-fixture-x-choose-03-same-case-two-structures",
+        "patternRef": "p7-fixture-pattern-zetafikcjonowac-two-shapes",
+        "activityType": "grammar-choose",
+        "order": 3,
+        "prompt": [
+          {
+            "text": "Zetafikcjonuje ___ .",
+            "lang": "pl"
+          }
+        ],
+        "promptEn": "SYNTHETIC-NONRELEASE: both options name the same case and are still different answers.",
+        "cue": "Same case, two structures",
+        "options": [
+          {
+            "value": "opt-03-prepositional-accusative",
+            "label": [
+              {
+                "text": "kogo? co?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Accusative — after o"
+              }
+            ]
+          },
+          {
+            "value": "opt-03-genitive",
+            "label": [
+              {
+                "text": "kogo? czego?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Genitive"
+              }
+            ]
+          },
+          {
+            "value": "opt-03-bare-accusative",
+            "label": [
+              {
+                "text": "kogo? co?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Accusative — bare slot"
+              }
+            ]
+          }
+        ],
+        "answerValue": "opt-03-bare-accusative",
+        "feedbackStructure": [
+          {
+            "text": "zetafikcjonowac",
+            "lang": "pl"
+          },
+          {
+            "text": " + "
+          },
+          {
+            "text": "kogo? co?",
+            "lang": "pl"
+          },
+          {
+            "text": " · Accusative (bare slot)"
+          }
+        ],
+        "feedbackExplanation": "SYNTHETIC-NONRELEASE: the case name alone does not identify the answer here."
+      },
+      {
+        "exerciseId": "p7-fixture-x-choose-04-multi-complement",
+        "patternRef": "p7-fixture-pattern-metodowac-two-slots",
+        "activityType": "grammar-choose",
+        "order": 4,
+        "prompt": [
+          {
+            "text": "Metoduje ___ w ___ .",
+            "lang": "pl"
+          }
+        ],
+        "promptEn": "SYNTHETIC-NONRELEASE: an invented two-slot frame.",
+        "cue": "Two slots",
+        "options": [
+          {
+            "value": "opt-04-dative-only",
+            "label": [
+              {
+                "text": "komu? czemu?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Dative"
+              }
+            ]
+          },
+          {
+            "value": "opt-04-dative-and-locative",
+            "label": [
+              {
+                "text": "komu? czemu?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Dative + "
+              },
+              {
+                "text": "w kim? w czym?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Locative"
+              }
+            ]
+          },
+          {
+            "value": "opt-04-accusative-and-locative",
+            "label": [
+              {
+                "text": "kogo? co?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Accusative + "
+              },
+              {
+                "text": "w kim? w czym?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Locative"
+              }
+            ]
+          }
+        ],
+        "answerValue": "opt-04-dative-and-locative",
+        "feedbackStructure": [
+          {
+            "text": "metodowac",
+            "lang": "pl"
+          },
+          {
+            "text": " + "
+          },
+          {
+            "text": "komu? czemu?",
+            "lang": "pl"
+          },
+          {
+            "text": " · Dative + "
+          },
+          {
+            "text": "w kim? w czym?",
+            "lang": "pl"
+          },
+          {
+            "text": " · Locative"
+          }
+        ],
+        "feedbackExplanation": "SYNTHETIC-NONRELEASE: a two-slot frame is shown whole, never half of it."
+      },
+      {
+        "exerciseId": "p7-fixture-x-choose-05-infinitive-vs-nominal",
+        "patternRef": "p7-fixture-pattern-bezokolicznikowac-content",
+        "activityType": "grammar-choose",
+        "order": 5,
+        "prompt": [
+          {
+            "text": "Bezokolicznikuje ___ .",
+            "lang": "pl"
+          }
+        ],
+        "promptEn": "SYNTHETIC-NONRELEASE: a slot with no case at all.",
+        "cue": "Verb or noun?",
+        "options": [
+          {
+            "value": "opt-05-genitive",
+            "label": [
+              {
+                "text": "kogo? czego?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Genitive"
+              }
+            ]
+          },
+          {
+            "value": "opt-05-instrumental",
+            "label": [
+              {
+                "text": "kim? czym?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Instrumental"
+              }
+            ]
+          },
+          {
+            "value": "opt-05-infinitive",
+            "label": [
+              {
+                "text": "+ "
+              },
+              {
+                "text": "bezokolicznik",
+                "lang": "pl"
+              },
+              {
+                "text": " · Infinitive"
+              }
+            ]
+          }
+        ],
+        "answerValue": "opt-05-infinitive",
+        "feedbackStructure": [
+          {
+            "text": "bezokolicznikowac",
+            "lang": "pl"
+          },
+          {
+            "text": " + "
+          },
+          {
+            "text": "bezokolicznik",
+            "lang": "pl"
+          },
+          {
+            "text": " · Infinitive"
+          }
+        ],
+        "feedbackExplanation": "SYNTHETIC-NONRELEASE: this invented slot carries no case, which is why case cannot own the shape."
+      },
+      {
+        "exerciseId": "p7-fixture-x-choose-06-clause-vs-nominal",
+        "patternRef": "p7-fixture-pattern-bezokolicznikowac-clause",
+        "activityType": "grammar-choose",
+        "order": 6,
+        "prompt": [
+          {
+            "text": "Bezokolicznikuje komus, ___ .",
+            "lang": "pl"
+          }
+        ],
+        "promptEn": "SYNTHETIC-NONRELEASE: a clause slot beside a cased one.",
+        "cue": "Clause or noun?",
+        "options": [
+          {
+            "value": "opt-06-clause",
+            "label": [
+              {
+                "text": "+ "
+              },
+              {
+                "text": "ze …",
+                "lang": "pl"
+              },
+              {
+                "text": " · Clause"
+              }
+            ]
+          },
+          {
+            "value": "opt-06-accusative",
+            "label": [
+              {
+                "text": "kogo? co?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Accusative"
+              }
+            ]
+          },
+          {
+            "value": "opt-06-infinitive",
+            "label": [
+              {
+                "text": "+ "
+              },
+              {
+                "text": "bezokolicznik",
+                "lang": "pl"
+              },
+              {
+                "text": " · Infinitive"
+              }
+            ]
+          }
+        ],
+        "answerValue": "opt-06-clause",
+        "feedbackStructure": [
+          {
+            "text": "bezokolicznikowac",
+            "lang": "pl"
+          },
+          {
+            "text": " + "
+          },
+          {
+            "text": "komu? czemu?",
+            "lang": "pl"
+          },
+          {
+            "text": " · Dative + "
+          },
+          {
+            "text": "ze …",
+            "lang": "pl"
+          },
+          {
+            "text": " · Clause"
+          }
+        ],
+        "feedbackExplanation": "SYNTHETIC-NONRELEASE: the second invented slot is a clause, not a noun."
+      },
+      {
+        "exerciseId": "p7-fixture-x-choose-07-lexical-sie",
+        "patternRef": "p7-fixture-pattern-zetafikcjonowac-sie-object",
+        "activityType": "grammar-choose",
+        "order": 7,
+        "prompt": [
+          {
+            "text": "Zetafikcjonuje sie ___ .",
+            "lang": "pl"
+          }
+        ],
+        "promptEn": "SYNTHETIC-NONRELEASE: sie belongs to the invented verb itself.",
+        "cue": "Lexical sie",
+        "options": [
+          {
+            "value": "opt-07-accusative",
+            "label": [
+              {
+                "text": "kogo? co?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Accusative"
+              }
+            ]
+          },
+          {
+            "value": "opt-07-genitive",
+            "label": [
+              {
+                "text": "kogo? czego?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Genitive"
+              }
+            ]
+          },
+          {
+            "value": "opt-07-dative",
+            "label": [
+              {
+                "text": "komu? czemu?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Dative"
+              }
+            ]
+          }
+        ],
+        "answerValue": "opt-07-genitive",
+        "feedbackStructure": [
+          {
+            "text": "zetafikcjonowac sie",
+            "lang": "pl"
+          },
+          {
+            "text": " + "
+          },
+          {
+            "text": "kogo? czego?",
+            "lang": "pl"
+          },
+          {
+            "text": " · Genitive"
+          }
+        ],
+        "feedbackExplanation": "SYNTHETIC-NONRELEASE: sie is part of the invented lemma and is never a slot of its own."
+      },
+      {
+        "exerciseId": "p7-fixture-x-choose-08-recognition-shaped",
+        "patternRef": "p7-fixture-pattern-podobnikowac-sie-experiencer",
+        "activityType": "grammar-choose",
+        "order": 8,
+        "prompt": [
+          {
+            "text": "Podobnikuje sie ___ ta zetamia.",
+            "lang": "pl"
+          }
+        ],
+        "promptEn": "SYNTHETIC-NONRELEASE: a recognition-shaped item in this fixture.",
+        "cue": "Recognise only",
+        "options": [
+          {
+            "value": "opt-08-genitive",
+            "label": [
+              {
+                "text": "kogo? czego?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Genitive"
+              }
+            ]
+          },
+          {
+            "value": "opt-08-instrumental",
+            "label": [
+              {
+                "text": "kim? czym?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Instrumental"
+              }
+            ]
+          },
+          {
+            "value": "opt-08-dative",
+            "label": [
+              {
+                "text": "komu? czemu?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Dative"
+              }
+            ]
+          }
+        ],
+        "answerValue": "opt-08-dative",
+        "feedbackStructure": [
+          {
+            "text": "podobnikowac sie",
+            "lang": "pl"
+          },
+          {
+            "text": " + "
+          },
+          {
+            "text": "komu? czemu?",
+            "lang": "pl"
+          },
+          {
+            "text": " · Dative"
+          }
+        ],
+        "feedbackExplanation": "SYNTHETIC-NONRELEASE: recognition is a property of a real approval decision, not of this record; the cue above is learner-facing text and nothing else."
+      },
+      {
+        "exerciseId": "p7-fixture-x-choose-09-hostile-text",
+        "patternRef": "p7-fixture-pattern-konstrukcjowac-hostile",
+        "activityType": "grammar-choose",
+        "order": 9,
+        "prompt": [
+          {
+            "text": "<img src=x onerror=\"window.__p7Pwned=1\">Konstrukcjuje ___ </h2><script>window.__p7Pwned=2</script>",
+            "lang": "pl"
+          }
+        ],
+        "promptEn": "SYNTHETIC-NONRELEASE: every string here is data and must render as text.",
+        "cue": "<b onclick=\"window.__p7Pwned=7\">hostile cue</b>",
+        "options": [
+          {
+            "value": "opt-09-plain",
+            "label": [
+              {
+                "text": "kogo? czego?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Genitive"
+              }
+            ]
+          },
+          {
+            "value": "opt-09-hostile",
+            "label": [
+              {
+                "text": "\"><b onmouseover=\"window.__p7Pwned=3\">"
+              },
+              {
+                "text": "kim? czym?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Instrumental</b>"
+              }
+            ]
+          },
+          {
+            "value": "opt-09-second-plain",
+            "label": [
+              {
+                "text": "komu? czemu?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Dative"
+              }
+            ]
+          }
+        ],
+        "answerValue": "opt-09-hostile",
+        "feedbackStructure": [
+          {
+            "text": "SYNTHETIC-NONRELEASE: <img src=x onerror=\"window.__p7Pwned=6\"> "
+          },
+          {
+            "text": "konstrukcjowac",
+            "lang": "pl"
+          },
+          {
+            "text": " + "
+          },
+          {
+            "text": "kim? czym?",
+            "lang": "pl"
+          },
+          {
+            "text": " · Instrumental"
+          }
+        ],
+        "feedbackExplanation": "SYNTHETIC-NONRELEASE: hostile string check - <script>window.__p7Pwned=4</script> <a href=\"javascript:window.__p7Pwned=5\">must stay text</a>"
+      },
+      {
+        "exerciseId": "p7-fixture-x-choose-10-long-wrapping-text",
+        "patternRef": "p7-fixture-pattern-metodowac-long-wrapping",
+        "activityType": "grammar-choose",
+        "order": 10,
+        "prompt": [
+          {
+            "text": "Metodowalibysmy zetafikcjonowanymi podobnikowaniami, gdyby konstrukcjowanie bezokolicznikowalo tak dlugo, jak metodowanie zetafikcjonowalo, a wtedy ta wymyslona ramka nadal potrzebowalaby ___ zeby zmiescic sie w jednej linii na waskim ekranie telefonu.",
+            "lang": "pl"
+          }
+        ],
+        "promptEn": "SYNTHETIC-NONRELEASE: a deliberately long prompt, so the card has to wrap rather than scroll sideways on a narrow phone.",
+        "cue": "Long wrapping text",
+        "options": [
+          {
+            "value": "opt-10-long-correct",
+            "label": [
+              {
+                "text": "komu? czemu?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Dative + "
+              },
+              {
+                "text": "w kim? w czym?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Locative - a deliberately long English tail, added so this option has to wrap onto several lines on a narrow phone instead of scrolling the card sideways"
+              }
+            ]
+          },
+          {
+            "value": "opt-10-long-first-distractor",
+            "label": [
+              {
+                "text": "kogo? co?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Accusative - a second deliberately long English tail, the same length as the first, so that no option is shorter merely because it happens to be the right one"
+              }
+            ]
+          },
+          {
+            "value": "opt-10-long-second-distractor",
+            "label": [
+              {
+                "text": "kim? czym?",
+                "lang": "pl"
+              },
+              {
+                "text": " · Instrumental - a third deliberately long English tail, so the option list has to wrap across several lines at 320 pixels rather than clip"
+              }
+            ]
+          }
+        ],
+        "answerValue": "opt-10-long-correct",
+        "feedbackStructure": [
+          {
+            "text": "metodowac",
+            "lang": "pl"
+          },
+          {
+            "text": " + "
+          },
+          {
+            "text": "komu? czemu?",
+            "lang": "pl"
+          },
+          {
+            "text": " · Dative + "
+          },
+          {
+            "text": "w kim? w czym?",
+            "lang": "pl"
+          },
+          {
+            "text": " · Locative"
+          }
+        ],
+        "feedbackExplanation": "SYNTHETIC-NONRELEASE: this explanation is deliberately long so the feedback region has to wrap on a narrow phone rather than clip, scroll sideways or push the Next control off the card; it says nothing about Polish and describes only the invented fixture frame above, whose correct answer is correct inside this fixture and nowhere else at all."
+      }
+    ]
+  }
+}

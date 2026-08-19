@@ -1097,7 +1097,7 @@ eq('G3 page scrolling happens only in the shared apply helper',
 // =========================================================================
 // H. Unchanged safeguards.
 // =========================================================================
-ok('H1 app version is the 8.10 release', /const APP_VERSION = "8\.10"/.test(INDEX));
+ok('H1 app version is the 8.11 release', /const APP_VERSION = "8\.11"/.test(INDEX));
 ok('H1 the shared status writer is untouched',
    codeOf('ppSetActivityStatus').indexOf('if(box.textContent===next)returnfalse;') !== -1);
 ok('H1 the typed announcement wording is untouched',

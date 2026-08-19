@@ -301,19 +301,28 @@ var BREAKERS = DECL_BLOCKS.filter(function (b) {
     (decl(b.body, 'overflow-wrap') || '') + ' ' + (decl(b.body, 'word-break') || ''));
 }).map(function (b) { return b.selector; }).sort();
 // `.end-table td`, `.mode-label` and `.sbar-title h1` are the pre-existing Phase 3B-2A
-// corrections; `.contact-email` is MLG-3A-08. This closeout adds exactly `.pl`, `.en`
-// and `.cat-btn` to that list and nothing else.
+// corrections; `.contact-email` is MLG-3A-08. Phase 3E adds only the runtime-data
+// fields below: passive Verb Patterns strings and the synthetic choose prompt,
+// options and feedback. The exact allowlist keeps the correction local.
 eq('B5 only the audited selectors may break inside a word',
-   BREAKERS, ['.cat-btn', '.contact-email', '.en', '.end-table td', '.mode-label', '.pl',
-              '.sbar-title h1']);
+   BREAKERS, ['.cat-btn', '.contact-email', '.en', '.end-table td', '.fb-explain',
+              '.fb-good .e', '.fb-good .p', '.mode-label', '.opt', '.pl', '.q-en',
+              '.q-prompt', '.sbar-title h1', '.vp-chip', '.vp-example-en',
+              '.vp-example-pl', '.vp-explain', '.vp-headline', '.vp-lead-in',
+              '.vp-lemma-head', '.vp-meaning-head', '.vp-role', '.vp-row-gloss',
+              '.vp-row-lemma']);
 // `anywhere` is the wider rule: it also lowers the intrinsic min-content contribution. It
 // is used only where that effect is what fixes the overflow - the card headline, whose
 // grid/flex chain has no min-width:0 to lean on. `.cat-btn` was measured not to need it.
-eq('B5 the intrinsic-sizing break rule is confined to the card headline',
+eq('B5 the intrinsic-sizing break rule is confined to audited data fields',
    DECL_BLOCKS.filter(function (b) {
      return /anywhere/.test(decl(b.body, 'overflow-wrap') || '');
    }).map(function (b) { return b.selector; }).sort(),
-   ['.contact-email', '.en', '.end-table td', '.pl', '.sbar-title h1']);
+   ['.contact-email', '.en', '.end-table td', '.fb-explain', '.fb-good .e',
+    '.fb-good .p', '.opt', '.pl', '.q-en', '.q-prompt', '.sbar-title h1',
+    '.vp-chip', '.vp-example-en', '.vp-example-pl', '.vp-explain', '.vp-headline',
+    '.vp-lead-in', '.vp-lemma-head', '.vp-meaning-head', '.vp-role',
+    '.vp-row-gloss', '.vp-row-lemma']);
 eq('B5 no wrapping rule was attached to a document-level container',
    BREAKERS.filter(function (s) {
      return ['html', 'body', '*', '.wrap', '.app-main', '.screen', 'main'].indexOf(s) !== -1;
@@ -665,12 +674,12 @@ eq('F6 the footer no longer owns a competing route to any in-app destination',
 // =========================================================================
 // G. Regression boundaries.
 // =========================================================================
-eq('G1 APP_VERSION is the 8.10 release', (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.10');
+eq('G1 APP_VERSION is the 8.11 release', (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.11');
 // The app-shell cache revision moved to v56 in Phase 4B-1: the hardened worker
 // stages its shell in a new cache so an open tab keeps being served the release
 // it was loaded with. The audio cache name below stays pinned forever.
 eq('G1 the app-shell cache name is the current shell revision',
-   (SW.match(/CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-v65');
+   (SW.match(/CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-v66');
 eq('G1 the audio cache name is unchanged', (SW.match(/AUDIO_CACHE\s*=\s*"([^"]+)"/) || [])[1], 'popolsku-audio');
 eq('G1 the storage schema version is unchanged',
    (MIGRATE.match(/SCHEMA_VERSION\s*=\s*(\d+)/) || [])[1], '2');

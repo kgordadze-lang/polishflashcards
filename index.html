@@ -834,11 +834,11 @@
   /* Grammar's completion heading follows the same programmatic-focus pattern. It is
      not a tab stop; every option and control keeps its ordinary focus-visible ring. */
   #gQuestion:focus,#gDoneTitle:focus{outline:none}
-  .q-prompt{margin:0;font-size:22px;font-weight:800;line-height:1.35;letter-spacing:-.4px;color:var(--forest)}
+  .q-prompt{margin:0;max-width:100%;font-size:22px;font-weight:800;line-height:1.35;letter-spacing:-.4px;color:var(--forest);overflow-wrap:anywhere}
   .q-prompt .blank{display:inline-block;min-width:56px;border-bottom:3px solid var(--emerald);margin:0 3px;vertical-align:middle;height:1.1em}
-  .q-en{font-size:14px;color:var(--muted);font-weight:500;margin-top:8px}
+  .q-en{max-width:100%;font-size:14px;color:var(--muted);font-weight:500;margin-top:8px;overflow-wrap:anywhere}
   .opts{display:flex;flex-direction:column;gap:10px;margin-top:22px}
-  .opt{border:1.5px solid var(--border);background:#fff;color:var(--forest);border-radius:14px;padding:14px 16px;font-size:16px;font-weight:700;cursor:pointer;text-align:center;transition:.14s;font-family:inherit}
+  .opt{max-width:100%;border:1.5px solid var(--border);background:#fff;color:var(--forest);border-radius:14px;padding:14px 16px;font-size:16px;font-weight:700;cursor:pointer;text-align:center;transition:.14s;font-family:inherit;overflow-wrap:anywhere}
   .opt:hover:not(:disabled){border-color:var(--emerald);transform:translateY(-1px)}
   .opt:disabled{cursor:default}
   .opt:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
@@ -856,6 +856,12 @@
      "C" is itself a hex digit and CSS would read \00a0C as one code point. */
   .opt.correct::after{content:"\2713\00a0 Correct"}
   .opt.wrong::after{content:"\2715\00a0 Try again"}
+  /* A drill may answer a miss by REVEALING instead of inviting another attempt
+     (see revealOnIncorrect). Once it has, "try again" is no longer true - there is
+     nothing left to try - so the wrong option's own words say what happened
+     instead. One more specific override; the two base rules above are untouched,
+     and a drill that keeps the retry mechanic never enters this state. */
+  .opts.revealed .opt.wrong::after{content:"\2715\00a0 Incorrect"}
   .build-row{min-height:56px;border:1.5px dashed #c7d3db;border-radius:14px;background:#fbfdfe;margin-top:20px;padding:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
   .build-row.empty::before{content:"Tap words below to build the sentence";color:#aebbc4;font-size:13px;font-weight:500;padding:4px 6px}
   .build-row.shake{animation:shake .32s}
@@ -876,9 +882,9 @@
   .fb-box.show{display:block;animation:fade .3s ease}
   .fb-good{background:var(--mint-bg);border-radius:14px;padding:13px 14px;display:flex;align-items:flex-start;gap:11px}
   .fb-good .t{flex:1;min-width:0}
-  .fb-good .p{font-size:15.5px;font-weight:700;color:var(--forest);line-height:1.35}
-  .fb-good .e{font-size:12.5px;color:var(--muted);margin-top:2px}
-  .fb-explain{font-size:13px;color:var(--sage-hover);font-weight:600;margin-top:9px;line-height:1.45}
+  .fb-good .p{font-size:15.5px;font-weight:700;color:var(--forest);line-height:1.35;overflow-wrap:anywhere}
+  .fb-good .e{font-size:12.5px;color:var(--muted);margin-top:2px;overflow-wrap:anywhere}
+  .fb-explain{font-size:13px;color:var(--sage-hover);font-weight:600;margin-top:9px;line-height:1.45;overflow-wrap:anywhere}
   .check-btn{margin-top:18px;align-self:flex-start;border:none;background:var(--forest);color:var(--cream);border-radius:13px;padding:12px 22px;font-size:14.5px;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s}
   .check-btn:hover:not(:disabled){background:var(--forest-hover)}
   .check-btn:disabled{opacity:.4;cursor:default}
@@ -982,6 +988,103 @@
     padding:12px 16px;border-radius:14px;font-size:13px;font-weight:500;line-height:1.45;
     max-width:calc(min(92vw,420px) - env(safe-area-inset-left) - env(safe-area-inset-right));
     box-shadow:var(--shadow);animation:fade .3s ease}
+
+  /* ---------- verb patterns (read-first reference) ----------
+     Width-agnostic on purpose: no new breakpoint and no horizontal scrolling.
+     Everything here is flex with wrapping and relative sizes. Runtime data may
+     still contain a single hostile or unusually long token, so only the fields
+     that render that data get an emergency overflow wrap. Nothing is truncated.
+     No animation and no transition, so reduced motion needs no local override. */
+  .vp-body{padding:6px 0 30px;display:flex;flex-direction:column;gap:14px}
+  .vp-lead{font-size:17px;font-weight:800;letter-spacing:-.2px;color:var(--forest);margin:6px 0 0;line-height:1.35}
+  .vp-sub{font-size:13.5px;color:var(--muted);margin:0;line-height:1.5}
+  /* The filter row WRAPS - it never scrolls sideways, because an option pushed
+     off-screen is an option the learner cannot find. */
+  .vp-filters{display:flex;flex-wrap:wrap;align-items:center;column-gap:8px;row-gap:8px;margin:0}
+  .vp-filters-label{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:#94a3b8}
+  .vp-filter{min-height:44px;max-width:100%;border:1.5px solid var(--border);background:#fff;
+    color:var(--forest);border-radius:999px;padding:9px 15px;font-family:inherit;font-size:13px;
+    font-weight:700;line-height:1.3;text-align:center;cursor:pointer}
+  .vp-filter:hover{border-color:var(--emerald)}
+  .vp-filter:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  /* The selected filter is marked by weight and border as well as tint, and it
+     carries aria-pressed, so the state never depends on colour. */
+  .vp-filter[aria-pressed="true"]{border-color:var(--mint-text);background:var(--mint-bg);
+    color:var(--mint-text);font-weight:800}
+  .vp-count{font-size:12.5px;font-weight:700;color:var(--sage-hover);margin:0;line-height:1.45}
+  .vp-list{display:flex;flex-direction:column;gap:9px}
+  .vp-letter{font-size:12px;font-weight:800;letter-spacing:.8px;color:#94a3b8;margin:8px 0 0}
+  .vp-row{display:flex;align-items:center;gap:11px;width:100%;min-height:44px;
+    border:1px solid var(--border);background:var(--card);border-radius:14px;
+    padding:12px 13px;font-family:inherit;text-align:left;cursor:pointer;box-shadow:var(--shadow-sm)}
+  .vp-row:hover{border-color:var(--emerald)}
+  .vp-row:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  .vp-row-main{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:4px}
+  .vp-row-lemma{font-size:16px;font-weight:800;color:var(--forest);line-height:1.35;overflow-wrap:anywhere}
+  .vp-row-gloss{font-size:13px;color:var(--muted);line-height:1.45;overflow-wrap:anywhere}
+  .vp-row-count{font-size:12px;font-weight:700;color:var(--sage-hover)}
+  .vp-row-arrow{flex:0 0 auto;color:#cbd5e1;font-size:22px;line-height:1}
+  .vp-empty{font-size:13.5px;color:var(--muted);margin:0;line-height:1.5}
+  .vp-lemma-head{font-size:24px;font-weight:800;letter-spacing:-.5px;color:var(--forest);
+    margin:6px 0 0;line-height:1.25;overflow-wrap:anywhere}
+  .vp-lemma-head:focus{outline:none}
+  .vp-lead-in{font-size:13.5px;color:var(--sage-hover);font-weight:600;margin:0;line-height:1.5;overflow-wrap:anywhere}
+  .vp-meaning{display:flex;flex-direction:column;gap:10px}
+  .vp-meaning-head{font-size:15px;font-weight:800;color:var(--sage-hover);margin:10px 0 0;line-height:1.4;overflow-wrap:anywhere}
+  .vp-pattern{display:flex;flex-direction:column;gap:9px;border:1px solid var(--border);
+    background:var(--card);border-radius:14px;padding:13px 14px;box-shadow:var(--shadow-sm)}
+  .vp-headline-row{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:9px;row-gap:6px}
+  .vp-headline{flex:1 1 auto;min-width:0;font-size:16.5px;font-weight:700;color:var(--forest);
+    margin:0;line-height:1.4;overflow-wrap:anywhere}
+  .vp-badge{flex:0 0 auto;border:1px solid var(--border);background:var(--cream);color:var(--sage-hover);
+    border-radius:999px;padding:3px 10px;font-size:11px;font-weight:800;letter-spacing:.4px}
+  .vp-recognition{flex:0 0 auto;align-self:center}
+  /* One chip type everywhere: the diagnostic question(s), then the full case
+     name, with the preposition bonded inside the same chip because it is not a
+     separate slot. The tint is decoration - every distinction is in the text. */
+  .vp-chips{list-style:none;display:flex;flex-wrap:wrap;column-gap:9px;row-gap:9px;margin:0;padding:0}
+  .vp-chip-item{display:flex;flex-direction:column;gap:3px;max-width:100%;min-width:0}
+  .vp-chip{display:inline-block;max-width:100%;background:var(--mint-bg);color:var(--mint-text);
+    border:1.5px solid transparent;border-radius:999px;padding:5px 11px;font-size:11.5px;
+    font-weight:700;letter-spacing:.2px;line-height:1.45;overflow-wrap:anywhere}
+  .vp-chip.is-match{border-color:var(--mint-text);font-weight:800}
+  .vp-role{font-size:12px;color:var(--muted);line-height:1.4;padding:0 4px;overflow-wrap:anywhere}
+  .vp-explain{font-size:14px;color:var(--forest);margin:0;line-height:1.55;overflow-wrap:anywhere}
+  .vp-example{background:var(--mint-bg);border-radius:12px;padding:11px 13px;
+    display:flex;flex-direction:column;gap:3px}
+  .vp-example-pl{font-size:15px;font-weight:700;color:var(--forest);margin:0;line-height:1.4;overflow-wrap:anywhere}
+  .vp-example-en{font-size:12.5px;color:var(--muted);margin:0;line-height:1.45;overflow-wrap:anywhere}
+  /* ---------- cross-links, both directions ----------
+     Same discipline as everything above: inline-flex with wrapping, relative
+     sizes, 44px targets, no width of their own and no intrinsic minimum wider
+     than one token - so a 320px column and 200% text both fit by wrapping
+     between tokens, with no new breakpoint and no horizontal scroll. */
+  /* Grammar -> Verb Patterns: one continuation at the END of a case lesson. */
+  .vp-continue-line{display:flex;justify-content:center;margin-top:16px}
+  .vp-continue{display:inline-flex;flex-wrap:wrap;align-items:center;justify-content:center;
+    gap:7px;max-width:100%;min-height:44px;border:1.5px solid var(--border);background:#fff;
+    color:var(--emerald);border-radius:999px;padding:10px 18px;font-family:inherit;
+    font-size:13.5px;font-weight:800;line-height:1.35;text-align:center;cursor:pointer}
+  .vp-continue:hover{border-color:var(--emerald)}
+  .vp-continue:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  /* Verb Patterns -> Grammar: the way back to the lesson that owns the case. */
+  .vp-case-links{display:flex;flex-wrap:wrap;column-gap:14px;row-gap:4px}
+  .vp-case-link{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px;max-width:100%;
+    min-height:44px;border:none;background:none;color:var(--emerald);padding:8px 2px;
+    font-family:inherit;font-size:13px;font-weight:800;line-height:1.4;text-align:left;
+    cursor:pointer}
+  .vp-case-link:hover{color:var(--sage-hover)}
+  .vp-case-link:focus-visible{outline:2px solid var(--emerald);outline-offset:2px;border-radius:8px}
+  /* The card-back pointer sits inside the card's own .pair-line idiom, so it
+     inherits that row's centring and wrapping and adds no layout of its own. */
+  .vp-card-link{display:inline-flex;flex-wrap:wrap;align-items:center;justify-content:center;
+    gap:6px;max-width:100%;min-height:44px;border:none;background:none;padding:4px 2px;
+    color:var(--emerald);font-family:inherit;font-size:13px;font-weight:700;line-height:1.4;
+    cursor:pointer}
+  .vp-card-link:hover{color:var(--sage-hover)}
+  .vp-card-link:focus-visible{outline:2px solid var(--emerald);outline-offset:2px;border-radius:10px}
+  .vp-card-doorway{font-size:13px;font-weight:700;color:inherit}
+  .vp-continue-arrow,.vp-case-arrow,.vp-card-arrow{flex:0 0 auto;color:inherit;font-size:15px;line-height:1}
 
   @media (prefers-reduced-motion:reduce){
     .build-row.shake{animation:none}
@@ -1184,6 +1287,10 @@
               <div class="warn-box" id="warnBox" role="note" hidden><span class="warn-k">Usage note</span><span id="warnText"></span></div>
               <div class="pair-line" id="pairLine" hidden><span class="pair-k">Aspect pair</span><span class="pair-v" id="pairV" lang="pl"></span></div>
               <div class="pair-line" id="variantLine" hidden><span class="pair-k" id="variantK">Also</span><span class="pair-v" id="variantV" lang="pl"></span></div>
+              <!-- Derived at runtime, never authored: the card schema is closed and no card
+                   holds a backlink. Hidden unless exactly one eligible pattern claims this
+                   card AND the owning verb has only one way of working. See ppRenderCardPattern. -->
+              <div class="pair-line" id="patternLine" hidden><span class="pair-k" id="patternK">Pattern</span><button class="vp-card-link" id="patternLink" type="button"></button></div>
               <a class="yt-link" id="ytLink" href="#" target="_blank" rel="noopener noreferrer" hidden>
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8zM9.6 15.6V8.4l6.2 3.6z"/></svg>
                 Watch on YouTube
@@ -1315,6 +1422,12 @@
           <button class="btn-primary" id="gAgain">Practice again</button>
           <button class="btn-ghost" id="gReview">Review the lesson</button>
           <button class="btn-ghost" id="gHome">Back to topics</button>
+        </div>
+        <!-- One continuation, rendered by the app AROUND the lesson rather than into it:
+             `teach` is authored, frozen, counted copy and never gains a generated row.
+             Shown on the seven case topics only. See gRenderPatternLink. -->
+        <div class="vp-continue-line" id="gPatternLine" hidden>
+          <button class="vp-continue" id="gPatternLink" type="button" aria-labelledby="gPatternLabel gPatternCaseName"><span id="gPatternLabel"></span><span class="sr-only" id="gPatternCaseName" lang="pl"></span><span class="vp-continue-arrow" aria-hidden="true">&#8594;</span></button>
         </div>
       </div>
     </div>
@@ -1572,6 +1685,30 @@
       </div>
       <div id="rNudge"></div>
     </div>
+  </section>
+
+  <!-- ============ VERB PATTERNS (read-first reference) ============
+       A lookup surface, not an activity: no speed toggle, because nothing
+       plays, and no progress bar, because nothing is scored. Everything below
+       #pBody is built by pRenderIndex / pRenderLemma with createElement and
+       textContent, because every string in it is runtime data rather than
+       authored markup. -->
+  <section class="screen" id="patterns">
+    <div class="sbar">
+      <button class="back" id="pBack" aria-label="Back">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="sbar-title"><h1 id="pTitle">Verb Patterns</h1><span id="pSub"></span></div>
+      <button class="back home-btn" aria-label="Home page">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </button>
+    </div>
+    <div class="vp-body" id="pBody"></div>
+    <!-- The one announcement region this surface needs, and it announces only
+         real state changes the learner caused: a new filtered result count, or
+         the reference being unavailable. A region that never announces is worse
+         than none - see the #lFbBox / #rFb demotion notes above. -->
+    <div class="sr-only" id="pStatus" role="status" aria-live="polite" aria-atomic="true"></div>
   </section>
 
   <!-- ============ PRIVACY NOTICE ============ -->
@@ -1838,6 +1975,7 @@
 <script src="pp-answer.js"></script>
 <script src="pp-distractor.js"></script>
 <script src="pp-migrate.js"></script>
+<script src="pp-verb-patterns.js"></script>
 <script>
 /* =========================================================================
    APP_VERSION - the ONLY place the human-facing version lives.
@@ -1846,7 +1984,7 @@
    Unrelated to CACHE in sw.js, which is a machine counter - bump both when
    you deploy, but they don't need to match.
    ========================================================================= */
-const APP_VERSION = "8.10";
+const APP_VERSION = "8.11";
 document.getElementById("footVersion").textContent = "v" + APP_VERSION;
 document.getElementById("footYear").textContent = String(new Date().getFullYear());
 
@@ -1916,10 +2054,37 @@ function practiceTopics(kind, emoji){
     desc:"A random mix drawn from every level" });
   return tops;
 }
+/* The verb-pattern reference index: ONE topic, not one per case. Case is an
+   in-screen filter over this single index, never a container - so a verb with
+   two cases stays one entry and an infinitive complement, which has no case at
+   all, still has a home. The topic object deliberately carries no runtime
+   entity and no identifier: topicHaystack() walks every string it can reach and
+   does not skip `id`, so the searchable text is one flat, curated string built
+   by the loader (display lemmas, case names in both languages, prepositions,
+   diagnostic questions) and nothing else. */
+function patternIndexTopics(){
+  return [{
+    name:"Verb Patterns", emoji:"\uD83C\uDFAF", kind:"patterns", chip:"Reference",
+    desc:"Look up a verb and see the case it takes",
+    surface:"verb-index",
+    searchText: PP_VERB_PATTERNS.searchText()
+  }];
+}
 LEVELS.push(
   { level:"Type it",   blurb:"See the meaning, type the Polish", topics: practiceTopics("typeit","\u2328\uFE0F") },
   { level:"Listening", blurb:"Hear the Polish, pick the meaning", topics: practiceTopics("listen","\uD83C\uDFA7") }
 );
+/* group:"grammar" puts this in the Grammar tab with no engine edit, exactly as
+   the categoryOf() contract below describes - no fourth top-level tab.
+   The level is created UNCONDITIONALLY, and nothing is fetched to decide that.
+   The surface has to exist for the learner to reach even when there is nothing
+   to list yet - which is the state at this tree, because no public runtime
+   projection exists and a projection, its fetch, its service-worker entries and
+   its cache bump can only land together in one release. Opening it with no data
+   therefore opens the screen and renders the neutral unavailable state; it is
+   not a failed route, and it is not an entry that silently disappears. */
+LEVELS.push({ level:"Verb Patterns", group:"grammar",
+  blurb:"Which case does this verb take?", topics: patternIndexTopics() });
 (function(){
   const gc = LEVELS.find(lv => lv.level === "Grammar Cases");
   if(!gc) return;
@@ -2597,6 +2762,14 @@ function tCount(t, lv, store){
   if(t.kind==="typeit"||t.kind==="listen") return poolFor(t.src, t.kind).length+' cards \u00b7 15 per round';
   if(t.kind==="grammar") return t.drills.length+' drills';
   if(t.kind==="convo")   return '~'+convoLen(t)+' turns';
+  /* Verbs and patterns are different numbers - one verb can take several
+     patterns - so the tile reports both rather than implying they are the same
+     count. With nothing to list yet it says so in the same learner-facing words
+     the surface itself uses, and claims no size it cannot back up. An unknown
+     kind must never fall through to the card branch below, which would read
+     "undefined cards". */
+  if(t.kind==="patterns")
+    return PP_VERB_PATTERNS.available ? PP_VERB_PATTERNS.countLabel() : "Not ready yet";
   let s = t.kind==="podcast" ? (t.cards.length-1)+' phrases' : t.cards.length+' cards';
   const rec = (store.progress && t.id) ? store.progress[t.id] : null;
   if(rec && rec.still && rec.still.length) s += ' \u00b7 <span class="review-n">'+rec.still.length+' to review</span>';
@@ -2844,6 +3017,7 @@ function render(){
     setUsageMeta(null);                         /* intro cards carry no usage metadata */
     $("pairLine").hidden = true;
     $("variantLine").hidden = true;
+    ppRenderCardPattern(null);          /* a podcast intro is not a vocabulary card */
     $("introStart").hidden = false;
     $("exampleBox").style.display = "none";
     $("fill").style.width = ((S.pos + 1) / S.queue.length) * 100 + "%";
@@ -2899,6 +3073,7 @@ function render(){
   const vp = ppVariantParts(c);
   if(vp){ $("variantK").textContent = vp.k; $("variantV").textContent = vp.v; $("variantLine").hidden = false; }
   else $("variantLine").hidden = true;
+  ppRenderCardPattern(c);               /* derived from the runtime reference only; hidden by default */
   if(c.ex){
     $("exampleBox").style.display = "flex";
     /* Neutral wording on purpose: podcast examples are illustrative, NOT verified
@@ -3386,21 +3561,44 @@ $("siteDrawer").addEventListener("click", e=>{
 
 /* ---------------- topic routing + adult-language gate (shown on EVERY open) ---------------- */
 let pendingTopic = null;
+/* Every branch is a POSITIVE match and the default DENIES.
+   startTopic used to be the fallthrough, which meant an unrecognised kind
+   reached the flashcard renderer and ran S.cards.map() on an undefined array:
+   state was already pointing at a topic that screen cannot render, nothing
+   navigated, and the learner got a tile that did nothing. It is now a named
+   destination for the two kinds it can actually render - a topic with no `kind`
+   at all (vocabulary) and "podcast" - so a typo, an empty string, a null or a
+   future kind lands in the deny branch instead.
+   A denied route: navigates nowhere, pushes no history entry, mutates no state
+   (the decision is made BEFORE any start* function is entered), moves no focus,
+   shows no error UI, and returns falsy so both call sites can see that nothing
+   happened. */
 function routeTopic(li, ti, t){
+  if(!t || typeof t !== "object"){ console.info("Po polsku: a topic that isn't a topic was not opened."); return false; }
   if(t.kind === "grammar") startGrammar(li, ti);
   else if(t.kind === "convo") startConvo(li, ti);
   else if(t.kind === "typeit") startTypeit(li, ti);
   else if(t.kind === "listen") startListen(li, ti);
-  else startTopic(li, ti);                              /* vocab + podcast */
+  else if(t.kind === "patterns"){
+    /* The routing decision is about the SURFACE, and it is made before any state
+       moves: a pattern topic whose surface key is missing or unrecognised is
+       denied here, because no renderer knows what it is. Having nothing to list
+       is not a routing failure - the screen opens and says so.  */
+    if(!pPatternSurfaceReady(t)){ console.info("Po polsku: an unrecognised verb-pattern surface was not opened."); return false; }
+    startPatterns(li, ti);
+  }
+  else if(typeof t.kind === "undefined" || t.kind === "podcast") startTopic(li, ti);   /* vocab + podcast, now EXPLICIT */
+  else { console.info("Po polsku: unknown topic kind was not opened."); return false; }   /* default deny */
+  return true;
 }
 function openTopic(li, ti, t){
-  if(t.mature){
+  if(t && t.mature){
     pendingTopic = {li, ti, t};
     /* Fail closed: if the modal cannot open, the adult-language topic stays shut. */
     if(!ppOpenSharedOverlay($("matureGate"), $("matureCancel"))) pendingTopic = null;  /* safe default lands on "Not now" */
-    return;
+    return false;                                       /* nothing was routed by this call; the gate decides next */
   }   /* re-prompt every time; never persisted */
-  routeTopic(li, ti, t);
+  return routeTopic(li, ti, t);
 }
 function closeMatureGate(){ pendingTopic = null; return ppCloseSharedOverlay($("matureGate")); }
 $("matureContinue").addEventListener("click", ()=>{
@@ -3408,7 +3606,17 @@ $("matureContinue").addEventListener("click", ()=>{
   pendingTopic = null;
   ppCloseSharedOverlay($("matureGate"), false);         /* no intermediate focus move before the activity */
   ppUseInvokerForNextScreen(invoker);                   /* the topic tile remains the activity's return target */
-  if(p) routeTopic(p.li, p.ti, p.t);
+  const routed = p ? routeTopic(p.li, p.ti, p.t) : false;
+  /* This is the ONE path a denied route could strand focus on <body>: the close
+     above deliberately suppressed the dialog's own restoration in anticipation
+     of an activity taking focus, so when nothing was routed this hands focus
+     back to the remembered invoker itself and retires the unused invoker so no
+     later screen consumes it. */
+  if(!routed){
+    ppUseInvokerForNextScreen(null);
+    if(!ppFocusActivityTarget(invoker)) ppFocusActivityTarget(ppScreenEntryTarget(ppCurrentScreen()));
+  }
+  return routed;
 });
 $("matureCancel").addEventListener("click", closeMatureGate);
 /* Escape, Android Back and the back gesture all arrive as the dialog's native cancel.
@@ -3445,8 +3653,691 @@ function ppStudyShortcutKeydown(e){
 }
 document.addEventListener("keydown", ppStudyShortcutKeydown);
 
+/* ---------------- verb patterns (read-first reference) ----------------
+   A passive lookup surface. Nothing is queued, nothing is scored, nothing is
+   persisted: P is ordinary in-memory session state, exactly like G, T, L and R.
+
+   `lemma -> meaning -> pattern` is the ONE canonical ownership hierarchy. The
+   A-Z verb index is the default entry, and the case filter is a VIEW over that
+   same index - so every pattern is rendered in full in exactly one place, the
+   lemma entry, and a filtered row is only ever a pointer with a summary. That
+   is what makes case a filter rather than an owner, and it is why a verb with
+   two cases stays one entry instead of being shredded across two containers.
+
+   Every string rendered here arrives from the runtime document, so this block
+   builds DOM with createElement and textContent only. gRenderTeach and
+   gRenderChoose use innerHTML over hand-authored committed markup; runtime text
+   is data and must never be parsed as markup. */
+const P = { li:0, ti:0, topicRef:null, view:"index", filter:"all",
+  lastLemmaKey:null, lastRowRef:null };
+
+/* Two different questions, deliberately not conflated.
+
+   The ROUTING precondition is the surface: is this topic the verb index and
+   nothing else? A topic whose surface key is missing or unrecognised is denied,
+   because no renderer knows what it is. Whether there is anything to list is a
+   separate question, and it is the renderer's - so the surface opens with no
+   reference data and shows the neutral unavailable state instead of refusing to
+   open. Neither question fetches anything. */
+function pPatternSurfaceReady(t){
+  return !!(t && t.kind === "patterns" && t.surface === "verb-index");
+}
+function pPatternDataReady(){
+  return !!(typeof PP_VERB_PATTERNS === "object" && PP_VERB_PATTERNS &&
+            PP_VERB_PATTERNS.available && PP_VERB_PATTERNS.hasIndex());
+}
+function pEl(tag, cls, text){
+  const el = document.createElement(tag);
+  if(cls) el.className = cls;
+  if(text !== undefined && text !== null) el.textContent = text;
+  return el;
+}
+/* Passive reference strings use the same safe {text, lang} shape as the
+   synthetic Grammar adapter. They are still text-only, but Polish and English
+   parts remain separate instead of being flattened into one aria-label. */
+function pAppendTextParts(host, parts){
+  (parts || []).forEach(part => {
+    if(!part || !part.text) return;
+    if(!part.lang){ host.appendChild(document.createTextNode(part.text)); return; }
+    const span = pEl("span", null, part.text);
+    span.setAttribute("lang", part.lang);
+    host.appendChild(span);
+  });
+  return host;
+}
+function pSetTextParts(host, parts){
+  host.textContent = "";
+  return pAppendTextParts(host, parts);
+}
+function pCaseFilterOption(id){
+  if(!PP_VERB_PATTERNS.available) return null;
+  const meta = PP_VERB_PATTERNS.caseMeta(id);
+  if(!meta || (!meta.direct && !meta.prepositional)) return null;
+  return { id:id, label:meta.en,
+    srLabel:meta.en + " (" + meta.pl + ")", polishName:meta.pl };
+}
+function pFilterExists(id){
+  return !!id && (PP_VERB_PATTERNS.filters().some(option => option.id === id) ||
+    !!pCaseFilterOption(id));
+}
+function pFilterOptions(){
+  const options = PP_VERB_PATTERNS.filters().slice();
+  if(options.some(option => option.id === P.filter)) return options;
+  const selected = pCaseFilterOption(P.filter);
+  if(!selected) return options;
+  const selectedOrder = PP_VERB_PATTERNS.CASE_ORDER.indexOf(selected.id);
+  let at = options.length;
+  for(let i=1; i<options.length; i++){
+    const order = PP_VERB_PATTERNS.CASE_ORDER.indexOf(options[i].id);
+    if(order !== -1 && order > selectedOrder){ at = i; break; }
+  }
+  options.splice(at, 0, selected);
+  return options;
+}
+function pFilterLabelParts(id){
+  const option = pFilterOptions().find(item => item.id === id);
+  if(!option) return [];
+  if(!option.polishName) return [{ text:option.label }];
+  return [{ text:option.polishName, lang:"pl" },
+          { text:" (" + option.label + ")" }];
+}
+function pPlural(n, one, many){ return n + (n === 1 ? one : many); }
+
+function startPatterns(li, ti, caseFilter, lemmaKey){
+  P.li = li; P.ti = ti; P.topicRef = LEVELS[li].topics[ti];
+  P.view = "index"; P.lastLemmaKey = null; P.lastRowRef = null;
+  /* A case filter is STATE on this screen, never a navigation step, so a case
+     lesson deep-links straight into the filtered view without adding a history
+     entry or creating a second home for a pattern. An unknown filter - which is
+     every filter while there is no reference data - falls back to the canonical
+     index, so the route never fails on it. */
+  P.filter = pFilterExists(caseFilter) ? caseFilter : "all";
+  show("patterns", true);        /* the renderer supplies this screen's entry focus */
+  /* A card pointer opens the lemma entry directly, so entering that way is ONE
+     render and ONE focus move rather than a visible stop at the index. It fails
+     closed: an unresolvable lemma - which is any lemma while there is no data -
+     falls through to the index, which then renders the unavailable state. */
+  if(lemmaKey !== null && lemmaKey !== undefined && pOpenLemma(lemmaKey)) return true;
+  pRenderIndex(true);
+  return true;
+}
+
+/* ---------------- the two cross-link destinations ----------------
+   Neither surface holds an index into the other: both destinations are resolved
+   by walking LEVELS for the topic that owns them, keyed by the static map in
+   pp-verb-patterns.js. Both fail closed - an unresolvable destination navigates
+   nowhere, mutates nothing and leaves focus exactly where it was.
+
+   The invoker is handed to the routing layer explicitly rather than being read
+   back off document.activeElement, because a click does not focus a button
+   everywhere; that is what makes Back return to the control that was pressed. */
+function ppPatternsLocation(){
+  for(let li=0; li<LEVELS.length; li++){
+    const topics = LEVELS[li].topics || [];
+    for(let ti=0; ti<topics.length; ti++){
+      if(pPatternSurfaceReady(topics[ti])) return { li:li, ti:ti };
+    }
+  }
+  return null;
+}
+function ppCaseLessonLocation(topicId){
+  if(!topicId) return null;
+  for(let li=0; li<LEVELS.length; li++){
+    const topics = LEVELS[li].topics || [];
+    for(let ti=0; ti<topics.length; ti++){
+      const t = topics[ti];
+      if(t && t.kind === "grammar" && t.id === topicId && t.teach) return { li:li, ti:ti };
+    }
+  }
+  return null;
+}
+/* Grammar -> the case-filtered VIEW of the one canonical index. Not gated on
+   data: with none, the same route opens the same screen and it says so. */
+function ppOpenPatternsFiltered(caseId, invoker){
+  const at = ppPatternsLocation();
+  if(!at) return false;
+  ppUseInvokerForNextScreen(invoker);
+  return startPatterns(at.li, at.ti, caseId);
+}
+/* A card -> the lemma entry, where every meaning and every pattern of that verb
+   is rendered side by side. The card never picks a meaning on the learner's
+   behalf; the entry is where the disambiguation actually happens. */
+function ppOpenPatternsLemma(lemmaKey, invoker){
+  const at = ppPatternsLocation();
+  if(!at || lemmaKey === null || lemmaKey === undefined) return false;
+  ppUseInvokerForNextScreen(invoker);
+  return startPatterns(at.li, at.ti, null, lemmaKey);
+}
+/* The canonical index, unfiltered and with no lemma opened. This is where a
+   doorway leads when the eligible claims do not even agree about which verb the
+   card is about: there is no lemma to open, and inventing one by taking the
+   first claim would be a tie-break dressed up as an answer. */
+function ppOpenPatternsIndex(invoker){
+  const at = ppPatternsLocation();
+  if(!at) return false;
+  ppUseInvokerForNextScreen(invoker);
+  return startPatterns(at.li, at.ti);
+}
+/* Verb Patterns -> the existing case lesson. Grammar keeps the teaching: this
+   opens the real topic, never a copy of it rendered here. */
+function ppOpenCaseLesson(topicId, invoker){
+  const at = ppCaseLessonLocation(topicId);
+  if(!at) return false;
+  ppUseInvokerForNextScreen(invoker);
+  startGrammar(at.li, at.ti);
+  return true;
+}
+
+/* ---------------- the vocabulary-card pointer ----------------
+   One compact line on the card BACK, derived at runtime and never authored.
+   The relationship comes from exactly one runtime relation - a pattern naming
+   this card with purpose `support` - and from nothing else. The card's visible
+   Polish, its English, its topic, its own id shape and any resemblance between
+   its text and a lemma are all ignored: a word that merely looks like a lemma is
+   not a claim that the two are the same thing.
+
+   Two gates, four outcomes, fail closed:
+     no eligible claim                     -> the line stays hidden
+     one claim, and the owning lemma has
+     exactly one meaning and one pattern   -> that pattern's own chip set
+     ambiguous, but every claim owned by
+     the same verb                         -> a neutral doorway to that verb
+     ambiguous ACROSS verbs                -> a neutral doorway to the index,
+                                              naming no verb and no pattern
+   The second gate is the one that matters: a card claimed by one pattern of a
+   verb that has another meaning would otherwise teach half the verb
+   confidently, and the missing half is invisible precisely because it has no
+   card of its own. Absence of a reference is never evidence of absence.
+
+   The two doorways differ only in what they are allowed to promise, and the
+   derivation - never this renderer - decides which applies.
+
+   Nothing here reads or renders review state, evidence, identifiers, the
+   reference itself or any editorial term - the card stays a vocabulary card. */
+function ppCardPatternClaim(card){
+  if(!card || typeof card.id !== "string" || !card.id) return null;
+  if(typeof PP_VERB_PATTERNS !== "object" || !PP_VERB_PATTERNS) return null;
+  if(!PP_VERB_PATTERNS.available) return null;
+  const claim = PP_VERB_PATTERNS.cardSupport(card.id);
+  if(!claim) return null;
+  /* Each outcome is admitted only in the exact shape it must have, so a claim
+     that is malformed - or a scope this renderer does not know - renders nothing
+     rather than something plausible-looking with no destination. */
+  const owned = typeof claim.lemmaKey === "number";
+  if(claim.state === "chip") return (owned && claim.chips && claim.chips.length) ? claim : null;
+  if(claim.state === "doorway" && claim.scope === "lemma") return owned ? claim : null;
+  if(claim.state === "doorway" && claim.scope === "index") return claim;
+  return null;                  /* "none", and any state this renderer does not know */
+}
+/* Where a card control leads. The destination is carried by the claim, so the
+   renderer never re-derives it and can never widen it. */
+function ppOpenCardPattern(claim, invoker){
+  if(!claim) return false;
+  if(claim.scope === "index") return ppOpenPatternsIndex(invoker);
+  return ppOpenPatternsLemma(claim.lemmaKey, invoker);
+}
+function ppRenderCardPattern(card){
+  const line = $("patternLine"), link = $("patternLink");
+  if(!line || !link) return false;
+  const claim = ppCardPatternClaim(card);
+  link.textContent = "";                       /* one line, never a second copy */
+  link.removeAttribute("aria-label");
+  link.onclick = null;
+  if(!claim){ line.hidden = true; return false; }
+  if(claim.state === "chip"){
+    /* The claimed pattern's COMPLETE frame: showing one chip of a two-slot
+       pattern would teach half of it. Runtime text, so chips are built the same
+       way the reference surface builds them - createElement and textContent. */
+    link.appendChild(pEl("span", "sr-only", "See this verb's pattern: "));
+    claim.chips.forEach(chip => link.appendChild(pBuildChip(chip, false, "span")));
+  }else{
+    /* A doorway that cannot name a verb must not sound as though it has: the
+       cross-verb wording promises only the reference, which is all it opens. */
+    const doorway = claim.scope === "index"
+      ? PP_VERB_PATTERNS.CARD_INDEX_DOORWAY_LABEL
+      : PP_VERB_PATTERNS.CARD_DOORWAY_LABEL;
+    link.appendChild(pEl("span", "vp-card-doorway", doorway));
+  }
+  const arrow = pEl("span", "vp-card-arrow", "→");
+  arrow.setAttribute("aria-hidden", "true");
+  link.appendChild(arrow);
+  link.onclick = ()=> ppOpenCardPattern(claim, link);
+  line.hidden = false;
+  return true;
+}
+
+/* ---------------- grammar -> verb patterns ----------------
+   The seven case topics remain the owners of case teaching. Nothing about a verb
+   pattern is copied into a lesson: no chip row, no verb list, no pattern block,
+   no explanation and no example. What is added is one continuation, and only on
+   the seven topics the static map recognises. */
+function gPatternContinuation(topic){
+  if(!topic || topic.kind !== "grammar") return null;
+  if(typeof PP_VERB_PATTERNS !== "object" || !PP_VERB_PATTERNS) return null;
+  return PP_VERB_PATTERNS.caseFilterFor(topic.id);
+}
+function gRenderPatternLink(topic){
+  const line = $("gPatternLine"), link = $("gPatternLink"), label = $("gPatternLabel"),
+        caseName = $("gPatternCaseName");
+  if(!line || !link || !label || !caseName) return false;
+  const target = gPatternContinuation(topic);
+  if(!target){
+    label.textContent = "";
+    caseName.textContent = "";
+    link.onclick = null;
+    line.hidden = true;
+    return false;
+  }
+  label.textContent = target.label;
+  caseName.textContent = target.polishName ? " (" + target.polishName + ")" : "";
+  link.onclick = ()=> ppOpenPatternsFiltered(target.filter, link);
+  line.hidden = false;
+  return true;
+}
+
+/* The canonical index. Rebuilt on entry and on returning from a lemma entry;
+   a filter change replaces the list in place instead (pApplyFilter), so the
+   control the learner pressed keeps focus. */
+function pRenderIndex(enterScreen){
+  const body = $("pBody");
+  P.view = "index";
+  body.textContent = "";
+  $("pTitle").textContent = "Verb Patterns";
+  $("pTitle").removeAttribute("lang");
+  ppSetActivityStatus($("pStatus"), []);
+  if(!pPatternSurfaceReady(P.topicRef) || !pPatternDataReady()){ pRenderUnavailable(body, enterScreen); return; }
+  pSetTextParts($("pSub"), P.filter === "all" ? [] : pFilterLabelParts(P.filter));
+  body.appendChild(pEl("p", "vp-lead", "Which case does this verb take?"));
+  body.appendChild(pEl("p", "vp-sub",
+    pPlural(PP_VERB_PATTERNS.summary().lemmas, " verb", " verbs") +
+    " · open one to see its patterns"));
+  body.appendChild(pBuildFilters());
+  const count = pEl("p", "vp-count", ""); count.id = "pCount"; body.appendChild(count);
+  const list = pEl("div", "vp-list", null); list.id = "pList"; body.appendChild(list);
+  pRenderRows(false);
+  if(enterScreen) ppFocusActivityTarget(ppScreenEntryTarget($("patterns")));
+  else if(P.lastRowRef) pFocusRow(P.lastRowRef);
+}
+
+/* Native buttons with aria-pressed, the same idiom as the home category and
+   level controls. The options are derived from the cases actually present, in
+   canonical case order, plus the explicit no-case bucket for the complements
+   that have no case at all. Full case names, never abbreviations, and the
+   accessible name adds the Polish name around the visible English one. */
+function pBuildFilters(){
+  const wrap = pEl("div", "vp-filters", null);
+  const label = pEl("span", "vp-filters-label", "Case");
+  label.id = "pFilterLabel";
+  wrap.setAttribute("role", "group");
+  wrap.setAttribute("aria-labelledby", "pFilterLabel");
+  wrap.appendChild(label);
+  pFilterOptions().forEach(option => {
+    const b = pEl("button", "vp-filter", null);
+    b.type = "button";
+    b.setAttribute("data-vp-filter", option.id);
+    b.appendChild(document.createTextNode(option.label));
+    if(option.polishName){
+      const polish = pEl("span", "sr-only", " (" + option.polishName + ")");
+      polish.setAttribute("lang", "pl");
+      b.appendChild(polish);
+    }
+    b.setAttribute("aria-pressed", option.id === P.filter ? "true" : "false");
+    b.onclick = ()=> pApplyFilter(option.id, b);
+    wrap.appendChild(b);
+  });
+  return wrap;
+}
+function pApplyFilter(id, button){
+  if(!pFilterExists(id) || P.filter === id) return false;
+  P.filter = id;
+  $("pBody").querySelectorAll(".vp-filter").forEach(b =>
+    b.setAttribute("aria-pressed", b === button ? "true" : "false"));
+  pSetTextParts($("pSub"), id === "all" ? [] : pFilterLabelParts(id));
+  pRenderRows(true);             /* list replaced in place; focus stays on the pressed control */
+  return true;
+}
+function pCountParts(){
+  const totals = PP_VERB_PATTERNS.filterCounts(P.filter);
+  const both = pPlural(totals.verbs, " verb", " verbs") + " · " +
+               pPlural(totals.patterns, " pattern", " patterns");
+  /* After filtering, verbs and patterns are different numbers - one verb can
+     have two patterns in the same case under two meanings - so both are always
+     reported rather than one standing in for the other. */
+  return P.filter === "all" ? [{ text:both }]
+    : [{ text:both + " with " }].concat(pFilterLabelParts(P.filter));
+}
+function pCountLine(){
+  return pCountParts().map(part => part.text).join("");
+}
+function pRenderRows(announce){
+  const list = $("pList"), count = $("pCount");
+  if(!list || !count) return false;
+  list.textContent = "";
+  const countParts = pCountParts();
+  pSetTextParts(count, countParts);
+  const rows = PP_VERB_PATTERNS.rows(P.filter);
+  if(!rows.length){
+    const empty = pEl("p", "vp-empty", null);
+    if(P.filter === "all") empty.textContent = "No verbs to show in this list.";
+    else pAppendTextParts(empty, [{ text:"No verb patterns with " }]
+      .concat(pFilterLabelParts(P.filter), [{ text:"." }]));
+    list.appendChild(empty);
+  }
+  let letter = "";
+  rows.forEach(row => {
+    /* Sticky-style letter headings group the canonical A-Z list; a filtered
+       view is a flat result list, so it has none. */
+    if(P.filter === "all" && row.letter !== letter){
+      letter = row.letter;
+      list.appendChild(pEl("h2", "vp-letter", letter));
+    }
+    list.appendChild(pBuildRow(row));
+  });
+  if(announce){
+    const message = pEl("span", null, null);
+    pAppendTextParts(message, countParts);
+    ppSetActivityStatus($("pStatus"), [message]);
+  }
+  return true;
+}
+
+/* A row is a pointer with a summary: never an explanation, never an example.
+   Chips inside a row are plain spans, because a row is a button and a button
+   may not contain a list. */
+function pBuildRow(row){
+  const b = pEl("button", "vp-row", null);
+  b.type = "button";
+  b.setAttribute("data-vp-row", String(row.key));   /* an opaque integer, never a content identifier */
+  /* The node is disposable, but its descriptor is not: Back rebuilds the list,
+     then compares these ordinary numeric positions on the NEW nodes. Keeping
+     the descriptor as a JS property avoids leaking runtime/editorial IDs into
+     the DOM and avoids holding a stale reference to the old button. */
+  b._vpRowRef = pRowRef(row);
+  const main = pEl("span", "vp-row-main", null);
+  const lemma = pEl("span", "vp-row-lemma", row.lemma);
+  lemma.setAttribute("lang", "pl");
+  main.appendChild(lemma);
+  main.appendChild(pEl("span", "vp-row-gloss", row.glosses));
+  if(row.isSummary){
+    const chips = pEl("span", "vp-chips", null);
+    /* Both chips of a two-slot frame are shown, with the matching one marked:
+       showing only the matching complement would teach half a frame. */
+    row.chips.forEach(chip => chips.appendChild(pBuildChip(chip, false, "span")));
+    main.appendChild(chips);
+    if(row.recognitionOnly) main.appendChild(pRecognitionChip());
+  }else{
+    main.appendChild(pEl("span", "vp-row-count",
+      pPlural(row.patternCount, " pattern", " patterns")));
+  }
+  b.appendChild(main);
+  const arrow = pEl("span", "vp-row-arrow", "›");
+  arrow.setAttribute("aria-hidden", "true");
+  b.appendChild(arrow);
+  b.onclick = ()=> pOpenLemma(row.key, b._vpRowRef);
+  return b;
+}
+/* One chip type everywhere: question(s) then the full case name, preposition
+   bonded inside, with the plain-English role phrase directly beneath it. The
+   case is carried entirely by the chip's TEXT - colour is decoration only, and
+   a filter match is stated in words as well as in weight. */
+function pBuildChip(chip, withRole, tag){
+  const item = pEl(tag || "span", "vp-chip-item", null);
+  const box = pEl("span", "vp-chip" + (chip.match ? " is-match" : ""), null);
+  chip.parts.forEach(part => {
+    const span = pEl("span", null, part.text);
+    if(part.lang) span.setAttribute("lang", part.lang);
+    box.appendChild(span);
+  });
+  if(chip.match) box.appendChild(pEl("span", "sr-only", " (matches this filter)"));
+  item.appendChild(box);
+  if(withRole && chip.role) item.appendChild(pEl("span", "vp-role", chip.role));
+  return item;
+}
+/* The app already has this concept and this chip for cards. The label is the
+   learner-facing one; the editorial term for it never reaches the screen. */
+function pRecognitionChip(){
+  return pEl("span", "usage-badge u-recognition vp-recognition", "Understand for now");
+}
+
+/* The canonical owner: the only place a pattern's explanation, example or role
+   line is rendered. Meanings are h3 under the lemma's h2, and a pattern is a
+   labelled section rather than a heading, so the reading order is exactly the
+   visual order: headline, level, recognition chip, chips with their roles,
+   explanation, example. */
+function pRowRef(row){
+  if(!row || typeof row.key !== "number") return null;
+  const ref = { lemmaKey:row.key };
+  if(typeof row.meaningIndex === "number" && typeof row.patternIndex === "number"){
+    ref.meaningIndex = row.meaningIndex;
+    ref.patternIndex = row.patternIndex;
+  }
+  return ref;
+}
+function pCopyRowRef(ref, key){
+  const copy = { lemmaKey:key };
+  if(ref && ref.lemmaKey === key && typeof ref.meaningIndex === "number" &&
+      typeof ref.patternIndex === "number"){
+    copy.meaningIndex = ref.meaningIndex;
+    copy.patternIndex = ref.patternIndex;
+  }
+  return copy;
+}
+function pSameExactRow(a, b){
+  return !!(a && b && typeof a.meaningIndex === "number" &&
+    typeof a.patternIndex === "number" && a.lemmaKey === b.lemmaKey &&
+    a.meaningIndex === b.meaningIndex && a.patternIndex === b.patternIndex);
+}
+function pOpenLemma(key, rowRef){
+  const entry = PP_VERB_PATTERNS.lemma(key);
+  if(!entry) return false;                 /* fail safely: stay exactly where we are */
+  P.lastLemmaKey = key;
+  P.lastRowRef = pCopyRowRef(rowRef, key);
+  return pRenderLemma(entry);
+}
+function pRenderLemma(entry){
+  const body = $("pBody");
+  if(!entry) return false;
+  P.view = "lemma";
+  body.textContent = "";
+  $("pTitle").textContent = entry.lemma;
+  $("pTitle").setAttribute("lang", "pl");
+  $("pSub").textContent = entry.aspect;
+  ppSetActivityStatus($("pStatus"), []);
+  const head = pEl("h2", "vp-lemma-head", entry.lemma);
+  head.setAttribute("lang", "pl");
+  head.setAttribute("tabindex", "-1");
+  head.id = "pLemmaHead";
+  body.appendChild(head);
+  if(entry.leadIn){
+    const leadIn = pEl("p", "vp-lead-in", null);
+    pAppendTextParts(leadIn, entry.leadInParts || [{ text:entry.leadIn }]);
+    body.appendChild(leadIn);
+  }
+  entry.meanings.forEach((meaning, mi) => {
+    const section = pEl("section", "vp-meaning", null);
+    const title = pEl("h3", "vp-meaning-head", meaning.glosses);
+    title.id = "pMeaning" + mi;
+    section.setAttribute("aria-labelledby", title.id);
+    section.appendChild(title);
+    meaning.patterns.forEach((pattern, pi) => {
+      const block = pEl("section", "vp-pattern", null);
+      const headline = pEl("p", "vp-headline", null);
+      headline.id = "pPattern" + mi + "-" + pi;
+      pattern.headline.forEach((part, index) => {
+        const span = pEl("span", null, (index ? " " : "") + part.text);
+        if(part.lang) span.setAttribute("lang", part.lang);
+        headline.appendChild(span);
+      });
+      block.setAttribute("aria-labelledby", headline.id);
+      const row = pEl("div", "vp-headline-row", null);
+      row.appendChild(headline);
+      if(pattern.badge.text){
+        const badge = pEl("span", "vp-badge", pattern.badge.text);
+        /* Only the recognition level is shown. Where production differs it is
+           never collapsed into this badge - it shows up as the absence of a
+           production activity - so the accessible name says what the level is. */
+        if(pattern.badge.srText) badge.setAttribute("aria-label", pattern.badge.srText);
+        row.appendChild(badge);
+      }
+      if(pattern.recognitionOnly) row.appendChild(pRecognitionChip());
+      block.appendChild(row);
+      const chips = pEl("ul", "vp-chips", null);
+      pattern.chips.forEach(chip => chips.appendChild(pBuildChip(chip, true, "li")));
+      block.appendChild(chips);
+      block.appendChild(pEl("p", "vp-explain", pattern.explanation));
+      /* No example is a complete state, not a gap: nothing is promised, nothing
+         is fabricated and no placeholder appears. */
+      if(pattern.example){
+        const example = pEl("div", "vp-example", null);
+        const pl = pEl("p", "vp-example-pl", pattern.example.pl);
+        pl.setAttribute("lang", "pl");
+        example.appendChild(pl);
+        example.appendChild(pEl("p", "vp-example-en", pattern.example.en));
+        block.appendChild(example);
+      }
+      /* The way back to the case that would fix the actual gap: knowing that a
+         verb takes the Genitive does not help a learner who cannot form it.
+         These are links to the existing lesson, never a copy of it - Grammar
+         still owns every word of the case teaching. One per distinct case in
+         the frame, in authored order, with none marked primary; a pattern whose
+         complements are an infinitive or a clause has no case, so it gets no
+         link rather than a fabricated one. */
+      if(pattern.caseLinks && pattern.caseLinks.length){
+        const links = pEl("div", "vp-case-links", null);
+        pattern.caseLinks.forEach(link => {
+          const b = pEl("button", "vp-case-link", null);
+          b.type = "button";
+          const visible = pEl("span", null, link.label);
+          visible.id = "pCaseLink" + mi + "-" + pi + "-" + link.caseId;
+          b.appendChild(visible);
+          const polish = pEl("span", "sr-only", " (" + link.polishName + ")");
+          polish.id = visible.id + "Pl";
+          polish.setAttribute("lang", "pl");
+          b.appendChild(polish);
+          const arrow = pEl("span", "vp-case-arrow", "→");
+          arrow.setAttribute("aria-hidden", "true");
+          b.appendChild(arrow);
+          b.setAttribute("aria-labelledby", visible.id + " " + polish.id);
+          b.onclick = ()=> ppOpenCaseLesson(link.topicId, b);
+          links.appendChild(b);
+        });
+        block.appendChild(links);
+      }
+      section.appendChild(block);
+    });
+    body.appendChild(section);
+  });
+  ppFocusAndRevealActivityTarget(head);
+  return true;
+}
+function pFocusRow(ref){
+  const list = $("pList");
+  const rows = list ? Array.from(list.querySelectorAll(".vp-row")) : [];
+  const exact = rows.find(row => pSameExactRow(row._vpRowRef, ref));
+  if(exact && ppFocusAndRevealActivityTarget(exact)) return true;
+  /* A general-index/card entry has no meaning/pattern origin. A missing exact
+     filtered row may also fall back only when one lemma row is unambiguous;
+     choosing the first of duplicates would repeat the bug this hardening fixes. */
+  const lemmaRows = rows.filter(row => row._vpRowRef && ref &&
+    row._vpRowRef.lemmaKey === ref.lemmaKey);
+  if(lemmaRows.length === 1 && ppFocusAndRevealActivityTarget(lemmaRows[0])) return true;
+  return ppFocusActivityTarget(ppScreenEntryTarget($("patterns")));
+}
+/* The passive unavailable state: learner-appropriate, neutral, and silent about
+   anything internal. No error, no diagnostic, no editorial vocabulary. The
+   route is denied before this point on the shipping path; this exists so the
+   screen is still complete and honest if reference data goes away underneath it. */
+function pRenderUnavailable(body, enterScreen){
+  $("pSub").textContent = "";
+  body.appendChild(pEl("p", "vp-lead", "Verb Patterns"));
+  const message = pEl("p", "vp-sub",
+    "This reference isn’t ready to open yet. Everything else in the app works as usual.");
+  body.appendChild(message);
+  ppSetActivityStatus($("pStatus"), [message.textContent]);
+  if(enterScreen) ppFocusActivityTarget(ppScreenEntryTarget($("patterns")));
+  return true;
+}
+/* Back is two steps, mirroring Grammar's learn/practice Back: a lemma entry
+   returns to the index with the filter still applied and focus back on the row
+   that was opened; the index leaves the surface. */
+$("pBack").addEventListener("click", ()=>{
+  if(P.view === "lemma"){ pRenderIndex(false); return; }
+  show("home");
+});
+
+/* ---------------- pattern practice: mechanics only, and unreachable ----------
+   A MECHANICS PROTOTYPE. It adapts already-authored choose items into the drill
+   shape the existing Grammar engine consumes and hands them to that engine -
+   the same screen, the same progression, the same option rendering, the same
+   feedback region, the same Next action, the same focus and keyboard contract.
+   No second activity engine exists, and none is wanted.
+
+   DELIBERATELY UNREACHABLE FROM THE RUNNING APP. Nothing calls this: there is no
+   tile, no pill, no route, no lemma-entry affordance, no query parameter, no
+   stored flag and no developer switch that reaches it. It lives here so the
+   tests drive THE SHIPPING adapter and THE SHIPPING engine rather than a
+   parallel copy of either, which is the only way the mechanics can be shown to
+   work at all.
+
+   WHAT REACHING IT WOULD NOT MEAN. Not that a pattern may be practised - that is
+   an explicit allowlist which is empty for every real pattern and defaults
+   closed; not that any item was reviewed; and not that anything is authorized to
+   reach a learner. Those decisions live outside the browser and none of them is
+   made here.
+
+   NOTHING IS PERSISTED. The whole run is ordinary in-memory session state, like
+   every other activity: no storage write, no mastery, no pattern completion, and
+   nothing survives a refresh. That is the intended behaviour, not a gap. */
+function pStartChoosePractice(items){
+  if(typeof PP_VERB_PATTERNS !== "object" || !PP_VERB_PATTERNS) return false;
+  const drills = PP_VERB_PATTERNS.grammarChooseDrills(items);
+  /* Fail closed: one unusable record starts nothing at all, rather than a
+     shorter round than the one that was handed over. */
+  if(!drills || !drills.length) return false;
+  /* A set with no lesson behind it: the practice phase is the whole activity,
+     so Back leaves rather than opening a lesson that does not exist. */
+  G.topic = { name:"Pattern practice", teach:[], drills:drills };
+  G.li = -1; G.tpi = -1; G.ti = 0;
+  $("gTitle").textContent = "Pattern practice";
+  show("grammar", true);         /* the drill renderer supplies this screen's entry focus */
+  gStartPractice();
+  return true;
+}
+
+/* ---------------- Priority 7 reference data: the one production load ----------------
+   The reference surface ships dormant and stays honest with no data: the tile
+   says "Not ready yet" and the surface renders its own neutral unavailable
+   state. This is the single call that offers it data, and the only place in the
+   application that names the runtime URL.
+
+   The transport itself lives in pp-verb-patterns.js and is dependency-injected,
+   so the URL, the retry policy (there is none) and the re-render policy are
+   owned here rather than by the helper. `fetch` is wrapped rather than passed
+   by reference because a bare `fetch` loses its binding.
+
+   FAILURE IS NON-BLOCKING AND SILENT. Offline, a missing file, an HTTP error, a
+   truncated body, a document that fails the closed public-shape check - every
+   one of them settles to `false`, leaves the neutral unavailable state exactly
+   where it was, and changes nothing else about startup. There is no fixture,
+   preview, editorial or query-string alternative to this URL: an unusable
+   runtime means the reference surface has nothing to show, never that some
+   other document gets shown instead.
+
+   On success, only what is already on screen is refreshed: the topic tile's
+   count and, if the learner is already standing on the unavailable state, the
+   index. Nothing is persisted, nothing navigates and no focus moves. */
+const PRIORITY7_RUNTIME_URL = "./content/verb-patterns.json";
+function pSettleRuntime(accepted){
+  if(accepted !== true) return;                    /* unavailable is a settled answer */
+  if($("home").classList.contains("active")) renderTopics();
+  if($("patterns").classList.contains("active") && P.view === "index") pRenderIndex(false);
+}
+void PP_VERB_PATTERNS.loadRuntimeDocument(
+  (url, options)=> fetch(url, options), PRIORITY7_RUNTIME_URL
+).then(pSettleRuntime, ()=>{});
+
 /* ---------------- grammar (teach -> drill) ---------------- */
-const G = { topic:null, li:0, tpi:0, ti:0, di:0, results:[], attempted:false, state:"ask", build:{pool:[],row:[]} };
+const G = { topic:null, li:0, tpi:0, ti:0, di:0, results:[], cleared:[], attempted:false, state:"ask", build:{pool:[],row:[]} };
 const G_AUDIO='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>';
 
 function gExampleHTML(ex){
@@ -3511,7 +4402,7 @@ function gSampleMix(topic){
    re-practiced before the round ends. Requeued copies never count toward the score. */
 function gStartPractice(){
   if(G.topic.mixOf) gSampleMix(G.topic);
-  G.queue=G.topic.mixOf ? G.topic.drills.slice() : gShuffle(G.topic.drills); G.di=0; G.results=[]; gPhaseView("practice"); gRenderDrill();
+  G.queue=G.topic.mixOf ? G.topic.drills.slice() : gShuffle(G.topic.drills); G.di=0; G.results=[]; G.cleared=[]; gPhaseView("practice"); gRenderDrill();
 }
 function gUpdateNextLabel(){
   const willRequeue = G.results[G.di]===false && !G.queue[G.di]._requeue;
@@ -3535,17 +4426,35 @@ function gSetStatus(parts){
   box.textContent="";
   (parts||[]).forEach(p=>box.appendChild(typeof p==="string" ? document.createTextNode(p) : p));
 }
+/* Every announcement below builds its answer the same way, through the same
+   gAppendTextParts the visible option used, so #gStatus segments the words
+   exactly as the button did: a plain authored string keeps the single lang="pl"
+   element it has always had, and a fragment label is announced part by part
+   rather than wrapped in one language it does not have. */
 function gAnnounceWrong(label){
   const answer=document.createElement("span");
-  answer.setAttribute("lang","pl");
-  answer.textContent=label;
+  if(Array.isArray(label)) gAppendTextParts(answer,label);
+  else { answer.setAttribute("lang","pl"); answer.textContent=label; }
   gSetStatus([answer," is not correct. Try another answer."]);
 }
 function gAnnounceCorrect(pl){
   const answer=document.createElement("span");
-  answer.setAttribute("lang","pl");
-  answer.textContent=pl;
+  if(Array.isArray(pl)) gAppendTextParts(answer,pl);
+  else { answer.setAttribute("lang","pl"); answer.textContent=pl; }
   gSetStatus(["Correct. The answer is ",answer,". Explanation available below. Next is ready."]);
+}
+/* The revealed-answer verdict. Two labels in ONE atomic announcement, so a
+   screen reader hears what was chosen and what the answer is from a single state
+   change rather than from two racing ones. */
+function gAnnounceRevealed(chosen, answer){
+  const picked=document.createElement("span");
+  if(Array.isArray(chosen)) gAppendTextParts(picked,chosen);
+  else { picked.setAttribute("lang","pl"); picked.textContent=chosen; }
+  const correct=document.createElement("span");
+  if(Array.isArray(answer)) gAppendTextParts(correct,answer);
+  else { correct.setAttribute("lang","pl"); correct.textContent=answer; }
+  gSetStatus([picked," is not correct. The answer is ",correct,
+              ". Explanation available below. Next is ready."]);
 }
 function gAnnounceBuildWrong(){
   gSetStatus(["That order is not correct. Adjust the highlighted words and try again."]);
@@ -3566,43 +4475,268 @@ function gFocusNextOption(box,from){
   }
   return null;
 }
+/* ---------------- the two shapes a choose drill may take ----------------
+   An option is either an authored STRING - every drill in data-grammar.js, and
+   the shape this engine has always had - or a {value,label} pair. The pair
+   exists for a drill whose text arrives as DATA rather than as committed copy:
+   two options may then legitimately read the same and still be different
+   answers, so scoring uses an explicit stable identity instead of the words on
+   the button or the position it happens to occupy. A string option answers
+   these three exactly as before, so nothing about an authored drill changes. */
+function gOptionValue(o){ return (o && typeof o==="object") ? o.value : o; }
+function gOptionLabel(o){ return (o && typeof o==="object") ? o.label : o; }
+/* A string option is Polish, exactly as every authored drill's options are. A
+   FRAGMENT label carries its own languages part by part, so the button itself
+   must claim none - one lang on the whole control is the bug this replaces. */
+function gOptionLang(o){
+  if(o && typeof o==="object") return Array.isArray(o.label) ? null : (o.lang || null);
+  return "pl";
+}
+/* ---------------- language-aware drill text ----------------
+   A drill string is either a plain STRING - one language for the whole of it,
+   which is every authored drill - or an array of {text, lang} FRAGMENTS.
+
+   Fragments exist because a structural label genuinely mixes languages:
+   `kogo? co? · Accusative` is Polish, a separator, then English. The document is
+   English, so marking the whole label lang="pl" makes a screen reader pronounce
+   "Accusative" as Polish, and marking none of it makes it pronounce the Polish
+   half as English. Only fragments are right about both halves.
+
+   ONE function turns fragments into DOM, and the visible option, the revealed
+   answer, the prompt, the feedback and the #gStatus announcement all go through
+   it - so the same string can never end up segmented two different ways in two
+   different places. Text nodes and textContent only; nothing here parses markup,
+   and a fragment's text is data exactly like every other drill string. */
+function gTextFragments(value){
+  if(Array.isArray(value)) return value;
+  return [{ text:(value===undefined||value===null) ? "" : String(value), lang:null }];
+}
+function gFragmentText(value){
+  return gTextFragments(value).map(part => part.text || "").join("");
+}
+function gAppendFragment(host, text, lang){
+  if(!text) return host;
+  if(!lang){ host.appendChild(document.createTextNode(text)); return host; }
+  const span=document.createElement("span");
+  span.setAttribute("lang", lang);
+  span.textContent=text;
+  host.appendChild(span);
+  return host;
+}
+function gAppendTextParts(host, value){
+  gTextFragments(value).forEach(part => gAppendFragment(host, part.text, part.lang));
+  return host;
+}
+/* ---------------- saying what happened to one option ----------------
+   A settled option has to say so without colour. There are two right ways to do
+   that, and which one applies depends on the option's own content.
+
+   A PLAIN STRING option is one language, so flattening it into an aria-label
+   loses nothing: `moja, correct` is exactly as good as the button's own text
+   plus a verdict, and this is what every authored drill has always had.
+
+   A FRAGMENT option is not one language. Its accessible name is computed from
+   language-tagged child nodes - `kogo? co?` in Polish, ` · Accusative` in the
+   document's English - and an aria-label REPLACES that computed name with one
+   flat string, throwing the segmentation away and leaving assistive technology
+   to read the whole of it in a single voice. So the verdict is APPENDED as
+   visually hidden text inside the button instead: the name is still computed
+   from the same nodes, in the same languages, with the verdict joining it at the
+   end in the document's own language. Nothing is flattened and nothing is lost.
+
+   Either way the verdict is words, never colour, and never a lang it has no
+   claim to. */
+function gSetOptionVerdict(btn, label, verdict){
+  if(!Array.isArray(label)){ btn.setAttribute("aria-label", btn.textContent+verdict); return btn; }
+  const said=gTextEl("span","sr-only");
+  said.textContent=verdict;
+  btn.appendChild(said);
+  return btn;
+}
+/* Which words a given option shows, taken from the drill rather than from the
+   DOM, so an announcement carries the same fragments the button was built from. */
+function gChooseOptionLabel(c, value){
+  const options=Array.isArray(c && c.options) ? c.options : [];
+  for(let i=0;i<options.length;i++){
+    if(gOptionValue(options[i])===value) return gOptionLabel(options[i]);
+  }
+  return value;
+}
+/* A drill flagged `textOnly` is the other half of the same idea: every string in
+   it is data, so its card is built with createElement and textContent only and
+   can never be parsed as markup. Authored drills keep the innerHTML path below,
+   because their markup is hand-written committed content and some of them use
+   it deliberately. Both paths share the option row, the click handling, the
+   focus moves, the announcements and the feedback region - only the way text
+   reaches the DOM differs, which is the only thing that has to. */
+function gTextEl(tag, cls, id){
+  const el=document.createElement(tag);
+  if(cls) el.className=cls;
+  if(id) el.id=id;
+  return el;
+}
+/* The blank is an app-generated affordance, not authored markup, so it survives
+   the text path as a real element rather than as a parsed string - and it
+   survives inside a language fragment without splitting that fragment's
+   language away from its words. */
+function gAppendDrillText(host, value, blankToken){
+  gTextFragments(value).forEach(part => {
+    const text = part.text || "";
+    if(!blankToken || text.indexOf(blankToken)===-1){
+      gAppendFragment(host, text, part.lang);
+      return;
+    }
+    text.split(blankToken).forEach((run,i)=>{
+      if(i) host.appendChild(gTextEl("span","blank"));
+      gAppendFragment(host, run, part.lang);
+    });
+  });
+  return host;
+}
+/* Same element ids, same classes, same reading order and the same option
+   container as the authored path - so #gInstruction, #gQuestion,
+   #gQuestionMeaning, .opts and #gFbBox all mean exactly what they already mean
+   to the focus helpers, the status region and the stylesheet. */
+function gPaintChooseText(card, c, instruction){
+  card.textContent="";
+  const dt=gTextEl("div","d-type","gInstruction");
+  dt.appendChild(document.createTextNode(instruction));
+  if(gFragmentText(c._case)){
+    dt.appendChild(document.createTextNode(" \u00b7 "));
+    const cue=gTextEl("b");
+    gAppendTextParts(cue, c._case);
+    dt.appendChild(cue);
+  }
+  card.appendChild(dt);
+  const q=gTextEl("h2","q-prompt","gQuestion");
+  q.setAttribute("tabindex","-1");
+  gAppendDrillText(q, c.prompt, "___");
+  card.appendChild(q);
+  const meaning=gTextEl("div","q-en","gQuestionMeaning");
+  gAppendTextParts(meaning, c.promptEn || "");
+  card.appendChild(meaning);
+  const box=gTextEl("div","opts");
+  box.setAttribute("role","group");
+  box.setAttribute("aria-labelledby","gInstruction gQuestion");
+  card.appendChild(box);
+  card.appendChild(gTextEl("div","fb-box","gFbBox"));
+  return box;
+}
+/* The same two regions the authored feedback has - the answer and the
+   explanation - built as text, and with NO audio control: a data drill has no
+   recorded clip, and offering one would promise playback that does not exist. */
+function gPaintChooseFeedbackText(fb, c){
+  fb.textContent="";
+  const good=gTextEl("div","fb-good");
+  const t=gTextEl("div","t");
+  /* The structural answer mixes languages; the explanation about it does not.
+     Each carries only what it actually is - an explanation is never marked
+     Polish just because the structure it describes contains Polish. */
+  const answer=gTextEl("div","p");
+  gAppendTextParts(answer, c.full);
+  t.appendChild(answer);
+  if(gFragmentText(c.fullEn)){
+    const en=gTextEl("div","e");
+    gAppendTextParts(en, c.fullEn);
+    t.appendChild(en);
+  }
+  good.appendChild(t);
+  fb.appendChild(good);
+  const explain=gTextEl("div","fb-explain");
+  gAppendTextParts(explain, c.explain);
+  fb.appendChild(explain);
+  fb.classList.add("show");
+  return fb;
+}
+/* ---------------- the two ways a choose drill may answer a miss ----------------
+   The default, and what every authored drill in data-grammar.js does: mark the
+   chosen option, disable only that one, and invite another attempt. The answer
+   stays hidden until the learner finds it.
+
+   The opt-in alternative, `revealOnIncorrect`: the first choice IS the attempt.
+   The drill marks what was chosen, identifies the correct option, closes every
+   option, shows the feedback it would have shown anyway, and hands over to Next.
+   A drill asks for this when guessing the remaining options would teach nothing -
+   when the options are structures rather than forms, the set is small, and
+   elimination would hand over the answer without the learner having decided
+   anything.
+
+   Either way the miss is banked by the caller BEFORE this runs, so the existing
+   requeue-once rule brings the item back exactly as it always did. This changes
+   what one presentation does, never what a round does. */
+function gRevealChooseAnswer(c, box, buttons, chosen){
+  const answer=buttons.filter(b=>b.getAttribute("data-val")===c.answer)[0];
+  gSetOptionVerdict(chosen, gChooseOptionLabel(c, chosen.getAttribute("data-val")),
+                    ", incorrect");
+  if(answer){
+    /* The same visual language the correct path already uses, and a verdict that
+       says WHY it is marked: the learner did not choose it, and aria-pressed
+       stays "false" on it so nothing suggests they did. */
+    answer.classList.add("correct");
+    gSetOptionVerdict(answer, gChooseOptionLabel(c, c.answer), ", correct answer");
+  }
+  box.classList.add("revealed");        /* the wrong option stops saying "try again" */
+  buttons.forEach(b=>b.disabled=true);  /* no brute-forcing what has already been shown */
+  G.state="done";
+  G.cleared[G.di]=false;                /* answered FOR the learner, not BY them */
+  gChooseFeedback(c);
+  gUpdateNextLabel();
+  /* The drill's own fragments, not the buttons' flattened text, so the spoken
+     verdict is segmented exactly the way the visible options are. */
+  gAnnounceRevealed(gChooseOptionLabel(c, chosen.getAttribute("data-val")),
+                    gChooseOptionLabel(c, c.answer));
+  $("gDrillNext").disabled=false;
+  if(typeof ppFocusActivityTarget==="function") ppFocusActivityTarget($("gDrillNext"));
+  else $("gDrillNext").focus();
+  return true;
+}
 function gRenderChoose(c){
-  const p=c.prompt.replace("___",'<span class="blank"></span>');
-  const dt = c._case ? "Choose the right form \u00b7 <b>"+c._case+"</b>" : "Choose the right form";
   const card=$("gDrillCard");
-  card.innerHTML='<div class="d-type" id="gInstruction">'+dt+'</div><h2 class="q-prompt" id="gQuestion" lang="pl" tabindex="-1">'+p+'</h2><div class="q-en" id="gQuestionMeaning">'+c.promptEn+'</div><div class="opts" role="group" aria-labelledby="gInstruction gQuestion"></div><div class="fb-box" id="gFbBox"></div>';
-  const box=card.querySelector(".opts");
+  const instruction=c.instruction || "Choose the right form";
+  let box;
+  if(c.textOnly) box=gPaintChooseText(card, c, instruction);
+  else{
+    const p=c.prompt.replace("___",'<span class="blank"></span>');
+    const dt = c._case ? instruction+" \u00b7 <b>"+c._case+"</b>" : instruction;
+    card.innerHTML='<div class="d-type" id="gInstruction">'+dt+'</div><h2 class="q-prompt" id="gQuestion" lang="pl" tabindex="-1">'+p+'</h2><div class="q-en" id="gQuestionMeaning">'+c.promptEn+'</div><div class="opts" role="group" aria-labelledby="gInstruction gQuestion"></div><div class="fb-box" id="gFbBox"></div>';
+    box=card.querySelector(".opts");
+  }
   const buttons=gShuffle(c.options).map(o=>{
+    const val=gOptionValue(o), label=gOptionLabel(o), lang=gOptionLang(o);
     const btn=document.createElement("button");
     btn.className="opt";
-    btn.setAttribute("lang","pl");
+    if(lang) btn.setAttribute("lang",lang);
     btn.setAttribute("aria-pressed","false");
-    btn.setAttribute("data-val",o);
-    btn.textContent=o;
+    btn.setAttribute("data-val",val);
+    if(Array.isArray(label)) gAppendTextParts(btn,label);
+    else btn.textContent=label;
     btn.addEventListener("click",()=>{
       if(G.state!=="ask") return;
-      const val=btn.getAttribute("data-val");
       if(typeof ppSetActivityOptionState==="function") ppSetActivityOptionState(box,btn);
       else buttons.forEach(b=>b.setAttribute("aria-pressed",b===btn?"true":"false"));
       if(val===c.answer){
         btn.classList.add("correct");
-        btn.setAttribute("aria-label",val+", correct");
+        gSetOptionVerdict(btn, label, ", correct");
         buttons.forEach(b=>b.disabled=true);
         G.state="done";
         if(!G.attempted) G.results[G.di]=true; else G.results[G.di]=false;
+        G.cleared[G.di]=true;           /* the learner ended on the right answer */
         gChooseFeedback(c);
         gUpdateNextLabel();
-        gAnnounceCorrect(c.answer);
+        gAnnounceCorrect(label);
         $("gDrillNext").disabled=false;
         if(typeof ppFocusActivityTarget==="function") ppFocusActivityTarget($("gDrillNext"));
         else $("gDrillNext").focus();
       } else {
         btn.classList.add("wrong");
-        btn.setAttribute("aria-label",val+", incorrect. Try again");
-        btn.disabled=true;
         G.attempted=true; G.results[G.di]=false;
-        gAnnounceWrong(val);
-        gFocusNextOption(box,btn);
+        if(c.revealOnIncorrect) gRevealChooseAnswer(c, box, buttons, btn);
+        else {
+          gSetOptionVerdict(btn, label, ", incorrect. Try again");
+          btn.disabled=true;
+          gAnnounceWrong(label);
+          gFocusNextOption(box,btn);
+        }
       }
     });
     box.appendChild(btn);
@@ -3617,6 +4751,7 @@ function gRenderChoose(c){
 }
 function gChooseFeedback(c){
   const fb=$("gFbBox");
+  if(c.textOnly){ gPaintChooseFeedbackText(fb,c); return; }
   fb.innerHTML='<div class="fb-good"><div class="t"><div class="p" lang="pl">'+c.full+'</div><div class="e">'+c.fullEn+'</div></div>'+
     '<button class="mini-audio" data-say="'+encodeURIComponent(c.full)+'">'+G_AUDIO+'</button></div>'+
     '<div class="fb-explain">'+c.explain+'</div>';
@@ -3782,22 +4917,62 @@ function gDrillAdvance(){
   }
   if(G.di<G.queue.length-1){ G.di++; gRenderDrill(); } else gShowDone();
 }
+/* A practice set may have no lesson behind it. Every topic in data-grammar.js
+   has one, so this answers true for all of them and their Back and their
+   `Review the lesson` action are exactly what they were; it exists so a set that
+   genuinely has nothing to review offers no control that would open an empty
+   lesson. */
+function gHasLesson(){
+  return !!(G.topic && Array.isArray(G.topic.teach) && G.topic.teach.length);
+}
+/* What actually became of the drills that came back. `G.results` cannot answer
+   this: it records whether an item was right FIRST TRY, which is the scoring
+   question, and a requeued drill that was missed again and then found still
+   reads false there. `G.cleared` records the other question - did this
+   presentation end on the right answer - and only that one can tell "came back
+   and you cleared it" from "came back and was missed again".
+
+   Under the retry mechanic every presentation ends on the right answer, because
+   nothing else advances the drill, so every authored round reports exactly what
+   it always reported. A reveal-on-first-miss drill is the case that made the old
+   sentence capable of being false. */
+function gRetryOutcome(){
+  const cleared=Array.isArray(G.cleared) ? G.cleared : [];
+  let count=0, done=0;
+  G.queue.forEach((drill,i)=>{
+    if(!drill._requeue) return;
+    count++;
+    if(cleared[i]!==false) done++;    /* unrecorded stays "cleared", as it always was */
+  });
+  return { count:count, cleared:done, open:count-done };
+}
+function gDoneMessage(score, total){
+  if(score===total) return "Every answer right on the first try. This is clicking.";
+  const retry=gRetryOutcome();
+  if(!retry.count) return "Nice work through the set.";
+  const lead="Nice work through the set - "+retry.count+" drill"+(retry.count===1?"":"s")+
+             " came back for a second pass";
+  if(!retry.open) return lead+" and you cleared "+(retry.count===1?"it":"them")+".";
+  if(retry.open===retry.count){
+    return lead+" and still need"+(retry.count===1?"s":"")+" practice.";
+  }
+  return lead+" and you cleared "+retry.cleared+" of them.";
+}
 function gShowDone(){
   const total=G.queue.filter(d=>!d._requeue).length;
   const score=G.queue.reduce((n,d,i)=> n + ((!d._requeue && G.results[i]===true) ? 1 : 0), 0);
-  const retried=G.queue.length-total;
   $("gScore").textContent=score; $("gTotal").textContent=total;
-  $("gDoneMsg").textContent = score===total
-    ? "Every answer right on the first try. This is clicking."
-    : "Nice work through the set - "+retried+" drill"+(retried===1?"":"s")+" came back for a second pass and you cleared "+(retried===1?"it":"them")+".";
+  $("gDoneMsg").textContent=gDoneMessage(score, total);
   gSetStatus([]);
+  gRenderPatternLink(G.topic);   /* the one continuation, at the END of the lesson */
+  $("gReview").hidden = !gHasLesson();   /* never a control that opens an empty lesson */
   gPhaseView("done");
   if(typeof ppFocusActivityTarget==="function") ppFocusActivityTarget($("gDoneTitle"));
   else $("gDoneTitle").focus();
 }
 
 /* grammar events */
-$("gBack").addEventListener("click", ()=>{ if($("gPractice").style.display!=="none"){ gRenderTeach(); gPhaseView("learn"); } else show("home"); });
+$("gBack").addEventListener("click", ()=>{ if($("gPractice").style.display!=="none" && gHasLesson()){ gRenderTeach(); gPhaseView("learn"); } else show("home"); });
 $("gPrev").addEventListener("click", ()=>{ if(G.ti>0){ G.ti--; gRenderTeach(); } });
 $("gNext").addEventListener("click", ()=>{ if(G.ti<G.topic.teach.length-1){ G.ti++; gRenderTeach(); } else gStartPractice(); });
 function gFlipLabel(){

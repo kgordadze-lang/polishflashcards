@@ -1,0 +1,393 @@
+{
+  "testOnlyNotice": "SYNTHETIC TEST-ONLY Priority 7 Phase 5-A fixture. Every lemma, sentence, source, reviewer and author below is invented. Nothing here is Polish, nothing here is a linguistic claim, and no record in this file is real human review evidence or a real approval.",
+  "artifactStatus": "priority-7-phase-5a-synthetic-editorial-nonproduction",
+  "syntheticIdentities": {
+    "reviewerRegistry": {
+      "test-reviewer-external-001": {
+        "human": true,
+        "roles": [
+          "external-verification"
+        ]
+      },
+      "test-reviewer-native-001": {
+        "human": true,
+        "roles": [
+          "native-linguistic"
+        ]
+      },
+      "test-reviewer-product-001": {
+        "human": true,
+        "roles": [
+          "product-approval",
+          "correction",
+          "reopen"
+        ]
+      },
+      "test-reviewer-owner-001": {
+        "human": true,
+        "roles": [
+          "product-approval",
+          "correction",
+          "reopen"
+        ],
+        "ownerAllowsMultipleRoles": true,
+        "acknowledgedReleaseModes": [
+          "solo-maintainer-reference-backed"
+        ]
+      }
+    },
+    "authorRegistry": {
+      "test-author-original-001": {
+        "human": true
+      }
+    },
+    "sourceRegistry": {
+      "test-source-reference-001": {
+        "sourceKind": "contemporary-reference"
+      },
+      "test-source-corpus-001": {
+        "sourceKind": "contemporary-corpus"
+      }
+    },
+    "editorialActorRegistry": {
+      "test-actor-editorial-001": {
+        "human": false,
+        "kind": "language-model",
+        "roles": [
+          "editorial-review",
+          "example-generation"
+        ],
+        "note": "SYNTHETIC TEST-ONLY nonhuman editorial actor. Not a person, not a native speaker, and not a reviewer identity."
+      },
+      "test-actor-editorial-002": {
+        "human": false,
+        "kind": "language-model",
+        "roles": [
+          "editorial-review"
+        ],
+        "note": "SYNTHETIC TEST-ONLY independent corroborating nonhuman editorial actor."
+      },
+      "test-actor-reference-analysis-001": {
+        "human": false,
+        "kind": "source-analysis-workflow",
+        "roles": [
+          "reference-verification"
+        ],
+        "note": "SYNTHETIC TEST-ONLY nonhuman reference-analysis workflow actor. Not a person, not a native speaker, not a linguist and not a reviewer identity. It records only that the reference-verification workflow ran; the cited authoritative sources, never this actor, supply the substantive support.",
+        "auditMetadata": {
+          "runNote": "SYNTHETIC TEST-ONLY private audit note. Model and run identifiers may be recorded here for the maintainer's own audit trail. Nothing in this object is part of the stable actor identity, and no release validity depends on it."
+        }
+      }
+    }
+  },
+  "syntheticRepositorySources": [
+    {
+      "source": "p7-phase5a-synthetic-memory",
+      "sourceIssues": [],
+      "levels": [
+        {
+          "id": "p7-phase5a-synthetic-level",
+          "level": "SYNTHETIC TEST-ONLY FIXTURE",
+          "blurb": "Priority 7 Phase 5-A synthetic governance rehearsal.",
+          "topics": [
+            {
+              "id": "p7-phase5a-synthetic-topic",
+              "name": "SYNTHETIC TEST-ONLY FIXTURE",
+              "cards": [
+                {
+                  "id": "p7-phase5a-synthetic-card-001",
+                  "pl": "TEST-ONLY zorbulate the widget.",
+                  "en": "TEST-ONLY invented sentence, not Polish.",
+                  "ex": "TEST-ONLY zorbulate frobs the marked widget.",
+                  "exEn": "TEST-ONLY invented example sentence, not Polish."
+                }
+              ],
+              "drills": [
+                {
+                  "id": "p7-phase5a-synthetic-drill-001",
+                  "type": "choose",
+                  "prompt": "TEST-ONLY ___ the marked widget.",
+                  "answer": "zorbulate",
+                  "full": "TEST-ONLY zorbulate the marked widget."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "reviewContextDate": "2026-08-09",
+  "editorial": {
+    "artifactStatus": "priority-7-editorial-nonproduction",
+    "formatVersion": 1,
+    "lemmas": [
+      {
+        "id": "vp-l-zorbulate-1b5241b4d560",
+        "canonicalLemma": "zorbulate",
+        "displayLemma": "ZORBULATE — TEST-ONLY SYNTHETIC",
+        "reflexive": false,
+        "aspect": "imperfective",
+        "meanings": [
+          {
+            "id": "vp-m-zorbulate-test-object-bb575b99875c",
+            "key": "test-object",
+            "glossesEn": [
+              "TEST-ONLY invented object-taking test action"
+            ],
+            "internalScope": "TEST-ONLY SYNTHETIC private scope note; never public.",
+            "patterns": [
+              {
+                "id": "vp-p-zorbulate-test-object-direct-object-71955b4c0f22",
+                "key": "direct-object",
+                "relationType": "lexical-frame",
+                "complements": [
+                  {
+                    "type": "case",
+                    "case": "accusative",
+                    "required": true,
+                    "role": "object"
+                  }
+                ],
+                "cefr": {
+                  "recognition": "A1",
+                  "production": "A1"
+                },
+                "teachingStatus": "active-production",
+                "usage": {
+                  "priority": "core",
+                  "register": "neutral"
+                },
+                "learnerExplanationEn": "TEST-ONLY invented frame with one direct case slot; no linguistic claim.",
+                "activityEligibility": [
+                  "grammar-build",
+                  "grammar-choose",
+                  "listening",
+                  "reference",
+                  "search",
+                  "type-it"
+                ],
+                "evidence": [
+                  {
+                    "sourceId": "test-source-reference-001",
+                    "sourceKind": "contemporary-reference",
+                    "locator": "fixture://phase5a/synthetic/direct-object",
+                    "factType": "complement-frame",
+                    "checkedAt": "2026-08-08",
+                    "note": "TEST-ONLY invented evidence record for governance rehearsal."
+                  },
+                  {
+                    "sourceId": "test-source-corpus-001",
+                    "sourceKind": "contemporary-corpus",
+                    "locator": "fixture://phase5a/synthetic/direct-object-corpus",
+                    "factType": "contrast",
+                    "checkedAt": "2026-08-08",
+                    "note": "TEST-ONLY invented corroboration record."
+                  }
+                ],
+                "reviewState": "approved",
+                "reviewEvents": [
+                  {
+                    "kind": "external-verification",
+                    "decision": "accept",
+                    "scopeVersion": 1,
+                    "scopeDigest": "sha256:2985640870be552285fed2ce0198b6f154a140938bf24eade04c353534c596a2",
+                    "supportingEvidenceDigests": [
+                      "sha256:a60c94d28c7d6e6e0a047cc30d5feef2fa9e45dd659e6c7563335a1b2824147f",
+                      "sha256:b003c9fb0bcdd0322aec00e2cb3045e5e7727339c5bf297afa52f1156344bd1c"
+                    ],
+                    "reviewerRef": "test-reviewer-external-001",
+                    "reviewedAt": "2026-08-08"
+                  },
+                  {
+                    "kind": "native-linguistic",
+                    "decision": "accept",
+                    "scopeVersion": 1,
+                    "scopeDigest": "sha256:0aad3a0a6ce635590ea2abc99838dde1e51958ddffd54af454a8a59042c3e3b7",
+                    "reviewerRef": "test-reviewer-native-001",
+                    "reviewedAt": "2026-08-08"
+                  },
+                  {
+                    "kind": "product-approval",
+                    "decision": "accept",
+                    "scopeVersion": 1,
+                    "scopeDigest": "sha256:c7d2a3ac4ad90af31597e1b4089ad17bacf252682a4189191b0f78ae32f49017",
+                    "reviewerRef": "test-reviewer-product-001",
+                    "reviewedAt": "2026-08-08"
+                  }
+                ],
+                "examples": [
+                  {
+                    "id": "vp-e-zorbulate-test-object-direct-object-original-context-f2ae3977f134",
+                    "key": "original-context",
+                    "pl": "TEST-ONLY zorbulate the marked widget now.",
+                    "en": "TEST-ONLY invented sentence, not Polish.",
+                    "origin": {
+                      "kind": "original",
+                      "authorRef": "test-author-original-001",
+                      "authoredAt": "2026-08-08"
+                    },
+                    "audioEligible": true
+                  },
+                  {
+                    "id": "vp-e-zorbulate-test-object-direct-object-repository-context-2a5dd0caae71",
+                    "key": "repository-context",
+                    "pl": "TEST-ONLY zorbulate frobs the marked widget.",
+                    "en": "TEST-ONLY invented example sentence, not Polish.",
+                    "origin": {
+                      "kind": "repository-reuse",
+                      "repositorySource": {
+                        "kind": "card",
+                        "id": "p7-phase5a-synthetic-card-001",
+                        "field": "ex"
+                      }
+                    },
+                    "audioEligible": false
+                  }
+                ],
+                "contentRefs": [
+                  {
+                    "kind": "card",
+                    "id": "p7-phase5a-synthetic-card-001",
+                    "purpose": "support"
+                  }
+                ],
+                "errorNotes": [
+                  {
+                    "kind": "predicted-distractor",
+                    "incorrectForm": "TEST-ONLY-WRONG-FORM",
+                    "guidanceEn": "TEST-ONLY invented guidance; choose the marked form.",
+                    "evidenceRefs": [
+                      0
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "vp-p-zorbulate-test-object-clause-content-ea3d1c94ce32",
+                "key": "clause-content",
+                "relationType": "constructional-frame",
+                "complements": [
+                  {
+                    "type": "clause",
+                    "clauseKind": "ze",
+                    "required": true,
+                    "role": "content"
+                  }
+                ],
+                "cefr": {
+                  "recognition": "B1"
+                },
+                "teachingStatus": "recognition-only",
+                "usage": {
+                  "priority": "limited",
+                  "register": "neutral",
+                  "note": "TEST-ONLY invented recognition-only frame."
+                },
+                "learnerExplanationEn": "TEST-ONLY invented clause frame offered for recognition only.",
+                "activityEligibility": [
+                  "reference",
+                  "search"
+                ],
+                "evidence": [
+                  {
+                    "sourceId": "test-source-reference-001",
+                    "sourceKind": "contemporary-reference",
+                    "locator": "fixture://phase5a/synthetic/clause-content",
+                    "factType": "complement-frame",
+                    "checkedAt": "2026-08-08",
+                    "note": "TEST-ONLY invented evidence record for the recognition frame."
+                  }
+                ],
+                "reviewState": "approved",
+                "reviewEvents": [
+                  {
+                    "kind": "external-verification",
+                    "decision": "accept",
+                    "scopeVersion": 1,
+                    "scopeDigest": "sha256:1433ed0d01afc0889f39167a7896c1ddcda0daa6fbfc16c5e2b014c2968ffe84",
+                    "supportingEvidenceDigests": [
+                      "sha256:5e61729fa14852c51d86b265f944151c67ce67fd2e054617414a603a8e667ec2"
+                    ],
+                    "reviewerRef": "test-reviewer-external-001",
+                    "reviewedAt": "2026-08-08"
+                  },
+                  {
+                    "kind": "native-linguistic",
+                    "decision": "accept",
+                    "scopeVersion": 1,
+                    "scopeDigest": "sha256:b8f7f82a5a567997790898e2f8201fb82676f1ebfa312a0199abd695c80e8e57",
+                    "reviewerRef": "test-reviewer-native-001",
+                    "reviewedAt": "2026-08-08"
+                  },
+                  {
+                    "kind": "product-approval",
+                    "decision": "accept",
+                    "scopeVersion": 1,
+                    "scopeDigest": "sha256:8852c09ae5a34824dc9b6adcc5c44b32630bdc52db8993d37f4bb40ab3f5e325",
+                    "reviewerRef": "test-reviewer-product-001",
+                    "reviewedAt": "2026-08-08"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "vp-l-quuxify-e2fae9f09f45",
+        "canonicalLemma": "quuxify",
+        "displayLemma": "QUUXIFY — TEST-ONLY SYNTHETIC",
+        "reflexive": false,
+        "aspect": "biaspectual",
+        "meanings": [
+          {
+            "id": "vp-m-quuxify-test-action-cb0fb2525150",
+            "key": "test-action",
+            "glossesEn": [
+              "TEST-ONLY invented unreviewed test action"
+            ],
+            "internalScope": "TEST-ONLY SYNTHETIC private scope note for research state.",
+            "patterns": [
+              {
+                "id": "vp-p-quuxify-test-action-infinitive-content-80ab74d7d2e7",
+                "key": "infinitive-content",
+                "relationType": "lexical-frame",
+                "complements": [
+                  {
+                    "type": "infinitive",
+                    "required": true,
+                    "role": "content"
+                  }
+                ],
+                "cefr": {
+                  "recognition": "A2",
+                  "production": "A2"
+                },
+                "teachingStatus": "active-production",
+                "usage": {
+                  "priority": "common",
+                  "register": "neutral"
+                },
+                "learnerExplanationEn": "TEST-ONLY invented frame that deliberately stays unreviewed.",
+                "activityEligibility": [],
+                "evidence": [
+                  {
+                    "sourceId": "test-source-reference-001",
+                    "sourceKind": "contemporary-reference",
+                    "locator": "fixture://phase5a/synthetic/infinitive-content",
+                    "factType": "complement-frame",
+                    "checkedAt": "2026-08-08",
+                    "note": "TEST-ONLY invented evidence for the research-only frame."
+                  }
+                ],
+                "reviewState": "research",
+                "reviewEvents": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

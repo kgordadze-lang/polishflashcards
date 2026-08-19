@@ -1,0 +1,355 @@
+{
+  "artifactStatus": "specification-example-not-production",
+  "specificationNotice": "Fictional Phase 1 fixtures only. These are not Polish teaching claims, pilot records, or learner-facing content.",
+  "formatVersion": 1,
+  "patternDataRevision": 1,
+  "lemmas": [
+    {
+      "id": "vp-l-fikcjonowac-a104036141da",
+      "canonicalLemma": "fikcjonować",
+      "reflexive": false,
+      "aspect": "unresolved",
+      "meanings": [
+        {
+          "id": "vp-m-fikcjonowac-test-content-8125d25987aa",
+          "key": "test-content",
+          "glossesEn": [
+            "perform a fictional test action"
+          ],
+          "internalScope": "Invented schema-only sense used to exercise direct case, infinitive, and clause complements.",
+          "patterns": [
+            {
+              "id": "vp-p-fikcjonowac-test-content-direct-target-fe6705e214bf",
+              "key": "direct-target",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "accusative",
+                  "required": true,
+                  "role": "object"
+                }
+              ],
+              "cefr": {
+                "recognition": "A1"
+              },
+              "teachingStatus": "deferred",
+              "usage": {
+                "priority": "limited",
+                "register": "neutral",
+                "note": "Fictional specification fixture; never eligible for teaching."
+              },
+              "learnerExplanationEn": "Fictional wording demonstrates a direct Accusative slot.",
+              "activityEligibility": [],
+              "evidence": [
+                {
+                  "sourceId": "phase1-specification-fixture",
+                  "sourceKind": "repository",
+                  "locator": "reports/priority-7-pattern-schema.example.json",
+                  "factType": "complement-frame",
+                  "checkedAt": "2026-08-08",
+                  "note": "Schema mechanics only; not linguistic evidence."
+                }
+              ],
+              "reviewState": "research",
+              "reviewEvents": [],
+              "examples": [
+                {
+                  "id": "vp-e-fikcjonowac-test-content-direct-target-first-context-718f9ecca50f",
+                  "key": "first-context",
+                  "pl": "Anna fikcjonuje ten projekt.",
+                  "en": "Anna performs the fictional test action on this project.",
+                  "origin": {
+                    "kind": "specification-fixture",
+                    "authorRef": "phase1-spec-author",
+                    "authoredAt": "2026-08-08"
+                  },
+                  "audioEligible": false
+                }
+              ]
+            },
+            {
+              "id": "vp-p-fikcjonowac-test-content-infinitive-content-94ebc1d64764",
+              "key": "infinitive-content",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "infinitive",
+                  "required": true,
+                  "role": "content"
+                }
+              ],
+              "cefr": {
+                "recognition": "B1"
+              },
+              "teachingStatus": "deferred",
+              "usage": {
+                "priority": "limited",
+                "register": "neutral",
+                "note": "Fictional specification fixture; never eligible for teaching."
+              },
+              "learnerExplanationEn": "Fictional wording demonstrates an infinitive slot.",
+              "activityEligibility": [],
+              "evidence": [
+                {
+                  "sourceId": "phase1-specification-fixture",
+                  "sourceKind": "repository",
+                  "locator": "reports/priority-7-pattern-schema.example.json",
+                  "factType": "complement-frame",
+                  "checkedAt": "2026-08-08"
+                }
+              ],
+              "reviewState": "research",
+              "reviewEvents": []
+            },
+            {
+              "id": "vp-p-fikcjonowac-test-content-ze-content-51c05e2bd5a4",
+              "key": "ze-content",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "dative",
+                  "required": true,
+                  "role": "recipient"
+                },
+                {
+                  "type": "clause",
+                  "clauseKind": "ze",
+                  "required": true,
+                  "role": "content"
+                }
+              ],
+              "cefr": {
+                "recognition": "B1"
+              },
+              "teachingStatus": "deferred",
+              "usage": {
+                "priority": "limited",
+                "register": "neutral",
+                "note": "Fictional specification fixture; never eligible for teaching."
+              },
+              "learnerExplanationEn": "Fictional wording demonstrates separate recipient and że-clause slots.",
+              "activityEligibility": [],
+              "evidence": [
+                {
+                  "sourceId": "phase1-specification-fixture",
+                  "sourceKind": "repository",
+                  "locator": "reports/priority-7-pattern-schema.example.json",
+                  "factType": "complement-frame",
+                  "checkedAt": "2026-08-08"
+                }
+              ],
+              "reviewState": "research",
+              "reviewEvents": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-metodowac-31466acb0b90",
+      "canonicalLemma": "metodować",
+      "reflexive": false,
+      "aspect": "unresolved",
+      "meanings": [
+        {
+          "id": "vp-m-metodowac-method-action-3af23eb4a46f",
+          "key": "method-action",
+          "glossesEn": [
+            "perform a fictional method action"
+          ],
+          "internalScope": "Invented schema-only sense contrasting method and selected prepositional frames.",
+          "patterns": [
+            {
+              "id": "vp-p-metodowac-method-action-instrumental-method-76890bd225e1",
+              "key": "instrumental-method",
+              "relationType": "means-method",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "instrumental",
+                  "required": false,
+                  "role": "means",
+                  "questionOverridePl": [
+                    "czym?"
+                  ]
+                }
+              ],
+              "cefr": {
+                "recognition": "A2"
+              },
+              "teachingStatus": "deferred",
+              "usage": {
+                "priority": "limited",
+                "register": "neutral",
+                "note": "Fictional specification fixture; never eligible for teaching."
+              },
+              "learnerExplanationEn": "Fictional wording demonstrates an optional Instrumental method phrase.",
+              "activityEligibility": [],
+              "evidence": [
+                {
+                  "sourceId": "phase1-specification-fixture",
+                  "sourceKind": "repository",
+                  "locator": "reports/priority-7-pattern-schema.example.json",
+                  "factType": "complement-frame",
+                  "checkedAt": "2026-08-08"
+                }
+              ],
+              "reviewState": "research",
+              "reviewEvents": []
+            },
+            {
+              "id": "vp-p-metodowac-method-action-za-target-86f4f3594f38",
+              "key": "za-target",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "preposition-case",
+                  "preposition": "za",
+                  "case": "accusative",
+                  "required": true,
+                  "role": "target"
+                }
+              ],
+              "cefr": {
+                "recognition": "A2"
+              },
+              "teachingStatus": "deferred",
+              "usage": {
+                "priority": "limited",
+                "register": "neutral",
+                "note": "Fictional specification fixture; never eligible for teaching."
+              },
+              "learnerExplanationEn": "Fictional wording demonstrates a selected preposition plus case.",
+              "activityEligibility": [],
+              "evidence": [
+                {
+                  "sourceId": "phase1-specification-fixture",
+                  "sourceKind": "repository",
+                  "locator": "reports/priority-7-pattern-schema.example.json",
+                  "factType": "complement-frame",
+                  "checkedAt": "2026-08-08"
+                }
+              ],
+              "reviewState": "research",
+              "reviewEvents": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-podobnisic-sie-b94c54f6bbbc",
+      "canonicalLemma": "podobnisić się",
+      "reflexive": true,
+      "aspect": "unresolved",
+      "meanings": [
+        {
+          "id": "vp-m-podobnisic-sie-appeal-fiction-11c4ed0d94d6",
+          "key": "appeal-fiction",
+          "glossesEn": [
+            "appeal fictionally"
+          ],
+          "internalScope": "Invented schema-only subject/stimulus and experiencer mapping.",
+          "patterns": [
+            {
+              "id": "vp-p-podobnisic-sie-appeal-fiction-subject-experiencer-ab4d9407ce34",
+              "key": "subject-experiencer",
+              "relationType": "subject-experiencer",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "nominative",
+                  "required": true,
+                  "role": "subject"
+                },
+                {
+                  "type": "case",
+                  "case": "dative",
+                  "required": true,
+                  "role": "experiencer"
+                }
+              ],
+              "cefr": {
+                "recognition": "A2"
+              },
+              "teachingStatus": "deferred",
+              "usage": {
+                "priority": "limited",
+                "register": "neutral",
+                "note": "Fictional specification fixture; never eligible for teaching."
+              },
+              "learnerExplanationEn": "Fictional wording demonstrates a subject and Dative experiencer.",
+              "activityEligibility": [],
+              "evidence": [
+                {
+                  "sourceId": "phase1-specification-fixture",
+                  "sourceKind": "repository",
+                  "locator": "reports/priority-7-pattern-schema.example.json",
+                  "factType": "complement-frame",
+                  "checkedAt": "2026-08-08"
+                }
+              ],
+              "reviewState": "research",
+              "reviewEvents": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-rolowac-bf32e11727eb",
+      "canonicalLemma": "rolować",
+      "reflexive": false,
+      "aspect": "unresolved",
+      "meanings": [
+        {
+          "id": "vp-m-rolowac-role-fiction-3bc527fe0052",
+          "key": "role-fiction",
+          "glossesEn": [
+            "have a fictional role"
+          ],
+          "internalScope": "Invented schema-only predicative construction.",
+          "patterns": [
+            {
+              "id": "vp-p-rolowac-role-fiction-predicate-role-8761fb770fbd",
+              "key": "predicate-role",
+              "relationType": "constructional-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "instrumental",
+                  "required": true,
+                  "role": "predicate"
+                }
+              ],
+              "cefr": {
+                "recognition": "A1"
+              },
+              "teachingStatus": "deferred",
+              "usage": {
+                "priority": "limited",
+                "register": "neutral",
+                "note": "Fictional specification fixture; never eligible for teaching."
+              },
+              "learnerExplanationEn": "Fictional wording demonstrates a constructional predicate case.",
+              "activityEligibility": [],
+              "evidence": [
+                {
+                  "sourceId": "phase1-specification-fixture",
+                  "sourceKind": "repository",
+                  "locator": "reports/priority-7-pattern-schema.example.json",
+                  "factType": "complement-frame",
+                  "checkedAt": "2026-08-08"
+                }
+              ],
+              "reviewState": "research",
+              "reviewEvents": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

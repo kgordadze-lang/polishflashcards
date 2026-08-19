@@ -1,0 +1,2761 @@
+{
+  "formatVersion": 1,
+  "patternDataRevision": 1,
+  "lemmas": [
+    {
+      "id": "vp-l-bac-sie-0fcafe1aef9f",
+      "canonicalLemma": "bać się",
+      "reflexive": true,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-bac-sie-be-afraid-of-60cc08a05be5",
+          "glossesEn": [
+            "be afraid of",
+            "fear"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-bac-sie-be-afraid-of-genitive-stimulus-4f1d684a5144",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "genitive",
+                  "required": true,
+                  "role": "target"
+                }
+              ],
+              "cefr": {
+                "recognition": "A2",
+                "production": "B1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "What you are afraid of goes in the Genitive: boję się burzy (I'm afraid of the storm).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-bac-sie-be-afraid-of-genitive-stimulus-spiders-and-flying-05ebb1adaeeb",
+                  "pl": "Boję się pająków i latania samolotem.",
+                  "en": "I am afraid of spiders and of flying.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "b1-character-emotions-010",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-genitive",
+                  "purpose": "support"
+                }
+              ],
+              "errorNotes": [
+                {
+                  "kind": "predicted-distractor",
+                  "incorrectForm": "boję się pająki",
+                  "guidanceEn": "Bać się takes the Genitive: boję się pająków (I'm afraid of spiders)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "vp-m-bac-sie-worry-about-3a50faed54bf",
+          "glossesEn": [
+            "worry about",
+            "fear for"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-bac-sie-worry-about-o-accusative-concern-c4b9b8d6811b",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "preposition-case",
+                  "preposition": "o",
+                  "case": "accusative",
+                  "required": true,
+                  "role": "topic"
+                }
+              ],
+              "cefr": {
+                "recognition": "B1"
+              },
+              "teachingStatus": "recognition-only",
+              "usage": {
+                "priority": "common",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "To say who you worry about, use o + Accusative: boję się o dzieci (I'm worried about the children).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-bac-sie-worry-about-o-accusative-concern-worried-about-grandad-6d3fcb1cfed8",
+                  "pl": "Boimy się o dziadka, bo mieszka sam.",
+                  "en": "We're worried about our grandad because he lives alone.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-accusative",
+                  "purpose": "support"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-byc-8deae1e7376a",
+      "canonicalLemma": "być",
+      "reflexive": false,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-byc-predicate-role-93c209d5654b",
+          "glossesEn": [
+            "be (a role, profession or category)"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-byc-predicate-role-instrumental-predicate-3b90a83fbb30",
+              "relationType": "constructional-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "instrumental",
+                  "required": true,
+                  "role": "predicate"
+                }
+              ],
+              "cefr": {
+                "recognition": "A1",
+                "production": "A2"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "For a role or profession after być, use the Instrumental: jestem studentem (I'm a student).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-byc-predicate-role-instrumental-predicate-first-year-student-181cc5a0b335",
+                  "pl": "Jestem studentem pierwszego roku.",
+                  "en": "I am a first-year student.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "a1-about-me-026",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "drill",
+                  "id": "grammar-cases-instrumental-003",
+                  "purpose": "practice"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-instrumental",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-nominative",
+                  "purpose": "contrast"
+                }
+              ],
+              "errorNotes": [
+                {
+                  "kind": "predicted-distractor",
+                  "incorrectForm": "jestem student",
+                  "guidanceEn": "After być a role or profession takes the Instrumental: jestem studentem (I'm a student)."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-czekac-c6c3d0da2caa",
+      "canonicalLemma": "czekać",
+      "reflexive": false,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-czekac-wait-for-bfb4d11f9655",
+          "glossesEn": [
+            "wait for"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-czekac-wait-for-na-accusative-target-3c9ac823ecde",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "preposition-case",
+                  "preposition": "na",
+                  "case": "accusative",
+                  "required": true,
+                  "role": "target"
+                }
+              ],
+              "cefr": {
+                "recognition": "A1",
+                "production": "A1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "Use na + Accusative for what you are waiting for: ask na kogo? na co?",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-czekac-wait-for-na-accusative-target-waiting-for-bus-c7204269b040",
+                  "pl": "Czekam na autobus.",
+                  "en": "I am waiting for the bus.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "a1-first-verbs-021",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "drill",
+                  "id": "building-sentences-relative-clauses-008",
+                  "purpose": "practice"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-accusative",
+                  "purpose": "support"
+                }
+              ],
+              "errorNotes": [
+                {
+                  "kind": "predicted-distractor",
+                  "incorrectForm": "czekam autobus",
+                  "guidanceEn": "Czekać needs the preposition na with the Accusative: czekam na autobus (I'm waiting for the bus)."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-dbac-15ed83f8434d",
+      "canonicalLemma": "dbać",
+      "reflexive": false,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-dbac-take-care-of-2b403d3e1b49",
+          "glossesEn": [
+            "take care of",
+            "look after"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-dbac-take-care-of-o-accusative-target-d3e3eb63129c",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "preposition-case",
+                  "preposition": "o",
+                  "case": "accusative",
+                  "required": true,
+                  "role": "target"
+                }
+              ],
+              "cefr": {
+                "recognition": "B1",
+                "production": "B1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "common",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "Use o + Accusative for what you take care of: dbam o zdrowie (I take care of my health).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-dbac-take-care-of-o-accusative-target-care-every-day-171833c3174d",
+                  "pl": "Codziennie dbam o kondycję.",
+                  "en": "I work on my fitness every day.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "b1-healthy-lifestyle-012",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-accusative",
+                  "purpose": "support"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-dziekowac-8e4ca359cb86",
+      "canonicalLemma": "dziękować",
+      "reflexive": false,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-dziekowac-thank-f19a15334790",
+          "glossesEn": [
+            "thank"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-dziekowac-thank-dative-recipient-za-accusative-057197dd300f",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "dative",
+                  "required": true,
+                  "role": "recipient"
+                },
+                {
+                  "type": "preposition-case",
+                  "preposition": "za",
+                  "case": "accusative",
+                  "required": true,
+                  "role": "topic"
+                }
+              ],
+              "cefr": {
+                "recognition": "A2",
+                "production": "B1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "common",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "Name the person in the Dative and the reason with za + Accusative: dziękuję komuś za coś (I thank someone for something).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-dziekowac-thank-dative-recipient-za-accusative-thanks-for-cooperation-92656ebcc371",
+                  "pl": "Dziękuję siostrze za kolację.",
+                  "en": "I thank my sister for dinner.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "drill",
+                  "id": "grammar-cases-dative-005",
+                  "purpose": "practice"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-dative",
+                  "purpose": "support"
+                }
+              ],
+              "errorNotes": [
+                {
+                  "kind": "predicted-distractor",
+                  "incorrectForm": "dziękuję mamę za pomoc",
+                  "guidanceEn": "The person thanked is Dative: dziękuję mamie za pomoc (I thank my mum for the help)."
+                }
+              ]
+            },
+            {
+              "id": "vp-p-dziekowac-thank-za-accusative-reason-fd31baa1b1ad",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "preposition-case",
+                  "preposition": "za",
+                  "case": "accusative",
+                  "required": true,
+                  "role": "topic"
+                }
+              ],
+              "cefr": {
+                "recognition": "A1",
+                "production": "A1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "Use za + Accusative for what you are thanking for: dziękuję za pomoc (thank you for the help).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-dziekowac-thank-za-accusative-reason-thanks-for-help-edd6c7bb9169",
+                  "pl": "Dziękuję za pomoc.",
+                  "en": "Thank you for your help.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "a1-first-phrases-006",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-accusative",
+                  "purpose": "support"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-interesowac-sie-594d3cf1b5a6",
+      "canonicalLemma": "interesować się",
+      "reflexive": true,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-interesowac-sie-be-interested-in-7a9b8150975b",
+          "glossesEn": [
+            "be interested in"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-interesowac-sie-be-interested-in-instrumental-topic-1ab788e84e01",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "instrumental",
+                  "required": true,
+                  "role": "topic"
+                }
+              ],
+              "cefr": {
+                "recognition": "A2",
+                "production": "A2"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "The subject you are interested in takes the bare Instrumental: ask kim? czym?",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-interesowac-sie-be-interested-in-instrumental-topic-politics-and-sport-9678fabc81e9",
+                  "pl": "Interesuję się polityką i sportem.",
+                  "en": "I am interested in politics and sport.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "a2-leisure-culture-002",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "drill",
+                  "id": "grammar-cases-instrumental-014",
+                  "purpose": "practice"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-instrumental",
+                  "purpose": "support"
+                }
+              ],
+              "errorNotes": [
+                {
+                  "kind": "predicted-distractor",
+                  "incorrectForm": "interesuję się o sport",
+                  "guidanceEn": "No preposition: use the bare Instrumental, interesuję się sportem (I'm interested in sport)."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-lubic-a9766b487203",
+      "canonicalLemma": "lubić",
+      "reflexive": false,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-lubic-enjoy-thing-or-activity-fd56f32d6d55",
+          "glossesEn": [
+            "like",
+            "enjoy"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-lubic-enjoy-thing-or-activity-accusative-object-7e585a50878f",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "accusative",
+                  "required": true,
+                  "role": "object"
+                }
+              ],
+              "cefr": {
+                "recognition": "A1",
+                "production": "A1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "For a thing you enjoy, lubić takes a plain Accusative object: lubię kawę (I like coffee).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-lubic-enjoy-thing-or-activity-accusative-object-polish-food-857835bb5b81",
+                  "pl": "Lubię polskie jedzenie.",
+                  "en": "I like Polish food.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "a1-first-verbs-018",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "card",
+                  "id": "a1-food-basics-023",
+                  "purpose": "contrast"
+                },
+                {
+                  "kind": "topic",
+                  "id": "building-sentences-negation",
+                  "purpose": "contrast"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-accusative",
+                  "purpose": "support"
+                }
+              ]
+            },
+            {
+              "id": "vp-p-lubic-enjoy-thing-or-activity-infinitive-activity-be3742b7ce45",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "infinitive",
+                  "required": true,
+                  "role": "content"
+                }
+              ],
+              "cefr": {
+                "recognition": "A1",
+                "production": "A1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "To say which activity you enjoy, use an infinitive: lubię czytać (I like reading).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-lubic-enjoy-thing-or-activity-infinitive-activity-reading-before-sleep-d573db6f04d1",
+                  "pl": "Lubię czytać przed snem.",
+                  "en": "I like reading before bed.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "a1-free-time-003",
+                  "purpose": "support"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-miec-3d78141ba164",
+      "canonicalLemma": "mieć",
+      "reflexive": false,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-miec-possess-1ba1201b22bf",
+          "glossesEn": [
+            "have",
+            "own"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-miec-possess-accusative-object-7181f802bd57",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "accusative",
+                  "required": true,
+                  "role": "object"
+                }
+              ],
+              "cefr": {
+                "recognition": "A1",
+                "production": "A1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "Mieć takes a plain Accusative object: mam psa (I have a dog).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-miec-possess-accusative-object-two-cats-and-a-dog-2ce2746c0cfc",
+                  "pl": "Mam dwa koty i psa.",
+                  "en": "I have two cats and a dog.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "a1-first-verbs-002",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "topic",
+                  "id": "building-sentences-negation",
+                  "purpose": "contrast"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-accusative",
+                  "purpose": "support"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-mowic-5f4740bd3f57",
+      "canonicalLemma": "mówić",
+      "reflexive": false,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-mowic-tell-content-15073cbb8666",
+          "glossesEn": [
+            "say",
+            "tell"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-mowic-tell-content-dative-recipient-accusative-content-2f2b1add1960",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "dative",
+                  "required": false,
+                  "role": "recipient"
+                },
+                {
+                  "type": "case",
+                  "case": "accusative",
+                  "required": true,
+                  "role": "content"
+                }
+              ],
+              "cefr": {
+                "recognition": "A2",
+                "production": "B1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "common",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "The thing told is Accusative and the person told is Dative; the person can be left out: mówię prawdę (I'm telling the truth).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-mowic-tell-content-dative-recipient-accusative-content-telling-parents-the-truth-cc31a97d5386",
+                  "pl": "Zawsze mówię rodzicom prawdę.",
+                  "en": "I always tell my parents the truth.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-accusative",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-dative",
+                  "purpose": "support"
+                }
+              ]
+            },
+            {
+              "id": "vp-p-mowic-tell-content-dative-recipient-ze-clause-a01ddc4a4736",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "dative",
+                  "required": false,
+                  "role": "recipient"
+                },
+                {
+                  "type": "clause",
+                  "clauseKind": "ze",
+                  "required": true,
+                  "role": "content"
+                }
+              ],
+              "cefr": {
+                "recognition": "A2",
+                "production": "B1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "common",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "The same meaning with clause content: że introduces what is said, and the person, if named, is Dative: mówię, że to prawda (I say that it's true).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-mowic-tell-content-dative-recipient-ze-clause-telling-you-its-a-good-idea-ed20965f4251",
+                  "pl": "Mówię ci, że to dobry pomysł.",
+                  "en": "I'm telling you that it's a good idea.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "topic",
+                  "id": "building-sentences-so-that",
+                  "purpose": "contrast"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-dative",
+                  "purpose": "support"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-myslec-8be636ebca9e",
+      "canonicalLemma": "myśleć",
+      "reflexive": false,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-myslec-think-about-fa2e0ab5d95a",
+          "glossesEn": [
+            "think about"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-myslec-think-about-o-locative-topic-edf0461e0dd2",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "preposition-case",
+                  "preposition": "o",
+                  "case": "locative",
+                  "required": true,
+                  "role": "topic"
+                }
+              ],
+              "cefr": {
+                "recognition": "A2",
+                "production": "A2"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "Use o + Locative for what you think about: myślę o wakacjach (I'm thinking about the holidays).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-myslec-think-about-o-locative-topic-thinking-about-the-exam-10ede796a5be",
+                  "pl": "Ciągle myślę o egzaminie.",
+                  "en": "I keep thinking about the exam.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "b1-expressing-opinions-009",
+                  "purpose": "contrast"
+                },
+                {
+                  "kind": "drill",
+                  "id": "grammar-cases-locative-006",
+                  "purpose": "practice"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-locative",
+                  "purpose": "support"
+                }
+              ],
+              "errorNotes": [
+                {
+                  "kind": "predicted-distractor",
+                  "incorrectForm": "myślę o wakacje",
+                  "guidanceEn": "After o in this meaning use the Locative: myślę o wakacjach (I'm thinking about the holidays)."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-opiekowac-sie-3a290ee21577",
+      "canonicalLemma": "opiekować się",
+      "reflexive": true,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-opiekowac-sie-care-for-278e820d8562",
+          "glossesEn": [
+            "look after",
+            "care for"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-opiekowac-sie-care-for-instrumental-object-8aa6f0a91e5b",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "instrumental",
+                  "required": true,
+                  "role": "object"
+                }
+              ],
+              "cefr": {
+                "recognition": "B1",
+                "production": "B1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "Who or what you look after takes the bare Instrumental: opiekuję się babcią (I look after my grandmother).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-opiekowac-sie-care-for-instrumental-object-caring-for-a-sick-grandmother-5d1ea100cdfa",
+                  "pl": "Dziś opiekuję się młodszą siostrą.",
+                  "en": "Today I'm looking after my younger sister.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-instrumental",
+                  "purpose": "support"
+                }
+              ],
+              "errorNotes": [
+                {
+                  "kind": "predicted-distractor",
+                  "incorrectForm": "opiekuję się o babcię",
+                  "guidanceEn": "No preposition: use the bare Instrumental, opiekuję się babcią (I look after my grandmother)."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-placic-d709669437d2",
+      "canonicalLemma": "płacić",
+      "reflexive": false,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-placic-pay-dd4705572184",
+          "glossesEn": [
+            "pay"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-placic-pay-instrumental-method-ef4313d0d5ce",
+              "relationType": "means-method",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "instrumental",
+                  "required": true,
+                  "role": "means"
+                }
+              ],
+              "cefr": {
+                "recognition": "A1",
+                "production": "A1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "To say how you pay, use the bare Instrumental: płacę kartą (I'm paying by card), płacę gotówką (I'm paying in cash).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-placic-pay-instrumental-method-paying-cash-e1eba53e074b",
+                  "pl": "Płacę gotówką.",
+                  "en": "I am paying in cash.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "a1-numbers-prices-017",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "card",
+                  "id": "a2-quantities-money-022",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-instrumental",
+                  "purpose": "support"
+                }
+              ],
+              "errorNotes": [
+                {
+                  "kind": "predicted-distractor",
+                  "incorrectForm": "płacę z kartą",
+                  "guidanceEn": "No preposition here: the means of payment is a bare Instrumental, płacę kartą (I'm paying by card)."
+                }
+              ]
+            },
+            {
+              "id": "vp-p-placic-pay-za-accusative-goods-73c6760c091d",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "preposition-case",
+                  "preposition": "za",
+                  "case": "accusative",
+                  "required": true,
+                  "role": "target"
+                }
+              ],
+              "cefr": {
+                "recognition": "A1",
+                "production": "A2"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "Use za + Accusative for what you are paying for: płacę za bilet (I'm paying for a ticket).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-placic-pay-za-accusative-goods-how-much-for-everything-dd5e5c88cfd4",
+                  "pl": "Płacę za kawę i gazetę.",
+                  "en": "I am paying for a coffee and a newspaper.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "a1-numbers-prices-015",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-accusative",
+                  "purpose": "support"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-podobac-sie-26084690c7ca",
+      "canonicalLemma": "podobać się",
+      "reflexive": true,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-podobac-sie-appeal-to-a74665181e3f",
+          "glossesEn": [
+            "like (something appeals to someone)"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-podobac-sie-appeal-to-nominative-stimulus-dative-experiencer-ef199e675ee9",
+              "relationType": "subject-experiencer",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "nominative",
+                  "required": true,
+                  "role": "subject"
+                },
+                {
+                  "type": "case",
+                  "case": "dative",
+                  "required": true,
+                  "role": "experiencer"
+                }
+              ],
+              "cefr": {
+                "recognition": "A2",
+                "production": "A2"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "The thing liked is the subject and the person is Dative: ten film mi się podoba (I like this film).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-podobac-sie-appeal-to-nominative-stimulus-dative-experiencer-honest-opinion-about-the-film-c11dccc4e223",
+                  "pl": "Szczerze mówiąc, nie podoba mi się ten film.",
+                  "en": "To be honest, I don't like this movie.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "a1-first-verbs-018",
+                  "purpose": "contrast"
+                },
+                {
+                  "kind": "card",
+                  "id": "b1-culture-entertainment-021",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "card",
+                  "id": "b1-expressing-opinions-004",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-dative",
+                  "purpose": "support"
+                }
+              ],
+              "errorNotes": [
+                {
+                  "kind": "predicted-distractor",
+                  "incorrectForm": "podobam ten film",
+                  "guidanceEn": "The thing liked is the subject and the person is Dative: ten film mi się podoba (I like this film)."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-pomagac-54633912de9a",
+      "canonicalLemma": "pomagać",
+      "reflexive": false,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-pomagac-assist-a4c05bbfc25c",
+          "glossesEn": [
+            "help",
+            "assist"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-pomagac-assist-dative-recipient-9f0a375c5e81",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "dative",
+                  "required": true,
+                  "role": "recipient"
+                }
+              ],
+              "cefr": {
+                "recognition": "A1",
+                "production": "A1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "The person you help goes in the Dative after pomagać: ask komu? czemu?",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-pomagac-assist-dative-recipient-helping-a-neighbour-da22c7a69e27",
+                  "pl": "Często pomagam sąsiadce.",
+                  "en": "I often help my neighbour.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "a1-first-verbs-022",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "drill",
+                  "id": "grammar-cases-dative-003",
+                  "purpose": "practice"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-dative",
+                  "purpose": "support"
+                }
+              ],
+              "errorNotes": [
+                {
+                  "kind": "predicted-distractor",
+                  "incorrectForm": "pomagam mamę",
+                  "guidanceEn": "The person helped is Dative, not Accusative: pomagam mamie (I help my mum)."
+                }
+              ]
+            },
+            {
+              "id": "vp-p-pomagac-assist-dative-recipient-w-locative-area-1e507dcdb869",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "dative",
+                  "required": true,
+                  "role": "recipient"
+                },
+                {
+                  "type": "preposition-case",
+                  "preposition": "w",
+                  "case": "locative",
+                  "required": true,
+                  "role": "topic"
+                }
+              ],
+              "cefr": {
+                "recognition": "A2",
+                "production": "A2"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "common",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "To say what you help with, add w + Locative: pomagać komuś w czymś (to help someone with something).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-pomagac-assist-dative-recipient-w-locative-area-helping-with-maths-adfee546f29a",
+                  "pl": "Pomagam bratu w matematyce.",
+                  "en": "I help my brother with maths.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "drill",
+                  "id": "grammar-cases-dative-003",
+                  "purpose": "practice"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-locative",
+                  "purpose": "support"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-potrzebowac-8b78ee8b092d",
+      "canonicalLemma": "potrzebować",
+      "reflexive": false,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-potrzebowac-need-1112b46d1be1",
+          "glossesEn": [
+            "need"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-potrzebowac-need-genitive-object-437fafad17d2",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "genitive",
+                  "required": true,
+                  "role": "object"
+                }
+              ],
+              "cefr": {
+                "recognition": "A1",
+                "production": "A2"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "What you need goes in the Genitive after potrzebować: ask kogo? czego?",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-potrzebowac-need-genitive-object-certificate-from-work-9bb3306bf0ee",
+                  "pl": "Potrzebuję zaświadczenia z pracy.",
+                  "en": "I need a certificate from work.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "a2-pharmacy-002",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "drill",
+                  "id": "people-numbers-comparison-003",
+                  "purpose": "practice"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-genitive",
+                  "purpose": "support"
+                }
+              ],
+              "errorNotes": [
+                {
+                  "kind": "predicted-distractor",
+                  "incorrectForm": "potrzebuję zaświadczenie",
+                  "guidanceEn": "Potrzebować takes the Genitive: potrzebuję zaświadczenia (I need a certificate)."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-prosic-82f143d28483",
+      "canonicalLemma": "prosić",
+      "reflexive": false,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-prosic-request-12aaa8159096",
+          "glossesEn": [
+            "ask for",
+            "request"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-prosic-request-accusative-person-o-accusative-thing-b7a8d9ce1a99",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "accusative",
+                  "required": true,
+                  "role": "interlocutor"
+                },
+                {
+                  "type": "preposition-case",
+                  "preposition": "o",
+                  "case": "accusative",
+                  "required": true,
+                  "role": "target"
+                }
+              ],
+              "cefr": {
+                "recognition": "A2",
+                "production": "B1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "common",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "The person asked is Accusative and the thing asked for takes o + Accusative.",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-prosic-request-accusative-person-o-accusative-thing-asking-the-boss-for-a-raise-edec4ed77571",
+                  "pl": "Będę prosić szefa o podwyżkę.",
+                  "en": "I will ask my boss for a raise.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "a2-restaurant-012",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-accusative",
+                  "purpose": "support"
+                }
+              ],
+              "errorNotes": [
+                {
+                  "kind": "predicted-distractor",
+                  "incorrectForm": "proszę mamie o pomoc",
+                  "guidanceEn": "The person asked is Accusative, not Dative: proszę mamę o pomoc (I ask my mum for help)."
+                }
+              ]
+            },
+            {
+              "id": "vp-p-prosic-request-o-accusative-request-06d776fbfd20",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "preposition-case",
+                  "preposition": "o",
+                  "case": "accusative",
+                  "required": true,
+                  "role": "target"
+                }
+              ],
+              "cefr": {
+                "recognition": "A1",
+                "production": "A2"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "Use o + Accusative for what you ask for: proszę o rachunek (the bill, please).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-prosic-request-o-accusative-request-passport-please-37568555b13c",
+                  "pl": "Proszę o paszport.",
+                  "en": "Your passport, please.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "a2-restaurant-012",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "drill",
+                  "id": "politeness-conditional-004",
+                  "purpose": "practice"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-accusative",
+                  "purpose": "support"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-pytac-0410b0f88718",
+      "canonicalLemma": "pytać",
+      "reflexive": false,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-pytac-ask-for-information-edc2b66ff9d6",
+          "glossesEn": [
+            "ask",
+            "ask about"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-pytac-ask-for-information-accusative-person-o-accusative-topic-841b41ed735a",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "accusative",
+                  "required": true,
+                  "role": "interlocutor"
+                },
+                {
+                  "type": "preposition-case",
+                  "preposition": "o",
+                  "case": "accusative",
+                  "required": true,
+                  "role": "topic"
+                }
+              ],
+              "cefr": {
+                "recognition": "A2",
+                "production": "B1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "common",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "The person asked is Accusative and the topic takes o + Accusative.",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-pytac-ask-for-information-accusative-person-o-accusative-topic-asking-a-friend-about-a-restaurant-4e51f8927a78",
+                  "pl": "Pytam koleżankę o nową restaurację.",
+                  "en": "I am asking my friend about the new restaurant.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-accusative",
+                  "purpose": "support"
+                }
+              ],
+              "errorNotes": [
+                {
+                  "kind": "predicted-distractor",
+                  "incorrectForm": "pytam mamie o adres",
+                  "guidanceEn": "The person asked is Accusative: pytam mamę o adres (I ask my mum for the address)."
+                }
+              ]
+            },
+            {
+              "id": "vp-p-pytac-ask-for-information-o-accusative-topic-c89674d989d8",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "preposition-case",
+                  "preposition": "o",
+                  "case": "accusative",
+                  "required": true,
+                  "role": "topic"
+                }
+              ],
+              "cefr": {
+                "recognition": "A2",
+                "production": "A2"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "Use o + Accusative for what you ask about: pytam o cenę (I ask about the price).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-pytac-ask-for-information-o-accusative-topic-asking-about-the-price-662fceb895d3",
+                  "pl": "Zawsze pytam o cenę.",
+                  "en": "I always ask about the price.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "a2-healthcare-appointments-017",
+                  "purpose": "contrast"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-accusative",
+                  "purpose": "support"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-rozmawiac-dd7ecc80c231",
+      "canonicalLemma": "rozmawiać",
+      "reflexive": false,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-rozmawiac-talk-with-73fae3a5d72c",
+          "glossesEn": [
+            "talk",
+            "have a conversation"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-rozmawiac-talk-with-o-locative-topic-b1c59475ac05",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "preposition-case",
+                  "preposition": "o",
+                  "case": "locative",
+                  "required": true,
+                  "role": "topic"
+                }
+              ],
+              "cefr": {
+                "recognition": "A2",
+                "production": "A2"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "Use o + Locative for the topic you talk about: rozmawiamy o pracy (we're talking about work).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-rozmawiac-talk-with-o-locative-topic-talking-about-music-94c6280fa290",
+                  "pl": "Zawsze rozmawiamy o muzyce.",
+                  "en": "We always talk about music.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "drill",
+                  "id": "grammar-cases-locative-003",
+                  "purpose": "practice"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-locative",
+                  "purpose": "support"
+                }
+              ]
+            },
+            {
+              "id": "vp-p-rozmawiac-talk-with-z-instrumental-interlocutor-8398fa7449ca",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "preposition-case",
+                  "preposition": "z",
+                  "case": "instrumental",
+                  "required": true,
+                  "role": "interlocutor"
+                }
+              ],
+              "cefr": {
+                "recognition": "A2",
+                "production": "A2"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "Use z + Instrumental for the person you talk to: rozmawiam z koleżanką (I'm talking to a friend).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-rozmawiac-talk-with-z-instrumental-interlocutor-talking-to-mum-every-day-e0d2b75493db",
+                  "pl": "Codziennie rozmawiam z mamą.",
+                  "en": "I talk to my mum every day.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "drill",
+                  "id": "grammar-cases-instrumental-005",
+                  "purpose": "practice"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-instrumental",
+                  "purpose": "support"
+                }
+              ]
+            },
+            {
+              "id": "vp-p-rozmawiac-talk-with-z-instrumental-o-locative-4e586b18cf98",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "preposition-case",
+                  "preposition": "z",
+                  "case": "instrumental",
+                  "required": true,
+                  "role": "interlocutor"
+                },
+                {
+                  "type": "preposition-case",
+                  "preposition": "o",
+                  "case": "locative",
+                  "required": true,
+                  "role": "topic"
+                }
+              ],
+              "cefr": {
+                "recognition": "B1",
+                "production": "B1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "common",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "Both together: z + Instrumental for the person, o + Locative for the topic.",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-rozmawiac-talk-with-z-instrumental-o-locative-doctor-about-test-results-6080f6504f29",
+                  "pl": "Rozmawiam z lekarzem o wynikach badań.",
+                  "en": "I'm talking to the doctor about the test results.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-instrumental",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-locative",
+                  "purpose": "support"
+                }
+              ],
+              "errorNotes": [
+                {
+                  "kind": "predicted-distractor",
+                  "incorrectForm": "rozmawiam z pracy",
+                  "guidanceEn": "Keep the two roles apart: z + Instrumental is the person, o + Locative is the topic."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-sluchac-301b09233922",
+      "canonicalLemma": "słuchać",
+      "reflexive": false,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-sluchac-listen-to-d981b432efa8",
+          "glossesEn": [
+            "listen to"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-sluchac-listen-to-genitive-target-a274f84c8d93",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "genitive",
+                  "required": true,
+                  "role": "target"
+                }
+              ],
+              "cefr": {
+                "recognition": "A1",
+                "production": "A1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "What you listen to goes in the Genitive after słuchać: ask kogo? czego?",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-sluchac-listen-to-genitive-target-music-on-the-way-ecf258289d6e",
+                  "pl": "Słucham muzyki w drodze do pracy.",
+                  "en": "I listen to music on the way to work.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "a1-free-time-005",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-genitive",
+                  "purpose": "support"
+                }
+              ],
+              "errorNotes": [
+                {
+                  "kind": "predicted-distractor",
+                  "incorrectForm": "słucham muzykę",
+                  "guidanceEn": "Słuchać takes the Genitive: słucham muzyki (I listen to music)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "vp-m-sluchac-obey-eb23d8503e9a",
+          "glossesEn": [
+            "obey",
+            "do as one is told"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-sluchac-obey-genitive-object-674adae2dec3",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "genitive",
+                  "required": true,
+                  "role": "object"
+                }
+              ],
+              "cefr": {
+                "recognition": "B1"
+              },
+              "teachingStatus": "recognition-only",
+              "usage": {
+                "priority": "common",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "In the obey sense słuchać still takes the Genitive: dziecko słucha mamy (the child obeys their mum).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-sluchac-obey-genitive-object-dog-obeys-its-owner-f1216029cb1b",
+                  "pl": "Ten pies słucha swojego pana.",
+                  "en": "This dog obeys its owner.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "b1-character-emotions-003",
+                  "purpose": "contrast"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-szukac-0daf5e6b5693",
+      "canonicalLemma": "szukać",
+      "reflexive": false,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-szukac-seek-35b07b1cceb1",
+          "glossesEn": [
+            "look for",
+            "search for"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-szukac-seek-genitive-target-71dc6eff512c",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "genitive",
+                  "required": true,
+                  "role": "target"
+                }
+              ],
+              "cefr": {
+                "recognition": "A1",
+                "production": "A1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "With this meaning szukać takes a Genitive object: ask kogo? czego?",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-szukac-seek-genitive-target-looking-for-cafe-efdccf7a5ba6",
+                  "pl": "Szukam dobrej kawiarni.",
+                  "en": "I am looking for a good café.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "a1-first-verbs-020",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "drill",
+                  "id": "grammar-cases-genitive-014",
+                  "purpose": "practice"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-genitive",
+                  "purpose": "support"
+                }
+              ],
+              "errorNotes": [
+                {
+                  "kind": "predicted-distractor",
+                  "incorrectForm": "szukam kawiarnię",
+                  "guidanceEn": "Szukać takes the Genitive, not the Accusative: szukam kawiarni (I'm looking for a café)."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-tesknic-3c9b07c066c3",
+      "canonicalLemma": "tęsknić",
+      "reflexive": false,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-tesknic-miss-d796ac98d4f5",
+          "glossesEn": [
+            "miss",
+            "long for"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-tesknic-miss-za-instrumental-target-f866502502c7",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "preposition-case",
+                  "preposition": "za",
+                  "case": "instrumental",
+                  "required": true,
+                  "role": "target"
+                }
+              ],
+              "cefr": {
+                "recognition": "B1",
+                "production": "B1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "Use za + Instrumental for whoever or whatever you miss: tęsknię za domem (I miss home).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-tesknic-miss-za-instrumental-target-missing-you-b98f2f56ea9f",
+                  "pl": "Tęsknię za tobą, kiedy wyjeżdżasz.",
+                  "en": "I miss you when you go away.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "b1-relationships-012",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-instrumental",
+                  "purpose": "support"
+                }
+              ],
+              "errorNotes": [
+                {
+                  "kind": "predicted-distractor",
+                  "incorrectForm": "tęsknię ciebie",
+                  "guidanceEn": "Tęsknić needs za with the Instrumental: tęsknię za tobą (I miss you)."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-uczyc-sie-a01d00cb7f2f",
+      "canonicalLemma": "uczyć się",
+      "reflexive": true,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-uczyc-sie-study-bd96ff26cc60",
+          "glossesEn": [
+            "learn",
+            "study"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-uczyc-sie-study-genitive-subject-matter-44c5fdb95dd7",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "genitive",
+                  "required": true,
+                  "role": "content"
+                }
+              ],
+              "cefr": {
+                "recognition": "A1",
+                "production": "A2"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "The subject you study goes in the Genitive after uczyć się: uczę się polskiego (I'm learning Polish).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-uczyc-sie-study-genitive-subject-matter-polish-for-a-year-180cd560a0ec",
+                  "pl": "Uczę się polskiego od roku.",
+                  "en": "I have been learning Polish for a year.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "a2-work-education-007",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "drill",
+                  "id": "verbs-reflexive-005",
+                  "purpose": "practice"
+                },
+                {
+                  "kind": "topic",
+                  "id": "verbs-reflexive",
+                  "purpose": "support"
+                }
+              ],
+              "errorNotes": [
+                {
+                  "kind": "predicted-distractor",
+                  "incorrectForm": "uczę się polski",
+                  "guidanceEn": "Use the Genitive: uczę się polskiego (I'm learning Polish)."
+                },
+                {
+                  "kind": "predicted-distractor",
+                  "incorrectForm": "uczę polskiego",
+                  "guidanceEn": "Keep się: uczyć się is learning, uczyć is teaching someone else."
+                }
+              ]
+            },
+            {
+              "id": "vp-p-uczyc-sie-study-infinitive-skill-ab708776387e",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "infinitive",
+                  "required": true,
+                  "role": "content"
+                }
+              ],
+              "cefr": {
+                "recognition": "A2",
+                "production": "B1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "common",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "To name a skill you are learning, use an infinitive: uczę się gotować (I'm learning to cook).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-uczyc-sie-study-infinitive-skill-learning-guitar-fc75e418733b",
+                  "pl": "Uczę się grać na gitarze.",
+                  "en": "I am learning to play the guitar.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "a1-free-time-007",
+                  "purpose": "support"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-ufac-6a061471e40a",
+      "canonicalLemma": "ufać",
+      "reflexive": false,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-ufac-trust-92b1bdb490f0",
+          "glossesEn": [
+            "trust"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-ufac-trust-dative-object-10988adac8cd",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "dative",
+                  "required": true,
+                  "role": "object"
+                }
+              ],
+              "cefr": {
+                "recognition": "B1",
+                "production": "B1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "The person you trust goes in the Dative: ufam bratu (I trust my brother).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-ufac-trust-dative-object-trusting-my-teacher-618816d6a6ea",
+                  "pl": "Ufam swojej nauczycielce.",
+                  "en": "I trust my teacher.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "b1-relationships-018",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-dative",
+                  "purpose": "support"
+                }
+              ],
+              "errorNotes": [
+                {
+                  "kind": "predicted-distractor",
+                  "incorrectForm": "ufam mojego brata",
+                  "guidanceEn": "Ufać takes the Dative, not the Accusative: ufam mojemu bratu (I trust my brother)."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-uzywac-a617dcf0b2fc",
+      "canonicalLemma": "używać",
+      "reflexive": false,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-uzywac-use-bf360f430fed",
+          "glossesEn": [
+            "use"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-uzywac-use-genitive-object-2c5cb44fe85d",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "genitive",
+                  "required": true,
+                  "role": "object"
+                }
+              ],
+              "cefr": {
+                "recognition": "A2",
+                "production": "A2"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "What you use goes in the Genitive after używać: ask czego?",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-uzywac-use-genitive-object-using-an-app-4ea0e75b504a",
+                  "pl": "Używam tej aplikacji do nauki języków.",
+                  "en": "I use this app for learning languages.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "a2-ecology-024",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-genitive",
+                  "purpose": "support"
+                }
+              ],
+              "errorNotes": [
+                {
+                  "kind": "predicted-distractor",
+                  "incorrectForm": "używam tę aplikację",
+                  "guidanceEn": "Używać takes the Genitive: używam tej aplikacji (I use this app)."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-widziec-59dbe12f8b3d",
+      "canonicalLemma": "widzieć",
+      "reflexive": false,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-widziec-perceive-visually-65710cb07f86",
+          "glossesEn": [
+            "see"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-widziec-perceive-visually-accusative-object-80b697e51432",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "accusative",
+                  "required": true,
+                  "role": "object"
+                }
+              ],
+              "cefr": {
+                "recognition": "A1",
+                "production": "A1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "Widzieć takes a plain Accusative object: widzę kota (I see a cat).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-widziec-perceive-visually-accusative-object-saw-your-sister-ec51af47f224",
+                  "pl": "Czy widzisz tę czerwoną torbę?",
+                  "en": "Do you see that red bag?",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "a2-describing-past-005",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "drill",
+                  "id": "grammar-cases-accusative-002",
+                  "purpose": "practice"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-accusative",
+                  "purpose": "support"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-wierzyc-171eb7790262",
+      "canonicalLemma": "wierzyć",
+      "reflexive": false,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-wierzyc-have-trust-0a6cbf4eee17",
+          "glossesEn": [
+            "believe (someone)",
+            "believe in (someone or something)"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-wierzyc-have-trust-dative-object-f38bb3e72123",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "dative",
+                  "required": true,
+                  "role": "object"
+                }
+              ],
+              "cefr": {
+                "recognition": "A2",
+                "production": "B1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "To believe a person, use the Dative: wierzę ci (I believe you).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-wierzyc-have-trust-dative-object-believing-a-friend-b65c5d71b199",
+                  "pl": "Wierzę koleżance, bo nigdy nie kłamie.",
+                  "en": "I believe my friend because she never lies.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "drill",
+                  "id": "grammar-cases-dative-008",
+                  "purpose": "practice"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-dative",
+                  "purpose": "support"
+                }
+              ],
+              "errorNotes": [
+                {
+                  "kind": "predicted-distractor",
+                  "incorrectForm": "nie wierzę go",
+                  "guidanceEn": "Wierzyć takes the Dative: nie wierzę mu (I don't believe him)."
+                }
+              ]
+            },
+            {
+              "id": "vp-p-wierzyc-have-trust-w-accusative-target-6561408ea8d1",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "preposition-case",
+                  "preposition": "w",
+                  "case": "accusative",
+                  "required": true,
+                  "role": "target"
+                }
+              ],
+              "cefr": {
+                "recognition": "B1",
+                "production": "B1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "common",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "For confidence in a person or thing, use w + Accusative: wierzę w tego lekarza (I believe in this doctor).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-wierzyc-have-trust-w-accusative-target-believing-in-the-team-9695f1faa84b",
+                  "pl": "Trener wierzy w tę drużynę.",
+                  "en": "The coach believes in this team.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-accusative",
+                  "purpose": "support"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-zajmowac-sie-176f8a1300f8",
+      "canonicalLemma": "zajmować się",
+      "reflexive": true,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-zajmowac-sie-look-after-person-b23fbb8fc99b",
+          "glossesEn": [
+            "look after",
+            "take care of"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-zajmowac-sie-look-after-person-instrumental-object-6f93facbd939",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "instrumental",
+                  "required": true,
+                  "role": "object"
+                }
+              ],
+              "cefr": {
+                "recognition": "B1"
+              },
+              "teachingStatus": "recognition-only",
+              "usage": {
+                "priority": "common",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "In the caring sense the person cared for is still a bare Instrumental.",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-zajmowac-sie-look-after-person-instrumental-object-looking-after-my-sisters-daughter-1976cdf5b971",
+                  "pl": "Kiedy siostra jest w pracy, zajmuję się jej córką.",
+                  "en": "When my sister is at work, I look after her daughter.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-instrumental",
+                  "purpose": "support"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "vp-m-zajmowac-sie-occupation-activity-7e3a8332a3bc",
+          "glossesEn": [
+            "do (as an activity or job)",
+            "deal with"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-zajmowac-sie-occupation-activity-instrumental-topic-3321df3f989e",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "instrumental",
+                  "required": true,
+                  "role": "topic"
+                }
+              ],
+              "cefr": {
+                "recognition": "A2",
+                "production": "B1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "What you do or deal with takes the bare Instrumental: zajmuję się marketingiem (I work in marketing).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-zajmowac-sie-occupation-activity-instrumental-topic-dad-repairs-computers-1ad6678e41cb",
+                  "pl": "Mój tata zajmuje się naprawą komputerów.",
+                  "en": "My dad works in computer repair.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-instrumental",
+                  "purpose": "support"
+                }
+              ],
+              "errorNotes": [
+                {
+                  "kind": "predicted-distractor",
+                  "incorrectForm": "zajmuję się o marketing",
+                  "guidanceEn": "No preposition: use the bare Instrumental, zajmuję się marketingiem (I work in marketing)."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-zalezec-679daa27f9be",
+      "canonicalLemma": "zależeć",
+      "reflexive": false,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-zalezec-depend-on-d640b1729639",
+          "glossesEn": [
+            "depend on"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-zalezec-depend-on-od-genitive-source-1ad29f7a1318",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "preposition-case",
+                  "preposition": "od",
+                  "case": "genitive",
+                  "required": true,
+                  "role": "topic"
+                }
+              ],
+              "cefr": {
+                "recognition": "B1",
+                "production": "B1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "Use od + Genitive for what something depends on: to zależy od pogody (it depends on the weather).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-zalezec-depend-on-od-genitive-source-plans-depend-on-the-weather-e539ac27be66",
+                  "pl": "Nasze plany zależą od pogody.",
+                  "en": "Our plans depend on the weather.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "b1-expressing-opinions-013",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-genitive",
+                  "purpose": "support"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "vp-m-zalezec-matter-to-someone-e7bf97e3c145",
+          "glossesEn": [
+            "care about",
+            "it matters to someone"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-zalezec-matter-to-someone-dative-experiencer-na-locative-1fc4131471cc",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "dative",
+                  "required": true,
+                  "role": "experiencer"
+                },
+                {
+                  "type": "preposition-case",
+                  "preposition": "na",
+                  "case": "locative",
+                  "required": true,
+                  "role": "topic"
+                }
+              ],
+              "cefr": {
+                "recognition": "B1"
+              },
+              "teachingStatus": "recognition-only",
+              "usage": {
+                "priority": "common",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "No ordinary subject here: the person is Dative and the thing takes na + Locative.",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-zalezec-matter-to-someone-dative-experiencer-na-locative-this-job-matters-to-me-49c780e0667f",
+                  "pl": "Bardzo mi zależy na tej pracy.",
+                  "en": "This job really matters to me.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "drill",
+                  "id": "building-sentences-so-that-007",
+                  "purpose": "practice"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-locative",
+                  "purpose": "support"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-znac-a4c921e7688c",
+      "canonicalLemma": "znać",
+      "reflexive": false,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-znac-be-acquainted-with-54b71d59f073",
+          "glossesEn": [
+            "know (a person, place or fact)"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-znac-be-acquainted-with-accusative-object-379e19b36299",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "accusative",
+                  "required": true,
+                  "role": "object"
+                }
+              ],
+              "cefr": {
+                "recognition": "A1",
+                "production": "A1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "Znać takes a plain Accusative object: znam tę restaurację (I know this restaurant).",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-znac-be-acquainted-with-accusative-object-know-this-restaurant-966b2c8de5a3",
+                  "pl": "Czy znasz tę restaurację?",
+                  "en": "Do you know this restaurant?",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "a1-first-verbs-012",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "drill",
+                  "id": "grammar-cases-accusative-005",
+                  "purpose": "practice"
+                },
+                {
+                  "kind": "topic",
+                  "id": "building-sentences-negation",
+                  "purpose": "contrast"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-accusative",
+                  "purpose": "support"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-znalezc-eec53e19f1a0",
+      "canonicalLemma": "znaleźć",
+      "reflexive": false,
+      "aspect": "perfective",
+      "meanings": [
+        {
+          "id": "vp-m-znalezc-find-8a0f0f34b6e8",
+          "glossesEn": [
+            "find"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-znalezc-find-accusative-object-d80c52211462",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "accusative",
+                  "required": true,
+                  "role": "object"
+                }
+              ],
+              "cefr": {
+                "recognition": "A2",
+                "production": "B1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "Znaleźć takes the Accusative, unlike szukać, which takes the Genitive.",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-znalezc-find-accusative-object-finally-found-a-flat-3609f7a71e3f",
+                  "pl": "W końcu znalazłam nową pracę.",
+                  "en": "I finally found a new job.",
+                  "audioEligible": false
+                }
+              ],
+              "contentRefs": [
+                {
+                  "kind": "card",
+                  "id": "a1-first-verbs-020",
+                  "purpose": "contrast"
+                },
+                {
+                  "kind": "card",
+                  "id": "b1-media-technology-014",
+                  "purpose": "support"
+                },
+                {
+                  "kind": "topic",
+                  "id": "grammar-cases-accusative",
+                  "purpose": "support"
+                }
+              ],
+              "errorNotes": [
+                {
+                  "kind": "predicted-distractor",
+                  "incorrectForm": "znaleźć mieszkania",
+                  "guidanceEn": "Znaleźć takes the Accusative: znaleźć mieszkanie (to find a flat). Only szukać uses the Genitive."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

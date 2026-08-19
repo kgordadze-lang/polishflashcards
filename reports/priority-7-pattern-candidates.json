@@ -1,0 +1,3470 @@
+{
+  "artifact": "priority-7-pattern-candidates",
+  "phase": 0,
+  "status": "research-only; no candidate is linguistically approved or implemented",
+  "source_constraints": {
+    "external_web_research": "not performed; not approved in this environment",
+    "source_demo": "headword index complete; detailed entries available only for book entries 1-50",
+    "copyright": "no dictionary examples, definitions, synonym collections, or complete headword index are reproduced"
+  },
+  "case_ids": [
+    "nominative",
+    "genitive",
+    "dative",
+    "accusative",
+    "instrumental",
+    "locative",
+    "vocative"
+  ],
+  "conceptual_complement_types": [
+    "case",
+    "preposition-case",
+    "infinitive",
+    "clause"
+  ],
+  "ranking_method": {
+    "version": "phase0-ranking-v2",
+    "allowed_component_values": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "scale_rule": "Every positive and penalty component is an integer from 1 to 5. For positive components, 1 is weakest and 5 strongest. For ambiguity and review burden, 1 is lowest penalty and 5 highest penalty.",
+    "formula": "4*utility_score + 3*current_support_score + 3*beginner_value_score + 4*learning_payoff_score + 2*determinism_score + 2*context_reuse_score + 2*contrast_value_score - 2*ambiguity_score - review_burden_score",
+    "component_definitions": {
+      "utility_score": "1 peripheral/limited practical use; 3 useful in recurring but bounded situations; 5 very frequent, broad everyday usefulness.",
+      "current_support_score": "1 little/no usable repository evidence; 3 one meaningful surface or repeated weak evidence; 5 strong repeated support across cards, teaching, drills or scenarios.",
+      "beginner_value_score": "1 mainly specialized/later B1 value; 3 useful A2-B1 value; 5 foundational A1-A2 value.",
+      "learning_payoff_score": "1 translation already supplies most needed guidance; 3 moderate non-obvious relationship; 5 high-error/non-obvious pattern that translation alone does not teach.",
+      "determinism_score": "1 difficult to test safely even with ordinary context; 3 deterministic with strong context/controlled options; 5 straightforward closed-answer practice.",
+      "context_reuse_score": "1 little/no natural current reuse; 3 one or a few reusable contexts; 5 repeated natural reuse across topics/scenarios.",
+      "contrast_value_score": "1 limited comparison value; 3 useful contrast; 5 strong high-value distinction from English or a nearby Polish construction.",
+      "ambiguity_score": "Penalty: 1 low ambiguity/closed meaning; 3 material ambiguity needing context; 5 very high ambiguity or several equally natural analyses/answers.",
+      "review_burden_score": "Penalty: 1 low burden with strong aligned evidence; 3 material meaning/register/construction questions; 5 high contemporary/native-review uncertainty."
+    },
+    "ordering": [
+      "calculated_rank_score descending",
+      "ambiguity_score ascending",
+      "review_burden_score ascending",
+      "current_support_score descending",
+      "NFC lemma by ascending Unicode code-point sequence"
+    ]
+  },
+  "pilot": [
+    {
+      "lemma": "pomagać",
+      "cefr": "A1",
+      "reflexive": false,
+      "aspect": "imperfective; current card links pomóc",
+      "meaning": "help",
+      "families": [
+        "direct-dative",
+        "contrast-set"
+      ],
+      "patterns": [
+        {
+          "label": "pomagać + dative",
+          "complements": [
+            {
+              "type": "case",
+              "case": "dative",
+              "question": "komu?/czemu?",
+              "role": "beneficiary"
+            }
+          ]
+        }
+      ],
+      "ambiguity": "low",
+      "type_it": "good as a person-form cloze; bare English still needs context",
+      "rationale": "Explicit A1 Dative guidance and a strong contrast with English and with Accusative-taking support verbs.",
+      "rank_score": 92,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [
+          "a1-first-verbs-022"
+        ],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "a1-about-me",
+          "a1-first-verbs",
+          "b1-travel-problems",
+          "building-sentences-so-that",
+          "grammar-cases-dative",
+          "grammar-cases-genitive",
+          "people-numbers-professions",
+          "politeness-conditional",
+          "politeness-formal-address",
+          "verbs-modal-verbs"
+        ],
+        "scenario_refs": [
+          "scenarios-healthcare-appointments",
+          "scenarios-pharmacy",
+          "scenarios-work-university"
+        ]
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 440,
+        "scope": "headword-index-only"
+      },
+      "source_confidence": "repository-plus-headword-only; detailed pattern requires independent verification",
+      "rank": 1,
+      "pre_correction_rank": 2,
+      "utility_score": 5,
+      "current_support_score": 5,
+      "beginner_value_score": 5,
+      "learning_payoff_score": 5,
+      "determinism_score": 4,
+      "context_reuse_score": 5,
+      "contrast_value_score": 4,
+      "ambiguity_score": 1,
+      "review_burden_score": 2,
+      "calculated_rank_score": 92,
+      "tie_break_lemma_key": "pomagać"
+    },
+    {
+      "lemma": "szukać",
+      "cefr": "A1",
+      "reflexive": false,
+      "aspect": "imperfective; current card links poszukać and contrasts znaleźć",
+      "meaning": "look for / seek",
+      "families": [
+        "direct-genitive",
+        "contrast-set"
+      ],
+      "patterns": [
+        {
+          "label": "szukać + genitive",
+          "complements": [
+            {
+              "type": "case",
+              "case": "genitive",
+              "question": "kogo?/czego?",
+              "role": "sought object"
+            }
+          ]
+        }
+      ],
+      "ambiguity": "medium",
+      "type_it": "contextual cloze; unsafe as a bare 'look for/find' translation",
+      "rationale": "Already an A1 card with explicit Genitive guidance; high-value contrast with znaleźć and repeated life-in-Poland use.",
+      "rank_score": 92,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [
+          "a1-first-verbs-020",
+          "a2-work-education-010",
+          "b1-idioms-026"
+        ],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "a1-directions",
+          "a1-first-verbs",
+          "a2-apartment",
+          "a2-travel-holidays",
+          "a2-work-education",
+          "b1-healthy-lifestyle",
+          "b1-idioms",
+          "grammar-cases-genitive",
+          "politeness-diminutives"
+        ],
+        "scenario_refs": [
+          "scenarios-city-transport"
+        ]
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 684,
+        "scope": "headword-index-only"
+      },
+      "source_confidence": "repository-plus-headword-only; detailed pattern requires independent verification",
+      "rank": 2,
+      "pre_correction_rank": 1,
+      "utility_score": 5,
+      "current_support_score": 5,
+      "beginner_value_score": 5,
+      "learning_payoff_score": 5,
+      "determinism_score": 4,
+      "context_reuse_score": 5,
+      "contrast_value_score": 4,
+      "ambiguity_score": 1,
+      "review_burden_score": 2,
+      "calculated_rank_score": 92,
+      "tie_break_lemma_key": "szukać"
+    },
+    {
+      "lemma": "słuchać",
+      "cefr": "A1",
+      "reflexive": false,
+      "aspect": "imperfective; current card links posłuchać",
+      "meaning": "listen to",
+      "families": [
+        "direct-genitive",
+        "contrast-set"
+      ],
+      "patterns": [
+        {
+          "label": "słuchać + genitive",
+          "complements": [
+            {
+              "type": "case",
+              "case": "genitive",
+              "question": "kogo?/czego?",
+              "role": "heard content/source"
+            }
+          ]
+        }
+      ],
+      "ambiguity": "medium",
+      "type_it": "good with a concrete noun; contrast with słyszeć needs context",
+      "rationale": "Explicit A1 Genitive guidance and a high-payoff contrast with słyszeć + Accusative.",
+      "rank_score": 92,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [
+          "a1-free-time-005"
+        ],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "a1-free-time",
+          "b1-character-emotions",
+          "b1-culture-entertainment",
+          "b1-healthy-lifestyle"
+        ],
+        "scenario_refs": []
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 643,
+        "scope": "headword-index-only"
+      },
+      "source_confidence": "repository-plus-headword-only; detailed pattern requires independent verification",
+      "rank": 3,
+      "pre_correction_rank": 3,
+      "utility_score": 5,
+      "current_support_score": 5,
+      "beginner_value_score": 5,
+      "learning_payoff_score": 5,
+      "determinism_score": 4,
+      "context_reuse_score": 4,
+      "contrast_value_score": 5,
+      "ambiguity_score": 1,
+      "review_burden_score": 2,
+      "calculated_rank_score": 92,
+      "tie_break_lemma_key": "słuchać"
+    },
+    {
+      "lemma": "czekać",
+      "cefr": "A1",
+      "reflexive": false,
+      "aspect": "imperfective; current card links poczekać",
+      "meaning": "wait for",
+      "families": [
+        "preposition-accusative"
+      ],
+      "patterns": [
+        {
+          "label": "czekać na + accusative",
+          "complements": [
+            {
+              "type": "preposition-case",
+              "case": "accusative",
+              "preposition": "na",
+              "question": "na kogo?/na co?",
+              "role": "waited-for target"
+            }
+          ]
+        }
+      ],
+      "ambiguity": "low",
+      "type_it": "good with a complete sentence or cloze",
+      "rationale": "A1 card and source sample entry; na + Accusative is common, practical, and not recoverable from English alone.",
+      "rank_score": 91,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [
+          "a1-first-verbs-021"
+        ],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "a1-family-people",
+          "a1-first-verbs",
+          "a2-character-traits",
+          "a2-healthcare-appointments",
+          "a2-official-matters",
+          "b1-expressing-opinions",
+          "b1-idioms",
+          "building-sentences-relative-clauses",
+          "people-numbers-numerals",
+          "politeness-plural-formal-address",
+          "verbs-aspect",
+          "verbs-imperative",
+          "verbs-modal-verbs",
+          "verbs-verbs-of-motion"
+        ],
+        "scenario_refs": [
+          "scenarios-pharmacy"
+        ]
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 46,
+        "scope": "sample-detailed-entry"
+      },
+      "source_confidence": "repository-plus-sample-entry; still unapproved",
+      "rank": 4,
+      "pre_correction_rank": 4,
+      "utility_score": 5,
+      "current_support_score": 5,
+      "beginner_value_score": 5,
+      "learning_payoff_score": 5,
+      "determinism_score": 4,
+      "context_reuse_score": 5,
+      "contrast_value_score": 3,
+      "ambiguity_score": 1,
+      "review_burden_score": 1,
+      "calculated_rank_score": 91,
+      "tie_break_lemma_key": "czekać"
+    },
+    {
+      "lemma": "potrzebować",
+      "cefr": "A1",
+      "reflexive": false,
+      "aspect": "imperfective",
+      "meaning": "need",
+      "families": [
+        "direct-genitive"
+      ],
+      "patterns": [
+        {
+          "label": "potrzebować + genitive",
+          "complements": [
+            {
+              "type": "case",
+              "case": "genitive",
+              "question": "kogo?/czego?",
+              "role": "needed thing/person"
+            }
+          ]
+        }
+      ],
+      "ambiguity": "low",
+      "type_it": "good as a contextual noun-form cloze",
+      "rationale": "Repeated across pharmacy, official-matters, restaurant, comparison drills, and scenarios but lacks an explicit lexical verb card.",
+      "rank_score": 89,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "a1-fruit-vegetables",
+          "a2-appearance-clothes",
+          "a2-official-matters",
+          "a2-pharmacy",
+          "a2-restaurant",
+          "people-numbers-comparison",
+          "podcasts-work-life"
+        ],
+        "scenario_refs": [
+          "scenarios-city-transport",
+          "scenarios-doctor",
+          "scenarios-gym",
+          "scenarios-pharmacy",
+          "scenarios-shops-services"
+        ]
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 461,
+        "scope": "headword-index-only"
+      },
+      "source_confidence": "repository-plus-headword-only; detailed pattern requires independent verification",
+      "rank": 5,
+      "pre_correction_rank": 5,
+      "utility_score": 5,
+      "current_support_score": 4,
+      "beginner_value_score": 5,
+      "learning_payoff_score": 5,
+      "determinism_score": 4,
+      "context_reuse_score": 5,
+      "contrast_value_score": 4,
+      "ambiguity_score": 1,
+      "review_burden_score": 2,
+      "calculated_rank_score": 89,
+      "tie_break_lemma_key": "potrzebować"
+    },
+    {
+      "lemma": "dziękować",
+      "cefr": "A1",
+      "reflexive": false,
+      "aspect": "imperfective; common perfective podziękować requires verification",
+      "meaning": "thank",
+      "families": [
+        "direct-dative",
+        "multiple-complements"
+      ],
+      "patterns": [
+        {
+          "label": "dziękować komuś za coś",
+          "complements": [
+            {
+              "type": "case",
+              "case": "dative",
+              "question": "komu?",
+              "role": "person thanked"
+            },
+            {
+              "type": "preposition-case",
+              "case": "accusative",
+              "preposition": "za",
+              "question": "za co?",
+              "role": "reason"
+            }
+          ]
+        }
+      ],
+      "ambiguity": "medium",
+      "type_it": "good in a complete formula; not from a one-word English cue",
+      "rationale": "Extremely frequent in cards/scenarios and explicitly drilled for Dative, yet the two-complement pattern is scattered.",
+      "rank_score": 88,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "a1-about-me",
+          "a1-cafe",
+          "a1-first-phrases",
+          "a2-leisure-culture",
+          "a2-restaurant",
+          "b1-career",
+          "grammar-cases-dative",
+          "grammar-cases-vocative",
+          "people-numbers-every-all",
+          "politeness-conditional",
+          "politeness-formal-address",
+          "politeness-formal-writing",
+          "politeness-plural-formal-address"
+        ],
+        "scenario_refs": [
+          "scenarios-city-transport",
+          "scenarios-doctor",
+          "scenarios-gym",
+          "scenarios-healthcare-appointments",
+          "scenarios-neighbours",
+          "scenarios-pharmacy",
+          "scenarios-shops-services",
+          "scenarios-work-university"
+        ]
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 113,
+        "scope": "headword-index-only"
+      },
+      "source_confidence": "repository-plus-headword-only; detailed pattern requires independent verification",
+      "rank": 6,
+      "pre_correction_rank": 7,
+      "utility_score": 5,
+      "current_support_score": 5,
+      "beginner_value_score": 5,
+      "learning_payoff_score": 5,
+      "determinism_score": 3,
+      "context_reuse_score": 5,
+      "contrast_value_score": 4,
+      "ambiguity_score": 2,
+      "review_burden_score": 2,
+      "calculated_rank_score": 88,
+      "tie_break_lemma_key": "dziękować"
+    },
+    {
+      "lemma": "płacić",
+      "cefr": "A1-A2",
+      "reflexive": false,
+      "aspect": "imperfective; current cards link zapłacić",
+      "meaning": "pay",
+      "families": [
+        "direct-instrumental",
+        "preposition-accusative",
+        "multiple-patterns"
+      ],
+      "patterns": [
+        {
+          "label": "płacić + instrumental (method)",
+          "complements": [
+            {
+              "type": "case",
+              "case": "instrumental",
+              "question": "czym?",
+              "role": "payment method"
+            }
+          ],
+          "review_note": "Instrumental payment method may be a means/method relationship rather than ordinary lexically governed object; Phase 1 must classify the smallest useful internal distinction."
+        },
+        {
+          "label": "płacić za + accusative",
+          "complements": [
+            {
+              "type": "preposition-case",
+              "case": "accusative",
+              "preposition": "za",
+              "question": "za kogo?/za co?",
+              "role": "paid-for item/person"
+            }
+          ]
+        }
+      ],
+      "ambiguity": "medium",
+      "type_it": "good with explicit method/item context; do not reduce the lemma to one case",
+      "rationale": "Multiple explicit cards and pharmacy/shop/city scenarios; demonstrates why pattern data must allow more than one complement frame.",
+      "rank_score": 88,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [
+          "a2-quantities-money-022",
+          "a2-quantities-money-026",
+          "b1-money-finance-013"
+        ],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "a1-numbers-prices",
+          "a2-quantities-money",
+          "a2-restaurant",
+          "b1-money-finance",
+          "politeness-formal-address",
+          "politeness-plural-formal-address",
+          "verbs-modal-verbs"
+        ],
+        "scenario_refs": [
+          "scenarios-city-transport",
+          "scenarios-pharmacy",
+          "scenarios-shops-services"
+        ]
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 406,
+        "scope": "headword-index-only"
+      },
+      "source_confidence": "repository-plus-headword-only; detailed pattern requires independent verification",
+      "rank": 7,
+      "pre_correction_rank": 8,
+      "utility_score": 5,
+      "current_support_score": 5,
+      "beginner_value_score": 5,
+      "learning_payoff_score": 4,
+      "determinism_score": 4,
+      "context_reuse_score": 5,
+      "contrast_value_score": 5,
+      "ambiguity_score": 2,
+      "review_burden_score": 2,
+      "calculated_rank_score": 88,
+      "tie_break_lemma_key": "płacić"
+    },
+    {
+      "lemma": "uczyć się",
+      "cefr": "A1",
+      "reflexive": true,
+      "aspect": "imperfective; current verb lesson links nauczyć się",
+      "meaning": "learn / study",
+      "families": [
+        "direct-genitive",
+        "reflexive"
+      ],
+      "patterns": [
+        {
+          "label": "uczyć się + genitive",
+          "complements": [
+            {
+              "type": "case",
+              "case": "genitive",
+              "question": "kogo?/czego?",
+              "role": "learned subject"
+            }
+          ]
+        }
+      ],
+      "ambiguity": "medium",
+      "type_it": "good with a subject noun; unsafe as bare 'study' without sense cue",
+      "rationale": "Already explained in the reflexive lesson and central to the app's own learner language; should become a first-class pattern.",
+      "rank_score": 88,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [
+          "a2-work-education-007"
+        ],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "a1-about-me",
+          "a1-free-time",
+          "a1-months-seasons",
+          "a2-character-traits",
+          "a2-work-education",
+          "b1-healthy-lifestyle",
+          "building-sentences-so-that",
+          "grammar-cases-instrumental",
+          "grammar-cases-locative",
+          "grammar-cases-nominative",
+          "grammar-cases-vocative",
+          "people-numbers-every-all",
+          "people-numbers-professions",
+          "verbs-future-tense",
+          "verbs-reflexive"
+        ],
+        "scenario_refs": [
+          "scenarios-work-university"
+        ]
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 718,
+        "scope": "headword-index-only"
+      },
+      "source_confidence": "repository-plus-headword-only; detailed pattern requires independent verification",
+      "rank": 8,
+      "pre_correction_rank": 6,
+      "utility_score": 5,
+      "current_support_score": 5,
+      "beginner_value_score": 5,
+      "learning_payoff_score": 5,
+      "determinism_score": 4,
+      "context_reuse_score": 4,
+      "contrast_value_score": 4,
+      "ambiguity_score": 2,
+      "review_burden_score": 2,
+      "calculated_rank_score": 88,
+      "tie_break_lemma_key": "uczyć się"
+    },
+    {
+      "lemma": "używać",
+      "cefr": "A2",
+      "reflexive": false,
+      "aspect": "imperfective; current card links użyć",
+      "meaning": "use",
+      "families": [
+        "direct-genitive",
+        "contrast-set"
+      ],
+      "patterns": [
+        {
+          "label": "używać + genitive",
+          "complements": [
+            {
+              "type": "case",
+              "case": "genitive",
+              "question": "kogo?/czego?",
+              "role": "used item"
+            }
+          ]
+        }
+      ],
+      "ambiguity": "medium",
+      "type_it": "good as a case-form cloze; distinguish from korzystać z",
+      "rationale": "Explicit A2 bilingual case guidance; unusually useful because English gives no signal for Genitive.",
+      "rank_score": 87,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [
+          "a2-ecology-024"
+        ],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "a2-ecology",
+          "b1-media-technology"
+        ],
+        "scenario_refs": [
+          "scenarios-gym"
+        ]
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 767,
+        "scope": "headword-index-only"
+      },
+      "source_confidence": "repository-plus-headword-only; detailed pattern requires independent verification",
+      "rank": 9,
+      "pre_correction_rank": 9,
+      "utility_score": 4,
+      "current_support_score": 5,
+      "beginner_value_score": 4,
+      "learning_payoff_score": 5,
+      "determinism_score": 4,
+      "context_reuse_score": 5,
+      "contrast_value_score": 5,
+      "ambiguity_score": 1,
+      "review_burden_score": 2,
+      "calculated_rank_score": 87,
+      "tie_break_lemma_key": "używać"
+    },
+    {
+      "lemma": "interesować się",
+      "cefr": "A2",
+      "reflexive": true,
+      "aspect": "imperfective; current card links zainteresować się",
+      "meaning": "be interested in",
+      "families": [
+        "direct-instrumental",
+        "reflexive-contrast"
+      ],
+      "patterns": [
+        {
+          "label": "interesować się + instrumental",
+          "complements": [
+            {
+              "type": "case",
+              "case": "instrumental",
+              "question": "kim?/czym?",
+              "role": "interest topic"
+            }
+          ]
+        }
+      ],
+      "ambiguity": "medium",
+      "type_it": "good as a case-form cloze; do not merge with non-reflexive interesować",
+      "rationale": "Explicit A2 card plus Instrumental teaching and drills; reflexive/non-reflexive meaning boundary is pedagogically valuable.",
+      "rank_score": 85,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [
+          "a2-leisure-culture-002"
+        ],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "a2-leisure-culture",
+          "b1-culture-entertainment",
+          "grammar-cases-instrumental",
+          "people-numbers-comparison"
+        ],
+        "scenario_refs": []
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 141,
+        "scope": "headword-index-only"
+      },
+      "source_confidence": "repository-plus-headword-only; detailed pattern requires independent verification",
+      "rank": 10,
+      "pre_correction_rank": 11,
+      "utility_score": 4,
+      "current_support_score": 5,
+      "beginner_value_score": 4,
+      "learning_payoff_score": 5,
+      "determinism_score": 4,
+      "context_reuse_score": 4,
+      "contrast_value_score": 5,
+      "ambiguity_score": 1,
+      "review_burden_score": 2,
+      "calculated_rank_score": 85,
+      "tie_break_lemma_key": "interesować się"
+    },
+    {
+      "lemma": "dbać",
+      "cefr": "A2",
+      "reflexive": false,
+      "aspect": "imperfective; current card links zadbać",
+      "meaning": "take care of / look after",
+      "families": [
+        "preposition-accusative",
+        "contrast-set"
+      ],
+      "patterns": [
+        {
+          "label": "dbać o + accusative",
+          "complements": [
+            {
+              "type": "preposition-case",
+              "case": "accusative",
+              "preposition": "o",
+              "question": "o kogo?/o co?",
+              "role": "care target"
+            }
+          ]
+        }
+      ],
+      "ambiguity": "medium",
+      "type_it": "good with a concrete care target; bare 'care' is unsafe",
+      "rationale": "Explicit B1 dbać o card and life-in-Poland utility; contrasts usefully with opiekować się and zależeć.",
+      "rank_score": 85,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [
+          "b1-healthy-lifestyle-012"
+        ],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "b1-healthy-lifestyle"
+        ],
+        "scenario_refs": [
+          "scenarios-doctor"
+        ]
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 60,
+        "scope": "headword-index-only"
+      },
+      "source_confidence": "repository-plus-headword-only; detailed pattern requires independent verification",
+      "rank": 11,
+      "pre_correction_rank": 12,
+      "utility_score": 4,
+      "current_support_score": 5,
+      "beginner_value_score": 4,
+      "learning_payoff_score": 5,
+      "determinism_score": 4,
+      "context_reuse_score": 5,
+      "contrast_value_score": 5,
+      "ambiguity_score": 2,
+      "review_burden_score": 2,
+      "calculated_rank_score": 85,
+      "tie_break_lemma_key": "dbać"
+    },
+    {
+      "lemma": "prosić",
+      "cefr": "A1",
+      "reflexive": false,
+      "aspect": "imperfective; common perfective poprosić requires verification and separate modeling",
+      "meaning": "ask / request",
+      "families": [
+        "multiple-complements",
+        "preposition-accusative",
+        "clause"
+      ],
+      "patterns": [
+        {
+          "label": "prosić kogoś o coś",
+          "complements": [
+            {
+              "type": "case",
+              "case": "accusative",
+              "question": "kogo?",
+              "role": "addressee"
+            },
+            {
+              "type": "preposition-case",
+              "case": "accusative",
+              "preposition": "o",
+              "question": "o co?",
+              "role": "requested thing"
+            }
+          ]
+        }
+      ],
+      "ambiguity": "high",
+      "type_it": "unsafe from bare English 'ask'; use a full pragmatic context or cloze",
+      "rationale": "Core request language in restaurant, shopping, politeness, and scenarios; requires separation from pytać.",
+      "rank_score": 85,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "a1-about-me",
+          "a1-cafe",
+          "a1-colours-clothes",
+          "a1-directions",
+          "a1-first-phrases",
+          "a1-first-verbs",
+          "a1-food-basics",
+          "a1-fruit-vegetables",
+          "a1-numbers-prices",
+          "a2-directions-orientation",
+          "a2-ecology",
+          "a2-healthcare-appointments",
+          "a2-official-matters",
+          "a2-pharmacy",
+          "a2-public-transport",
+          "a2-quantities-money",
+          "a2-restaurant",
+          "b1-career",
+          "b1-character-emotions",
+          "b1-travel-problems",
+          "building-sentences-so-that",
+          "grammar-cases-accusative",
+          "grammar-cases-genitive",
+          "grammar-cases-instrumental",
+          "people-numbers-numerals",
+          "politeness-conditional",
+          "politeness-diminutives",
+          "politeness-formal-address",
+          "politeness-plural-formal-address",
+          "verbs-imperative",
+          "verbs-verbs-of-motion"
+        ],
+        "scenario_refs": [
+          "scenarios-city-transport",
+          "scenarios-doctor",
+          "scenarios-gym",
+          "scenarios-healthcare-appointments",
+          "scenarios-pharmacy",
+          "scenarios-shops-services"
+        ]
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 488,
+        "scope": "headword-index-only"
+      },
+      "source_confidence": "repository-plus-headword-only; detailed pattern requires independent verification",
+      "rank": 12,
+      "pre_correction_rank": 10,
+      "utility_score": 5,
+      "current_support_score": 4,
+      "beginner_value_score": 5,
+      "learning_payoff_score": 5,
+      "determinism_score": 3,
+      "context_reuse_score": 5,
+      "contrast_value_score": 5,
+      "ambiguity_score": 3,
+      "review_burden_score": 2,
+      "calculated_rank_score": 85,
+      "tie_break_lemma_key": "prosić"
+    },
+    {
+      "lemma": "tęsknić",
+      "cefr": "A2",
+      "reflexive": false,
+      "aspect": "imperfective; current card links zatęsknić",
+      "meaning": "miss / long for",
+      "families": [
+        "preposition-instrumental",
+        "contrast-set"
+      ],
+      "patterns": [
+        {
+          "label": "tęsknić za + instrumental",
+          "complements": [
+            {
+              "type": "preposition-case",
+              "case": "instrumental",
+              "preposition": "za",
+              "question": "za kim?/za czym?",
+              "role": "missed person/thing"
+            }
+          ]
+        }
+      ],
+      "ambiguity": "medium",
+      "type_it": "good as a pronoun/noun-form cloze; bare 'miss' can be ambiguous",
+      "rationale": "Explicit B1 card and vocative drill reuse; high emotional usefulness and a non-obvious preposition/case pairing.",
+      "rank_score": 83,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [
+          "b1-relationships-012"
+        ],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "b1-character-emotions",
+          "b1-relationships",
+          "grammar-cases-vocative"
+        ],
+        "scenario_refs": []
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 696,
+        "scope": "headword-index-only"
+      },
+      "source_confidence": "repository-plus-headword-only; detailed pattern requires independent verification",
+      "rank": 13,
+      "pre_correction_rank": 13,
+      "utility_score": 4,
+      "current_support_score": 5,
+      "beginner_value_score": 4,
+      "learning_payoff_score": 5,
+      "determinism_score": 4,
+      "context_reuse_score": 4,
+      "contrast_value_score": 5,
+      "ambiguity_score": 2,
+      "review_burden_score": 2,
+      "calculated_rank_score": 83,
+      "tie_break_lemma_key": "tęsknić"
+    },
+    {
+      "lemma": "lubić",
+      "cefr": "A1",
+      "reflexive": false,
+      "aspect": "imperfective; polubić changes meaning/aspect and needs separate treatment",
+      "meaning": "like",
+      "families": [
+        "direct-accusative",
+        "contrast-set"
+      ],
+      "patterns": [
+        {
+          "label": "lubić + accusative",
+          "complements": [
+            {
+              "type": "case",
+              "case": "accusative",
+              "question": "kogo?/co?",
+              "role": "liked person/thing"
+            }
+          ]
+        }
+      ],
+      "ambiguity": "high",
+      "type_it": "unsafe from bare 'like'; distinguish from podobać się",
+      "rationale": "Explicit A1 Accusative card; a useful reference verb for the harder podobać się construction.",
+      "rank_score": 82,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [
+          "a1-first-verbs-018",
+          "b1-relationships-022"
+        ],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "a1-colours-clothes",
+          "a1-first-verbs",
+          "a1-food-basics",
+          "a1-free-time",
+          "a2-appearance-clothes",
+          "a2-character-traits",
+          "a2-daily-life",
+          "b1-career",
+          "b1-culture-entertainment",
+          "b1-relationships",
+          "building-sentences-negation",
+          "building-sentences-relative-clauses",
+          "grammar-cases-accusative",
+          "grammar-cases-genitive",
+          "people-numbers-nationalities",
+          "verbs-present-tense"
+        ],
+        "scenario_refs": []
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 197,
+        "scope": "headword-index-only"
+      },
+      "source_confidence": "repository-plus-headword-only; detailed pattern requires independent verification",
+      "rank": 14,
+      "pre_correction_rank": 18,
+      "utility_score": 5,
+      "current_support_score": 5,
+      "beginner_value_score": 5,
+      "learning_payoff_score": 3,
+      "determinism_score": 4,
+      "context_reuse_score": 5,
+      "contrast_value_score": 5,
+      "ambiguity_score": 3,
+      "review_burden_score": 2,
+      "calculated_rank_score": 82,
+      "tie_break_lemma_key": "lubić"
+    },
+    {
+      "lemma": "znać",
+      "cefr": "A1",
+      "reflexive": false,
+      "aspect": "imperfective; poznać is a related change-of-state/meeting verb, not an automatic interchangeable partner",
+      "meaning": "know a person/place / be familiar with",
+      "families": [
+        "direct-accusative",
+        "contrast-set"
+      ],
+      "patterns": [
+        {
+          "label": "znać + accusative",
+          "complements": [
+            {
+              "type": "case",
+              "case": "accusative",
+              "question": "kogo?/co?",
+              "role": "known person/place/thing"
+            }
+          ]
+        }
+      ],
+      "ambiguity": "high",
+      "type_it": "unsafe from bare 'know'; contrast with wiedzieć and contextually with poznać",
+      "rationale": "Explicit A1 card and Accusative teaching; translation alone does not distinguish knowing facts from familiarity.",
+      "rank_score": 82,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [
+          "a1-first-verbs-012"
+        ],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "a1-first-phrases",
+          "a1-first-verbs",
+          "b1-relationships",
+          "building-sentences-negation",
+          "building-sentences-relative-clauses",
+          "building-sentences-so-that",
+          "grammar-cases-accusative",
+          "grammar-cases-genitive",
+          "people-numbers-nationalities"
+        ],
+        "scenario_refs": []
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 972,
+        "scope": "headword-index-only"
+      },
+      "source_confidence": "repository-plus-headword-only; detailed pattern requires independent verification",
+      "rank": 15,
+      "pre_correction_rank": 17,
+      "utility_score": 5,
+      "current_support_score": 5,
+      "beginner_value_score": 5,
+      "learning_payoff_score": 3,
+      "determinism_score": 4,
+      "context_reuse_score": 5,
+      "contrast_value_score": 5,
+      "ambiguity_score": 3,
+      "review_burden_score": 2,
+      "calculated_rank_score": 82,
+      "tie_break_lemma_key": "znać"
+    },
+    {
+      "lemma": "rozmawiać",
+      "cefr": "A1-A2",
+      "reflexive": false,
+      "aspect": "imperfective; common perfective porozmawiać requires verification",
+      "meaning": "talk / have a conversation",
+      "families": [
+        "multiple-patterns",
+        "preposition-instrumental",
+        "preposition-locative"
+      ],
+      "patterns": [
+        {
+          "label": "rozmawiać z + instrumental",
+          "complements": [
+            {
+              "type": "preposition-case",
+              "case": "instrumental",
+              "preposition": "z",
+              "question": "z kim?/z czym?",
+              "role": "interlocutor"
+            }
+          ]
+        },
+        {
+          "label": "rozmawiać o + locative",
+          "complements": [
+            {
+              "type": "preposition-case",
+              "case": "locative",
+              "preposition": "o",
+              "question": "o kim?/o czym?",
+              "role": "topic"
+            }
+          ]
+        }
+      ],
+      "ambiguity": "high",
+      "type_it": "unsafe from bare 'talk'; safe as a z/o contrast cloze",
+      "rationale": "Both patterns are already taught in separate case topics, but no shared verb-centered explanation connects them.",
+      "rank_score": 82,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "a1-days-time",
+          "building-sentences-so-that",
+          "grammar-cases-instrumental",
+          "grammar-cases-locative",
+          "politeness-formal-address"
+        ],
+        "scenario_refs": []
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 603,
+        "scope": "headword-index-only"
+      },
+      "source_confidence": "repository-plus-headword-only; detailed pattern requires independent verification",
+      "rank": 16,
+      "pre_correction_rank": 14,
+      "utility_score": 5,
+      "current_support_score": 4,
+      "beginner_value_score": 4,
+      "learning_payoff_score": 5,
+      "determinism_score": 3,
+      "context_reuse_score": 5,
+      "contrast_value_score": 5,
+      "ambiguity_score": 3,
+      "review_burden_score": 2,
+      "calculated_rank_score": 82,
+      "tie_break_lemma_key": "rozmawiać"
+    },
+    {
+      "lemma": "bać się",
+      "cefr": "A2",
+      "reflexive": true,
+      "aspect": "imperfective",
+      "meaning": "fear / be worried",
+      "families": [
+        "direct-genitive",
+        "meaning-sensitive",
+        "preposition-accusative"
+      ],
+      "patterns": [
+        {
+          "label": "bać się + genitive",
+          "complements": [
+            {
+              "type": "case",
+              "case": "genitive",
+              "question": "kogo?/czego?",
+              "role": "feared stimulus"
+            }
+          ]
+        },
+        {
+          "label": "bać się o + accusative",
+          "complements": [
+            {
+              "type": "preposition-case",
+              "case": "accusative",
+              "preposition": "o",
+              "question": "o kogo?/o co?",
+              "role": "person/thing whose safety is a concern"
+            }
+          ],
+          "review_note": "Meaning boundary and production priority require contemporary native review"
+        }
+      ],
+      "ambiguity": "high",
+      "type_it": "unsafe from bare English; teach the meaning contrast before production",
+      "rationale": "Explicit B1 Genitive card and source sample entry; the o + Accusative contrast is exactly the kind of meaning-dependent pattern Priority 7 must model.",
+      "rank_score": 82,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [
+          "b1-character-emotions-010"
+        ],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "a2-health-body",
+          "a2-travel-holidays",
+          "b1-character-emotions"
+        ],
+        "scenario_refs": []
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 5,
+        "scope": "sample-detailed-entry"
+      },
+      "source_confidence": "repository-plus-sample-entry; still unapproved",
+      "rank": 17,
+      "pre_correction_rank": 15,
+      "utility_score": 5,
+      "current_support_score": 5,
+      "beginner_value_score": 4,
+      "learning_payoff_score": 5,
+      "determinism_score": 3,
+      "context_reuse_score": 4,
+      "contrast_value_score": 5,
+      "ambiguity_score": 3,
+      "review_burden_score": 3,
+      "calculated_rank_score": 82,
+      "tie_break_lemma_key": "bać się"
+    },
+    {
+      "lemma": "być",
+      "cefr": "A1",
+      "reflexive": false,
+      "aspect": "imperfective-only in current/source framing",
+      "meaning": "be / identify as",
+      "families": [
+        "identity-instrumental",
+        "nominative-contrast",
+        "meaning-sensitive"
+      ],
+      "patterns": [
+        {
+          "label": "być + instrumental (role/profession)",
+          "complements": [
+            {
+              "type": "case",
+              "case": "instrumental",
+              "question": "kim?/czym?",
+              "role": "role/identity"
+            }
+          ],
+          "review_note": "Role/profession Instrumental is predicative/constructional, not assumed to be ordinary direct verb government."
+        },
+        {
+          "label": "to jest + nominative",
+          "complements": [
+            {
+              "type": "case",
+              "case": "nominative",
+              "question": "kto?/co?",
+              "role": "identified item"
+            }
+          ],
+          "review_note": "The to jest + Nominative contrast is constructional and must not be modeled as an ordinary governed object."
+        }
+      ],
+      "ambiguity": "high",
+      "type_it": "safe only with the construction supplied",
+      "rationale": "Foundational verb with extensive explicit case teaching; the to jest / jest kimś contrast prevents a misleading one-case rule.",
+      "rank_score": 82,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [
+          "a1-first-verbs-001",
+          "a2-appearance-clothes-002",
+          "b1-character-emotions-012",
+          "b1-idioms-012",
+          "podcasts-meaning-of-life-011"
+        ],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "a1-about-me",
+          "a1-cafe",
+          "a1-colours-clothes",
+          "a1-days-time",
+          "a1-directions",
+          "a1-family-people",
+          "a1-first-phrases",
+          "a1-first-verbs",
+          "a1-food-basics",
+          "a1-fruit-vegetables",
+          "a1-months-seasons",
+          "a1-morning-routine",
+          "a1-numbers-prices",
+          "a1-weather-today",
+          "a2-apartment",
+          "a2-appearance-clothes",
+          "a2-character-traits",
+          "a2-daily-life",
+          "a2-describing-past",
+          "a2-directions-orientation",
+          "a2-ecology",
+          "a2-food-shopping",
+          "a2-health-body",
+          "a2-healthcare-appointments",
+          "a2-holidays-traditions",
+          "a2-home-family",
+          "a2-leisure-culture",
+          "a2-nature-animals",
+          "a2-official-matters",
+          "a2-pharmacy",
+          "a2-public-transport",
+          "a2-quantities-money",
+          "a2-restaurant",
+          "a2-travel-holidays",
+          "a2-weather-climate",
+          "a2-work-education",
+          "b1-career",
+          "b1-character-emotions",
+          "b1-corporate-slang",
+          "b1-culture-entertainment",
+          "b1-everyday-slang",
+          "b1-exclamations",
+          "b1-expressing-opinions",
+          "b1-getting-things-done",
+          "b1-healthy-lifestyle",
+          "b1-idioms",
+          "b1-money-finance",
+          "b1-proverbs",
+          "b1-relationships",
+          "b1-swearing",
+          "b1-travel-problems",
+          "b1-urban-party-slang",
+          "building-sentences-conditions",
+          "building-sentences-negation",
+          "building-sentences-relative-clauses",
+          "building-sentences-so-that",
+          "grammar-cases-dative",
+          "grammar-cases-genitive",
+          "grammar-cases-instrumental",
+          "grammar-cases-locative",
+          "grammar-cases-nominative",
+          "grammar-cases-vocative",
+          "people-numbers-adjectives",
+          "people-numbers-comparison",
+          "people-numbers-every-all",
+          "people-numbers-nationalities",
+          "people-numbers-numerals",
+          "people-numbers-professions",
+          "people-numbers-pronouns",
+          "podcasts-meaning-of-life",
+          "podcasts-toxic-productivity",
+          "podcasts-work-life",
+          "politeness-conditional",
+          "politeness-diminutives",
+          "politeness-formal-address",
+          "politeness-plural-formal-address",
+          "verbs-aspect",
+          "verbs-future-tense",
+          "verbs-imperative",
+          "verbs-past-tense",
+          "verbs-present-tense"
+        ],
+        "scenario_refs": [
+          "scenarios-city-transport",
+          "scenarios-doctor",
+          "scenarios-gym",
+          "scenarios-healthcare-appointments",
+          "scenarios-neighbours",
+          "scenarios-pharmacy",
+          "scenarios-shops-services",
+          "scenarios-work-university"
+        ]
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 25,
+        "scope": "sample-detailed-entry"
+      },
+      "source_confidence": "repository-plus-sample-entry; still unapproved",
+      "rank": 18,
+      "pre_correction_rank": 16,
+      "utility_score": 5,
+      "current_support_score": 5,
+      "beginner_value_score": 5,
+      "learning_payoff_score": 4,
+      "determinism_score": 3,
+      "context_reuse_score": 5,
+      "contrast_value_score": 5,
+      "ambiguity_score": 4,
+      "review_burden_score": 2,
+      "calculated_rank_score": 82,
+      "tie_break_lemma_key": "być"
+    },
+    {
+      "lemma": "mówić",
+      "cefr": "A1",
+      "reflexive": false,
+      "aspect": "imperfective; current card links powiedzieć",
+      "meaning": "say / speak / tell",
+      "families": [
+        "dative-recipient",
+        "multiple-complements",
+        "clause"
+      ],
+      "patterns": [
+        {
+          "label": "mówić komuś coś",
+          "complements": [
+            {
+              "type": "case",
+              "case": "dative",
+              "question": "komu?",
+              "role": "recipient"
+            },
+            {
+              "type": "case",
+              "case": "accusative",
+              "question": "co?",
+              "role": "content"
+            }
+          ],
+          "review_note": "Meaning boundary and active-production scope require Phase 1/native verification."
+        },
+        {
+          "label": "mówić komuś, że...",
+          "complements": [
+            {
+              "type": "case",
+              "case": "dative",
+              "question": "komu?",
+              "role": "recipient"
+            },
+            {
+              "type": "clause",
+              "role": "content clause"
+            }
+          ],
+          "review_note": "Whether this shares one meaning record with the object pattern requires Phase 1/native verification."
+        }
+      ],
+      "ambiguity": "high",
+      "type_it": "unsafe from bare say/speak/tell; use a recipient/content frame",
+      "rationale": "Core A1 verb and Dative trigger; multiple English verbs map onto meaning-specific Polish constructions.",
+      "rank_score": 81,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [
+          "a1-first-verbs-009"
+        ],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "a1-about-me",
+          "a1-first-phrases",
+          "a1-first-verbs",
+          "a2-describing-past",
+          "a2-healthcare-appointments",
+          "b1-expressing-opinions",
+          "b1-idioms",
+          "b1-relationships",
+          "building-sentences-conditions",
+          "building-sentences-negation",
+          "building-sentences-relative-clauses",
+          "building-sentences-so-that",
+          "grammar-cases-dative",
+          "people-numbers-comparison",
+          "people-numbers-nationalities",
+          "politeness-conditional",
+          "politeness-formal-address",
+          "verbs-aspect",
+          "verbs-imperative",
+          "verbs-present-tense"
+        ],
+        "scenario_refs": []
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 226,
+        "scope": "headword-index-only"
+      },
+      "source_confidence": "repository-plus-headword-only; detailed pattern requires independent verification",
+      "rank": 19,
+      "pre_correction_rank": 19,
+      "utility_score": 5,
+      "current_support_score": 5,
+      "beginner_value_score": 5,
+      "learning_payoff_score": 4,
+      "determinism_score": 3,
+      "context_reuse_score": 5,
+      "contrast_value_score": 5,
+      "ambiguity_score": 4,
+      "review_burden_score": 3,
+      "calculated_rank_score": 81,
+      "tie_break_lemma_key": "mówić"
+    },
+    {
+      "lemma": "mieć",
+      "cefr": "A1",
+      "reflexive": false,
+      "aspect": "imperfective-only in current/source framing",
+      "meaning": "have",
+      "families": [
+        "direct-accusative",
+        "reference-set"
+      ],
+      "patterns": [
+        {
+          "label": "mieć + accusative",
+          "complements": [
+            {
+              "type": "case",
+              "case": "accusative",
+              "question": "kogo?/co?",
+              "role": "possessed/experienced thing"
+            }
+          ]
+        }
+      ],
+      "ambiguity": "medium",
+      "type_it": "good as a reference Accusative cloze; many idiomatic mieć phrases need separate meanings",
+      "rationale": "Foundational A1 reference verb; lower incremental payoff than non-obvious patterns but essential for comparison and negation behavior.",
+      "rank_score": 79,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [
+          "a1-first-verbs-002",
+          "a2-appearance-clothes-003",
+          "b1-character-emotions-002",
+          "b1-idioms-010",
+          "b1-idioms-023",
+          "b1-swearing-009",
+          "b1-swearing-026",
+          "podcasts-meaning-of-life-002"
+        ],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "a1-about-me",
+          "a1-colours-clothes",
+          "a1-days-time",
+          "a1-directions",
+          "a1-family-people",
+          "a1-first-phrases",
+          "a1-first-verbs",
+          "a1-fruit-vegetables",
+          "a1-months-seasons",
+          "a1-morning-routine",
+          "a1-numbers-prices",
+          "a2-apartment",
+          "a2-appearance-clothes",
+          "a2-character-traits",
+          "a2-describing-past",
+          "a2-directions-orientation",
+          "a2-ecology",
+          "a2-food-shopping",
+          "a2-health-body",
+          "a2-healthcare-appointments",
+          "a2-holidays-traditions",
+          "a2-home-family",
+          "a2-leisure-culture",
+          "a2-nature-animals",
+          "a2-official-matters",
+          "a2-pharmacy",
+          "a2-public-transport",
+          "a2-quantities-money",
+          "a2-restaurant",
+          "a2-travel-holidays",
+          "a2-work-education",
+          "b1-career",
+          "b1-character-emotions",
+          "b1-corporate-slang",
+          "b1-everyday-slang",
+          "b1-expressing-opinions",
+          "b1-getting-things-done",
+          "b1-idioms",
+          "b1-media-technology",
+          "b1-money-finance",
+          "b1-proverbs",
+          "b1-swearing",
+          "b1-travel-problems",
+          "b1-urban-party-slang",
+          "building-sentences-conditions",
+          "building-sentences-negation",
+          "building-sentences-relative-clauses",
+          "grammar-cases-accusative",
+          "grammar-cases-genitive",
+          "grammar-cases-nominative",
+          "grammar-cases-vocative",
+          "people-numbers-comparison",
+          "people-numbers-every-all",
+          "people-numbers-numerals",
+          "people-numbers-professions",
+          "podcasts-meaning-of-life",
+          "podcasts-toxic-productivity",
+          "podcasts-work-life",
+          "politeness-diminutives",
+          "politeness-formal-address",
+          "politeness-formal-writing",
+          "politeness-plural-formal-address",
+          "verbs-past-tense",
+          "verbs-present-tense",
+          "verbs-reflexive"
+        ],
+        "scenario_refs": [
+          "scenarios-doctor",
+          "scenarios-gym",
+          "scenarios-healthcare-appointments",
+          "scenarios-neighbours",
+          "scenarios-pharmacy",
+          "scenarios-shops-services",
+          "scenarios-work-university"
+        ]
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 214,
+        "scope": "headword-index-only"
+      },
+      "source_confidence": "repository-plus-headword-only; detailed pattern requires independent verification",
+      "rank": 20,
+      "pre_correction_rank": 22,
+      "utility_score": 5,
+      "current_support_score": 5,
+      "beginner_value_score": 5,
+      "learning_payoff_score": 2,
+      "determinism_score": 5,
+      "context_reuse_score": 5,
+      "contrast_value_score": 3,
+      "ambiguity_score": 2,
+      "review_burden_score": 1,
+      "calculated_rank_score": 79,
+      "tie_break_lemma_key": "mieć"
+    },
+    {
+      "lemma": "widzieć",
+      "cefr": "A1",
+      "reflexive": false,
+      "aspect": "imperfective; zobaczyć is the common result/perfective relation",
+      "meaning": "see",
+      "families": [
+        "direct-accusative",
+        "contrast-set"
+      ],
+      "patterns": [
+        {
+          "label": "widzieć + accusative",
+          "complements": [
+            {
+              "type": "case",
+              "case": "accusative",
+              "question": "kogo?/co?",
+              "role": "seen person/thing"
+            }
+          ]
+        }
+      ],
+      "ambiguity": "medium",
+      "type_it": "good as an animacy-sensitive Accusative cloze",
+      "rationale": "Explicitly named in Accusative drills and present as inflected vocabulary; reference point for słyszeć/słuchać-style perception contrasts.",
+      "rank_score": 79,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "a1-about-me",
+          "a1-first-phrases",
+          "a2-describing-past",
+          "a2-nature-animals",
+          "b1-character-emotions",
+          "b1-media-technology",
+          "building-sentences-negation",
+          "building-sentences-so-that",
+          "grammar-cases-accusative",
+          "grammar-cases-genitive"
+        ],
+        "scenario_refs": [
+          "scenarios-city-transport",
+          "scenarios-neighbours",
+          "scenarios-work-university"
+        ]
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 778,
+        "scope": "headword-index-only"
+      },
+      "source_confidence": "repository-plus-headword-only; detailed pattern requires independent verification",
+      "rank": 21,
+      "pre_correction_rank": 21,
+      "utility_score": 5,
+      "current_support_score": 4,
+      "beginner_value_score": 5,
+      "learning_payoff_score": 3,
+      "determinism_score": 4,
+      "context_reuse_score": 4,
+      "contrast_value_score": 5,
+      "ambiguity_score": 2,
+      "review_burden_score": 2,
+      "calculated_rank_score": 79,
+      "tie_break_lemma_key": "widzieć"
+    },
+    {
+      "lemma": "pytać",
+      "cefr": "A1-A2",
+      "reflexive": false,
+      "aspect": "imperfective; common perfective zapytać requires verification",
+      "meaning": "ask a question / ask about",
+      "families": [
+        "multiple-complements",
+        "preposition-accusative"
+      ],
+      "patterns": [
+        {
+          "label": "pytać kogoś o coś",
+          "complements": [
+            {
+              "type": "case",
+              "case": "accusative",
+              "question": "kogo?",
+              "role": "addressee"
+            },
+            {
+              "type": "preposition-case",
+              "case": "accusative",
+              "preposition": "o",
+              "question": "o co?",
+              "role": "topic/information"
+            }
+          ]
+        }
+      ],
+      "ambiguity": "high",
+      "type_it": "unsafe from bare English 'ask'; contrast explicitly with prosić",
+      "rationale": "Accusative case teaching names pytać o, and everyday directions/appointments need it; current content is implicit rather than verb-centered.",
+      "rank_score": 79,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "a1-about-me",
+          "a1-first-verbs",
+          "a2-describing-past",
+          "a2-healthcare-appointments",
+          "b1-everyday-slang",
+          "building-sentences-conditions",
+          "building-sentences-negation",
+          "building-sentences-so-that",
+          "grammar-cases-accusative",
+          "grammar-cases-vocative",
+          "people-numbers-professions",
+          "podcasts-meaning-of-life",
+          "podcasts-work-life",
+          "politeness-formal-writing"
+        ],
+        "scenario_refs": [
+          "scenarios-city-transport",
+          "scenarios-gym",
+          "scenarios-work-university"
+        ]
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 573,
+        "scope": "headword-index-only"
+      },
+      "source_confidence": "repository-plus-headword-only; detailed pattern requires independent verification",
+      "rank": 22,
+      "pre_correction_rank": 20,
+      "utility_score": 5,
+      "current_support_score": 3,
+      "beginner_value_score": 4,
+      "learning_payoff_score": 5,
+      "determinism_score": 3,
+      "context_reuse_score": 5,
+      "contrast_value_score": 5,
+      "ambiguity_score": 3,
+      "review_burden_score": 2,
+      "calculated_rank_score": 79,
+      "tie_break_lemma_key": "pytać"
+    },
+    {
+      "lemma": "myśleć",
+      "cefr": "A2",
+      "reflexive": false,
+      "aspect": "imperfective; pomyśleć is a common perfective relation requiring review",
+      "meaning": "think about",
+      "families": [
+        "preposition-locative",
+        "clause",
+        "meaning-sensitive"
+      ],
+      "patterns": [
+        {
+          "label": "myśleć o + locative",
+          "complements": [
+            {
+              "type": "preposition-case",
+              "case": "locative",
+              "preposition": "o",
+              "question": "o kim?/o czym?",
+              "role": "thought topic"
+            }
+          ]
+        }
+      ],
+      "ambiguity": "high",
+      "type_it": "unsafe from bare 'think'; safe as an o + Locative cloze",
+      "rationale": "Locative teaching and opinion content already use it; future modeling must keep myśleć o apart from myśleć, że.",
+      "rank_score": 76,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "b1-expressing-opinions",
+          "grammar-cases-locative",
+          "people-numbers-comparison",
+          "podcasts-meaning-of-life",
+          "podcasts-work-life"
+        ],
+        "scenario_refs": []
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 232,
+        "scope": "headword-index-only"
+      },
+      "source_confidence": "repository-plus-headword-only; detailed pattern requires independent verification",
+      "rank": 23,
+      "pre_correction_rank": 23,
+      "utility_score": 5,
+      "current_support_score": 4,
+      "beginner_value_score": 4,
+      "learning_payoff_score": 4,
+      "determinism_score": 3,
+      "context_reuse_score": 4,
+      "contrast_value_score": 5,
+      "ambiguity_score": 3,
+      "review_burden_score": 2,
+      "calculated_rank_score": 76,
+      "tie_break_lemma_key": "myśleć"
+    },
+    {
+      "lemma": "znaleźć",
+      "cefr": "A2",
+      "reflexive": false,
+      "aspect": "perfective; current szukać card contrasts it with imperfective znajdować/find semantics",
+      "meaning": "find",
+      "families": [
+        "direct-accusative",
+        "contrast-set",
+        "negation-interaction"
+      ],
+      "patterns": [
+        {
+          "label": "znaleźć + accusative (affirmative direct object)",
+          "complements": [
+            {
+              "type": "case",
+              "case": "accusative",
+              "question": "kogo?/co?",
+              "role": "found person/thing"
+            }
+          ],
+          "review_note": "Negated direct objects follow the repository's Accusative-to-Genitive rule; do not encode Genitive as the lemma's sole pattern"
+        }
+      ],
+      "ambiguity": "high",
+      "type_it": "use an aspect-aware sentence; unsafe as bare 'find/look for'",
+      "rationale": "Existing szukać contrast and negation drill make it a useful comparison verb; it is absent from the source headword index and needs independent verification.",
+      "rank_score": 75,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [],
+        "aspect_or_contrast_card_ids": [
+          "a1-first-verbs-020",
+          "a2-work-education-010",
+          "b1-idioms-026"
+        ],
+        "teaching_or_topic_refs": [
+          "a2-describing-past",
+          "a2-work-education",
+          "b1-media-technology",
+          "building-sentences-negation"
+        ],
+        "scenario_refs": [
+          "scenarios-city-transport"
+        ]
+      },
+      "book_evidence": {
+        "present": false,
+        "book_index": null,
+        "scope": "not-in-headword-index"
+      },
+      "source_confidence": "repository evidence only; absent from source index and requires independent verification",
+      "rank": 24,
+      "pre_correction_rank": 24,
+      "utility_score": 5,
+      "current_support_score": 4,
+      "beginner_value_score": 4,
+      "learning_payoff_score": 3,
+      "determinism_score": 4,
+      "context_reuse_score": 5,
+      "contrast_value_score": 5,
+      "ambiguity_score": 3,
+      "review_burden_score": 3,
+      "calculated_rank_score": 75,
+      "tie_break_lemma_key": "znaleźć"
+    },
+    {
+      "lemma": "podobać się",
+      "cefr": "A2",
+      "reflexive": true,
+      "aspect": "source index labels the headword NDK/DK; modern treatment requires review",
+      "meaning": "appeal to / be liked by",
+      "families": [
+        "dative-experiencer",
+        "meaning-sensitive"
+      ],
+      "patterns": [
+        {
+          "label": "coś podoba się komuś",
+          "complements": [
+            {
+              "type": "case",
+              "case": "nominative",
+              "question": "co?",
+              "role": "thing liked"
+            },
+            {
+              "type": "case",
+              "case": "dative",
+              "question": "komu?",
+              "role": "experiencer"
+            }
+          ],
+          "review_note": "Nominative stimulus plus Dative experiencer is a subject/experiencer construction; Phase 1 must decide its minimal internal relation representation."
+        }
+      ],
+      "ambiguity": "high",
+      "type_it": "unsafe from bare 'like'; use role-labeled or sentence-context drills",
+      "rationale": "Existing B1 example explicitly names the Dative; it is a major English-to-Polish argument-structure reversal.",
+      "rank_score": 74,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "b1-culture-entertainment",
+          "b1-expressing-opinions"
+        ],
+        "scenario_refs": []
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 425,
+        "scope": "headword-index-only"
+      },
+      "source_confidence": "repository-plus-headword-only; detailed pattern requires independent verification",
+      "rank": 25,
+      "pre_correction_rank": 25,
+      "utility_score": 5,
+      "current_support_score": 3,
+      "beginner_value_score": 4,
+      "learning_payoff_score": 5,
+      "determinism_score": 3,
+      "context_reuse_score": 4,
+      "contrast_value_score": 5,
+      "ambiguity_score": 4,
+      "review_burden_score": 3,
+      "calculated_rank_score": 74,
+      "tie_break_lemma_key": "podobać się"
+    },
+    {
+      "lemma": "ufać",
+      "cefr": "A2",
+      "reflexive": false,
+      "aspect": "imperfective; zaufać is a common change-of-state relation requiring review",
+      "meaning": "trust",
+      "families": [
+        "direct-dative",
+        "contrast-set"
+      ],
+      "patterns": [
+        {
+          "label": "ufać + dative",
+          "complements": [
+            {
+              "type": "case",
+              "case": "dative",
+              "question": "komu?/czemu?",
+              "role": "trusted person/thing"
+            }
+          ]
+        }
+      ],
+      "ambiguity": "medium",
+      "type_it": "good as a pronoun/person-form cloze",
+      "rationale": "Named as a Dative trigger and valuable for real relationships; no explicit lexical verb card currently consolidates it.",
+      "rank_score": 72,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "b1-relationships",
+          "building-sentences-negation",
+          "grammar-cases-dative"
+        ],
+        "scenario_refs": []
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 727,
+        "scope": "headword-index-only"
+      },
+      "source_confidence": "repository-plus-headword-only; detailed pattern requires independent verification",
+      "rank": 26,
+      "pre_correction_rank": 26,
+      "utility_score": 4,
+      "current_support_score": 3,
+      "beginner_value_score": 3,
+      "learning_payoff_score": 5,
+      "determinism_score": 4,
+      "context_reuse_score": 4,
+      "contrast_value_score": 4,
+      "ambiguity_score": 2,
+      "review_burden_score": 2,
+      "calculated_rank_score": 72,
+      "tie_break_lemma_key": "ufać"
+    },
+    {
+      "lemma": "wierzyć",
+      "cefr": "A2",
+      "reflexive": false,
+      "aspect": "imperfective; uwierzyć is a common result relation requiring review",
+      "meaning": "believe / believe in",
+      "families": [
+        "direct-dative",
+        "preposition-accusative",
+        "meaning-sensitive"
+      ],
+      "patterns": [
+        {
+          "label": "wierzyć + dative",
+          "complements": [
+            {
+              "type": "case",
+              "case": "dative",
+              "question": "komu?/czemu?",
+              "role": "person/source believed"
+            }
+          ]
+        },
+        {
+          "label": "wierzyć w + accusative",
+          "complements": [
+            {
+              "type": "preposition-case",
+              "case": "accusative",
+              "preposition": "w",
+              "question": "w kogo?/w co?",
+              "role": "belief object"
+            }
+          ]
+        }
+      ],
+      "ambiguity": "high",
+      "type_it": "unsafe from bare 'believe'; require the intended meaning",
+      "rationale": "Dative drill coverage exists, and the meaning-dependent w + Accusative frame makes it a strong multi-pattern candidate.",
+      "rank_score": 70,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "b1-everyday-slang",
+          "b1-exclamations",
+          "grammar-cases-dative"
+        ],
+        "scenario_refs": []
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 781,
+        "scope": "headword-index-only"
+      },
+      "source_confidence": "repository-plus-headword-only; detailed pattern requires independent verification",
+      "rank": 27,
+      "pre_correction_rank": 27,
+      "utility_score": 4,
+      "current_support_score": 4,
+      "beginner_value_score": 3,
+      "learning_payoff_score": 5,
+      "determinism_score": 3,
+      "context_reuse_score": 4,
+      "contrast_value_score": 5,
+      "ambiguity_score": 4,
+      "review_burden_score": 3,
+      "calculated_rank_score": 70,
+      "tie_break_lemma_key": "wierzyć"
+    },
+    {
+      "lemma": "opiekować się",
+      "cefr": "A2",
+      "reflexive": true,
+      "aspect": "imperfective; common perfective zaopiekować się requires verification",
+      "meaning": "look after / care for",
+      "families": [
+        "direct-instrumental",
+        "contrast-set"
+      ],
+      "patterns": [
+        {
+          "label": "opiekować się + instrumental",
+          "complements": [
+            {
+              "type": "case",
+              "case": "instrumental",
+              "question": "kim?/czym?",
+              "role": "person/thing cared for"
+            }
+          ]
+        }
+      ],
+      "ambiguity": "medium",
+      "type_it": "good with a specific care target; bare 'care for' needs a sense cue",
+      "rationale": "High practical family/health value and a useful contrast with dbać o; repository coverage is currently weak.",
+      "rank_score": 69,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [],
+        "scenario_refs": []
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 360,
+        "scope": "headword-index-only"
+      },
+      "source_confidence": "headword-only plus provisional analysis; detailed pattern requires independent verification",
+      "rank": 28,
+      "pre_correction_rank": 29,
+      "utility_score": 4,
+      "current_support_score": 1,
+      "beginner_value_score": 3,
+      "learning_payoff_score": 5,
+      "determinism_score": 4,
+      "context_reuse_score": 5,
+      "contrast_value_score": 5,
+      "ambiguity_score": 2,
+      "review_burden_score": 3,
+      "calculated_rank_score": 69,
+      "tie_break_lemma_key": "opiekować się"
+    },
+    {
+      "lemma": "zajmować się",
+      "cefr": "A2",
+      "reflexive": true,
+      "aspect": "imperfective; common perfective zająć się requires verification",
+      "meaning": "deal with / be occupied with",
+      "families": [
+        "direct-instrumental",
+        "reflexive-contrast",
+        "meaning-sensitive"
+      ],
+      "patterns": [
+        {
+          "label": "zajmować się + instrumental",
+          "complements": [
+            {
+              "type": "case",
+              "case": "instrumental",
+              "question": "kim?/czym?",
+              "role": "activity/responsibility"
+            }
+          ]
+        }
+      ],
+      "ambiguity": "high",
+      "type_it": "use a contextual cloze; distinguish non-reflexive zajmować 'take up'",
+      "rationale": "Named in Instrumental teaching and useful for work introductions; reflexive/non-reflexive polysemy tests the architecture.",
+      "rank_score": 69,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "grammar-cases-instrumental"
+        ],
+        "scenario_refs": []
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 897,
+        "scope": "headword-index-only"
+      },
+      "source_confidence": "repository-plus-headword-only; detailed pattern requires independent verification",
+      "rank": 29,
+      "pre_correction_rank": 28,
+      "utility_score": 4,
+      "current_support_score": 3,
+      "beginner_value_score": 3,
+      "learning_payoff_score": 5,
+      "determinism_score": 3,
+      "context_reuse_score": 4,
+      "contrast_value_score": 5,
+      "ambiguity_score": 3,
+      "review_burden_score": 3,
+      "calculated_rank_score": 69,
+      "tie_break_lemma_key": "zajmować się"
+    },
+    {
+      "lemma": "zależeć",
+      "cefr": "A2-B1",
+      "reflexive": false,
+      "aspect": "imperfective",
+      "meaning": "depend on / matter to",
+      "families": [
+        "preposition-genitive",
+        "dative-experiencer",
+        "preposition-locative",
+        "meaning-sensitive"
+      ],
+      "patterns": [
+        {
+          "label": "zależeć od + genitive",
+          "complements": [
+            {
+              "type": "preposition-case",
+              "case": "genitive",
+              "preposition": "od",
+              "question": "od kogo?/od czego?",
+              "role": "dependency source"
+            }
+          ]
+        },
+        {
+          "label": "zależeć komuś na + locative",
+          "complements": [
+            {
+              "type": "case",
+              "case": "dative",
+              "question": "komu?",
+              "role": "experiencer"
+            },
+            {
+              "type": "preposition-case",
+              "case": "locative",
+              "preposition": "na",
+              "question": "na kim?/na czym?",
+              "role": "valued matter"
+            }
+          ],
+          "review_note": "Keep as a separate meaning/construction"
+        }
+      ],
+      "ambiguity": "high",
+      "type_it": "recognition first; unsafe from bare 'depend/care/matter'",
+      "rationale": "Strong architecture stress-test with two high-value constructions; current coverage is only a żeby example, so release risk is higher.",
+      "rank_score": 58,
+      "review_status": "research-candidate",
+      "native_review_required": true,
+      "current_po_polsku": {
+        "primary_verb_card_ids": [],
+        "aspect_or_contrast_card_ids": [],
+        "teaching_or_topic_refs": [
+          "b1-expressing-opinions",
+          "building-sentences-so-that"
+        ],
+        "scenario_refs": []
+      },
+      "book_evidence": {
+        "present": true,
+        "book_index": 904,
+        "scope": "headword-index-only"
+      },
+      "source_confidence": "repository-plus-headword-only; detailed pattern requires independent verification",
+      "rank": 30,
+      "pre_correction_rank": 30,
+      "utility_score": 4,
+      "current_support_score": 2,
+      "beginner_value_score": 2,
+      "learning_payoff_score": 5,
+      "determinism_score": 2,
+      "context_reuse_score": 4,
+      "contrast_value_score": 5,
+      "ambiguity_score": 4,
+      "review_burden_score": 4,
+      "calculated_rank_score": 58,
+      "tie_break_lemma_key": "zależeć"
+    }
+  ],
+  "future_shortlist": [
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 1,
+      "lemma": "pomagać",
+      "reflexive": false,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 440,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 2,
+      "lemma": "szukać",
+      "reflexive": false,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 684,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 3,
+      "lemma": "słuchać",
+      "reflexive": false,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 643,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 4,
+      "lemma": "czekać",
+      "reflexive": false,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 46,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 5,
+      "lemma": "potrzebować",
+      "reflexive": false,
+      "current_presence": "other-repository-evidence",
+      "book_list_present": true,
+      "book_index": 461,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 6,
+      "lemma": "dziękować",
+      "reflexive": false,
+      "current_presence": "other-repository-evidence",
+      "book_list_present": true,
+      "book_index": 113,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 7,
+      "lemma": "płacić",
+      "reflexive": false,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 406,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 8,
+      "lemma": "uczyć się",
+      "reflexive": true,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 718,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 9,
+      "lemma": "używać",
+      "reflexive": false,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 767,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 10,
+      "lemma": "interesować się",
+      "reflexive": true,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 141,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 11,
+      "lemma": "dbać",
+      "reflexive": false,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 60,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 12,
+      "lemma": "prosić",
+      "reflexive": false,
+      "current_presence": "other-repository-evidence",
+      "book_list_present": true,
+      "book_index": 488,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 13,
+      "lemma": "tęsknić",
+      "reflexive": false,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 696,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 14,
+      "lemma": "lubić",
+      "reflexive": false,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 197,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 15,
+      "lemma": "znać",
+      "reflexive": false,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 972,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 16,
+      "lemma": "rozmawiać",
+      "reflexive": false,
+      "current_presence": "other-repository-evidence",
+      "book_list_present": true,
+      "book_index": 603,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 17,
+      "lemma": "bać się",
+      "reflexive": true,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 5,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 18,
+      "lemma": "być",
+      "reflexive": false,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 25,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 19,
+      "lemma": "mówić",
+      "reflexive": false,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 226,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 20,
+      "lemma": "mieć",
+      "reflexive": false,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 214,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 21,
+      "lemma": "widzieć",
+      "reflexive": false,
+      "current_presence": "other-repository-evidence",
+      "book_list_present": true,
+      "book_index": 778,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 22,
+      "lemma": "pytać",
+      "reflexive": false,
+      "current_presence": "other-repository-evidence",
+      "book_list_present": true,
+      "book_index": 573,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 23,
+      "lemma": "myśleć",
+      "reflexive": false,
+      "current_presence": "other-repository-evidence",
+      "book_list_present": true,
+      "book_index": 232,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 24,
+      "lemma": "znaleźć",
+      "reflexive": false,
+      "current_presence": "linked-aspect-or-contrast",
+      "book_list_present": false,
+      "book_index": null,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 25,
+      "lemma": "podobać się",
+      "reflexive": true,
+      "current_presence": "other-repository-evidence",
+      "book_list_present": true,
+      "book_index": 425,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 26,
+      "lemma": "ufać",
+      "reflexive": false,
+      "current_presence": "other-repository-evidence",
+      "book_list_present": true,
+      "book_index": 727,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 27,
+      "lemma": "wierzyć",
+      "reflexive": false,
+      "current_presence": "other-repository-evidence",
+      "book_list_present": true,
+      "book_index": 781,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 28,
+      "lemma": "opiekować się",
+      "reflexive": true,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 360,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 29,
+      "lemma": "zajmować się",
+      "reflexive": true,
+      "current_presence": "other-repository-evidence",
+      "book_list_present": true,
+      "book_index": 897,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 1 - pilot",
+      "tier_order": 30,
+      "lemma": "zależeć",
+      "reflexive": false,
+      "current_presence": "other-repository-evidence",
+      "book_list_present": true,
+      "book_index": 904,
+      "status": "research-candidate",
+      "release_implication": "pilot candidate only; native review and owner approval required"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 1,
+      "lemma": "spotykać się",
+      "reflexive": true,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 658,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 2,
+      "lemma": "cieszyć się",
+      "reflexive": true,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 45,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 3,
+      "lemma": "zakochiwać się",
+      "reflexive": true,
+      "current_presence": "linked-aspect-or-contrast",
+      "book_list_present": true,
+      "book_index": 899,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 4,
+      "lemma": "zgadzać się",
+      "reflexive": true,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 958,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 5,
+      "lemma": "wybaczać",
+      "reflexive": false,
+      "current_presence": "linked-aspect-or-contrast",
+      "book_list_present": true,
+      "book_index": 815,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 6,
+      "lemma": "pasować",
+      "reflexive": false,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 396,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 7,
+      "lemma": "brakować",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 17,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 8,
+      "lemma": "przeszkadzać",
+      "reflexive": false,
+      "current_presence": "other-repository-evidence",
+      "book_list_present": true,
+      "book_index": 532,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 9,
+      "lemma": "szkodzić",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 683,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 10,
+      "lemma": "sprzyjać",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 666,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 11,
+      "lemma": "radzić",
+      "reflexive": false,
+      "current_presence": "other-repository-evidence",
+      "book_list_present": true,
+      "book_index": 575,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 12,
+      "lemma": "doradzać",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 91,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 13,
+      "lemma": "odpowiadać",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 328,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 14,
+      "lemma": "pokazywać",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 435,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 15,
+      "lemma": "dawać",
+      "reflexive": false,
+      "current_presence": "other-repository-evidence",
+      "book_list_present": true,
+      "book_index": 57,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 16,
+      "lemma": "kupować",
+      "reflexive": false,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 185,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 17,
+      "lemma": "jeść",
+      "reflexive": false,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 145,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 18,
+      "lemma": "pić",
+      "reflexive": false,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 400,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 19,
+      "lemma": "oglądać",
+      "reflexive": false,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 347,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 20,
+      "lemma": "słyszeć",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 645,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 21,
+      "lemma": "rozumieć",
+      "reflexive": false,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 616,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 22,
+      "lemma": "pamiętać",
+      "reflexive": false,
+      "current_presence": "other-repository-evidence",
+      "book_list_present": true,
+      "book_index": 393,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 23,
+      "lemma": "zapominać",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 920,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 24,
+      "lemma": "marzyć",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 210,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 25,
+      "lemma": "rezygnować",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 584,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 26,
+      "lemma": "korzystać",
+      "reflexive": false,
+      "current_presence": "other-repository-evidence",
+      "book_list_present": true,
+      "book_index": 173,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 27,
+      "lemma": "próbować",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 493,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 28,
+      "lemma": "przestawać",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 528,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 29,
+      "lemma": "zaczynać",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 889,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 30,
+      "lemma": "planować",
+      "reflexive": false,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 405,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 31,
+      "lemma": "decydować się",
+      "reflexive": true,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 62,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 32,
+      "lemma": "umawiać się",
+      "reflexive": true,
+      "current_presence": "linked-aspect-or-contrast",
+      "book_list_present": true,
+      "book_index": 736,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 33,
+      "lemma": "zapraszać",
+      "reflexive": false,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 923,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 34,
+      "lemma": "informować",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 139,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 2 - next essential",
+      "tier_order": 35,
+      "lemma": "przepraszać",
+      "reflexive": false,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 519,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 1,
+      "lemma": "oskarżać",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 375,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 2,
+      "lemma": "wymagać",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 839,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 3,
+      "lemma": "unikać",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 741,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 4,
+      "lemma": "przestrzegać",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 530,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 5,
+      "lemma": "żądać",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 995,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 6,
+      "lemma": "oczekiwać",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 296,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 7,
+      "lemma": "spodziewać się",
+      "reflexive": true,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 654,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 8,
+      "lemma": "obawiać się",
+      "reflexive": true,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 275,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 9,
+      "lemma": "wstydzić się",
+      "reflexive": true,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 814,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 10,
+      "lemma": "żałować",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 993,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 11,
+      "lemma": "zazdrościć",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 944,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 12,
+      "lemma": "gratulować",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 130,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 13,
+      "lemma": "życzyć",
+      "reflexive": false,
+      "current_presence": "other-repository-evidence",
+      "book_list_present": true,
+      "book_index": 1000,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 14,
+      "lemma": "zabraniać",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 882,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 15,
+      "lemma": "pozwalać",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 480,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 16,
+      "lemma": "polecać",
+      "reflexive": false,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 438,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 17,
+      "lemma": "proponować",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 487,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 18,
+      "lemma": "przekonywać",
+      "reflexive": false,
+      "current_presence": "linked-aspect-or-contrast",
+      "book_list_present": true,
+      "book_index": 507,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 19,
+      "lemma": "namawiać",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 248,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 20,
+      "lemma": "zmuszać",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 970,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 21,
+      "lemma": "zachęcać",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 883,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 22,
+      "lemma": "ostrzegać",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 376,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 23,
+      "lemma": "przypominać",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 555,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 24,
+      "lemma": "przypatrywać się",
+      "reflexive": true,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 553,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 25,
+      "lemma": "przyglądać się",
+      "reflexive": true,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 543,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 26,
+      "lemma": "przyzwyczajać się",
+      "reflexive": true,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 567,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 27,
+      "lemma": "specjalizować się",
+      "reflexive": true,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 651,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 28,
+      "lemma": "skupiać się",
+      "reflexive": true,
+      "current_presence": "primary-card",
+      "book_list_present": false,
+      "book_index": null,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 29,
+      "lemma": "zastanawiać się",
+      "reflexive": true,
+      "current_presence": "primary-card",
+      "book_list_present": true,
+      "book_index": 929,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 30,
+      "lemma": "walczyć",
+      "reflexive": false,
+      "current_presence": "other-repository-evidence",
+      "book_list_present": true,
+      "book_index": 768,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 31,
+      "lemma": "dążyć",
+      "reflexive": false,
+      "current_presence": "other-repository-evidence",
+      "book_list_present": true,
+      "book_index": 59,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 32,
+      "lemma": "należeć",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 247,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 33,
+      "lemma": "wspierać",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": false,
+      "book_index": null,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 34,
+      "lemma": "uczestniczyć",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 715,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    },
+    {
+      "tier": "Tier 3 - useful B1 expansion",
+      "tier_order": 35,
+      "lemma": "polegać",
+      "reflexive": false,
+      "current_presence": "not-found-by-surface-search",
+      "book_list_present": true,
+      "book_index": 439,
+      "status": "future-research-candidate",
+      "release_implication": "not approved; pattern facts, CEFR, frequency, and contemporary usage require later verification"
+    }
+  ]
+}

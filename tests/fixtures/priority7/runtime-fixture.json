@@ -1,0 +1,417 @@
+{
+  "artifactStatus": "priority-7-runtime-projection-nonrelease-fixture",
+  "releaseAuthorized": false,
+  "runtimeProjection": {
+    "formatVersion": 1,
+    "patternDataRevision": 1,
+    "lemmas": [
+      {
+        "id": "vp-l-bezokolicznikowac-da9ad5c948c4",
+        "canonicalLemma": "bezokolicznikować",
+        "reflexive": false,
+        "aspect": "imperfective",
+        "meanings": [
+          {
+            "id": "vp-m-bezokolicznikowac-clause-action-3367a962b261",
+            "glossesEn": [
+              "SYNTHETIC-NONRELEASE: report an invented action"
+            ],
+            "patterns": [
+              {
+                "id": "vp-p-bezokolicznikowac-clause-action-infinitive-content-246c9d6a65b2",
+                "relationType": "lexical-frame",
+                "complements": [
+                  {
+                    "type": "infinitive",
+                    "required": true,
+                    "role": "content"
+                  }
+                ],
+                "cefr": {
+                  "recognition": "A1",
+                  "production": "A2"
+                },
+                "teachingStatus": "active-production",
+                "usage": {
+                  "priority": "core",
+                  "register": "neutral"
+                },
+                "learnerExplanationEn": "SYNTHETIC-NONRELEASE: this invented frame is followed by another verb, not by a case.",
+                "activityEligibility": []
+              },
+              {
+                "id": "vp-p-bezokolicznikowac-clause-action-recipient-clause-40c4e09006a8",
+                "relationType": "lexical-frame",
+                "complements": [
+                  {
+                    "type": "case",
+                    "case": "dative",
+                    "required": true,
+                    "role": "recipient"
+                  },
+                  {
+                    "type": "clause",
+                    "clauseKind": "ze",
+                    "required": true,
+                    "role": "content"
+                  }
+                ],
+                "cefr": {
+                  "recognition": "B1",
+                  "production": "B1"
+                },
+                "teachingStatus": "active-production",
+                "usage": {
+                  "priority": "common",
+                  "register": "neutral"
+                },
+                "learnerExplanationEn": "SYNTHETIC-NONRELEASE: this invented frame mixes one case slot with a clause.",
+                "activityEligibility": [],
+                "examples": [
+                  {
+                    "id": "vp-e-bezokolicznikowac-clause-action-recipient-clause-clause-context-0526ce45b030",
+                    "pl": "SYNTHETIC-NONRELEASE: bezokolicznikuję obiektowi, że to test.",
+                    "en": "SYNTHETIC-NONRELEASE: I report to the invented object that this is a test.",
+                    "audioEligible": false
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "vp-l-fikcjonowac-a104036141da",
+        "canonicalLemma": "fikcjonować",
+        "reflexive": false,
+        "aspect": "imperfective",
+        "meanings": [
+          {
+            "id": "vp-m-fikcjonowac-test-object-6c17e23fdcdb",
+            "glossesEn": [
+              "SYNTHETIC-NONRELEASE: act on an invented object"
+            ],
+            "patterns": [
+              {
+                "id": "vp-p-fikcjonowac-test-object-direct-object-2ca00c01f9fc",
+                "relationType": "lexical-frame",
+                "complements": [
+                  {
+                    "type": "case",
+                    "case": "accusative",
+                    "required": true,
+                    "role": "object"
+                  }
+                ],
+                "cefr": {
+                  "recognition": "A1",
+                  "production": "A1"
+                },
+                "teachingStatus": "active-production",
+                "usage": {
+                  "priority": "core",
+                  "register": "neutral"
+                },
+                "learnerExplanationEn": "SYNTHETIC-NONRELEASE: with this invented sense the verb takes a direct object.",
+                "activityEligibility": [
+                  "grammar-choose",
+                  "reference",
+                  "search"
+                ],
+                "examples": [
+                  {
+                    "id": "vp-e-fikcjonowac-test-object-direct-object-first-context-1908fd823ea2",
+                    "pl": "SYNTHETIC-NONRELEASE: fikcjonuję obiekt testowy.",
+                    "en": "SYNTHETIC-NONRELEASE: I act on the invented test object.",
+                    "audioEligible": false
+                  }
+                ],
+                "errorNotes": [
+                  {
+                    "kind": "predicted-distractor",
+                    "incorrectForm": "SYNTHETIC-NONRELEASE-ZLA-FORMA",
+                    "guidanceEn": "SYNTHETIC-NONRELEASE: invented guidance string, never learner copy."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "vp-l-konstrukcjowac-57001a89838e",
+        "canonicalLemma": "konstrukcjować",
+        "reflexive": false,
+        "aspect": "imperfective",
+        "meanings": [
+          {
+            "id": "vp-m-konstrukcjowac-role-sense-73283894ea05",
+            "glossesEn": [
+              "SYNTHETIC-NONRELEASE: hold an invented role"
+            ],
+            "patterns": [
+              {
+                "id": "vp-p-konstrukcjowac-role-sense-predicate-instrumental-ff8e1c0d86fd",
+                "relationType": "constructional-frame",
+                "complements": [
+                  {
+                    "type": "case",
+                    "case": "instrumental",
+                    "required": true,
+                    "role": "predicate"
+                  }
+                ],
+                "cefr": {
+                  "recognition": "A1",
+                  "production": "A1"
+                },
+                "teachingStatus": "active-production",
+                "usage": {
+                  "priority": "core",
+                  "register": "neutral"
+                },
+                "learnerExplanationEn": "SYNTHETIC-NONRELEASE: this invented frame names a role rather than an object. This sentence is deliberately long so the narrow-phone layout has to wrap a real paragraph of learner-facing text between tokens rather than clipping it, scrolling it sideways or breaking it inside a word.",
+                "activityEligibility": [
+                  "reference",
+                  "search"
+                ]
+              }
+            ]
+          }
+        ],
+        "displayLemma": "konstrukcjować (synthetic-nonrelease display form, deliberately long)"
+      },
+      {
+        "id": "vp-l-metodowac-31466acb0b90",
+        "canonicalLemma": "metodować",
+        "reflexive": false,
+        "aspect": "imperfective",
+        "meanings": [
+          {
+            "id": "vp-m-metodowac-method-action-3af23eb4a46f",
+            "glossesEn": [
+              "SYNTHETIC-NONRELEASE: carry out an invented method"
+            ],
+            "patterns": [
+              {
+                "id": "vp-p-metodowac-method-action-instrumental-means-eff782c088cb",
+                "relationType": "means-method",
+                "complements": [
+                  {
+                    "type": "case",
+                    "case": "instrumental",
+                    "required": false,
+                    "role": "means"
+                  }
+                ],
+                "cefr": {
+                  "recognition": "A2",
+                  "production": "A2"
+                },
+                "teachingStatus": "active-production",
+                "usage": {
+                  "priority": "common",
+                  "register": "neutral"
+                },
+                "learnerExplanationEn": "SYNTHETIC-NONRELEASE: this invented frame names how the action is carried out.",
+                "activityEligibility": []
+              },
+              {
+                "id": "vp-p-metodowac-method-action-recipient-and-area-cd2612535330",
+                "relationType": "lexical-frame",
+                "complements": [
+                  {
+                    "type": "case",
+                    "case": "dative",
+                    "required": true,
+                    "role": "recipient"
+                  },
+                  {
+                    "type": "preposition-case",
+                    "preposition": "w",
+                    "case": "locative",
+                    "required": true,
+                    "role": "content"
+                  }
+                ],
+                "cefr": {
+                  "recognition": "B1",
+                  "production": "B1"
+                },
+                "teachingStatus": "active-production",
+                "usage": {
+                  "priority": "common",
+                  "register": "neutral"
+                },
+                "learnerExplanationEn": "SYNTHETIC-NONRELEASE: this invented frame has two slots, and both belong to it.",
+                "activityEligibility": []
+              },
+              {
+                "id": "vp-p-metodowac-method-action-topic-locative-426f531e9d49",
+                "relationType": "lexical-frame",
+                "complements": [
+                  {
+                    "type": "preposition-case",
+                    "preposition": "o",
+                    "case": "locative",
+                    "required": true,
+                    "role": "topic"
+                  }
+                ],
+                "cefr": {
+                  "recognition": "A2",
+                  "production": "B1"
+                },
+                "teachingStatus": "active-production",
+                "usage": {
+                  "priority": "common",
+                  "register": "neutral"
+                },
+                "learnerExplanationEn": "SYNTHETIC-NONRELEASE: this invented frame names what the action is about, and it carries hostile text on purpose: <img src=x onerror=\"window.__vpPwned=1\"></span><script>window.__vpPwned=1</script> This sentence is deliberately long so the narrow-phone layout has to wrap a real paragraph of learner-facing text between tokens rather than clipping it, scrolling it sideways or breaking it inside a word.",
+                "activityEligibility": [],
+                "examples": [
+                  {
+                    "id": "vp-e-metodowac-method-action-topic-locative-long-context-0e1026fe999c",
+                    "pl": "SYNTHETIC-NONRELEASE: metoduję o obiekcie testowym, o wymyślonym obiekcie testowym i o jeszcze jednym wymyślonym obiekcie testowym.",
+                    "en": "SYNTHETIC-NONRELEASE: a deliberately long invented translation that has to wrap on a narrow phone, and it also carries hostile text: <img src=x onerror=\"window.__vpPwned=1\"></span><script>window.__vpPwned=1</script>",
+                    "audioEligible": false
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "vp-l-podobnikowac-sie-e9eeb9585ca5",
+        "canonicalLemma": "podobnikować się",
+        "reflexive": true,
+        "aspect": "imperfective",
+        "meanings": [
+          {
+            "id": "vp-m-podobnikowac-sie-experiencer-sense-0c58503cda5c",
+            "glossesEn": [
+              "SYNTHETIC-NONRELEASE: appeal to an invented person"
+            ],
+            "patterns": [
+              {
+                "id": "vp-p-podobnikowac-sie-experiencer-sense-subject-and-experiencer-cffaa19dcad3",
+                "relationType": "subject-experiencer",
+                "complements": [
+                  {
+                    "type": "case",
+                    "case": "nominative",
+                    "required": true,
+                    "role": "subject"
+                  },
+                  {
+                    "type": "case",
+                    "case": "dative",
+                    "required": true,
+                    "role": "experiencer"
+                  }
+                ],
+                "cefr": {
+                  "recognition": "A2"
+                },
+                "teachingStatus": "recognition-only",
+                "usage": {
+                  "priority": "common",
+                  "register": "neutral"
+                },
+                "learnerExplanationEn": "SYNTHETIC-NONRELEASE: in this invented frame the roles are the other way round from English.",
+                "activityEligibility": [
+                  "reference"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "vp-l-zetafikcjonowac-sie-58d0b2b5d998",
+        "canonicalLemma": "zetafikcjonować się",
+        "reflexive": true,
+        "aspect": "imperfective",
+        "meanings": [
+          {
+            "id": "vp-m-zetafikcjonowac-sie-object-sense-94930b684f1e",
+            "glossesEn": [
+              "SYNTHETIC-NONRELEASE: relate to an invented object"
+            ],
+            "patterns": [
+              {
+                "id": "vp-p-zetafikcjonowac-sie-object-sense-genitive-object-f55aea760d22",
+                "relationType": "lexical-frame",
+                "complements": [
+                  {
+                    "type": "case",
+                    "case": "genitive",
+                    "required": true,
+                    "role": "object"
+                  }
+                ],
+                "cefr": {
+                  "recognition": "A2",
+                  "production": "A2"
+                },
+                "teachingStatus": "active-production",
+                "usage": {
+                  "priority": "core",
+                  "register": "neutral"
+                },
+                "learnerExplanationEn": "SYNTHETIC-NONRELEASE: the first invented sense takes one slot.",
+                "activityEligibility": [
+                  "reference",
+                  "search"
+                ],
+                "examples": [
+                  {
+                    "id": "vp-e-zetafikcjonowac-sie-object-sense-genitive-object-first-context-741437ae38ee",
+                    "pl": "SYNTHETIC-NONRELEASE: zetafikcjonuję się obiektu testowego.",
+                    "en": "SYNTHETIC-NONRELEASE: I relate to the invented test object.",
+                    "audioEligible": false
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "vp-m-zetafikcjonowac-sie-target-sense-b9b472272271",
+            "glossesEn": [
+              "SYNTHETIC-NONRELEASE: aim at an invented object"
+            ],
+            "patterns": [
+              {
+                "id": "vp-p-zetafikcjonowac-sie-target-sense-target-accusative-e32fb611ab40",
+                "relationType": "lexical-frame",
+                "complements": [
+                  {
+                    "type": "preposition-case",
+                    "preposition": "o",
+                    "case": "accusative",
+                    "required": true,
+                    "role": "target"
+                  }
+                ],
+                "cefr": {
+                  "recognition": "B1"
+                },
+                "teachingStatus": "recognition-only",
+                "usage": {
+                  "priority": "common",
+                  "register": "neutral"
+                },
+                "learnerExplanationEn": "SYNTHETIC-NONRELEASE: the second invented sense behaves differently from the first.",
+                "activityEligibility": [
+                  "reference",
+                  "search"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

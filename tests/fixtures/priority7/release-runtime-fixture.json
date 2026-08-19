@@ -1,0 +1,92 @@
+{
+  "formatVersion": 1,
+  "patternDataRevision": 424242,
+  "lemmas": [
+    {
+      "id": "vp-l-quuxify-e2fae9f09f45",
+      "canonicalLemma": "quuxify",
+      "displayLemma": "TEST-ONLY Quuxify <img src=x onerror=window.__p7LoaderPwned=1>",
+      "reflexive": false,
+      "aspect": "imperfective",
+      "meanings": [
+        {
+          "id": "vp-m-quuxify-test-object-edbc81d96069",
+          "glossesEn": [
+            "TEST-ONLY invented object <script>window.__p7LoaderPwned=1</script>"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-quuxify-test-object-direct-object-8f42f33a66e6",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "case",
+                  "case": "accusative",
+                  "required": true,
+                  "role": "object"
+                }
+              ],
+              "cefr": {
+                "recognition": "A1",
+                "production": "A1"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "core",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "TEST-ONLY explanation <svg onload=window.__p7LoaderPwned=1> remains inert text.",
+              "activityEligibility": [],
+              "examples": [
+                {
+                  "id": "vp-e-quuxify-test-object-direct-object-hostile-example-d4977fb27f36",
+                  "pl": "TEST-ONLY quux payload </p><img src=x onerror=window.__p7LoaderPwned=1>",
+                  "en": "TEST-ONLY invented sentence, not Polish and not a linguistic claim.",
+                  "audioEligible": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vp-l-zorbulate-1b5241b4d560",
+      "canonicalLemma": "zorbulate",
+      "reflexive": false,
+      "aspect": "biaspectual",
+      "meanings": [
+        {
+          "id": "vp-m-zorbulate-test-action-2270d48267d9",
+          "glossesEn": [
+            "TEST-ONLY invented action"
+          ],
+          "patterns": [
+            {
+              "id": "vp-p-zorbulate-test-action-infinitive-content-6f3fde00b55a",
+              "relationType": "lexical-frame",
+              "complements": [
+                {
+                  "type": "infinitive",
+                  "required": true,
+                  "role": "content"
+                }
+              ],
+              "cefr": {
+                "recognition": "A2",
+                "production": "A2"
+              },
+              "teachingStatus": "active-production",
+              "usage": {
+                "priority": "common",
+                "register": "neutral"
+              },
+              "learnerExplanationEn": "TEST-ONLY invented frame for transport and rendering rehearsal.",
+              "activityEligibility": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

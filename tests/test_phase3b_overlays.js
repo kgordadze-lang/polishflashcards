@@ -419,10 +419,22 @@ ok('D4 the visible Not now action reuses the same close helper',
 ok('D5 the gate fails closed when the modal cannot be opened',
    hasCode(extractFunction(INDEX, 'openTopic'),
            'if(!ppOpenSharedOverlay($("matureGate"), $("matureCancel"))) pendingTopic = null;'));
+// Narrowed by Priority 7 Phase 3B, and only in the one way that phase's routing
+// remediation requires: routeTopic now returns whether anything was routed, and
+// this call site must OBSERVE that answer instead of discarding it. The two
+// original clauses are unchanged, the routing call is still asserted here, and
+// the phase adds the half that was previously impossible to state - that a
+// denied route through this gate restores focus to the remembered invoker
+// instead of leaving it on <body>, because the close above deliberately
+// suppressed the dialog's own restoration.
 ok('D5 the continue path routes the topic and keeps the tile as the return target',
    hasCode(INDEX, 'ppCloseSharedOverlay($("matureGate"), false);') &&
    hasCode(INDEX, 'ppUseInvokerForNextScreen(invoker);') &&
-   hasCode(INDEX, 'if(p) routeTopic(p.li, p.ti, p.t);'));
+   hasCode(INDEX, 'const routed = p ? routeTopic(p.li, p.ti, p.t) : false;'));
+ok('D5 a denied route through the gate restores focus to the remembered invoker',
+   hasCode(INDEX, 'if(!routed){') &&
+   hasCode(INDEX, 'ppUseInvokerForNextScreen(null);') &&
+   hasCode(INDEX, 'if(!ppFocusActivityTarget(invoker)) ppFocusActivityTarget(ppScreenEntryTarget(ppCurrentScreen()));'));
 eq('D5 the gate no longer toggles the hidden attribute anywhere',
    countOf(INDEX, '$("matureGate").hidden'), 0);
 ok('D6 both overlays isolate the background through the same function',

@@ -569,7 +569,26 @@ var GNAMES = [
   'gRenderChoose', 'gSetStatus', 'gAnnounceWrong', 'gAnnounceCorrect',
   'gAnnounceBuildWrong', 'gAnnounceBuildIncomplete', 'gFocusNextOption',
   'gChooseFeedback', 'gRenderBuild', 'gPaintBuild', 'gCheckBuild',
-  'gDrillAdvance', 'gShowDone'
+  'gDrillAdvance', 'gShowDone',
+  // AMENDED by Priority 7 Phase 3C.  gShowDone now renders one continuation link
+  // at the END of a case lesson, so its two helpers must be in scope here or the
+  // extracted gShowDone throws.  Nothing about the Grammar assertions below
+  // changes: with no PP_VERB_PATTERNS in this harness the helper resolves no
+  // case topic and hides the line, which is the same fail-closed path the app
+  // takes on a non-case topic.
+  'gPatternContinuation', 'gRenderPatternLink',
+  // AMENDED by Priority 7 Phase 3D-1.  gRenderChoose, gChooseFeedback and
+  // gShowDone gained narrow extension points for a drill whose text arrives as
+  // DATA rather than as authored markup, so their helpers must be in scope here
+  // or the extracted functions throw.  This adds names to an extraction list and
+  // alters no assertion: every authored drill in data-grammar.js carries string
+  // options and no textOnly flag, so it takes the same branch it always did -
+  // which is exactly what the 612 assertions below re-prove.
+  'gOptionValue', 'gOptionLabel', 'gOptionLang', 'gTextEl', 'gAppendDrillText',
+  'gPaintChooseText', 'gPaintChooseFeedbackText', 'gHasLesson',
+  'gAnnounceRevealed', 'gRevealChooseAnswer',
+  'gRetryOutcome', 'gDoneMessage', 'gTextFragments', 'gFragmentText',
+  'gAppendFragment', 'gAppendTextParts', 'gChooseOptionLabel', 'gSetOptionVerdict'
 ];
 var GSRC = {};
 GNAMES.forEach(function (name) {
@@ -1138,6 +1157,28 @@ var CORRECT_TAIL = CORRECT_AT === -1 ? '' :
   CODE_G.gRenderChoose.slice(CORRECT_AT, WRONG_AT === -1 ? CODE_G.gRenderChoose.length : WRONG_AT);
 ok('K1 wrong path leaves state open',
    WRONG_TAIL.indexOf('G.state="done"') === -1 && WRONG_TAIL.indexOf("G.state='done'") === -1);
+// ADDED by Priority 7 Phase 3D-1, and additive on purpose: no assertion above was
+// rewritten.  A drill may now OPT IN to answering a miss by revealing instead of
+// inviting another attempt.  K1 above still describes the retry path, which is the
+// path every authored drill takes and the only path reachable without the flag;
+// these state the boundary explicitly so it cannot drift into the default.
+ok('K1 the reveal-on-incorrect path is opt-in per drill and never the default',
+   hasCode(CODE_G.gRenderChoose, 'if(c.revealOnIncorrect) gRevealChooseAnswer(c, box, buttons, btn);') &&
+   countOf(CODE_G.gRenderChoose, 'revealOnIncorrect') === 1);
+ok('K1 the retry mechanic is what an absent flag still gets',
+   WRONG_TAIL.indexOf('gAnnounceWrong') !== -1 &&
+   WRONG_TAIL.indexOf('gFocusNextOption') !== -1 &&
+   WRONG_TAIL.indexOf('btn.disabled=true') !== -1);
+ok('K1 the settle, the reveal and the close live only in the opt-in helper',
+   (hasCode(CODE_G.gRevealChooseAnswer, 'G.state="done"') ||
+    hasCode(CODE_G.gRevealChooseAnswer, "G.state='done'")) &&
+   CODE_G.gRevealChooseAnswer.indexOf('buttons.forEach(b=>b.disabled=true)') !== -1 &&
+   CODE_G.gRevealChooseAnswer.indexOf('gChooseFeedback') !== -1);
+ok('K1 no authored Grammar drill opts in', (function () {
+  var authored = readFile(ROOT + 'data-grammar.js');
+  return authored.indexOf('revealOnIncorrect') === -1 &&
+         authored.indexOf('textOnly') === -1;
+})());
 ok('K2 safe option construction uses createElement + textContent + exact identity',
    hasCode(CODE_G.gRenderChoose, 'document.createElement("button")') &&
    CODE_G.gRenderChoose.indexOf('textContent') !== -1 &&

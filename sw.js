@@ -23,7 +23,7 @@
    index.html: a technical cache revision (a worker/caching change with no
    learner-visible difference) bumps this alone, and a release that changes what
    the learner sees bumps APP_VERSION. Either may move without the other. */
-const CACHE = "popolsku-v65";
+const CACHE = "popolsku-v66";
 const AUDIO_CACHE = "popolsku-audio";
 
 /* ------------------------------------------------------------------ *
@@ -91,7 +91,15 @@ const REQUIRED_ASSETS = [
   "./data-verbs.js",
   "./data-scenarios.js",
   "./data-podcasts.js",
-  "./audio-manifest.json"
+  "./audio-manifest.json",
+  /* Priority 7 reference data. The helper is an ordinary shell script and is
+     cached like one; the runtime document it consumes is REQUIRED rather than
+     optional, because the reference surface is part of the offline app and a
+     surface that only works online is not one this shell ships. Its runtime
+     strategy is network-first (see PATTERN_RUNTIME_PATH below) - precaching is
+     what makes it available offline, not what decides how it revalidates. */
+  "./pp-verb-patterns.js",
+  "./content/verb-patterns.json"
 ];
 
 const OPTIONAL_ASSETS = [
@@ -118,6 +126,12 @@ const INDEX_FILE = "index.html";
 const DATA_FILE = /\/data-[a-z0-9-]+\.js$/;
 const AUDIO_FILE = /\/audio\/[a-f0-9]+\.mp3$/;
 const AUDIO_MANIFEST_PATH = SCOPE_PATH + "audio-manifest.json";
+/* The Priority 7 runtime document. Content, not shell: republishing it must
+   reach a returning learner on the next online visit without waiting for a
+   CACHE bump, exactly like the lesson data files and the audio manifest. It is
+   therefore precached for offline use but revalidated network-first, and is
+   deliberately excluded from the cache-first static inventory below. */
+const PATTERN_RUNTIME_PATH = SCOPE_PATH + "content/verb-patterns.json";
 
 /* Generated navigation is intentionally an exact inventory, not a rule such as
    "every nested URL" or even "everything below /grammar". Each entry corresponds
@@ -168,7 +182,8 @@ const GENERATED_PAGE_PATHS = GENERATED_PAGE_ASSETS.map(asset => canonicalPathOf(
 const STATIC_ASSET_PATHS = REQUIRED_ASSETS.concat(OPTIONAL_ASSETS)
   .map(asset => canonicalPathOf(asset))
   .filter(path => path !== null && path !== SCOPE_PATH &&
-                  !DATA_FILE.test(path) && path !== AUDIO_MANIFEST_PATH);
+                  !DATA_FILE.test(path) && path !== AUDIO_MANIFEST_PATH &&
+                  path !== PATTERN_RUNTIME_PATH);
 
 /* Diagnostics. A cache write that fails silently is how "visit online, then use
    offline" quietly stops being true, so every skipped/failed write is counted and
@@ -524,6 +539,7 @@ function classifyRequest(request) {
   }
   if (DATA_FILE.test(path)) return "data";
   if (path === AUDIO_MANIFEST_PATH) return "audio-manifest";
+  if (path === PATTERN_RUNTIME_PATH) return "pattern-runtime";
   if (AUDIO_FILE.test(path)) return "audio";
   if (STATIC_ASSET_PATHS.indexOf(path) !== -1) return "static";
   return "unknown";                                   /* network-only, never cached */
@@ -917,6 +933,12 @@ self.addEventListener("fetch", e => {
   /* The audio manifest: regenerate audio, re-upload the manifest, users pick up
      the new entries on their next online visit. */
   if (category === "audio-manifest") { networkFirst(e, key, false); return; }
+
+  /* The Priority 7 runtime document: regenerate the reference corpus, re-upload
+     it, users pick up the new revision on their next online visit. Same
+     contract as the lesson data - a cached copy answers offline, and it is
+     never served cache-first while the network can say otherwise. */
+  if (category === "pattern-runtime") { networkFirst(e, key, false); return; }
 
   /* MP3s: the filename IS the content hash, so if the URL is the same the audio is
      the same and it never needs revalidation. Stored in the versionless audio

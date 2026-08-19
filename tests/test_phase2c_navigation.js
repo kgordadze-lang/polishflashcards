@@ -920,10 +920,10 @@ ok('E4 Guide does not depend on drawer JavaScript for destination content',
 // -------------------------------------------------------------------------
 // F. Cross-phase safeguard and regression boundaries.
 // -------------------------------------------------------------------------
-ok('F1 app version is the 8.10 release', /const APP_VERSION = "8\.10"/.test(INDEX));
+ok('F1 app version is the 8.11 release', /const APP_VERSION = "8\.11"/.test(INDEX));
 // Phase 4D bumps the app-shell cache to v65 so the contact CTA polish is isolated
 // from the Phase 4C shell while open tabs remain on their old worker.
-ok('F1 app-shell cache is the current shell revision', /const CACHE = "popolsku-v65"/.test(SW));
+ok('F1 app-shell cache is the current shell revision', /const CACHE = "popolsku-v66"/.test(SW));
 ok('F1 audio cache remains popolsku-audio', /const AUDIO_CACHE = "popolsku-audio"/.test(SW));
 ok('F1 schema version remains 2', /PP_MIGRATE\.SCHEMA_VERSION = 2/.test(MIGRATE));
 ok('F1 content migration revision remains 2', /PP_MIGRATE\.CONTENT_MIGRATION_REVISION = 2/.test(MIGRATE));

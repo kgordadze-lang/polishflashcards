@@ -340,9 +340,15 @@ eq('D4 the speed label keeps its fixed width so the chip does not jump',
    decl(blocksFor('.speed-label', '')[0].body, 'min-width'), '44px');
 eq('D4 the direction toggle is still the only other member of the speed-toggle family',
    countOf(INDEX, 'class="speed-toggle dir-toggle"'), 1);
+// 10 -> 11 headers: Priority 7 Phase 3B adds the read-first Verb Patterns
+// screen. The assertion is a count-only amendment - the invariant it protects is
+// unchanged and is what matters here: every .sbar in the shell has a Home
+// control, so the two numbers must stay equal, and the new header carries a Back
+// control and a Home control like every other one. It deliberately has no speed
+// control, which is why the D4 count above stays at six.
 eq('D5 every header still has its Back control and its Home control',
    [countOf(INDEX, '<div class="sbar">'),
-    countOf(INDEX, '<button class="back home-btn" aria-label="Home page">')], [10, 10]);
+    countOf(INDEX, '<button class="back home-btn" aria-label="Home page">')], [11, 11]);
 ok('D5 no header control is hidden at narrow widths',
    !rulesTouching('.sbar', W400).concat(
       rulesTouching('.sbar > .speed-toggle', W400),
@@ -596,7 +602,7 @@ eq('J2 no visibility:hidden was introduced anywhere in the sheet',
    DECL_BLOCKS.filter(function (b) { return (decl(b.body, 'visibility') || '') === 'hidden'; }).length, 0);
 eq('J3 no generated-page code was pulled into the app shell', /build_pages/.test(INDEX), false);
 eq('J3 the app version this phase must not touch is intact',
-   (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.10');
+   (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '8.11');
 // The three approved touch-target changes are the only dimension changes in the diff: no
 // other control gained width/height/padding under the new responsive blocks.
 eq('J4 no control was resized inside the new responsive blocks',

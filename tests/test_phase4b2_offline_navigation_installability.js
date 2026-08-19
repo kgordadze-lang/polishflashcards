@@ -184,7 +184,7 @@ function seed(name,key,res){var all={};all[name]={};all[name][key]=res;return al
 
 // A. Exact generated route inventory and classification.
 var W=worker(), API=W.api, SHELL=API.CACHE;
-eq('A1 shell cache revision is popolsku-v65',SHELL,'popolsku-v65');
+eq('A1 shell cache revision is popolsku-v66',SHELL,'popolsku-v66');
 eq('A1 audio cache remains popolsku-audio',API.AUDIO_CACHE,'popolsku-audio');
 var generated=[];
 ['guide','grammar','vocabulary'].forEach(function(dir){
@@ -295,8 +295,8 @@ function activate(env){var result=env.api.install(),rec=typeof result==='string'
 (function(){var e=a2hs({storage:{unrelated:'untouched','popolsku-a2hs':JSON.stringify({installed:true})}});eq('C29/C30 migration never clears unrelated localStorage',e.store.getItem('unrelated'),'untouched');eq('C29 no permanent installed boolean remains',countOf(JSON.stringify(e.store.data),'installed'),0);})();
 
 // D. Cross-phase source safeguards and frozen scope.
-eq('D1 APP_VERSION is the 8.10 release',(INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/)||[])[1],'8.10');
-eq('D1 shell cache is v65',(SW_SRC.match(/const CACHE\s*=\s*"([^"]+)"/)||[])[1],'popolsku-v65');
+eq('D1 APP_VERSION is the 8.11 release',(INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/)||[])[1],'8.11');
+eq('D1 shell cache is v66',(SW_SRC.match(/const CACHE\s*=\s*"([^"]+)"/)||[])[1],'popolsku-v66');
 eq('D1 audio cache is unchanged',(SW_SRC.match(/const AUDIO_CACHE\s*=\s*"([^"]+)"/)||[])[1],'popolsku-audio');
 eq('D1 schema and migration revisions stay 2',[(MIGRATE.match(/SCHEMA_VERSION\s*=\s*(\d+)/)||[])[1],(MIGRATE.match(/CONTENT_MIGRATION_REVISION\s*=\s*(\d+)/)||[])[1]],['2','2']);
 eq('D2 no executable skipWaiting exists',countOf(SW_CODE,'skipWaiting('),0);eq('D2 no executable clients.claim exists',countOf(SW_CODE,'clients.claim('),0);eq('D2 cache.addAll is absent',countOf(SW_CODE,'.addAll('),0);
