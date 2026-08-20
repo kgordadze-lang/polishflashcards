@@ -2,13 +2,14 @@
 
 ## Locked Phase 2 result
 
-- Exactly 70 provisional lemmas; the corrected Phase 0 set is unchanged.
-- Exact lemma-level CEFR hypotheses: 22 A1, 43 A2, 5 B1.
+- Exactly 70 provisional lemmas; independent-review delta from corrected Phase 0 is remove `nazywać się`, add `radzić sobie`.
+- Exact lemma-level CEFR hypotheses: 21 A1, 43 A2, 6 B1.
 - Motion: 12/70 (17.1%), retained provisionally subject to evidence and capped at 12.
 - Ten aspect pairs are double-slotted; eight additional in-pool pair families use one or zero slots.
-- Representation concerns are explicit; no case was invented for model fit.
+- Representation totals are 31 compatible, 38 probably compatible—verify, and one model-fit concern (`pracować`). `nazywać się` is an architecture hold; no case or predicate type was invented.
 - All 70 have one ordered Phase 3 verification question.
 - Twenty-four reserves are structured into diversity, family/swap, and architecture-hold tiers.
+- The new `radzić sobie` row must be verified independently from advice-sense `radzić`; promotion is not syntactic approval.
 
 The authoritative row-level artifact is `priority-8-phase-2-shortlist.csv`; the authoritative verification order is `priority-8-phase-2-phase3-verification-queue.csv`.
 

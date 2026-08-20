@@ -12,14 +12,14 @@ All expansion figures below are **planning hypotheses** or **coverage opportunit
 | Direct Instrumental | 6 | 0–5 | 8 | No vehicle phrase receives credit. Growth is zero unless Phase 3 verifies a genuinely selected construction. |
 | Preposition + Accusative | 11 | 10–25 | 28 | Opportunities include agreement, worry, invitation, permission, conflict, and event-sensitive meanings; motion destinations receive no automatic credit. |
 | Preposition + Locative | 5 | 4–13 | 13 | `pamiętać o`, `zapominać o`, and participation meanings of `brać/wziąć` are verification targets. |
-| Preposition + Instrumental | 3 | 4–13 | 11 | Meeting, agreement, and conflict frames are useful targets; verify selected relation and optionality. |
+| Preposition + Instrumental | 3 | 4–13 | 11 | Meeting, agreement, conflict, and promoted coping (`radzić sobie`) frames are useful targets; verify selected relation and optionality. |
 | Preposition + Genitive | 1 | 20–40 | 30 | Largest planning gap, but generic motion destination/source phrases do not count. Non-motion targets include `pisać do`, `dzwonić`, `należeć do`, and `korzystać z`. |
 | Infinitive | 2 | 11–27 | 20 | Modals and control/phase/advice/attempt meanings require sense-specific verification. |
 | Clause | 1 | 7–20 | 13 | Keep `że`, `czy`, `żeby`, and interrogative clauses distinct. |
 | Multi-complement | 9 | 18–42 | 39 | High-value but high-burden hypotheses include giving, saying, advising, teaching, showing, and bringing. |
 | Subject-experiencer | 1 | 1–4 | 3 | `pasować` is a planning opportunity only; relation analysis must precede any later allocation. |
 | Meaning-sensitive lemmas | 4 | 24–48 | 39 | Selective senses only; do not turn broad verbs into exhaustive valency inventories. |
-| Lexical-`się` patterns | 9 | 9–24 | 24 | Eight selected lexical-`się` lemmas offer provisional research breadth; identity and meaning never transfer. |
+| Lexical-`się` patterns | 9 | 9–24 | 24 | Seven selected lexical-`się` lemmas remain after the architecture hold for `nazywać się`; promoted lexical phrase `radzić sobie` adds a different Instrumental opportunity. Identity and meaning never transfer. |
 
 The central planning totals above reproduce Phase 0 and are not a forecast guaranteed by choosing 70 lemmas. Phase 3 may remove unsupported opportunities, and Phase 4 decides actual meaning/pattern counts only after the Phase 3B freeze.
 
@@ -30,6 +30,7 @@ The central planning totals above reproduce Phase 0 and are not a forecast guara
 - Direct Instrumental is not a quota. Treating transport vehicles as governed slots would create false balance.
 - The apparent large preposition + Genitive gain is the least trustworthy raw expansion number because many provisional motion expressions may be adjuncts. Non-motion candidates must carry the reliable part of that research goal.
 - `pracować jako + Nominative`, the core predicate of `czuć się`, and the ordinary price/amount construction of `kosztować` receive no coverage credit.
+- The name predicate of `nazywać się` receives no coverage credit and the lemma is no longer selected. `radzić sobie + z + Instrumental` is only a coverage opportunity pending Phase 3; the replacement does not prove or increment a final pattern count.
 - No aspect partner inherits a pattern, so pair selection does not double any coverage count automatically.
 
 ## Balance lock for replacement

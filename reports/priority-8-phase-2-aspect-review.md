@@ -36,7 +36,8 @@ This audit covers all apparent aspect-partner pairs for which both lemma identit
 - `zaczynać/zacząć` and `kończyć/skończyć` consume four slots despite weak direct evidence. They are deliberately early in the verification queue and are the first double slots to collapse if independent value fails.
 - Prefixed motion perfectives are selected while their imperfectives remain reserve to cap motion concentration. A swap may follow evidence; adding both may not happen automatically.
 - The released `mówić`, `pytać`, and `uczyć się` do not transfer patterns to `powiedzieć`, reserve `zapytać`, or selected non-reflexive `uczyć`.
+- Promoted `radzić sobie` is not an aspect partner of selected `radzić`. It is a separately listed lexical phrase with a different provisional meaning/construction. Phase 3 must verify whether both identities independently justify slots; neither may inherit the other's pattern.
 
 ## Finding
 
-Keep the ten double-slotted pairs provisionally, but treat `zaczynać/zacząć`, `kończyć/skończyć`, and the motion pair `wracać/wrócić` as the first opportunity-cost review points. Phase 3 must produce separate evidence dispositions for both members before Phase 3B can retain two slots.
+Keep the ten double-slotted pairs provisionally; the `nazywać się` replacement does not alter any aspect-family count. Treat `zaczynać/zacząć`, `kończyć/skończyć`, and the motion pair `wracać/wrócić` as the first opportunity-cost review points. Separately, verify `radzić` and `radzić sobie` as non-aspect lexical identities before Phase 3B retains both.

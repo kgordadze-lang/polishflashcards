@@ -2,9 +2,9 @@
 
 ## Recommendation
 
-Retain the corrected Phase 0 70 unchanged as the Phase 3 research queue. The shortlist is **provisional**: it is not linguistic approval, frame approval, a final lemma freeze, stable-ID authorization, or learner-content authorization. Repository evidence indicates Po polsku relevance/reuse potential only and does not prove Polish valency.
+Retain exactly 70 lemmas as the Phase 3 research queue after one independent-review correction: remove `nazywać się` and promote reserve `radzić sobie`. The shortlist is **provisional**: it is not linguistic approval, frame approval, a final lemma freeze, stable-ID authorization, or learner-content authorization. Repository evidence indicates Po polsku relevance/reuse potential only and does not prove Polish valency.
 
-The Phase 0 corrections remain locked: `przynosić` stays in place of `czuć się`, and `kłócić się` stays in place of `kosztować`. No contrary internal evidence was found. The core `czuć się + adverb/adjective` representation and ordinary `kosztować` price/amount construction remain architecture holds; no case is invented. `pracować jako + Nominative` receives no coverage credit.
+The earlier Phase 0 corrections remain locked: `przynosić` stays in place of `czuć się`, and `kłócić się` stays in place of `kosztować`. Independent review found that `nazywać się` failed the same representation-fit gate: all existing repository occurrences are the name-predicate use (`Nazywam się…`, `Jak się nazywasz?`, “to be called”), and no genuinely separate case, preposition-case, infinitive, or clause hypothesis was found. It is now an architecture hold. No case or Nominative/predicate complement is invented.
 
 ## Exact provisional shortlist
 
@@ -38,7 +38,7 @@ The Phase 0 corrections remain locked: `przynosić` stays in place of `czuć si�
 | 26 | `pisać` | A1 | 33 | compatible | medium |
 | 27 | `napisać` | A2 | 29 | compatible | medium |
 | 28 | `przynosić` | A2 | 32 | probably compatible - verify | high |
-| 29 | `nazywać się` | A1 | 31 | model-fit concern | critical |
+| 29 | `radzić sobie` | B1 | 33 | compatible | high |
 | 30 | `spotykać się` | A2 | 36 | compatible | medium |
 | 31 | `spotkać się` | A2 | 35 | compatible | medium |
 | 32 | `umówić się` | A2 | 35 | probably compatible - verify | medium |
@@ -83,15 +83,15 @@ The Phase 0 corrections remain locked: `przynosić` stays in place of `czuć si�
 
 ## Balance summary
 
-- CEFR hypotheses: **22 A1, 43 A2, 5 B1**.
+- CEFR hypotheses: **21 A1, 43 A2, 6 B1**.
 - Motion: **12/70 (17.1%)**, retained provisionally subject to Phase 3 evidence and capped at 12.
 - Double-slotted aspect pairs: 10; every partner requires independent verification.
-- Representation-fit statuses distinguish structural compatibility from linguistic support. `compatible` means the proposed complement form can be expressed by the locked model, not that the construction is correct.
+- Representation-fit totals: **31 compatible, 38 probably compatible—verify, 1 model-fit concern**. `compatible` means only that the proposed complement form can be expressed by the locked model, not that the construction is linguistically verified.
 - The ordered verification queue contains every selected lemma exactly once and prioritizes model-fit, adjunct, weak-evidence, aspect-duplication, and meaning-sensitivity risks.
 
 ## Phase 0 comparison
 
-The Phase 2 set has **no removals and no additions** relative to the corrected Phase 0 70. Phase 2 does not have contemporary evidence authority, and the repository review found no internal contradiction that would justify undoing the corrected architecture decisions. Replacement remains evidence-driven in Phase 3 and human-owned in Phase 3B.
+Relative to the corrected Phase 0 70, the exact delta is **remove `nazywać się`; add `radzić sobie`**. The replacement is not a linguistic approval. `radzić sobie` wins the Phase 2 reserve comparison because the repository records direct coping contexts, its provisional `z + Instrumental` form fits `preposition-case`, it adds non-motion Instrumental diversity, and its editorial burden is lower than weaker-evidence alternatives. Phase 3 must still verify the governed construction and whether the lexical phrase independently justifies a slot alongside `radzić`.
 
 ## Files that govern interpretation
 
@@ -99,6 +99,6 @@ The Phase 2 set has **no removals and no additions** relative to the corrected P
 - `priority-8-phase-2-coverage-balance.md` — planning opportunities, not verified frame counts.
 - `priority-8-phase-2-aspect-review.md` — complete in-pool pair audit.
 - `priority-8-phase-2-motion-review.md` — no automatic adjunct credit.
-- `priority-8-phase-2-cefr-review.md` — reason for retaining 22/43/5.
+- `priority-8-phase-2-cefr-review.md` — correction from 22/43/5 to 21/43/6.
 - `priority-8-phase-2-replacement-policy.md` — deterministic reserve selection.
 - `priority-8-phase-2-risk-review.md` and the CSV verification queue — Phase 3 order.

@@ -21,6 +21,6 @@
 
 ## Opportunity cost
 
-Twelve motion slots displace candidates that could broaden non-motion Locative, Instrumental, Genitive, Dative, lexical-`się`, or abstract clause coverage. The reserve pool contains `marzyć`, `uczestniczyć`, `radzić sobie`, `wybaczać`, `rezygnować`, `decydować`, and other non-motion alternatives, although none is verified yet. It also contains four imperfective prefixed-motion partners, allowing one-for-one aspect swaps without increasing the share.
+Twelve motion slots displace candidates that could broaden non-motion Locative, Instrumental, Genitive, Dative, lexical-`się`, or abstract clause coverage. Promoted `radzić sobie` now adds a non-motion Instrumental opportunity. Remaining reserves include `marzyć`, `uczestniczyć`, `wybaczać`, `rezygnować`, `decydować`, `przygotowywać się`, and other non-motion alternatives, although none is verified. Four imperfective prefixed-motion partners remain available for one-for-one swaps without increasing the share.
 
 Retaining 12 is justified only as a high-priority research bet: the repository strongly teaches these motion distinctions and practical Polish learners need them. If Phase 3 finds that a motion lemma offers only general lexical usefulness plus free adjuncts, Phase 3B should compare it against a verified non-motion reserve rather than granting it a Verb Patterns slot by default. Additional motion lemmas require an explicit human trade-off decision.

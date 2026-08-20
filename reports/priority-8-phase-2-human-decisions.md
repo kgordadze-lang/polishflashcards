@@ -10,8 +10,10 @@ Approve keeping up to 12 motion lemmas (17.1%) when each offers independent lear
 
 Decide whether all ten double-slotted pairs justify 20 lemma slots after independent verification. Review `zaczynać/zacząć` and `kończyć/skończyć` first, followed by `wracać/wrócić`, because their opportunity cost or evidence risk is highest. A one-partner result should free a slot for a verified diversity reserve rather than automatically choosing another partner.
 
+The replacement adds a related but non-aspect identity question: confirm in Phase 3B whether advice-sense `radzić` and coping phrase `radzić sobie` provide enough independent teaching value to retain both slots after separate verification.
+
 ## 3. Frequency versus construction breadth
 
 When a high-frequency simple verb competes with a lower-frequency but verified non-Accusative/clause/lexical-`się` construction, choose how much breadth the approximately 100-lemma product should preserve. Phase 2 recommends practical usefulness as the primary signal and construction breadth as a strong tie-break, not a quota.
 
-The 22/43/5 CEFR mix is not placed in the decision queue now because no Phase 2 evidence supports a specific alternative. Reopen it only if Phase 3 failures make a material shift unavoidable or reveal a clearly stronger verified B1 opportunity.
+The corrected 21/43/6 CEFR mix is not a separate decision item because it follows the representation gate and stays within the existing ±2 guardrail. Reopen it only if Phase 3 failures make a material shift unavoidable.
