@@ -32,10 +32,33 @@
 | `pokazywać` | 03 | KEEP VERIFIED | A | compatible | Exact imperfective sense independently supports optional Dative + Accusative, exact `na + Accusative`, and an interrogative clause; generalized `GDZIE` is not converted to a concrete frame. | None. |
 | `radzić sobie` | 03 | KEEP VERIFIED | A | compatible | Exact lexical entry directly supports optional `z + Instrumental`; `sobie` remains part of the identity, and coping independently differs from advice-sense `radzić`. | None. |
 | `kupować` | 03 | KEEP VERIFIED | A | compatible | Exact imperfective sense independently supports Accusative goods, optional seller/price, alternative Dative recipient, and `dla + Genitive`; pair opportunity cost remains open. | None now; later pair-level comparison required. |
+| `kupić` | 04 | KEEP VERIFIED | A | compatible | Exact perfective sense independently supports Accusative goods, optional seller/price, alternative Dative beneficiary, and `dla + Genitive`; bounded acquisition is useful despite complete pair overlap. | None; purchase pair receives `RETAIN-BOTH SIGNAL MODERATE`. |
+| `dawać` | 04 | KEEP VERIFIED | A | compatible | Exact imperfective transfer sense independently supports Accusative thing + Dative recipient; process/repeated/habitual value is strong. | None; transfer pair receives `RETAIN-BOTH SIGNAL STRONG`. |
+| `dać` | 04 | KEEP VERIFIED | A | compatible | Exact perfective transfer sense independently supports Accusative thing + Dative recipient; completed-transfer value is strong. | None; transfer pair receives `RETAIN-BOTH SIGNAL STRONG`. |
+| `brać` | 04 | KEEP VERIFIED | A | compatible | Literal sense supports Accusative with exact means/part alternatives; a separate fixed entry supports required `udział` plus governed `w + Locative` without reducing participation to generic object syntax. | None; taking pair receives `RETAIN-BOTH SIGNAL STRONG`. |
+| `wziąć` | 04 | KEEP VERIFIED | A | compatible | Exact perfective literal and fixed participation evidence independently mirrors the authorized meanings without inheriting from `brać`; `udział` remains required. | None; taking pair receives `RETAIN-BOTH SIGNAL STRONG`. |
+| `czytać` | 04 | KEEP VERIFIED | A | compatible | Exact imperfective reading sense supports Accusative content, optional listener, topic, content clauses, and direct speech; generalized `GDZIE` yields no concrete frame. | None now; reading pair receives `COLLAPSE-TO-ONE SIGNAL` for Phase 3B. |
+| `przeczytać` | 04 | KEEP VERIFIED | A | compatible | Exact perfective whole-text sense independently supports nearly the same construction inventory; result meaning is real but adds no unique product construction. | None now; reading pair receives `COLLAPSE-TO-ONE SIGNAL` for Phase 3B. |
+| `pisać` | 04 | KEEP VERIFIED | A | compatible | Exact creation sense supports Accusative text; separate correspondence sense supports Dative or `do + Genitive` addressee with topic/object/clause/direct-speech alternatives. | None; writing pair receives `RETAIN-BOTH SIGNAL MODERATE`. |
+| `napisać` | 04 | KEEP VERIFIED | A | compatible | Exact perfective creation and correspondence senses independently support the same core inventory with schema-specific Dative optionality. | None; writing pair receives `RETAIN-BOTH SIGNAL MODERATE`. |
+| `spotykać się` | 04 | KEEP VERIFIED | A | compatible | Exact lexical-reflexive imperfective sense independently supports `z + Instrumental` for a singular personal subject and a reciprocal plural variant; time/place/frequency remain adjuncts. | None; pair decision deferred because order 41 was not researched. |
 
-## Cumulative disposition totals after Batch 03
+## Batch 4 provisional aspect-pair signals
 
-- `KEEP VERIFIED`: 17
+| Pair | Signal | Basis |
+|---|---|---|
+| `kupować / kupić` | RETAIN-BOTH SIGNAL MODERATE | Independently exact but construction-identical; central process/habitual versus bounded purchase value partly offsets opportunity cost. |
+| `dawać / dać` | RETAIN-BOTH SIGNAL STRONG | Independently exact core transfer schemas; exceptionally central aspect and Dative/Accusative teaching value. |
+| `brać / wziąć` | RETAIN-BOTH SIGNAL STRONG | Independently exact literal and fixed participation evidence; suppletive, frequent aspect contrast carries high learner value. |
+| `czytać / przeczytać` | COLLAPSE-TO-ONE SIGNAL | Both verified, but construction coverage nearly coincides and explicit aspect metadata could teach most of the completion contrast. |
+| `pisać / napisać` | RETAIN-BOTH SIGNAL MODERATE | Both verified across creation and correspondence; practical aspect value is high but architecture duplication creates real cost. |
+| `spotykać się / spotkać się` | PAIR DECISION INCONCLUSIVE | Only `spotykać się` was authorized in Batch 4; order 41 remains unresearched as a candidate. |
+
+These signals are provisional and do not alter dispositions, the selected 70, or replacement state.
+
+## Cumulative disposition totals after Batch 04
+
+- `KEEP VERIFIED`: 27
 - `KEEP WITH NARROWING`: 13
 - `REPLACEMENT RECOMMENDED`: 0
 - `ARCHITECTURE HOLD`: 0
