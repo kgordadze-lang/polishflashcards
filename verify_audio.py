@@ -23,7 +23,8 @@ import os
 import sys
 
 from pp_audio_rule import (DATA_GLOB, load_levels, main_audio_text, normalize,
-                           required_phrases, walk_audio_texts)
+                           required_phrases, verb_pattern_audio_examples,
+                           walk_audio_texts)
 
 AUDIO_DIR = "audio"
 
@@ -32,9 +33,40 @@ def phrase_hash(normalized):
     return hashlib.sha256(normalized.encode("utf-8")).hexdigest()[:12]
 
 
-def main():
-    manifest = json.load(open("audio-manifest.json", encoding="utf-8"))["entries"]
+def manifest_integrity_problems(manifest):
+    """Check content addressing, canonical paths, and normalized uniqueness."""
     problems = []
+    seen = {}
+    for key, entry in manifest.items():
+        if not isinstance(entry, dict):
+            problems.append(f"  malformed manifest entry: {key}")
+            continue
+        phrase = entry.get("pl")
+        path = entry.get("file")
+        if not isinstance(phrase, str) or not normalize(phrase):
+            problems.append(f"  malformed manifest Polish text: {key}")
+            continue
+        normalized = normalize(phrase)
+        expected_key = phrase_hash(normalized)
+        if key != expected_key:
+            problems.append(
+                f"  manifest key/hash mismatch or collision: {key} != {expected_key}")
+        expected_path = f"{AUDIO_DIR}/{key}.mp3"
+        if path != expected_path:
+            problems.append(
+                f"  manifest path mismatch: {key} -> {path!r}, expected {expected_path!r}")
+        prior = seen.get(normalized)
+        if prior is not None and prior != key:
+            problems.append(
+                f"  duplicate normalized utterance: {normalized[:70]} ({prior}, {key})")
+        seen[normalized] = key
+    return problems
+
+
+def main():
+    with open("audio-manifest.json", encoding="utf-8") as handle:
+        manifest = json.load(handle)["entries"]
+    problems = manifest_integrity_problems(manifest)
 
     # ---- forward: every required phrase has an entry and a real file ----
     for path in sorted(glob.glob(DATA_GLOB)):
@@ -54,6 +86,26 @@ def main():
             problems.append(f"  no manifest entry: {n[:70]}   ({path})")
         for n in missing_file:
             problems.append(f"  clip missing/empty on disk: {n[:70]}   ({path})")
+
+    pattern_examples = verb_pattern_audio_examples()
+    pattern_phrases = {normalize(example["pl"]) for example in pattern_examples}
+    pattern_missing_entry, pattern_missing_file = [], []
+    for n in sorted(pattern_phrases):
+        entry = manifest.get(phrase_hash(n))
+        if not entry:
+            pattern_missing_entry.append(n)
+        elif not (os.path.exists(entry["file"]) and
+                  os.path.getsize(entry["file"]) > 0):
+            pattern_missing_file.append(n)
+    pattern_status = "OK" if not (
+        pattern_missing_entry or pattern_missing_file) else "PROBLEMS"
+    print(f"{'content/verb-patterns.json':22s} {len(pattern_phrases):4d} phrases  "
+          f"{pattern_status}")
+    for n in pattern_missing_entry:
+        problems.append(f"  no manifest entry: {n[:70]}   (Verb Patterns runtime)")
+    for n in pattern_missing_file:
+        problems.append(
+            f"  clip missing/empty on disk: {n[:70]}   (Verb Patterns runtime)")
 
     required = required_phrases(DATA_GLOB)
     live = {phrase_hash(n) for n in required}

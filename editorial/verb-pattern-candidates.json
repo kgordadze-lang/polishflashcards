@@ -136,6 +136,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:537155640e0f0e336c80775259ac5406a3be00bbcbf1433911ce6a12c08edcb8",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:f8613d66090b2a36fbec48286f588fb551a2ac7a6737b21297dc0d13dc227ec1",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -144,7 +172,7 @@
                   "key": "looking-for-cafe",
                   "pl": "Szukam dobrej kawiarni.",
                   "en": "I am looking for a good café.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "repository-reuse",
                     "repositorySource": {
@@ -318,6 +346,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:f7c70d1b957f37e08f1c7e0a5c7d9efa8ffe0aea71845c74da0a9f77fac37727",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:43c200e49627ea9bec11a4a09ba80fbe2948782dc1cb29ed3ec0cbdfe354c0a9",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -326,7 +382,7 @@
                   "key": "helping-a-neighbour",
                   "pl": "Często pomagam sąsiadce.",
                   "en": "I often help my neighbour.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "editorial-generated",
                     "generatorRef": "priority7-example-generation",
@@ -476,6 +532,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:ecc928d29699e7c1b21e39634bbb2fae81c987742dedf9638e884d31172d1508",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:a20c7ea9c259819edebef80e76ebd1af9d21c9e2eaa903d0ea5d5bb1a6f89a4d",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -484,7 +568,7 @@
                   "key": "helping-with-maths",
                   "pl": "Pomagam bratu w matematyce.",
                   "en": "I help my brother with maths.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "editorial-generated",
                     "generatorRef": "priority7-example-generation",
@@ -642,6 +726,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:a0c990779437537c4e406469cf9c310b232b3936a931606cd767af7f6de01b2c",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:7d1ae0d60187d73c84ca44180d9520c88a5a587fe5eb902efc9690560a16013f",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -650,7 +762,7 @@
                   "key": "music-on-the-way",
                   "pl": "Słucham muzyki w drodze do pracy.",
                   "en": "I listen to music on the way to work.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "repository-reuse",
                     "repositorySource": {
@@ -802,6 +914,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:f0c1908c6b23d8954f619f65c15d99e1d0de0ff60f7331fff08e67ed68bee77f",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:0fc31139e82b9a0b0a5b04f75f559108998f4d81a222366553645b9a640fe0ac",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -810,7 +950,7 @@
                   "key": "dog-obeys-its-owner",
                   "pl": "Ten pies słucha swojego pana.",
                   "en": "This dog obeys its owner.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "editorial-generated",
                     "generatorRef": "priority7-example-generation",
@@ -964,6 +1104,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:87ce744bd2bd5bb0926a085700edbf99b73c703dab6f555b0694885ea6f2bacc",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:7db05435d6dc6993d05a9976e9a12754ca2bf90359ee9c665a638e25d1841995",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -972,7 +1140,7 @@
                   "key": "waiting-for-bus",
                   "pl": "Czekam na autobus.",
                   "en": "I am waiting for the bus.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "repository-reuse",
                     "repositorySource": {
@@ -1145,6 +1313,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:3020dc737cb9844cbccc1de4cb33c2304aeae9341001ffc53f9de95d0fbe9bcd",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:61bd67eb5590cb6c72531fbe6bb2af22c676dd57da135210b8dc551befc85018",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -1153,7 +1349,7 @@
                   "key": "certificate-from-work",
                   "pl": "Potrzebuję zaświadczenia z pracy.",
                   "en": "I need a certificate from work.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "repository-reuse",
                     "repositorySource": {
@@ -1327,6 +1523,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:1e25222f116e891a5990dc326c8641a204a24bb6210943a4c0402d111ecee159",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:b271147b5061f1e73ae2d1de8af46b1ef93891c5e0a5b1b8c143f85d495bf01a",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -1335,7 +1559,7 @@
                   "key": "polish-for-a-year",
                   "pl": "Uczę się polskiego od roku.",
                   "en": "I have been learning Polish for a year.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "repository-reuse",
                     "repositorySource": {
@@ -1485,6 +1709,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:f2026cc672e3074289e1916b8d05d611e08387fc42f1b85c89a5d03d730203a6",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:ec6f4dcf23c12f88fd8653a67bea990591a348cc388353fb2309b8306d4ff9e0",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -1493,7 +1745,7 @@
                   "key": "learning-guitar",
                   "pl": "Uczę się grać na gitarze.",
                   "en": "I am learning to play the guitar.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "repository-reuse",
                     "repositorySource": {
@@ -1650,6 +1902,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:4a4ba5ae7187aa45ce5d5d4a95be0d1a88e0b877ed155ac1f3cd488072a4bc1e",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:ca646090a9a5ce21b3ad02a0ef9f1f3526ed8d59b1cd6cdc1c873a90f1456e95",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -1658,7 +1938,7 @@
                   "key": "thanks-for-help",
                   "pl": "Dziękuję za pomoc.",
                   "en": "Thank you for your help.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "repository-reuse",
                     "repositorySource": {
@@ -1807,6 +2087,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:5ba22098375cdc2878d22a15057b2001665d897a3fa671441ab532a40f4ac373",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:b3e0861e5e9a8d6b5bd33b5d9f51a80eddd6ecf19eca9a4eae2faeb802003878",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -1815,7 +2123,7 @@
                   "key": "thanks-for-cooperation",
                   "pl": "Dziękuję siostrze za kolację.",
                   "en": "I thank my sister for dinner.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "editorial-generated",
                     "generatorRef": "priority7-example-generation",
@@ -1981,6 +2289,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:a0a31bd9e23bf2315a42f220f7a0f8efdb2bf02cc83253182e7e632c74d9f4aa",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:6242eba4eb4db1e9e1b185e10b11048c641c492357f7bcde82027cbe72f3cf25",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -1989,7 +2325,7 @@
                   "key": "how-much-for-everything",
                   "pl": "Płacę za kawę i gazetę.",
                   "en": "I am paying for a coffee and a newspaper.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "editorial-generated",
                     "generatorRef": "priority7-example-generation",
@@ -2129,6 +2465,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:9a54b5228ce2add2c80285abd70a82a672293898b99289f136f190dd21a30ffb",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:8f670dd0e9633de662dae81f5b053206653b0bc34e99bb573150bbe417b91385",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -2137,7 +2501,7 @@
                   "key": "paying-cash",
                   "pl": "Płacę gotówką.",
                   "en": "I am paying in cash.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "repository-reuse",
                     "repositorySource": {
@@ -2310,6 +2674,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:af6e8b954c59c4e738c978635ac13b9e7d7bda39df5eee454ceaa6c11b25b77a",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:5c8a14ce5aba0a72a490e2e4df96ee335384c13afb372011f1dd47bc62c954c9",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -2318,7 +2710,7 @@
                   "key": "using-an-app",
                   "pl": "Używam tej aplikacji do nauki języków.",
                   "en": "I use this app for learning languages.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "repository-reuse",
                     "repositorySource": {
@@ -2488,6 +2880,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:5a325a05331291e4fb5306b083ec52fa7d6a6439555e00d60125013efee09434",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:beecade56ce0161d393a505236f4eb9f86e79b050aee78072757cbcfacf839aa",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -2496,7 +2916,7 @@
                   "key": "passport-please",
                   "pl": "Proszę o paszport.",
                   "en": "Your passport, please.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "repository-reuse",
                     "repositorySource": {
@@ -2652,6 +3072,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:e58a9be5a254540e447639d08519a9ab165e9a004563dc32886bf025f4450650",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:f65d960ff32cd5f0cd8cf3bf8ffb6655a04fc0d028b4114324acaf8bd939c100",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -2660,7 +3108,7 @@
                   "key": "asking-the-boss-for-a-raise",
                   "pl": "Będę prosić szefa o podwyżkę.",
                   "en": "I will ask my boss for a raise.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "repository-reuse",
                     "repositorySource": {
@@ -2828,6 +3276,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:fde9bada79f31a6afbd634efd8edada2f3dd64664e573c3e7dfed0c2269acdd1",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:9aa6a7679471682403fd20039a9638e3fa5f7702ff434b8a8f80beb8e34628b9",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -2836,7 +3312,7 @@
                   "key": "politics-and-sport",
                   "pl": "Interesuję się polityką i sportem.",
                   "en": "I am interested in politics and sport.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "repository-reuse",
                     "repositorySource": {
@@ -3019,6 +3495,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:ca9215c253fa5a84c875e7ec08f40dd6e7596c0a04614a050e5704ce1c625148",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:45159f9e824f841b83d53f7a828305da6af4c083686ad87fee41e5b8fc3decee",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -3027,7 +3531,7 @@
                   "key": "care-every-day",
                   "pl": "Codziennie dbam o kondycję.",
                   "en": "I work on my fitness every day.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "editorial-generated",
                     "generatorRef": "priority7-example-generation",
@@ -3187,6 +3691,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:ad1785dccc921bc29da830751da1e5754f2f4483ee1c3b0116e0a057c6b926ec",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:371c7547c778f704e0c08b319ed455cd364da459b941e0c40bdb7417fb6c3acb",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -3195,7 +3727,7 @@
                   "key": "missing-you",
                   "pl": "Tęsknię za tobą, kiedy wyjeżdżasz.",
                   "en": "I miss you when you go away.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "repository-reuse",
                     "repositorySource": {
@@ -3365,6 +3897,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:d4bf9824cdd0dbf7e4009cc35824a19ed288b2203deefba341980ab3885b8d0f",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:59c26d44a86392f543b9a49fab941274cb592168bdf35fc987e60d350e7c60b3",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -3373,7 +3933,7 @@
                   "key": "talking-to-mum-every-day",
                   "pl": "Codziennie rozmawiam z mamą.",
                   "en": "I talk to my mum every day.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "editorial-generated",
                     "generatorRef": "priority7-example-generation",
@@ -3506,6 +4066,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:14d128c46c74a3c142c1379527cce4bc549b21516bb3fed49c8e396b783f9555",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:0ed753defeb261608c4be1e896ee6d4384620b1985c04940906b9a6299cf5f60",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -3514,7 +4102,7 @@
                   "key": "talking-about-music",
                   "pl": "Zawsze rozmawiamy o muzyce.",
                   "en": "We always talk about music.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "editorial-generated",
                     "generatorRef": "priority7-example-generation",
@@ -3646,6 +4234,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:4b2ceaecfe154f31af873fda10cb30b034254ab9873df45588be0acf188ee416",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:42a10f26269abe02df8050d6e93097c77d6b2a3f23dc0c3ba5c572dad21b9482",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -3654,7 +4270,7 @@
                   "key": "doctor-about-test-results",
                   "pl": "Rozmawiam z lekarzem o wynikach badań.",
                   "en": "I'm talking to the doctor about the test results.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "editorial-generated",
                     "generatorRef": "priority7-example-generation",
@@ -3820,6 +4436,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:2bf4376a1f7bacc0b11e41f2a14ef0d56b15656eb67f7c973c608ca783c4e42b",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:3d00c10ac6ae34dd4ce800e9adf95b810a5debac9adeb5ed8c50dba2470749e0",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -3828,7 +4472,7 @@
                   "key": "spiders-and-flying",
                   "pl": "Boję się pająków i latania samolotem.",
                   "en": "I am afraid of spiders and of flying.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "repository-reuse",
                     "repositorySource": {
@@ -3981,6 +4625,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:5fa5b81630235fc0350ed8a30bc4be75b2279e512cc356de75a16afb7138d4cb",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:4b7a4f830d4d0f250c2c58e2c9a3f8b282dbf2ba1db1adcf4654b2f3cfbb2c81",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -3989,7 +4661,7 @@
                   "key": "worried-about-grandad",
                   "pl": "Boimy się o dziadka, bo mieszka sam.",
                   "en": "We're worried about our grandad because he lives alone.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "editorial-generated",
                     "generatorRef": "priority7-example-generation",
@@ -4150,6 +4822,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:001d7d96f6a3519854e3259c4cbf06376ee51b8c17e9673cb25902ab741821b5",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:dd9eb030bf4fb10f37312a6cbbf3dcd1d3b2d8d13e1b10e747780108ec4a6b15",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -4158,7 +4858,7 @@
                   "key": "first-year-student",
                   "pl": "Jestem studentem pierwszego roku.",
                   "en": "I am a first-year student.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "repository-reuse",
                     "repositorySource": {
@@ -4336,6 +5036,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:732217713caf650a06d70a2ddbd56401fc1cdc383404bf50ce77a403f32447ce",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:8e5d1e469e2c869af5ba238de81d7da5b1e54a9aa7085d4c01733ae8ce723543",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -4344,7 +5072,7 @@
                   "key": "know-this-restaurant",
                   "pl": "Czy znasz tę restaurację?",
                   "en": "Do you know this restaurant?",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "repository-reuse",
                     "repositorySource": {
@@ -4516,6 +5244,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:314be779dcbecdb0bd85d01875da0878a76e1ed7152d017327bf01640ebf0ff5",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:340f461169f4c7c1736c5154eb8887aa492dd8356068efd7b07ce27b65ca73ce",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -4524,7 +5280,7 @@
                   "key": "polish-food",
                   "pl": "Lubię polskie jedzenie.",
                   "en": "I like Polish food.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "repository-reuse",
                     "repositorySource": {
@@ -4676,6 +5432,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:e4fea4e7951b0db96c88362e6e819a27289ffad7c09cdab6418d1787c3d34d06",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:7e77550ef4d39f31238520c705718e7246bad6e070a0c59f6dde332490acc183",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -4684,7 +5468,7 @@
                   "key": "reading-before-sleep",
                   "pl": "Lubię czytać przed snem.",
                   "en": "I like reading before bed.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "repository-reuse",
                     "repositorySource": {
@@ -4859,6 +5643,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:15b02b88157ad1fc4a31fd006a912de0e10764169381163acb5b62c530d51c52",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:ab9c8ccfcf7ce574be51cead0bb91258aa9709582f221a2b1d5f988b5db9ef78",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -4867,7 +5679,7 @@
                   "key": "telling-parents-the-truth",
                   "pl": "Zawsze mówię rodzicom prawdę.",
                   "en": "I always tell my parents the truth.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "editorial-generated",
                     "generatorRef": "priority7-example-generation",
@@ -5016,6 +5828,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:ad0a69cdc0cdffc47583255b4ced4a8c980d3898ccba4b58c4d16044fef8e8eb",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:473fffc3ff9073b7226d33f539a6204f654f7a9d798bf416f5e4eeae24c656be",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -5024,7 +5864,7 @@
                   "key": "telling-you-its-a-good-idea",
                   "pl": "Mówię ci, że to dobry pomysł.",
                   "en": "I'm telling you that it's a good idea.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "editorial-generated",
                     "generatorRef": "priority7-example-generation",
@@ -5184,6 +6024,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:28d10953f134357840a462e91cd0f5be9b767de77bbd6ed46b43ba76e38528fc",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:81c22edb8deba6704f49e71c40f2190608ffe7dde39bf11efa01fb6be9ac6ed0",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -5192,7 +6060,7 @@
                   "key": "asking-about-the-price",
                   "pl": "Zawsze pytam o cenę.",
                   "en": "I always ask about the price.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "editorial-generated",
                     "generatorRef": "priority7-example-generation",
@@ -5330,6 +6198,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:809f828f5e29bf04ae97577a804199f38de3ad3e890134e79901ba5cb4aa5cbc",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:143be40972c49809d0b35465eac9da438a2dc03b53401c54bfc98bf90d95cb27",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -5338,7 +6234,7 @@
                   "key": "asking-a-friend-about-a-restaurant",
                   "pl": "Pytam koleżankę o nową restaurację.",
                   "en": "I am asking my friend about the new restaurant.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "editorial-generated",
                     "generatorRef": "priority7-example-generation",
@@ -5498,6 +6394,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:b513cea0749d4a60b5a3d8bbffd28b6fb5299c24c6f0d9197b5d75c1a49bf8b9",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:f75643760e62904b53e61b8b21e81e00d7804c200e9539b3d4ca4c4f108b69f4",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -5506,7 +6430,7 @@
                   "key": "saw-your-sister",
                   "pl": "Czy widzisz tę czerwoną torbę?",
                   "en": "Do you see that red bag?",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "editorial-generated",
                     "generatorRef": "priority7-example-generation",
@@ -5670,6 +6594,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:dfb59aeedfa708c0e7be6ad1d46cb0b166b5e413ef51ff3598489a90313118be",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:a6ae2fe987e5301d277bf62ad7d3aeee2b50527d946d425ea9b471c4f4624aa3",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -5678,7 +6630,7 @@
                   "key": "two-cats-and-a-dog",
                   "pl": "Mam dwa koty i psa.",
                   "en": "I have two cats and a dog.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "repository-reuse",
                     "repositorySource": {
@@ -5853,6 +6805,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:a0f3ce8fd8e17f17777967c9130bb31793622e587e9082e47be6b79817a2b52d",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:1b4a0f7f8737eda5ff352cc3d154815c649ef5d455c0d0800a190b6244ef82d2",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -5861,7 +6841,7 @@
                   "key": "thinking-about-the-exam",
                   "pl": "Ciągle myślę o egzaminie.",
                   "en": "I keep thinking about the exam.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "editorial-generated",
                     "generatorRef": "priority7-example-generation",
@@ -6031,6 +7011,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:950e21de31e55ad1310841310f00376e4d4a52ad7bd2926b03018999fbd6e3d4",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:8e89a7d9818c7c4e6c1b7dcb468389040c2b5b352ee8b46c16baef132e647443",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -6039,7 +7047,7 @@
                   "key": "finally-found-a-flat",
                   "pl": "W końcu znalazłam nową pracę.",
                   "en": "I finally found a new job.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "editorial-generated",
                     "generatorRef": "priority7-example-generation",
@@ -6223,6 +7231,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:0691cbd42e1702d04bb63ce49d8bfe6a287629311e4acef932c9e04e4317ff01",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:18a80ece7cbdbc9da6a4c6b38d8aa042127498d53b048c0ffa3bef0e25f958e8",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -6231,7 +7267,7 @@
                   "key": "honest-opinion-about-the-film",
                   "pl": "Szczerze mówiąc, nie podoba mi się ten film.",
                   "en": "To be honest, I don't like this movie.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "repository-reuse",
                     "repositorySource": {
@@ -6409,6 +7445,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:1e03abb0105eeee952a903703f0d12f913655b98fd32a51596ce08a0803e73df",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:83f86c421860d28aec7febea7a86e648f97164213113ea53a0a55e5800c7c60c",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -6417,7 +7481,7 @@
                   "key": "trusting-my-teacher",
                   "pl": "Ufam swojej nauczycielce.",
                   "en": "I trust my teacher.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "editorial-generated",
                     "generatorRef": "priority7-example-generation",
@@ -6583,6 +7647,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:e829a4702e2d67e1d40df2e24565f1691f9ad1bd21528dae49a87e447dde5621",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:33b7b5e8564702f2668bf70686a3ce0fae39686bd00f0ba34eba5e76f4b7fda7",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -6591,7 +7683,7 @@
                   "key": "believing-a-friend",
                   "pl": "Wierzę koleżance, bo nigdy nie kłamie.",
                   "en": "I believe my friend because she never lies.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "editorial-generated",
                     "generatorRef": "priority7-example-generation",
@@ -6723,6 +7815,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:35175ebc9ee0461c8571c2d2e55737bbdc58211309c80f136218c56b25440455",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:86df6003ab85709335607a7097b642a8c9f75d8fd901a1f16c39ef7592c227b1",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -6731,7 +7851,7 @@
                   "key": "believing-in-the-team",
                   "pl": "Trener wierzy w tę drużynę.",
                   "en": "The coach believes in this team.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "editorial-generated",
                     "generatorRef": "priority7-example-generation",
@@ -6885,6 +8005,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:94c2dc4b05720d464d934df2b8a5fa9c11f7921a59fd18ab98457f7e0087bf05",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:807badbf6571a59a020828ce734a20cbf65400ad62889b4f0c9087c6bbf70c59",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -6893,7 +8041,7 @@
                   "key": "dad-repairs-computers",
                   "pl": "Mój tata zajmuje się naprawą komputerów.",
                   "en": "My dad works in computer repair.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "editorial-generated",
                     "generatorRef": "priority7-example-generation",
@@ -6994,6 +8142,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-17",
                   "note": "Product owner approval after visual inspection of all 45 patterns in the Priority 7 learner interface: APPROVE ALL. Inclusion and usefulness decision on the recorded treatment; no new language review was performed."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:285874c1bcccef82b7a316f68f267453ac2ae9105cdb36da604dfb47449de377",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:40c01e63866dbad76ea92a7522cf8e8cd7a04a82faecf6c79edc8c3124d50bdc",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -7002,7 +8178,7 @@
                   "key": "looking-after-my-sisters-daughter",
                   "pl": "Kiedy siostra jest w pracy, zajmuję się jej córką.",
                   "en": "When my sister is at work, I look after her daughter.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "editorial-generated",
                     "generatorRef": "priority7-example-generation",
@@ -7156,6 +8332,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:47d5c1b45c205afbbb90b373baa08d7665a5f67630c82e94be98515f10da0057",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:1d6d2977c86247aee247a5f2716ece0d55e616d1b9efb2ce78041df0ce93f5ba",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -7164,7 +8368,7 @@
                   "key": "caring-for-a-sick-grandmother",
                   "pl": "Dziś opiekuję się młodszą siostrą.",
                   "en": "Today I'm looking after my younger sister.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "editorial-generated",
                     "generatorRef": "priority7-example-generation",
@@ -7325,6 +8529,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:ff6bf99c893ba2e6dfae6b5b49791aa381dbbdc652680dd08aea194f8375cbbd",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:23fa77b166b9759594f4047904a6e555c807e7781875f56cfdec15d84f60712c",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -7333,7 +8565,7 @@
                   "key": "plans-depend-on-the-weather",
                   "pl": "Nasze plany zależą od pogody.",
                   "en": "Our plans depend on the weather.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "editorial-generated",
                     "generatorRef": "priority7-example-generation",
@@ -7475,6 +8707,34 @@
                   "reviewerRef": "product-owner-001",
                   "reviewedAt": "2026-08-18",
                   "note": "Product owner visually reviewed the corrected H2 learner content - completed examples, translated Polish illustrations - approved it 2026-08-18. Not a new linguistic, reference or native-speaker review. Audio deferred; UI wording separate."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "changes-requested",
+                  "actorRef": "priority7-editorial-review",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: audio eligibility changed, so prior tier-2 and product acceptances are stale. Pronunciation permission is being reviewed independently from activities."
+                },
+                {
+                  "kind": "editorial-review",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:e0c9270b6f0251a159389f88f21a1a798eb46021806f0e3ed14a7b073a59e9f1",
+                  "actorRef": "priority7-editorial-review",
+                  "corroboratingActorRefs": [
+                    "priority7-editorial-corroboration"
+                  ],
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: exact content and activity allowlists are unchanged. audioEligible now permits pronunciation only. Nonhuman policy review; no human listening, native-speaker, or linguistic audio approval."
+                },
+                {
+                  "kind": "product-approval",
+                  "decision": "accept",
+                  "scopeVersion": 1,
+                  "scopeDigest": "sha256:41d62d1e90806533c86851a728f3deaca6a8b4918ad1a8079e40e888d9185676",
+                  "reviewerRef": "product-owner-001",
+                  "reviewedAt": "2026-08-20",
+                  "note": "Priority 8 Phase 1A playback-only policy: owner authorized playback for the existing 45 examples. No Listening or audio-quality approval; 25 new clips remain pending human QA and this local candidate is not deployable."
                 }
               ],
               "examples": [
@@ -7483,7 +8743,7 @@
                   "key": "this-job-matters-to-me",
                   "pl": "Bardzo mi zależy na tej pracy.",
                   "en": "This job really matters to me.",
-                  "audioEligible": false,
+                  "audioEligible": true,
                   "origin": {
                     "kind": "editorial-generated",
                     "generatorRef": "priority7-example-generation",

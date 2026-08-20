@@ -345,6 +345,7 @@ class ValidationContext:
     # and no human can be laundered into a machine-generated provenance record.
     editorial_actor_registry: Mapping[str, Mapping[str, Any]] = field(
         default_factory=dict)
+    pronunciation_playback_authorized: bool = False
 
     def __post_init__(self) -> None:
         if isinstance(self.today, str):
@@ -677,6 +678,11 @@ def _validate_context(context: Any, issues: list[Issue]) -> bool:
     if type(context.today) is not _datetime.date:
         _add(issues, "CONTEXT_DATE", "$context.today",
              "today must be a real date or ISO YYYY-MM-DD string.")
+        valid = False
+    if type(context.pronunciation_playback_authorized) is not bool:
+        _add(issues, "CONTEXT_PLAYBACK_POLICY",
+             "$context.pronunciation_playback_authorized",
+             "pronunciation_playback_authorized must be a Boolean.")
         valid = False
     return valid
 
@@ -2042,10 +2048,13 @@ def _validate_pattern(
                 example_key if isinstance(example_key, str) else None,
                 example_path, example, lemma, meaning, value))
         if example.get("audioEligible") is True and not (
-                isinstance(eligibility, list) and "listening" in eligibility and
-                review_state == "approved"):
+                review_state == "approved" and (
+                    (isinstance(eligibility, list) and
+                     "listening" in eligibility) or
+                    context.pronunciation_playback_authorized)):
             _add(issues, "AUDIO_NOT_AUTHORIZED", f"{example_path}.audioEligible",
-                 "Audio requires approved review state and listening eligibility.")
+                 "Audio requires an approved owning pattern and either the "
+                 "explicit pronunciation-playback policy or Listening eligibility.")
 
     if eligibility_ok and isinstance(eligibility, list) and (
             {item for item in eligibility if isinstance(item, str)} &
@@ -2763,10 +2772,12 @@ def validate_runtime(
                                 pass
                         if example.get("audioEligible") is True and not (
                                 isinstance(eligibility, list) and
-                                "listening" in eligibility):
+                                "listening" in eligibility or
+                                type(revision) is int and revision >= 2):
                             _add(issues, "AUDIO_NOT_AUTHORIZED",
                                  f"{example_path}.audioEligible",
-                                 "Runtime audio requires listening eligibility.")
+                                 "Runtime revision 1 audio requires Listening; "
+                                 "independent pronunciation starts at revision 2.")
                 if isinstance(eligibility, list) and (
                         {item for item in eligibility if isinstance(item, str)} & {
                             "listening", "grammar-choose", "grammar-build", "type-it"}) and not examples:
@@ -4244,12 +4255,14 @@ def _validate_frozen_document(value: Any) -> list[Issue]:
             parent_policy = policy_by_id.get(parent_id) if isinstance(
                 parent_id, str) else None
             if (not isinstance(parent_policy, Mapping) or
-                    not isinstance(parent_policy.get("activityEligibility"), list) or
-                    "listening" not in parent_policy.get("activityEligibility", []) or
-                    parent_policy.get("reviewState") != "approved"):
+                    parent_policy.get("reviewState") != "approved" or (
+                        "listening" not in parent_policy.get(
+                            "activityEligibility", []) and not (
+                                type(revision) is int and revision >= 2))):
                 _add(issues, "AUDIO_NOT_AUTHORIZED",
                      f"$frozen.policy[{entity_id!r}].audioEligible",
-                     "Frozen audio requires an approved listening-eligible pattern.")
+                     "Frozen revision 1 audio requires approved Listening; "
+                     "revision 2 may authorize pronunciation independently.")
 
     review_history_ids: list[str] = []
     review_history_by_id: dict[str, Mapping[str, Any]] = {}
@@ -4958,6 +4971,8 @@ def _load_context(path: str | None, repository_root: str | None) -> ValidationCo
         repository_index=index,
         allocation_registry=allocation_registry,
         editorial_actor_registry=raw.get("editorialActorRegistry", {}),
+        pronunciation_playback_authorized=raw.get(
+            "pronunciationPlaybackAuthorized", False),
     )
 
 

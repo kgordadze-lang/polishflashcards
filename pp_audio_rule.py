@@ -22,6 +22,7 @@ The audio-bearing fields, and where the rule applies:
     ex        example sentence -> always required, unchanged
     full      drill feedback   -> always required, unchanged
     npc       scenario line    -> always required, unchanged
+    eligible Verb Patterns example -> required from the validated public runtime
 
 `ex` / `full` / `npc` are deliberately NOT filtered for completeness. Several of
 them legitimately trail off mid-thought inside a longer context, and they were
@@ -31,10 +32,13 @@ it were the word being learned.
 
 import glob
 import re
+import json
+from pathlib import Path
 
 import json5
 
 DATA_GLOB = "data-*.js"
+VERB_PATTERNS_RUNTIME = "content/verb-patterns.json"
 
 # Fields that always need audio exactly as authored, on any node that carries them.
 EXTRA_AUDIO_FIELDS = ("ex", "full", "npc")
@@ -67,7 +71,7 @@ def load_levels(data_file):
     parenthesis counter instead of trusting a regex. json5 then tolerates
     unquoted keys, trailing commas, and comments - the data files' whole
     grammar. A parse failure is a data-file bug worth surfacing loudly."""
-    src = open(data_file, encoding="utf-8").read()
+    src = Path(data_file).read_text(encoding="utf-8")
     levels = []
     i = 0
     while True:
@@ -163,7 +167,37 @@ def walk_audio_texts(node, out):
         walk_audio_texts(val, out)
 
 
-def required_phrases(data_glob=DATA_GLOB):
+def verb_pattern_audio_examples(runtime_path=VERB_PATTERNS_RUNTIME):
+    """Return pronunciation-authorized examples from the public runtime only."""
+    path = Path(runtime_path)
+    if not path.is_file():
+        return []
+    with path.open(encoding="utf-8") as handle:
+        runtime = json.load(handle)
+    from priority7_tooling import validate_runtime
+    issues = validate_runtime(runtime)
+    if issues:
+        rendered = "\n".join(str(issue) for issue in issues[:20])
+        raise ValueError(
+            f"Verb Patterns runtime is not valid for audio discovery:\n{rendered}")
+    found = []
+    for lemma in runtime["lemmas"]:
+        for meaning in lemma["meanings"]:
+            for pattern in meaning["patterns"]:
+                for example in pattern.get("examples", []):
+                    if example["audioEligible"]:
+                        found.append({
+                            "lemmaId": lemma["id"],
+                            "lemma": lemma.get("displayLemma", lemma["canonicalLemma"]),
+                            "patternId": pattern["id"],
+                            "exampleId": example["id"],
+                            "pl": example["pl"],
+                        })
+    return found
+
+
+def required_phrases(data_glob=DATA_GLOB,
+                     runtime_path=VERB_PATTERNS_RUNTIME):
     """Ordered, de-duplicated list of every normalized phrase that must have a clip.
 
     This is THE required set: what generate_audio.py builds, what verify_audio.py
@@ -176,6 +210,10 @@ def required_phrases(data_glob=DATA_GLOB):
             n = normalize(raw)
             if n:
                 seen.setdefault(n, True)
+    for example in verb_pattern_audio_examples(runtime_path):
+        n = normalize(example["pl"])
+        if n:
+            seen.setdefault(n, True)
     return list(seen.keys())
 
 
@@ -203,8 +241,10 @@ def template_cards(data_glob=DATA_GLOB):
 
 if __name__ == "__main__":
     phrases = required_phrases()
+    pattern_examples = verb_pattern_audio_examples()
     tmpl = template_cards()
     with_audio = [c for c in tmpl if main_audio_text(c)]
     print(f"{len(phrases)} phrases require audio")
+    print(f"{len(pattern_examples)} pronunciation-eligible Verb Patterns examples")
     print(f"{len(tmpl)} template cards, {len(with_audio)} with a complete audioText, "
           f"{len(tmpl) - len(with_audio)} with no main-card audio")

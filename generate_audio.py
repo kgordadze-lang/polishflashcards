@@ -34,6 +34,7 @@ Bump CACHE in sw.js (e.g. v15 -> v16) so returning users pick everything up clea
 
 import argparse
 import asyncio
+import csv
 import datetime
 import glob
 import hashlib
@@ -42,7 +43,8 @@ import os
 
 import edge_tts
 
-from pp_audio_rule import DATA_GLOB, required_phrases
+from pp_audio_rule import (DATA_GLOB, VERB_PATTERNS_RUNTIME, normalize,
+                           required_phrases)
 
 VOICE = "pl-PL-MarekNeural"   # Marek
 AUDIO_DIR = "audio"
@@ -53,19 +55,41 @@ def phrase_hash(normalized: str) -> str:
     return hashlib.sha256(normalized.encode("utf-8")).hexdigest()[:12]
 
 
+def validate_manifest_slot(entries: dict, key: str, phrase: str, path: str) -> None:
+    """Fail closed before an occupied content address can be overwritten."""
+    existing = entries.get(key)
+    if existing is not None and (
+            existing.get("pl") != phrase or existing.get("file") != path):
+        raise RuntimeError(
+            f"content-hash collision or manifest drift at {key}: "
+            f"expected {phrase!r} -> {path!r}, found {existing!r}")
+
+
 def collect_phrases() -> list:
     """Ordered, de-duplicated list of every normalized phrase that needs a clip.
 
     Delegates to pp_audio_rule so this script, verify_audio.py and the app can't
     disagree about what "needs audio" means."""
-    return required_phrases(DATA_GLOB)
+    return required_phrases(DATA_GLOB, VERB_PATTERNS_RUNTIME)
 
 
 async def synth(text: str, out_path: str):
     await edge_tts.Communicate(text, VOICE).save(out_path)
 
 
-async def main(prune: bool = False):
+def load_authorized_phrases(csv_path: str) -> set[str]:
+    """Load an exact text-only synthesis allowlist from a QA inventory CSV."""
+    with open(csv_path, encoding="utf-8", newline="") as fh:
+        rows = list(csv.DictReader(fh))
+    phrases = {normalize(row.get("exact_polish") or "") for row in rows}
+    phrases.discard("")
+    if len(phrases) != len(rows):
+        raise RuntimeError(
+            "synthesis allowlist contains an empty or duplicate exact_polish value")
+    return phrases
+
+
+async def main(prune: bool = False, allowlist_csv: str | None = None):
     os.makedirs(AUDIO_DIR, exist_ok=True)
 
     manifest = {"voice": VOICE, "generatedAt": None, "audioDir": AUDIO_DIR, "entries": {}}
@@ -78,11 +102,26 @@ async def main(prune: bool = False):
     entries = manifest.setdefault("entries", {})
 
     phrases = collect_phrases()
+    authorized = load_authorized_phrases(allowlist_csv) if allowlist_csv else None
+    if authorized is not None:
+        missing = {
+            phrase for phrase in phrases
+            if not (
+                os.path.exists(f"{AUDIO_DIR}/{phrase_hash(phrase)}.mp3")
+                and os.path.getsize(f"{AUDIO_DIR}/{phrase_hash(phrase)}.mp3") > 0
+            )
+        }
+        if missing != authorized:
+            raise RuntimeError(
+                "refusing synthesis: missing phrase set does not exactly match "
+                f"authorized CSV (missing={len(missing)}, authorized={len(authorized)})")
+        phrases = [phrase for phrase in phrases if phrase in authorized]
     made = failed = 0
     failures = []
     for n in phrases:
         h = phrase_hash(n)
         rel = f"{AUDIO_DIR}/{h}.mp3"
+        validate_manifest_slot(entries, h, n, rel)
         # Incremental - a clip counts as existing only if it's non-empty.
         # (edge-tts can leave a zero-byte file behind on a partial failure;
         # treat those as missing and re-synthesize.)
@@ -148,5 +187,8 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser(description="Generate missing audio clips and update the manifest.")
     ap.add_argument("--prune", action="store_true",
                     help="also remove stale manifest entries and list orphaned MP3s")
+    ap.add_argument(
+        "--allowlist-csv",
+        help="refuse synthesis unless its exact missing phrase set matches this CSV")
     args = ap.parse_args()
-    asyncio.run(main(prune=args.prune))
+    asyncio.run(main(prune=args.prune, allowlist_csv=args.allowlist_csv))

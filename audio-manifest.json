@@ -1,6 +1,6 @@
 {
 "voice": "pl-PL-MarekNeural",
-"generatedAt": "2026-08-01T08:27:27.519443Z",
+"generatedAt": "2026-08-20T12:35:38.597530Z",
 "audioDir": "audio",
 "entries": {
 "000311d1288f": {
@@ -13510,6 +13510,106 @@
 "e6063c6546c9": {
 "pl": "Dzień dobry, dzwonię w sprawie wizyty kontrolnej.",
 "file": "audio/e6063c6546c9.mp3"
+},
+"ba8ffae67384": {
+"pl": "Boimy się o dziadka, bo mieszka sam.",
+"file": "audio/ba8ffae67384.mp3"
+},
+"a47da763550c": {
+"pl": "Codziennie dbam o kondycję.",
+"file": "audio/a47da763550c.mp3"
+},
+"14a59bbdc91a": {
+"pl": "Dziękuję siostrze za kolację.",
+"file": "audio/14a59bbdc91a.mp3"
+},
+"9cd5878d87e5": {
+"pl": "Zawsze mówię rodzicom prawdę.",
+"file": "audio/9cd5878d87e5.mp3"
+},
+"3a1345633c7b": {
+"pl": "Mówię ci, że to dobry pomysł.",
+"file": "audio/3a1345633c7b.mp3"
+},
+"34d6718a97b5": {
+"pl": "Ciągle myślę o egzaminie.",
+"file": "audio/34d6718a97b5.mp3"
+},
+"6ebd3768b640": {
+"pl": "Dziś opiekuję się młodszą siostrą.",
+"file": "audio/6ebd3768b640.mp3"
+},
+"d883cb2fb59a": {
+"pl": "Płacę za kawę i gazetę.",
+"file": "audio/d883cb2fb59a.mp3"
+},
+"7e089f4410d7": {
+"pl": "Często pomagam sąsiadce.",
+"file": "audio/7e089f4410d7.mp3"
+},
+"bf30f876fb3d": {
+"pl": "Pomagam bratu w matematyce.",
+"file": "audio/bf30f876fb3d.mp3"
+},
+"c9fd4250f49a": {
+"pl": "Pytam koleżankę o nową restaurację.",
+"file": "audio/c9fd4250f49a.mp3"
+},
+"49075a113c25": {
+"pl": "Zawsze pytam o cenę.",
+"file": "audio/49075a113c25.mp3"
+},
+"b3d0274579f7": {
+"pl": "Zawsze rozmawiamy o muzyce.",
+"file": "audio/b3d0274579f7.mp3"
+},
+"b2b4d7e44eec": {
+"pl": "Codziennie rozmawiam z mamą.",
+"file": "audio/b2b4d7e44eec.mp3"
+},
+"deafd1c92fce": {
+"pl": "Rozmawiam z lekarzem o wynikach badań.",
+"file": "audio/deafd1c92fce.mp3"
+},
+"fb790bca5329": {
+"pl": "Ten pies słucha swojego pana.",
+"file": "audio/fb790bca5329.mp3"
+},
+"52221b23692c": {
+"pl": "Ufam swojej nauczycielce.",
+"file": "audio/52221b23692c.mp3"
+},
+"67814b59e796": {
+"pl": "Czy widzisz tę czerwoną torbę?",
+"file": "audio/67814b59e796.mp3"
+},
+"f06e4a2bd9c3": {
+"pl": "Wierzę koleżance, bo nigdy nie kłamie.",
+"file": "audio/f06e4a2bd9c3.mp3"
+},
+"3d709270cdd6": {
+"pl": "Trener wierzy w tę drużynę.",
+"file": "audio/3d709270cdd6.mp3"
+},
+"ef2b6a3eedbf": {
+"pl": "Kiedy siostra jest w pracy, zajmuję się jej córką.",
+"file": "audio/ef2b6a3eedbf.mp3"
+},
+"b304455b54fa": {
+"pl": "Mój tata zajmuje się naprawą komputerów.",
+"file": "audio/b304455b54fa.mp3"
+},
+"cd4741e333d3": {
+"pl": "Nasze plany zależą od pogody.",
+"file": "audio/cd4741e333d3.mp3"
+},
+"779329e1891f": {
+"pl": "Bardzo mi zależy na tej pracy.",
+"file": "audio/779329e1891f.mp3"
+},
+"0b4d3fbd75d7": {
+"pl": "W końcu znalazłam nową pracę.",
+"file": "audio/0b4d3fbd75d7.mp3"
 }
 }
 }

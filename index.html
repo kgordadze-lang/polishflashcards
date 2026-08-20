@@ -1052,8 +1052,11 @@
   .vp-explain{font-size:14px;color:var(--forest);margin:0;line-height:1.55;overflow-wrap:anywhere}
   .vp-example{background:var(--mint-bg);border-radius:12px;padding:11px 13px;
     display:flex;flex-direction:column;gap:3px}
-  .vp-example-pl{font-size:15px;font-weight:700;color:var(--forest);margin:0;line-height:1.4;overflow-wrap:anywhere}
+  .vp-example-pl-row{display:flex;align-items:center;gap:10px;min-width:0}
+  .vp-example-pl{flex:1;min-width:0;font-size:15px;font-weight:700;color:var(--forest);margin:0;line-height:1.4;overflow-wrap:anywhere}
   .vp-example-en{font-size:12.5px;color:var(--muted);margin:0;line-height:1.45;overflow-wrap:anywhere}
+  .vp-example-audio{width:44px;height:44px;margin-left:auto;font-size:16px;line-height:1}
+  .vp-example-audio:disabled{opacity:.55;cursor:wait}
   /* ---------- cross-links, both directions ----------
      Same discipline as everything above: inline-flex with wrapping, relative
      sizes, 44px targets, no width of their own and no intrinsic minimum wider
@@ -1089,6 +1092,7 @@
   @media (prefers-reduced-motion:reduce){
     .build-row.shake{animation:none}
     .flip,.screen,.done,.bubble,.hero h1,.hero h1 em,.hero-badge{transition:none;animation:none}
+    .fab.speaking,.ex-audio.speaking,.mini-audio.speaking{animation:none}
     .hero h1 em{background:none;-webkit-text-fill-color:var(--emerald)}
   }
   @media (max-width:400px){
@@ -1984,7 +1988,7 @@
    Unrelated to CACHE in sw.js, which is a machine counter - bump both when
    you deploy, but they don't need to match.
    ========================================================================= */
-const APP_VERSION = "8.11";
+const APP_VERSION = "8.12";
 document.getElementById("footVersion").textContent = "v" + APP_VERSION;
 document.getElementById("footYear").textContent = String(new Date().getFullYear());
 
@@ -2510,6 +2514,7 @@ function showScreen(scr, deferFocus, restoreScroll){
      destination at the top, unchanged. */
   const fromScreen=ppCurrentScreen();
   const toScreen=$(scr);
+  if(fromScreen && fromScreen.id==="patterns" && fromScreen!==toScreen) stopAllAudio();
   if(fromScreen && fromScreen!==toScreen) ppRememberScreenScroll(fromScreen.id);   /* where the outgoing screen was left */
   document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
   toScreen.classList.add("active");
@@ -3259,6 +3264,14 @@ function settleAudioManifest(manifest){
      settlement changes what is PRESSABLE and nothing else. */
   syncListeningAudioReadiness();
   syncRoundAudioReadiness();
+  if(typeof syncPatternAudioReadiness === "function") syncPatternAudioReadiness();
+}
+
+function syncPatternAudioReadiness(){
+  const loading = audioManifestStatus === "loading";
+  document.querySelectorAll(".vp-example-audio").forEach(btn => {
+    btn.disabled = loading;
+  });
 }
 
 /* Load the manifest once at startup - one request, no retry, no polling. Failure
@@ -3940,6 +3953,7 @@ function gRenderPatternLink(topic){
    control the learner pressed keeps focus. */
 function pRenderIndex(enterScreen){
   const body = $("pBody");
+  if(typeof stopAllAudio === "function") stopAllAudio();
   P.view = "index";
   body.textContent = "";
   $("pTitle").textContent = "Verb Patterns";
@@ -4189,9 +4203,20 @@ function pRenderLemma(entry){
          is fabricated and no placeholder appears. */
       if(pattern.example){
         const example = pEl("div", "vp-example", null);
+        const plRow = pEl("div", "vp-example-pl-row", null);
         const pl = pEl("p", "vp-example-pl", pattern.example.pl);
         pl.setAttribute("lang", "pl");
-        example.appendChild(pl);
+        plRow.appendChild(pl);
+        if(pattern.example.audioEligible){
+          const audio = pEl("button", "mini-audio vp-example-audio", null);
+          audio.type = "button";
+          audio.textContent = "🔊";
+          audio.setAttribute("data-say", encodeURIComponent(pattern.example.pl));
+          ppSetAudioControlName(audio, "Play example sentence", pattern.example.pl);
+          audio.disabled = audioManifestStatus === "loading";
+          plRow.appendChild(audio);
+        }
+        example.appendChild(plRow);
         example.appendChild(pEl("p", "vp-example-en", pattern.example.en));
         block.appendChild(example);
       }

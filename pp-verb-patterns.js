@@ -1168,7 +1168,8 @@ var PP_VERB_PATTERNS = (function () {
               }),
               explanation: pattern.learnerExplanationEn,
               example: pattern.examples && pattern.examples.length
-                ? { pl: pattern.examples[0].pl, en: pattern.examples[0].en }
+                ? { pl: pattern.examples[0].pl, en: pattern.examples[0].en,
+                    audioEligible: pattern.examples[0].audioEligible }
                 : null,
               /* Pointers back to the existing case lessons. Grammar keeps the
                  teaching; this view carries only the way back to it. */

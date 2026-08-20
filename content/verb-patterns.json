@@ -1,6 +1,6 @@
 {
   "formatVersion": 1,
-  "patternDataRevision": 1,
+  "patternDataRevision": 2,
   "lemmas": [
     {
       "id": "vp-l-bac-sie-0fcafe1aef9f",
@@ -42,7 +42,7 @@
                   "id": "vp-e-bac-sie-be-afraid-of-genitive-stimulus-spiders-and-flying-05ebb1adaeeb",
                   "pl": "Boję się pająków i latania samolotem.",
                   "en": "I am afraid of spiders and of flying.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -101,7 +101,7 @@
                   "id": "vp-e-bac-sie-worry-about-o-accusative-concern-worried-about-grandad-6d3fcb1cfed8",
                   "pl": "Boimy się o dziadka, bo mieszka sam.",
                   "en": "We're worried about our grandad because he lives alone.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -155,7 +155,7 @@
                   "id": "vp-e-byc-predicate-role-instrumental-predicate-first-year-student-181cc5a0b335",
                   "pl": "Jestem studentem pierwszego roku.",
                   "en": "I am a first-year student.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -232,7 +232,7 @@
                   "id": "vp-e-czekac-wait-for-na-accusative-target-waiting-for-bus-c7204269b040",
                   "pl": "Czekam na autobus.",
                   "en": "I am waiting for the bus.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -305,7 +305,7 @@
                   "id": "vp-e-dbac-take-care-of-o-accusative-target-care-every-day-171833c3174d",
                   "pl": "Codziennie dbam o kondycję.",
                   "en": "I work on my fitness every day.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -371,7 +371,7 @@
                   "id": "vp-e-dziekowac-thank-dative-recipient-za-accusative-thanks-for-cooperation-92656ebcc371",
                   "pl": "Dziękuję siostrze za kolację.",
                   "en": "I thank my sister for dinner.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -422,7 +422,7 @@
                   "id": "vp-e-dziekowac-thank-za-accusative-reason-thanks-for-help-edd6c7bb9169",
                   "pl": "Dziękuję za pomoc.",
                   "en": "Thank you for your help.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -481,7 +481,7 @@
                   "id": "vp-e-interesowac-sie-be-interested-in-instrumental-topic-politics-and-sport-9678fabc81e9",
                   "pl": "Interesuję się polityką i sportem.",
                   "en": "I am interested in politics and sport.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -553,7 +553,7 @@
                   "id": "vp-e-lubic-enjoy-thing-or-activity-accusative-object-polish-food-857835bb5b81",
                   "pl": "Lubię polskie jedzenie.",
                   "en": "I like Polish food.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -605,7 +605,7 @@
                   "id": "vp-e-lubic-enjoy-thing-or-activity-infinitive-activity-reading-before-sleep-d573db6f04d1",
                   "pl": "Lubię czytać przed snem.",
                   "en": "I like reading before bed.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -660,7 +660,7 @@
                   "id": "vp-e-miec-possess-accusative-object-two-cats-and-a-dog-2ce2746c0cfc",
                   "pl": "Mam dwa koty i psa.",
                   "en": "I have two cats and a dog.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -731,7 +731,7 @@
                   "id": "vp-e-mowic-tell-content-dative-recipient-accusative-content-telling-parents-the-truth-cc31a97d5386",
                   "pl": "Zawsze mówię rodzicom prawdę.",
                   "en": "I always tell my parents the truth.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -780,7 +780,7 @@
                   "id": "vp-e-mowic-tell-content-dative-recipient-ze-clause-telling-you-its-a-good-idea-ed20965f4251",
                   "pl": "Mówię ci, że to dobry pomysł.",
                   "en": "I'm telling you that it's a good idea.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -840,7 +840,7 @@
                   "id": "vp-e-myslec-think-about-o-locative-topic-thinking-about-the-exam-10ede796a5be",
                   "pl": "Ciągle myślę o egzaminie.",
                   "en": "I keep thinking about the exam.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -912,7 +912,7 @@
                   "id": "vp-e-opiekowac-sie-care-for-instrumental-object-caring-for-a-sick-grandmother-5d1ea100cdfa",
                   "pl": "Dziś opiekuję się młodszą siostrą.",
                   "en": "Today I'm looking after my younger sister.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -973,7 +973,7 @@
                   "id": "vp-e-placic-pay-instrumental-method-paying-cash-e1eba53e074b",
                   "pl": "Płacę gotówką.",
                   "en": "I am paying in cash.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -1029,7 +1029,7 @@
                   "id": "vp-e-placic-pay-za-accusative-goods-how-much-for-everything-dd5e5c88cfd4",
                   "pl": "Płacę za kawę i gazetę.",
                   "en": "I am paying for a coffee and a newspaper.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -1094,7 +1094,7 @@
                   "id": "vp-e-podobac-sie-appeal-to-nominative-stimulus-dative-experiencer-honest-opinion-about-the-film-c11dccc4e223",
                   "pl": "Szczerze mówiąc, nie podoba mi się ten film.",
                   "en": "To be honest, I don't like this movie.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -1171,7 +1171,7 @@
                   "id": "vp-e-pomagac-assist-dative-recipient-helping-a-neighbour-da22c7a69e27",
                   "pl": "Często pomagam sąsiadce.",
                   "en": "I often help my neighbour.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -1233,7 +1233,7 @@
                   "id": "vp-e-pomagac-assist-dative-recipient-w-locative-area-helping-with-maths-adfee546f29a",
                   "pl": "Pomagam bratu w matematyce.",
                   "en": "I help my brother with maths.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -1292,7 +1292,7 @@
                   "id": "vp-e-potrzebowac-need-genitive-object-certificate-from-work-9bb3306bf0ee",
                   "pl": "Potrzebuję zaświadczenia z pracy.",
                   "en": "I need a certificate from work.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -1371,7 +1371,7 @@
                   "id": "vp-e-prosic-request-accusative-person-o-accusative-thing-asking-the-boss-for-a-raise-edec4ed77571",
                   "pl": "Będę prosić szefa o podwyżkę.",
                   "en": "I will ask my boss for a raise.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -1422,7 +1422,7 @@
                   "id": "vp-e-prosic-request-o-accusative-request-passport-please-37568555b13c",
                   "pl": "Proszę o paszport.",
                   "en": "Your passport, please.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -1494,7 +1494,7 @@
                   "id": "vp-e-pytac-ask-for-information-accusative-person-o-accusative-topic-asking-a-friend-about-a-restaurant-4e51f8927a78",
                   "pl": "Pytam koleżankę o nową restaurację.",
                   "en": "I am asking my friend about the new restaurant.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -1540,7 +1540,7 @@
                   "id": "vp-e-pytac-ask-for-information-o-accusative-topic-asking-about-the-price-662fceb895d3",
                   "pl": "Zawsze pytam o cenę.",
                   "en": "I always ask about the price.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -1601,7 +1601,7 @@
                   "id": "vp-e-rozmawiac-talk-with-o-locative-topic-talking-about-music-94c6280fa290",
                   "pl": "Zawsze rozmawiamy o muzyce.",
                   "en": "We always talk about music.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -1645,7 +1645,7 @@
                   "id": "vp-e-rozmawiac-talk-with-z-instrumental-interlocutor-talking-to-mum-every-day-e0d2b75493db",
                   "pl": "Codziennie rozmawiam z mamą.",
                   "en": "I talk to my mum every day.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -1696,7 +1696,7 @@
                   "id": "vp-e-rozmawiac-talk-with-z-instrumental-o-locative-doctor-about-test-results-6080f6504f29",
                   "pl": "Rozmawiam z lekarzem o wynikach badań.",
                   "en": "I'm talking to the doctor about the test results.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -1762,7 +1762,7 @@
                   "id": "vp-e-sluchac-listen-to-genitive-target-music-on-the-way-ecf258289d6e",
                   "pl": "Słucham muzyki w drodze do pracy.",
                   "en": "I listen to music on the way to work.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -1820,7 +1820,7 @@
                   "id": "vp-e-sluchac-obey-genitive-object-dog-obeys-its-owner-f1216029cb1b",
                   "pl": "Ten pies słucha swojego pana.",
                   "en": "This dog obeys its owner.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -1875,7 +1875,7 @@
                   "id": "vp-e-szukac-seek-genitive-target-looking-for-cafe-efdccf7a5ba6",
                   "pl": "Szukam dobrej kawiarni.",
                   "en": "I am looking for a good café.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -1948,7 +1948,7 @@
                   "id": "vp-e-tesknic-miss-za-instrumental-target-missing-you-b98f2f56ea9f",
                   "pl": "Tęsknię za tobą, kiedy wyjeżdżasz.",
                   "en": "I miss you when you go away.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -2015,7 +2015,7 @@
                   "id": "vp-e-uczyc-sie-study-genitive-subject-matter-polish-for-a-year-180cd560a0ec",
                   "pl": "Uczę się polskiego od roku.",
                   "en": "I have been learning Polish for a year.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -2074,7 +2074,7 @@
                   "id": "vp-e-uczyc-sie-study-infinitive-skill-learning-guitar-fc75e418733b",
                   "pl": "Uczę się grać na gitarze.",
                   "en": "I am learning to play the guitar.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -2128,7 +2128,7 @@
                   "id": "vp-e-ufac-trust-dative-object-trusting-my-teacher-618816d6a6ea",
                   "pl": "Ufam swojej nauczycielce.",
                   "en": "I trust my teacher.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -2194,7 +2194,7 @@
                   "id": "vp-e-uzywac-use-genitive-object-using-an-app-4ea0e75b504a",
                   "pl": "Używam tej aplikacji do nauki języków.",
                   "en": "I use this app for learning languages.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -2260,7 +2260,7 @@
                   "id": "vp-e-widziec-perceive-visually-accusative-object-saw-your-sister-ec51af47f224",
                   "pl": "Czy widzisz tę czerwoną torbę?",
                   "en": "Do you see that red bag?",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -2325,7 +2325,7 @@
                   "id": "vp-e-wierzyc-have-trust-dative-object-believing-a-friend-b65c5d71b199",
                   "pl": "Wierzę koleżance, bo nigdy nie kłamie.",
                   "en": "I believe my friend because she never lies.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -2376,7 +2376,7 @@
                   "id": "vp-e-wierzyc-have-trust-w-accusative-target-believing-in-the-team-9695f1faa84b",
                   "pl": "Trener wierzy w tę drużynę.",
                   "en": "The coach believes in this team.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -2430,7 +2430,7 @@
                   "id": "vp-e-zajmowac-sie-look-after-person-instrumental-object-looking-after-my-sisters-daughter-1976cdf5b971",
                   "pl": "Kiedy siostra jest w pracy, zajmuję się jej córką.",
                   "en": "When my sister is at work, I look after her daughter.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -2477,7 +2477,7 @@
                   "id": "vp-e-zajmowac-sie-occupation-activity-instrumental-topic-dad-repairs-computers-1ad6678e41cb",
                   "pl": "Mój tata zajmuje się naprawą komputerów.",
                   "en": "My dad works in computer repair.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -2539,7 +2539,7 @@
                   "id": "vp-e-zalezec-depend-on-od-genitive-source-plans-depend-on-the-weather-e539ac27be66",
                   "pl": "Nasze plany zależą od pogody.",
                   "en": "Our plans depend on the weather.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -2597,7 +2597,7 @@
                   "id": "vp-e-zalezec-matter-to-someone-dative-experiencer-na-locative-this-job-matters-to-me-49c780e0667f",
                   "pl": "Bardzo mi zależy na tej pracy.",
                   "en": "This job really matters to me.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -2656,7 +2656,7 @@
                   "id": "vp-e-znac-be-acquainted-with-accusative-object-know-this-restaurant-966b2c8de5a3",
                   "pl": "Czy znasz tę restaurację?",
                   "en": "Do you know this restaurant?",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
@@ -2725,7 +2725,7 @@
                   "id": "vp-e-znalezc-find-accusative-object-finally-found-a-flat-3609f7a71e3f",
                   "pl": "W końcu znalazłam nową pracę.",
                   "en": "I finally found a new job.",
-                  "audioEligible": false
+                  "audioEligible": true
                 }
               ],
               "contentRefs": [
