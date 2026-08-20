@@ -30,7 +30,7 @@ These are source candidates, not final examples. Exact text may be reused only a
 | brać | `a1-morning-routine-005` / pharmacy scenarios | review an exact medicine-taking sentence |
 | czytać | `verbs-aspect-004:full` | `Zwykle czytam książki wieczorem.` |
 | pisać | `verbs-present-tense` | `Piszę e-mail do szefa.` |
-| czuć się | `verbs-reflexive-007:full` | `Czuję się dobrze.` |
+| czuć się (reserve/model-fit hold) | `verbs-reflexive-007:full` | `Czuję się dobrze.` proves Po polsku relevance, but its predicate is outside the locked complement vocabulary |
 | nazywać się | `verbs-reflexive-004:full` | `Nazywam się Anna.` |
 | spotykać się | `verbs-reflexive-006:full` | `Spotykamy się o piątej.` (time context; may not demonstrate `z + Instr`) |
 | umówić się | healthcare appointment cards/scenario | several approved scheduling utterances; verify complement focus |
@@ -47,11 +47,13 @@ These are source candidates, not final examples. Exact text may be reused only a
 | polecać | `b1-culture-entertainment-018:ex` | `Gorąco polecam tę książkę.` |
 | życzyć | grammar/scenario formula | `Wszystkiego najlepszego!` exists, but the ellipsis may not teach the full two-case frame |
 | korzystać | `scenarios-gym` | `Długo jeszcze będziesz korzystać z ławki?` |
+| przynosić | `a2-healthcare-appointments-016` | promoted compatible Dative + Accusative hypothesis; exact form/text requires Phase 3 review |
+| kłócić się | `b1-relationships-014` | promoted compatible `z + Instrumental` / `o + Accusative` hypothesis; exact frame/text requires Phase 3 review |
 | pokazywać/pokazać | `grammar-cases-dative-014:full` | `Pokażę ci drogę.` (perfective form; do not mislabel as imperfective reuse) |
 
 Every listed utterance already belongs to the global required-audio set, so exact retention would allow manifest reuse. A morphologically different future example does not reuse that clip.
 
-Candidates without a suitable exact repository sentence are honestly marked `editorial-generated`/future creation in the candidate CSV. Phase 0 did not invent final examples.
+Candidates without a suitable exact repository sentence are honestly marked `editorial-generated`/future creation in the candidate CSV. Repository evidence establishes relevance/reuse opportunity only, not valency or final selection. Phase 0 did not invent final examples.
 
 ## Expansion audio range
 

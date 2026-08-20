@@ -2,7 +2,7 @@
 
 ## Recommendation status
 
-This is a **planning recommendation, not an approved corpus**. It selects exactly 70 new lemma identities, bringing the target from 30 to approximately 100 lemmas. The order is curated for usefulness and coverage balance; it is intentionally not a blind descending sort of `total_score`.
+This is **Phase 0 discovery guidance, not an approved corpus or frame inventory**. It provisionally selects exactly 70 new lemma identities, bringing the planning target from 30 to approximately 100 lemmas. Every construction below is a hypothesis for Phase 3 contemporary verification; repository evidence proves Po polsku relevance/reuse, not Polish valency. Human product judgment owns the final Phase 3B shortlist. The order is curated for usefulness and coverage balance; it is intentionally not a blind descending sort of `total_score`.
 
 | Rank | Lemma | CEFR | Score | Provisional construction focus |
 |---:|---|---|---:|---|
@@ -23,7 +23,7 @@ This is a **planning recommendation, not an approved corpus**. It selects exactl
 | 15 | kupować | A1 | 40 | Accusative goods; dla + Genitive beneficiary |
 | 16 | kupić | A1 | 39 | Accusative goods; Dative recipient in give/buy-for contexts only if supported |
 | 17 | mieszkać | A1 | 40 | w + Locative; z + Instrumental co-resident |
-| 18 | pracować | A1 | 36 | w + Locative; jako + Nominative; nad + Instrumental |
+| 18 | pracować | A1 | 36 | nad + Instrumental and w + Locative only if verified; jako + Nominative is outside the locked model |
 | 19 | kochać | A1 | 38 | Accusative person/thing |
 | 20 | dawać | A2 | 34 | Dative recipient + Accusative thing |
 | 21 | dać | A2 | 30 | Dative recipient + Accusative thing |
@@ -33,7 +33,7 @@ This is a **planning recommendation, not an approved corpus**. It selects exactl
 | 25 | przeczytać | A2 | 31 | Accusative text |
 | 26 | pisać | A1 | 33 | Accusative text; do + Genitive addressee |
 | 27 | napisać | A2 | 29 | Accusative text; do + Genitive addressee |
-| 28 | czuć się | A1 | 34 | adverb/adjective predicate; Instrumental identity only if supported |
+| 28 | przynosić | A2 | 32 | Dative recipient + Accusative thing |
 | 29 | nazywać się | A1 | 31 | Nominative name predicate |
 | 30 | spotykać się | A2 | 36 | z + Instrumental person |
 | 31 | spotkać się | A2 | 35 | z + Instrumental person |
@@ -74,10 +74,17 @@ This is a **planning recommendation, not an approved corpus**. It selects exactl
 | 66 | korzystać | A2 | 39 | z + Genitive resource |
 | 67 | uczyć | A2 | 36 | Accusative person + Genitive subject; + infinitive |
 | 68 | pasować | A2 | 38 | Dative experiencer; do + Genitive match |
-| 69 | kosztować | A2 | 33 | Accusative price/amount; Genitive cost only if supported |
+| 69 | kłócić się | B1 | 29 | z + Instrumental person; o + Accusative topic |
 | 70 | pokazywać | A2 | 34 | Dative recipient + Accusative thing |
 
-The underlying [priority-8-next-70-ranking.csv](priority-8-next-70-ranking.csv) exposes every component score and uncertainty. The proposed lemma-level CEFR mix is 23 A1, 43 A2 and 4 B1. That does not predetermine pattern CEFR: a common A2 lemma may have a B1 frame that should be recognition-only or deferred.
+The underlying [priority-8-next-70-ranking.csv](priority-8-next-70-ranking.csv) exposes every component score and uncertainty. The proposed lemma-level CEFR mix is 22 A1, 43 A2 and 5 B1. That does not predetermine pattern CEFR: a common A2 lemma may have a B1 frame that should be recognition-only or deferred.
+
+## Architecture-fit corrections
+
+- `czuć się` is reserve. Its central `czuć się + adverb/adjective` learner construction cannot be encoded by `case`, `preposition-case`, `infinitive` or `clause`; no Instrumental substitute is invented.
+- `kosztować` is reserve. The ordinary price/amount construction is not assigned Accusative, Genitive or another direct case without linguistic and model-fit evidence.
+- `pracować` remains included for independently useful compatible hypotheses. `jako + Nominative` is outside `preposition-case` because that type disallows Nominative and is excluded from coverage.
+- `przynosić` and `kłócić się` are the replacements because their compatible provisional frames add practical Dative/multi-complement and Instrumental/Accusative-preposition value with cited repository contexts. Their lower numeric scores demonstrate that architecture fit, learner value, coverage and evidence—not score order—control selection.
 
 ## Balance decisions that override raw score
 
@@ -88,12 +95,24 @@ The underlying [priority-8-next-70-ranking.csv](priority-8-next-70-ranking.csv) 
 - Selected perfectives (`kupić`, `dać`, `wziąć`, `przeczytać`, `napisać`, `spotkać się`, `obejrzeć`, `zacząć`, `skończyć`, `wrócić`, `przyjść`, `przyjechać`, `wyjść`, `wyjechać`) are separate lemma candidates, not pattern copies.
 - Simple object verbs such as `kochać` remain for practical balance even though they add less case novelty.
 
+## Motion-lemma concentration
+
+The provisional 70 contain **12 primarily motion lemmas (17.1%)**: `iść`, `chodzić`, `jechać`, `jeździć`, `dojść`, `dojechać`, `wracać`, `wrócić`, `przyjść`, `przyjechać`, `wyjść` and `wyjechać`. This is a deliberate but capped share. These verbs have unusually strong committed teaching evidence, high navigation/daily-life value and important Polish motion contrasts; adding further motion partners would displace Dative, clause, lexical-`się` and non-motion preposition families.
+
+Only genuinely selected meaning-specific lexical/constructional frames may become patterns. Generic destination, source, route, time and vehicle phrases remain possible adjuncts and contribute no case/preposition coverage merely because they occur with a motion verb.
+
+## Aspect-partner slot policy
+
+Both partners receive provisional slots only if each independently has everyday usefulness and repository evidence, learners need both aspects, the pair adds teaching value beyond a duplicated frame, and the two slots beat competing domain/coverage uses of the approximately 70-lemma budget. Failure of any criterion keeps one partner reserve. Patterns are researched independently and never inherited.
+
+Ten pairs currently receive two provisional slots: `kupować/kupić`, `dawać/dać`, `brać/wziąć`, `czytać/przeczytać`, `pisać/napisać`, `spotykać się/spotkać się`, `oglądać/obejrzeć`, `zaczynać/zacząć`, `kończyć/skończyć` and `wracać/wrócić`. `zaczynać/zacząć` remains double-slotted only for the independently useful process/bounded-onset contrast and is explicitly conditional on Phase 3 evidence. `zamawiać` remains the single ordering-family inclusion while `zamówić` stays reserve; `rezerwować` remains the single booking-family inclusion while `zarezerwować` stays reserve. Phase 3 may recommend a one-for-one partner swap, but not automatic inheritance or an extra slot.
+
 ## Reserve and replacement policy
 
-The 24 reserves include aspect partners and alternatives such as `zapytać`, `zamówić`, `zarezerwować`, opening/closing verbs, additional motion partners, `decydować`, `rezygnować`, `marzyć`, `uczestniczyć`, `kłócić się`, `radzić sobie`, `wyglądać`, `odbierać` and `wybierać`. Seven rows are deferred for weak evidence or complexity.
+The 24 reserves include architecture-fit holds `czuć się` and `kosztować`, aspect alternatives such as `zapytać`, `zamówić` and `zarezerwować`, opening/closing verbs, additional motion partners, `decydować`, `rezygnować`, `marzyć`, `uczestniczyć`, `radzić sobie`, `wyglądać`, `odbierać` and `wybierać`. Seven rows are deferred for weak evidence or complexity.
 
-After Phase 3 verification, replacements should preserve learner-domain and construction balance, not merely substitute the next numeric total. The product owner freezes the final approximately 70 lemma identities before stable IDs or learner wording are authored.
+Phase 2 locks this provisional shortlist and its coverage/balance target. Phase 3 verifies every proposed meaning/frame and recommends evidence-based replacements while the list remains provisional. Phase 3B is the human final lemma freeze after unsupported candidates have been replaced. Only then may Phase 4 author learner wording and allocate stable pattern/example identities. Replacements preserve learner-domain and construction balance, not merely the next numeric total.
 
 ## Complexity expectations
 
-The selected 70 are expected to yield about 95 meanings and 120 patterns centrally, not 70 patterns. Broad verbs (`robić`, `brać/wziąć`, `powiedzieć`, `pamiętać`) need selective meanings; complex or rare frames should be B1 recognition-only or deferred. Aspect and reflexive relationships require reciprocal, independently reviewed links and never imply pattern inheritance.
+The selected 70 are expected to yield about 95 meanings and 120 patterns centrally, not 70 patterns. Broad verbs (`robić`, `brać/wziąć`, `powiedzieć`, `pamiętać`) need selective meanings; complex or rare frames should be B1 recognition-only or deferred. This estimate is not evidence for any individual frame. Aspect and reflexive relationships require reciprocal, independently reviewed links and never imply pattern inheritance.

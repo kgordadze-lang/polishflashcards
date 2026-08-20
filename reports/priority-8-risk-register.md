@@ -6,6 +6,7 @@
 | Linguistic | Valid but uncommon/dated frame | distorted priorities | usage/register evidence; defer weak frames | 3 |
 | Linguistic | Meaning and pattern conflated | misleading inheritance | selective meaning scopes; separate IDs | 3–5 |
 | Linguistic | Complement confused with adjunct | false valency claim | explicitly test destination/source/time/vehicle/beneficiary status | 3–4 |
+| Linguistic | Candidate core construction outside locked complement model | false representability or invented case frame | architecture-fit gate; reserve incompatible lemmas; no schema expansion in correction pass | 2–3B |
 | Linguistic | Incorrect aspect relationship | wrong transfer | research each lemma independently; reciprocal links only | 3–5 |
 | Linguistic | Reflexive/non-reflexive conflation | wrong identity/meaning | lexical `się` in lemma identity; no inheritance | 3–5 |
 | Linguistic | A1–B1 overloaded by advanced frames | poor sequencing | pattern-level CEFR; recognition/defer policy | 4–5 |
@@ -35,7 +36,7 @@
 | Process | Trust prose counts | hidden drift | machine-readable CSV and recalculation gates | all |
 | Process | Self-referential discovery diff | unstable artifact | generate diff last excluding itself | 0 |
 | Process | Alter historical provenance tests | destroys evidence | add successor tests, never rewrite history | all |
-| Process | Start learner work before shortlist approval | wasted/unauthorized scope | Phase 2 human freeze gate | 2 |
+| Process | Start learner work before final shortlist approval | wasted/unauthorized scope | Phase 2 provisional lock; Phase 3 verification; Phase 3B human freeze before Phase 4 | 2–3B |
 | Process | Cross repository/security boundary | production risk | exact path/remotes/hook checks before/after; reports-only diff | 0 |
 
 The highest combined risks are policy coupling (`audioEligible` vs Listening), premature synthesis, weak external support for low-evidence include candidates, and a combined mega-release. The staged plan directly addresses each.

@@ -8,7 +8,7 @@
 4. **Editorial analysis:** select learner-relevant meanings/frames, distinguish complements from adjuncts, set CEFR/status and draft original or correctly attributed repository examples.
 5. **Human product approval:** decide inclusion, usefulness, sequencing and learner treatment. AI agreement is not linguistic approval.
 
-No internet/reference corroboration was claimed during this audit. Every proposed construction remains “requires Phase 3 verification”.
+No internet/reference corroboration was claimed during this audit. Every proposed construction remains a discovery hypothesis marked “requires Phase 3 verification”; appearance in the ranking approves neither a frame nor a lemma for final inclusion.
 
 ## Minimum record per proposed pattern
 
@@ -25,14 +25,15 @@ No internet/reference corroboration was claimed during this audit. Every propose
 
 ## Phase 3 procedure
 
-1. Freeze the approved lemma shortlist only; do not allocate final pattern/example IDs yet if identity is unresolved.
+1. Begin from the human-approved **provisional** Phase 2 shortlist and balance lock. Do not treat it as the final lemma freeze and do not allocate pattern/example IDs.
 2. Research each candidate meaning independently. A dictionary headword never imports a pattern.
 3. Verify each provisional frame in WSJP PAN’s relevant sense/syntax material. Capture a short factual paraphrase and locator, not copied entry prose.
 4. Check contemporary examples/corpus evidence for frequency, register and national use; flag regional, dated or marginal constructions.
 5. Distinguish selected complements from free destination, source, time, manner, beneficiary and vehicle adjuncts.
 6. Compare aspect partners and reflexive/non-reflexive lemmas independently; propose reciprocal links only after both sides are supported.
-7. Mark evidence `supported`, `uncertain` or `insufficient`. Insufficient frames/lemmas become `defer` or are replaced from reserve.
-8. Pass supported records through `research → reference-verification → editorial-review → product-approval`. Product approval remains human-owned.
+7. Mark evidence `supported`, `uncertain` or `insufficient`. Recommend reserve replacements for insufficient frames/lemmas using learner value, coverage, architecture fit and repository evidence rather than numeric rank alone.
+8. Conduct Phase 3B human review: replace unsupported candidates, resolve aspect-pair and motion opportunity cost, and freeze the final lemma identities.
+9. Only after Phase 3B, pass supported records into Phase 4 construction and the `research → reference-verification → editorial-review → product-approval` chain. Product approval remains human-owned.
 
 ## Copyright and privacy controls
 
@@ -40,4 +41,4 @@ Private research material never enters public runtime, reports intended for depl
 
 ## Acceptance threshold
 
-A frame may advance only when its exact meaning and complement structure have contemporary support, editorial analysis finds it practical at A1–B1, example provenance is valid, and uncertainty is resolved enough for a deterministic learner explanation. Otherwise defer it; ranking is not a waiver.
+A frame may advance only when its exact meaning and complement structure fit the locked model and have contemporary support, editorial analysis finds it practical at A1–B1, example provenance is valid, and uncertainty is resolved enough for a deterministic learner explanation. Otherwise defer it; repository evidence and ranking position are not waivers. Human product judgment owns the final Phase 3B shortlist.

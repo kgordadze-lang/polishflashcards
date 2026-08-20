@@ -8,7 +8,7 @@ This is a useful A1–B1 profile, but B1 is more prominent in production than re
 
 ## Candidate-lemma planning mix
 
-The ranked next-70 has 23 likely A1, 43 likely A2 and 4 likely B1 lemmas. Lemma CEFR is only discovery metadata: each approved pattern receives its own recognition and optional production CEFR. A broad A2 verb may own a B1 pattern, and a B1 construction can be recognition-only while a simpler meaning is active-production.
+The corrected ranked next-70 has 22 likely A1, 43 likely A2 and 5 likely B1 lemmas. The change moves architecture-incompatible `czuć się` and `kosztować` to reserve and promotes compatible `przynosić` and `kłócić się` hypotheses. Lemma CEFR is only discovery metadata: each approved pattern receives its own recognition and optional production CEFR. A broad A2 verb may own a B1 pattern, and a B1 construction can be recognition-only while a simpler meaning is active-production.
 
 ## Proposed pattern target
 
@@ -32,7 +32,7 @@ A pattern is active-production only when its production CEFR is A1–B1 and its 
 
 - A1: core modals, everyday object verbs, basic motion/residence and high-frequency infinitive patterns.
 - A2: most preposition/case contrasts, practical aspect partners, Dative recipient frames and everyday lexical-`się` verbs.
-- B1: `pozwalać`, `radzić`, `unikać`, `wymagać`, complex clause/multi-complement frames and lower-confidence meanings.
+- B1: `pozwalać`, `radzić`, `unikać`, `wymagać`, `kłócić się`, complex clause/multi-complement frames and lower-confidence meanings.
 - Defer anything above B1 or requiring advanced stylistic/semantic distinctions.
 
 CEFR is an editorial decision requiring corroboration and review; numeric corpus balance cannot assign it automatically.

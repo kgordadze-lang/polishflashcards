@@ -29,21 +29,27 @@ Reports only. Exit gate: independent review of this commit; no learner/runtime/e
 
 Exit gate: revision 2 official projection; 45 controls, exact 20/25/0/0 split, full accessibility/offline/Range tests, all activity allowlists still empty. Rollback: complete revision-1 runtime/UI plus removal of only new manifest references; shared clips preserved.
 
-### Phase 2 — shortlist/freeze approximately 70 lemma candidates
+### Phase 2 — provisional shortlist and coverage/balance lock
 
-Owner reviews the 101 pool, selects approximately 70, records reserves and freezes identities/domains before linguistic authoring. No stable pattern/example IDs yet where structure is unresolved.
+Owner reviews the 101 pool and locks a **provisional** approximately-70 shortlist, reserve strategy, motion/aspect budget and target coverage/domain balance. This is not the final lemma freeze: every proposed construction remains a hypothesis, and architecture-fit holds remain reserve. No stable pattern/example IDs or learner wording are authored.
 
-Exit gate: human-approved shortlist and balance rationale. Rollback: replace from reserve without touching production.
+Exit gate: human-approved provisional shortlist and auditable balance rationale. Rollback: revise the provisional list without touching production.
 
 ### Phase 3 — research and contemporary reference verification
 
-Verify meanings, frames, register, aspect/reflexive relations and complement-versus-adjunct status. Use repository evidence plus WSJP PAN/other reputable sources; defer unsupported rows.
+Verify meanings, frames, register, aspect/reflexive relations, locked-model fit and complement-versus-adjunct status. Use repository evidence plus WSJP PAN/other reputable sources; recommend replacements for unsupported rows while the shortlist remains provisional. Repository relevance is not valency evidence.
 
-Exit gate: current-digest `reference-verification` for every advancing pattern. Rollback: defer/replace candidate.
+Exit gate: supported/uncertain/insufficient disposition and current-digest `reference-verification` evidence for every advancing hypothesis. Rollback: defer or propose a reserve replacement.
+
+### Phase 3B — final human lemma freeze
+
+The human product owner reviews the Phase 3 evidence, replaces unsupported candidates through learner-value/coverage/evidence criteria, resolves aspect-pair opportunity cost and freezes the final lemma identities. A replacement is never selected merely by the next numeric score.
+
+Exit gate: final human-approved lemma set, reserves, domain/coverage balance and architecture fit. Only this gate authorizes Phase 4 construction work. Rollback: reopen the shortlist before any stable pattern/example allocation.
 
 ### Phase 4 — editorial construction
 
-Author selective meanings/patterns, CEFR/status, explanations, original or exact-provenance examples, content refs and error notes. Allocate stable IDs only from frozen identity seeds. No public runtime.
+Only after Phase 3B, author selective meanings/patterns, CEFR/status, explanations, original or exact-provenance examples, content refs and error notes. Allocate stable IDs only from final frozen identity seeds. No public runtime.
 
 Exit gate: closed private schema, stable-ID/tombstone checks, repository-source parity, no B2/C1 drift.
 
@@ -87,7 +93,7 @@ Human owner approval is required for the pronunciation semantic change, current-
 
 1. Formally approve the new `audioEligible` pronunciation semantics.
 2. Confirm all 45 examples, including recognition-only patterns, receive playback (recommended).
-3. Approve or amend the ranked 70 and replacement rules.
+3. Approve or amend the provisional ranked 70, aspect/motion budget and Phase 3B replacement rules.
 4. Confirm the central scale target (~129 meanings/~165 patterns/examples) is acceptable.
 5. Decide which complex frames are recognition-only versus deferred.
 6. Decide whether expanded audio ships with revision 3 or a tightly scoped successor revision.

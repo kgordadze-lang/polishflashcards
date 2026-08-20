@@ -25,18 +25,18 @@ These are expected—not approved—counts:
 | Infinitive | 2 | 18 | 20 |
 | Clause | 1 | 12 | 13 |
 | Multi-complement patterns | 9 | 30 | 39 |
-| Subject-experiencer patterns | 1 | 3 | 4 |
+| Subject-experiencer patterns | 1 | 2 | 3 |
 | Meaning-sensitive lemmas | 4 | 35 | 39 |
 | Lexical-`się` patterns | 9 | 15 | 24 |
 
 ## Candidate contributions
 
 - Preposition + Genitive: motion `do/z`, `pisać do`, `dzwonić do/w sprawie`, `należeć do`, `korzystać z`, plus reserve `rezygnować z`.
-- Dative/multi-complement: `dawać/dać`, `odpowiadać`, `powiedzieć`, `polecać`, `pozwalać`, `radzić`, `życzyć`, `uczyć`, `pasować`, `pokazywać`.
+- Dative/multi-complement: `dawać/dać`, `odpowiadać`, `powiedzieć`, `polecać`, `pozwalać`, `radzić`, `życzyć`, `uczyć`, `pasować`, `pokazywać` and the promoted `przynosić` hypothesis.
 - Locative: `pamiętać o`, `zapominać o`, participation frames of `brać/wziąć`; reserve `marzyć o` and `uczestniczyć w`.
-- Instrumental: `spotykać/spotkać się z`, `zgadzać się z`; reserve `kłócić się z` and `radzić sobie z`.
+- Instrumental: `spotykać/spotkać się z`, `zgadzać się z` and the promoted `kłócić się z`; reserve `radzić sobie z`.
 - Infinitive/clause: modals, `wiedzieć`, `powiedzieć`, `zaczynać/zacząć`, `cieszyć/martwić się`, `pamiętać`, `polecać`, `pozwalać`, `radzić`, `próbować`, `uczyć`.
 
 ## Guardrails
 
-Useful coverage is the objective, not equal distribution. Do not label destination, origin, vehicle, beneficiary, time or place adjuncts as governed complements merely to improve a matrix. Clause kinds remain explicit. Direct Locative remains zero because the locked model represents Locative through preposition-case frames. Every proposed relation/complement remains provisional until reference verification.
+Useful coverage is the objective, not equal distribution. Do not label destination, origin, vehicle, beneficiary, time or place adjuncts as governed complements merely to improve a matrix. The 12 selected motion lemmas receive no automatic destination/source/vehicle coverage credit. `pracować jako + Nominative`, the core predicate of `czuć się` and the ordinary price/amount construction of `kosztować` are outside or unresolved under the locked complement model and are excluded from these estimates. Clause kinds remain explicit. Direct Locative remains zero because the locked model represents Locative through preposition-case frames. Every proposed relation/complement remains provisional until reference verification and final Phase 3B selection.
