@@ -9,6 +9,8 @@ The primary authority is WSJP PAN. Its 2026 methodology is important to the boun
 - an entry's `DOKĄD` or `SKĄD` position can establish a selected goal/source participant;
 - collocations can document `do + Genitive`, `na + Accusative`, or `z + Genitive` as common realizations of that participant;
 - this does **not** justify claiming that the verb exclusively governs that one preposition;
+- exact concrete-frame evidence in `Składnia` and a concrete realization of generalized role evidence are not epistemically identical: the former verifies the exact construction directly, while the latter remains a narrowed realization;
+- a collocation can support a narrowed realization only when `Składnia` independently establishes the underlying generalized role; collocation alone is insufficient;
 - route, time, frequency, and manner material absent from `Składnia` receives no valency credit;
 - the locked architecture can store concrete case or preposition-case realizations, but cannot store generalized `DOKĄD/SKĄD` as a new complement type.
 
@@ -172,7 +174,7 @@ The Walenty valency interface was consulted as a possible independent check but 
 
 **Aspect independence and learner value.** The imperfective entry is independently evidenced. Ongoing/repeated return is practical, but constructionally duplicates the perfective partner.
 
-**Disposition.** **KEEP VERIFIED**.
+**Disposition.** **KEEP WITH NARROWING** — the lemma remains viable through concrete `do/z + Genitive` realizations of selected `DOKĄD/SKĄD`, without treating those realizations as exact exclusive government.
 
 **Uncertainty.** Later authoring must not collapse generalized goal/source selection into a claim that the verb uniquely governs `do` and `z`.
 
@@ -192,7 +194,7 @@ The Walenty valency interface was consulted as a possible independent check but 
 
 **Aspect independence and learner value.** The bounded perfective meaning is independently common and teachable, but the separate-slot signal is only **moderate** because it adds aspect value without adding construction coverage.
 
-**Disposition.** **KEEP VERIFIED** provisionally. This does not settle the later pair-level opportunity-cost decision.
+**Disposition.** **KEEP WITH NARROWING** provisionally — concrete `do/z + Genitive` forms remain viable narrowed realizations of selected `DOKĄD/SKĄD`, not exact concrete requirements in `Składnia`. This does not settle the later pair-level opportunity-cost decision.
 
 **Uncertainty.** Phase 3B should compare the cost of double-slotting this pair only after reserve candidates themselves are verified.
 
@@ -220,7 +222,7 @@ The Walenty valency interface was consulted as a possible independent check but 
 
 - Orders covered: exactly 1–10.
 - Lemmas covered: exactly 10 and unique.
-- Dispositions: 8 `KEEP VERIFIED`; 2 `KEEP WITH NARROWING`; 0 `REPLACEMENT RECOMMENDED`; 0 `ARCHITECTURE HOLD`; 0 `INCONCLUSIVE`.
+- Dispositions: 6 `KEEP VERIFIED`; 4 `KEEP WITH NARROWING`; 0 `REPLACEMENT RECOMMENDED`; 0 `ARCHITECTURE HOLD`; 0 `INCONCLUSIVE`.
 - Every KEEP disposition identifies at least one architecture-compatible supported construction.
 - No reserve was researched or promoted.
 - No learner examples, stable IDs, audio, runtime changes, or model extensions were produced.

@@ -22,6 +22,15 @@ The current WSJP methodology resolves part of the apparent ambiguity:
 
 The product-model risk follows directly: a concrete `do + Genitive` card can honestly instantiate selected `DOKĄD`, but must not state or imply that `do` is the verb's sole lexically governed form. All such rows are marked `compatible with narrowing`.
 
+This policy is cumulative for later batches:
+
+- a concrete `Składnia` label such as `nad CZYM`, `na CO`, `CZYM`, or `do CZEGO` directly verifies that exact locked-model construction;
+- generalized `DOKĄD`, `SKĄD`, `GDZIE`, or `KTÓRĘDY` verifies a selected/connoted semantic position but not one unique preposition;
+- an attested concrete preposition-case form may represent that generalized role only as a narrowed realization;
+- the underlying role must be independently selected in `Składnia`; a collocation alone is insufficient;
+- exact concrete-frame evidence and narrowed realization evidence are not epistemically identical;
+- no generalized role becomes a new architecture type, and no narrowed realization may be described as exclusive lexical government.
+
 ## Sense ambiguity
 
 - `pracować`: production `nad + Instrumental` must remain separate from employment location, occupational `jako` predicate, work for a beneficiary, and work with people.
@@ -61,7 +70,7 @@ Recommended independent review question: does the Po polsku Verb Patterns editor
 - `pracować jako + Nominative` remains outside the locked complement types. The lemma survives only through the separate `nad + Instrumental` sense.
 - Generalized WSJP positions `DOKĄD/SKĄD` cannot be represented directly. Only concrete, attested case/preposition realizations can be stored, with wording that preserves the broader alternation.
 - No `predicate`, `adverbial`, `nominative-predicate`, free-text complement, or new type was introduced.
-- `KEEP WITH NARROWING` for `pracować` and `przyjść` records the removed location/predicate or person-specific hypothesis rather than silently preserving it.
+- `KEEP WITH NARROWING` for `pracować`, `wracać`, `wrócić`, and `przyjść` records either a removed hypothesis or the lower epistemic status of a concrete realization of generalized `DOKĄD/SKĄD`; none is an architecture hold.
 
 ## Items needing independent review
 
