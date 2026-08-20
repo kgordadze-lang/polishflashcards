@@ -22,11 +22,21 @@
 | `zacząć` | 02 | KEEP VERIFIED | A | compatible | Exact perfective onset sense independently supports Accusative and infinitive; bounded-onset value is real, but no unique construction is added. | None now; later pair-level comparison required. |
 | `kończyć` | 02 | KEEP VERIFIED | A | compatible | Exact imperfective completion sense independently supports Accusative and infinitive; later-queue `skończyć` was not researched. | None now; defer pair comparison. |
 | `pamiętać` | 02 | KEEP VERIFIED | A | compatible | Recall sense directly supports Accusative, `o + Locative`, `że` content clause, and interrogative clause; distinct obligation sense directly supports infinitive and `żeby` clause. | None. |
+| `zapominać` | 03 | KEEP WITH NARROWING | A | compatible with narrowing | Recall sense directly supports Genitive/Accusative object, `o + Locative`, `że`, and an interrogative clause; distinct failure-to-act sense supports infinitive, but the proposed `żeby` clause is not listed. | None. |
+| `próbować` | 03 | KEEP VERIFIED | A | compatible | Attempt sense directly supports infinitive and Genitive action noun; distinct sampling sense independently supports a Genitive sampled object. | None. |
+| `pozwalać` | 03 | KEEP WITH NARROWING | A | compatible with narrowing | Permission sense has optional Dative with `na + Accusative` or `żeby` and a separate infinitive schema; no exact combined Dative-plus-infinitive schema is listed. | None. |
+| `unikać` | 03 | KEEP WITH NARROWING | A | compatible with narrowing | Exact schema directly supports Genitive, while Genitive gerunds do not establish the proposed infinitive government. | None. |
+| `wymagać` | 03 | KEEP VERIFIED | A | compatible | Separated person- and situation-requirement senses directly support Genitive, optional `od + Genitive`, and `żeby` clauses with sense-specific restrictions. | None. |
+| `należeć` | 03 | KEEP VERIFIED | A | compatible | Ownership and organization-membership senses separately support exact `do + Genitive`; the shared surface form does not merge their meanings. | None. |
+| `kłócić się` | 03 | KEEP VERIFIED | A | compatible | Exact lexical-reflexive sense supports optional `z + Instrumental` and `o + Accusative` plus topic-clause alternatives, with plural reciprocal variants explicitly distinguished. | None. |
+| `pokazywać` | 03 | KEEP VERIFIED | A | compatible | Exact imperfective sense independently supports optional Dative + Accusative, exact `na + Accusative`, and an interrogative clause; generalized `GDZIE` is not converted to a concrete frame. | None. |
+| `radzić sobie` | 03 | KEEP VERIFIED | A | compatible | Exact lexical entry directly supports optional `z + Instrumental`; `sobie` remains part of the identity, and coping independently differs from advice-sense `radzić`. | None. |
+| `kupować` | 03 | KEEP VERIFIED | A | compatible | Exact imperfective sense independently supports Accusative goods, optional seller/price, alternative Dative recipient, and `dla + Genitive`; pair opportunity cost remains open. | None now; later pair-level comparison required. |
 
-## Cumulative disposition totals after Batch 02
+## Cumulative disposition totals after Batch 03
 
-- `KEEP VERIFIED`: 10
-- `KEEP WITH NARROWING`: 10
+- `KEEP VERIFIED`: 17
+- `KEEP WITH NARROWING`: 13
 - `REPLACEMENT RECOMMENDED`: 0
 - `ARCHITECTURE HOLD`: 0
 - `INCONCLUSIVE`: 0
