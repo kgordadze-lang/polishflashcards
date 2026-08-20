@@ -27,6 +27,12 @@ The approved Batch 1 rule remains unchanged and governs Batch 2:
 
 This applies beyond motion. In `zamawiać`, optional `GDZIE` makes the provider/location position selected under WSJP methodology, while the documented `u + Genitive` provider form remains only one realization. Later batches must apply the same rule to generalized non-motion positions.
 
+## Prospective evidence-recording rule
+
+When an already-authorized exact sense is inspected in Phase 3, record every clearly learner-relevant construction that is both explicitly present in that exact authoritative `Składnia` schema and directly representable by the locked complement model, even if Phase 2 did not name every construction.
+
+This rule does not authorize unrelated-sense or reserve research, exhaustive lexicography, construction claims from mere `Połączenia`, or expansion of generalized `DOKĄD/SKĄD/GDZIE/KTÓRĘDY` into arbitrary concrete patterns. It prevents direct, already-observed, architecture-compatible evidence from being silently discarded.
+
 ## Motion risks
 
 ### `przyjechać`
@@ -47,8 +53,8 @@ No motion construction in Batch 2 was credited from collocation alone.
 
 - `przynosić`: exact imperfective `CO + (SKĄD) + (DOKĄD)` directly supports the Accusative thing but not a Dative recipient. A recipient cannot be inferred from real-world transfer semantics or borrowed from `przynieść`.
 - `odpowiadać`: exact answer sense 1 directly supports `na CO` and a `że` clause. The definition's person addressed is not a listed Dative position. Matching/preference, correspondence, and other senses cannot supply it. The absence of an exact current-repository frame is only a secondary product fact.
-- `zamawiać`: `CO` is exact. Optional `GDZIE` is selected/connoted, and `u`-provider forms are documented, but `u + Genitive` is not an exact or exclusive provider frame. Treating any order location as equivalent would overgeneralize the evidence.
-- `pamiętać`: direct Accusative and `o + Locative` belong to recall sense 1. `żeby` belongs to the distinct obligation/reminder sense 3. Combining them as freely interchangeable would erase the verified sense boundary.
+- `zamawiać`: `CO`, optional Dative `KOMU`, and alternative beneficiary `dla KOGO` are exact architecture-compatible positions. The two beneficiary forms belong to alternative schemas and are not simultaneous requirements. Optional `GDZIE` is selected/connoted, and `u`-provider forms are documented, but `u + Genitive` is not an exact or exclusive provider frame. Treating any order location as equivalent would overgeneralize the evidence.
+- `pamiętać`: direct Accusative, `o + Locative`, `że` content clause, and interrogative dependent clause belong to recall sense 1. Infinitive and `żeby` clause belong to distinct obligation/reminder sense 3. Combining the inventories as freely interchangeable—or importing separate sense 2—would erase the verified sense boundary.
 
 ## Aspect-independence risks
 
@@ -63,7 +69,7 @@ No motion construction in Batch 2 was credited from collocation alone.
 - All surviving constructions fit only the locked types `case`, `preposition-case`, `infinitive`, or `clause`.
 - `DOKĄD`, `SKĄD`, and `GDZIE` were not introduced as model types.
 - `przyjechać`, `wyjść`, `wyjechać`, and `zamawiać` use `compatible with narrowing` where a concrete product form realizes a generalized selected role.
-- `przynosić` and `odpowiadać` also use `compatible with narrowing` because Phase 2 overclaimed a Dative participant that the exact schema does not support.
+- `przynosić` and `odpowiadać` also use `compatible with narrowing` because Phase 2 overclaimed a Dative participant that the exact schema does not support. This does not conflict with the exact optional Dative beneficiary independently present in the different `zamawiać` schema.
 - No predicate, adverbial, free-text complement, or architecture extension is proposed.
 
 ## Items needing independent review

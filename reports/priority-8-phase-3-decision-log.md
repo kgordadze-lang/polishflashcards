@@ -17,11 +17,11 @@
 | `wyjechać` | 02 | KEEP WITH NARROWING | A | compatible with narrowing | Exact leave-by-vehicle sense selects generalized `SKĄD`; `z + Genitive` is a narrowed realization, while the proposed goal and vehicle positions are unsupported. | None. |
 | `przynosić` | 02 | KEEP WITH NARROWING | A | compatible with narrowing | Exact imperfective physical-carrying sense supports Accusative `CO` but not the proposed Dative recipient; no evidence is borrowed from `przynieść`. | None. |
 | `odpowiadać` | 02 | KEEP WITH NARROWING | A | compatible with narrowing | Exact answer sense supports `na + Accusative` and a `że` clause but not a Dative person; other meanings and repository occurrence do not supply it. | None. |
-| `zamawiać` | 02 | KEEP WITH NARROWING | A | compatible with narrowing | Accusative `CO` is exact; documented `u + Genitive` provider is only a narrowed realization of optional selected `GDZIE`. | None. |
+| `zamawiać` | 02 | KEEP WITH NARROWING | A | compatible with narrowing | Accusative `CO`, optional Dative `KOMU`, and alternative beneficiary `dla KOGO` are exact; documented `u + Genitive` provider is only a narrowed realization of optional selected `GDZIE`. | None. |
 | `zaczynać` | 02 | KEEP VERIFIED | A | compatible | Exact imperfective onset sense independently supports Accusative and infinitive; process/onset value is real, but pair opportunity cost remains open. | None now; later pair-level comparison required. |
 | `zacząć` | 02 | KEEP VERIFIED | A | compatible | Exact perfective onset sense independently supports Accusative and infinitive; bounded-onset value is real, but no unique construction is added. | None now; later pair-level comparison required. |
 | `kończyć` | 02 | KEEP VERIFIED | A | compatible | Exact imperfective completion sense independently supports Accusative and infinitive; later-queue `skończyć` was not researched. | None now; defer pair comparison. |
-| `pamiętać` | 02 | KEEP VERIFIED | A | compatible | Recall sense directly supports Accusative and `o + Locative`; distinct obligation sense directly supports a `żeby` clause. | None. |
+| `pamiętać` | 02 | KEEP VERIFIED | A | compatible | Recall sense directly supports Accusative, `o + Locative`, `że` content clause, and interrogative clause; distinct obligation sense directly supports infinitive and `żeby` clause. | None. |
 
 ## Cumulative disposition totals after Batch 02
 

@@ -108,15 +108,15 @@ The Walenty public interface remained unavailable for inspectable lemma-level fr
 
 **Authoritative evidence.** [WSJP PAN, `zamawiać`, sense 1 “meble”](https://wsjp.pl/haslo/podglad/7274/zamawiac/1158002/meble), accessed 2026-08-20, gives `(KOMU) + CO + (GDZIE)` or `(dla KOGO) + CO + (GDZIE)` and documents `u dostawcy`, `u krawca`, `u producenta`, and similar provider forms.
 
-**Phase 2 answer.** Yes with narrowing. Accusative `CO` is direct. `u + Genitive` is an attested provider realization of optional selected `GDZIE`, not an exact concrete `Składnia` requirement or exclusive provider preposition.
+**Phase 2 answer.** Yes with narrowing. Accusative `CO` is direct. The alternative schemas also directly support optional Dative `KOMU` or alternative beneficiary `dla + Genitive`. `u + Genitive` is an attested provider realization of optional selected `GDZIE`, not an exact concrete `Składnia` requirement or exclusive provider preposition.
 
-**Supported construction and boundary.** Accusative maps directly to `case`. Concrete `u + Genitive` may map to `preposition-case` only as a narrowed realization. The generalized optional provider/location role is connoted under WSJP methodology, so this is stronger than collocation alone, but it remains weaker than an exact `u KOGO` label.
+**Supported construction and boundary.** Accusative and optional Dative beneficiary/recipient map directly to `case`. Alternative beneficiary `dla + Genitive` maps directly to `preposition-case`. These are alternative WSJP schema variants: `KOMU` and `dla KOGO` are not presented as simultaneous requirements. Concrete `u + Genitive` may map to `preposition-case` only as a narrowed realization of optional `GDZIE`. The generalized provider/location role is connoted under WSJP methodology, so this is stronger than collocation alone, but weaker than an exact `u KOGO` label.
 
 **Representation, independence, and value.** `compatible with narrowing`. Evidence is exact to imperfective `zamawiać` and not inherited from reserve `zamówić`. Ordering an item and identifying a provider remain useful.
 
 **Disposition.** **KEEP WITH NARROWING**.
 
-**Uncertainty.** Later wording must preserve the broader `GDZIE` alternation and not imply exclusive `u` government.
+**Uncertainty.** Later wording must preserve the alternative beneficiary schemas, the broader `GDZIE` alternation, and the fact that `u` is not exclusive government.
 
 ### 17. `zaczynać`
 
@@ -178,17 +178,17 @@ The Walenty public interface remained unavailable for inspectable lemma-level fr
 
 **Senses researched.** WSJP sense 1, retaining and recalling people, things, events, or information; separately, sense 3, remembering that an action should be performed.
 
-**Authoritative evidence.** [WSJP PAN, `pamiętać`, sense 1 “każdą chwilę”](https://wsjp.pl/haslo/podglad/37811/pamietac/4692695/kazda-chwile), accessed 2026-08-20, gives `KOGO/CO` and `o KIM/CZYM` in the recall sense. [WSJP PAN, `pamiętać`, sense 3 “zrobić coś”](https://wsjp.pl/haslo/podglad/37811/pamietac/4692697/zrobic-cos), accessed 2026-08-20, separately gives `BEZOKOLICZNIK` and `żeby ZDANIE` for the obligation/reminder meaning.
+**Authoritative evidence.** [WSJP PAN, `pamiętać`, sense 1 “każdą chwilę”](https://wsjp.pl/haslo/podglad/37811/pamietac/4692695/kazda-chwile), accessed 2026-08-20, gives `KOGO/CO`, `o KIM/CZYM`, `że ZDANIE`, and `ZDANIE PYTAJNOZALEŻNE` in the recall sense. [WSJP PAN, `pamiętać`, sense 3 “zrobić coś”](https://wsjp.pl/haslo/podglad/37811/pamietac/4692697/zrobic-cos), accessed 2026-08-20, separately gives `BEZOKOLICZNIK` and `żeby ZDANIE` for the obligation/reminder meaning.
 
-**Phase 2 answer.** Direct Accusative and `o + Locative` are both supported within recall sense 1. The `żeby` clause belongs to distinct obligation sense 3. All fit deterministic teaching when recorded as separate sense constructions rather than combined into one oversized pattern.
+**Phase 2 answer.** Recall sense 1 directly supports Accusative, `o + Locative`, a `że` content clause, and an interrogative dependent clause. Distinct obligation sense 3 directly supports infinitive and `żeby` clause. All fit deterministic teaching when the two sense inventories remain separate rather than becoming one oversized pattern.
 
-**Supported construction and boundary.** Direct Accusative maps to `case`; `o + Locative` maps to `preposition-case`; `żeby` maps to `clause`. None is inferred from an adjunct, and the obligation clause is not transferred to the general recall sense.
+**Supported construction and boundary.** In recall sense 1, direct Accusative maps to `case`, `o + Locative` to `preposition-case`, and `że` plus the interrogative dependent clause to `clause`. In obligation sense 3, the infinitive maps to `infinitive` and `żeby` to `clause`. None is inferred from an adjunct; the inventories are not interchangeable, and separate WSJP sense 2 is not imported.
 
 **Representation, independence, and value.** `compatible`. No in-pool partner is implicated. The distinct recall and reminder constructions have strong learner value.
 
 **Disposition.** **KEEP VERIFIED**.
 
-**Uncertainty.** Later authoring must preserve the sense split and avoid presenting all three forms as interchangeable.
+**Uncertainty.** Later authoring must preserve the recall/obligation split and avoid presenting the six constructions as interchangeable.
 
 ## Batch reconciliation
 
@@ -197,6 +197,7 @@ The Walenty public interface remained unavailable for inspectable lemma-level fr
 - Dispositions: 4 `KEEP VERIFIED`; 6 `KEEP WITH NARROWING`; 0 `REPLACEMENT RECOMMENDED`; 0 `ARCHITECTURE HOLD`; 0 `INCONCLUSIVE`.
 - Every KEEP has at least one evidence-level `A` architecture-compatible construction.
 - Narrowed generalized-role realizations occur for `przyjechać`, literal `wyjść`, `wyjechać`, and the provider expression of `zamawiać`; no exclusive preposition government is claimed.
+- All directly representable constructions already visible in the inspected `zamawiać` and `pamiętać` schemas are retained; alternative schema variants and sense boundaries remain explicit.
 - `przynosić` loses the Dative-recipient hypothesis; `odpowiadać` loses the Dative-person hypothesis.
 - `zaczynać` and `zacząć` were independently verified and retained without settling later pair opportunity cost.
 - `kończyć` was verified without researching or borrowing from later-queue `skończyć`.
