@@ -47,7 +47,7 @@ Listening uses a complete, natural, approved Polish sentence. Valid targets incl
 - participant role;
 - contrast between reviewed patterns.
 
-`audioEligible: true` authorizes learner-initiated pronunciation of the exact approved example through the shared player. It does not authorize Listening. Listening remains independently gated by `activityEligibility:["listening"]` and still requires a separately governed exercise item with a safe question and distractors.
+`audioEligible: true` is valid only when the containing approved pattern includes `listening`. `reference` alone does not authorize audio or playback; any future reference-playback consumer requires a new explicit design.
 
 Do not synthesize or play lemma labels, pattern notation, case names, case questions, provenance, or isolated feedback. Distractors must be semantically non-colliding. Exact normalized existing audio is reused where the approved sentence matches; otherwise generation belongs to a later audio phase.
 
@@ -103,7 +103,7 @@ Reject eligibility if:
 - more than one natural answer remains unintentionally valid;
 - a restricted/dated construction would be presented as neutral core use;
 - the task depends on an unreviewed aspect/reflexive relation;
-- any example has `audioEligible: true` while its containing pattern is not approved;
+- any example has `audioEligible: true` without containing-pattern `listening` eligibility;
 - feedback can state only the answer but not the trigger;
 - the activity would write current card progress or alter current pool totals.
 
@@ -114,6 +114,6 @@ Reject eligibility if:
 | Allowlist array, default false | eligibility inferred from approval/status | prevents accidental consumers | none |
 | Grammar first | Type It first | controlled context and safe distractors | pilot evidence supports closed typing |
 | Separate future item IDs using type + item key | pattern doubles as exercise; type-only identity | multiple items per type retain separate frozen identity without positions | only the remaining exercise object shape is deferred |
-| Pronunciation is independent from activities | infer Listening from audio or require Listening for playback | one exact example may be heard without becoming an exercise item | explicit future change to the shared playback policy |
+| Fail-closed record rules for recognition, limited use, and audio | prose-only consumer interpretation | Schema rejects inherently productive recognition keys, limited production, and audio without listening | explicit future specification reopening/new playback consumer |
 | Session-only mixed practice | reuse card mastery | avoids semantic migration and false transfer | separately approved persistence design |
 | Conversation reinforcement only | score existing branches | preserves natural scenario design | explicit future conversation assessment scope |

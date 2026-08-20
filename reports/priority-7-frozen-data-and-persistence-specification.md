@@ -86,7 +86,7 @@ Future public `content/verb-patterns.json` is a generated runtime projection, de
 
 Runtime validation without frozen state proves only the closed runtime shape/privacy contract. Runtime validation with repository/allocation context may additionally prove referential shape, kind, and parent ownership, but not active release membership because tombstoned allocations are intentionally retained. Complete release verification must validate the whole frozen envelope and its exactly derived `runtimeProjection`; Phase 2A exposes no deployment command.
 
-A dedicated `pp-verb-patterns.js` loader reads only the public runtime projection. The projector/validators, runtime snapshot, consumer adapters, service-worker required-asset/network-first classification, and shell cache update deploy atomically. Audio inventory reads only projected examples with `audioEligible: true`; that flag authorizes pronunciation playback and never implies `activityEligibility:["listening"]`.
+A dedicated `pp-verb-patterns.js` loader reads only the public runtime projection. The projector/validators, runtime snapshot, consumer adapters, service-worker required-asset/network-first classification, and shell cache update deploy atomically. Audio inventory reads only projected examples with `audioEligible: true` under a pattern eligible for `listening`.
 
 The file is not added in Phase 1. The report-only JSON artifacts under `reports/` are specifications and MUST be excluded from runtime discovery.
 

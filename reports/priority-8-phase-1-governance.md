@@ -2,6 +2,8 @@
 
 The owner authorized the playback-only policy for the already-approved 45 examples. The policy is now explicit: `audioEligible` permits learner-initiated pronunciation of the exact approved example; it does not infer or authorize Listening, Type It, grammar practice, or any activity.
 
+The Priority 7 specification files remain historical records of the revision-1 policy. Priority 8 revision 2 prospectively supersedes the former audio-implies-Listening policy: `audioEligible` now authorizes learner-initiated pronunciation only, while `activityEligibility` remains separately and explicitly governed. This is a Priority 8 policy amendment, not a rewrite of Priority 7 history.
+
 Changing `audioEligible` moved the tier-2/product digests. The established event model requires a changes-requested event before a new editorial acceptance can follow the completed prior round, so each pattern received exactly three append-only events dated 2026-08-20:
 
 1. nonhuman `editorial-review: changes-requested`, recording that the prior higher-tier acceptances became stale;
