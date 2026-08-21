@@ -192,3 +192,23 @@ Each member retains independent exact-lemma evidence. No syntax, disposition, or
 `radzić` and `radzić sobie` resolve to no material redundancy: their identities, meanings, and construction inventories are independently verified. Any later replacement would require a new evidence gate for a Phase 2 **UNVERIFIED RESERVE** profile.
 
 No final lemma freeze has occurred. No reserve has been researched or promoted, and Phase 3B has not begun.
+
+## Phase 3B human lemma freeze
+
+The human reviewer approved the Phase 3B product-allocation package and closed the outstanding synthesis decisions. This section records full-pattern product status only; it changes no historical Phase 3 linguistic disposition, evidence record, representation result, or synthesis recommendation.
+
+- Frozen additions for Phase 4: **68 full-pattern lemmas**.
+- Metadata-only verified aspect partners: **2**.
+- Expected product total after expansion: **30 + 68 = approximately 98**.
+- `zaczynać / zacząć`: collapse approved with `zacząć` as full-pattern anchor and `zaczynać` as `ASPECT-PARTNER METADATA ONLY`.
+- `czytać / przeczytać`: collapse approved with `czytać` as full-pattern anchor and `przeczytać` as `ASPECT-PARTNER METADATA ONLY`.
+- The six borderline families retain both full patterns: `wracać / wrócić`, `kończyć / skończyć`, `kupować / kupić`, `pisać / napisać`, `spotykać się / spotkać się`, and `oglądać / obejrzeć`.
+- The two strong families retain both full patterns: `dawać / dać` and `brać / wziąć`.
+- All 12 motion lemmas retain full-pattern status; the reviewed concentration is explicitly accepted and does not authorize further motion additions.
+- `przynosić` is retained with Accusative carried-object narrowing; Dative is not restored and no syntax is inherited from `przynieść`.
+- `martwić się` is retained with lexical `się`; the reviewed overlap with released `bać się` is accepted.
+- `radzić` and lexical `radzić sobie` are both retained with separate identities, evidence, and constructions; `sobie` is preserved.
+- No reserve backfill occurs. No reserve is researched, verified, or promoted, and no replacement gate is opened.
+- All 16 `KEEP WITH NARROWING` constraints and all 21 `compatible with narrowing` representation constraints remain binding.
+
+This is the final Priority 8 expansion lemma-set freeze. Phase 4 is authorized only from the exact frozen 68 in `priority-8-phase-3b-phase4-handoff.md`; it has not begun in this run. No new full-pattern lemma may enter without reopened governance and, for an unverified reserve, a dedicated verification gate.
