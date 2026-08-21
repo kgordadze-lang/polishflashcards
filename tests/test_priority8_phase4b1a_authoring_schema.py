@@ -49,13 +49,28 @@ def candidate_example(
     key="first-context",
     meaning_ref="core",
     pattern_ref="case-target",
+    candidate_origin=None,
 ):
+    if candidate_origin is None:
+        candidate_origin = {"kind": "editorial-generated"}
     return {
         "candidateExampleKey": key,
         "meaningKeyRef": meaning_ref,
         "patternKeyRef": pattern_ref,
         "pl": "Zdanie wyłącznie testowe.",
         "en": "Fixture-only sentence.",
+        "candidateOrigin": candidate_origin,
+    }
+
+
+def repository_origin(source_kind, field, source_id="repository-content-001"):
+    return {
+        "kind": "repository-reuse",
+        "repositorySource": {
+            "kind": source_kind,
+            "id": source_id,
+            "field": field,
+        },
     }
 
 
@@ -102,6 +117,143 @@ class Priority8Phase4B1AAuthoringSchemaTests(unittest.TestCase):
             candidate_example()
         ]
         self.assertEqual([], validator.validate_data(data))
+
+    def test_editorial_generated_candidate_origin_accepted(self):
+        data = self.authored()
+        record(data, "pracować")["candidateContent"]["examples"] = [
+            candidate_example(
+                candidate_origin={"kind": "editorial-generated"})
+        ]
+        self.assertEqual([], validator.validate_data(data))
+
+    def _assert_repository_origin_accepted(self, source_kind, field):
+        data = self.authored()
+        record(data, "pracować")["candidateContent"]["examples"] = [
+            candidate_example(
+                candidate_origin=repository_origin(source_kind, field))
+        ]
+        self.assertEqual([], validator.validate_data(data))
+
+    def test_repository_reuse_card_pl_accepted(self):
+        self._assert_repository_origin_accepted("card", "pl")
+
+    def test_repository_reuse_card_ex_accepted(self):
+        self._assert_repository_origin_accepted("card", "ex")
+
+    def test_repository_reuse_drill_prompt_accepted(self):
+        self._assert_repository_origin_accepted("drill", "prompt")
+
+    def test_repository_reuse_drill_answer_accepted(self):
+        self._assert_repository_origin_accepted("drill", "answer")
+
+    def test_missing_candidate_origin_rejected(self):
+        data = self.authored()
+        example = candidate_example()
+        example.pop("candidateOrigin")
+        record(data, "pracować")["candidateContent"]["examples"] = [example]
+        self.assert_invalid(data, "missing fields: candidateOrigin")
+
+    def test_unknown_candidate_origin_kind_rejected(self):
+        data = self.authored()
+        example = candidate_example(candidate_origin={"kind": "unknown"})
+        record(data, "pracować")["candidateContent"]["examples"] = [example]
+        self.assert_invalid(data, "candidateOrigin.kind must be one of")
+
+    def test_editorial_generated_with_repository_source_rejected(self):
+        data = self.authored()
+        origin = {
+            "kind": "editorial-generated",
+            "repositorySource": {
+                "kind": "card", "id": "card-001", "field": "pl"},
+        }
+        record(data, "pracować")["candidateContent"]["examples"] = [
+            candidate_example(candidate_origin=origin)
+        ]
+        self.assert_invalid(data, "candidateOrigin has unexpected fields")
+
+    def test_repository_reuse_without_repository_source_rejected(self):
+        data = self.authored()
+        example = candidate_example(
+            candidate_origin={"kind": "repository-reuse"})
+        record(data, "pracować")["candidateContent"]["examples"] = [example]
+        self.assert_invalid(data, "missing fields: repositorySource")
+
+    def _assert_repository_source_mutation_rejected(
+        self, mutation, expected_fragment
+    ):
+        data = self.authored()
+        origin = repository_origin("card", "pl")
+        mutation(origin["repositorySource"])
+        record(data, "pracować")["candidateContent"]["examples"] = [
+            candidate_example(candidate_origin=origin)
+        ]
+        self.assert_invalid(data, expected_fragment)
+
+    def test_repository_source_missing_kind_rejected(self):
+        self._assert_repository_source_mutation_rejected(
+            lambda source: source.pop("kind"), "missing fields: kind")
+
+    def test_repository_source_missing_id_rejected(self):
+        self._assert_repository_source_mutation_rejected(
+            lambda source: source.pop("id"), "missing fields: id")
+
+    def test_repository_source_missing_field_rejected(self):
+        self._assert_repository_source_mutation_rejected(
+            lambda source: source.pop("field"), "missing fields: field")
+
+    def test_repository_source_extra_field_rejected(self):
+        self._assert_repository_source_mutation_rejected(
+            lambda source: source.update({"extra": "not-allowed"}),
+            "unexpected fields: extra",
+        )
+
+    def test_card_with_prompt_field_rejected(self):
+        data = self.authored()
+        example = candidate_example(
+            candidate_origin=repository_origin("card", "prompt"))
+        record(data, "pracować")["candidateContent"]["examples"] = [example]
+        self.assert_invalid(data, "must be one of: ex, pl")
+
+    def test_drill_with_ex_field_rejected(self):
+        data = self.authored()
+        example = candidate_example(
+            candidate_origin=repository_origin("drill", "ex"))
+        record(data, "pracować")["candidateContent"]["examples"] = [example]
+        self.assert_invalid(data, "must be one of: answer, prompt")
+
+    def test_blank_repository_source_id_rejected(self):
+        data = self.authored()
+        example = candidate_example(
+            candidate_origin=repository_origin("card", "pl", "  "))
+        record(data, "pracować")["candidateContent"]["examples"] = [example]
+        self.assert_invalid(data, "repositorySource.id must be a non-empty")
+
+    def test_repository_source_production_vp_prefix_rejected(self):
+        data = self.authored()
+        example = candidate_example(
+            candidate_origin=repository_origin("card", "pl", "vp-l-test"))
+        record(data, "pracować")["candidateContent"]["examples"] = [example]
+        self.assert_invalid(data, "production vp-* ID prefix is prohibited")
+
+    def test_original_candidate_origin_rejected(self):
+        data = self.authored()
+        example = candidate_example(candidate_origin={"kind": "original"})
+        record(data, "pracować")["candidateContent"]["examples"] = [example]
+        self.assert_invalid(data, "candidateOrigin.kind must be one of")
+
+    def test_provenance_governance_and_actor_fields_remain_rejected(self):
+        for field in (
+            "actorRef", "generatorRef", "reviewerRef", "authorRef",
+            "adoptedAt",
+        ):
+            with self.subTest(field=field):
+                data = self.authored()
+                origin = {"kind": "editorial-generated", field: "actor-001"}
+                record(data, "pracować")["candidateContent"]["examples"] = [
+                    candidate_example(candidate_origin=origin)
+                ]
+                self.assert_invalid(
+                    data, "governance/reviewer identity field")
 
     def test_same_candidate_meaning_key_under_two_lemmas_allowed(self):
         data = self.authored()
@@ -295,7 +447,7 @@ class Priority8Phase4B1AAuthoringSchemaTests(unittest.TestCase):
         self.assertEqual(
             {
                 "candidateExampleKey", "meaningKeyRef", "patternKeyRef",
-                "pl", "en",
+                "pl", "en", "candidateOrigin",
             },
             validator.CANDIDATE_EXAMPLE_FIELDS,
         )
@@ -387,6 +539,21 @@ class Priority8Phase4B1AAuthoringSchemaTests(unittest.TestCase):
         before = copy.deepcopy(data)
         validator.validate_data(data)
         self.assertEqual(before, data)
+
+    def test_success_summary_reports_live_b0_and_revision(self):
+        self.assertEqual(
+            "PASS: Priority 8 4B0 staging revision 1 is read-only valid "
+            "(68 lemmas, 21 constrained records, 12 global constraints).",
+            validator.success_summary(self.real),
+        )
+
+    def test_success_summary_reports_future_b1_and_revision(self):
+        data = self.authored("4B1")
+        self.assertEqual([], validator.validate_data(data))
+        self.assertIn(
+            "Priority 8 4B1 staging revision 2",
+            validator.success_summary(data),
+        )
 
 
 if __name__ == "__main__":

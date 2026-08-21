@@ -121,6 +121,12 @@ CANDIDATE_PATTERN_FIELDS = {
 }
 CANDIDATE_EXAMPLE_FIELDS = {
     "candidateExampleKey", "meaningKeyRef", "patternKeyRef", "pl", "en",
+    "candidateOrigin",
+}
+CANDIDATE_ORIGIN_KINDS = {"editorial-generated", "repository-reuse"}
+REPOSITORY_SOURCE_FIELDS = {
+    "card": {"pl", "ex"},
+    "drill": {"prompt", "answer"},
 }
 
 GLOBAL_CONSTRAINT_TEXTS = [
@@ -403,7 +409,7 @@ def _check_candidate_prohibitions(
     issues: list[str],
 ) -> None:
     for key, _, child_path in _walk(candidate, path):
-        if key == "id" or key.lower() in PRODUCTION_ID_FIELDS:
+        if key.lower() in PRODUCTION_ID_FIELDS:
             issues.append(
                 f"{child_path}: production-ID field name is prohibited "
                 "from candidate content"
@@ -659,11 +665,45 @@ def _validate_candidate_example(
         pattern_ref, f"{path}.patternKeyRef", issues)
     _nonempty_string(value.get("pl"), f"{path}.pl", issues, minimum=3)
     _nonempty_string(value.get("en"), f"{path}.en", issues, minimum=3)
+    _validate_candidate_origin(
+        value.get("candidateOrigin"), f"{path}.candidateOrigin", issues)
     return (
         meaning_ref if meaning_ok else None,
         pattern_ref if pattern_ok else None,
         key if key_ok else None,
     )
+
+
+def _validate_candidate_origin(
+    value: Any,
+    path: str,
+    issues: list[str],
+) -> None:
+    if not isinstance(value, dict):
+        issues.append(f"{path} must be an object")
+        return
+    kind = value.get("kind")
+    if not _enum(kind, CANDIDATE_ORIGIN_KINDS, f"{path}.kind", issues):
+        return
+    if kind == "editorial-generated":
+        _exact_keys(value, {"kind"}, path, issues)
+        return
+
+    if not _exact_keys(value, {"kind", "repositorySource"}, path, issues):
+        if "repositorySource" not in value:
+            return
+    source = value.get("repositorySource")
+    source_path = f"{path}.repositorySource"
+    if not _exact_keys(source, {"kind", "id", "field"}, source_path, issues):
+        if not isinstance(source, dict):
+            return
+    source_kind = source.get("kind")
+    if not _enum(source_kind, set(REPOSITORY_SOURCE_FIELDS),
+                 f"{source_path}.kind", issues):
+        return
+    _nonempty_string(source.get("id"), f"{source_path}.id", issues)
+    _enum(source.get("field"), REPOSITORY_SOURCE_FIELDS[source_kind],
+          f"{source_path}.field", issues)
 
 
 def _validate_candidate_content(
@@ -974,9 +1014,19 @@ def validate_file(path: Path = STAGING_PATH) -> list[str]:
     return validate_data(load_staging(path))
 
 
+def success_summary(data: dict[str, Any]) -> str:
+    """Return the truthful deterministic success label for validated staging."""
+    return (
+        f"PASS: Priority 8 {data['phaseStep']} staging revision "
+        f"{data['stagingRevision']} is read-only valid "
+        "(68 lemmas, 21 constrained records, 12 global constraints)."
+    )
+
+
 def main() -> int:
     try:
-        issues = validate_file()
+        data = load_staging()
+        issues = validate_data(data)
     except (OSError, json.JSONDecodeError, FrozenInputError, ValueError) as exc:
         print(f"FAIL: {exc}", file=sys.stderr)
         return 1
@@ -985,10 +1035,7 @@ def main() -> int:
         for issue in issues:
             print(f"- {issue}", file=sys.stderr)
         return 1
-    print(
-        "PASS: Priority 8 Phase 4B0 staging is read-only valid "
-        "(68 draft lemmas, 21 constrained records, 12 global constraints)."
-    )
+    print(success_summary(data))
     return 0
 
 

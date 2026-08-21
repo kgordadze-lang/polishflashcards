@@ -36,7 +36,21 @@ Control: Examples carry the minimum transitive `meaningKeyRef` alongside
 lemma, so no other lemma can satisfy a reference. Tests cover repeated pattern
 keys with resolved examples and an attempted cross-lemma bind.
 
-## 4. Staging drifts from canonical semantics
+## 4. Provenance loss or false repository reuse
+
+Risk: Phase 4B could discard whether an example was reused or generated,
+forcing Phase 4C to infer provenance from wording; alternatively, an unchecked
+repository-reuse claim could be treated as established fact.
+
+Control: Every candidate example requires private `candidateOrigin`, limited to
+`editorial-generated` or an exact card/drill source claim. Editorial-generated
+makes no human-authorship claim and carries no actor identity. Repository reuse
+preserves source kind, repository content ID, and source field. Phase 4B does
+not resolve the source: independent batch review must check the claim, and
+Phase 4C must construct canonical `origin` and pass the existing byte-exact
+resolver. Provenance is never inferred retrospectively from sentence wording.
+
+## 5. Staging drifts from canonical semantics
 
 Risk: A private format could invent complement concepts or silently accept
 values the canonical authoring model cannot represent.
@@ -47,7 +61,7 @@ from the inspected Priority 7 tooling. Candidate shapes retain canonical field
 names when semantics match and document every omission. No fifth complement
 type or generalized-role pseudo-type is accepted.
 
-## 5. Direct-speech staging/canonical mismatch before Phase 4C
+## 6. Direct-speech staging/canonical mismatch before Phase 4C
 
 Risk: `direct-speech` is approved for private authoring but is not yet legal in
 the canonical Python or JavaScript clause-kind sets.
@@ -56,17 +70,19 @@ Control: It remains a `clause` subtype only, is accepted only by this private
 staging validator, and is not projected or promoted. Phase 4C must add and test
 canonical Python/JavaScript parity before promotion.
 
-## 6. Accidental governance leakage
+## 7. Accidental governance leakage
 
 Risk: Canonical `reviewState`, events, reviewer/actor identities, release mode,
 registries, or provenance actors could falsely claim review in a draft record.
 
 Control: Candidate shapes are closed and a recursive candidate-only check
-rejects governance and identity fields even if nested. The existing private
-lemma-level `stagingReviewStatus` is separate; authored fixtures remain
-`draft`. No independent-review event is invented.
+rejects governance and identity fields even if nested. Private
+`candidateOrigin` records only source classification: it cannot carry
+`generatorRef`, `adoptedAt`, `authorRef`, reviewer, or actor identity. The
+existing private lemma-level `stagingReviewStatus` is separate; authored
+fixtures remain `draft`. No independent-review event is invented.
 
-## 7. Premature production IDs
+## 8. Premature production IDs
 
 Risk: Candidate keys could be mistaken for allocated stable identities, or an
 ID field/value could leak into staging.
@@ -76,7 +92,7 @@ ID field names and all five `vp-*` families. Tests cover each family and an ID
 field mutation. The validator calls neither `freeze_editorial` nor
 `verified_runtime_from_frozen` and generates nothing.
 
-## 8. Batch membership drift
+## 9. Batch membership drift
 
 Risk: Future authoring could skip, repeat, reorder, or prematurely populate a
 lemma, or restore orders 17/37 as full records.
@@ -87,7 +103,7 @@ is `10/10/10/9/10/10/9`; its flattened sequence must equal the frozen ordered
 which batches must be populated and which must remain empty. Both boundary
 failures have tests.
 
-## 9. False independent-review status
+## 10. False independent-review status
 
 Risk: A coding-model authoring commit could claim independent review before it
 occurs.
@@ -96,7 +112,7 @@ Control: The validator accepts truthful private `draft` status for authored
 records and never requires `independently-reviewed` merely because a batch is
 complete. Independent review remains a post-commit human workflow gate.
 
-## 10. Example cardinality strengthened without authority
+## 11. Example cardinality strengthened without authority
 
 Risk: Treating the current corpus's one-example-per-pattern observation as a
 schema law could reject otherwise canonical authoring.

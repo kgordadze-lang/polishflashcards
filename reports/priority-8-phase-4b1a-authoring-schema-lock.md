@@ -90,6 +90,7 @@ meaningKeyRef
 patternKeyRef
 pl
 en
+candidateOrigin
 ```
 
 `patternKeyRef` resolves together with the transitive `meaningKeyRef` to one
@@ -98,6 +99,40 @@ is the minimum disambiguator required by the locked rule that the same
 `candidatePatternKey` may occur under different meanings. Without it, a flat
 example record could not identify its owner when such reuse occurs.
 
+Every candidate example also preserves its provenance claim at authoring time.
+`candidateOrigin` is required and has exactly one of these private shapes:
+
+```json
+{"kind": "editorial-generated"}
+```
+
+or:
+
+```json
+{
+  "kind": "repository-reuse",
+  "repositorySource": {
+    "kind": "card",
+    "id": "repository-content-id",
+    "field": "pl"
+  }
+}
+```
+
+For `card`, the source field is `pl` or `ex`; for `drill`, it is `prompt` or
+`answer`. The source object contains exactly `kind`, `id`, and `field`, and its
+ID is a non-empty trimmed repository content ID. `editorial-generated` carries
+no repository source and makes no human-authorship claim. `original` is not an
+authorized candidate origin.
+
+This private claim is deliberately not canonical example `origin`. No
+`generatorRef`, `adoptedAt`, `authorRef`, reviewer, or actor identity exists in
+Phase 4B candidate provenance. Batch review must independently check every
+repository-reuse claim against the named repository source. Phase 4C remains
+responsible for constructing canonical `origin` and satisfying the existing
+byte-exact repository-reuse rules. Provenance must never be reconstructed later
+from sentence wording.
+
 ## Canonical fields deliberately excluded
 
 - Production `id` fields are prohibited; no `vp-l-`, `vp-m-`, `vp-p-`,
@@ -105,11 +140,12 @@ example record could not identify its owner when such reuse occurs.
 - Canonical `key` is replaced by the three explicit candidate-key names.
 - Nested canonical `patterns` and `examples` are replaced by the normalized
   per-lemma arrays and explicit ownership references.
-- `reviewState`, `reviewEvents`, `releaseMode`, reviewer/actor references,
-  registries, and example `origin` are canonical governance/provenance fields.
-  They are excluded. Private lemma-level `stagingReviewStatus` remains a
-  separate vocabulary and may truthfully remain `draft` before independent
-  review.
+- `reviewState`, `reviewEvents`, `releaseMode`, reviewer/actor references, and
+  registries are canonical governance fields and are excluded. Canonical
+  example `origin` is also excluded, but its truthful source classification is
+  preserved immediately in required private `candidateOrigin`. Private
+  lemma-level `stagingReviewStatus` remains a separate vocabulary and may
+  truthfully remain `draft` before independent review.
 - Canonical pattern `evidence` is not duplicated into each ID-less candidate.
   The staging lemma already pins the frozen Phase 3 evidence row and exact
   source locator. Phase 4C must construct and review canonical evidence records
@@ -231,3 +267,8 @@ Only in-memory fixtures contain candidate records in Phase 4B1A. The live
 staging artifact remains byte-identical to the starting HEAD. No Polish
 linguistic content was authored, no production ID was allocated, and no
 canonical/runtime generator is imported or called.
+
+The validator CLI success label is derived from the validated document's
+actual `phaseStep` and `stagingRevision`; the unchanged live artifact therefore
+reports `4B0` and revision 1, while a valid future `4B1` fixture reports revision
+2.
