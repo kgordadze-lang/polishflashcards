@@ -42,6 +42,16 @@
 | `pisać` | 04 | KEEP VERIFIED | A | compatible | Exact creation sense supports Accusative text; separate correspondence sense supports Dative or `do + Genitive` addressee with topic/object/clause/direct-speech alternatives. | None; writing pair receives `RETAIN-BOTH SIGNAL MODERATE`. |
 | `napisać` | 04 | KEEP VERIFIED | A | compatible | Exact perfective creation and correspondence senses independently support the same core inventory with schema-specific Dative optionality. | None; writing pair receives `RETAIN-BOTH SIGNAL MODERATE`. |
 | `spotykać się` | 04 | KEEP VERIFIED | A | compatible | Exact lexical-reflexive imperfective sense independently supports `z + Instrumental` for a singular personal subject and a reciprocal plural variant; time/place/frequency remain adjuncts. | None; pair decision deferred because order 41 was not researched. |
+| `spotkać się` | 05 | KEEP VERIFIED | A | compatible | Exact lexical-reflexive perfective sense independently supports `z + Instrumental` for a singular personal subject and a reciprocal plural variant; lexical `się` remains required. | None; meeting pair receives `RETAIN-BOTH SIGNAL MODERATE`. |
+| `oglądać` | 05 | KEEP VERIFIED | A | compatible | Exact imperfective viewing sense independently supports Accusative person/content and optional exact `w + Locative`; ordinary location/medium phrases are not generalized. | None; viewing pair receives `RETAIN-BOTH SIGNAL MODERATE`. |
+| `obejrzeć` | 05 | KEEP VERIFIED | A | compatible | Exact perfective completed-viewing sense independently supports Accusative content only; no optional `w` position is inherited from `oglądać`. | None; viewing pair receives `RETAIN-BOTH SIGNAL MODERATE`. |
+| `skończyć` | 05 | KEEP VERIFIED | A | compatible | Completion sense independently supports Accusative and infinitive; separate colloquial cessation sense supports exact `z + Instrumental`. | None; completion pair receives `RETAIN-BOTH SIGNAL MODERATE`. |
+| `chcieć` | 05 | KEEP VERIFIED | A | compatible | Desire sense separately supports object, infinitive, and `żeby` schemas; polite/request sense has its own Accusative, infinitive, and `żeby` alternatives with usage restrictions. | None. |
+| `robić` | 05 | KEEP VERIFIED | A | compatible | Making and activity-performance senses separately support exact Accusative, without turning every noun collocation into its own governed frame. | None. |
+| `rozumieć` | 05 | KEEP VERIFIED | A | compatible | Content-comprehension sense supports Accusative, `że`, and interrogative-dependent clauses; separate empathic-person sense supports Accusative person. | None. |
+| `mieszkać` | 05 | KEEP WITH NARROWING | A | compatible with narrowing | Residence sense selects generalized `GDZIE` plus optional exact co-resident `z + Instrumental`; `w + Locative` is a documented realization, not exclusive government. | None. |
+| `umówić się` | 05 | KEEP WITH NARROWING | A | compatible with narrowing | Appointment and agreement schemas independently support exact partner/topic/clause positions; appointment `do + Genitive` is only a documented realization of selected `GDZIE`. | None. |
+| `dzwonić` | 05 | KEEP WITH NARROWING | A | compatible with narrowing | Telephone sense selects generalized target `DOKĄD` and direct `że`/`żeby`; concrete `do`/`na` targets are realizations and collocational `w sprawie` is not governed. | None. |
 
 ## Batch 4 provisional aspect-pair signals
 
@@ -60,6 +70,24 @@ These signals are provisional and do not alter dispositions, the selected 70, or
 
 - `KEEP VERIFIED`: 27
 - `KEEP WITH NARROWING`: 13
+- `REPLACEMENT RECOMMENDED`: 0
+- `ARCHITECTURE HOLD`: 0
+- `INCONCLUSIVE`: 0
+
+## Batch 5 provisional aspect-pair signals
+
+| Pair | Signal | Basis |
+|---|---|---|
+| `spotykać się / spotkać się` | RETAIN-BOTH SIGNAL MODERATE | Both independently exact and highly practical; recurring versus bounded meeting value is useful, but construction coverage coincides and morphology is regular. |
+| `oglądać / obejrzeć` | RETAIN-BOTH SIGNAL MODERATE | Both independently exact for Accusative viewing; `oglądać` adds optional `w + Locative`, and process/habitual versus completed viewing is central despite substantial overlap. |
+| `kończyć / skończyć` | RETAIN-BOTH SIGNAL MODERATE | Both independently support completion Accusative/infinitive; `skończyć` adds a separate exact `z + Instrumental` cessation sense, partly offsetting duplication. |
+
+These signals are provisional. Final Phase 3 synthesis will normalize all Batch 4 and Batch 5 aspect-family signals under one common scoring rubric before human freeze. They do not alter dispositions, the selected 70, or replacement state.
+
+## Cumulative disposition totals after Batch 05
+
+- `KEEP VERIFIED`: 34
+- `KEEP WITH NARROWING`: 16
 - `REPLACEMENT RECOMMENDED`: 0
 - `ARCHITECTURE HOLD`: 0
 - `INCONCLUSIVE`: 0
