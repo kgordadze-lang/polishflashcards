@@ -62,6 +62,16 @@
 | `polecać` | 06 | KEEP VERIFIED | A | compatible | Person/item recommendation supports optional Dative plus Accusative; separate directive/instruction sense supports optional Dative with infinitive, `żeby`, direct speech, or an Accusative action noun. | None. |
 | `radzić` | 06 | KEEP VERIFIED | A | compatible | Exact non-reflexive advice sense independently supports Dative advisee with nominal, clause, direct-speech, or infinitive content; no evidence is reused from `radzić sobie`. | None; strong independent-slot signal. |
 | `pasować` | 06 | KEEP VERIFIED | A | compatible | Four exact senses separately support Dative evaluator/experiencer and `do`/`na` match or fit targets with meaning-specific relation roles. | None; strong independent-slot signal. |
+| `móc` | 07 | KEEP VERIFIED | A | compatible | Ability and permission senses independently select an infinitive; request/help question use retains the same infinitive and creates no question complement. | None; strong independent-slot signal. |
+| `musieć` | 07 | KEEP VERIFIED | A | compatible | Core necessity directly selects an infinitive in unrestricted-subject and zero-subject schemas; subject realization adds no complement type. | None; strong independent-slot signal. |
+| `wiedzieć` | 07 | KEEP VERIFIED | A | compatible | Knowledge-content sense supports Accusative, `o + Locative`, `że`, and interrogative-dependent content; `czy` is a realization and generalized `SKĄD` is not concretized. | None; strong independent-slot signal. |
+| `jeść` | 07 | KEEP VERIFIED | A | compatible | Exact consumption sense supports optional Accusative food object and optional Instrumental implement/means; ordinary Genitive under negation remains grammar-owned. | None; strong independent-slot signal. |
+| `pić` | 07 | KEEP VERIFIED | A | compatible | Ordinary liquid-consumption sense directly supports the Accusative object; no partitive or contextual frame is inferred. | None; strong independent-slot signal. |
+| `kochać` | 07 | KEEP VERIFIED | A | compatible | Person-love, idea/place attachment, and strong-liking senses independently support Accusative objects; strong-liking sense separately supports an infinitive activity. | None; strong independent-slot signal. |
+| `przepraszać` | 07 | KEEP VERIFIED | A | compatible | Exact apology syntax gives required `KOGO + za CO` and alternative optional `KOGO` plus a `że` clause. | None; strong independent-slot signal. |
+| `życzyć` | 07 | KEEP VERIFIED | A | compatible | Exact good-wish sense gives required `KOMU + CZEGO` and alternative required `KOMU + żeby ZDANIE`, independently from `życzyć sobie`. | None; strong independent-slot signal. |
+| `korzystać` | 07 | KEEP VERIFIED | A | compatible | Resource-use and benefit-from senses independently select exact `z + Genitive` with distinct semantic roles. | None; strong independent-slot signal. |
+| `uczyć` | 07 | KEEP VERIFIED | A | compatible | Non-reflexive teaching senses independently support separate Accusative-plus-Genitive, Accusative-plus-infinitive, content-clause, and topic schemas; no evidence is inherited from `uczyć się`. | None; strong independent-slot signal. |
 
 ## Batch 4 provisional aspect-pair signals
 
@@ -115,6 +125,24 @@ No Batch 6 signal changes a disposition, activates replacement, or alters the se
 ## Cumulative disposition totals after Batch 06
 
 - `KEEP VERIFIED`: 44
+- `KEEP WITH NARROWING`: 16
+- `REPLACEMENT RECOMMENDED`: 0
+- `ARCHITECTURE HOLD`: 0
+- `INCONCLUSIVE`: 0
+
+## Batch 7 mechanical completion record
+
+- Orders 61–70 add 10 `KEEP VERIFIED` rows at evidence level `A`.
+- `móc` question packaging, `wiedzieć` interrogative-dependent `czy`, `jeść` grammar-owned negation, and non-reflexive `uczyć` identity boundaries are preserved.
+- No narrowed realization is needed in Batch 7.
+- No replacement trigger, architecture hold, or inconclusive result is opened.
+- No reserve is researched or promoted.
+- Approved Batch 4–6 product/aspect signals remain unchanged.
+- Final Phase 3 synthesis remains deferred until independent review of Batch 7.
+
+## Cumulative disposition totals after Batch 07
+
+- `KEEP VERIFIED`: 54
 - `KEEP WITH NARROWING`: 16
 - `REPLACEMENT RECOMMENDED`: 0
 - `ARCHITECTURE HOLD`: 0
