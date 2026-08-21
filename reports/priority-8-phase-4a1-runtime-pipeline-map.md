@@ -56,7 +56,15 @@ Running `python3 priority8_phase1_transition.py` (no `--write`) itself raised `R
 - `editorial/verb-pattern-candidates.json` — sole content source (30/30 lemma IDs identical to runtime; this audit confirmed the lemma ID sets are byte-for-byte the same set between the two files).
 - `editorial/priority-7-authoring-context.json` — the `ValidationContext` (source/reviewer/editorial-actor/author/allocation registries) that both `validate_editorial` and `freeze_editorial` require to resolve `sourceId`, `reviewerRef`, `actorRef`, and allocation-registry cross-references.
 
-Neither of these files is loaded by the shipping application; per `reports/priority-7-frozen-data-and-persistence-specification.md` §7, the editorial record "MUST NOT be transferred to the production/public static-site repository... Release inventory tests prove absence."
+### Correction: production repository vs. static-host exposure vs. runtime payload
+
+This audit's original text stated the two editorial files are "not transferred to the production/public static-site repository" and that "release inventory tests prove absence." That statement was too broad and conflicts with this repository's own tracked history. Three separate concepts must be distinguished:
+
+1. **Production Git repository.** This repository is (or is a checkout of) the actual `popolsku.app` production source: `CNAME` contains `popolsku.app` and `sitemap.xml` lists live `https://popolsku.app/...` URLs. Both editorial files are **tracked, committed paths in this repository's own git history** — `git ls-files editorial/` lists both, `.gitignore` contains no rule excluding `editorial/`, and `git log --diff-filter=A -- editorial/verb-pattern-candidates.json` shows both files were added in commit `2bf4d09505866c9a47ecfa0f6634d6f05352f679`, whose message is literally `release: activate Priority 7 verb patterns`. **The two editorial files are part of the tracked production Git history, not excluded from it.**
+2. **Deployed/static-host file exposure.** Whether a live deployed host actually serves the raw `/editorial/*.json` paths to a browser depends on hosting/deployment configuration (e.g. whether GitHub Pages serves the full repository tree or only a filtered build output) — this audit performed no deployment or network research and **does not know, and does not claim, either way** whether these paths are reachable on the deployed site.
+3. **Public Verb-Pattern runtime payload.** This remains as originally established and is unaffected by (1)/(2): the Verb Patterns browser/runtime path (`pp-verb-patterns.js`) only ever fetches `content/verb-patterns.json`; it never loads either editorial file; and every private/governance field (`evidence`, `reviewEvents`, `internalScope`, `key`, `origin`, `releaseMode`, etc.) is stripped by the projector and mechanically rejected if present by `validate_runtime`'s `_recursive_private_key_check`.
+
+The "MUST NOT be transferred... release inventory tests prove absence" line is a **historical specification statement** from `reports/priority-7-frozen-data-and-persistence-specification.md` §7 (a Phase-1 planning document), not an observation of current repository state — the repository's actual history shows the opposite happened for the git tree specifically (the files were transferred/committed as part of the Phase 7 release-activation commit). The "release inventory" tests this audit found (`tests/test_priority7_phase4fi1.py::PhaseFootprintTests::test_no_editorial_path_is_in_the_footprint`) check something narrower than "absence from the repository": they check that a specific *release commit's own diff* ("footprint") does not itself add or touch an `editorial/`-prefixed path — not that `editorial/` is absent from the tree, and not anything about what a deployed host serves.
 
 ## Validators protecting the runtime
 
@@ -81,6 +89,32 @@ Neither of these files is loaded by the shipping application; per `reports/prior
 
 `priority8_phase1_transition.py` (no `--write`) was run and is **not** listed above as a general-purpose command — it is a one-shot historical script pinned to a specific past commit and a specific past context state, and it now fails by design once the repository has moved past that point. It is documented here only as evidence for the projection mechanism, not as a reusable audit command.
 
-## Note on the wider test suite
+## Note on the wider test suite (corrected)
 
-Running the four test files above turned up **19 pre-existing failures out of 155 tests**, all in files unrelated to the four run for pipeline confirmation once the broader suite was sampled (`test_priority7_phase5a.py`'s `CommittedStateGuard`/`RealCorpusBoundaryTests`, `test_priority7_phase3b.py`'s `FixtureIsolationTests`, `test_priority8_phase1.py`'s `test_official_transition_is_current_and_revision_two`). These are **pre-existing and not caused by this audit** — no file was modified before or during the run (`git status --short` was empty throughout), and the failures are consistent with these being *phase-pinned* regression tests that assert the repository is at one specific earlier phase checkpoint (e.g. "is the official transition script current," "is a specific sixth committed edit the head state") rather than living forward-compatible tests. The project has since advanced to Phase 3B/8, so several of these historical pins now legitimately fail. This is recorded as an **OBSERVED FACT** for the risk review; it is not something this audit fixed or should fix, since doing so would mean editing test files, which is out of scope.
+Command actually run, verbatim, and re-run again during the Phase 4A-1 correction pass with an identical result:
+
+```
+python3 -m pytest tests/test_priority8_phase1.py tests/test_priority8_phase1b.py tests/test_priority7_phase3b.py tests/test_priority7_phase5a.py -q
+```
+
+**Totals: 136 passed, 19 failed, 155 total.** `git status --short` was empty before and after both runs — no file was modified before, during, or by this command.
+
+The original wording ("19 pre-existing failures... all in files unrelated to the four run") was self-contradictory, since the failures occur inside three of the four files that were actually run, and is corrected below.
+
+**Failures occurred within the selected historical phase-pinned suites**, by file:
+
+| File | Failed | Passed |
+|---|---|---|
+| `tests/test_priority8_phase1.py` | 1 | (remainder) |
+| `tests/test_priority8_phase1b.py` | 0 | all |
+| `tests/test_priority7_phase3b.py` | 5 | (remainder) |
+| `tests/test_priority7_phase5a.py` | 13 | (remainder) |
+
+Reason categories, by exact assertion/error text observed in the run:
+
+1. **Pinned Phase 4F-I1 activation-layer bundle state (8 of 19 failures).** `tests/priority7_phase4fi1_normalizer.py:397` raises `AssertionError: the Phase 4F-I1 activation layer is present on some but not all of the runtime document, index.html and sw.js, or the runtime bytes are not the pinned I1 release; the bundle is incomplete and must not be normalised away`. These tests require index.html/sw.js/runtime bytes to jointly match one specific pinned historical release combination; this checkout does not currently match that exact combination.
+2. **A pinned historical commit SHA does not contain the expected path in this checkout's history (7 of 19 failures).** `git show 7beb50d7b3463d7745352f1608f1e30019529fdf:editorial/verb-pattern-candidates.json` (invoked by the test helpers) fails with `fatal: path 'editorial/verb-pattern-candidates.json' exists on disk, but not in '7beb50d7b3463d7745352f1608f1e30019529fdf'` — the referenced commit exists in this repository, but the test's assumption about what that specific historical commit contains does not hold in this checkout.
+3. **Cascading count/set-membership assertions stemming from the same two root causes (3 of 19 failures)** — `AssertionError: Items in the second set but not the first` (×2) and `AssertionError: 0 != 45` (×1), each occurring in tests downstream of the pinned-baseline comparisons in categories 1–2.
+4. **The Phase-1A transition script rejects the current, later authoring-context state (1 of 19 failures)** — `tests/test_priority8_phase1.py::Priority8Phase1GovernanceTests::test_official_transition_is_current_and_revision_two` invokes `priority8_phase1_transition.py` as a subprocess and asserts its exit code is 0; it returns 1 with `RuntimeError: authoring context contains a non-Phase-1A change`, matching this audit's own direct run of that script (see above).
+
+The defensible statement is: **these failures exist on the untouched Phase 4A-1 starting baseline and were not caused by this reports-only audit** — not that they are "pre-existing" merely because the working tree was clean (clean-tree is necessary evidence that nothing here caused them, but the failures' actual cause, established above, is that several tests pin exact historical commit SHAs and an exact release-bundle state that this checkout does not currently match). No test file was read for the purpose of editing, and none was modified.
