@@ -147,3 +147,48 @@ No Batch 6 signal changes a disposition, activates replacement, or alters the se
 - `REPLACEMENT RECOMMENDED`: 0
 - `ARCHITECTURE HOLD`: 0
 - `INCONCLUSIVE`: 0
+
+## Final Phase 3 synthesis
+
+This section is a product-level synthesis appended after the seven approved linguistic batches. It does not rewrite any historical disposition or evidence decision.
+
+### Mechanical 70-row totals
+
+- Seven authoritative Batch CSVs, 10 rows each, reconcile to 70 total rows.
+- Verification orders are exactly 1–70 and all 70 lemmas are unique.
+- Every Batch header and data row has width 35; no malformed record or unexpected `None` key exists.
+- Linguistic dispositions remain 54 `KEEP VERIFIED`, 16 `KEEP WITH NARROWING`, and zero replacement, hold, or inconclusive.
+- Representation fit is 49 `compatible` and 21 `compatible with narrowing`.
+- Evidence strength is 70 `A`; independent-slot signals are 57 strong and 13 moderate.
+- The exact narrowed set is `pracować`, `wracać`, `wrócić`, `przyjść`, `przyjechać`, `wyjść`, `wyjechać`, `przynosić`, `odpowiadać`, `zamawiać`, `zapominać`, `pozwalać`, `unikać`, `mieszkać`, `umówić się`, and `dzwonić`.
+
+### Normalized aspect-family outcomes
+
+| Outcome | Families |
+|---|---|
+| `RETAIN BOTH - STRONG` | `dawać / dać`; `brać / wziąć` |
+| `RETAIN BOTH - BORDERLINE` | `wracać / wrócić`; `kończyć / skończyć`; `kupować / kupić`; `pisać / napisać`; `spotykać się / spotkać się`; `oglądać / obejrzeć` |
+| `COLLAPSE CANDIDATE` | `zaczynać / zacząć`; `czytać / przeczytać` |
+| `HUMAN REVIEW - INCONCLUSIVE` | none |
+
+Each member retains independent exact-lemma evidence. No syntax, disposition, or evidence strength is inherited across a pair.
+
+### Product-level human-freeze recommendation counts
+
+- `RETAIN - CLEAR`: 39
+- `RETAIN - AUTHORING NARROWING`: 11
+- `RETAIN - BORDERLINE OPPORTUNITY COST`: 16
+- `COLLAPSE / REMOVE CANDIDATE FOR HUMAN REVIEW`: 4 rows forming 2 pair decisions
+- `HUMAN REVIEW - OTHER`: 0
+
+### Phase 3B human decisions still required
+
+1. Decide whether to collapse neither, one, or both of `zaczynać / zacząć` and `czytać / przeczytać`, and choose the full-pattern anchor for any collapsed family.
+2. Decide two-slot retention for the six borderline pairs: `wracać / wrócić`, `kończyć / skończyć`, `kupować / kupić`, `pisać / napisać`, `spotykać się / spotkać się`, and `oglądać / obejrzeć`.
+3. Approve or reduce the 12-lemma motion ceiling, focusing on `przyjechać`, `wyjechać`, and the return pair.
+4. Decide the individual opportunity-cost cases `przynosić` and `martwić się`.
+5. Decide whether approximately 98, 99, or 100 total product lemmas is acceptable before considering any backfill.
+
+`radzić` and `radzić sobie` resolve to no material redundancy: their identities, meanings, and construction inventories are independently verified. Any later replacement would require a new evidence gate for a Phase 2 **UNVERIFIED RESERVE** profile.
+
+No final lemma freeze has occurred. No reserve has been researched or promoted, and Phase 3B has not begun.
