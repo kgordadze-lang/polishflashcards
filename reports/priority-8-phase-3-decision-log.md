@@ -52,6 +52,16 @@
 | `mieszkać` | 05 | KEEP WITH NARROWING | A | compatible with narrowing | Residence sense selects generalized `GDZIE` plus optional exact co-resident `z + Instrumental`; `w + Locative` is a documented realization, not exclusive government. | None. |
 | `umówić się` | 05 | KEEP WITH NARROWING | A | compatible with narrowing | Appointment and agreement schemas independently support exact partner/topic/clause positions; appointment `do + Genitive` is only a documented realization of selected `GDZIE`. | None. |
 | `dzwonić` | 05 | KEEP WITH NARROWING | A | compatible with narrowing | Telephone sense selects generalized target `DOKĄD` and direct `że`/`żeby`; concrete `do`/`na` targets are realizations and collocational `w sprawie` is not governed. | None. |
+| `powiedzieć` | 06 | KEEP VERIFIED | A | compatible | Spoken-communication sense directly supports separate optional Dative/`do` addressee schemas with object, topic, or content clause, plus direct speech; no maximal combined template is created. | None. |
+| `gotować` | 06 | KEEP VERIFIED | A | compatible | Exact hot-meal preparation sense supports optional Accusative dish/meal and optional Dative beneficiary; `dla + Genitive` receives no frame credit. | None. |
+| `rezerwować` | 06 | KEEP VERIFIED | A | compatible | Exact booking sense supports required Accusative with alternative optional Dative or `dla + Genitive` beneficiary/customer; setting-aside `na` remains separate. | None. |
+| `cieszyć się` | 06 | KEEP VERIFIED | A | compatible | Exact lexical-reflexive joy sense supports alternative `z + Genitive`, `na + Accusative`, `że`, and Instrumental cause/content constructions. | None. |
+| `martwić się` | 06 | KEEP VERIFIED | A | compatible | Exact lexical-reflexive worry sense supports Instrumental, `o + Accusative`, `że`, and interrogative-dependent content; overlap with released `bać się o` makes product value moderate, not weak. | None; moderate opportunity-cost signal remains for final synthesis. |
+| `zgadzać się` | 06 | KEEP VERIFIED | A | compatible | Consent sense supports `na`, `żeby`, infinitive, and direct speech; opinion-agreement sense separately supports `z`, optional `z + że`, and direct speech. | None. |
+| `zapraszać` | 06 | KEEP VERIFIED | A | compatible | Exact invitation schema directly supports Accusative invitee with alternative exact `na + Accusative` or `do + Genitive`; separate generalized `GDZIE` is not concretized. | None. |
+| `polecać` | 06 | KEEP VERIFIED | A | compatible | Person/item recommendation supports optional Dative plus Accusative; separate directive/instruction sense supports optional Dative with infinitive, `żeby`, direct speech, or an Accusative action noun. | None. |
+| `radzić` | 06 | KEEP VERIFIED | A | compatible | Exact non-reflexive advice sense independently supports Dative advisee with nominal, clause, direct-speech, or infinitive content; no evidence is reused from `radzić sobie`. | None; strong independent-slot signal. |
+| `pasować` | 06 | KEEP VERIFIED | A | compatible | Four exact senses separately support Dative evaluator/experiencer and `do`/`na` match or fit targets with meaning-specific relation roles. | None; strong independent-slot signal. |
 
 ## Batch 4 provisional aspect-pair signals
 
@@ -87,6 +97,24 @@ These signals are provisional. Final Phase 3 synthesis will normalize all Batch 
 ## Cumulative disposition totals after Batch 05
 
 - `KEEP VERIFIED`: 34
+- `KEEP WITH NARROWING`: 16
+- `REPLACEMENT RECOMMENDED`: 0
+- `ARCHITECTURE HOLD`: 0
+- `INCONCLUSIVE`: 0
+
+## Batch 6 product-value signals
+
+| Lemma | Signal | Basis |
+|---|---|---|
+| `martwić się` | moderate | Exact worry meaning and added Instrumental/clause shapes survive, while released `bać się o + Accusative` creates material overlap. |
+| `radzić` | strong | Advice identity, meaning, Dative/content constructions, and use differ independently from lexical coping expression `radzić sobie`. |
+| `pasować` | strong | Multiple common exact fit/match/suit relations add value when kept as separate sense and role records. |
+
+No Batch 6 signal changes a disposition, activates replacement, or alters the selected 70. The approved Batch 4–5 aspect-family signals remain unchanged.
+
+## Cumulative disposition totals after Batch 06
+
+- `KEEP VERIFIED`: 44
 - `KEEP WITH NARROWING`: 16
 - `REPLACEMENT RECOMMENDED`: 0
 - `ARCHITECTURE HOLD`: 0
