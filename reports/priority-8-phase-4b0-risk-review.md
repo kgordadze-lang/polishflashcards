@@ -91,10 +91,14 @@ duplicate, source, and baseline mutations fail.
 Risk: Candidate keys may be malformed, duplicated, or treated as durable before
 human staging approval.
 
-Control: No candidate key exists in Phase 4B0. Future field names are explicit;
-the validator already applies the current lowercase-kebab syntax and per-kind
-uniqueness checks. Candidate keys remain editable until human staging approval
-and must not include verification order as an identity seed.
+Control: No candidate key exists in valid Phase 4B0 staging. Future field names
+are explicit, and the validator already applies the current lowercase-kebab
+syntax. Sibling-scoped uniqueness is deliberately deferred until the candidate
+ownership hierarchy is defined before candidate authoring begins. Global
+uniqueness must never be imposed because the stable-ID seed model scopes meaning
+keys under lemma identity, pattern keys under meaning identity, and example keys
+under pattern identity. Candidate keys remain editable until human staging
+approval and must not include verification order as an identity seed.
 
 ## 10. Future direct-speech schema dependency
 

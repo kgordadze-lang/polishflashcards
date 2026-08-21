@@ -217,13 +217,28 @@ class Priority8Phase4B0StagingTests(unittest.TestCase):
         })
         self.assert_invalid(data, "candidate key must use lowercase kebab-case")
 
-    def test_rejects_duplicate_future_candidate_key(self):
-        data = self.mutated()
-        record(data, "pracować")["candidateContent"]["meanings"].extend([
-            {"candidateMeaningKey": "production-work"},
-            {"candidateMeaningKey": "production-work"},
-        ])
-        self.assert_invalid(data, "duplicate candidateMeaningKey")
+    def test_candidate_key_identity_is_not_global(self):
+        fixture = {
+            "lemmas": [
+                {"owner": "pracować", "candidateMeaningKey": "core"},
+                {"owner": "iść", "candidateMeaningKey": "core"},
+            ]
+        }
+        issues = []
+        validator._check_recursive_prohibitions(fixture, issues)
+        self.assertFalse(
+            any("duplicate candidateMeaningKey" in issue for issue in issues),
+            issues,
+        )
+        self.assertFalse(
+            any("candidate key must use" in issue for issue in issues),
+            issues,
+        )
+        self.assertEqual(
+            2,
+            sum("candidate keys are prohibited in Phase 4B0" in issue
+                for issue in issues),
+        )
 
     def test_validator_does_not_mutate_staging_file(self):
         before = digest(STAGING_PATH)

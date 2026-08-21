@@ -224,9 +224,6 @@ def _exact_keys(
 
 
 def _check_recursive_prohibitions(data: Any, issues: list[str]) -> None:
-    candidate_values: dict[str, dict[str, str]] = {
-        name: {} for name in CANDIDATE_KEY_FIELDS
-    }
     for key, value, path in _walk(data):
         if key.lower() in PRODUCTION_ID_FIELDS:
             issues.append(f"{path}: production-ID field name is prohibited")
@@ -237,13 +234,6 @@ def _check_recursive_prohibitions(data: Any, issues: list[str]) -> None:
                 issues.append(
                     f"{path}: candidate key must use lowercase kebab-case"
                 )
-            elif value in candidate_values[key]:
-                issues.append(
-                    f"{path}: duplicate {key} {value!r}; first seen at "
-                    f"{candidate_values[key][value]}"
-                )
-            else:
-                candidate_values[key][value] = path
             issues.append(f"{path}: candidate keys are prohibited in Phase 4B0")
 
 

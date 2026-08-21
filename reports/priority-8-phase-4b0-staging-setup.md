@@ -78,9 +78,12 @@ The latter contains empty `meanings`, `patterns`, and `examples` arrays.
 
 Future candidate key field names are `candidateMeaningKey`,
 `candidatePatternKey`, and `candidateExampleKey`. The validator applies the
-current stable-key lowercase-kebab syntax and per-kind uniqueness checks if a
-future fixture introduces them. Phase 4B0 itself rejects all candidate keys and
-all non-empty candidate-content collections.
+current stable-key lowercase-kebab syntax if a future fixture introduces them.
+Phase 4B0 itself rejects all candidate keys and all non-empty candidate-content
+collections. Sibling-scoped uniqueness is deliberately deferred until the
+candidate ownership hierarchy is defined before candidate authoring begins.
+Global uniqueness must never be imposed because stable IDs seed each key under
+its parent identity.
 
 This private schema does not alter `formatVersion`, `SCHEMA_VERSION`,
 `CONTENT_MIGRATION_REVISION`, or `patternDataRevision`.
@@ -153,7 +156,7 @@ validates:
 - exact 21 per-lemma and 12 global constraints;
 - exact metadata-only and required-lexical placement;
 - empty candidate content;
-- future candidate-key syntax and uniqueness;
+- future candidate-key syntax, without imposing global uniqueness;
 - recursive production-ID prefixes and production-ID field names.
 
 It imports no canonical generator, allocates no identity, writes no file, and
@@ -188,11 +191,13 @@ produces no canonical or runtime JSON.
 23. authored candidate example;
 24. non-draft Phase 4B0 status;
 25. bad starting baseline;
-26. malformed future candidate-key syntax;
-27. a duplicate future candidate key.
+26. malformed future candidate-key syntax.
 
 Positive tests validate the real staging file and prove validator non-mutation,
-determinism, and unchanged canonical/runtime boundary snapshots.
+determinism, unchanged canonical/runtime boundary snapshots, and that the same
+valid candidate key under distinct ownership paths is not treated as a global
+duplicate. Sibling-scoped uniqueness will be added only after the ownership
+hierarchy is defined and candidate authoring is authorized.
 
 ## Empty-content and ID proof
 
