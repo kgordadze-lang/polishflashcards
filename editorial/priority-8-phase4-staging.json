@@ -1,9 +1,9 @@
 {
   "stagingSchemaVersion": 1,
-  "stagingRevision": 1,
+  "stagingRevision": 2,
   "priority": 8,
   "phase": "4B",
-  "phaseStep": "4B0",
+  "phaseStep": "4B1",
   "frozenFullPatternCount": 68,
   "sources": {
     "phase3BFreezeCsv": {
@@ -166,9 +166,54 @@
       ],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "production-creation",
+            "glossesEn": [
+              "work on creating something",
+              "develop something"
+            ],
+            "internalScope": "Goal-directed work on creating or producing something. Excludes employment, occupation, workplace, beneficiary, collaboration, and work-with-person readings."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "nad-instrumental-work-object",
+            "meaningKeyRef": "production-creation",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "nad",
+                "case": "instrumental",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For creating or developing something, use nad + Instrumental: pracuję nad filmem (I'm working on a film)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "production-creation",
+            "patternKeyRef": "nad-instrumental-work-object",
+            "pl": "Pracuję nad nowym filmem.",
+            "en": "I am working on a new film.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -194,9 +239,125 @@
       ],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "directed-on-foot-motion",
+            "glossesEn": [
+              "go on foot",
+              "go somewhere on foot"
+            ],
+            "internalScope": "Directed motion on foot, including going in order to perform an action. The destination forms are individual realizations of a selected destination role, not an exhaustive government list."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "do-genitive-destination",
+            "meaningKeyRef": "directed-on-foot-motion",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For this journey on foot, do + Genitive is one common way to name the destination; other destinations use other prepositions."
+          },
+          {
+            "candidatePatternKey": "na-accusative-destination",
+            "meaningKeyRef": "directed-on-foot-motion",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "accusative",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For this journey on foot, na + Accusative is another way to name the destination; it does not replace other destination prepositions."
+          },
+          {
+            "candidatePatternKey": "infinitive-purpose",
+            "meaningKeyRef": "directed-on-foot-motion",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use an infinitive to say the action you are going to do: idę kupić chleb (I'm going to buy bread)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "directed-on-foot-motion",
+            "patternKeyRef": "do-genitive-destination",
+            "pl": "Idę do sklepu.",
+            "en": "I am going to the shop.",
+            "candidateOrigin": {
+              "kind": "repository-reuse",
+              "repositorySource": {
+                "kind": "card",
+                "id": "a1-first-verbs-006",
+                "field": "ex"
+              }
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "directed-on-foot-motion",
+            "patternKeyRef": "na-accusative-destination",
+            "pl": "Idę na basen.",
+            "en": "I am going to the swimming pool.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "directed-on-foot-motion",
+            "patternKeyRef": "infinitive-purpose",
+            "pl": "Idę kupić chleb.",
+            "en": "I am going to buy bread.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -222,9 +383,128 @@
       ],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "regular-attendance",
+            "glossesEn": [
+              "attend regularly",
+              "go to regularly"
+            ],
+            "internalScope": "Habitual attendance at an activity or institution. The na + Accusative pattern is for the activity or attendance reading, not a merely spatial na-destination."
+          },
+          {
+            "candidateMeaningKey": "regular-on-foot-motion",
+            "glossesEn": [
+              "go regularly on foot",
+              "go regularly to do something"
+            ],
+            "internalScope": "Repeated or habitual motion on foot to a place or in order to do an action. Keeps the selected destination and infinitive purpose separate from attendance/activity na + Accusative."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "na-accusative-activity",
+            "meaningKeyRef": "regular-attendance",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "accusative",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For a regular activity or class, use na + Accusative: chodzę na kurs polskiego (I go to a Polish course). This is not just a spatial destination."
+          },
+          {
+            "candidatePatternKey": "do-genitive-destination",
+            "meaningKeyRef": "regular-on-foot-motion",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For regular trips on foot, do + Genitive can name a selected destination; other destination prepositions are possible in other contexts."
+          },
+          {
+            "candidatePatternKey": "infinitive-purpose",
+            "meaningKeyRef": "regular-on-foot-motion",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use an infinitive to say the activity you go to do regularly: chodzę pływać (I go swimming)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "regular-attendance",
+            "patternKeyRef": "na-accusative-activity",
+            "pl": "Chodzę na kurs polskiego.",
+            "en": "I go to a Polish course.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "regular-on-foot-motion",
+            "patternKeyRef": "do-genitive-destination",
+            "pl": "Chodzę do biblioteki.",
+            "en": "I go to the library regularly.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "regular-on-foot-motion",
+            "patternKeyRef": "infinitive-purpose",
+            "pl": "Chodzę pływać.",
+            "en": "I go swimming.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -250,9 +530,121 @@
       ],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "directed-transport-travel",
+            "glossesEn": [
+              "travel by vehicle",
+              "go by transport"
+            ],
+            "internalScope": "Directed travel using a vehicle, animal, or transport or sport equipment. Destination and selected vehicle/equipment constructions are separate patterns; route, time, and ordinary manner are excluded."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "do-genitive-destination",
+            "meaningKeyRef": "directed-transport-travel",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For this journey by transport, do + Genitive is one way to name the selected destination; it is not the only possible destination preposition."
+          },
+          {
+            "candidatePatternKey": "instrumental-vehicle",
+            "meaningKeyRef": "directed-transport-travel",
+            "relationType": "means-method",
+            "complements": [
+              {
+                "type": "case",
+                "case": "instrumental",
+                "required": true,
+                "role": "means"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "When you name the vehicle, use the bare Instrumental: jadę autobusem (I'm travelling by bus). In this sense it names the selected vehicle for the journey."
+          },
+          {
+            "candidatePatternKey": "na-locative-equipment",
+            "meaningKeyRef": "directed-transport-travel",
+            "relationType": "means-method",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "locative",
+                "required": true,
+                "role": "means"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use na + Locative for travel on a vehicle or piece of equipment: jadę na rowerze (I'm travelling by bicycle)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "directed-transport-travel",
+            "patternKeyRef": "do-genitive-destination",
+            "pl": "Jadę do Gdańska.",
+            "en": "I am travelling to Gdańsk.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "directed-transport-travel",
+            "patternKeyRef": "instrumental-vehicle",
+            "pl": "Jadę autobusem.",
+            "en": "I am travelling by bus.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "directed-transport-travel",
+            "patternKeyRef": "na-locative-equipment",
+            "pl": "Jadę na rowerze.",
+            "en": "I am travelling by bicycle.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -278,9 +670,121 @@
       ],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "habitual-transport-travel",
+            "glossesEn": [
+              "travel regularly by vehicle",
+              "go by transport regularly"
+            ],
+            "internalScope": "Repeated or habitual overland travel using transport. Frequency is part of the meaning but is not a complement; destination and selected vehicle/equipment constructions are separate patterns."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "do-genitive-destination",
+            "meaningKeyRef": "habitual-transport-travel",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For repeated travel by transport, do + Genitive can name a selected destination; other destination prepositions are possible in other contexts."
+          },
+          {
+            "candidatePatternKey": "instrumental-vehicle",
+            "meaningKeyRef": "habitual-transport-travel",
+            "relationType": "means-method",
+            "complements": [
+              {
+                "type": "case",
+                "case": "instrumental",
+                "required": true,
+                "role": "means"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "When you name the vehicle for repeated travel, use the bare Instrumental: jeżdżę tramwajem (I travel by tram). This is a selected vehicle pattern, not a frequency pattern."
+          },
+          {
+            "candidatePatternKey": "na-locative-equipment",
+            "meaningKeyRef": "habitual-transport-travel",
+            "relationType": "means-method",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "locative",
+                "required": true,
+                "role": "means"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use na + Locative for repeated travel on a vehicle or piece of equipment: jeżdżę na nartach (I go skiing)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "habitual-transport-travel",
+            "patternKeyRef": "do-genitive-destination",
+            "pl": "Jeżdżę do Gdyni.",
+            "en": "I travel to Gdynia.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "habitual-transport-travel",
+            "patternKeyRef": "instrumental-vehicle",
+            "pl": "Jeżdżę tramwajem.",
+            "en": "I travel by tram.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "habitual-transport-travel",
+            "patternKeyRef": "na-locative-equipment",
+            "pl": "Jeżdżę na nartach.",
+            "en": "I go skiing.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -297,9 +801,54 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "abstract-conclusion",
+            "glossesEn": [
+              "reach a conclusion",
+              "arrive at a truth or conviction"
+            ],
+            "internalScope": "The abstract intellectual-result sense of reaching a thought, truth, conclusion, or conviction. Excludes literal walking destinations and other dojść senses."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "do-genitive-result",
+            "meaningKeyRef": "abstract-conclusion",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For reaching a conclusion or truth, use do + Genitive: dojść do wniosku (reach a conclusion). This is not about physically walking somewhere."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "abstract-conclusion",
+            "patternKeyRef": "do-genitive-result",
+            "pl": "Doszliśmy do wniosku.",
+            "en": "We reached a conclusion.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -325,9 +874,155 @@
       ],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "transport-endpoint-arrival",
+            "glossesEn": [
+              "reach an endpoint by transport",
+              "get to a destination by vehicle"
+            ],
+            "internalScope": "Reaching an endpoint through travel in or on transport. Concrete do and na endpoint forms are individual realizations of the selected endpoint role; vehicle and equipment constructions remain separate."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "do-genitive-endpoint",
+            "meaningKeyRef": "transport-endpoint-arrival",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For reaching an endpoint by transport, do + Genitive is one way to name it; it is not the only possible endpoint preposition."
+          },
+          {
+            "candidatePatternKey": "na-accusative-endpoint",
+            "meaningKeyRef": "transport-endpoint-arrival",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "accusative",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For reaching an endpoint by transport, na + Accusative is another way to name it; other endpoint prepositions are possible."
+          },
+          {
+            "candidatePatternKey": "instrumental-vehicle",
+            "meaningKeyRef": "transport-endpoint-arrival",
+            "relationType": "means-method",
+            "complements": [
+              {
+                "type": "case",
+                "case": "instrumental",
+                "required": true,
+                "role": "means"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "When you name the vehicle used to reach the endpoint, use the bare Instrumental: dojadę pociągiem (I'll get there by train)."
+          },
+          {
+            "candidatePatternKey": "na-locative-equipment",
+            "meaningKeyRef": "transport-endpoint-arrival",
+            "relationType": "means-method",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "locative",
+                "required": true,
+                "role": "means"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use na + Locative for reaching the endpoint on a vehicle or piece of equipment: dojedziemy na rowerach (we'll get there by bicycle)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "transport-endpoint-arrival",
+            "patternKeyRef": "do-genitive-endpoint",
+            "pl": "Dojedziemy do hotelu.",
+            "en": "We will get to the hotel.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "transport-endpoint-arrival",
+            "patternKeyRef": "na-accusative-endpoint",
+            "pl": "Dojedziemy na stację.",
+            "en": "We will get to the station.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "transport-endpoint-arrival",
+            "patternKeyRef": "instrumental-vehicle",
+            "pl": "Dojadę pociągiem.",
+            "en": "I will get there by train.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "transport-endpoint-arrival",
+            "patternKeyRef": "na-locative-equipment",
+            "pl": "Dojedziemy na rowerach.",
+            "en": "We will get there by bicycle.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -353,9 +1048,88 @@
       ],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "return-to-earlier-place",
+            "glossesEn": [
+              "return",
+              "come back"
+            ],
+            "internalScope": "Imperfective return to a place previously occupied. The do and z forms are concrete realizations of selected return-goal and return-source positions, not exclusive government."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "do-genitive-return-goal",
+            "meaningKeyRef": "return-to-earlier-place",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For this return meaning, do + Genitive can express the place you return to. It is one realization of the return goal, not the only form."
+          },
+          {
+            "candidatePatternKey": "z-genitive-return-source",
+            "meaningKeyRef": "return-to-earlier-place",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For this return meaning, z + Genitive can express the place you return from. It is one realization of the return source, not the only form."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "return-to-earlier-place",
+            "patternKeyRef": "do-genitive-return-goal",
+            "pl": "Wracam do mieszkania.",
+            "en": "I am returning to the flat.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "return-to-earlier-place",
+            "patternKeyRef": "z-genitive-return-source",
+            "pl": "Wracam z kina.",
+            "en": "I am coming back from the cinema.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -381,9 +1155,88 @@
       ],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "completed-return-to-earlier-place",
+            "glossesEn": [
+              "return",
+              "come back"
+            ],
+            "internalScope": "Bounded perfective return to a place previously occupied. This independently evidenced meaning uses concrete do and z realizations of selected return-goal and return-source positions, not exclusive government."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "do-genitive-return-goal",
+            "meaningKeyRef": "completed-return-to-earlier-place",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For this completed return, do + Genitive can express the place you return to. It is one realization of the return goal, not the only form."
+          },
+          {
+            "candidatePatternKey": "z-genitive-return-source",
+            "meaningKeyRef": "completed-return-to-earlier-place",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For this completed return, z + Genitive can express the place you return from. It is one realization of the return source, not the only form."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "completed-return-to-earlier-place",
+            "patternKeyRef": "do-genitive-return-goal",
+            "pl": "Wrócę do mieszkania.",
+            "en": "I will return to the flat.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "completed-return-to-earlier-place",
+            "patternKeyRef": "z-genitive-return-source",
+            "pl": "Wróciłem z kina.",
+            "en": "I came back from the cinema.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -409,9 +1262,128 @@
       ],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "literal-place-arrival",
+            "glossesEn": [
+              "arrive at a place",
+              "come to a place"
+            ],
+            "internalScope": "Literal arrival at a place. The do + Genitive form is a concrete realization of a selected destination role; this record excludes person-specific targets."
+          },
+          {
+            "candidateMeaningKey": "one-off-activity-arrival",
+            "glossesEn": [
+              "come to do something",
+              "come for a one-off activity"
+            ],
+            "internalScope": "One-off arrival in order to perform or undergo an activity or event. Keeps event/activity na + Accusative and the selected infinitive separate from literal place arrival and arrival time."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "do-genitive-place-destination",
+            "meaningKeyRef": "literal-place-arrival",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For literal arrival at a place, do + Genitive can name the destination; it is one way to express that destination."
+          },
+          {
+            "candidatePatternKey": "na-accusative-event-destination",
+            "meaningKeyRef": "one-off-activity-arrival",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "accusative",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For a one-off event or activity, na + Accusative can name the destination: przyszliśmy na koncert (we came to a concert)."
+          },
+          {
+            "candidatePatternKey": "infinitive-purpose",
+            "meaningKeyRef": "one-off-activity-arrival",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use an infinitive to say the one-off action you came to do: przyszedłem odebrać dokument (I came to collect a document)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "literal-place-arrival",
+            "patternKeyRef": "do-genitive-place-destination",
+            "pl": "Przyszliśmy do muzeum.",
+            "en": "We came to the museum.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "one-off-activity-arrival",
+            "patternKeyRef": "na-accusative-event-destination",
+            "pl": "Przyszliśmy na koncert.",
+            "en": "We came to a concert.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "one-off-activity-arrival",
+            "patternKeyRef": "infinitive-purpose",
+            "pl": "Przyszedłem odebrać dokument.",
+            "en": "I came to collect a document.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
