@@ -1,0 +1,1642 @@
+{
+  "stagingSchemaVersion": 1,
+  "stagingRevision": 1,
+  "priority": 8,
+  "phase": "4B",
+  "phaseStep": "4B0",
+  "frozenFullPatternCount": 68,
+  "sources": {
+    "phase3BFreezeCsv": {
+      "path": "reports/priority-8-phase-3b-final-lemma-freeze.csv",
+      "sha256": "c54da66e854f0d1b4014b783e2493c150ad1e3c94941cb481b3a341d8b3f6375"
+    },
+    "phase3BHandoff": {
+      "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+      "sha256": "5fd32f1f8fd11028c62d5ed68c91ee3b5670cc9b6f87ec14295e8f3266a4a9eb"
+    },
+    "phase4A2PolicyFreeze": {
+      "path": "reports/priority-8-phase-4a2-2-policy-freeze.md",
+      "sha256": "149c684feba063742b73a5a3be2ec7379b6d7be83640e2114acc3c81c3c83119"
+    },
+    "phase4A2StagingContract": {
+      "path": "reports/priority-8-phase-4a2-2-staging-contract.md",
+      "sha256": "5a041f504446490c7f782278c2853c17b01bbedaefcab55420c372909f61191c"
+    }
+  },
+  "startingIntegrationBaseline": {
+    "head": "2e90510f2a91bca2297781208bce3c94648e4427",
+    "tree": "f86d876fce59f4042fa3bf9a306720914ed79b9d"
+  },
+  "allowedReviewStatuses": [
+    "draft",
+    "independently-reviewed",
+    "human-approved"
+  ],
+  "globalConstraints": [
+    {
+      "constraintOrder": 1,
+      "text": "Preserve generalized-role versus concrete-realization discipline. `DOKĄD`, `SKĄD`, and `GDZIE` are not new architecture types or proof of exclusive preposition government.",
+      "source": {
+        "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+        "section": "Global Phase 4 constraints",
+        "item": 1
+      }
+    },
+    {
+      "constraintOrder": 2,
+      "text": "Build exact sense-specific schemas only.",
+      "source": {
+        "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+        "section": "Global Phase 4 constraints",
+        "item": 2
+      }
+    },
+    {
+      "constraintOrder": 3,
+      "text": "Keep alternative schemas alternative; never reconstruct an unsupported maximal frame.",
+      "source": {
+        "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+        "section": "Global Phase 4 constraints",
+        "item": 3
+      }
+    },
+    {
+      "constraintOrder": 4,
+      "text": "Preserve lexical `się` and `sobie` as part of the verified identity.",
+      "source": {
+        "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+        "section": "Global Phase 4 constraints",
+        "item": 4
+      }
+    },
+    {
+      "constraintOrder": 5,
+      "text": "Preserve required lexical `udział` in `brać udział w + Locative` and `wziąć udział w + Locative`.",
+      "source": {
+        "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+        "section": "Global Phase 4 constraints",
+        "item": 5
+      }
+    },
+    {
+      "constraintOrder": 6,
+      "text": "Keep aspect partners independently evidenced.",
+      "source": {
+        "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+        "section": "Global Phase 4 constraints",
+        "item": 6
+      }
+    },
+    {
+      "constraintOrder": 7,
+      "text": "Never transfer syntax through an aspect metadata relationship.",
+      "source": {
+        "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+        "section": "Global Phase 4 constraints",
+        "item": 7
+      }
+    },
+    {
+      "constraintOrder": 8,
+      "text": "Keep ordinary Genitive under negation grammar-owned rather than creating a lemma-specific lexical pattern.",
+      "source": {
+        "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+        "section": "Global Phase 4 constraints",
+        "item": 8
+      }
+    },
+    {
+      "constraintOrder": 9,
+      "text": "Preserve exact clause distinctions: `że`, `żeby`, interrogative-dependent, and direct speech.",
+      "source": {
+        "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+        "section": "Global Phase 4 constraints",
+        "item": 9
+      }
+    },
+    {
+      "constraintOrder": 10,
+      "text": "Keep related identities separate, including `radzić / radzić sobie`, `uczyć / uczyć się`, and reflexive/non-reflexive entries.",
+      "source": {
+        "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+        "section": "Global Phase 4 constraints",
+        "item": 10
+      }
+    },
+    {
+      "constraintOrder": 11,
+      "text": "Do not restore any rejected Phase 2 hypothesis during authoring.",
+      "source": {
+        "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+        "section": "Global Phase 4 constraints",
+        "item": 11
+      }
+    },
+    {
+      "constraintOrder": 12,
+      "text": "Allocate no stable ID until the exact Phase 4 editorial record is approved under the later ID policy.",
+      "source": {
+        "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+        "section": "Global Phase 4 constraints",
+        "item": 12
+      }
+    }
+  ],
+  "lemmas": [
+    {
+      "verificationOrder": 1,
+      "canonicalLemma": "pracować",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP WITH NARROWING",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-01-verification.csv",
+        "verificationOrder": 1,
+        "primarySourceKey": "WSJP-PRAC-05",
+        "primarySourceLocator": "sense 5; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [
+        {
+          "text": "Author only the production sense with nad + Instrumental. Do not encode jako + Nominative or ordinary workplace GDZIE as a verb pattern.",
+          "source": {
+            "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+            "section": "Sixteen KEEP WITH NARROWING constraints",
+            "verificationOrder": 1
+          }
+        }
+      ],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 2,
+      "canonicalLemma": "iść",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-01-verification.csv",
+        "verificationOrder": 2,
+        "primarySourceKey": "WSJP-ISC-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [
+        {
+          "text": "The locked product can encode individual do/na realizations but not the generalized DOKĄD alternation as one abstract slot; later authoring must avoid implying exclusive government.",
+          "source": {
+            "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+            "section": "Additional KEEP VERIFIED representation constraints",
+            "verificationOrder": 2
+          }
+        }
+      ],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 3,
+      "canonicalLemma": "chodzić",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-01-verification.csv",
+        "verificationOrder": 3,
+        "primarySourceKey": "WSJP-CHODZ-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [
+        {
+          "text": "The semantic boundary between event attendance na CO and a spatial na-destination must be enforced during later sense selection.",
+          "source": {
+            "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+            "section": "Additional KEEP VERIFIED representation constraints",
+            "verificationOrder": 3
+          }
+        }
+      ],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 4,
+      "canonicalLemma": "jechać",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-01-verification.csv",
+        "verificationOrder": 4,
+        "primarySourceKey": "WSJP-JECH-01A",
+        "primarySourceLocator": "sense 1.a; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [
+        {
+          "text": "Walenty could not be inspected at lemma level, so the unexpected selected-vehicle result lacks independent corroboration and deserves reviewer attention.",
+          "source": {
+            "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+            "section": "Additional KEEP VERIFIED representation constraints",
+            "verificationOrder": 4
+          }
+        }
+      ],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 5,
+      "canonicalLemma": "jeździć",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-01-verification.csv",
+        "verificationOrder": 5,
+        "primarySourceKey": "WSJP-JEZDZ-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [
+        {
+          "text": "As with jechać, independent lemma-level Walenty corroboration was unavailable; exact pedagogical delimitation of vehicle participant versus manner needs review.",
+          "source": {
+            "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+            "section": "Additional KEEP VERIFIED representation constraints",
+            "verificationOrder": 5
+          }
+        }
+      ],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 6,
+      "canonicalLemma": "dojść",
+      "aspect": "perfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-01-verification.csv",
+        "verificationOrder": 6,
+        "primarySourceKey": "WSJP-DOJSC-14",
+        "primarySourceLocator": "sense 14; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 7,
+      "canonicalLemma": "dojechać",
+      "aspect": "perfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-01-verification.csv",
+        "verificationOrder": 7,
+        "primarySourceKey": "WSJP-DOJECH-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [
+        {
+          "text": "The selected-vehicle analysis should receive independent review because it reverses the Phase 2 working suspicion and Walenty was inaccessible.",
+          "source": {
+            "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+            "section": "Additional KEEP VERIFIED representation constraints",
+            "verificationOrder": 7
+          }
+        }
+      ],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 8,
+      "canonicalLemma": "wracać",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP WITH NARROWING",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-01-verification.csv",
+        "verificationOrder": 8,
+        "primarySourceKey": "WSJP-WRAC-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [
+        {
+          "text": "Label do/z forms as goal/source realizations, never as exclusive government; keep the imperfective evidence independent from wrócić.",
+          "source": {
+            "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+            "section": "Sixteen KEEP WITH NARROWING constraints",
+            "verificationOrder": 8
+          }
+        }
+      ],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 9,
+      "canonicalLemma": "wrócić",
+      "aspect": "perfective",
+      "phase3Disposition": "KEEP WITH NARROWING",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-01-verification.csv",
+        "verificationOrder": 9,
+        "primarySourceKey": "WSJP-WROC-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [
+        {
+          "text": "Label do/z as realizations, preserve the moderate independent-slot signal, and do not inherit syntax from wracać.",
+          "source": {
+            "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+            "section": "Sixteen KEEP WITH NARROWING constraints",
+            "verificationOrder": 9
+          }
+        }
+      ],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 10,
+      "canonicalLemma": "przyjść",
+      "aspect": "perfective",
+      "phase3Disposition": "KEEP WITH NARROWING",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-01-verification.csv",
+        "verificationOrder": 10,
+        "primarySourceKey": "WSJP-PRZYJ-02",
+        "primarySourceLocator": "sense 2; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [
+        {
+          "text": "Keep event/activity and place readings sense-specific; label concrete destinations as realizations and do not author an unverified person-target do frame.",
+          "source": {
+            "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+            "section": "Sixteen KEEP WITH NARROWING constraints",
+            "verificationOrder": 10
+          }
+        }
+      ],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 11,
+      "canonicalLemma": "przyjechać",
+      "aspect": "perfective",
+      "phase3Disposition": "KEEP WITH NARROWING",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-02-verification.csv",
+        "verificationOrder": 11,
+        "primarySourceKey": "WSJP-PRZYJECH-01",
+        "primarySourceLocator": "single sense; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [
+        {
+          "text": "Author do/na only as destination realizations, not exclusive government; exclude source, vehicle, route, and time from the lexical pattern.",
+          "source": {
+            "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+            "section": "Sixteen KEEP WITH NARROWING constraints",
+            "verificationOrder": 11
+          }
+        }
+      ],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 12,
+      "canonicalLemma": "wyjść",
+      "aspect": "perfective",
+      "phase3Disposition": "KEEP WITH NARROWING",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-02-verification.csv",
+        "verificationOrder": 12,
+        "primarySourceKey": "WSJP-WYJSC-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [
+        {
+          "text": "Keep literal exit separate from sport/result meanings and label every concrete source/destination form as a generalized-role realization.",
+          "source": {
+            "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+            "section": "Sixteen KEEP WITH NARROWING constraints",
+            "verificationOrder": 12
+          }
+        }
+      ],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 13,
+      "canonicalLemma": "wyjechać",
+      "aspect": "perfective",
+      "phase3Disposition": "KEEP WITH NARROWING",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-02-verification.csv",
+        "verificationOrder": 13,
+        "primarySourceKey": "WSJP-WYJECH-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [
+        {
+          "text": "Author only the source-role realization; do not add destination, vehicle, route, or time frames and do not imply exclusive z government.",
+          "source": {
+            "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+            "section": "Sixteen KEEP WITH NARROWING constraints",
+            "verificationOrder": 13
+          }
+        }
+      ],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 14,
+      "canonicalLemma": "przynosić",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP WITH NARROWING",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-02-verification.csv",
+        "verificationOrder": 14,
+        "primarySourceKey": "WSJP-PRZYNOS-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [
+        {
+          "text": "Keep the exact imperfective identity and Accusative object; do not author a Dative recipient or inherit any construction from przynieść.",
+          "source": {
+            "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+            "section": "Sixteen KEEP WITH NARROWING constraints",
+            "verificationOrder": 14
+          }
+        }
+      ],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 15,
+      "canonicalLemma": "odpowiadać",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP WITH NARROWING",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-02-verification.csv",
+        "verificationOrder": 15,
+        "primarySourceKey": "WSJP-ODPOW-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [
+        {
+          "text": "Author the exact answer sense with alternative na-question and że-content schemas; exclude an unverified Dative person and unrelated meanings.",
+          "source": {
+            "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+            "section": "Sixteen KEEP WITH NARROWING constraints",
+            "verificationOrder": 15
+          }
+        }
+      ],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 16,
+      "canonicalLemma": "zamawiać",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP WITH NARROWING",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-02-verification.csv",
+        "verificationOrder": 16,
+        "primarySourceKey": "WSJP-ZAMAW-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [
+        {
+          "text": "Keep beneficiary schemas alternative, label u + Genitive as a realization rather than exclusive provider government, and do not build a maximal frame.",
+          "source": {
+            "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+            "section": "Sixteen KEEP WITH NARROWING constraints",
+            "verificationOrder": 16
+          }
+        }
+      ],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 18,
+      "canonicalLemma": "zacząć",
+      "aspect": "perfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-02-verification.csv",
+        "verificationOrder": 18,
+        "primarySourceKey": "WSJP-ZACZ-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      },
+      "metadataAspectPartner": {
+        "canonicalLemma": "zaczynać",
+        "aspect": "imperfective"
+      }
+    },
+    {
+      "verificationOrder": 19,
+      "canonicalLemma": "kończyć",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-02-verification.csv",
+        "verificationOrder": 19,
+        "primarySourceKey": "WSJP-KONCZ-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 20,
+      "canonicalLemma": "pamiętać",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-02-verification.csv",
+        "verificationOrder": 20,
+        "primarySourceKey": "WSJP-PAMIET-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 21,
+      "canonicalLemma": "zapominać",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP WITH NARROWING",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-03-verification.csv",
+        "verificationOrder": 21,
+        "primarySourceKey": "WSJP-ZAPOM-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [
+        {
+          "text": "Keep recall and failure-to-act senses separate and omit the unverified żeby schema.",
+          "source": {
+            "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+            "section": "Sixteen KEEP WITH NARROWING constraints",
+            "verificationOrder": 21
+          }
+        }
+      ],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 22,
+      "canonicalLemma": "próbować",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-03-verification.csv",
+        "verificationOrder": 22,
+        "primarySourceKey": "WSJP-PROB-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 23,
+      "canonicalLemma": "pozwalać",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP WITH NARROWING",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-03-verification.csv",
+        "verificationOrder": 23,
+        "primarySourceKey": "WSJP-POZW-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [
+        {
+          "text": "Author the listed alternative schemas separately; do not freely combine Dative, na + Accusative, infinitive, and żeby positions or transfer participants across senses.",
+          "source": {
+            "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+            "section": "Sixteen KEEP WITH NARROWING constraints",
+            "verificationOrder": 23
+          }
+        }
+      ],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 24,
+      "canonicalLemma": "unikać",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP WITH NARROWING",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-03-verification.csv",
+        "verificationOrder": 24,
+        "primarySourceKey": "WSJP-UNIK-01",
+        "primarySourceLocator": "single sense; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [
+        {
+          "text": "Author direct Genitive only and omit infinitive government.",
+          "source": {
+            "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+            "section": "Sixteen KEEP WITH NARROWING constraints",
+            "verificationOrder": 24
+          }
+        }
+      ],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 25,
+      "canonicalLemma": "wymagać",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-03-verification.csv",
+        "verificationOrder": 25,
+        "primarySourceKey": "WSJP-WYMAG-02",
+        "primarySourceLocator": "sense 2; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 26,
+      "canonicalLemma": "należeć",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-03-verification.csv",
+        "verificationOrder": 26,
+        "primarySourceKey": "WSJP-NALEZ-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 27,
+      "canonicalLemma": "kłócić się",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-03-verification.csv",
+        "verificationOrder": 27,
+        "primarySourceKey": "WSJP-KLOC-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 28,
+      "canonicalLemma": "pokazywać",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-03-verification.csv",
+        "verificationOrder": 28,
+        "primarySourceKey": "WSJP-POKAZYW-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 29,
+      "canonicalLemma": "radzić sobie",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-03-verification.csv",
+        "verificationOrder": 29,
+        "primarySourceKey": "WSJP-RADZ-SOBIE-01",
+        "primarySourceLocator": "single lexical entry; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 30,
+      "canonicalLemma": "kupować",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-03-verification.csv",
+        "verificationOrder": 30,
+        "primarySourceKey": "WSJP-KUPOW-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 31,
+      "canonicalLemma": "kupić",
+      "aspect": "perfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-04-verification.csv",
+        "verificationOrder": 31,
+        "primarySourceKey": "WSJP-KUP-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 32,
+      "canonicalLemma": "dawać",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-04-verification.csv",
+        "verificationOrder": 32,
+        "primarySourceKey": "WSJP-DAW-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 33,
+      "canonicalLemma": "dać",
+      "aspect": "perfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-04-verification.csv",
+        "verificationOrder": 33,
+        "primarySourceKey": "WSJP-DAC-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 34,
+      "canonicalLemma": "brać",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-04-verification.csv",
+        "verificationOrder": 34,
+        "primarySourceKey": "WSJP-BRAC-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      },
+      "requiredLexicalItems": [
+        "udział"
+      ]
+    },
+    {
+      "verificationOrder": 35,
+      "canonicalLemma": "wziąć",
+      "aspect": "perfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-04-verification.csv",
+        "verificationOrder": 35,
+        "primarySourceKey": "WSJP-WZIAC-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      },
+      "requiredLexicalItems": [
+        "udział"
+      ]
+    },
+    {
+      "verificationOrder": 36,
+      "canonicalLemma": "czytać",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-04-verification.csv",
+        "verificationOrder": 36,
+        "primarySourceKey": "WSJP-CZYT-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      },
+      "metadataAspectPartner": {
+        "canonicalLemma": "przeczytać",
+        "aspect": "perfective"
+      }
+    },
+    {
+      "verificationOrder": 38,
+      "canonicalLemma": "pisać",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-04-verification.csv",
+        "verificationOrder": 38,
+        "primarySourceKey": "WSJP-PIS-02",
+        "primarySourceLocator": "sense 2; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 39,
+      "canonicalLemma": "napisać",
+      "aspect": "perfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-04-verification.csv",
+        "verificationOrder": 39,
+        "primarySourceKey": "WSJP-NAPIS-02",
+        "primarySourceLocator": "sense 2; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 40,
+      "canonicalLemma": "spotykać się",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-04-verification.csv",
+        "verificationOrder": 40,
+        "primarySourceKey": "WSJP-SPOTYK-SIE-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 41,
+      "canonicalLemma": "spotkać się",
+      "aspect": "perfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-05-verification.csv",
+        "verificationOrder": 41,
+        "primarySourceKey": "WSJP-SPOTK-SIE-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 42,
+      "canonicalLemma": "oglądać",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-05-verification.csv",
+        "verificationOrder": 42,
+        "primarySourceKey": "WSJP-OGLAD-02",
+        "primarySourceLocator": "sense 2; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 43,
+      "canonicalLemma": "obejrzeć",
+      "aspect": "perfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-05-verification.csv",
+        "verificationOrder": 43,
+        "primarySourceKey": "WSJP-OBEJRZ-02",
+        "primarySourceLocator": "sense 2; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 44,
+      "canonicalLemma": "skończyć",
+      "aspect": "perfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-05-verification.csv",
+        "verificationOrder": 44,
+        "primarySourceKey": "WSJP-SKONCZ-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 45,
+      "canonicalLemma": "chcieć",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-05-verification.csv",
+        "verificationOrder": 45,
+        "primarySourceKey": "WSJP-CHCIEC-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 46,
+      "canonicalLemma": "robić",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-05-verification.csv",
+        "verificationOrder": 46,
+        "primarySourceKey": "WSJP-ROBIC-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 47,
+      "canonicalLemma": "rozumieć",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-05-verification.csv",
+        "verificationOrder": 47,
+        "primarySourceKey": "WSJP-ROZUM-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 48,
+      "canonicalLemma": "mieszkać",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP WITH NARROWING",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-05-verification.csv",
+        "verificationOrder": 48,
+        "primarySourceKey": "WSJP-MIESZK-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [
+        {
+          "text": "Label w + Locative as a residence-place realization rather than exclusive government; restrict z + Instrumental to the selected co-resident role.",
+          "source": {
+            "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+            "section": "Sixteen KEEP WITH NARROWING constraints",
+            "verificationOrder": 48
+          }
+        }
+      ],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 49,
+      "canonicalLemma": "umówić się",
+      "aspect": "perfective",
+      "phase3Disposition": "KEEP WITH NARROWING",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-05-verification.csv",
+        "verificationOrder": 49,
+        "primarySourceKey": "WSJP-UMOW-SIE-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [
+        {
+          "text": "Preserve lexical się, keep appointment and agreement senses separate, label do as a realization, and do not merge alternatives into a maximal frame.",
+          "source": {
+            "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+            "section": "Sixteen KEEP WITH NARROWING constraints",
+            "verificationOrder": 49
+          }
+        }
+      ],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 50,
+      "canonicalLemma": "dzwonić",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP WITH NARROWING",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-05-verification.csv",
+        "verificationOrder": 50,
+        "primarySourceKey": "WSJP-DZWON-03",
+        "primarySourceLocator": "sense 3; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [
+        {
+          "text": "Label do/na targets as realizations, retain direct content clauses, and do not encode w sprawie + Genitive as a governed construction.",
+          "source": {
+            "path": "reports/priority-8-phase-3b-phase4-handoff.md",
+            "section": "Sixteen KEEP WITH NARROWING constraints",
+            "verificationOrder": 50
+          }
+        }
+      ],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 51,
+      "canonicalLemma": "powiedzieć",
+      "aspect": "perfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-06-verification.csv",
+        "verificationOrder": 51,
+        "primarySourceKey": "WSJP-POWIEDZ-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 52,
+      "canonicalLemma": "gotować",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-06-verification.csv",
+        "verificationOrder": 52,
+        "primarySourceKey": "WSJP-GOTOW-03",
+        "primarySourceLocator": "sense 3; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 53,
+      "canonicalLemma": "rezerwować",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-06-verification.csv",
+        "verificationOrder": 53,
+        "primarySourceKey": "WSJP-REZERW-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 54,
+      "canonicalLemma": "cieszyć się",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-06-verification.csv",
+        "verificationOrder": 54,
+        "primarySourceKey": "WSJP-CIESZ-SIE-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 55,
+      "canonicalLemma": "martwić się",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-06-verification.csv",
+        "verificationOrder": 55,
+        "primarySourceKey": "WSJP-MARTW-SIE-01",
+        "primarySourceLocator": "Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 56,
+      "canonicalLemma": "zgadzać się",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-06-verification.csv",
+        "verificationOrder": 56,
+        "primarySourceKey": "WSJP-ZGADZ-SIE-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 57,
+      "canonicalLemma": "zapraszać",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-06-verification.csv",
+        "verificationOrder": 57,
+        "primarySourceKey": "WSJP-ZAPRASZ-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 58,
+      "canonicalLemma": "polecać",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-06-verification.csv",
+        "verificationOrder": 58,
+        "primarySourceKey": "WSJP-POLEC-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia, Informacja normatywna"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 59,
+      "canonicalLemma": "radzić",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-06-verification.csv",
+        "verificationOrder": 59,
+        "primarySourceKey": "WSJP-RADZ-02",
+        "primarySourceLocator": "sense 2; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 60,
+      "canonicalLemma": "pasować",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-06-verification.csv",
+        "verificationOrder": 60,
+        "primarySourceKey": "WSJP-PASOW-05",
+        "primarySourceLocator": "sense 5; Definicja, Cytaty, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 61,
+      "canonicalLemma": "móc",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-07-verification.csv",
+        "verificationOrder": 61,
+        "primarySourceKey": "WSJP-MOC-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 62,
+      "canonicalLemma": "musieć",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-07-verification.csv",
+        "verificationOrder": 62,
+        "primarySourceKey": "WSJP-MUSIEC-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 63,
+      "canonicalLemma": "wiedzieć",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-07-verification.csv",
+        "verificationOrder": 63,
+        "primarySourceKey": "WSJP-WIEDZ-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Cytaty, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 64,
+      "canonicalLemma": "jeść",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-07-verification.csv",
+        "verificationOrder": 64,
+        "primarySourceKey": "WSJP-JESC-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 65,
+      "canonicalLemma": "pić",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-07-verification.csv",
+        "verificationOrder": 65,
+        "primarySourceKey": "WSJP-PIC-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 66,
+      "canonicalLemma": "kochać",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-07-verification.csv",
+        "verificationOrder": 66,
+        "primarySourceKey": "WSJP-KOCH-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 67,
+      "canonicalLemma": "przepraszać",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-07-verification.csv",
+        "verificationOrder": 67,
+        "primarySourceKey": "WSJP-PRZEPRASZ-01",
+        "primarySourceLocator": "Definicja, Połączenia, Cytaty, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 68,
+      "canonicalLemma": "życzyć",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-07-verification.csv",
+        "verificationOrder": 68,
+        "primarySourceKey": "WSJP-ZYCZ-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Cytaty, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 69,
+      "canonicalLemma": "korzystać",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-07-verification.csv",
+        "verificationOrder": 69,
+        "primarySourceKey": "WSJP-KORZ-02",
+        "primarySourceLocator": "sense 2; Definicja, Połączenia, Cytaty, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    },
+    {
+      "verificationOrder": 70,
+      "canonicalLemma": "uczyć",
+      "aspect": "imperfective",
+      "phase3Disposition": "KEEP VERIFIED",
+      "phase3Evidence": {
+        "verificationCsv": "reports/priority-8-phase-3-batch-07-verification.csv",
+        "verificationOrder": 70,
+        "primarySourceKey": "WSJP-UCZ-01",
+        "primarySourceLocator": "sense 1; Definicja, Połączenia, Cytaty, Składnia"
+      },
+      "bindingConstraints": [],
+      "stagingReviewStatus": "draft",
+      "candidateContent": {
+        "meanings": [],
+        "patterns": [],
+        "examples": []
+      }
+    }
+  ]
+}

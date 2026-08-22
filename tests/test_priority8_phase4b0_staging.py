@@ -15,6 +15,7 @@ import validate_priority8_staging as validator  # noqa: E402
 
 
 STAGING_PATH = ROOT / "editorial/priority-8-phase4-staging.json"
+B0_BASELINE_FIXTURE = ROOT / "tests/fixtures/priority8_phase4b0_staging_baseline.json"
 BOUNDARY_PATHS = [
     ROOT / "editorial/verb-pattern-candidates.json",
     ROOT / "editorial/priority-7-authoring-context.json",
@@ -41,7 +42,9 @@ def record(data, lemma):
 class Priority8Phase4B0StagingTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.real = json.loads(STAGING_PATH.read_text(encoding="utf-8"))
+        # Frozen pre-authoring B0 baseline, not the live staging file, which
+        # advances past B0 once later batches are authored.
+        cls.real = json.loads(B0_BASELINE_FIXTURE.read_text(encoding="utf-8"))
 
     def mutated(self):
         return copy.deepcopy(self.real)

@@ -11,7 +11,7 @@ sys.path.insert(0, str(ROOT))
 import validate_priority8_staging as validator  # noqa: E402
 
 
-STAGING_PATH = ROOT / "editorial/priority-8-phase4-staging.json"
+B0_BASELINE_FIXTURE = ROOT / "tests/fixtures/priority8_phase4b0_staging_baseline.json"
 
 
 def record(data, lemma):
@@ -77,7 +77,10 @@ def repository_origin(source_kind, field, source_id="repository-content-001"):
 class Priority8Phase4B1AAuthoringSchemaTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.real = json.loads(STAGING_PATH.read_text(encoding="utf-8"))
+        # Synthetic authoring builds on the frozen B0 baseline so this schema
+        # suite stays independent of whatever batch is live in the staging
+        # corpus, rather than asserting the live file is B0.
+        cls.real = json.loads(B0_BASELINE_FIXTURE.read_text(encoding="utf-8"))
 
     def authored(self, phase_step="4B1"):
         data = copy.deepcopy(self.real)
