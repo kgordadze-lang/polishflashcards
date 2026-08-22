@@ -1,0 +1,155 @@
+{
+  "registryVersion": 1,
+  "rules": [
+    {
+      "ruleId": "p8-4b-pozwalac-no-dative-infinitive",
+      "kind": "forbid-complement-cooccurrence",
+      "lemma": "pozwalać",
+      "verificationOrder": 23,
+      "signatures": [
+        {
+          "type": "case",
+          "case": "dative"
+        },
+        {
+          "type": "infinitive"
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-unikac-no-infinitive",
+      "kind": "forbid-complement-match",
+      "lemma": "unikać",
+      "verificationOrder": 24,
+      "signature": {
+        "type": "infinitive"
+      }
+    },
+    {
+      "ruleId": "p8-4b-wymagac-exact-alternative-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "wymagać",
+      "verificationOrder": 25,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "person-requires-behavior",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "genitive",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "od",
+                "case": "genitive",
+                "required": false,
+                "role": "target"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "od",
+                "case": "genitive",
+                "required": false,
+                "role": "target"
+              }
+            ]
+          ]
+        },
+        {
+          "meaningKey": "situation-requires-content",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "genitive",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "od",
+                "case": "genitive",
+                "required": false,
+                "role": "target"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "od",
+                "case": "genitive",
+                "required": false,
+                "role": "target"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-klocic-sie-lexical-identity",
+      "kind": "require-lexical-identity",
+      "lemma": "kłócić się",
+      "verificationOrder": 27,
+      "lexicalItems": [
+        "się"
+      ]
+    },
+    {
+      "ruleId": "p8-4b-pokazywac-authorized-preposition-cases",
+      "kind": "allow-only-preposition-case-signatures",
+      "lemma": "pokazywać",
+      "verificationOrder": 28,
+      "allowedSignatures": [
+        {
+          "type": "preposition-case",
+          "preposition": "na",
+          "case": "accusative",
+          "required": true,
+          "role": "target"
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-radzic-sobie-lexical-identity",
+      "kind": "require-lexical-identity",
+      "lemma": "radzić sobie",
+      "verificationOrder": 29,
+      "lexicalItems": [
+        "sobie"
+      ]
+    },
+    {
+      "ruleId": "p8-4b-zaczynac-metadata-only",
+      "kind": "require-empty-candidate-content",
+      "lemma": "zaczynać",
+      "target": "metadataAspectPartner",
+      "ownerLemma": "zacząć"
+    },
+    {
+      "ruleId": "p8-4b-przeczytac-metadata-only",
+      "kind": "require-empty-candidate-content",
+      "lemma": "przeczytać",
+      "target": "metadataAspectPartner",
+      "ownerLemma": "czytać"
+    }
+  ]
+}
