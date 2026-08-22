@@ -1,9 +1,9 @@
 {
   "stagingSchemaVersion": 1,
-  "stagingRevision": 2,
+  "stagingRevision": 3,
   "priority": 8,
   "phase": "4B",
-  "phaseStep": "4B1",
+  "phaseStep": "4B2",
   "frozenFullPatternCount": 68,
   "sources": {
     "phase3BFreezeCsv": {
@@ -1409,9 +1409,88 @@
       ],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "transport-destination-arrival",
+            "glossesEn": [
+              "arrive by transport",
+              "come by vehicle"
+            ],
+            "internalScope": "Arrival at a destination by travelling in or on transport. do+Genitive and na+Accusative are individual realizations of a selected destination role, not exhaustive government. Excludes source, vehicle, route, time, and manner; no syntax is borrowed from imperfective przyjeżdżać."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "do-genitive-destination",
+            "meaningKeyRef": "transport-destination-arrival",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "One common way to express this destination is do + Genitive: przyjadę do Warszawy (I'll arrive in Warsaw)."
+          },
+          {
+            "candidatePatternKey": "na-accusative-destination",
+            "meaningKeyRef": "transport-destination-arrival",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "accusative",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Another common way to express this destination is na + Accusative: przyjadę na dworzec (I'll arrive at the station)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "transport-destination-arrival",
+            "patternKeyRef": "do-genitive-destination",
+            "pl": "Przyjadę do Warszawy.",
+            "en": "I will arrive in Warsaw.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "transport-destination-arrival",
+            "patternKeyRef": "na-accusative-destination",
+            "pl": "Przyjadę na dworzec.",
+            "en": "I will arrive at the station.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -1437,9 +1516,123 @@
       ],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "literal-exit-from-place",
+            "glossesEn": [
+              "go out",
+              "leave a place",
+              "exit"
+            ],
+            "internalScope": "Literal exit from a bounded place. z+Genitive realizes a selected source role; do+Genitive and na+Accusative realize a selected destination role. All are non-exclusive realizations. Excludes the separately evidenced ranking/result sense (na+Accusative, e.g. 'wyjść na prowadzenie'), which is not authored in this record; also excludes route, time, and manner. No syntax is borrowed from imperfective wychodzić."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "z-genitive-source",
+            "meaningKeyRef": "literal-exit-from-place",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For the place you are leaving, use z + Genitive: wyszedłem z domu (I left the house)."
+          },
+          {
+            "candidatePatternKey": "do-genitive-destination",
+            "meaningKeyRef": "literal-exit-from-place",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "One common way to name where you're going after leaving is do + Genitive: wyjdę do ogrodu (I'll go out to the garden)."
+          },
+          {
+            "candidatePatternKey": "na-accusative-destination",
+            "meaningKeyRef": "literal-exit-from-place",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "accusative",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Another common way to name that destination is na + Accusative: wyjdę na balkon (I'll go out onto the balcony)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "literal-exit-from-place",
+            "patternKeyRef": "z-genitive-source",
+            "pl": "Wyszedłem z domu.",
+            "en": "I left the house.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "literal-exit-from-place",
+            "patternKeyRef": "do-genitive-destination",
+            "pl": "Wyjdę do ogrodu.",
+            "en": "I will go out to the garden.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "literal-exit-from-place",
+            "patternKeyRef": "na-accusative-destination",
+            "pl": "Wyjdę na balkon.",
+            "en": "I will go out onto the balcony.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -1465,9 +1658,54 @@
       ],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "transport-departure",
+            "glossesEn": [
+              "leave by transport",
+              "depart from a place by vehicle"
+            ],
+            "internalScope": "Leaving a bounded area by transport. z+Genitive realizes a selected source role, not exclusive government. Excludes destination, vehicle, route, time, and manner. No syntax is borrowed from imperfective wyjeżdżać."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "z-genitive-source",
+            "meaningKeyRef": "transport-departure",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For the place you are leaving, use z + Genitive: wyjadę z miasta (I'll leave the city). This does not name a destination."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "transport-departure",
+            "patternKeyRef": "z-genitive-source",
+            "pl": "Wyjadę z miasta.",
+            "en": "I will leave the city.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -1493,9 +1731,53 @@
       ],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "physical-carrying",
+            "glossesEn": [
+              "bring something",
+              "carry something to a place"
+            ],
+            "internalScope": "Physically carrying or bringing a thing to a destination. Direct Accusative names the carried object. Optional generalized source/goal roles exist in the sense but no concrete preposition realization is authored for product use. No Dative recipient exists; that Phase 2 hypothesis was explicitly rejected. No syntax is inherited from perfective przynieść."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "accusative-object",
+            "meaningKeyRef": "physical-carrying",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The thing you bring takes the Accusative: przynoszę kawę (I'm bringing coffee)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "physical-carrying",
+            "patternKeyRef": "accusative-object",
+            "pl": "Przynoszę kawę.",
+            "en": "I am bringing coffee.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -1521,9 +1803,121 @@
       ],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "answering-by-speech",
+            "glossesEn": [
+              "answer",
+              "reply",
+              "respond by speaking"
+            ],
+            "internalScope": "Answering a question or prior utterance by speaking. na+Accusative names the question/content target; że introduces a content clause; direct speech may also express the answer's content. These are alternatives, not a combined maximal frame. No Dative addressee exists; the person spoken to is not a schema position. Matching/preference, correspondence, and other odpowiadać senses are excluded."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "na-accusative-question",
+            "meaningKeyRef": "answering-by-speech",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "accusative",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For what you're answering, use na + Accusative: odpowiadam na pytanie (I'm answering the question)."
+          },
+          {
+            "candidatePatternKey": "ze-content-clause",
+            "meaningKeyRef": "answering-by-speech",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use że to introduce the content of your answer: odpowiadam, że nie wiem (I answer that I don't know)."
+          },
+          {
+            "candidatePatternKey": "direct-speech",
+            "meaningKeyRef": "answering-by-speech",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "direct-speech",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "You can also give the answer's exact words directly: odpowiadam: „Nie wiem” (I answer: \"I don't know\")."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "answering-by-speech",
+            "patternKeyRef": "na-accusative-question",
+            "pl": "Odpowiadam na pytanie.",
+            "en": "I am answering the question.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "answering-by-speech",
+            "patternKeyRef": "ze-content-clause",
+            "pl": "Odpowiadam, że nie wiem.",
+            "en": "I answer that I don't know.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "answering-by-speech",
+            "patternKeyRef": "direct-speech",
+            "pl": "Odpowiadam: „Nie wiem”.",
+            "en": "I answer: \"I don't know.\"",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -1549,9 +1943,154 @@
       ],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "commissioning-ordering",
+            "glossesEn": [
+              "order something",
+              "commission something"
+            ],
+            "internalScope": "Ordering or commissioning something for payment. Accusative names the ordered item. Dative and dla+Genitive are alternative beneficiary realizations of the same participant, not combined into one frame. u+Genitive is a documented realization of a selected provider/location role, not exclusive provider government. No syntax is borrowed from perfective zamówić."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "accusative-item",
+            "meaningKeyRef": "commissioning-ordering",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The thing you order takes the Accusative: zamawiam pizzę (I'm ordering a pizza)."
+          },
+          {
+            "candidatePatternKey": "dative-beneficiary",
+            "meaningKeyRef": "commissioning-ordering",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "dative",
+                "required": true,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "To say who the order is for, one way is the Dative: zamawiam mężowi prezent (I'm ordering a present for my husband)."
+          },
+          {
+            "candidatePatternKey": "dla-genitive-beneficiary",
+            "meaningKeyRef": "commissioning-ordering",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "dla",
+                "case": "genitive",
+                "required": true,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Another way to say who the order is for is dla + Genitive: zamawiam prezent dla żony (I'm ordering a present for my wife)."
+          },
+          {
+            "candidatePatternKey": "u-genitive-provider",
+            "meaningKeyRef": "commissioning-ordering",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "u",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "One common way to name the provider is u + Genitive: zamawiam meble u stolarza (I'm ordering furniture from a carpenter)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "commissioning-ordering",
+            "patternKeyRef": "accusative-item",
+            "pl": "Zamawiam pizzę.",
+            "en": "I am ordering a pizza.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "commissioning-ordering",
+            "patternKeyRef": "dative-beneficiary",
+            "pl": "Zamawiam mężowi prezent.",
+            "en": "I am ordering a present for my husband.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "commissioning-ordering",
+            "patternKeyRef": "dla-genitive-beneficiary",
+            "pl": "Zamawiam prezent dla żony.",
+            "en": "I am ordering a present for my wife.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "commissioning-ordering",
+            "patternKeyRef": "u-genitive-provider",
+            "pl": "Zamawiam meble u stolarza.",
+            "en": "I am ordering furniture from a carpenter.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -1568,9 +2107,85 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "bounded-onset",
+            "glossesEn": [
+              "start something",
+              "begin an activity"
+            ],
+            "internalScope": "Bounded onset of an activity. Accusative names the activity as a direct object; infinitive names the action begun. Both are independently evidenced for perfective zacząć; no syntax is inherited from the metadata-only imperfective partner zaczynać."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "accusative-activity",
+            "meaningKeyRef": "bounded-onset",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The activity you start takes the Accusative: zacząłem lekcję (I started the lesson)."
+          },
+          {
+            "candidatePatternKey": "infinitive",
+            "meaningKeyRef": "bounded-onset",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use an infinitive to say what you started doing: zacząłem czytać książkę (I started reading a book)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "bounded-onset",
+            "patternKeyRef": "accusative-activity",
+            "pl": "Zacząłem lekcję.",
+            "en": "I started the lesson.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "bounded-onset",
+            "patternKeyRef": "infinitive",
+            "pl": "Zacząłem czytać książkę.",
+            "en": "I started reading a book.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       },
       "metadataAspectPartner": {
         "canonicalLemma": "zaczynać",
@@ -1591,9 +2206,85 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "activity-completion",
+            "glossesEn": [
+              "finish something",
+              "end an activity or task"
+            ],
+            "internalScope": "Bringing an activity or task to its end. Accusative names the activity/task; the infinitive is selected, naming the action being finished, not a purpose adjunct. Exact imperfective kończyć is independently evidenced; no syntax is borrowed from perfective skończyć, and this record does not pre-decide the later kończyć/skończyć pair policy."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "accusative-task",
+            "meaningKeyRef": "activity-completion",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The task you finish takes the Accusative: kończę pracę (I'm finishing the work)."
+          },
+          {
+            "candidatePatternKey": "infinitive",
+            "meaningKeyRef": "activity-completion",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use an infinitive to say what you're finishing doing: kończę czytać książkę (I'm finishing reading the book)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "activity-completion",
+            "patternKeyRef": "accusative-task",
+            "pl": "Kończę pracę.",
+            "en": "I am finishing the work.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "activity-completion",
+            "patternKeyRef": "infinitive",
+            "pl": "Kończę czytać książkę.",
+            "en": "I am finishing reading the book.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -1610,9 +2301,161 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "recall-retain",
+            "glossesEn": [
+              "remember",
+              "recall",
+              "keep in memory"
+            ],
+            "internalScope": "Recalling or retaining people, things, events, or information. Direct Accusative names the remembered person/thing/event/information; o+Locative names a remembered topic. Independently verified że-content-clause and interrogative-dependent-clause constructions also exist in this exact sense but are intentionally not authored in this record; see the Batch 2 risk report for the omission rationale. Excludes the distinct obligation/reminder meaning and does not use żeby."
+          },
+          {
+            "candidateMeaningKey": "obligation-reminder",
+            "glossesEn": [
+              "remember to do something",
+              "not forget to do something"
+            ],
+            "internalScope": "Remembering that an action should be performed; an obligation/reminder sense distinct from ordinary recall. Infinitive and żeby-clause are both selected. Not merged into recall merely because English can translate both with 'remember'; does not use że or o+Locative."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "accusative-recollection",
+            "meaningKeyRef": "recall-retain",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The thing you remember takes the Accusative: pamiętam ten dzień (I remember that day)."
+          },
+          {
+            "candidatePatternKey": "o-locative-topic",
+            "meaningKeyRef": "recall-retain",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "o",
+                "case": "locative",
+                "required": true,
+                "role": "topic"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For a remembered topic, use o + Locative: pamiętam o twoich urodzinach (I remember your birthday)."
+          },
+          {
+            "candidatePatternKey": "infinitive-obligation",
+            "meaningKeyRef": "obligation-reminder",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use an infinitive when you and the person doing the action are the same: pamiętaj zamknąć drzwi (remember to close the door)."
+          },
+          {
+            "candidatePatternKey": "zeby-clause-obligation",
+            "meaningKeyRef": "obligation-reminder",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use żeby when the person who should act is different: pamiętaj, żeby dzieci umyły ręce (remember that the children should wash their hands)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "recall-retain",
+            "patternKeyRef": "accusative-recollection",
+            "pl": "Pamiętam ten dzień.",
+            "en": "I remember that day.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "recall-retain",
+            "patternKeyRef": "o-locative-topic",
+            "pl": "Pamiętam o twoich urodzinach.",
+            "en": "I remember your birthday.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "obligation-reminder",
+            "patternKeyRef": "infinitive-obligation",
+            "pl": "Pamiętaj zamknąć drzwi.",
+            "en": "Remember to close the door.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "obligation-reminder",
+            "patternKeyRef": "zeby-clause-obligation",
+            "pl": "Pamiętaj, żeby dzieci umyły ręce.",
+            "en": "Remember that the children should wash their hands.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -1638,9 +2481,225 @@
       ],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "recall-failure",
+            "glossesEn": [
+              "forget",
+              "lose recall of something"
+            ],
+            "internalScope": "Losing recall of people, things, events, or information. Direct Genitive and direct Accusative both realize the remembered/forgotten object; o+Locative names a remembered topic; że and czy content clauses realize forgotten propositional/question content. All are directly verified for this exact sense. Excludes the distinct failure-to-act meaning below and does not use żeby; that schema was explicitly rejected by Phase 3."
+          },
+          {
+            "candidateMeaningKey": "failure-to-act",
+            "glossesEn": [
+              "forget to do something",
+              "fail to do something one should have done"
+            ],
+            "internalScope": "Failing to perform an action that should have been performed. Infinitive is the sole authorized construction. The proposed żeby-clause was explicitly rejected by Phase 3 evidence and must not be authored here. No syntax is inherited from another aspect identity; this meaning is kept separate from the recall/forgetting sense above."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "genitive-object",
+            "meaningKeyRef": "recall-failure",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "genitive",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The forgotten thing can take the Genitive: zapominam numeru telefonu (I forget the phone number)."
+          },
+          {
+            "candidatePatternKey": "accusative-object",
+            "meaningKeyRef": "recall-failure",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The forgotten thing can also take the Accusative: zapominam tę twarz (I forget that face)."
+          },
+          {
+            "candidatePatternKey": "o-locative-topic",
+            "meaningKeyRef": "recall-failure",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "o",
+                "case": "locative",
+                "required": true,
+                "role": "topic"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For a forgotten topic, use o + Locative: zapominam o spotkaniu (I forget about the meeting)."
+          },
+          {
+            "candidatePatternKey": "ze-content-clause",
+            "meaningKeyRef": "recall-failure",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use że to introduce what you forget: zapominam, że mam spotkanie (I forget that I have a meeting)."
+          },
+          {
+            "candidatePatternKey": "czy-dependent-clause",
+            "meaningKeyRef": "recall-failure",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "czy",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "B1"
+            },
+            "teachingStatus": "recognition-only",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use czy to introduce a forgotten yes/no question: zapominam, czy zamknąłem drzwi (I forget whether I locked the door)."
+          },
+          {
+            "candidatePatternKey": "infinitive-failure",
+            "meaningKeyRef": "failure-to-act",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use an infinitive to say the action you failed to do: zapominam zadzwonić (I forget to call)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "recall-failure",
+            "patternKeyRef": "genitive-object",
+            "pl": "Zapominam numeru telefonu.",
+            "en": "I forget the phone number.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "recall-failure",
+            "patternKeyRef": "accusative-object",
+            "pl": "Zapominam tę twarz.",
+            "en": "I forget that face.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "recall-failure",
+            "patternKeyRef": "o-locative-topic",
+            "pl": "Zapominam o spotkaniu.",
+            "en": "I forget about the meeting.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "recall-failure",
+            "patternKeyRef": "ze-content-clause",
+            "pl": "Zapominam, że mam spotkanie.",
+            "en": "I forget that I have a meeting.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "recall-failure",
+            "patternKeyRef": "czy-dependent-clause",
+            "pl": "Zapominam, czy zamknąłem drzwi.",
+            "en": "I forget whether I locked the door.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "failure-to-act",
+            "patternKeyRef": "infinitive-failure",
+            "pl": "Zapominam zadzwonić.",
+            "en": "I forget to call.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
