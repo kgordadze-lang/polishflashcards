@@ -1,3 +1,4 @@
+import hashlib
 import json
 import re
 import unittest
@@ -17,9 +18,21 @@ import validate_priority8_staging as validator  # noqa: E402
 
 STAGING_PATH = ROOT / "editorial/priority-8-phase4-staging.json"
 BATCH_1 = tuple(lemma for _, lemma in validator.AUTHORING_BATCHES[0])
-FUTURE_LEMMAS = tuple(
-    lemma for batch in validator.AUTHORING_BATCHES[1:] for _, lemma in batch
+BATCH_1_DIGEST_FIELDS = (
+    "verificationOrder",
+    "canonicalLemma",
+    "aspect",
+    "phase3Disposition",
+    "phase3Evidence",
+    "bindingConstraints",
+    "candidateContent",
 )
+BATCH_1_APPROVED_DIGEST = (
+    "3849e0082e59e0984e7082c35e5b492eb3a228706aab2a7323575a5a9f9e619e"
+)
+ALLOWED_REVIEW_STATUSES = {
+    "draft", "independently-reviewed", "human-approved",
+}
 PRODUCTION_ID_KEY_NAMES = validator.PRODUCTION_ID_FIELDS
 ORDER_NUMBER_RE = re.compile(r"(?:^|-)0*[1-9][0-9]*(?:-|$)")
 
@@ -39,6 +52,20 @@ def walk(value):
             yield from walk(child)
 
 
+def batch_digest(records):
+    projection = [
+        {field: item[field] for field in BATCH_1_DIGEST_FIELDS}
+        for item in records
+    ]
+    canonical = json.dumps(
+        projection,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(canonical).hexdigest()
+
+
 class Priority8Phase4B1Batch01Tests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -48,55 +75,25 @@ class Priority8Phase4B1Batch01Tests(unittest.TestCase):
     def test_live_staging_validates(self):
         self.assertEqual([], validator.validate_data(self.data))
 
-    def test_envelope_and_exact_batch_membership(self):
-        self.assertEqual("4B1", self.data["phaseStep"])
-        self.assertEqual(2, self.data["stagingRevision"])
+    def test_frozen_corpus_and_exact_batch_membership(self):
         self.assertEqual(68, self.data["frozenFullPatternCount"])
-        authored = tuple(
-            item["canonicalLemma"] for item in self.data["lemmas"]
-            if any(item["candidateContent"].values())
+        self.assertEqual(
+            validator.AUTHORING_BATCHES[0],
+            tuple(
+                (item["verificationOrder"], item["canonicalLemma"])
+                for item in self.batch_records
+            ),
         )
-        self.assertEqual(BATCH_1, authored)
-        self.assertEqual(58, len(FUTURE_LEMMAS))
 
-    def test_future_batches_and_metadata_only_identities_stay_empty(self):
-        for lemma in FUTURE_LEMMAS:
-            with self.subTest(lemma=lemma):
-                self.assertEqual(
-                    {"meanings": [], "patterns": [], "examples": []},
-                    record(self.data, lemma)["candidateContent"],
-                )
-        names = {item["canonicalLemma"] for item in self.data["lemmas"]}
-        self.assertNotIn("zaczynać", names)
-        self.assertNotIn("przeczytać", names)
+    def test_exact_approved_batch_content_digest(self):
+        self.assertEqual(BATCH_1_APPROVED_DIGEST,
+                         batch_digest(self.batch_records))
 
-    def test_statuses_and_frozen_constraints_remain_unchanged(self):
-        self.assertEqual(
-            Counter({"draft": 68}),
-            Counter(item["stagingReviewStatus"] for item in self.data["lemmas"]),
-        )
-        self.assertEqual(
-            validator._expected_global_constraints(),
-            self.data["globalConstraints"],
-        )
-        expected = {
-            item["canonicalLemma"]: item["bindingConstraints"]
-            for item in validator._expected_lemmas()
-        }
-        self.assertEqual(21, sum(bool(value) for value in expected.values()))
-        self.assertEqual(
-            expected,
-            {item["canonicalLemma"]: item["bindingConstraints"]
-             for item in self.data["lemmas"]},
-        )
-        partners = {
-            item["canonicalLemma"]: item["metadataAspectPartner"]
-            for item in self.data["lemmas"]
-            if "metadataAspectPartner" in item
-        }
-        self.assertEqual(validator.EXPECTED_METADATA_PARTNERS, partners)
-        self.assertEqual(["udział"], record(self.data, "brać")["requiredLexicalItems"])
-        self.assertEqual(["udział"], record(self.data, "wziąć")["requiredLexicalItems"])
+    def test_batch_review_statuses_use_allowed_lifecycle_values(self):
+        self.assertTrue(all(
+            item["stagingReviewStatus"] in ALLOWED_REVIEW_STATUSES
+            for item in self.batch_records
+        ))
 
     def test_authored_counts_and_every_meaning_has_a_pattern(self):
         for item in self.batch_records:
@@ -201,10 +198,12 @@ class Priority8Phase4B1Batch01Tests(unittest.TestCase):
             self.assertEqual([], matches, example["pl"])
 
     def test_no_production_ids_or_id_fields_exist(self):
-        for key, value in walk(self.data):
-            self.assertNotIn(key.lower(), PRODUCTION_ID_KEY_NAMES)
-            if isinstance(value, str):
-                self.assertIsNone(validator.PRODUCTION_ID_RE.search(value), value)
+        for item in self.batch_records:
+            for key, value in walk(item):
+                self.assertNotIn(key.lower(), PRODUCTION_ID_KEY_NAMES)
+                if isinstance(value, str):
+                    self.assertIsNone(
+                        validator.PRODUCTION_ID_RE.search(value), value)
 
 
 if __name__ == "__main__":

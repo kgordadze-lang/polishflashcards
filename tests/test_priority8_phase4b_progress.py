@@ -1,0 +1,122 @@
+"""Moving live-progress gate; Batch 2-7 update its phase and batch boundary."""
+
+import json
+import unittest
+from collections import Counter
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+
+import sys
+
+sys.path.insert(0, str(ROOT))
+
+import validate_priority8_staging as validator  # noqa: E402
+
+
+STAGING_PATH = ROOT / "editorial/priority-8-phase4-staging.json"
+EMPTY_CONTENT = {"meanings": [], "patterns": [], "examples": []}
+CURRENT_AUTHORED = validator.AUTHORING_BATCHES[0]
+CURRENT_FUTURE = tuple(
+    item for batch in validator.AUTHORING_BATCHES[1:] for item in batch
+)
+
+
+def walk(value):
+    if isinstance(value, dict):
+        for key, child in value.items():
+            yield key, child
+            yield from walk(child)
+    elif isinstance(value, list):
+        for child in value:
+            yield from walk(child)
+
+
+class Priority8Phase4BProgressTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.data = json.loads(STAGING_PATH.read_text(encoding="utf-8"))
+        cls.by_order = {
+            item["verificationOrder"]: item for item in cls.data["lemmas"]
+        }
+
+    def test_live_staging_validates(self):
+        self.assertEqual([], validator.validate_data(self.data))
+
+    def test_current_envelope_and_full_pattern_count(self):
+        self.assertEqual(1, self.data["stagingSchemaVersion"])
+        self.assertEqual(2, self.data["stagingRevision"])
+        self.assertEqual("4B1", self.data["phaseStep"])
+        self.assertEqual(68, self.data["frozenFullPatternCount"])
+        self.assertEqual(68, len(self.data["lemmas"]))
+
+    def test_exact_current_authored_and_future_empty_boundaries(self):
+        authored = tuple(
+            (item["verificationOrder"], item["canonicalLemma"])
+            for item in self.data["lemmas"]
+            if item["candidateContent"] != EMPTY_CONTENT
+        )
+        self.assertEqual(CURRENT_AUTHORED, authored)
+        self.assertEqual(58, len(CURRENT_FUTURE))
+        for order, lemma in CURRENT_FUTURE:
+            with self.subTest(order=order, lemma=lemma):
+                item = self.by_order[order]
+                self.assertEqual(lemma, item["canonicalLemma"])
+                self.assertEqual(EMPTY_CONTENT, item["candidateContent"])
+
+    def test_all_current_review_statuses_are_draft(self):
+        self.assertEqual(
+            Counter({"draft": 68}),
+            Counter(item["stagingReviewStatus"] for item in self.data["lemmas"]),
+        )
+
+    def test_current_authored_totals(self):
+        authored_records = [
+            self.by_order[order] for order, _ in CURRENT_AUTHORED
+        ]
+        totals = tuple(
+            sum(len(item["candidateContent"][collection])
+                for item in authored_records)
+            for collection in ("meanings", "patterns", "examples")
+        )
+        self.assertEqual((12, 25, 25), totals)
+
+    def test_no_production_or_canonical_runtime_ids(self):
+        for key, value in walk(self.data):
+            self.assertNotIn(key.lower(), validator.PRODUCTION_ID_FIELDS)
+            if isinstance(value, str):
+                self.assertIsNone(validator.PRODUCTION_ID_RE.search(value), value)
+
+    def test_exact_metadata_only_aspect_relationships(self):
+        partners = {
+            item["canonicalLemma"]: item["metadataAspectPartner"]
+            for item in self.data["lemmas"]
+            if "metadataAspectPartner" in item
+        }
+        self.assertEqual(validator.EXPECTED_METADATA_PARTNERS, partners)
+        names = {item["canonicalLemma"] for item in self.data["lemmas"]}
+        self.assertTrue(validator.METADATA_IDENTITIES.isdisjoint(names))
+
+    def test_all_binding_and_global_constraints_remain_present(self):
+        expected_bindings = {
+            item["canonicalLemma"]: item["bindingConstraints"]
+            for item in validator._expected_lemmas()
+        }
+        self.assertEqual(
+            21,
+            sum(bool(value) for value in expected_bindings.values()),
+        )
+        self.assertEqual(
+            expected_bindings,
+            {item["canonicalLemma"]: item["bindingConstraints"]
+             for item in self.data["lemmas"]},
+        )
+        self.assertEqual(
+            validator._expected_global_constraints(),
+            self.data["globalConstraints"],
+        )
+
+
+if __name__ == "__main__":
+    unittest.main()
