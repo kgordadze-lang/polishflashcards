@@ -1,9 +1,9 @@
 {
   "stagingSchemaVersion": 1,
-  "stagingRevision": 3,
+  "stagingRevision": 4,
   "priority": 8,
   "phase": "4B",
-  "phaseStep": "4B2",
+  "phaseStep": "4B3",
   "frozenFullPatternCount": 68,
   "sources": {
     "phase3BFreezeCsv": {
@@ -2716,9 +2716,126 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "attempt-action-result",
+            "glossesEn": [
+              "try to do something",
+              "attempt something"
+            ],
+            "internalScope": "Attempting an action or result. The infinitive names the attempted action; a direct Genitive action noun (a noun, not an infinitive) names the attempted result. Both belong to this exact sense, retained under the completeness rule."
+          },
+          {
+            "candidateMeaningKey": "taste-sample-food-drink",
+            "glossesEn": [
+              "taste something",
+              "sample food or drink"
+            ],
+            "internalScope": "Checking the taste of food or drink. Direct Genitive names the sampled object. Shares surface case with the attempt sense's Genitive action noun but is a materially different meaning; the two are not merged. Purpose, manner, time, and other tasting circumstances are not complements."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "infinitive",
+            "meaningKeyRef": "attempt-action-result",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use an infinitive to say what you're trying to do: próbuję rozwiązać problem (I'm trying to solve the problem)."
+          },
+          {
+            "candidatePatternKey": "genitive-action-noun",
+            "meaningKeyRef": "attempt-action-result",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "genitive",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The attempted result can also be a noun in the Genitive: próbuję szczęścia (I'm trying my luck)."
+          },
+          {
+            "candidatePatternKey": "genitive-sampled-object",
+            "meaningKeyRef": "taste-sample-food-drink",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "genitive",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The food or drink you taste takes the Genitive: próbuję zupy (I'm tasting the soup)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "attempt-action-result",
+            "patternKeyRef": "infinitive",
+            "pl": "Próbuję rozwiązać problem.",
+            "en": "I'm trying to solve the problem.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "attempt-action-result",
+            "patternKeyRef": "genitive-action-noun",
+            "pl": "Próbuję szczęścia.",
+            "en": "I'm trying my luck.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "taste-sample-food-drink",
+            "patternKeyRef": "genitive-sampled-object",
+            "pl": "Próbuję zupy.",
+            "en": "I'm tasting the soup.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -2744,9 +2861,237 @@
       ],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "human-permission",
+            "glossesEn": [
+              "allow someone to do something",
+              "give permission"
+            ],
+            "internalScope": "Human permission or non-prevention. Optional Dative names the permitted person; it belongs only to the na + Accusative and żeby-clause variants below, never to the standalone infinitive. Do not combine Dative with the infinitive. No syntax is inherited from perfective pozwolić."
+          },
+          {
+            "candidateMeaningKey": "inanimate-enabling",
+            "glossesEn": [
+              "allow something (of a thing/situation)",
+              "make something possible"
+            ],
+            "internalScope": "An inanimate thing or situation enabling an action or result. No Dative participant exists in this sense; it is never transferred from the human-permission sense above. na + Accusative, infinitive, and żeby-clause remain independent alternatives here, not one combined frame."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "dative-na-accusative-permission",
+            "meaningKeyRef": "human-permission",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "accusative",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "You can name who is allowed with the Dative, then say what with na + Accusative: mama pozwala mi na wyjście (Mom allows me to go out)."
+          },
+          {
+            "candidatePatternKey": "dative-zeby-permission",
+            "meaningKeyRef": "human-permission",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              },
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use żeby when the permitted person is the subject of their own clause: mama pozwala, żeby dzieci oglądały bajki (Mom allows the children to watch cartoons)."
+          },
+          {
+            "candidatePatternKey": "infinitive",
+            "meaningKeyRef": "human-permission",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "A standalone infinitive gives general permission without naming a person: pozwalam pracować z domu (I allow working from home)."
+          },
+          {
+            "candidatePatternKey": "na-accusative-enabling",
+            "meaningKeyRef": "inanimate-enabling",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "accusative",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For a thing or situation making something possible, use na + Accusative: internet pozwala na szybką komunikację (the internet allows quick communication)."
+          },
+          {
+            "candidatePatternKey": "infinitive",
+            "meaningKeyRef": "inanimate-enabling",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "An infinitive can also follow directly: internet pozwala pracować zdalnie (the internet allows working remotely)."
+          },
+          {
+            "candidatePatternKey": "zeby-enabling",
+            "meaningKeyRef": "inanimate-enabling",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "B1"
+            },
+            "teachingStatus": "recognition-only",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "A żeby-clause can follow when the enabling thing is more abstract, such as a law or policy: prawo pozwala, żeby firmy stosowały ulgi (the law allows companies to apply tax breaks)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "human-permission",
+            "patternKeyRef": "dative-na-accusative-permission",
+            "pl": "Mama pozwala mi na wyjście.",
+            "en": "Mom allows me to go out.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "human-permission",
+            "patternKeyRef": "dative-zeby-permission",
+            "pl": "Mama pozwala, żeby dzieci oglądały bajki.",
+            "en": "Mom allows the children to watch cartoons.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "human-permission",
+            "patternKeyRef": "infinitive",
+            "pl": "Pozwalam pracować z domu.",
+            "en": "I allow working from home.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "inanimate-enabling",
+            "patternKeyRef": "na-accusative-enabling",
+            "pl": "Internet pozwala na szybką komunikację.",
+            "en": "The internet allows quick communication.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "inanimate-enabling",
+            "patternKeyRef": "infinitive",
+            "pl": "Internet pozwala pracować zdalnie.",
+            "en": "The internet allows working remotely.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "inanimate-enabling",
+            "patternKeyRef": "zeby-enabling",
+            "pl": "Prawo pozwala, żeby firmy stosowały ulgi.",
+            "en": "The law allows companies to apply tax breaks.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -2772,9 +3117,52 @@
       ],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "avoidance",
+            "glossesEn": [
+              "avoid something"
+            ],
+            "internalScope": "Trying not to experience, participate in, do, or contact the object. Direct Genitive is the sole authorized construction. Infinitive government was explicitly rejected by Phase 3 and is not authored; a Genitive gerund/action noun remains a noun in Genitive, not an infinitive complement."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "genitive-object",
+            "meaningKeyRef": "avoidance",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "genitive",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The thing you avoid takes the Genitive: unikam słodyczy (I avoid sweets)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "avoidance",
+            "patternKeyRef": "genitive-object",
+            "pl": "Unikam słodyczy.",
+            "en": "I avoid sweets.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -2791,9 +3179,230 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "person-requires-behavior",
+            "glossesEn": [
+              "require conduct or a trait from someone"
+            ],
+            "internalScope": "A person requiring conduct or a trait. Genitive names the required content; optional od + Genitive names the person the requirement is directed at; żeby introduces a clause. The optional od participant here is restricted to a person, unlike the situation-requires meaning below. od + Genitive is directly selected by this schema, not a narrowed realization of a generalized role."
+          },
+          {
+            "candidateMeaningKey": "situation-requires-content",
+            "glossesEn": [
+              "make conduct or a condition necessary"
+            ],
+            "internalScope": "A situation making conduct or a condition necessary. Genitive names the required content; optional od + Genitive names the person or thing the requirement is directed at (broader than the person-only restriction above); żeby introduces a clause. Not merged with the person-requires meaning despite the shared surface forms."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "genitive-required-content",
+            "meaningKeyRef": "person-requires-behavior",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "genitive",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The required thing takes the Genitive: szef wymaga lojalności (the boss requires loyalty)."
+          },
+          {
+            "candidatePatternKey": "od-genitive-required-from",
+            "meaningKeyRef": "person-requires-behavior",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "od",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For the person the requirement is directed at, use od + Genitive: wymaga lojalności od pracowników (it requires loyalty from employees)."
+          },
+          {
+            "candidatePatternKey": "zeby-clause",
+            "meaningKeyRef": "person-requires-behavior",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use żeby to introduce what someone is required to do: szef wymaga, żeby pracownicy przychodzili punktualnie (the boss requires that employees arrive on time)."
+          },
+          {
+            "candidatePatternKey": "genitive-required-content",
+            "meaningKeyRef": "situation-requires-content",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "genitive",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The required thing takes the Genitive: wyjście z nałogu wymaga silnej woli (getting out of an addiction requires strong will)."
+          },
+          {
+            "candidatePatternKey": "od-genitive-required-from",
+            "meaningKeyRef": "situation-requires-content",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "od",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For the person or thing the requirement is directed at, use od + Genitive: wymaga elastyczności od zespołu (it requires flexibility from the team)."
+          },
+          {
+            "candidatePatternKey": "zeby-clause",
+            "meaningKeyRef": "situation-requires-content",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "B1"
+            },
+            "teachingStatus": "recognition-only",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "A żeby-clause can follow when the requiring subject is an abstract situation: sytuacja wymaga, żeby wszyscy zachowali spokój (the situation requires that everyone stay calm)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "person-requires-behavior",
+            "patternKeyRef": "genitive-required-content",
+            "pl": "Szef wymaga lojalności.",
+            "en": "The boss requires loyalty.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "person-requires-behavior",
+            "patternKeyRef": "od-genitive-required-from",
+            "pl": "Wymaga lojalności od pracowników.",
+            "en": "It requires loyalty from employees.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "person-requires-behavior",
+            "patternKeyRef": "zeby-clause",
+            "pl": "Szef wymaga, żeby pracownicy przychodzili punktualnie.",
+            "en": "The boss requires that employees arrive on time.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "situation-requires-content",
+            "patternKeyRef": "genitive-required-content",
+            "pl": "Wyjście z nałogu wymaga silnej woli.",
+            "en": "Getting out of an addiction requires strong will.",
+            "candidateOrigin": {
+              "kind": "repository-reuse",
+              "repositorySource": {
+                "kind": "card",
+                "id": "b1-healthy-lifestyle-018",
+                "field": "ex"
+              }
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "situation-requires-content",
+            "patternKeyRef": "od-genitive-required-from",
+            "pl": "Wymaga elastyczności od zespołu.",
+            "en": "It requires flexibility from the team.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "situation-requires-content",
+            "patternKeyRef": "zeby-clause",
+            "pl": "Sytuacja wymaga, żeby wszyscy zachowali spokój.",
+            "en": "The situation requires that everyone stay calm.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -2810,9 +3419,95 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "ownership",
+            "glossesEn": [
+              "belong to someone",
+              "be owned by someone"
+            ],
+            "internalScope": "Being owned by a person or group. do + Genitive names the owner. This is an exact schema, not a narrowed generalized-role realization. Category, relationship, obligation, należeć się, location, time, and manner are not imported."
+          },
+          {
+            "candidateMeaningKey": "organization-membership",
+            "glossesEn": [
+              "be a member of a group or organization"
+            ],
+            "internalScope": "Being a member of an organization or group. do + Genitive names the organization/group. Shares the same surface do + Genitive form as ownership above but is a distinct, separately evidenced meaning; the two are kept apart rather than flattened into one generic 'belong to' record."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "do-genitive-owner",
+            "meaningKeyRef": "ownership",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For who owns something, use do + Genitive: ten dom należy do sąsiadki (this house belongs to my neighbor)."
+          },
+          {
+            "candidatePatternKey": "do-genitive-organization",
+            "meaningKeyRef": "organization-membership",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For the group you belong to, use do + Genitive: należę do klubu sportowego (I belong to a sports club)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "ownership",
+            "patternKeyRef": "do-genitive-owner",
+            "pl": "Ten dom należy do sąsiadki.",
+            "en": "This house belongs to my neighbor.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "organization-membership",
+            "patternKeyRef": "do-genitive-organization",
+            "pl": "Należę do klubu sportowego.",
+            "en": "I belong to a sports club.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -2829,9 +3524,153 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "interpersonal-quarrelling",
+            "glossesEn": [
+              "argue with someone",
+              "quarrel"
+            ],
+            "internalScope": "Lexical-reflexive interpersonal quarrelling; się is part of the identity and nothing is transferred from non-reflexive kłócić. For a singular personal subject, z + Instrumental names the interlocutor and o + Accusative names the topic, each independently. A plural reciprocal subject naturally omits a separate z-interlocutor. że and the interrogative clause are alternatives to the nominal o + Accusative topic, not to the interlocutor. Frequency, intensity, manner, place, and other circumstances are not complements."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "z-instrumental-interlocutor",
+            "meaningKeyRef": "interpersonal-quarrelling",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": true,
+                "role": "interlocutor"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For who you're arguing with, use z + Instrumental: kłócę się z bratem (I argue with my brother)."
+          },
+          {
+            "candidatePatternKey": "o-accusative-topic",
+            "meaningKeyRef": "interpersonal-quarrelling",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "o",
+                "case": "accusative",
+                "required": true,
+                "role": "topic"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For the topic of the argument, use o + Accusative: kłócimy się o drobiazgi (we argue about trivial things). A plural subject like this doesn't need a separate z-phrase."
+          },
+          {
+            "candidatePatternKey": "ze-content-clause",
+            "meaningKeyRef": "interpersonal-quarrelling",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use że to introduce the topic as a clause: kłócimy się, że nikt nie sprząta (we argue that nobody cleans up)."
+          },
+          {
+            "candidatePatternKey": "czy-dependent-clause",
+            "meaningKeyRef": "interpersonal-quarrelling",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "czy",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "B1"
+            },
+            "teachingStatus": "recognition-only",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use czy to introduce an undecided yes/no topic: kłócimy się, czy powinniśmy wyjechać (we're arguing about whether we should leave)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "interpersonal-quarrelling",
+            "patternKeyRef": "z-instrumental-interlocutor",
+            "pl": "Kłócę się z bratem.",
+            "en": "I argue with my brother.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "interpersonal-quarrelling",
+            "patternKeyRef": "o-accusative-topic",
+            "pl": "Kłócimy się o drobiazgi.",
+            "en": "We argue about trivial things.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "interpersonal-quarrelling",
+            "patternKeyRef": "ze-content-clause",
+            "pl": "Kłócimy się, że nikt nie sprząta.",
+            "en": "We argue that nobody cleans up.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "interpersonal-quarrelling",
+            "patternKeyRef": "czy-dependent-clause",
+            "pl": "Kłócimy się, czy powinniśmy wyjechać.",
+            "en": "We're arguing about whether we should leave.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -2848,9 +3687,126 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "directing-attention-to-content",
+            "glossesEn": [
+              "show someone something",
+              "point something out"
+            ],
+            "internalScope": "Directing a person's attention so that a person, thing, place, or content is seen. Optional Dative names the recipient and Accusative names the thing shown, in one schema. A separate exact na + Accusative names what is pointed at/toward, distinct from the Dative+Accusative showing frame. An interrogative-dependent clause names shown content. Optional GDZIE also occurs in the evidence as selected semantic-role evidence only; it is not concretized into any w/na + Locative or other location pattern. No syntax is borrowed from pokazać."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "dative-recipient-accusative-thing",
+            "meaningKeyRef": "directing-attention-to-content",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              },
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The person you show something to takes the Dative, and the thing shown takes the Accusative: pokazuję dzieciom zdjęcia (I'm showing the children photos)."
+          },
+          {
+            "candidatePatternKey": "na-accusative-pointing",
+            "meaningKeyRef": "directing-attention-to-content",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "accusative",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "To point at or toward something, use na + Accusative: pokazuję na mapę (I'm pointing at the map)."
+          },
+          {
+            "candidatePatternKey": "interrogative-dependent-clause",
+            "meaningKeyRef": "directing-attention-to-content",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "interrogative",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use a question word to introduce shown content: pokazuję, jak to zrobić (I show how to do it)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "directing-attention-to-content",
+            "patternKeyRef": "dative-recipient-accusative-thing",
+            "pl": "Pokazuję dzieciom zdjęcia.",
+            "en": "I'm showing the children photos.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "directing-attention-to-content",
+            "patternKeyRef": "na-accusative-pointing",
+            "pl": "Pokazuję na mapę.",
+            "en": "I'm pointing at the map.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "directing-attention-to-content",
+            "patternKeyRef": "interrogative-dependent-clause",
+            "pl": "Pokazuję, jak to zrobić.",
+            "en": "I show how to do it.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -2867,9 +3823,55 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "coping-with-difficulty",
+            "glossesEn": [
+              "cope with something",
+              "manage on one's own",
+              "handle a difficulty"
+            ],
+            "internalScope": "Overcoming or managing difficulties independently. sobie is part of the lexical identity, not a free Dative complement. Optional z + Instrumental names the difficulty. Situational w-phrases and other forms shown only in connections receive no frame credit. Nothing is transferred from non-reflexive advice-sense radzić; both are intentionally retained as distinct full lemmas."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "z-instrumental-topic",
+            "meaningKeyRef": "coping-with-difficulty",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": true,
+                "role": "topic"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For the difficulty you're handling, use z + Instrumental: radzę sobie z trudnościami (I cope with difficulties)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "coping-with-difficulty",
+            "patternKeyRef": "z-instrumental-topic",
+            "pl": "Radzę sobie z trudnościami.",
+            "en": "I cope with difficulties.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -2886,9 +3888,146 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "process-purchase",
+            "glossesEn": [
+              "buy something",
+              "purchase (ongoing/habitual)"
+            ],
+            "internalScope": "Imperfective process, habitual, or repeated buying. Accusative names the purchased goods in every schema. Schema A adds optional od + Genitive seller and optional za + Accusative price together; schema B adds an optional Dative beneficiary; schema C adds an optional dla + Genitive beneficiary. The three schemas are alternatives, not one maximal purchase frame. Purchase location, channel, occasion, frequency, and manner remain outside the pattern inventory. No syntax is inherited from perfective kupić."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "seller-price-schema",
+            "meaningKeyRef": "process-purchase",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "od",
+                "case": "genitive",
+                "required": false,
+                "role": "target"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "za",
+                "case": "accusative",
+                "required": false,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "You can add who you buy from with od + Genitive and the price with za + Accusative: kupuję warzywa od rolnika za dziesięć złotych (I buy vegetables from a farmer for ten złoty)."
+          },
+          {
+            "candidatePatternKey": "dative-beneficiary-schema",
+            "meaningKeyRef": "process-purchase",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "To say who benefits, one way is the Dative: kupuję dzieciom zabawki (I buy the children toys)."
+          },
+          {
+            "candidatePatternKey": "dla-beneficiary-schema",
+            "meaningKeyRef": "process-purchase",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "dla",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Another way to say who benefits is dla + Genitive: kupuję zabawki dla dzieci (I buy toys for the children)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "process-purchase",
+            "patternKeyRef": "seller-price-schema",
+            "pl": "Kupuję warzywa od rolnika za dziesięć złotych.",
+            "en": "I buy vegetables from a farmer for ten złoty.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "process-purchase",
+            "patternKeyRef": "dative-beneficiary-schema",
+            "pl": "Kupuję dzieciom zabawki.",
+            "en": "I buy the children toys.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "process-purchase",
+            "patternKeyRef": "dla-beneficiary-schema",
+            "pl": "Kupuję zabawki dla dzieci.",
+            "en": "I buy toys for the children.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -2905,9 +4044,156 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "completed-purchase",
+            "glossesEn": [
+              "buy something (completed)",
+              "purchase (bounded)"
+            ],
+            "internalScope": "Perfective bounded acquisition of goods for money. Accusative names the purchased goods in every schema. Schema A adds optional od + Genitive seller and optional za + Accusative price together; schema B adds an optional Dative beneficiary; schema C adds an optional dla + Genitive beneficiary. The three schemas are alternatives, not one maximal purchase frame. Dative is not generalized to every purchase context. Purchase place, channel, occasion, frequency, manner, and means of payment are not promoted. Independently evidenced from imperfective kupować; no construction is unique against kupować's inventory, but no syntax is inherited from it either."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "seller-price-schema",
+            "meaningKeyRef": "completed-purchase",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "od",
+                "case": "genitive",
+                "required": false,
+                "role": "target"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "za",
+                "case": "accusative",
+                "required": false,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "You can add who you bought from with od + Genitive and the price with za + Accusative: kupię chleb od piekarza za pięć złotych (I will buy bread from a baker for five złoty)."
+          },
+          {
+            "candidatePatternKey": "dative-beneficiary-schema",
+            "meaningKeyRef": "completed-purchase",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "To say who benefits, one way is the Dative: kupiłem jej kwiaty (I bought her flowers)."
+          },
+          {
+            "candidatePatternKey": "dla-beneficiary-schema",
+            "meaningKeyRef": "completed-purchase",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "dla",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Another way to say who benefits is dla + Genitive: kupiłem prezenty dla całej rodziny (I bought presents for the whole family)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "completed-purchase",
+            "patternKeyRef": "seller-price-schema",
+            "pl": "Kupię chleb od piekarza za pięć złotych.",
+            "en": "I will buy bread from a baker for five złoty.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "completed-purchase",
+            "patternKeyRef": "dative-beneficiary-schema",
+            "pl": "Kupiłem jej kwiaty.",
+            "en": "I bought her flowers.",
+            "candidateOrigin": {
+              "kind": "repository-reuse",
+              "repositorySource": {
+                "kind": "card",
+                "id": "a2-nature-animals-016",
+                "field": "ex"
+              }
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "completed-purchase",
+            "patternKeyRef": "dla-beneficiary-schema",
+            "pl": "Kupiłem prezenty dla całej rodziny.",
+            "en": "I bought presents for the whole family.",
+            "candidateOrigin": {
+              "kind": "repository-reuse",
+              "repositorySource": {
+                "kind": "card",
+                "id": "a2-holidays-traditions-007",
+                "field": "ex"
+              }
+            }
+          }
+        ]
       }
     },
     {
