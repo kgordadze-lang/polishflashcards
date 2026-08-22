@@ -76,19 +76,47 @@ because a JSON shape resembled it.
 ### `wymagać`
 
 - Meanings: 2 — `person-requires-behavior`, `situation-requires-content`.
-- Patterns: 6 — `genitive-required-content`, `od-genitive-required-from`,
-  `zeby-clause` under each meaning (3 + 3). The situation-meaning's
-  `zeby-clause` is **recognition-only**; the other five are
-  active-production.
-- Examples: `Szef wymaga lojalności.`; `Wymaga lojalności od pracowników.`;
-  `Szef wymaga, żeby pracownicy przychodzili punktualnie.`; `Wyjście z
-  nałogu wymaga silnej woli.` (repository-reuse); `Wymaga elastyczności od
-  zespołu.`; `Sytuacja wymaga, żeby wszyscy zachowali spokój.`
-- Handling: the person-only restriction on `od + Genitive` under
-  person-requires versus the broader person-or-thing restriction under
-  situation-requires is recorded in each meaning's `internalScope`, since
-  the architecture has no formal noun-class restriction mechanism. The two
-  meanings are never merged despite sharing pattern keys and surface forms.
+- Patterns: 4 — `genitive-required-content` and `zeby-clause` under each
+  meaning (2 + 2). Each pattern carries the required Phase 3 core
+  complement (Genitive content, or the `żeby` clause) plus an **optional**
+  `od + Genitive` complement, matching the exact source schemas
+  `(od KOGO) + CZEGO`, `(od KOGO) + żeby ZDANIE` (person-requires) and
+  `(od KOGO/CZEGO) + CZEGO`, `(od KOGO/CZEGO) + żeby ZDANIE`
+  (situation-requires). There is no standalone `od + Genitive` pattern:
+  `od` never appears without its required Genitive or `żeby` co-complement,
+  because no source schema licenses `od` alone. The situation-meaning's
+  `zeby-clause` is **recognition-only**; the other three are
+  active-production, unchanged from the original authoring pass.
+- Examples: `Wymaga lojalności od pracowników.` (realizes the required
+  Genitive together with the optional `od` participant); `Szef wymaga,
+  żeby pracownicy przychodzili punktualnie.`; `Wyjście z nałogu wymaga
+  silnej woli.` (repository-reuse, realizes the required Genitive alone,
+  `od` unrealized since it is optional); `Sytuacja wymaga, żeby wszyscy
+  zachowali spokój.`
+- Handling: `od + Genitive` is optional inside each exact schema, never a
+  required sole complement. The person-only restriction on `od + Genitive`
+  under person-requires versus the broader person-or-thing restriction
+  under situation-requires is recorded in each meaning's `internalScope`,
+  since the architecture has no formal noun-class restriction mechanism.
+  The two meanings are never merged despite sharing pattern keys and
+  surface forms.
+
+  **Correction note.** The original Batch 3 authoring pass incorrectly
+  modeled `od + Genitive` as a third, standalone, required-sole-complement
+  pattern (`od-genitive-required-from`) in each meaning, and omitted the
+  optional `od` participant from both `zeby-clause` patterns. An
+  independent review identified this as a schema-decomposition defect: no
+  Phase 3 source schema licenses `wymagać` with only an `od + Genitive`
+  phrase and no required core. This has been corrected as described above;
+  the two invalid standalone patterns and their two now-superseded
+  editorial-generated examples (`Szef wymaga lojalności.` and `Wymaga
+  elastyczności od zespołu.`) were removed. `Wymaga lojalności od
+  pracowników.`, which already correctly realized the required Genitive
+  together with the optional `od` participant, was re-targeted onto the
+  corrected `genitive-required-content` pattern for `person-requires-
+  behavior` with its wording preserved exactly. The repository-reuse
+  example for the situation meaning's Genitive pattern was kept unchanged
+  to preserve its provenance.
 
 ### `należeć`
 
@@ -212,11 +240,11 @@ alternatives (e.g. Dative vs. `dla` beneficiary).
 
 ## Coverage, provenance, and totals
 
-- Batch 3 totals: 14 meanings, 32 patterns, 32 examples.
-- Cumulative Batch 1 + 2 + 3 totals: 38 meanings, 85 patterns, 85 examples,
+- Batch 3 totals: 14 meanings, 30 patterns, 30 examples.
+- Cumulative Batch 1 + 2 + 3 totals: 38 meanings, 83 patterns, 83 examples,
   across 30 authored lemmas.
 - Every authored pattern has exactly one candidate example.
-- Teaching status: 29 active-production; 3 recognition-only
+- Teaching status: 27 active-production; 3 recognition-only
   (`pozwalać`/`zeby-enabling`, `wymagać`/`zeby-clause` under
   situation-requires, `kłócić się`/`czy-dependent-clause`).
   - **Recognition-only rationale.** All three exceptions share a genuine,
@@ -228,14 +256,14 @@ alternatives (e.g. Dative vs. `dla` beneficiary).
     A1–B1 learner; each is authored (not omitted) with CEFR recognition at
     B1 and no production CEFR value, per the validator's `recognition-only`
     rule.
-  - **Active-production justification for the remaining 29.** Each
+  - **Active-production justification for the remaining 27.** Each
     represents a concrete, high-frequency valency construction (direct
     case objects, exact schema-listed prepositional positions, plain
     infinitives, human-subject `żeby`/`że` clauses, and the wh-word
     `interrogative` clause under `pokazywać`, which is common and practical
     at A2 — e.g. "Pokaż, jak to zrobić" is a textbook-level request).
     Productive use is realistic at each pattern's assigned CEFR.
-- Provenance: 3 repository-reuse; 29 editorial-generated.
+- Provenance: 3 repository-reuse; 27 editorial-generated.
   - `wymagać` / `genitive-required-content` (situation-requires): reused
     `card:b1-healthy-lifestyle-018.ex` — "Wyjście z nałogu wymaga silnej
     woli."
@@ -264,15 +292,20 @@ All meaning and pattern keys are durable semantic/construction identities
 (e.g. `attempt-action-result`, `dative-na-accusative-permission`,
 `seller-price-schema`), independent of batch number, verification order, or
 example wording. Pattern-key reuse across meanings of the same lemma
-(`infinitive` under both `pozwalać` meanings; `genitive-required-content`,
-`od-genitive-required-from`, `zeby-clause` under both `wymagać` meanings;
-`seller-price-schema` etc. shared between `kupować` and `kupić`) is
-sibling-scoped per the locked architecture, matching Batch 1/2 precedent.
-All 32 `candidateExampleKey` values use the durable slot name `primary`.
+(`infinitive` under both `pozwalać` meanings; `genitive-required-content`
+and `zeby-clause` under both `wymagać` meanings; `seller-price-schema` etc.
+shared between `kupować` and `kupić`) is sibling-scoped per the locked
+architecture, matching Batch 1/2 precedent. All 30 `candidateExampleKey`
+values use the durable slot name `primary`.
 
 ## Batch 3 digest
 
-`160c25b9c9311eb97dd50faa2c5e8582243bb850b5b9afc14dee671c1363720d`
+`8276864944181e47b573767151e98b556b52037b7920335d32fb510aeee58edb`
+
+(Superseded corrected value. The original authoring-pass digest,
+`160c25b9c9311eb97dd50faa2c5e8582243bb850b5b9afc14dee671c1363720d`, was
+recomputed after the `wymagać` schema correction described above; see
+`tests/test_priority8_phase4b3_batch03.py`.)
 
 The digest projects verification orders 22–31 in staging order over
 `verificationOrder`, `canonicalLemma`, `aspect`, `phase3Disposition`,
@@ -289,11 +322,13 @@ python3 -m unittest tests.test_priority8_phase4b0_staging         # 31 tests, OK
 python3 -m unittest tests.test_priority8_phase4b1a_authoring_schema   # 65 tests, OK
 python3 -m unittest tests.test_priority8_phase4b1_batch01          # 9 tests, OK
 python3 -m unittest tests.test_priority8_phase4b2_batch02          # 11 tests, OK
-python3 -m unittest tests.test_priority8_phase4b3_batch03          # 16 tests, OK
+python3 -m unittest tests.test_priority8_phase4b3_batch03          # 17 tests, OK
 python3 -m unittest tests.test_priority8_phase4b_progress          # 8 tests, OK
 ```
 
-Combined: 140 tests, OK.
+Combined: 141 tests, OK. (One additional dedicated test,
+`test_wymagac_od_genitive_is_optional_not_standalone`, was added by the
+`wymagać` correction; see `tests/test_priority8_phase4b3_batch03.py`.)
 
 ## Validator result
 

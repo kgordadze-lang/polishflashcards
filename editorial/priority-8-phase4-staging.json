@@ -3185,14 +3185,14 @@
             "glossesEn": [
               "require conduct or a trait from someone"
             ],
-            "internalScope": "A person requiring conduct or a trait. Genitive names the required content; optional od + Genitive names the person the requirement is directed at; żeby introduces a clause. The optional od participant here is restricted to a person, unlike the situation-requires meaning below. od + Genitive is directly selected by this schema, not a narrowed realization of a generalized role."
+            "internalScope": "A person requiring conduct or a trait. Genitive names the required content; optional od + Genitive names the person the requirement is directed at; żeby introduces a clause. The optional od participant here is restricted to a person, unlike the situation-requires meaning below. od + Genitive is directly selected by this schema, not a narrowed realization of a generalized role. There is no standalone od + Genitive construction; od only appears optionally alongside the required Genitive or żeby complement."
           },
           {
             "candidateMeaningKey": "situation-requires-content",
             "glossesEn": [
               "make conduct or a condition necessary"
             ],
-            "internalScope": "A situation making conduct or a condition necessary. Genitive names the required content; optional od + Genitive names the person or thing the requirement is directed at (broader than the person-only restriction above); żeby introduces a clause. Not merged with the person-requires meaning despite the shared surface forms."
+            "internalScope": "A situation making conduct or a condition necessary. Genitive names the required content; optional od + Genitive names the person or thing the requirement is directed at (broader than the person-only restriction above); żeby introduces a clause. Not merged with the person-requires meaning despite the shared surface forms. There is no standalone od + Genitive construction; od only appears optionally alongside the required Genitive or żeby complement."
           }
         ],
         "patterns": [
@@ -3206,6 +3206,13 @@
                 "case": "genitive",
                 "required": true,
                 "role": "object"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "od",
+                "case": "genitive",
+                "required": false,
+                "role": "target"
               }
             ],
             "cefr": {
@@ -3217,18 +3224,24 @@
               "priority": "core",
               "register": "neutral"
             },
-            "learnerExplanationEn": "The required thing takes the Genitive: szef wymaga lojalności (the boss requires loyalty)."
+            "learnerExplanationEn": "The required thing takes the Genitive; you can optionally add od + Genitive for the person it's required from: wymaga lojalności od pracowników (it requires loyalty from employees)."
           },
           {
-            "candidatePatternKey": "od-genitive-required-from",
+            "candidatePatternKey": "zeby-clause",
             "meaningKeyRef": "person-requires-behavior",
             "relationType": "lexical-frame",
             "complements": [
               {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              },
+              {
                 "type": "preposition-case",
                 "preposition": "od",
                 "case": "genitive",
-                "required": true,
+                "required": false,
                 "role": "target"
               }
             ],
@@ -3241,30 +3254,7 @@
               "priority": "common",
               "register": "neutral"
             },
-            "learnerExplanationEn": "For the person the requirement is directed at, use od + Genitive: wymaga lojalności od pracowników (it requires loyalty from employees)."
-          },
-          {
-            "candidatePatternKey": "zeby-clause",
-            "meaningKeyRef": "person-requires-behavior",
-            "relationType": "lexical-frame",
-            "complements": [
-              {
-                "type": "clause",
-                "clauseKind": "zeby",
-                "required": true,
-                "role": "content"
-              }
-            ],
-            "cefr": {
-              "recognition": "A2",
-              "production": "B1"
-            },
-            "teachingStatus": "active-production",
-            "usage": {
-              "priority": "common",
-              "register": "neutral"
-            },
-            "learnerExplanationEn": "Use żeby to introduce what someone is required to do: szef wymaga, żeby pracownicy przychodzili punktualnie (the boss requires that employees arrive on time)."
+            "learnerExplanationEn": "Use żeby to introduce what someone is required to do; you can optionally add od + Genitive for the person it applies to: szef wymaga, żeby pracownicy przychodzili punktualnie (the boss requires that employees arrive on time)."
           },
           {
             "candidatePatternKey": "genitive-required-content",
@@ -3276,6 +3266,13 @@
                 "case": "genitive",
                 "required": true,
                 "role": "object"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "od",
+                "case": "genitive",
+                "required": false,
+                "role": "target"
               }
             ],
             "cefr": {
@@ -3287,31 +3284,7 @@
               "priority": "core",
               "register": "neutral"
             },
-            "learnerExplanationEn": "The required thing takes the Genitive: wyjście z nałogu wymaga silnej woli (getting out of an addiction requires strong will)."
-          },
-          {
-            "candidatePatternKey": "od-genitive-required-from",
-            "meaningKeyRef": "situation-requires-content",
-            "relationType": "lexical-frame",
-            "complements": [
-              {
-                "type": "preposition-case",
-                "preposition": "od",
-                "case": "genitive",
-                "required": true,
-                "role": "target"
-              }
-            ],
-            "cefr": {
-              "recognition": "A2",
-              "production": "B1"
-            },
-            "teachingStatus": "active-production",
-            "usage": {
-              "priority": "common",
-              "register": "neutral"
-            },
-            "learnerExplanationEn": "For the person or thing the requirement is directed at, use od + Genitive: wymaga elastyczności od zespołu (it requires flexibility from the team)."
+            "learnerExplanationEn": "The required thing takes the Genitive; you can optionally add od + Genitive for the person or thing it's required from: wyjście z nałogu wymaga silnej woli (getting out of an addiction requires strong will)."
           },
           {
             "candidatePatternKey": "zeby-clause",
@@ -3323,6 +3296,13 @@
                 "clauseKind": "zeby",
                 "required": true,
                 "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "od",
+                "case": "genitive",
+                "required": false,
+                "role": "target"
               }
             ],
             "cefr": {
@@ -3333,7 +3313,7 @@
               "priority": "common",
               "register": "neutral"
             },
-            "learnerExplanationEn": "A żeby-clause can follow when the requiring subject is an abstract situation: sytuacja wymaga, żeby wszyscy zachowali spokój (the situation requires that everyone stay calm)."
+            "learnerExplanationEn": "A żeby-clause can follow when the requiring subject is an abstract situation; you can optionally add od + Genitive for the person or thing it applies to: sytuacja wymaga, żeby wszyscy zachowali spokój (the situation requires that everyone stay calm)."
           }
         ],
         "examples": [
@@ -3341,16 +3321,6 @@
             "candidateExampleKey": "primary",
             "meaningKeyRef": "person-requires-behavior",
             "patternKeyRef": "genitive-required-content",
-            "pl": "Szef wymaga lojalności.",
-            "en": "The boss requires loyalty.",
-            "candidateOrigin": {
-              "kind": "editorial-generated"
-            }
-          },
-          {
-            "candidateExampleKey": "primary",
-            "meaningKeyRef": "person-requires-behavior",
-            "patternKeyRef": "od-genitive-required-from",
             "pl": "Wymaga lojalności od pracowników.",
             "en": "It requires loyalty from employees.",
             "candidateOrigin": {
@@ -3380,16 +3350,6 @@
                 "id": "b1-healthy-lifestyle-018",
                 "field": "ex"
               }
-            }
-          },
-          {
-            "candidateExampleKey": "primary",
-            "meaningKeyRef": "situation-requires-content",
-            "patternKeyRef": "od-genitive-required-from",
-            "pl": "Wymaga elastyczności od zespołu.",
-            "en": "It requires flexibility from the team.",
-            "candidateOrigin": {
-              "kind": "editorial-generated"
             }
           },
           {

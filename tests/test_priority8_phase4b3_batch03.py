@@ -29,7 +29,7 @@ BATCH_3_DIGEST_FIELDS = (
     "metadataAspectPartner",
 )
 BATCH_3_APPROVED_DIGEST = (
-    "160c25b9c9311eb97dd50faa2c5e8582243bb850b5b9afc14dee671c1363720d"
+    "8276864944181e47b573767151e98b556b52037b7920335d32fb510aeee58edb"
 )
 ALLOWED_REVIEW_STATUSES = {
     "draft", "independently-reviewed", "human-approved",
@@ -125,10 +125,10 @@ class Priority8Phase4B3Batch03Tests(unittest.TestCase):
         self.assertEqual(14, sum(
             len(item["candidateContent"]["meanings"])
             for item in self.batch_records))
-        self.assertEqual(32, sum(
+        self.assertEqual(30, sum(
             len(item["candidateContent"]["patterns"])
             for item in self.batch_records))
-        self.assertEqual(32, sum(
+        self.assertEqual(30, sum(
             len(item["candidateContent"]["examples"])
             for item in self.batch_records))
 
@@ -232,12 +232,96 @@ class Priority8Phase4B3Batch03Tests(unittest.TestCase):
         )
 
     def test_pozwalac_never_combines_dative_with_infinitive(self):
+        # Scans every pozwalać pattern in both meanings for the co-occurrence
+        # of a Dative complement and an infinitive complement, regardless of
+        # the pattern's candidatePatternKey. A weaker version of this guard
+        # that only inspected patterns literally keyed "infinitive" would
+        # miss a forbidden Dative+infinitive pattern authored under any
+        # other key.
         pozwalac = record(self.data, "pozwalać")
         for pattern in pozwalac["candidateContent"]["patterns"]:
+            types = [c["type"] for c in pattern["complements"]]
+            has_dative = any(
+                c["type"] == "case" and c.get("case") == "dative"
+                for c in pattern["complements"]
+            )
+            has_infinitive = "infinitive" in types
+            self.assertFalse(
+                has_dative and has_infinitive,
+                f"pozwalać pattern {pattern['candidatePatternKey']!r} under "
+                f"meaning {pattern['meaningKeyRef']!r} combines a Dative "
+                "complement with an infinitive complement",
+            )
             if pattern["candidatePatternKey"] == "infinitive":
-                types = {c["type"] for c in pattern["complements"]}
-                self.assertEqual({"infinitive"}, types)
+                self.assertEqual({"infinitive"}, set(types))
                 self.assertEqual(1, len(pattern["complements"]))
+
+    def test_wymagac_od_genitive_is_optional_not_standalone(self):
+        # Corrected schema: od + Genitive is optional and attached to the
+        # required Genitive-content or żeby-clause complement in each
+        # meaning; there is no standalone od-only pattern.
+        wymagac = record(self.data, "wymagać")
+        patterns = wymagac["candidateContent"]["patterns"]
+        self.assertEqual(4, len(patterns))
+        self.assertFalse(
+            any(p["candidatePatternKey"] == "od-genitive-required-from"
+                for p in patterns),
+            "wymagać must not contain a standalone od-genitive-required-from "
+            "pattern",
+        )
+        by_meaning = {}
+        for p in patterns:
+            by_meaning.setdefault(p["meaningKeyRef"], []).append(p)
+        self.assertEqual(
+            {"person-requires-behavior", "situation-requires-content"},
+            set(by_meaning),
+        )
+        for meaning_key, pats in by_meaning.items():
+            self.assertEqual(2, len(pats), meaning_key)
+            self.assertEqual(
+                {"genitive-required-content", "zeby-clause"},
+                {p["candidatePatternKey"] for p in pats},
+                meaning_key,
+            )
+            for p in pats:
+                od_complements = [
+                    c for c in p["complements"]
+                    if c["type"] == "preposition-case"
+                    and c.get("preposition") == "od"
+                    and c.get("case") == "genitive"
+                ]
+                self.assertEqual(
+                    1, len(od_complements),
+                    (meaning_key, p["candidatePatternKey"]))
+                self.assertFalse(
+                    od_complements[0]["required"],
+                    (meaning_key, p["candidatePatternKey"]))
+                required_complements = [
+                    c for c in p["complements"] if c is not od_complements[0]
+                ]
+                self.assertEqual(1, len(required_complements))
+                self.assertTrue(required_complements[0]["required"])
+                if p["candidatePatternKey"] == "genitive-required-content":
+                    self.assertEqual("case", required_complements[0]["type"])
+                    self.assertEqual(
+                        "genitive", required_complements[0]["case"])
+                else:
+                    self.assertEqual(
+                        "clause", required_complements[0]["type"])
+                    self.assertEqual(
+                        "zeby", required_complements[0]["clauseKind"])
+        # The person-only versus person-or-thing restriction on the optional
+        # od participant has no formal structural representation in this
+        # architecture, so it must remain documented in internalScope.
+        meanings = {
+            m["candidateMeaningKey"]: m
+            for m in wymagac["candidateContent"]["meanings"]
+        }
+        self.assertIn(
+            "person", meanings["person-requires-behavior"]["internalScope"])
+        self.assertIn(
+            "person or thing",
+            meanings["situation-requires-content"]["internalScope"])
 
     def test_unikac_authors_no_infinitive(self):
         unikac = record(self.data, "unikać")

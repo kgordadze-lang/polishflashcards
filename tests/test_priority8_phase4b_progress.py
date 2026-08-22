@@ -83,7 +83,7 @@ class Priority8Phase4BProgressTests(unittest.TestCase):
                 for item in authored_records)
             for collection in ("meanings", "patterns", "examples")
         )
-        self.assertEqual((38, 85, 85), totals)
+        self.assertEqual((38, 83, 83), totals)
 
     def test_no_production_or_canonical_runtime_ids(self):
         for key, value in walk(self.data):
