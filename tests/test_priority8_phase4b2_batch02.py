@@ -29,7 +29,7 @@ BATCH_2_DIGEST_FIELDS = (
     "metadataAspectPartner",
 )
 BATCH_2_APPROVED_DIGEST = (
-    "5fef7ce7dddb9f06dd56e25cef7591ac4c94e0aa2f71fe208227431b0a649664"
+    "dd55047bbd7db3d28224d6366015c7353479206e4ffba64cf8b6397efb8d8db8"
 )
 ALLOWED_REVIEW_STATUSES = {
     "draft", "independently-reviewed", "human-approved",

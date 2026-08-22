@@ -1550,7 +1550,7 @@
               "priority": "core",
               "register": "neutral"
             },
-            "learnerExplanationEn": "For the place you are leaving, use z + Genitive: wyszedłem z domu (I left the house)."
+            "learnerExplanationEn": "One common way to say where you're leaving from is z + Genitive: wyszedłem z domu (I left the house). This is a common realization of the source, not the only possible form."
           },
           {
             "candidatePatternKey": "do-genitive-destination",
@@ -1691,7 +1691,7 @@
               "priority": "core",
               "register": "neutral"
             },
-            "learnerExplanationEn": "For the place you are leaving, use z + Genitive: wyjadę z miasta (I'll leave the city). This does not name a destination."
+            "learnerExplanationEn": "One common way to say where you're leaving from by transport is z + Genitive: wyjadę z miasta (I'll leave the city). This is a common realization of the source, not the only possible form. It does not name a destination."
           }
         ],
         "examples": [
