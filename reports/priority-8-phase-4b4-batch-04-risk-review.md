@@ -194,9 +194,12 @@ English-string uniqueness. The 10 affected examples (§ authoring report
 addendum) were rewritten; duplicate English between recipient-mode siblings
 is now accepted where the Polish constructions genuinely share one natural
 translation. All 41 Polish sentences remain pairwise unique and
-pedagogically distinct; 4 of the 41 English strings now legitimately
-duplicate. `napisać`'s A2–A4 examples still visibly realize the required
-Dative; every required complement is still realized in its example.
+pedagogically distinct. Four distinct English translations are each shared
+by a sibling pair (the interrogative-clause and direct-speech alternatives,
+for both `pisać` and `napisać`), so 8 of the 41 example records participate
+in English duplication; this is intentional, not an oversight. `napisać`'s
+A2–A4 examples still visibly realize the required Dative; every required
+complement is still realized in its example.
 
 ## 14. Provenance / quiet reuse — WORDING CORRECTED
 
@@ -227,8 +230,8 @@ checking "the complete repository entity index" — this overstated coverage.
 
 Both scans found **zero verbatim collisions** for all 41 Batch 4 Polish
 sentences (including the 10 corrected). All 41 Polish strings are pairwise
-unique within Batch 4; English strings are not required to be, and 4 now
-legitimately duplicate (§13).
+unique within Batch 4; English strings are not required to be, and 8 of the
+41 records now participate in one of four legitimate duplicate pairs (§13).
 
 ## 15. Future-safe historical lock
 

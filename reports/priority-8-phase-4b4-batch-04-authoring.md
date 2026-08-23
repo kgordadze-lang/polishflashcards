@@ -29,8 +29,9 @@ matrix, the guard registry, the progress test, or any complement/key:
    commit for all 41 patterns — verified programmatically.
 
 English-string uniqueness across Batch 4 is **no longer presented as a
-product-quality goal**: 4 of the 41 English translations now legitimately
-duplicate across a Dative/`do`+Genitive sibling pair, because natural
+product-quality goal**: four distinct English translations are each shared
+by a sibling pair (Dative vs. `do`+Genitive), so 8 of the 41 example records
+participate in English duplication. This is intentional — natural
 translation quality outranks an artificial uniqueness constraint. All 41
 Polish sentences remain pairwise unique. The Batch 4 content digest changed
 accordingly; see below.
@@ -149,10 +150,13 @@ source wording. No production ID was allocated anywhere.
   grammar-deck text) but is a one-time authoring-time check, not a
   test-suite-enforced guarantee.
 - All 41 Polish strings are pairwise unique across Batch 4. English
-  translations are **not** required to be unique: 4 of the 41 now
-  legitimately duplicate (the interrogative-clause, `że`-clause, and
-  direct-speech Dative/`do`+Genitive sibling pairs share a natural English
-  rendering), which is intentional — see the correction addendum.
+  translations are **not** required to be unique: four distinct English
+  translations are each shared by a Dative/`do`+Genitive sibling pair (the
+  interrogative-clause and direct-speech alternatives, for both `pisać` and
+  `napisać`), so 8 of the 41 example records participate in English
+  duplication. This is intentional — natural translation quality takes
+  priority over global English string uniqueness — see the correction
+  addendum.
 
 ## Live rules added (same commit)
 
