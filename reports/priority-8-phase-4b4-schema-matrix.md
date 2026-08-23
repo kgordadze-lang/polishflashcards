@@ -220,10 +220,22 @@ content-clause variants with optional `o KIM/CZYM` and `GDZIE`;
 | 5 | `direct-speech-content` | `clause:direct-speech role=content required` | `case:dative role=recipient optional` | `direct-speech` | not applicable |
 
 Proposed live guard: `require-exact-pattern-shapes` (G) +
-`allow-only-preposition-case-signatures` (H) restricted to the single
-authorized `o+locative` topic signature, which structurally blocks any
-concretization of `GDZIE` into `w`/`na` + Locative, `do` + Genitive, or any
-other location preposition.
+`allow-only-preposition-case-signatures` (H). Because the guard engine matches
+complements by exact signature equality — `required` is part of that
+signature, not a separate check — the czytać matrix authorizes **two**
+distinct `o+locative` topic signatures, and guard H's allowlist must contain
+both:
+
+- `preposition-case:o+locative role=topic required=true` (the dedicated topic
+  alternative, row 2, where it is the required core complement);
+- `preposition-case:o+locative role=topic required=false` (the optional topic
+  participant on the `że`/interrogative clause alternatives, rows 3–4).
+
+A one-entry allowlist containing only the `required=true` form would falsely
+reject rows 3 and 4, which this matrix already authorizes. With both entries
+present, the allowlist still structurally blocks any concretization of
+`GDZIE` into `w`/`na` + Locative, `do` + Genitive, or any other location
+preposition, since no such signature is ever added to it.
 
 **Conservative-reading note.** The source lists optional `KOMU` explicitly on
 variants 1, 2 and 5 but **not** on the content-clause variants. This matrix
@@ -486,8 +498,10 @@ concrete reading-location realization — no `w + Locative`, no `na + Locative`,
 no `do + Genitive`, no other location preposition. Reading place, medium,
 language, speed and frequency remain outside product complement syntax. The
 proposed `allow-only-preposition-case-signatures` guard (H) makes this
-structurally enforceable by allowlisting only the authorized `o+locative` topic
-signature for `czytać`.
+structurally enforceable for `czytać` by allowlisting exactly the two
+authorized `o+locative` topic signatures — `required=true` (row 2) and
+`required=false` (rows 3–4) — and nothing else; see §9 (guard H) for why both
+must be listed.
 
 No other Batch 4 construction is a narrowed realization of a generalized role;
 `za + Accusative`, `w + Locative` (participation), `z + Instrumental`,
@@ -519,7 +533,7 @@ this task. Presence-asserting rules must land in the same commit as the
 | E | `brać` participation | `require-lexical-material-in-explanation` | Learner explanation must contain whole token `udział` |
 | F | `wziąć` | same three as C/D/E | Independently pinned |
 | G | `czytać` | `require-exact-pattern-shapes` | Five alternatives with exact optionality |
-| H | `czytać` | `allow-only-preposition-case-signatures` | Allowlist `o+locative` topic only → blocks any `GDZIE` concretization |
+| H | `czytać` | `allow-only-preposition-case-signatures` | Allowlist **both** authorized `o+locative` topic signatures — `role=topic required=true` (row 2's required core) and `role=topic required=false` (rows 3–4's optional participant) — and nothing else. The guard engine matches complements by exact signature equality, so `required` is part of the signature identity, not a separate check; a one-entry allowlist naming only the `required=true` form would falsely reject rows 3 and 4. With both entries present, any concretization of `GDZIE` into `w`/`na` + Locative, `do` + Genitive, or any other location preposition remains blocked, since no such signature is ever added |
 | I | `pisać` | `require-exact-pattern-shapes` | Creation meaning (1 alternative) plus correspondence meaning (12 alternatives: 6 optional-Dative Mode A + 6 optional-`do` Mode B); the exact-shape check inherently prevents recipient-mode merger, Dative/`do` co-occurrence, clause-kind merger, and any maximal correspondence frame, since only the 13 declared shapes are accepted |
 | J | `napisać` | `require-exact-pattern-shapes` | Creation meaning (1 alternative) plus correspondence meaning (12 alternatives), with the rule's declared shapes encoding **required** Dative on exactly A2–A4 and optional Dative/`do` everywhere else — this is what structurally prevents future authoring from normalizing `napisać`'s requiredness to `pisać`'s |
 | K | `spotykać się` | `require-lexical-identity` + `require-exact-pattern-shapes` | `się` preserved; single required `z+instrumental` |
