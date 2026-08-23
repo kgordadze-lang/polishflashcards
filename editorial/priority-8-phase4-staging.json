@@ -1,9 +1,9 @@
 {
   "stagingSchemaVersion": 1,
-  "stagingRevision": 4,
+  "stagingRevision": 5,
   "priority": 8,
   "phase": "4B",
-  "phaseStep": "4B3",
+  "phaseStep": "4B4",
   "frozenFullPatternCount": 68,
   "sources": {
     "phase3BFreezeCsv": {
@@ -4170,9 +4170,59 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "transfer-to-recipient",
+            "glossesEn": [
+              "give something to someone",
+              "hand something over"
+            ],
+            "internalScope": "Imperfective transfer causing a recipient to own or use a thing; process, repeated, and habitual transfer. Accusative object and Dative recipient are both required in the same schema. Gift occasion, purpose, manner, time, and w prezencie-style contextual gift language are not complements."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "accusative-thing-dative-recipient",
+            "meaningKeyRef": "transfer-to-recipient",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": true,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The thing given takes the Accusative and the recipient takes the Dative, and both are required: daję sąsiadowi klucze (I'm giving the neighbor the keys)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "transfer-to-recipient",
+            "patternKeyRef": "accusative-thing-dative-recipient",
+            "pl": "Daję sąsiadowi klucze.",
+            "en": "I'm giving the neighbor the keys.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -4189,9 +4239,59 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "completed-transfer-to-recipient",
+            "glossesEn": [
+              "give something to someone (completed)",
+              "hand something over (bounded)"
+            ],
+            "internalScope": "Completed/bounded transfer causing a recipient to own or use a thing, independently evidenced from dawać. Accusative object and Dative recipient are both required. Gift occasion, purpose, manner, time, and w prezencie-style language are not complements."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "accusative-thing-dative-recipient",
+            "meaningKeyRef": "completed-transfer-to-recipient",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": true,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The thing given takes the Accusative and the recipient takes the Dative, and both are required: dałem sąsiadowi klucze (I gave the neighbor the keys)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "completed-transfer-to-recipient",
+            "patternKeyRef": "accusative-thing-dative-recipient",
+            "pl": "Dałem sąsiadowi klucze.",
+            "en": "I gave the neighbor the keys.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -4208,9 +4308,141 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "literal-taking",
+            "glossesEn": [
+              "take something (literal)",
+              "grasp something"
+            ],
+            "internalScope": "Literal grasping/taking of an entity. Two distinct source schemas are kept as alternatives: an Accusative object with an optional Instrumental means (animate subject), and an Accusative object with a required za + Accusative gripped part (personal subject). Destination, manner, time, and circumstance are not complements."
+          },
+          {
+            "candidateMeaningKey": "fixed-participation",
+            "glossesEn": [
+              "take part in something",
+              "participate"
+            ],
+            "internalScope": "Fixed lexical construction brać udział w czymś = participation, a separate lexical entry, not derived from ordinary object syntax. udział is required lexical material of the fixed construction, not a replaceable Accusative object; the schema structurally encodes only w + Locative. A personal subject is required. Participation modifiers, event circumstances, time, and manner are not complements, and this is never modelled as generic brać + w + Locative."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "accusative-entity-optional-instrumental-means",
+            "meaningKeyRef": "literal-taking",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "case",
+                "case": "instrumental",
+                "required": false,
+                "role": "means"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The thing taken takes the Accusative; you can optionally add the Instrumental for what it's taken with: biorę zupę łyżką (I'm taking/scooping the soup with a spoon)."
+          },
+          {
+            "candidatePatternKey": "accusative-entity-za-accusative-gripped-part",
+            "meaningKeyRef": "literal-taking",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "za",
+                "case": "accusative",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "To take hold of someone or something by a part, use Accusative + za + Accusative for the gripped part, both required: biorę dziecko za rękę (I'm taking the child by the hand)."
+          },
+          {
+            "candidatePatternKey": "w-locative-participation-target",
+            "meaningKeyRef": "fixed-participation",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "w",
+                "case": "locative",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "brać udział w + Locative is a fixed expression meaning to take part in something; udział is a fixed word here, not a replaceable object: biorę udział w konferencji (I'm taking part in the conference)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "literal-taking",
+            "patternKeyRef": "accusative-entity-optional-instrumental-means",
+            "pl": "Biorę zupę łyżką.",
+            "en": "I'm taking the soup with a spoon.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "literal-taking",
+            "patternKeyRef": "accusative-entity-za-accusative-gripped-part",
+            "pl": "Biorę dziecko za rękę.",
+            "en": "I'm taking the child by the hand.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "fixed-participation",
+            "patternKeyRef": "w-locative-participation-target",
+            "pl": "Biorę udział w konferencji.",
+            "en": "I'm taking part in the conference.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       },
       "requiredLexicalItems": [
         "udział"
@@ -4230,9 +4462,141 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "bounded-literal-taking",
+            "glossesEn": [
+              "take something (completed)",
+              "grasp something (bounded)"
+            ],
+            "internalScope": "Bounded literal grasping/taking, independently evidenced from brać. Same two alternatives: Accusative with optional Instrumental means (animate subject), and Accusative with required za + Accusative gripped part (personal subject). Destination, time, manner, and circumstance are not complements."
+          },
+          {
+            "candidateMeaningKey": "fixed-participation",
+            "glossesEn": [
+              "take part in something (completed)",
+              "enter into participation"
+            ],
+            "internalScope": "Fixed lexical construction wziąć udział w czymś = entry into participation, a separate WSJP fixed entry, independently evidenced from brać's. udział is required lexical material, not a replaceable object; only w + Locative is structurally encoded. A personal subject is required. Participation modifiers, event circumstances, time, and manner are not complements."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "accusative-entity-optional-instrumental-means",
+            "meaningKeyRef": "bounded-literal-taking",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "case",
+                "case": "instrumental",
+                "required": false,
+                "role": "means"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The thing taken takes the Accusative; you can optionally add the Instrumental for what it's taken with: wziąłem klucz szczypcami (I took/grabbed the key with pliers)."
+          },
+          {
+            "candidatePatternKey": "accusative-entity-za-accusative-gripped-part",
+            "meaningKeyRef": "bounded-literal-taking",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "za",
+                "case": "accusative",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "To take hold of someone or something by a part, use Accusative + za + Accusative for the gripped part, both required: wziąłem dziecko za rękę (I took the child by the hand)."
+          },
+          {
+            "candidatePatternKey": "w-locative-participation-target",
+            "meaningKeyRef": "fixed-participation",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "w",
+                "case": "locative",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "wziąć udział w + Locative is a fixed expression meaning to enter into participation; udział is a fixed word here, not a replaceable object: wziąłem udział w konferencji (I took part in the conference)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "bounded-literal-taking",
+            "patternKeyRef": "accusative-entity-optional-instrumental-means",
+            "pl": "Wziąłem klucz szczypcami.",
+            "en": "I took/grabbed the key with pliers.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "bounded-literal-taking",
+            "patternKeyRef": "accusative-entity-za-accusative-gripped-part",
+            "pl": "Wziąłem dziecko za rękę.",
+            "en": "I took the child by the hand.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "fixed-participation",
+            "patternKeyRef": "w-locative-participation-target",
+            "pl": "Wziąłem udział w konferencji.",
+            "en": "I took part in the conference.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       },
       "requiredLexicalItems": [
         "udział"
@@ -4252,9 +4616,224 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "reading-written-content",
+            "glossesEn": [
+              "read something",
+              "read aloud"
+            ],
+            "internalScope": "Reading written symbols/text, including process/habitual reading, content reporting, and reading aloud. Five alternatives: bare Accusative content with an optional Dative listener; a required o + Locative topic with optional Accusative and Dative; a że-clause or interrogative-dependent clause each with an optional o + Locative topic; and direct speech with an optional Dative listener. Reading frequency, speed, manner, language, medium, and incidental place are not complements, and no concrete location frame (w/na + Locative, do + Genitive, or any other location preposition) is ever authored from the generalized GDZIE evidence."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "accusative-content-optional-listener",
+            "meaningKeyRef": "reading-written-content",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "What is read takes the Accusative; you can optionally add the Dative for who it's read to: czytam dzieciom książkę (I'm reading the children a book)."
+          },
+          {
+            "candidatePatternKey": "o-locative-topic",
+            "meaningKeyRef": "reading-written-content",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "o",
+                "case": "locative",
+                "required": true,
+                "role": "topic"
+              },
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": false,
+                "role": "object"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "To read about a topic, use o + Locative, which is required here: czytam o polityce (I'm reading about politics). This names the topic you're reading about, not a location."
+          },
+          {
+            "candidatePatternKey": "ze-content-clause",
+            "meaningKeyRef": "reading-written-content",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "o",
+                "case": "locative",
+                "required": false,
+                "role": "topic"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use że to introduce what you read as a clause: czytam, że ceny rosną (I'm reading that prices are rising)."
+          },
+          {
+            "candidatePatternKey": "interrogative-content-clause",
+            "meaningKeyRef": "reading-written-content",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "interrogative",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "o",
+                "case": "locative",
+                "required": false,
+                "role": "topic"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use a question word to introduce read content: czytam, dlaczego ceny rosną (I'm reading why prices are rising)."
+          },
+          {
+            "candidatePatternKey": "direct-speech-content",
+            "meaningKeyRef": "reading-written-content",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "direct-speech",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "You can also read exact words aloud directly, optionally naming who you're reading to with the Dative: czytam dzieciom: „Ala ma kota” (I'm reading to the children: \"Ala has a cat.\")."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "reading-written-content",
+            "patternKeyRef": "accusative-content-optional-listener",
+            "pl": "Czytam dzieciom książkę.",
+            "en": "I'm reading the children a book.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "reading-written-content",
+            "patternKeyRef": "o-locative-topic",
+            "pl": "Czytam o polityce.",
+            "en": "I'm reading about politics.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "reading-written-content",
+            "patternKeyRef": "ze-content-clause",
+            "pl": "Czytam, że ceny rosną.",
+            "en": "I'm reading that prices are rising.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "reading-written-content",
+            "patternKeyRef": "interrogative-content-clause",
+            "pl": "Czytam, dlaczego ceny rosną.",
+            "en": "I'm reading why prices are rising.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "reading-written-content",
+            "patternKeyRef": "direct-speech-content",
+            "pl": "Czytam dzieciom: „Ala ma kota”.",
+            "en": "I'm reading to the children: \"Ala has a cat.\"",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       },
       "metadataAspectPartner": {
         "canonicalLemma": "przeczytać",
@@ -4275,9 +4854,531 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "text-creation",
+            "glossesEn": [
+              "write something (create)",
+              "compose a text"
+            ],
+            "internalScope": "Creating and recording a text or music (WSJP sense 2). Bare Accusative names the created text; no addressee. Correspondence addressees of any form, writing medium, place, time, language, frequency, and manner are not complements, and creative-sense do + Genitive newspaper connections are not modelled as an addressee schema."
+          },
+          {
+            "candidateMeaningKey": "written-correspondence",
+            "glossesEn": [
+              "write to someone",
+              "correspond in writing"
+            ],
+            "internalScope": "Communicating information in writing (WSJP sense 4). Six content families (o + Locative topic, że-clause, żeby-clause, interrogative-dependent clause, direct speech, bare Accusative content) each optionally take a recipient in one of two mutually exclusive alternative forms, Dative or do + Genitive. Every recipient is optional in every pisać correspondence schema; Dative and do + Genitive never co-occur in one pattern. Writing medium, place, time, language, frequency, and manner are not complements, and do + Genitive is never generalized beyond correspondence."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "accusative-created-text",
+            "meaningKeyRef": "text-creation",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "What you write takes the Accusative: piszę powieść (I'm writing a novel)."
+          },
+          {
+            "candidatePatternKey": "dative-topic",
+            "meaningKeyRef": "written-correspondence",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "o",
+                "case": "locative",
+                "required": true,
+                "role": "topic"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For the topic you're writing about, use o + Locative, which is required here; you can optionally add the Dative for who you're writing to (no preposition): piszę koledze o wakacjach (I'm writing my friend about the holidays)."
+          },
+          {
+            "candidatePatternKey": "dative-ze-clause",
+            "meaningKeyRef": "written-correspondence",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use że to introduce what you're writing as a clause; you can optionally add the bare Dative for who you're writing to: piszę koledze, że wracam jutro (I'm writing my friend that I'm coming back tomorrow)."
+          },
+          {
+            "candidatePatternKey": "dative-zeby-clause",
+            "meaningKeyRef": "written-correspondence",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use żeby to introduce what you're asking someone to do; you can optionally add the bare Dative for who you're writing to: piszę koledze, żeby zadzwonił (I'm writing my friend, asking him to call)."
+          },
+          {
+            "candidatePatternKey": "dative-interrogative-clause",
+            "meaningKeyRef": "written-correspondence",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "interrogative",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use a question word to introduce written content; you can optionally add the bare Dative for who you're writing to: piszę koledze, kiedy wracam (I'm writing my friend when I'm coming back)."
+          },
+          {
+            "candidatePatternKey": "dative-direct-speech",
+            "meaningKeyRef": "written-correspondence",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "direct-speech",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "You can write exact words directly; you can optionally add the bare Dative for who you're writing to: piszę koledze: „Wracam jutro” (I'm writing my friend: \"I'm coming back tomorrow.\")."
+          },
+          {
+            "candidatePatternKey": "dative-accusative-content",
+            "meaningKeyRef": "written-correspondence",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "What you write takes the Accusative; you can optionally add the bare Dative for who you're writing to: piszę koledze wiadomość (I'm writing my friend a message)."
+          },
+          {
+            "candidatePatternKey": "do-genitive-topic",
+            "meaningKeyRef": "written-correspondence",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "o",
+                "case": "locative",
+                "required": true,
+                "role": "topic"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "B1"
+            },
+            "teachingStatus": "recognition-only",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For the topic you're writing about, use o + Locative, which is required here; you can optionally add do + Genitive (literally 'to') for who you're writing to: piszę do koleżanki o wakacjach (I'm writing to my friend about the holidays)."
+          },
+          {
+            "candidatePatternKey": "do-genitive-ze-clause",
+            "meaningKeyRef": "written-correspondence",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "B1"
+            },
+            "teachingStatus": "recognition-only",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use że to introduce what you're writing as a clause; you can optionally add do + Genitive for who you're writing to: piszę do koleżanki, że wracam jutro (I'm writing to my friend that I'm coming back tomorrow)."
+          },
+          {
+            "candidatePatternKey": "do-genitive-zeby-clause",
+            "meaningKeyRef": "written-correspondence",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "B1"
+            },
+            "teachingStatus": "recognition-only",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use żeby to introduce what you're asking someone to do; you can optionally add do + Genitive for who you're writing to: piszę do koleżanki, żeby zadzwoniła (I'm writing to my friend, asking her to call)."
+          },
+          {
+            "candidatePatternKey": "do-genitive-interrogative-clause",
+            "meaningKeyRef": "written-correspondence",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "interrogative",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "B1"
+            },
+            "teachingStatus": "recognition-only",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use a question word to introduce written content; you can optionally add do + Genitive for who you're writing to: piszę do koleżanki, kiedy wracam (I'm writing to my friend when I'm coming back)."
+          },
+          {
+            "candidatePatternKey": "do-genitive-direct-speech",
+            "meaningKeyRef": "written-correspondence",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "direct-speech",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "B1"
+            },
+            "teachingStatus": "recognition-only",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "You can write exact words directly; you can optionally add do + Genitive for who you're writing to: piszę do koleżanki: „Wracam jutro” (I'm writing to my friend: \"I'm coming back tomorrow.\")."
+          },
+          {
+            "candidatePatternKey": "do-genitive-accusative-content",
+            "meaningKeyRef": "written-correspondence",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "B1"
+            },
+            "teachingStatus": "recognition-only",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "What you write takes the Accusative; you can optionally add do + Genitive for who you're writing to: piszę do koleżanki wiadomość (I'm writing a message to my friend)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "text-creation",
+            "patternKeyRef": "accusative-created-text",
+            "pl": "Piszę powieść.",
+            "en": "I'm writing a novel.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "written-correspondence",
+            "patternKeyRef": "dative-topic",
+            "pl": "Piszę koledze o wakacjach.",
+            "en": "I'm writing my friend about the holidays.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "written-correspondence",
+            "patternKeyRef": "dative-ze-clause",
+            "pl": "Piszę koledze, że wracam jutro.",
+            "en": "I'm writing my friend that I'm coming back tomorrow.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "written-correspondence",
+            "patternKeyRef": "dative-zeby-clause",
+            "pl": "Piszę koledze, żeby zadzwonił.",
+            "en": "I'm writing my friend, asking him to call.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "written-correspondence",
+            "patternKeyRef": "dative-interrogative-clause",
+            "pl": "Piszę koledze, kiedy wracam.",
+            "en": "I'm writing my friend when I'm coming back.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "written-correspondence",
+            "patternKeyRef": "dative-direct-speech",
+            "pl": "Piszę koledze: „Wracam jutro”.",
+            "en": "I'm writing my friend: \"I'm coming back tomorrow.\"",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "written-correspondence",
+            "patternKeyRef": "dative-accusative-content",
+            "pl": "Piszę koledze wiadomość.",
+            "en": "I'm writing my friend a message.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "written-correspondence",
+            "patternKeyRef": "do-genitive-topic",
+            "pl": "Piszę do koleżanki o wakacjach.",
+            "en": "I'm writing to my friend about the holidays.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "written-correspondence",
+            "patternKeyRef": "do-genitive-ze-clause",
+            "pl": "Piszę do koleżanki, że wracam jutro.",
+            "en": "I'm writing to my friend that I'm coming back tomorrow.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "written-correspondence",
+            "patternKeyRef": "do-genitive-zeby-clause",
+            "pl": "Piszę do koleżanki, żeby zadzwoniła.",
+            "en": "I'm writing to my friend, asking her to call.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "written-correspondence",
+            "patternKeyRef": "do-genitive-interrogative-clause",
+            "pl": "Piszę do koleżanki, kiedy wracam.",
+            "en": "I'm writing to my friend when I'm coming back.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "written-correspondence",
+            "patternKeyRef": "do-genitive-direct-speech",
+            "pl": "Piszę do koleżanki: „Wracam jutro”.",
+            "en": "I'm writing to my friend: \"I'm coming back tomorrow.\"",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "written-correspondence",
+            "patternKeyRef": "do-genitive-accusative-content",
+            "pl": "Piszę do koleżanki wiadomość.",
+            "en": "I'm writing a message to my friend.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -4294,9 +5395,531 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "completed-text-creation",
+            "glossesEn": [
+              "write something (completed)",
+              "compose a text (bounded)"
+            ],
+            "internalScope": "Completed creation and recording of a text or music (WSJP sense 2), independently evidenced from pisać. Bare Accusative names the created text; no addressee. Correspondence addressees, medium, place, time, language, repetition, and manner are not complements, and creative-sense do + Genitive newspaper connections are not modelled as an addressee schema."
+          },
+          {
+            "candidateMeaningKey": "completed-written-correspondence",
+            "glossesEn": [
+              "write to someone (completed)",
+              "correspond in writing (bounded)"
+            ],
+            "internalScope": "Completed written communication (WSJP sense 4), independently evidenced from pisać. Same six content families, each taking a recipient in one of two mutually exclusive alternative forms, Dative or do + Genitive. Critical asymmetry: Dative is required on exactly the three clause alternatives (że, żeby, interrogative-dependent) and optional on topic, direct speech, and bare Accusative content; do + Genitive remains optional throughout. This schema-specific requiredness is preserved exactly and is never normalized to pisać's uniformly-optional Dative in either direction. Medium, place, time, language, repetition, and manner are not complements."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "accusative-created-text",
+            "meaningKeyRef": "completed-text-creation",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "What you write takes the Accusative: napisałem powieść (I wrote a novel)."
+          },
+          {
+            "candidatePatternKey": "dative-topic",
+            "meaningKeyRef": "completed-written-correspondence",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "o",
+                "case": "locative",
+                "required": true,
+                "role": "topic"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For the topic you're writing about, use o + Locative, which is required here; the bare Dative recipient is optional in this alternative: napisałem koledze o wakacjach (I wrote my friend about the holidays)."
+          },
+          {
+            "candidatePatternKey": "dative-ze-clause",
+            "meaningKeyRef": "completed-written-correspondence",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": true,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use że to introduce what you wrote as a clause. Unlike pisać, in this clause alternative the bare Dative recipient is REQUIRED, not optional: napisałem koledze, że wracam jutro (I wrote my friend that I'm coming back tomorrow)."
+          },
+          {
+            "candidatePatternKey": "dative-zeby-clause",
+            "meaningKeyRef": "completed-written-correspondence",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": true,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use żeby to introduce what you're asking someone to do. The bare Dative recipient is REQUIRED in this clause alternative: napisałem koledze, żeby zadzwonił (I wrote my friend, asking him to call)."
+          },
+          {
+            "candidatePatternKey": "dative-interrogative-clause",
+            "meaningKeyRef": "completed-written-correspondence",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "interrogative",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": true,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use a question word to introduce written content. The bare Dative recipient is REQUIRED in this clause alternative: napisałem koledze, kiedy wracam (I wrote my friend when I'm coming back)."
+          },
+          {
+            "candidatePatternKey": "dative-direct-speech",
+            "meaningKeyRef": "completed-written-correspondence",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "direct-speech",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "You can write exact words directly; the bare Dative recipient is optional here: napisałem koledze: „Wracam jutro” (I wrote my friend: \"I'm coming back tomorrow.\")."
+          },
+          {
+            "candidatePatternKey": "dative-accusative-content",
+            "meaningKeyRef": "completed-written-correspondence",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "What you write takes the Accusative; the bare Dative recipient is optional here: napisałem koledze wiadomość (I wrote my friend a message)."
+          },
+          {
+            "candidatePatternKey": "do-genitive-topic",
+            "meaningKeyRef": "completed-written-correspondence",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "o",
+                "case": "locative",
+                "required": true,
+                "role": "topic"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "B1"
+            },
+            "teachingStatus": "recognition-only",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For the topic you're writing about, use o + Locative, which is required here; do + Genitive for the recipient stays optional throughout, unlike Dative on the clause alternatives: napisałem do koleżanki o wakacjach (I wrote to my friend about the holidays)."
+          },
+          {
+            "candidatePatternKey": "do-genitive-ze-clause",
+            "meaningKeyRef": "completed-written-correspondence",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "B1"
+            },
+            "teachingStatus": "recognition-only",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use że to introduce what you wrote as a clause; do + Genitive for the recipient remains optional here: napisałem do koleżanki, że wracam jutro (I wrote to my friend that I'm coming back tomorrow)."
+          },
+          {
+            "candidatePatternKey": "do-genitive-zeby-clause",
+            "meaningKeyRef": "completed-written-correspondence",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "B1"
+            },
+            "teachingStatus": "recognition-only",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use żeby to introduce what you're asking someone to do; do + Genitive for the recipient remains optional here: napisałem do koleżanki, żeby zadzwoniła (I wrote to my friend, asking her to call)."
+          },
+          {
+            "candidatePatternKey": "do-genitive-interrogative-clause",
+            "meaningKeyRef": "completed-written-correspondence",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "interrogative",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "B1"
+            },
+            "teachingStatus": "recognition-only",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use a question word to introduce written content; do + Genitive for the recipient remains optional here: napisałem do koleżanki, kiedy wracam (I wrote to my friend when I'm coming back)."
+          },
+          {
+            "candidatePatternKey": "do-genitive-direct-speech",
+            "meaningKeyRef": "completed-written-correspondence",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "direct-speech",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "B1"
+            },
+            "teachingStatus": "recognition-only",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "You can write exact words directly; do + Genitive for the recipient remains optional here: napisałem do koleżanki: „Wracam jutro” (I wrote to my friend: \"I'm coming back tomorrow.\")."
+          },
+          {
+            "candidatePatternKey": "do-genitive-accusative-content",
+            "meaningKeyRef": "completed-written-correspondence",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "B1"
+            },
+            "teachingStatus": "recognition-only",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "What you write takes the Accusative; do + Genitive for the recipient remains optional here: napisałem do koleżanki wiadomość (I wrote a message to my friend)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "completed-text-creation",
+            "patternKeyRef": "accusative-created-text",
+            "pl": "Napisałem powieść.",
+            "en": "I wrote a novel.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "completed-written-correspondence",
+            "patternKeyRef": "dative-topic",
+            "pl": "Napisałem koledze o wakacjach.",
+            "en": "I wrote my friend about the holidays.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "completed-written-correspondence",
+            "patternKeyRef": "dative-ze-clause",
+            "pl": "Napisałem koledze, że wracam jutro.",
+            "en": "I wrote my friend that I'm coming back tomorrow.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "completed-written-correspondence",
+            "patternKeyRef": "dative-zeby-clause",
+            "pl": "Napisałem koledze, żeby zadzwonił.",
+            "en": "I wrote my friend, asking him to call.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "completed-written-correspondence",
+            "patternKeyRef": "dative-interrogative-clause",
+            "pl": "Napisałem koledze, kiedy wracam.",
+            "en": "I wrote my friend when I'm coming back.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "completed-written-correspondence",
+            "patternKeyRef": "dative-direct-speech",
+            "pl": "Napisałem koledze: „Wracam jutro”.",
+            "en": "I wrote my friend: \"I'm coming back tomorrow.\"",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "completed-written-correspondence",
+            "patternKeyRef": "dative-accusative-content",
+            "pl": "Napisałem koledze wiadomość.",
+            "en": "I wrote my friend a message.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "completed-written-correspondence",
+            "patternKeyRef": "do-genitive-topic",
+            "pl": "Napisałem do koleżanki o wakacjach.",
+            "en": "I wrote to my friend about the holidays.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "completed-written-correspondence",
+            "patternKeyRef": "do-genitive-ze-clause",
+            "pl": "Napisałem do koleżanki, że wracam jutro.",
+            "en": "I wrote to my friend that I'm coming back tomorrow.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "completed-written-correspondence",
+            "patternKeyRef": "do-genitive-zeby-clause",
+            "pl": "Napisałem do koleżanki, żeby zadzwoniła.",
+            "en": "I wrote to my friend, asking her to call.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "completed-written-correspondence",
+            "patternKeyRef": "do-genitive-interrogative-clause",
+            "pl": "Napisałem do koleżanki, kiedy wracam.",
+            "en": "I wrote to my friend when I'm coming back.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "completed-written-correspondence",
+            "patternKeyRef": "do-genitive-direct-speech",
+            "pl": "Napisałem do koleżanki: „Wracam jutro”.",
+            "en": "I wrote to my friend: \"I'm coming back tomorrow.\"",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "completed-written-correspondence",
+            "patternKeyRef": "do-genitive-accusative-content",
+            "pl": "Napisałem do koleżanki wiadomość.",
+            "en": "I wrote a message to my friend.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -4313,9 +5936,54 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "recurring-social-meeting",
+            "glossesEn": [
+              "meet up with someone",
+              "meet regularly"
+            ],
+            "internalScope": "Recurring or processual social meetings and contact. z + Instrumental names the meeting partner for a singular personal subject. A reciprocal plural personal subject (e.g. 'we meet') may occur without a separate partner phrase; this is a participant/usage restriction, not a second complementless pattern. się is part of the lexical identity, not a free complement. Frequency, time, place, manner, purpose, and accompanying activities are not complements."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "z-instrumental-meeting-partner",
+            "meaningKeyRef": "recurring-social-meeting",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": true,
+                "role": "interlocutor"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For who you meet up with, use z + Instrumental: spotykam się z przyjaciółmi (I meet up with friends). A reciprocal plural subject like 'we meet' doesn't need a separate z-phrase."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "recurring-social-meeting",
+            "patternKeyRef": "z-instrumental-meeting-partner",
+            "pl": "Spotykam się z przyjaciółmi.",
+            "en": "I meet up with friends.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -4332,9 +6000,54 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "completed-social-meeting",
+            "glossesEn": [
+              "meet up with someone (completed)",
+              "meet (bounded)"
+            ],
+            "internalScope": "A completed/bounded social meeting or contact, independently evidenced from spotykać się (Batch 05 §41). Same z + Instrumental meeting-partner schema and the same singular/reciprocal-plural participant treatment. się is part of the lexical identity. Time, place, manner, purpose, and accompanying activities are not complements."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "z-instrumental-meeting-partner",
+            "meaningKeyRef": "completed-social-meeting",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": true,
+                "role": "interlocutor"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For who you met up with, use z + Instrumental: spotkałem się z przyjaciółmi (I met up with friends). A reciprocal plural subject like 'we met' doesn't need a separate z-phrase."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "completed-social-meeting",
+            "patternKeyRef": "z-instrumental-meeting-partner",
+            "pl": "Spotkałem się z przyjaciółmi.",
+            "en": "I met up with friends.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
