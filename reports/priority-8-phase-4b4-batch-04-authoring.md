@@ -1,5 +1,40 @@
 # Priority 8 Phase 4B4 — Batch 04 authoring
 
+## Correction addendum (product-quality review)
+
+Independent review of the original authoring (commit
+`823ee376c258bb8e4d4183c3e577d60291ab14dd`) approved the full 41/41 matrix
+implementation and all structural/guard work, but required two product-quality
+corrections, applied in a separate follow-up commit without touching the
+matrix, the guard registry, the progress test, or any complement/key:
+
+1. **Teaching status of the 12 `do` + Genitive correspondence patterns.**
+   The original blanket `recognition-only` classification is corrected below
+   (§"CEFR / teaching-status decisions"). It is contradicted by existing
+   product content, which already drills active production of `do` +
+   Genitive correspondence (`data-verbs.js` drill `verbs-future-tense-005`,
+   type `"build"`, target "Napiszę do ciebie wieczorem."). Each `do` +
+   Genitive pattern's `cefr` and `teachingStatus` were mirrored exactly from
+   its Dative-mode sibling in the same content family, mechanically, per
+   lemma. Result: **41 active-production, 0 recognition-only** (up from
+   29/12) — derived by direct inspection of the sibling records, not forced.
+2. **Ten example/translation corrections** (§"Example provenance" and the
+   per-lemma table below), covering four ambiguous interrogative-clause
+   translations, two Dative `że`-clause translations using a marked "write
+   my friend that…" construction, two Dative direct-speech translations with
+   the same "write my friend:" awkwardness, and the `brać`/`wziąć`
+   optional-Instrumental examples (one contrived, one carrying a
+   slash-alternative English translation). Complements, candidate keys, and
+   meaning/pattern/example cardinality are byte-identical to the original
+   commit for all 41 patterns — verified programmatically.
+
+English-string uniqueness across Batch 4 is **no longer presented as a
+product-quality goal**: 4 of the 41 English translations now legitimately
+duplicate across a Dative/`do`+Genitive sibling pair, because natural
+translation quality outranks an artificial uniqueness constraint. All 41
+Polish sentences remain pairwise unique. The Batch 4 content digest changed
+accordingly; see below.
+
 ## Scope and starting endpoint
 
 This is an **implementation** task against an already-reviewed and frozen
@@ -45,18 +80,19 @@ The frozen matrix declares, and this authoring implements exactly:
 | `brać` | 2 | 3 | 3 | 3 | 0 |
 | `wziąć` | 2 | 3 | 3 | 3 | 0 |
 | `czytać` | 1 | 5 | 5 | 5 | 0 |
-| `pisać` | 2 | 13 | 13 | 7 | 6 |
-| `napisać` | 2 | 13 | 13 | 7 | 6 |
+| `pisać` | 2 | 13 | 13 | 13 | 0 |
+| `napisać` | 2 | 13 | 13 | 13 | 0 |
 | `spotykać się` | 1 | 1 | 1 | 1 | 0 |
 | `spotkać się` | 1 | 1 | 1 | 1 | 0 |
-| **Total** | **13** | **41** | **41** | **29** | **12** |
+| **Total** | **13** | **41** | **41** | **41** | **0** |
 
-For `pisać`/`napisać`, the Dative recipient mode (Mode A, 6 alternatives each)
-is `active-production`; the `do` + Genitive recipient mode (Mode B, 6
-alternatives each) is `recognition-only`, reflecting that `do` + Genitive
-addressing is materially less central for active learner production than the
-modern default Dative recipient, while remaining fully declared and
-structurally guarded either way. See the risk review for the full rationale.
+**Corrected** (see addendum): `pisać`/`napisać`'s `do` + Genitive recipient
+mode (Mode B, 6 alternatives each) is `active-production`, mirroring its
+Dative sibling's `cefr`/`teachingStatus` exactly, content family by content
+family — not classified by recipient mode. `teachingStatus` and `cefr` now
+follow content-family complexity only: `accusative-content`/`topic` are
+core/A1-A2, clause alternatives (`że`, `żeby`, interrogative, direct speech)
+are common/A2-B1, identically in both recipient modes.
 
 ## Candidate keys
 
@@ -69,14 +105,20 @@ source wording. No production ID was allocated anywhere.
 
 - Basic one-complement or two-required-complement constructions (`dawać`,
   `dać`, `brać`/`wziąć` literal A1/A2, participation, `spotykać się`/
-  `spotkać się`, `czytać` alt 1, `pisać`/`napisać` creation and
-  `dative-accusative-content`): CEFR A1/A1 or A2/A2, `active-production`,
-  `core` priority.
+  `spotkać się`, `czytać` alt 1, `pisać`/`napisać` creation and both modes'
+  `accusative-content`): CEFR A1/A1 or A2/A2, `active-production`, `core`
+  priority.
 - Clause-based alternatives (`że`, `żeby`, interrogative-dependent, direct
-  speech) on `czytać` and `pisać`/`napisać` Mode A: CEFR A2/B1 or A2/A2,
-  `active-production`, `common` priority.
-- `pisać`/`napisać` Mode B (`do` + Genitive) alternatives: CEFR B1 recognition
-  only (no `production` field), `recognition-only`, `common` priority.
+  speech) on `czytać` and on **both** `pisać`/`napisać` recipient modes: CEFR
+  A2/B1 or A2/A2, `active-production`, `common` priority.
+- **Corrected:** `pisać`/`napisać`'s `do` + Genitive mode is no longer a
+  separate, uniformly `recognition-only` tier. Each `do`+Genitive pattern's
+  `cefr` and `teachingStatus` were mirrored mechanically from its exact
+  Dative-mode sibling (same content family), so both recipient modes now
+  carry identical pedagogical treatment content-family by content-family.
+  `usage` was left untouched — `priority: common`/`core` was already
+  consistent with `active-production` and contained no textual claim of
+  peripherality that needed removing.
 
 ## Example provenance
 
@@ -88,14 +130,29 @@ source wording. No production ID was allocated anywhere.
   participation, reading, correspondence, meeting vocabulary). No exact,
   schema-faithful match was found, so reuse was not forced, per the task's
   "reuse is optional" instruction.
-- **Editorial-generated count: 41.**
-- **Quiet-reuse scan:** every one of the 41 generated Polish sentences was
-  checked against the full repository entity index (1665 entities from
-  `data-*.js`) for a verbatim match in any `card.pl`/`card.ex`/`drill.prompt`/
-  `drill.answer` field. Zero matches — no generated sentence already exists
-  verbatim elsewhere in the repository under a different classification.
-- All 41 Polish strings and all 41 English strings are pairwise unique across
-  Batch 4 (verified programmatically).
+- **Editorial-generated count: 41** (unchanged after the correction).
+- **Quiet-reuse scan (historical-lock / index method):** every generated
+  Polish sentence — including the 10 corrected in this pass — was checked
+  against `priority7_tooling.repository_index_from_root`'s entity index
+  (1665 entities sourced from `data-*.js`: 1215 `card`, 353 `drill`, 89
+  `topic`, 8 `scenario`) for a verbatim match in the fields the historical
+  lock actually reads, `card.pl`/`card.ex`/`drill.prompt`/`drill.answer`.
+  Zero matches. This method does **not** reach nested grammar-deck example
+  arrays (e.g. `data-verbs.js`'s `examples[].pl`), which are outside `card`/
+  `drill` record shape.
+- **Supplemental raw-text scan (broader, authoring-time only, not part of the
+  automated historical lock):** all 10 corrected Polish sentences were also
+  grepped verbatim against the full text of every `.js` file, every
+  `editorial/*.json` file, and every `reports/*` file in the repository
+  (187 files, ~8.2 MB), excluding the staging file and Batch 4's own reports.
+  Zero matches. This scan is broader than the index method (it reaches the
+  grammar-deck text) but is a one-time authoring-time check, not a
+  test-suite-enforced guarantee.
+- All 41 Polish strings are pairwise unique across Batch 4. English
+  translations are **not** required to be unique: 4 of the 41 now
+  legitimately duplicate (the interrogative-clause, `że`-clause, and
+  direct-speech Dative/`do`+Genitive sibling pairs share a natural English
+  rendering), which is intentional — see the correction addendum.
 
 ## Live rules added (same commit)
 
@@ -142,8 +199,17 @@ Digest projection fields: `verificationOrder`, `canonicalLemma`, `aspect`,
 projection and canonical-JSON serialization discipline used by the Batch
 1/2/3 historical locks.
 
-**Batch 4 digest:**
-`06fa454bb7888b5bf4cb4a904add75cb68adba591d6ead11eb916f92faefcf6c`
+**Batch 4 digest (corrected):**
+`7f8fd8840d7aadeffbd23a5047cf8ce200b07c84c41520835a11f575c698b4f2`
+
+(Original, pre-correction digest:
+`06fa454bb7888b5bf4cb4a904add75cb68adba591d6ead11eb916f92faefcf6c` — superseded
+because `cefr`, `teachingStatus`, and 10 examples' `pl`/`en`/
+`learnerExplanationEn` changed. B1/B2/B3 digests are unaffected and remain
+`3849e0082e59e0984e7082c35e5b492eb3a228706aab2a7323575a5a9f9e619e`,
+`dd55047bbd7db3d28224d6366015c7353479206e4ffba64cf8b6397efb8d8db8`, and
+`8276864944181e47b573767151e98b556b52037b7920335d32fb510aeee58edb`
+respectively.)
 
 Pinned in `tests/test_priority8_phase4b4_batch04.py`.
 

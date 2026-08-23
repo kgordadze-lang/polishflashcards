@@ -4354,7 +4354,7 @@
               "priority": "core",
               "register": "neutral"
             },
-            "learnerExplanationEn": "The thing taken takes the Accusative; you can optionally add the Instrumental for what it's taken with: biorę zupę łyżką (I'm taking/scooping the soup with a spoon)."
+            "learnerExplanationEn": "The thing taken takes the Accusative; you can optionally add the Instrumental for what it's taken with: biorę kostki lodu szczypcami (I pick up ice cubes with tongs)."
           },
           {
             "candidatePatternKey": "accusative-entity-za-accusative-gripped-part",
@@ -4416,8 +4416,8 @@
             "candidateExampleKey": "primary",
             "meaningKeyRef": "literal-taking",
             "patternKeyRef": "accusative-entity-optional-instrumental-means",
-            "pl": "Biorę zupę łyżką.",
-            "en": "I'm taking the soup with a spoon.",
+            "pl": "Biorę kostki lodu szczypcami.",
+            "en": "I pick up ice cubes with tongs.",
             "candidateOrigin": {
               "kind": "editorial-generated"
             }
@@ -4508,7 +4508,7 @@
               "priority": "core",
               "register": "neutral"
             },
-            "learnerExplanationEn": "The thing taken takes the Accusative; you can optionally add the Instrumental for what it's taken with: wziąłem klucz szczypcami (I took/grabbed the key with pliers)."
+            "learnerExplanationEn": "The thing taken takes the Accusative; you can optionally add the Instrumental for what it's taken with: wziąłem kostkę lodu szczypcami (I picked up an ice cube with tongs)."
           },
           {
             "candidatePatternKey": "accusative-entity-za-accusative-gripped-part",
@@ -4570,8 +4570,8 @@
             "candidateExampleKey": "primary",
             "meaningKeyRef": "bounded-literal-taking",
             "patternKeyRef": "accusative-entity-optional-instrumental-means",
-            "pl": "Wziąłem klucz szczypcami.",
-            "en": "I took/grabbed the key with pliers.",
+            "pl": "Wziąłem kostkę lodu szczypcami.",
+            "en": "I picked up an ice cube with tongs.",
             "candidateOrigin": {
               "kind": "editorial-generated"
             }
@@ -4953,7 +4953,7 @@
               "priority": "common",
               "register": "neutral"
             },
-            "learnerExplanationEn": "Use że to introduce what you're writing as a clause; you can optionally add the bare Dative for who you're writing to: piszę koledze, że wracam jutro (I'm writing my friend that I'm coming back tomorrow)."
+            "learnerExplanationEn": "Use że to introduce what you're writing as a clause; you can optionally add the bare Dative for who you're writing to: piszę koledze, że wracam jutro (I'm writing to my friend that I'll be back tomorrow)."
           },
           {
             "candidatePatternKey": "dative-zeby-clause",
@@ -5011,7 +5011,7 @@
               "priority": "common",
               "register": "neutral"
             },
-            "learnerExplanationEn": "Use a question word to introduce written content; you can optionally add the bare Dative for who you're writing to: piszę koledze, kiedy wracam (I'm writing my friend when I'm coming back)."
+            "learnerExplanationEn": "Use a question word to introduce written content; you can optionally add the bare Dative for who you're writing to: piszę koledze, o której wrócę (I'm writing to my friend what time I'll be back)."
           },
           {
             "candidatePatternKey": "dative-direct-speech",
@@ -5040,7 +5040,7 @@
               "priority": "common",
               "register": "neutral"
             },
-            "learnerExplanationEn": "You can write exact words directly; you can optionally add the bare Dative for who you're writing to: piszę koledze: „Wracam jutro” (I'm writing my friend: \"I'm coming back tomorrow.\")."
+            "learnerExplanationEn": "You can write exact words directly; you can optionally add the bare Dative for who you're writing to: piszę koledze: „Wracam jutro” (I'm writing to my friend: \"I'm coming back tomorrow.\")."
           },
           {
             "candidatePatternKey": "dative-accusative-content",
@@ -5092,9 +5092,10 @@
               }
             ],
             "cefr": {
-              "recognition": "B1"
+              "recognition": "A2",
+              "production": "A2"
             },
-            "teachingStatus": "recognition-only",
+            "teachingStatus": "active-production",
             "usage": {
               "priority": "common",
               "register": "neutral"
@@ -5121,9 +5122,10 @@
               }
             ],
             "cefr": {
-              "recognition": "B1"
+              "recognition": "A2",
+              "production": "B1"
             },
-            "teachingStatus": "recognition-only",
+            "teachingStatus": "active-production",
             "usage": {
               "priority": "common",
               "register": "neutral"
@@ -5150,9 +5152,10 @@
               }
             ],
             "cefr": {
-              "recognition": "B1"
+              "recognition": "A2",
+              "production": "B1"
             },
-            "teachingStatus": "recognition-only",
+            "teachingStatus": "active-production",
             "usage": {
               "priority": "common",
               "register": "neutral"
@@ -5179,14 +5182,15 @@
               }
             ],
             "cefr": {
-              "recognition": "B1"
+              "recognition": "A2",
+              "production": "A2"
             },
-            "teachingStatus": "recognition-only",
+            "teachingStatus": "active-production",
             "usage": {
               "priority": "common",
               "register": "neutral"
             },
-            "learnerExplanationEn": "Use a question word to introduce written content; you can optionally add do + Genitive for who you're writing to: piszę do koleżanki, kiedy wracam (I'm writing to my friend when I'm coming back)."
+            "learnerExplanationEn": "Use a question word to introduce written content; you can optionally add do + Genitive for who you're writing to: piszę do koleżanki, o której wrócę (I'm writing to my friend what time I'll be back)."
           },
           {
             "candidatePatternKey": "do-genitive-direct-speech",
@@ -5208,9 +5212,10 @@
               }
             ],
             "cefr": {
-              "recognition": "B1"
+              "recognition": "A2",
+              "production": "B1"
             },
-            "teachingStatus": "recognition-only",
+            "teachingStatus": "active-production",
             "usage": {
               "priority": "common",
               "register": "neutral"
@@ -5237,9 +5242,10 @@
               }
             ],
             "cefr": {
-              "recognition": "B1"
+              "recognition": "A1",
+              "production": "A1"
             },
-            "teachingStatus": "recognition-only",
+            "teachingStatus": "active-production",
             "usage": {
               "priority": "common",
               "register": "neutral"
@@ -5273,7 +5279,7 @@
             "meaningKeyRef": "written-correspondence",
             "patternKeyRef": "dative-ze-clause",
             "pl": "Piszę koledze, że wracam jutro.",
-            "en": "I'm writing my friend that I'm coming back tomorrow.",
+            "en": "I'm writing to my friend that I'll be back tomorrow.",
             "candidateOrigin": {
               "kind": "editorial-generated"
             }
@@ -5292,8 +5298,8 @@
             "candidateExampleKey": "primary",
             "meaningKeyRef": "written-correspondence",
             "patternKeyRef": "dative-interrogative-clause",
-            "pl": "Piszę koledze, kiedy wracam.",
-            "en": "I'm writing my friend when I'm coming back.",
+            "pl": "Piszę koledze, o której wrócę.",
+            "en": "I'm writing to my friend what time I'll be back.",
             "candidateOrigin": {
               "kind": "editorial-generated"
             }
@@ -5303,7 +5309,7 @@
             "meaningKeyRef": "written-correspondence",
             "patternKeyRef": "dative-direct-speech",
             "pl": "Piszę koledze: „Wracam jutro”.",
-            "en": "I'm writing my friend: \"I'm coming back tomorrow.\"",
+            "en": "I'm writing to my friend: \"I'm coming back tomorrow.\"",
             "candidateOrigin": {
               "kind": "editorial-generated"
             }
@@ -5352,8 +5358,8 @@
             "candidateExampleKey": "primary",
             "meaningKeyRef": "written-correspondence",
             "patternKeyRef": "do-genitive-interrogative-clause",
-            "pl": "Piszę do koleżanki, kiedy wracam.",
-            "en": "I'm writing to my friend when I'm coming back.",
+            "pl": "Piszę do koleżanki, o której wrócę.",
+            "en": "I'm writing to my friend what time I'll be back.",
             "candidateOrigin": {
               "kind": "editorial-generated"
             }
@@ -5494,7 +5500,7 @@
               "priority": "common",
               "register": "neutral"
             },
-            "learnerExplanationEn": "Use że to introduce what you wrote as a clause. Unlike pisać, in this clause alternative the bare Dative recipient is REQUIRED, not optional: napisałem koledze, że wracam jutro (I wrote my friend that I'm coming back tomorrow)."
+            "learnerExplanationEn": "Use że to introduce what you wrote as a clause. Unlike pisać, in this clause alternative the bare Dative recipient is REQUIRED, not optional: napisałem koledze, że wrócę jutro (I wrote to my friend that I'll be back tomorrow)."
           },
           {
             "candidatePatternKey": "dative-zeby-clause",
@@ -5552,7 +5558,7 @@
               "priority": "common",
               "register": "neutral"
             },
-            "learnerExplanationEn": "Use a question word to introduce written content. The bare Dative recipient is REQUIRED in this clause alternative: napisałem koledze, kiedy wracam (I wrote my friend when I'm coming back)."
+            "learnerExplanationEn": "Use a question word to introduce written content. The bare Dative recipient is REQUIRED in this clause alternative: napisałem koledze, o której wrócę (I wrote to my friend what time I'll be back)."
           },
           {
             "candidatePatternKey": "dative-direct-speech",
@@ -5581,7 +5587,7 @@
               "priority": "common",
               "register": "neutral"
             },
-            "learnerExplanationEn": "You can write exact words directly; the bare Dative recipient is optional here: napisałem koledze: „Wracam jutro” (I wrote my friend: \"I'm coming back tomorrow.\")."
+            "learnerExplanationEn": "You can write exact words directly; the bare Dative recipient is optional here: napisałem koledze: „Wracam jutro” (I wrote to my friend: \"I'm coming back tomorrow.\")."
           },
           {
             "candidatePatternKey": "dative-accusative-content",
@@ -5633,9 +5639,10 @@
               }
             ],
             "cefr": {
-              "recognition": "B1"
+              "recognition": "A2",
+              "production": "A2"
             },
-            "teachingStatus": "recognition-only",
+            "teachingStatus": "active-production",
             "usage": {
               "priority": "common",
               "register": "neutral"
@@ -5662,9 +5669,10 @@
               }
             ],
             "cefr": {
-              "recognition": "B1"
+              "recognition": "A2",
+              "production": "B1"
             },
-            "teachingStatus": "recognition-only",
+            "teachingStatus": "active-production",
             "usage": {
               "priority": "common",
               "register": "neutral"
@@ -5691,9 +5699,10 @@
               }
             ],
             "cefr": {
-              "recognition": "B1"
+              "recognition": "A2",
+              "production": "B1"
             },
-            "teachingStatus": "recognition-only",
+            "teachingStatus": "active-production",
             "usage": {
               "priority": "common",
               "register": "neutral"
@@ -5720,14 +5729,15 @@
               }
             ],
             "cefr": {
-              "recognition": "B1"
+              "recognition": "A2",
+              "production": "A2"
             },
-            "teachingStatus": "recognition-only",
+            "teachingStatus": "active-production",
             "usage": {
               "priority": "common",
               "register": "neutral"
             },
-            "learnerExplanationEn": "Use a question word to introduce written content; do + Genitive for the recipient remains optional here: napisałem do koleżanki, kiedy wracam (I wrote to my friend when I'm coming back)."
+            "learnerExplanationEn": "Use a question word to introduce written content; do + Genitive for the recipient remains optional here: napisałem do koleżanki, o której wrócę (I wrote to my friend what time I'll be back)."
           },
           {
             "candidatePatternKey": "do-genitive-direct-speech",
@@ -5749,9 +5759,10 @@
               }
             ],
             "cefr": {
-              "recognition": "B1"
+              "recognition": "A2",
+              "production": "B1"
             },
-            "teachingStatus": "recognition-only",
+            "teachingStatus": "active-production",
             "usage": {
               "priority": "common",
               "register": "neutral"
@@ -5778,9 +5789,10 @@
               }
             ],
             "cefr": {
-              "recognition": "B1"
+              "recognition": "A1",
+              "production": "A1"
             },
-            "teachingStatus": "recognition-only",
+            "teachingStatus": "active-production",
             "usage": {
               "priority": "common",
               "register": "neutral"
@@ -5813,8 +5825,8 @@
             "candidateExampleKey": "primary",
             "meaningKeyRef": "completed-written-correspondence",
             "patternKeyRef": "dative-ze-clause",
-            "pl": "Napisałem koledze, że wracam jutro.",
-            "en": "I wrote my friend that I'm coming back tomorrow.",
+            "pl": "Napisałem koledze, że wrócę jutro.",
+            "en": "I wrote to my friend that I'll be back tomorrow.",
             "candidateOrigin": {
               "kind": "editorial-generated"
             }
@@ -5833,8 +5845,8 @@
             "candidateExampleKey": "primary",
             "meaningKeyRef": "completed-written-correspondence",
             "patternKeyRef": "dative-interrogative-clause",
-            "pl": "Napisałem koledze, kiedy wracam.",
-            "en": "I wrote my friend when I'm coming back.",
+            "pl": "Napisałem koledze, o której wrócę.",
+            "en": "I wrote to my friend what time I'll be back.",
             "candidateOrigin": {
               "kind": "editorial-generated"
             }
@@ -5844,7 +5856,7 @@
             "meaningKeyRef": "completed-written-correspondence",
             "patternKeyRef": "dative-direct-speech",
             "pl": "Napisałem koledze: „Wracam jutro”.",
-            "en": "I wrote my friend: \"I'm coming back tomorrow.\"",
+            "en": "I wrote to my friend: \"I'm coming back tomorrow.\"",
             "candidateOrigin": {
               "kind": "editorial-generated"
             }
@@ -5893,8 +5905,8 @@
             "candidateExampleKey": "primary",
             "meaningKeyRef": "completed-written-correspondence",
             "patternKeyRef": "do-genitive-interrogative-clause",
-            "pl": "Napisałem do koleżanki, kiedy wracam.",
-            "en": "I wrote to my friend when I'm coming back.",
+            "pl": "Napisałem do koleżanki, o której wrócę.",
+            "en": "I wrote to my friend what time I'll be back.",
             "candidateOrigin": {
               "kind": "editorial-generated"
             }

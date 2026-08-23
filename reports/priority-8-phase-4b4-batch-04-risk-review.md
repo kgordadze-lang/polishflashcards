@@ -5,6 +5,14 @@ This review audits the Batch 4 implementation against the frozen
 linguistic decision the matrix already settled; it checks that authoring
 faithfully implements it.
 
+**Correction addendum.** Sections 12, 13, and 14 below are marked
+CORRECTED. They record the original authoring-time reasoning as originally
+written, followed by the independent review's objection and the correction
+actually applied (a following commit, separate from the original authoring
+commit `823ee376c258bb8e4d4183c3e577d60291ab14dd`). No other section of this
+review changed: the matrix conformance, structural, guard-registry, and
+immutability findings below are unaffected and remain accurate.
+
 ## 1. `dawać`/`dać` aspect independence
 
 Both lemmas carry the identical schema (`CO` + `KOMU`, both required),
@@ -124,45 +132,103 @@ pattern was followed exactly — each meeting lemma has exactly one pattern.
 This decision was made in the frozen matrix, not re-litigated here; this
 authoring only implements it.
 
-## 12. CEFR / status edge cases
+## 12. CEFR / status edge cases — CORRECTED
 
-The Mode A (Dative) vs Mode B (`do`+Genitive) `active-production` vs
-`recognition-only` split for `pisać`/`napisać` correspondence is a genuine,
-explainable judgment call, not a way to hide schema uncertainty (the schema
-itself is fully frozen and identical in shape for both modes): Dative is the
-modern default recipient marking and is judged appropriately central for
-active production; `do`+Genitive addressing, while fully legitimate and
-schema-declared, is judged more formal/literary and materially less central
-for active learner production, so it is marked `recognition-only` (CEFR B1
-recognition, no production level) rather than withheld or altered. This
-mirrors the precedent already in the corpus of splitting one lemma's
-alternatives across `active-production` and `recognition-only` by
-markedness/frequency (e.g. `kłócić się`'s `czy`-clause).
+**Original decision (superseded).** The initial authoring classified all 12
+`pisać`/`napisać` `do`+Genitive correspondence patterns as `recognition-only`
+as a block, reasoning that `do`+Genitive addressing is uniformly more
+formal/literary than the Dative default, and cited `kłócić się`'s `czy`-clause
+as corpus precedent for splitting a lemma's alternatives across
+`active-production`/`recognition-only`.
 
-## 13. Example naturalness
+**Independent review rejected this**, on two grounds, both confirmed on
+direct inspection:
 
-All 41 examples are short, contemporary, natural declarative sentences using
-common vocabulary (keys, neighbors, friends, novels, messages, conferences,
-soup, pliers). Every example realizes every required complement of its
-pattern. Per the authoring brief, the `pisać`/`napisać` recipient-mode sibling
-pairs (Dative vs `do`+Genitive) both realize the optional recipient so the
-two alternatives remain visually/pedagogically distinguishable even though
-the recipient is optional in both; `napisać`'s A2–A4 examples realize the
-now-required Dative directly. English translations distinguish the Dative
-recipient (double-object "writing my friend...") from the `do`+Genitive
-recipient ("writing to my friend...") to avoid two structurally different
-Polish patterns collapsing onto identical English text.
+1. **Factually contradicted by existing product content.** `data-verbs.js`
+   drill `verbs-future-tense-005` (type `"build"`) requires the learner to
+   *actively produce* "Napiszę do ciebie wieczorem." — a `do`+Genitive
+   correspondence sentence. A construction the product already drills for
+   production cannot simultaneously be `recognition-only` in the verb-pattern
+   data.
+2. **The cited precedent is not like-for-like.** `kłócić się`'s `czy`-clause
+   is one specific, independently marked *clause type* set to
+   `recognition-only` (alongside `zapominać`'s parallel `czy`-clause); it is
+   not a precedent for demoting an entire *recipient mode* — six otherwise
+   ordinary content families — to `recognition-only` wholesale, irrespective
+   of each family's own complexity.
 
-## 14. Provenance / quiet reuse
+**Corrected rule, now applied:** `teachingStatus` and `cefr` follow
+**content-family complexity**, not recipient mode. Each `do`+Genitive
+pattern's `cefr` and `teachingStatus` were mirrored, mechanically, from its
+exact Dative-mode sibling in the same content family (`topic` mirrors
+`topic`, `że`-clause mirrors `że`-clause, and so on), independently for
+`pisać` and `napisać`. Since all 12 Dative-mode siblings are
+`active-production`, this yields **41 active-production / 0
+recognition-only** for the whole of Batch 4 — a result derived from
+inspecting the sibling records, not asserted in advance. `usage` values were
+left unchanged: `priority: common`/`core` contained no textual claim of
+peripherality and is fully consistent with `active-production`.
 
-Zero repository-reuse examples; all 41 are `editorial-generated`. A targeted
-search of `editorial/verb-pattern-candidates.json` and the `data-*.js` product
-corpora found no exact schema-faithful match to reuse, so none was forced. A
-full quiet-reuse scan of all 41 generated Polish sentences against the
-complete repository entity index (via `priority7_tooling.
-repository_index_from_root`, 1665 entities, zero adapter issues) found zero
-verbatim collisions. All 41 Polish and all 41 English strings are pairwise
-unique within Batch 4.
+## 13. Example naturalness — CORRECTED
+
+**Original decision (superseded).** The initial authoring deliberately
+diverged the English translation of every Dative-mode pattern from its
+`do`+Genitive sibling (dropping "to" in the Dative English gloss: "writing
+my friend..." vs "writing to my friend...") specifically to keep all 41
+English strings pairwise unique.
+
+**Independent review rejected this** for 8 of the resulting examples plus 2
+unrelated ones, on naturalness grounds: "write my friend that…" and "write
+my friend: …" are marked/awkward English that this product's own corpus
+never uses (`data-grammar.js`/`data-verbs.js` consistently say "write **to**
+me"/"write **to** you"/"an email **to** the boss", never a bare double
+object with a `że`-clause or quoted speech); four interrogative-clause
+examples used "when I'm coming back", which reads as a temporal adjunct
+rather than the intended embedded question; and the `brać`/`wziąć`
+optional-Instrumental examples were contrived ("soup with a spoon") or
+carried a slash-alternative translation ("took/grabbed"), a form with zero
+precedent across the 83 Batch 1–3 examples.
+
+**Corrected rule, now applied:** naturalness and semantic clarity outrank
+English-string uniqueness. The 10 affected examples (§ authoring report
+addendum) were rewritten; duplicate English between recipient-mode siblings
+is now accepted where the Polish constructions genuinely share one natural
+translation. All 41 Polish sentences remain pairwise unique and
+pedagogically distinct; 4 of the 41 English strings now legitimately
+duplicate. `napisać`'s A2–A4 examples still visibly realize the required
+Dative; every required complement is still realized in its example.
+
+## 14. Provenance / quiet reuse — WORDING CORRECTED
+
+Zero repository-reuse examples; all 41 are `editorial-generated` (unchanged
+by the correction). A targeted search of `editorial/verb-pattern-
+candidates.json` and the `data-*.js` product corpora found no exact
+schema-faithful match to reuse, so none was forced.
+
+**Original wording (superseded):** described the quiet-reuse scan as
+checking "the complete repository entity index" — this overstated coverage.
+
+**Corrected description.** Two distinct scans were run, and neither alone is
+"complete":
+
+1. **Historical-lock / index scan** (the one `tests/test_priority8_phase4b4_
+   batch04.py` actually runs on every test invocation): every generated
+   Polish sentence is checked via `priority7_tooling.
+   repository_index_from_root` against exactly the fields it indexes —
+   `card.pl`, `card.ex`, `drill.prompt`, `drill.answer` — across 1665
+   entities (1215 `card`, 353 `drill`, 89 `topic`, 8 `scenario`). This scan
+   does **not** reach nested grammar-deck `examples[].pl` text (e.g. in
+   `data-verbs.js`), which is outside the `card`/`drill` record shape.
+2. **Supplemental raw-text scan** (broader, run once at authoring time for
+   the 10 corrected sentences, not enforced by any test): a verbatim grep of
+   every `.js`, `editorial/*.json`, and `reports/*` file (187 files, ~8.2 MB),
+   excluding the staging file and Batch 4's own reports — this does reach the
+   grammar-deck text.
+
+Both scans found **zero verbatim collisions** for all 41 Batch 4 Polish
+sentences (including the 10 corrected). All 41 Polish strings are pairwise
+unique within Batch 4; English strings are not required to be, and 4 now
+legitimately duplicate (§13).
 
 ## 15. Future-safe historical lock
 
