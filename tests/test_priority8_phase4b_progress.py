@@ -18,10 +18,10 @@ import validate_priority8_staging as validator  # noqa: E402
 STAGING_PATH = ROOT / "editorial/priority-8-phase4-staging.json"
 EMPTY_CONTENT = {"meanings": [], "patterns": [], "examples": []}
 CURRENT_AUTHORED = tuple(
-    item for batch in validator.AUTHORING_BATCHES[:4] for item in batch
+    item for batch in validator.AUTHORING_BATCHES[:5] for item in batch
 )
 CURRENT_FUTURE = tuple(
-    item for batch in validator.AUTHORING_BATCHES[4:] for item in batch
+    item for batch in validator.AUTHORING_BATCHES[5:] for item in batch
 )
 
 
@@ -48,8 +48,8 @@ class Priority8Phase4BProgressTests(unittest.TestCase):
 
     def test_current_envelope_and_full_pattern_count(self):
         self.assertEqual(1, self.data["stagingSchemaVersion"])
-        self.assertEqual(5, self.data["stagingRevision"])
-        self.assertEqual("4B4", self.data["phaseStep"])
+        self.assertEqual(6, self.data["stagingRevision"])
+        self.assertEqual("4B5", self.data["phaseStep"])
         self.assertEqual(68, self.data["frozenFullPatternCount"])
         self.assertEqual(68, len(self.data["lemmas"]))
 
@@ -60,8 +60,8 @@ class Priority8Phase4BProgressTests(unittest.TestCase):
             if item["candidateContent"] != EMPTY_CONTENT
         )
         self.assertEqual(CURRENT_AUTHORED, authored)
-        self.assertEqual(39, len(CURRENT_AUTHORED))
-        self.assertEqual(29, len(CURRENT_FUTURE))
+        self.assertEqual(49, len(CURRENT_AUTHORED))
+        self.assertEqual(19, len(CURRENT_FUTURE))
         for order, lemma in CURRENT_FUTURE:
             with self.subTest(order=order, lemma=lemma):
                 item = self.by_order[order]
@@ -83,7 +83,7 @@ class Priority8Phase4BProgressTests(unittest.TestCase):
                 for item in authored_records)
             for collection in ("meanings", "patterns", "examples")
         )
-        self.assertEqual((51, 124, 124), totals)
+        self.assertEqual((66, 164, 164), totals)
 
     def test_no_production_or_canonical_runtime_ids(self):
         for key, value in walk(self.data):

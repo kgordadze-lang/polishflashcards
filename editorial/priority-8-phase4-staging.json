@@ -1,9 +1,9 @@
 {
   "stagingSchemaVersion": 1,
-  "stagingRevision": 5,
+  "stagingRevision": 6,
   "priority": 8,
   "phase": "4B",
-  "phaseStep": "4B4",
+  "phaseStep": "4B5",
   "frozenFullPatternCount": 68,
   "sources": {
     "phase3BFreezeCsv": {
@@ -6076,9 +6076,60 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "processual-viewing",
+            "glossesEn": [
+              "watch something",
+              "view something"
+            ],
+            "internalScope": "Processual or habitual viewing of a film, programme, performance, or other visual content (WSJP sense 2). The optional w + Locative names the presentation context in which the viewed person/content appears (e.g. the film or show they are in) — it is an exact listed position, not a realization of a generalized role, and is never generalized to ordinary viewing place, device, screen, or medium. Viewing time, frequency, and manner are not complements. Nothing is inherited from obejrzeć."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "accusative-content-optional-presentation-context",
+            "meaningKeyRef": "processual-viewing",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "w",
+                "case": "locative",
+                "required": false,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The person or content you watch takes the Accusative; you can optionally add w + Locative for the film/show they appear in — not the TV or place you're watching from: oglądam ją w nowym serialu (I'm watching her in a new series)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "processual-viewing",
+            "patternKeyRef": "accusative-content-optional-presentation-context",
+            "pl": "Oglądam ją w nowym serialu.",
+            "en": "I'm watching her in a new series.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -6095,9 +6146,53 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "completed-viewing",
+            "glossesEn": [
+              "watch something (completed)",
+              "view something all the way through"
+            ],
+            "internalScope": "Completed viewing resulting in acquaintance with a film, programme, performance, or other visual content (WSJP sense 2), independently evidenced from oglądać. No optional w + Locative is imported. Viewing place, medium, device, time, and manner are not complements."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "accusative-content",
+            "meaningKeyRef": "completed-viewing",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "What you watched takes the Accusative: obejrzałem ten film (I watched that movie)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "completed-viewing",
+            "patternKeyRef": "accusative-content",
+            "pl": "Obejrzałem ten film.",
+            "en": "I watched that movie.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -6114,9 +6209,127 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "activity-completion",
+            "glossesEn": [
+              "finish something",
+              "complete a task"
+            ],
+            "internalScope": "Bringing a noun- or infinitive-denoted activity to completion (WSJP sense 1). Two alternatives: bare Accusative task/activity, or an infinitive naming the completed activity. Completion time, deadline, place, manner, and result circumstances are not complements. z + Instrumental belongs only to the separate cessation meaning below and is never added here. Nothing is inherited from kończyć."
+          },
+          {
+            "candidateMeaningKey": "definitive-cessation",
+            "glossesEn": [
+              "quit something for good",
+              "be done with a habit"
+            ],
+            "internalScope": "Colloquial definitive ceasing of an activity or habit (WSJP sense 4) — a separate sense, not a variant of task completion. z + Instrumental names the activity or habit being given up for good."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "accusative-task",
+            "meaningKeyRef": "activity-completion",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The finished task or activity takes the Accusative: skończyłem pracę (I finished the work)."
+          },
+          {
+            "candidatePatternKey": "infinitive",
+            "meaningKeyRef": "activity-completion",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use an infinitive for the activity you finished doing: skończyłem pisać raport (I finished writing the report)."
+          },
+          {
+            "candidatePatternKey": "z-instrumental-ceased-activity",
+            "meaningKeyRef": "definitive-cessation",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": true,
+                "role": "topic"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use z + Instrumental for definitively giving up a habit or activity for good — a separate colloquial sense from finishing an ordinary task: skończyłem z paleniem (I'm done with smoking)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "activity-completion",
+            "patternKeyRef": "accusative-task",
+            "pl": "Skończyłem pracę.",
+            "en": "I finished the work.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "activity-completion",
+            "patternKeyRef": "infinitive",
+            "pl": "Skończyłem pisać raport.",
+            "en": "I finished writing the report.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "definitive-cessation",
+            "patternKeyRef": "z-instrumental-ceased-activity",
+            "pl": "Skończyłem z paleniem.",
+            "en": "I'm done with smoking.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -6133,9 +6346,238 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "desire",
+            "glossesEn": [
+              "want something",
+              "wish for something"
+            ],
+            "internalScope": "Desire for an object, one's own action, or an event/state (WSJP sense 1). The Genitive-object schema carries two optional participants, od + Genitive (source) and dla + Genitive (beneficiary), inside the same pattern. Infinitive expresses the wanting participant's own action; żeby expresses a desired event/state distinct from that action. Purpose, reason, degree, and contextual beneficiary phrases outside the exact schemas are not complements. Directly listed adverbial JAK lies outside the locked four complement types and is not represented."
+          },
+          {
+            "candidateMeaningKey": "polite-request-or-intention",
+            "glossesEn": [
+              "would like something (polite)",
+              "state a polite intention"
+            ],
+            "internalScope": "First-person polite request or stated intention (WSJP sense 3), kept entirely separate from ordinary desire: this sense takes Accusative (not Genitive), has no od/dla participants, and is restricted to first-person past or conditional forms (chciałbym/chciałabym, chciałem/chciałam) — never bare present-tense chcę. This usage restriction is a control-plane fact with no field in the locked schema; every pattern below must be authored and exemplified consistently with it."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "genitive-desired-object",
+            "meaningKeyRef": "desire",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "genitive",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "od",
+                "case": "genitive",
+                "required": false,
+                "role": "target"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "dla",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The desired thing takes the Genitive; you can optionally add od + Genitive for who it's wanted from, or dla + Genitive for who it's wanted for: chcę pomocy od brata (I want help from my brother)."
+          },
+          {
+            "candidatePatternKey": "infinitive-own-action",
+            "meaningKeyRef": "desire",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use an infinitive for what you yourself want to do: chcę zwiedzić Kraków (I want to visit Krakow)."
+          },
+          {
+            "candidatePatternKey": "zeby-desired-event",
+            "meaningKeyRef": "desire",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use żeby to say you want something to happen, done by someone or something else: chcę, żeby dzieci były szczęśliwe (I want the children to be happy)."
+          },
+          {
+            "candidatePatternKey": "accusative-requested-object",
+            "meaningKeyRef": "polite-request-or-intention",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use the first-person conditional chciałbym/chciałabym for a polite request, with the requested thing in the Accusative — not ordinary present-tense chcę: chciałbym herbatę (I would like a tea)."
+          },
+          {
+            "candidatePatternKey": "infinitive-intended-action",
+            "meaningKeyRef": "polite-request-or-intention",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use chciałbym/chciałabym plus an infinitive for a polite stated intention: chciałbym zapytać o rezerwację (I would like to ask about a reservation)."
+          },
+          {
+            "candidatePatternKey": "zeby-requested-event",
+            "meaningKeyRef": "polite-request-or-intention",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use chciałbym/chciałabym with żeby for a polite request directed at someone else's action: chciałbym, żebyś do mnie zadzwonił (I would like you to call me)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "desire",
+            "patternKeyRef": "genitive-desired-object",
+            "pl": "Chcę pomocy od brata.",
+            "en": "I want help from my brother.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "desire",
+            "patternKeyRef": "infinitive-own-action",
+            "pl": "Chcę zwiedzić Kraków.",
+            "en": "I want to visit Krakow.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "desire",
+            "patternKeyRef": "zeby-desired-event",
+            "pl": "Chcę, żeby dzieci były szczęśliwe.",
+            "en": "I want the children to be happy.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "polite-request-or-intention",
+            "patternKeyRef": "accusative-requested-object",
+            "pl": "Chciałbym herbatę.",
+            "en": "I would like a tea.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "polite-request-or-intention",
+            "patternKeyRef": "infinitive-intended-action",
+            "pl": "Chciałbym zapytać o rezerwację.",
+            "en": "I would like to ask about a reservation.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "polite-request-or-intention",
+            "patternKeyRef": "zeby-requested-event",
+            "pl": "Chciałbym, żebyś do mnie zadzwonił.",
+            "en": "I would like you to call me.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -6152,9 +6594,94 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "entity-creation",
+            "glossesEn": [
+              "make something",
+              "create something"
+            ],
+            "internalScope": "Making or creating an entity (WSJP sense 1). The Accusative names the thing created. Materials, tools, place, purpose, beneficiary, time, and manner are not complements. Not merged with the activity-performance sense below despite sharing the Accusative surface."
+          },
+          {
+            "candidateMeaningKey": "activity-performance",
+            "glossesEn": [
+              "do an activity",
+              "perform a named activity"
+            ],
+            "internalScope": "Performing the activity named by an adjacent noun (WSJP sense 2), e.g. doing the laundry. The Accusative names the activity, not a created entity. Individual robić + noun collocations are not promoted into separate governed frames beyond this one schema. Not merged with the creation sense above."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "accusative-created-entity",
+            "meaningKeyRef": "entity-creation",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The thing you make or create takes the Accusative: robię ciasto (I'm making a cake)."
+          },
+          {
+            "candidatePatternKey": "accusative-activity-noun",
+            "meaningKeyRef": "activity-performance",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The named activity you perform takes the Accusative — you are not creating this thing, you are doing it: robię pranie (I'm doing the laundry)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "entity-creation",
+            "patternKeyRef": "accusative-created-entity",
+            "pl": "Robię ciasto.",
+            "en": "I'm making a cake.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "activity-performance",
+            "patternKeyRef": "accusative-activity-noun",
+            "pl": "Robię pranie.",
+            "en": "I'm doing the laundry.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -6171,9 +6698,160 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "content-comprehension",
+            "glossesEn": [
+              "understand something",
+              "comprehend content"
+            ],
+            "internalScope": "Comprehending communicated or represented content (WSJP sense 1): bare Accusative content, a że-clause, or an interrogative-dependent clause (how/why/what/etc., all one clause type, never separate frames). Degree, manner, language of presentation, information source, and circumstances are not complements. No clause is transferred to the person-understanding sense below."
+          },
+          {
+            "candidateMeaningKey": "empathic-person-understanding",
+            "glossesEn": [
+              "understand a person",
+              "empathize with someone"
+            ],
+            "internalScope": "Empathically understanding a person (WSJP sense 4), a separate meaning from comprehending content even though both surface as Accusative. No content clause attaches here."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "accusative-content",
+            "meaningKeyRef": "content-comprehension",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "What you understand takes the Accusative: rozumiem żart (I understand the joke)."
+          },
+          {
+            "candidatePatternKey": "ze-content-clause",
+            "meaningKeyRef": "content-comprehension",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use że to introduce what you understand as a clause: rozumiem, że jesteś zmęczony (I understand that you're tired)."
+          },
+          {
+            "candidatePatternKey": "interrogative-content-clause",
+            "meaningKeyRef": "content-comprehension",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "interrogative",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use a question word to introduce understood content: rozumiem, dlaczego się spóźniłeś (I understand why you were late)."
+          },
+          {
+            "candidatePatternKey": "accusative-person",
+            "meaningKeyRef": "empathic-person-understanding",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The person you empathically understand takes the Accusative: rozumiem cię jak nikt inny (I understand you like no one else)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "content-comprehension",
+            "patternKeyRef": "accusative-content",
+            "pl": "Rozumiem żart.",
+            "en": "I understand the joke.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "content-comprehension",
+            "patternKeyRef": "ze-content-clause",
+            "pl": "Rozumiem, że jesteś zmęczony.",
+            "en": "I understand that you're tired.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "content-comprehension",
+            "patternKeyRef": "interrogative-content-clause",
+            "pl": "Rozumiem, dlaczego się spóźniłeś.",
+            "en": "I understand why you were late.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "empathic-person-understanding",
+            "patternKeyRef": "accusative-person",
+            "pl": "Rozumiem cię jak nikt inny.",
+            "en": "I understand you like no one else.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -6199,9 +6877,61 @@
       ],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "long-term-residence",
+            "glossesEn": [
+              "live somewhere",
+              "reside somewhere"
+            ],
+            "internalScope": "Residing somewhere permanently or for a long period, optionally with a co-resident (WSJP sense 1). w + Locative is a documented residence-place realization of the generalized GDZIE role — not exclusive lexical government; na and u place forms are documented in the same source entry but are not authored as additional product frames. Optional z + Instrumental names a genuine co-resident, not incidental accompaniment. Residence duration, reason, manner, and incidental companions are not complements."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "w-locative-residence-optional-co-resident",
+            "meaningKeyRef": "long-term-residence",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "w",
+                "case": "locative",
+                "required": true,
+                "role": "target"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": false,
+                "role": "interlocutor"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use w + Locative for where you live — a documented residence-place realization, not the only possible form; add z + Instrumental for a co-resident you live with: mieszkam w Warszawie z bratem (I live in Warsaw with my brother)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "long-term-residence",
+            "patternKeyRef": "w-locative-residence-optional-co-resident",
+            "pl": "Mieszkam w Warszawie z bratem.",
+            "en": "I live in Warsaw with my brother.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -6227,9 +6957,312 @@
       ],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "meeting-arrangement",
+            "glossesEn": [
+              "arrange to meet someone",
+              "set up an appointment"
+            ],
+            "internalScope": "Arranging a meeting with another person (WSJP sense 1). Two source schemas: one fully optional (a partner and an appointment/event, neither forced required), and one representing a selected venue/service position through a narrowed do + Genitive realization — do + Genitive is required only in that one product row because the row exists to represent that position, never because do is exclusive government or the only possible location form. A further source-selected time position (KIEDY) has no documented concrete realization and is intentionally not represented as any complement. A reciprocal plural personal subject (\"we arranged to meet\") may occur without a separate partner phrase; this is a usage fact, not a second complementless pattern. się is part of canonicalLemma, never a complement."
+          },
+          {
+            "candidateMeaningKey": "mutual-agreement",
+            "glossesEn": [
+              "agree on something with someone",
+              "come to an agreement"
+            ],
+            "internalScope": "Reaching an agreement with another person about a term, action, or proposition (WSJP sense 2), entirely separate from arranging a meeting. Five representable content alternatives (na, o, że, żeby, interrogative-dependent), each with an optional z + Instrumental partner never split into its own pattern. A sixth source-listed alternative, co do + Genitive, is verified linguistic evidence but cannot be represented in the locked schema (which accepts only single-word prepositions); it is architecture-deferred to Phase 4C, never encoded as co or do alone, and contributes no product row here. A reciprocal plural subject may occur without a separate partner phrase, recorded as usage, not a second pattern. się is part of canonicalLemma, never a complement."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "z-instrumental-partner-na-accusative-event",
+            "meaningKeyRef": "meeting-arrangement",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": false,
+                "role": "interlocutor"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "accusative",
+                "required": false,
+                "role": "topic"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Both the meeting partner (z + Instrumental) and the appointment/event (na + Accusative) are optional and can be named together or omitted depending on context: umówiłem się z kolegą na kawę (I arranged to meet my friend for coffee)."
+          },
+          {
+            "candidatePatternKey": "do-genitive-appointment-venue",
+            "meaningKeyRef": "meeting-arrangement",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": false,
+                "role": "interlocutor"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use do + Genitive for the venue or service you've made an appointment at — a documented realization, not the only possible location form; you can optionally add z + Instrumental for who you arranged it with: umówiłem się z żoną do lekarza (I made an appointment with my wife at the doctor's)."
+          },
+          {
+            "candidatePatternKey": "na-accusative-agreed-term",
+            "meaningKeyRef": "mutual-agreement",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "accusative",
+                "required": true,
+                "role": "topic"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": false,
+                "role": "interlocutor"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use na + Accusative for the term you agreed on; you can optionally add z + Instrumental for who you agreed with: umówiłem się z szefem na podwyżkę (I agreed with my boss on a raise)."
+          },
+          {
+            "candidatePatternKey": "o-accusative-agreed-subject",
+            "meaningKeyRef": "mutual-agreement",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "o",
+                "case": "accusative",
+                "required": true,
+                "role": "topic"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": false,
+                "role": "interlocutor"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use o + Accusative for the subject you agreed on; you can optionally add z + Instrumental for who you agreed with: umówiłem się ze sprzedawcą o cenę (I agreed with the seller on the price)."
+          },
+          {
+            "candidatePatternKey": "ze-agreement-clause",
+            "meaningKeyRef": "mutual-agreement",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": false,
+                "role": "interlocutor"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use że to introduce what you agreed as a clause; you can optionally add z + Instrumental for who you agreed with: umówiłem się z bratem, że pomoże mi w przeprowadzce (I agreed with my brother that he'll help me move)."
+          },
+          {
+            "candidatePatternKey": "zeby-agreed-action-clause",
+            "meaningKeyRef": "mutual-agreement",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": false,
+                "role": "interlocutor"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use żeby to introduce an agreed action; you can optionally add z + Instrumental for who you agreed with: umówiłem się z kolegą, żeby zachować to w tajemnicy (I agreed with my friend to keep it secret)."
+          },
+          {
+            "candidatePatternKey": "interrogative-agreement-clause",
+            "meaningKeyRef": "mutual-agreement",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "interrogative",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": false,
+                "role": "interlocutor"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use a question word to introduce what was agreed; you can optionally add z + Instrumental for who you agreed with: umówiłem się z zespołem, kto za co odpowiada (I agreed with the team who's responsible for what)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "meeting-arrangement",
+            "patternKeyRef": "z-instrumental-partner-na-accusative-event",
+            "pl": "Umówiłem się z kolegą na kawę.",
+            "en": "I arranged to meet my friend for coffee.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "meeting-arrangement",
+            "patternKeyRef": "do-genitive-appointment-venue",
+            "pl": "Umówiłem się z żoną do lekarza.",
+            "en": "I made an appointment with my wife at the doctor's.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "mutual-agreement",
+            "patternKeyRef": "na-accusative-agreed-term",
+            "pl": "Umówiłem się z szefem na podwyżkę.",
+            "en": "I agreed with my boss on a raise.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "mutual-agreement",
+            "patternKeyRef": "o-accusative-agreed-subject",
+            "pl": "Umówiłem się ze sprzedawcą o cenę.",
+            "en": "I agreed with the seller on the price.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "mutual-agreement",
+            "patternKeyRef": "ze-agreement-clause",
+            "pl": "Umówiłem się z bratem, że pomoże mi w przeprowadzce.",
+            "en": "I agreed with my brother that he'll help me move.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "mutual-agreement",
+            "patternKeyRef": "zeby-agreed-action-clause",
+            "pl": "Umówiłem się z kolegą, żeby zachować to w tajemnicy.",
+            "en": "I agreed with my friend to keep it secret.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "mutual-agreement",
+            "patternKeyRef": "interrogative-agreement-clause",
+            "pl": "Umówiłem się z zespołem, kto za co odpowiada.",
+            "en": "I agreed with the team who's responsible for what.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -6255,9 +7288,154 @@
       ],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "telephone-contact",
+            "glossesEn": [
+              "call someone",
+              "phone someone"
+            ],
+            "internalScope": "Making telephone contact with a person or institution and optionally reporting or requesting content (WSJP sense 3). do + Genitive and na + Accusative are documented narrowed realizations of the generalized DOKĄD call-target role, never exclusive government. że and żeby introduce exact content alternatives, independent of the target rows. Call source/device, time, frequency, manner, and topic phrases such as w sprawie + Genitive are not complements — w sprawie appears only in Połączenia, never in Składnia, so it is not governed."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "do-genitive-call-target",
+            "meaningKeyRef": "telephone-contact",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use do + Genitive for who you're calling — a documented target realization, not exclusive government: dzwonię do mamy (I'm calling my mom)."
+          },
+          {
+            "candidatePatternKey": "na-accusative-call-target",
+            "meaningKeyRef": "telephone-contact",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "accusative",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use na + Accusative for an institution or number you're calling — another documented target realization: dzwonię na policję (I'm calling the police)."
+          },
+          {
+            "candidatePatternKey": "ze-reported-content-clause",
+            "meaningKeyRef": "telephone-contact",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use że to report what you're calling to say: dzwonię, że będę późno (I'm calling to say I'll be late)."
+          },
+          {
+            "candidatePatternKey": "zeby-requested-content-clause",
+            "meaningKeyRef": "telephone-contact",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use żeby to request an action: dzwonię, żebyś odebrał paczkę (I'm calling to ask you to pick up the package)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "telephone-contact",
+            "patternKeyRef": "do-genitive-call-target",
+            "pl": "Dzwonię do mamy.",
+            "en": "I'm calling my mom.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "telephone-contact",
+            "patternKeyRef": "na-accusative-call-target",
+            "pl": "Dzwonię na policję.",
+            "en": "I'm calling the police.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "telephone-contact",
+            "patternKeyRef": "ze-reported-content-clause",
+            "pl": "Dzwonię, że będę późno.",
+            "en": "I'm calling to say I'll be late.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "telephone-contact",
+            "patternKeyRef": "zeby-requested-content-clause",
+            "pl": "Dzwonię, żebyś odebrał paczkę.",
+            "en": "I'm calling to ask you to pick up the package.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -6274,9 +7452,450 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "spoken-communication",
+            "glossesEn": [
+              "say something",
+              "tell someone something"
+            ],
+            "internalScope": "Spoken communication that conveys interpretable content (WSJP sense 1), with recipient and content realized through separate object, topic, clause, or direct-speech schemas — never one maximal KOMU + CO + o + że + żeby template. Dative and do + Genitive addressees are alternatives that never co-occur in one pattern, and every recipient is optional. Direct speech carries no recipient at all. Voice, manner, channel, location, time, and communicative circumstances are not complements. Directly listed adverbial JAK lies outside the locked four complement types and is not represented."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "dative-accusative-content",
+            "meaningKeyRef": "spoken-communication",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "What you said takes the Accusative; you can optionally add the bare Dative for who you told: powiedziałem koledze prawdę (I told my friend the truth)."
+          },
+          {
+            "candidatePatternKey": "dative-o-locative-topic",
+            "meaningKeyRef": "spoken-communication",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "o",
+                "case": "locative",
+                "required": true,
+                "role": "topic"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use o + Locative for the topic you told someone about, which is required here; the bare Dative recipient is optional: powiedziałem koledze o problemie (I told my friend about the problem)."
+          },
+          {
+            "candidatePatternKey": "dative-ze-clause",
+            "meaningKeyRef": "spoken-communication",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use że to introduce what you said as a clause; you can optionally add the bare Dative for who you told: powiedziałem koledze, że wyjeżdżam (I told my friend that I'm leaving)."
+          },
+          {
+            "candidatePatternKey": "dative-zeby-clause",
+            "meaningKeyRef": "spoken-communication",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use żeby to introduce what you asked someone to do; you can optionally add the bare Dative for who you told: powiedziałem koledze, żeby poczekał (I told my friend to wait)."
+          },
+          {
+            "candidatePatternKey": "dative-interrogative-clause",
+            "meaningKeyRef": "spoken-communication",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "interrogative",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use a question word to introduce what you said; you can optionally add the bare Dative for who you told: powiedziałem koledze, o której wracam (I told my friend what time I'm coming back)."
+          },
+          {
+            "candidatePatternKey": "do-genitive-accusative-content",
+            "meaningKeyRef": "spoken-communication",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "What you said takes the Accusative; you can optionally add do + Genitive for who you told: powiedziałem prawdę do koleżanki (I told the truth to my friend)."
+          },
+          {
+            "candidatePatternKey": "do-genitive-o-locative-topic",
+            "meaningKeyRef": "spoken-communication",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "o",
+                "case": "locative",
+                "required": true,
+                "role": "topic"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use o + Locative for the topic, which is required here; you can optionally add do + Genitive for who you told: powiedziałem do koleżanki o problemie (I mentioned the problem to my friend)."
+          },
+          {
+            "candidatePatternKey": "do-genitive-ze-clause",
+            "meaningKeyRef": "spoken-communication",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use że to introduce what you said as a clause; you can optionally add do + Genitive for who you told: powiedziałem do koleżanki, że wyjeżdżam (I mentioned to my friend that I'm leaving)."
+          },
+          {
+            "candidatePatternKey": "do-genitive-zeby-clause",
+            "meaningKeyRef": "spoken-communication",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use żeby to introduce what you asked someone to do; you can optionally add do + Genitive for who you told: powiedziałem do koleżanki, żeby poczekała (I told my friend to wait)."
+          },
+          {
+            "candidatePatternKey": "do-genitive-interrogative-clause",
+            "meaningKeyRef": "spoken-communication",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "interrogative",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use a question word to introduce what you said; you can optionally add do + Genitive for who you told: powiedziałem do koleżanki, o której wracam (I mentioned to my friend what time I'm coming back)."
+          },
+          {
+            "candidatePatternKey": "direct-speech-content",
+            "meaningKeyRef": "spoken-communication",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "direct-speech",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "You can report exact spoken words directly, with no recipient in this schema: powiedziałem: „Zaraz wracam” (I said: \"I'll be right back.\")."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "spoken-communication",
+            "patternKeyRef": "dative-accusative-content",
+            "pl": "Powiedziałem koledze prawdę.",
+            "en": "I told my friend the truth.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "spoken-communication",
+            "patternKeyRef": "dative-o-locative-topic",
+            "pl": "Powiedziałem koledze o problemie.",
+            "en": "I told my friend about the problem.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "spoken-communication",
+            "patternKeyRef": "dative-ze-clause",
+            "pl": "Powiedziałem koledze, że wyjeżdżam.",
+            "en": "I told my friend that I'm leaving.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "spoken-communication",
+            "patternKeyRef": "dative-zeby-clause",
+            "pl": "Powiedziałem koledze, żeby poczekał.",
+            "en": "I told my friend to wait.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "spoken-communication",
+            "patternKeyRef": "dative-interrogative-clause",
+            "pl": "Powiedziałem koledze, o której wracam.",
+            "en": "I told my friend what time I'm coming back.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "spoken-communication",
+            "patternKeyRef": "do-genitive-accusative-content",
+            "pl": "Powiedziałem prawdę do koleżanki.",
+            "en": "I told the truth to my friend.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "spoken-communication",
+            "patternKeyRef": "do-genitive-o-locative-topic",
+            "pl": "Powiedziałem do koleżanki o problemie.",
+            "en": "I mentioned the problem to my friend.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "spoken-communication",
+            "patternKeyRef": "do-genitive-ze-clause",
+            "pl": "Powiedziałem do koleżanki, że wyjeżdżam.",
+            "en": "I mentioned to my friend that I'm leaving.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "spoken-communication",
+            "patternKeyRef": "do-genitive-zeby-clause",
+            "pl": "Powiedziałem do koleżanki, żeby poczekała.",
+            "en": "I told my friend to wait.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "spoken-communication",
+            "patternKeyRef": "do-genitive-interrogative-clause",
+            "pl": "Powiedziałem do koleżanki, o której wracam.",
+            "en": "I mentioned to my friend what time I'm coming back.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "spoken-communication",
+            "patternKeyRef": "direct-speech-content",
+            "pl": "Powiedziałem: „Zaraz wracam”.",
+            "en": "I said: \"I'll be right back.\"",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {

@@ -937,6 +937,736 @@
           ]
         }
       ]
+    },
+    {
+      "ruleId": "p8-4b-ogladac-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "oglądać",
+      "verificationOrder": 42,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "processual-viewing",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "w",
+                "case": "locative",
+                "required": false,
+                "role": "target"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-obejrzec-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "obejrzeć",
+      "verificationOrder": 43,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "completed-viewing",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-skonczyc-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "skończyć",
+      "verificationOrder": 44,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "activity-completion",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ]
+          ]
+        },
+        {
+          "meaningKey": "definitive-cessation",
+          "patterns": [
+            [
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": true,
+                "role": "topic"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-chciec-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "chcieć",
+      "verificationOrder": 45,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "desire",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "genitive",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "od",
+                "case": "genitive",
+                "required": false,
+                "role": "target"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "dla",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              }
+            ]
+          ]
+        },
+        {
+          "meaningKey": "polite-request-or-intention",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-robic-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "robić",
+      "verificationOrder": 46,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "entity-creation",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ]
+          ]
+        },
+        {
+          "meaningKey": "activity-performance",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-rozumiec-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "rozumieć",
+      "verificationOrder": 47,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "content-comprehension",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "interrogative",
+                "required": true,
+                "role": "content"
+              }
+            ]
+          ]
+        },
+        {
+          "meaningKey": "empathic-person-understanding",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-mieszkac-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "mieszkać",
+      "verificationOrder": 48,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "long-term-residence",
+          "patterns": [
+            [
+              {
+                "type": "preposition-case",
+                "preposition": "w",
+                "case": "locative",
+                "required": true,
+                "role": "target"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": false,
+                "role": "interlocutor"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-mieszkac-authorized-preposition-cases",
+      "kind": "allow-only-preposition-case-signatures",
+      "lemma": "mieszkać",
+      "verificationOrder": 48,
+      "allowedSignatures": [
+        {
+          "type": "preposition-case",
+          "preposition": "w",
+          "case": "locative",
+          "required": true,
+          "role": "target"
+        },
+        {
+          "type": "preposition-case",
+          "preposition": "z",
+          "case": "instrumental",
+          "required": false,
+          "role": "interlocutor"
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-dzwonic-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "dzwonić",
+      "verificationOrder": 50,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "telephone-contact",
+          "patterns": [
+            [
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            [
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "accusative",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-dzwonic-authorized-preposition-cases",
+      "kind": "allow-only-preposition-case-signatures",
+      "lemma": "dzwonić",
+      "verificationOrder": 50,
+      "allowedSignatures": [
+        {
+          "type": "preposition-case",
+          "preposition": "do",
+          "case": "genitive",
+          "required": true,
+          "role": "target"
+        },
+        {
+          "type": "preposition-case",
+          "preposition": "na",
+          "case": "accusative",
+          "required": true,
+          "role": "target"
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-powiedziec-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "powiedzieć",
+      "verificationOrder": 51,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "spoken-communication",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            [
+              {
+                "type": "preposition-case",
+                "preposition": "o",
+                "case": "locative",
+                "required": true,
+                "role": "topic"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "interrogative",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            [
+              {
+                "type": "preposition-case",
+                "preposition": "o",
+                "case": "locative",
+                "required": true,
+                "role": "topic"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "interrogative",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "direct-speech",
+                "required": true,
+                "role": "content"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-umowic-sie-lexical-identity",
+      "kind": "require-lexical-identity",
+      "lemma": "umówić się",
+      "verificationOrder": 49,
+      "lexicalItems": [
+        "się"
+      ]
+    },
+    {
+      "ruleId": "p8-4b-umowic-sie-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "umówić się",
+      "verificationOrder": 49,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "meeting-arrangement",
+          "patterns": [
+            [
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": false,
+                "role": "interlocutor"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "accusative",
+                "required": false,
+                "role": "topic"
+              }
+            ],
+            [
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": false,
+                "role": "interlocutor"
+              }
+            ]
+          ]
+        },
+        {
+          "meaningKey": "mutual-agreement",
+          "patterns": [
+            [
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "accusative",
+                "required": true,
+                "role": "topic"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": false,
+                "role": "interlocutor"
+              }
+            ],
+            [
+              {
+                "type": "preposition-case",
+                "preposition": "o",
+                "case": "accusative",
+                "required": true,
+                "role": "topic"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": false,
+                "role": "interlocutor"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": false,
+                "role": "interlocutor"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": false,
+                "role": "interlocutor"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "interrogative",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": false,
+                "role": "interlocutor"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-umowic-sie-authorized-preposition-cases",
+      "kind": "allow-only-preposition-case-signatures",
+      "lemma": "umówić się",
+      "verificationOrder": 49,
+      "allowedSignatures": [
+        {
+          "type": "preposition-case",
+          "preposition": "z",
+          "case": "instrumental",
+          "required": false,
+          "role": "interlocutor"
+        },
+        {
+          "type": "preposition-case",
+          "preposition": "na",
+          "case": "accusative",
+          "required": false,
+          "role": "topic"
+        },
+        {
+          "type": "preposition-case",
+          "preposition": "do",
+          "case": "genitive",
+          "required": true,
+          "role": "target"
+        },
+        {
+          "type": "preposition-case",
+          "preposition": "na",
+          "case": "accusative",
+          "required": true,
+          "role": "topic"
+        },
+        {
+          "type": "preposition-case",
+          "preposition": "o",
+          "case": "accusative",
+          "required": true,
+          "role": "topic"
+        }
+      ]
     }
   ]
 }
