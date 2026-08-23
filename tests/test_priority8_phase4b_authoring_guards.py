@@ -1,7 +1,8 @@
-"""Live semantic authoring guards for Priority 8 Phase 4B staging.
+"""Live declarative authoring guards for Priority 8 Phase 4B staging.
 
 Unlike historical batch digests and the moving progress gate, these rules are
-declarative structural invariants applied to whatever Phase 4B batch is live.
+semantic-structure or explanation-consistency invariants applied to whatever
+Phase 4B batch is live.
 """
 
 from __future__ import annotations
@@ -9,6 +10,7 @@ from __future__ import annotations
 import copy
 import json
 import re
+import sys
 import unittest
 from collections import Counter
 from pathlib import Path
@@ -16,6 +18,11 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+import validate_priority8_staging as staging_validator  # noqa: E402
+
+
 STAGING_PATH = ROOT / "editorial/priority-8-phase4-staging.json"
 RULES_PATH = ROOT / "tests/fixtures/priority8_phase4b_authoring_rules.json"
 RULE_ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
@@ -40,8 +47,17 @@ RULE_FIELDS = {
     },
     "allow-only-preposition-case-signatures": COMMON_FIELDS
     | {"allowedSignatures"},
-    "require-lexical-material-in-pattern": COMMON_FIELDS
-    | {"meaningKey", "patternSelector", "material", "fields"},
+    "require-lexical-material-in-explanation": COMMON_FIELDS
+    | {"meaningKey", "patternSelector", "lexicalItems"},
+}
+
+SIGNATURE_FIELDS_BY_TYPE = {
+    "case": {"type", "case", "required", "role"},
+    "preposition-case": {
+        "type", "case", "preposition", "required", "role",
+    },
+    "infinitive": {"type", "required", "role"},
+    "clause": {"type", "clauseKind", "required", "role"},
 }
 
 
@@ -61,10 +77,54 @@ def _validate_signature(rule_id: str, value: Any, path: str) -> None:
         _configuration_problem(
             rule_id, f"{path} has unknown fields: {', '.join(sorted(unknown))}"
         )
-    if not _nonempty_string(value.get("type")):
-        _configuration_problem(rule_id, f"{path}.type must be a non-empty string")
+    complement_type = value.get("type")
+    if complement_type not in staging_validator.COMPLEMENT_TYPES:
+        _configuration_problem(
+            rule_id,
+            f"{path}.type has invalid value {complement_type!r}; expected one "
+            f"of {sorted(staging_validator.COMPLEMENT_TYPES)!r}",
+        )
+    incompatible = set(value) - SIGNATURE_FIELDS_BY_TYPE[complement_type]
+    if incompatible:
+        _configuration_problem(
+            rule_id,
+            f"{path} has fields incompatible with type {complement_type!r}: "
+            f"{', '.join(sorted(incompatible))}",
+        )
     if "required" in value and not isinstance(value["required"], bool):
         _configuration_problem(rule_id, f"{path}.required must be Boolean")
+    if "role" in value and value["role"] not in staging_validator.ROLES:
+        _configuration_problem(
+            rule_id, f"{path}.role has invalid value {value['role']!r}"
+        )
+    if "case" in value:
+        cases = (
+            staging_validator.DIRECT_CASE_IDS
+            if complement_type == "case"
+            else staging_validator.PREPOSITION_CASE_IDS
+        )
+        if value["case"] not in cases:
+            _configuration_problem(
+                rule_id,
+                f"{path}.case has invalid value {value['case']!r} for "
+                f"type {complement_type!r}; expected one of {sorted(cases)!r}",
+            )
+    if "clauseKind" in value and (
+        value["clauseKind"] not in staging_validator.CLAUSE_KINDS
+    ):
+        _configuration_problem(
+            rule_id,
+            f"{path}.clauseKind has invalid value {value['clauseKind']!r}",
+        )
+    if "preposition" in value and (
+        not isinstance(value["preposition"], str)
+        or not staging_validator.PREPOSITION_RE.fullmatch(value["preposition"])
+    ):
+        _configuration_problem(
+            rule_id,
+            f"{path}.preposition has invalid value {value['preposition']!r}; "
+            "expected one lowercase Polish word",
+        )
 
 
 def _validate_signature_list(
@@ -88,8 +148,8 @@ def validate_rule_registry(
         raise GuardConfigurationError(
             "registry must contain exactly registryVersion and rules"
         )
-    if registry["registryVersion"] != 1:
-        raise GuardConfigurationError("registryVersion must equal 1")
+    if registry["registryVersion"] != 2:
+        raise GuardConfigurationError("registryVersion must equal 2")
     if not isinstance(registry["rules"], list):
         raise GuardConfigurationError("rules must be an array")
 
@@ -186,18 +246,18 @@ def validate_rule_registry(
                     _configuration_problem(
                         rule_id, "allowedSignatures must describe preposition-case complements"
                     )
-        elif kind == "require-lexical-material-in-pattern":
+        elif kind == "require-lexical-material-in-explanation":
             if not _nonempty_string(rule["meaningKey"]):
                 _configuration_problem(rule_id, "meaningKey must be a non-empty string")
             _validate_signature(
                 rule_id, rule["patternSelector"], "patternSelector"
             )
-            if not _nonempty_string(rule["material"]):
-                _configuration_problem(rule_id, "material must be a non-empty string")
-            if rule["fields"] != ["learnerExplanationEn"]:
+            items = rule["lexicalItems"]
+            if not isinstance(items, list) or not items or not all(
+                _nonempty_string(item) for item in items
+            ):
                 _configuration_problem(
-                    rule_id,
-                    "fields must currently equal ['learnerExplanationEn']",
+                    rule_id, "lexicalItems must be a non-empty string array"
                 )
 
     if data is not None:
@@ -386,7 +446,7 @@ def guard_issues(
                             f"preposition-case signature {complement!r}; allowed "
                             f"signatures are {allowed!r}"
                         )
-        elif kind == "require-lexical-material-in-pattern":
+        elif kind == "require-lexical-material-in-explanation":
             selected = [
                 pattern for pattern in patterns
                 if pattern.get("meaningKeyRef") == rule["meaningKey"]
@@ -401,15 +461,17 @@ def guard_issues(
                     f"matches selector {rule['patternSelector']!r}"
                 )
             for pattern in selected:
-                for field in rule["fields"]:
-                    value = pattern.get(field, "")
-                    if not isinstance(value, str) or not _token_present(
-                        value, rule["material"]
-                    ):
-                        issues.append(
-                            f"{_label(rule, pattern)}: field {field!r} lacks "
-                            f"required lexical material {rule['material']!r}"
-                        )
+                explanation = pattern.get("learnerExplanationEn", "")
+                missing = [
+                    item for item in rule["lexicalItems"]
+                    if not isinstance(explanation, str)
+                    or not _token_present(explanation, item)
+                ]
+                if missing:
+                    issues.append(
+                        f"{_label(rule, pattern)}: learnerExplanationEn lacks "
+                        f"required lexical material {missing!r}"
+                    )
     return issues
 
 
@@ -428,6 +490,12 @@ def _pattern(
         if pattern["meaningKeyRef"] == meaning
         and pattern["candidatePatternKey"] == pattern_key
     )
+
+
+def _registry_rule(
+    registry: dict[str, Any], rule_id: str
+) -> dict[str, Any]:
+    return next(rule for rule in registry["rules"] if rule["ruleId"] == rule_id)
 
 
 class Priority8Phase4BAuthoringGuardTests(unittest.TestCase):
@@ -568,6 +636,81 @@ class Priority8Phase4BAuthoringGuardTests(unittest.TestCase):
         ):
             validate_rule_registry(registry)
 
+    def test_unikac_infinitve_type_typo_fails_before_guard_evaluation(self):
+        registry = copy.deepcopy(self.registry)
+        rule = _registry_rule(registry, "p8-4b-unikac-no-infinitive")
+        rule["signature"]["type"] = "infinitve"
+        with self.assertRaisesRegex(
+            GuardConfigurationError,
+            "p8-4b-unikac-no-infinitive.*invalid value 'infinitve'",
+        ):
+            guard_issues(self.live, registry)
+
+    def test_pozwalac_datve_case_typo_fails_before_guard_evaluation(self):
+        registry = copy.deepcopy(self.registry)
+        rule = _registry_rule(
+            registry, "p8-4b-pozwalac-no-dative-infinitive"
+        )
+        rule["signatures"][0]["case"] = "datve"
+        with self.assertRaisesRegex(
+            GuardConfigurationError,
+            "p8-4b-pozwalac-no-dative-infinitive.*invalid value 'datve'",
+        ):
+            guard_issues(self.live, registry)
+
+    def test_invalid_clause_kind_fails_closed(self):
+        registry = copy.deepcopy(self.registry)
+        rule = _registry_rule(
+            registry, "p8-4b-wymagac-exact-alternative-shapes"
+        )
+        rule["meaningShapes"][0]["patterns"][1][0]["clauseKind"] = "zebyy"
+        with self.assertRaisesRegex(
+            GuardConfigurationError, "clauseKind has invalid value 'zebyy'"
+        ):
+            validate_rule_registry(registry)
+
+    def test_malformed_preposition_fails_closed(self):
+        registry = copy.deepcopy(self.registry)
+        rule = _registry_rule(
+            registry, "p8-4b-pokazywac-authorized-preposition-cases"
+        )
+        rule["allowedSignatures"][0]["preposition"] = "na mapie"
+        with self.assertRaisesRegex(
+            GuardConfigurationError,
+            "preposition has invalid value 'na mapie'.*lowercase Polish word",
+        ):
+            validate_rule_registry(registry)
+
+    def test_incompatible_matcher_field_fails_closed(self):
+        registry = copy.deepcopy(self.registry)
+        rule = _registry_rule(registry, "p8-4b-unikac-no-infinitive")
+        rule["signature"]["case"] = "genitive"
+        with self.assertRaisesRegex(
+            GuardConfigurationError,
+            "fields incompatible with type 'infinitive': case",
+        ):
+            validate_rule_registry(registry)
+
+    def test_invalid_matcher_role_fails_closed(self):
+        registry = copy.deepcopy(self.registry)
+        rule = _registry_rule(
+            registry, "p8-4b-pozwalac-no-dative-infinitive"
+        )
+        rule["signatures"][0]["role"] = "recipent"
+        with self.assertRaisesRegex(
+            GuardConfigurationError, "role has invalid value 'recipent'"
+        ):
+            validate_rule_registry(registry)
+
+    def test_malformed_empty_signature_fails_closed(self):
+        registry = copy.deepcopy(self.registry)
+        rule = _registry_rule(registry, "p8-4b-unikac-no-infinitive")
+        rule["signature"] = {}
+        with self.assertRaisesRegex(
+            GuardConfigurationError, "signature must be a non-empty object"
+        ):
+            validate_rule_registry(registry)
+
     def test_malformed_rule_fails_closed(self):
         registry = copy.deepcopy(self.registry)
         registry["rules"][0].pop("signatures")
@@ -591,7 +734,7 @@ class Priority8Phase4BAuthoringGuardTests(unittest.TestCase):
         ):
             validate_rule_registry(registry, self.live)
 
-    def _synthetic_lexical_material(self, explanation: str) -> tuple[
+    def _synthetic_explanation_material(self, explanation: str) -> tuple[
         dict[str, Any], dict[str, Any]
     ]:
         data = {"lemmas": [{
@@ -611,9 +754,9 @@ class Priority8Phase4BAuthoringGuardTests(unittest.TestCase):
                 "examples": [],
             },
         }]}
-        registry = {"registryVersion": 1, "rules": [{
-            "ruleId": "synthetic-required-lexical-material",
-            "kind": "require-lexical-material-in-pattern",
+        registry = {"registryVersion": 2, "rules": [{
+            "ruleId": "synthetic-required-explanation-material",
+            "kind": "require-lexical-material-in-explanation",
             "lemma": "synthetic-participation",
             "verificationOrder": 999,
             "meaningKey": "participation",
@@ -621,24 +764,29 @@ class Priority8Phase4BAuthoringGuardTests(unittest.TestCase):
                 "type": "preposition-case", "preposition": "w",
                 "case": "locative",
             },
-            "material": "udział",
-            "fields": ["learnerExplanationEn"],
+            "lexicalItems": ["udział"],
         }]}
         return data, registry
 
-    def test_required_lexical_material_primitive_passes_when_present(self):
-        data, registry = self._synthetic_lexical_material(
+    def test_required_explanation_material_primitive_passes_when_present(self):
+        data, registry = self._synthetic_explanation_material(
             "Keep udział in the fixed participation construction."
         )
         self.assertEqual([], guard_issues(data, registry))
 
-    def test_required_lexical_material_primitive_fails_when_absent(self):
-        data, registry = self._synthetic_lexical_material(
+    def test_required_explanation_material_primitive_fails_when_absent(self):
+        data, registry = self._synthetic_explanation_material(
             "A stripped generic location construction."
         )
         issues = guard_issues(data, registry)
         self.assertEqual(1, len(issues))
-        self.assertIn("required lexical material 'udział'", issues[0])
+        self.assertIn("required lexical material ['udział']", issues[0])
+
+    def test_explanation_guard_does_not_claim_to_interpret_negation(self):
+        data, registry = self._synthetic_explanation_material(
+            "Do not use udział here."
+        )
+        self.assertEqual([], guard_issues(data, registry))
 
 
 if __name__ == "__main__":

@@ -22,16 +22,16 @@ future-empty boundary, and draft-state assertions. This separation prevents
 later Batch 2-7 authoring from invalidating a historical regression test while
 still detecting unauthorized movement in the current authoring envelope.
 
-### Live structural authoring guards
+### Live declarative authoring guards
 
 `tests/test_priority8_phase4b_authoring_guards.py` reads the current live
 staging file and interprets the declarative registry at
 `tests/fixtures/priority8_phase4b_authoring_rules.json`. It answers “Does the
-current staging violate a known structural semantic invariant?” Rules remain
-active across later batches and contain no current phase/revision/count,
-future-empty boundary, or historical digest assertions. Structural matching is
-independent of a candidate pattern key unless a future semantic identity
-genuinely requires such a key.
+current staging violate a known semantic-structure or explanation-consistency
+invariant?” Rules remain active across later batches and contain no current
+phase/revision/count, future-empty boundary, or historical digest assertions.
+Structural matchers are independent of a candidate pattern key unless a future
+semantic identity genuinely requires such a key.
 
 Independent linguistic review answers a third question: “Did the schema
 faithfully represent the evidence and learner need?” Historical locks, live
@@ -84,6 +84,13 @@ The live rule registry is extended when a new batch activates an
 evidence-driven invariant; reusable guard logic changes only when no existing
 primitive expresses that invariant.
 
+Presence-asserting rules for a new batch—such as exact required pattern shapes
+or required lexical tokens in a selected pattern's learner explanation—are
+introduced in the same authoring commit as the candidate content they protect,
+after the schema matrix has been derived. They fail by design while the target
+meaning/pattern is absent. Absence/prohibition rules may be activated earlier
+only when that is semantically appropriate.
+
 ## Schema-first authoring rule for Batches 4-7
 
 Before `candidateContent` is edited, the author must derive and verify a compact
@@ -94,12 +101,24 @@ meaning and alternative schema and records:
 |---|---|---|---|---|---|---|---|---|
 | `wymagać` | person requires behavior | A | Genitive content | `od` + Genitive person | — | — | not applicable | no standalone `od` |
 | `wymagać` | person requires behavior | B | clause content | `od` + Genitive person | `żeby` | — | not applicable | no standalone `od` |
+| `brać` (Batch 4 plan only) | participation | fixed participation | `w` + Locative | — | — | `udział` | exact governed realization | no generic `brać + w` frame |
 
 The matrix is checked against evidence before pattern keys, examples, learner
 explanations, or staging content are written. Future batch prompts must require
 the model to output and verify it internally or place it in the batch authoring
 report before staging authoring. It is a workflow/control-plane artifact, not
 a new staging field, and does not alter the locked candidate-content schema.
+
+For Batch 4 participation, the current controls are deliberately split:
+lemma-level private `requiredLexicalItems: ["udział"]`; the matrix row above;
+an independently authored `w` + Locative complement; an explanation-token
+guard; an example preserved by the future historical Batch 4 lock; and
+independent linguistic review of the fixed construction. The explanation
+guard checks only that `learnerExplanationEn` mentions the token. It cannot
+prove that a pattern structurally contains lexical material, interpret a
+negated/unrelated mention, or turn `w` + Locative into a lexical-material
+field. A genuine pattern-level representation is an open later schema question
+for schema implementation/reconciliation, not a Phase 4B change.
 
 After authoring, the historical lock, moving progress gate, applicable live
 semantic guards, and independent linguistic review all run. The fuller engine

@@ -2,11 +2,12 @@
 
 ## Outcome and scope
 
-Phase 4B now has a reusable live semantic-structure guard alongside, but
+Phase 4B now has a reusable live declarative authoring guard alongside, but
 separate from, its historical batch digests and moving progress test. The
 implementation consists of a human-readable JSON registry and a generic test
-interpreter. It changes no staging content, schema, production data, runtime
-data, or historical test.
+interpreter. Registry version 2 also fails closed on invalid complement-
+signature values. It changes no staging content, schema, production data,
+runtime data, or historical test.
 
 The registry is
 `tests/fixtures/priority8_phase4b_authoring_rules.json`; the interpreter and
@@ -22,10 +23,11 @@ its mutation proofs are
    phase/revision/boundary, with the expected cumulative totals, future-empty
    records, and draft state?” Only
    `tests/test_priority8_phase4b_progress.py` owns those changing assertions.
-3. **Live semantic authoring guards** answer “Does current staging violate a
-   known structural semantic invariant?” The registry is evaluated against the
-   current file in every future batch. It contains no phase step, staging
-   revision, count, authored-boundary, future-empty-boundary, or digest value.
+3. **Live declarative authoring guards** answer “Does current staging violate a
+   known semantic-structure or explanation-consistency invariant?” The
+   registry is evaluated against the current file in every future batch. It
+   contains no phase step, staging revision, count, authored-boundary,
+   future-empty-boundary, or digest value.
 
 A digest can faithfully preserve a mistaken original interpretation. A live
 guard can prevent a known class of structural mistake from recurring. Neither
@@ -56,20 +58,43 @@ The engine supports these declarative rule kinds:
   complement in a lemma against an exact declarative allowlist. This is the
   safe mechanism for generalized roles when staging cannot itself represent
   “authorized realization” versus “arbitrary concretization.”
-- `require-lexical-material-in-pattern`: selects patterns by meaning and a
-  complement signature, then requires a whole lexical token in the configured
-  pattern field. In the locked staging architecture that field is
-  `learnerExplanationEn`, the first-class pattern-level prose available for a
-  fixed lexical item. A synthetic test proves both pass and failure behavior;
-  no unauthored Batch 4 rule is active yet.
+- `require-lexical-material-in-explanation`: selects authored patterns by
+  meaning and a complement signature, then requires declared whole lexical
+  tokens in `learnerExplanationEn`. This is only a learner-explanation prose
+  consistency check. It does not prove that the candidate pattern structurally
+  contains the lexical item, and it does not interpret negation or whether a
+  token mention teaches the right semantics. No unauthored Batch 4 rule is
+  active yet.
 
 Complement signatures contain data only. The registry permits no executable
 Python expressions. Registry version, top-level shape, rule IDs, duplicate
 IDs, known kinds, exact per-kind fields, nested signature shapes, scalar types,
-and live targets are validated explicitly. Unknown or malformed rules fail
-closed. Violations name the stable rule ID and lemma, plus meaning and pattern
-when a concrete pattern is involved; a pattern key is diagnostic context, not
-the basis of a structural decision.
+and live targets are validated explicitly. Signature values reuse the
+canonical definitions in `validate_priority8_staging.py`: complement type,
+direct-case and preposition-case inventories, clause kinds, roles, and the
+lowercase-single-Polish-word preposition expression. Fields incompatible with
+the declared complement type are rejected. A typo or nonsensical never-match
+signature therefore cannot silently disable a guard. Unknown or malformed
+rules fail closed. Violations name the stable rule ID and lemma, plus meaning
+and pattern when a concrete pattern is involved; a pattern key is diagnostic
+context, not the basis of a structural decision.
+
+The accepted canonical signature values are:
+
+- types: `case`, `preposition-case`, `infinitive`, `clause`;
+- direct cases: `nominative`, `genitive`, `dative`, `accusative`,
+  `instrumental`;
+- preposition cases: `genitive`, `dative`, `accusative`, `instrumental`,
+  `locative`;
+- clause kinds: `ze`, `czy`, `zeby`, `interrogative`, `direct-speech`;
+- roles: `subject`, `object`, `recipient`, `experiencer`, `predicate`,
+  `content`, `topic`, `interlocutor`, `means`, `target`;
+- prepositions: one lowercase Polish word matching the validator's
+  `PREPOSITION_RE`.
+
+For example, `case` signatures reject `preposition`/`clauseKind` fields;
+`preposition-case` rejects `clauseKind`; `infinitive` rejects `case`,
+`preposition`, and `clauseKind`; and `clause` rejects `case`/`preposition`.
 
 ## Current active rules
 
@@ -100,21 +125,24 @@ The guard suite deep-copies live data and mutates only memory. It proves:
 | Add candidate content to metadata-only `przeczytać` | metadata-only content boundary | caught |
 | Add unauthorized `w` + Accusative to `pokazywać` | preposition-case allowlist | caught |
 | Retain the live exact `na` + Accusative pointing pattern | preposition-case allowlist | passes |
-| Supply an unknown kind, malformed rule, duplicate ID, or nonexistent target | registry validation | rejected clearly |
-| Require synthetic pattern-level lexical `udział`, present | lexical material primitive | passes |
-| Require synthetic pattern-level lexical `udział`, absent | lexical material primitive | caught |
+| Change the `unikać` rule type to misspelled `infinitve` | canonical type validation | rejected before evaluation |
+| Change the `pozwalać` Dative case to misspelled `datve` | canonical case validation | rejected before evaluation |
+| Supply an invalid clause kind or malformed preposition | canonical signature validation | rejected before evaluation |
+| Supply incompatible signature fields or an invalid role | field/value validation | rejected before evaluation |
+| Supply an unknown kind, malformed signature/rule, duplicate ID, or nonexistent target | registry validation | rejected clearly |
+| Require synthetic explanation token `udział`, present | explanation consistency | passes |
+| Require synthetic explanation token `udział`, absent | explanation consistency | caught |
+| Mention `udział` in negated synthetic prose | token presence only | passes, demonstrating the documented limit |
 
 ## Future Batch 4-7 extension
 
 Future batches normally add registry objects, not Python branches:
 
-- `brać udział w + Locative` and `wziąć udział w + Locative` can activate one
-  `require-lexical-material-in-pattern` rule per independently authored lemma.
-  Each rule should select the participation meaning and structural `w` +
-  Locative complement, then require whole-token `udział` in that pattern's
-  learner explanation. The existing skeleton-level `requiredLexicalItems`
-  remains a separate frozen-input control; the live rule protects the authored
-  pattern representation.
+- `brać udział w + Locative` and `wziąć udział w + Locative` may activate one
+  `require-lexical-material-in-explanation` rule per independently authored
+  lemma. Each rule selects the participation meaning and structural `w` +
+  Locative complement, then checks only that its learner explanation explicitly
+  mentions `udział`.
 - A meaning with evidence-bound alternatives can use
   `require-exact-pattern-shapes` to declare its complement multisets and
   requiredness without relying on candidate pattern names.
@@ -130,6 +158,49 @@ the engine and its mutation tests should be extended in the same commit as the
 first declarative use. An inactive rule must not target unauthored Batch 4
 content merely to advertise future intent.
 
+Presence-asserting rules—including `require-exact-pattern-shapes` and
+`require-lexical-material-in-explanation`—are introduced in the same authoring
+commit as the new candidate content they protect, after the evidence matrix is
+derived. They intentionally fail when their required meaning/pattern is absent.
+Absence/prohibition rules may be introduced earlier only when doing so is
+semantically appropriate.
+
+The former rule kind, `require-lexical-material-in-pattern`, overstated its
+contract: it searched learner-explanation prose and could not inspect a
+structural lexical-material field because no such field exists. Registry
+version 2 replaces that name with
+`require-lexical-material-in-explanation`. The new contract is exactly token
+presence in `learnerExplanationEn` for structurally selected authored patterns.
+It is a prose consistency guard, not a structural pattern guarantee.
+
+## Batch 4 `udział` control boundary
+
+The locked Phase 4B candidate-pattern schema has no field that structurally
+attaches required lexical material to a pattern. Until a separate later
+schema/governance decision, Batch 4 uses complementary controls without
+mislabeling any of them as such a field:
+
+1. **Governance/staging:** existing lemma-level private
+   `requiredLexicalItems: ["udział"]` on frozen `brać` and `wziąć`, already
+   protected by the existing validator and global constraint.
+2. **Schema-first matrix:** the participation alternative records required
+   lexical material `udział` before authoring.
+3. **Pattern structure:** the participation pattern independently encodes its
+   governed `w` + Locative complement. This complement alone does not encode
+   `udział`.
+4. **Explanation:** the renamed prose guard can require the selected pattern's
+   learner explanation to mention/teach `udział`; token presence cannot prove
+   structural semantics.
+5. **Example/historical lock:** the approved participation example must use the
+   fixed construction, and the Batch 4 digest later preserves that approved
+   content.
+6. **Independent linguistic review:** a reviewer verifies that the meaning is
+   still the fixed construction, not generic `brać/wziąć + w + Locative`.
+
+A genuine pattern-level lexical-material representation remains an **open
+later schema question** for the schema implementation/reconciliation stage.
+This correction neither adds a field nor pre-decides its eventual design.
+
 ## Schema-first authoring workflow
 
 Before editing `candidateContent` in Batches 4-7, the author prepares a compact
@@ -140,6 +211,7 @@ examples, explanations, or staging content:
 |---|---|---|---|---|---|---|---|---|
 | `wymagać` | person requires behavior | A | Genitive content | `od` + Genitive person | — | — | not applicable | no standalone `od` |
 | `wymagać` | person requires behavior | B | clause content | `od` + Genitive person | `żeby` | — | not applicable | no standalone `od` |
+| `brać` (Batch 4 plan only) | participation | fixed participation | `w` + Locative | — | — | `udział` | exact governed realization | no generic `brać + w` frame |
 
 Each row represents one source-licensed alternative, not a bag of complements
 to merge. The author verifies the matrix against evidence first, maps each row
