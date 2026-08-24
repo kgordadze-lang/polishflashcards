@@ -1016,26 +1016,44 @@ Stated explicitly rather than papered over:
 4. **`polecać`'s A4 gerund/action-noun preference is not expressible.** The
    locked schema has no noun-class field; the normative note lives in
    `internalScope` and `learnerExplanationEn` only.
-5. **`pasować`'s four relation types are not structurally distinguishable
+5. **`polecać`'s A4 and B1 rows are structurally identical across two
+   different meanings.** A4 `dative-accusative-action-noun`
+   (`directive-instruction`) and B1 `dative-accusative-recommended-item`
+   (`recommendation`) share the exact shape
+   `{case:accusative role=object required=true, case:dative role=recipient
+   required=false}`. Guard O's `exactMeaningSet: true` pins the declared shape
+   set under each meaning key, but — exactly as for `móc` (item 1) and
+   `zgadzać się` (item 3) above — a structural comparison of two identical
+   complement multisets cannot itself distinguish which semantics belongs
+   under which key; a swap between the two rows would be structurally
+   invisible to guard O. This is not a guard defect and not a missing
+   invariant: the complement structures genuinely are identical, so no
+   additional structural rule could separate them without inventing a field
+   the locked schema does not have. The directive/instruction-versus-
+   recommendation split — like the A4 gerund/action-noun preference in item 4
+   — is therefore preserved only through `internalScope`, `glossesEn`,
+   `learnerExplanationEn`, the example, and independent review, not through
+   any guard.
+6. **`pasować`'s four relation types are not structurally distinguishable
    beyond shape.** Meanings A and C both contain
    `do+genitive role=target required=true`; only C's optional Dative
    distinguishes them structurally. That harmony ≠ reference-target is a
    semantic fact carried by the meaning keys, `internalScope`, and the learner
    explanations. Meanings C and D both use `case:dative role=experiencer`; only
    the presence of `do + Genitive` distinguishes them.
-6. **`cieszyć się`'s four cause distinctions (realized / anticipated / nominal
+7. **`cieszyć się`'s four cause distinctions (realized / anticipated / nominal
    / propositional) are semantic**, not structural; the four distinct shapes
    are enforceable, the four distinct *meanings of those shapes* are not.
-7. **`zapraszać`'s event-vs-destination role distinction is not expressible in
+8. **`zapraszać`'s event-vs-destination role distinction is not expressible in
    the `role` enum.** Both positions must take `role: target` (the enum has no
    finer value); guard N pins the preposition/case pair, and the semantic
    distinction lives in the pattern keys, `internalScope`, and the learner
    explanations.
-8. **`pasować` meaning D's subject–experiencer characterization is not
+9. **`pasować` meaning D's subject–experiencer characterization is not
    expressible as `relationType` under Phase 4B** — see §5.9 and §19.
-9. **"This is exact source syntax, not a narrowed realization" is documentation,
-   not structure.** Guards pin *which* signatures may appear; the epistemic
-   label lives in this matrix, `internalScope`, and review.
+10. **"This is exact source syntax, not a narrowed realization" is documentation,
+    not structure.** Guards pin *which* signatures may appear; the epistemic
+    label lives in this matrix, `internalScope`, and review.
 
 ## 15. Candidate-key audit
 
