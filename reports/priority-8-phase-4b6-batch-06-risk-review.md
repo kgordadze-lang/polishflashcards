@@ -1,5 +1,42 @@
 # Priority 8 Phase 4B6 — Batch 06 risk review
 
+## Correction addendum (independent-review aspect-fidelity pass)
+
+Independent review (`APPROVE WITH CORRECTIONS`) found exactly two defect
+classes, both corrected here; no matrix, guard, `relationType`, complement
+structure, requiredness value, CEFR assignment, or `teachingStatus` value
+required correction.
+
+**Defect class A — aspect identity (five examples).** `polecać`'s four
+`directive-instruction` examples used `polecił` (perfective `polecić`'s
+past tense) and `radzić`'s `dative-direct-speech-advice` example used
+`poradziła` (perfective `poradzić`'s past tense), neither of which
+instantiates the declared-imperfective lemma being authored. Corrected to
+present-tense forms of the actual imperfective verbs (`poleca`, `radzę`),
+following the established corpus convention (`Piszę…`, `Odpowiadam…`,
+`Dzwonię…`) that every imperfective lemma's direct-speech/clause examples use
+present tense specifically to avoid this trap. Full before/after detail,
+including the `polecać` A4-versus-B1 semantic-safety confirmation, is in the
+authoring report's "Aspect-fidelity corrections" section. The five matching
+`learnerExplanationEn` illustrative snippets were updated in lockstep; no
+other explanatory wording changed. Both quiet-reuse layers were re-run on all
+five corrected sentences with zero collisions; provenance remains 0
+repository-reuse / 37 editorial-generated.
+
+**Defect class B — report arithmetic (this file and the authoring report).**
+§15 below previously read "`36` active-production, `0` recognition-only";
+staging has always contained 37 active-production patterns (37 patterns
+exist in Batch 6, so 36+0 was arithmetically impossible). Corrected to `37`
+below. This was a report-only wording defect, not a staging defect, verified
+both before and after the aspect correction.
+
+Because `candidateContent` changed, the Batch 6 historical digest changed
+accordingly, using the same, unmodified projection: new digest
+`cff207b6e728fb203ba05a9ba94915432957be76101b3bd6a0f65137cdda98d5`,
+superseding the original
+`4315720bc2ca58424f668d0aec4448c0eb7716bc8db682b7b439c2dd22f64a96`. B1-B5
+digests independently reconfirmed unchanged.
+
 ## 1. Scope
 
 This reviews the actual authored content in
@@ -106,7 +143,7 @@ both guards simultaneously.
 Two meanings (`directive-instruction`, 4 patterns, each with optional
 Dative; `recommendation`, 1 pattern). No infinitive or clause complement type
 appears anywhere under `recommendation` (mechanically verified). The A4
-Accusative ("Trener polecił zawodnikom rozgrzewkę.") is glossed and explained
+Accusative ("Trener poleca zawodnikom rozgrzewkę.") is glossed and explained
 as an action-noun/gerund instruction, never as an ordinary recommendation;
 the B1 Accusative ("Polecam ci tę restaurację.") is glossed as a recommended
 item. The two meanings' `internalScope` text is distinct (mechanically
@@ -225,7 +262,7 @@ hide a schema concern, and no pattern was defaulted to `active-production`
 without independent consideration; every high-attention row named in the
 brief (§17 of the authoring task) was individually weighed against register
 and frequency, and each was retained `active-production` with an explicit,
-documented reason rather than a mechanical default. `36` active-production,
+documented reason rather than a mechanical default. `37` active-production,
 `0` recognition-only is therefore a genuine, examined conclusion, not an
 unconsidered uniform choice.
 

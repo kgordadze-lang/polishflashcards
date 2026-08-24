@@ -1,5 +1,94 @@
 # Priority 8 Phase 4B6 — Batch 06 authoring
 
+## Correction addendum (independent-review aspect-fidelity pass)
+
+Independent review of the original authoring (commit
+`cad4c494a1996d9d394a0a49aa304ebeb9dc5dc7`) returned **APPROVE WITH
+CORRECTIONS**: the full 37/37 matrix implementation, all 16 meaning keys and
+37 pattern keys, all complement structures and requiredness values, all four
+all-optional patterns, every `relationType` decision, all lexical-identity
+decisions, all CEFR assignments, the 21 Batch 6 guards, the 57-rule registry,
+the documented semantic guard limitations, and the historical-lock/progress-
+test architecture were approved **without change**. Exactly two defect
+classes were flagged and are corrected in this addendum:
+
+1. **Aspect-identity defect (five example records).** `polecać` and `radzić`
+   are both declared `aspect: imperfective`. Four `polecać`
+   `directive-instruction` examples used `polecił`, a conjugated form of the
+   **perfective** partner `polecić`, and the `radzić`
+   `dative-direct-speech-advice` example used `poradziła`, a conjugated form
+   of the **perfective** partner `poradzić` (formed by `po-` prefixation,
+   exactly parallel to this corpus's own already-approved `pisać`→`napisać`
+   pair). Neither perfective form instantiates the imperfective lemma being
+   authored. All five are corrected to natural **present-tense** sentences
+   using the actual imperfective verb, following the established corpus
+   convention already used by every other imperfective lemma's direct-speech/
+   clause example (`Piszę…`, `Odpowiadam…`, `Dzwonię…` — never past tense).
+   The five matching `learnerExplanationEn` illustrative snippets were
+   updated in lockstep; no surrounding explanatory prose was rewritten. Full
+   before/after detail is in "Aspect-fidelity corrections" below.
+2. **Report arithmetic error (this file and the risk review).** Both files
+   stated "36 active-production, 0 recognition-only". Staging has always
+   contained **37** active-production patterns (0 recognition-only) — 37
+   patterns exist in Batch 6, so 36+0 was arithmetically impossible. This was
+   a report-only wording defect; independently re-verified against staging
+   both before and after the aspect correction. Corrected to "37" in both
+   files; no CEFR/`teachingStatus` value changed anywhere.
+
+No matrix, guard, `relationType`, complement structure, requiredness value,
+CEFR assignment, or `teachingStatus` value was touched. `polecać` remains
+2 meanings / 5 patterns with the A4/B1 identical-shape semantic distinction
+intact; `radzić` remains 1 meaning / 5 patterns with the Dative requiredness
+asymmetry intact. Because `candidateContent` changed, the Batch 6 historical
+digest changed accordingly using the **same, unmodified** projection; see
+"Aspect-fidelity corrections" and "Batch 6 digest" below. B1-B5 digests were
+independently reconfirmed unchanged.
+
+## Aspect-fidelity corrections
+
+| Lemma | Pattern | Old PL | New PL | Old EN | New EN |
+|---|---|---|---|---|---|
+| `polecać` | `dative-infinitive-instruction` | Lekarz polecił mi odpoczywać. | Lekarz poleca mi odpoczywać. | The doctor told me to rest. | The doctor tells me to rest. |
+| `polecać` | `dative-zeby-instruction` | Szef polecił mi, żebym przygotował raport. | Szef poleca mi, żebym przygotował raport. | My boss told me to prepare the report. | My boss tells me to prepare the report. |
+| `polecać` | `dative-direct-speech-instruction` | „Zamknij drzwi” — polecił mi kierownik. | Kierownik poleca mi: „Zamknij drzwi”. | "Close the door," the manager instructed me. | The manager tells me: "Close the door." |
+| `polecać` | `dative-accusative-action-noun` | Trener polecił zawodnikom rozgrzewkę. | Trener poleca zawodnikom rozgrzewkę. | The coach ordered the players to warm up. | The coach orders the players to warm up. |
+| `radzić` | `dative-direct-speech-advice` | „Odpocznij trochę” — poradziła mi przyjaciółka. | Radzę ci: „Odpocznij trochę”. | "Get some rest," my friend advised me. | I advise you: "Rest a little." |
+
+Each corrected sentence instantiates the exact declared-imperfective lemma
+(`poleca`/`radzę`, present tense, no perfective partner conjugation anywhere)
+while preserving every structural fact the row exists to teach: optional
+Dative recipient realized in all four `polecać` rows; required infinitive,
+`żeby` clause, direct speech, and Accusative action-noun preserved
+respectively; `radzić`'s required Dative advisee and required direct-speech
+clause preserved; no `sobie`, no `z + Instrumental` introduced anywhere.
+
+`polecać` A4 (`dative-accusative-action-noun`) received extra scrutiny because
+it is structurally identical to recommendation's B1
+(`dative-accusative-recommended-item`). The corrected sentence keeps the
+original authority-context scenario (a coach ordering players to warm up)
+that review itself judged unambiguous: "rozgrzewka" (warm-up) is a mandatory
+training activity ordered by an authority figure to subordinates, not a
+purchasable/experiential item recommendable to a customer — the WSJP-sense-2
+scope B1 occupies. Only the tense changed (`polecił` → `poleca`); the
+authority-context framing that makes the row unmistakably directive rather
+than recommendation was preserved unaltered, and B1 itself was not touched.
+
+Each `learnerExplanationEn` embedding the old illustrative snippet was
+updated to embed the corrected snippet and its English gloss; no other wording
+in any of the five explanations changed.
+
+Both quiet-reuse layers were re-run on all five corrected Polish sentences:
+zero collisions in the 1665-entity indexed product corpus, and zero
+collisions in a raw-text sweep of every `data-*.js`, `pp-*.js`, top-level
+`*.json`, `editorial/*.json` (excluding the staging file itself, which now
+legitimately contains these sentences), and `reports/*.md` file (excluding
+this batch's own two reports). All five remain `editorial-generated`;
+provenance is unchanged at 0 repository-reuse / 37 editorial-generated.
+
+Recomputed after correction: 37 unique Polish, 37 unique English, 0
+duplicate English values (no duplication existed before or after; none was
+introduced or removed by this correction).
+
 ## Scope and starting endpoint
 
 This is an **implementation** task against an already independently-reviewed
@@ -101,7 +190,7 @@ active-production default taken without checking):
   `active-production`, `common`, matching the `pozwalać` Dative+infinitive
   precedent exactly.
 
-**36 active-production, 0 recognition-only.** Recognition-only was
+**37 active-production, 0 recognition-only.** Recognition-only was
 independently considered and rejected for every high-attention row named in
 the brief:
 
@@ -233,9 +322,16 @@ and confirmed:
 
 ## Batch 6 digest
 
+Post-correction digest, using the **same, unmodified** digest projection
+(the aspect-fidelity corrections changed `candidateContent`, so the digest
+changed accordingly):
+
 ```
-4315720bc2ca58424f668d0aec4448c0eb7716bc8db682b7b439c2dd22f64a96
+cff207b6e728fb203ba05a9ba94915432957be76101b3bd6a0f65137cdda98d5
 ```
+
+Original (pre-correction) digest, superseded by the corrected value above:
+`4315720bc2ca58424f668d0aec4448c0eb7716bc8db682b7b439c2dd22f64a96`.
 
 B1-B5 independently recomputed and confirmed **unchanged**:
 

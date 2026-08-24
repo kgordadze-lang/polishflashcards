@@ -8849,7 +8849,7 @@
               "priority": "common",
               "register": "neutral"
             },
-            "learnerExplanationEn": "For an instruction to act, use a bare infinitive; naming who is instructed (Dative) is optional: lekarz polecił mi odpoczywać (the doctor told me to rest)."
+            "learnerExplanationEn": "For an instruction to act, use a bare infinitive; naming who is instructed (Dative) is optional: lekarz poleca mi odpoczywać (the doctor tells me to rest)."
           },
           {
             "candidatePatternKey": "dative-zeby-instruction",
@@ -8878,7 +8878,7 @@
               "priority": "common",
               "register": "neutral"
             },
-            "learnerExplanationEn": "A żeby clause is another way to give the same instruction: szef polecił mi, żebym przygotował raport (my boss told me to prepare the report)."
+            "learnerExplanationEn": "A żeby clause is another way to give the same instruction: szef poleca mi, żebym przygotował raport (my boss tells me to prepare the report)."
           },
           {
             "candidatePatternKey": "dative-direct-speech-instruction",
@@ -8907,7 +8907,7 @@
               "priority": "common",
               "register": "neutral"
             },
-            "learnerExplanationEn": "An instruction can also be quoted directly: „Zamknij drzwi” — polecił mi kierownik (\"Close the door,\" the manager instructed me)."
+            "learnerExplanationEn": "An instruction can also be quoted directly: kierownik poleca mi: „Zamknij drzwi” (the manager tells me: \"Close the door.\")."
           },
           {
             "candidatePatternKey": "dative-accusative-action-noun",
@@ -8936,7 +8936,7 @@
               "priority": "common",
               "register": "neutral"
             },
-            "learnerExplanationEn": "The Accusative names the ordered action as a noun (usually a gerund/action noun), not a recommended item: trener polecił zawodnikom rozgrzewkę (the coach ordered the players to warm up)."
+            "learnerExplanationEn": "The Accusative names the ordered action as a noun (usually a gerund/action noun), not a recommended item: trener poleca zawodnikom rozgrzewkę (the coach orders the players to warm up)."
           },
           {
             "candidatePatternKey": "dative-accusative-recommended-item",
@@ -8973,8 +8973,8 @@
             "candidateExampleKey": "primary",
             "meaningKeyRef": "directive-instruction",
             "patternKeyRef": "dative-infinitive-instruction",
-            "pl": "Lekarz polecił mi odpoczywać.",
-            "en": "The doctor told me to rest.",
+            "pl": "Lekarz poleca mi odpoczywać.",
+            "en": "The doctor tells me to rest.",
             "candidateOrigin": {
               "kind": "editorial-generated"
             }
@@ -8983,8 +8983,8 @@
             "candidateExampleKey": "primary",
             "meaningKeyRef": "directive-instruction",
             "patternKeyRef": "dative-zeby-instruction",
-            "pl": "Szef polecił mi, żebym przygotował raport.",
-            "en": "My boss told me to prepare the report.",
+            "pl": "Szef poleca mi, żebym przygotował raport.",
+            "en": "My boss tells me to prepare the report.",
             "candidateOrigin": {
               "kind": "editorial-generated"
             }
@@ -8993,8 +8993,8 @@
             "candidateExampleKey": "primary",
             "meaningKeyRef": "directive-instruction",
             "patternKeyRef": "dative-direct-speech-instruction",
-            "pl": "„Zamknij drzwi” — polecił mi kierownik.",
-            "en": "\"Close the door,\" the manager instructed me.",
+            "pl": "Kierownik poleca mi: „Zamknij drzwi”.",
+            "en": "The manager tells me: \"Close the door.\"",
             "candidateOrigin": {
               "kind": "editorial-generated"
             }
@@ -9003,8 +9003,8 @@
             "candidateExampleKey": "primary",
             "meaningKeyRef": "directive-instruction",
             "patternKeyRef": "dative-accusative-action-noun",
-            "pl": "Trener polecił zawodnikom rozgrzewkę.",
-            "en": "The coach ordered the players to warm up.",
+            "pl": "Trener poleca zawodnikom rozgrzewkę.",
+            "en": "The coach orders the players to warm up.",
             "candidateOrigin": {
               "kind": "editorial-generated"
             }
@@ -9161,7 +9161,7 @@
               "priority": "common",
               "register": "neutral"
             },
-            "learnerExplanationEn": "Advice can be quoted directly, with the advisee (Dative) still required: „Odpocznij trochę” — poradziła mi przyjaciółka (\"Get some rest,\" my friend advised me)."
+            "learnerExplanationEn": "Advice can be quoted directly, with the advisee (Dative) still required: radzę ci: „Odpocznij trochę” (I advise you: \"Rest a little.\")."
           },
           {
             "candidatePatternKey": "dative-infinitive-advice",
@@ -9227,8 +9227,8 @@
             "candidateExampleKey": "primary",
             "meaningKeyRef": "giving-advice",
             "patternKeyRef": "dative-direct-speech-advice",
-            "pl": "„Odpocznij trochę” — poradziła mi przyjaciółka.",
-            "en": "\"Get some rest,\" my friend advised me.",
+            "pl": "Radzę ci: „Odpocznij trochę”.",
+            "en": "I advise you: \"Rest a little.\"",
             "candidateOrigin": {
               "kind": "editorial-generated"
             }
