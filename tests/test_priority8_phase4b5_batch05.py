@@ -35,7 +35,7 @@ BATCH_5_DIGEST_FIELDS = (
     "requiredLexicalItems",
 )
 BATCH_5_APPROVED_DIGEST = (
-    "7c95810c26d99237995f138b58a9ae5ca07cd7431721cd619f1eb4f4622daf60"
+    "d84939a803de1e7513bec822e2e707e93b0090e3bff2251658d058b99e7ed951"
 )
 ALLOWED_REVIEW_STATUSES = {
     "draft", "independently-reviewed", "human-approved",

@@ -7368,7 +7368,7 @@
               "priority": "common",
               "register": "neutral"
             },
-            "learnerExplanationEn": "Use że to report what you're calling to say: dzwonię, że będę późno (I'm calling to say I'll be late)."
+            "learnerExplanationEn": "Use że to report what you're calling to say: dzwonię, że się spóźnię (I'm calling to say I'll be late)."
           },
           {
             "candidatePatternKey": "zeby-requested-content-clause",
@@ -7419,7 +7419,7 @@
             "candidateExampleKey": "primary",
             "meaningKeyRef": "telephone-contact",
             "patternKeyRef": "ze-reported-content-clause",
-            "pl": "Dzwonię, że będę późno.",
+            "pl": "Dzwonię, że się spóźnię.",
             "en": "I'm calling to say I'll be late.",
             "candidateOrigin": {
               "kind": "editorial-generated"
@@ -7637,7 +7637,7 @@
               "priority": "core",
               "register": "neutral"
             },
-            "learnerExplanationEn": "What you said takes the Accusative; you can optionally add do + Genitive for who you told: powiedziałem prawdę do koleżanki (I told the truth to my friend)."
+            "learnerExplanationEn": "What you said takes the Accusative; you can optionally add do + Genitive for who you told: powiedziałem do koleżanki prawdę (I told the truth to my friend)."
           },
           {
             "candidatePatternKey": "do-genitive-o-locative-topic",
@@ -7839,7 +7839,7 @@
             "candidateExampleKey": "primary",
             "meaningKeyRef": "spoken-communication",
             "patternKeyRef": "do-genitive-accusative-content",
-            "pl": "Powiedziałem prawdę do koleżanki.",
+            "pl": "Powiedziałem do koleżanki prawdę.",
             "en": "I told the truth to my friend.",
             "candidateOrigin": {
               "kind": "editorial-generated"

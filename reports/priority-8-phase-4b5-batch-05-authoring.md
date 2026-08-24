@@ -1,5 +1,41 @@
 # Priority 8 Phase 4B5 — Batch 05 authoring
 
+## Correction addendum (independent-review example-quality pass)
+
+Independent review of the original authoring (commit
+`f69132cc757bdf2b5033c0b5824ceb1dbc716fbc`) returned **APPROVE WITH
+CORRECTIONS**: the full 40/40 matrix implementation, all candidate keys,
+all complement structures and requiredness, the 40 active-production / 0
+recognition-only classification, CEFR, the live guard registry, and all
+23/23 mutation results were approved without change. Exactly two example
+records were flagged, and both are corrected in a separate follow-up
+commit:
+
+1. **G-1 (required) — `dzwonić` / `ze-reported-content-clause`.** The
+   original example "Dzwonię, że będę późno." used an English-calqued
+   rendering of "I'll be late" — Polish expresses tardiness with *spóźnić
+   się*, attested three times in this product's own `data-*.js` corpus,
+   with zero attestations of the calqued form. Corrected to "Dzwonię, że
+   się spóźnię." The English gloss ("I'm calling to say I'll be late") and
+   the structural pattern (required `że`-clause) are unchanged.
+2. **G-2 (recommended) — `powiedzieć` / `do-genitive-accusative-content`.**
+   The original example "Powiedziałem prawdę do koleżanki." placed the
+   `do`+Genitive recipient in a trailing position inconsistent with its
+   four sibling `do`+Genitive rows, which all place it immediately after
+   the verb. Reordered to "Powiedziałem do koleżanki prawdę." — the
+   reviewer's suggested minimal reorder was used as-is; no lexical
+   substitution was needed. Structure (required Accusative content,
+   optional `do`+Genitive recipient) and English gloss are unchanged.
+
+These two corrections are unrelated to, and must not be confused with, the
+two **first-pass authoring-time** quiet-reuse collisions already documented
+below in "Example provenance" ("Chcę odpocząć." / "Chciałbym kawę.", found
+and rewritten *before* the original commit was ever made). This addendum
+covers a distinct, later, independent-review finding on already-committed
+content. Both corrected sentences were re-scanned through both quiet-reuse
+layers with zero collisions (see the risk review, §22). The Batch 5 digest
+changed accordingly; see below.
+
 ## Scope and starting endpoint
 
 This is an **implementation** task against an already independently-reviewed
@@ -201,8 +237,16 @@ Digest projection fields: `verificationOrder`, `canonicalLemma`, `aspect`,
 and canonical-JSON serialization discipline used by the Batch 1–4 historical
 locks.
 
-**Batch 5 digest:**
-`7c95810c26d99237995f138b58a9ae5ca07cd7431721cd619f1eb4f4622daf60`
+**Batch 5 digest (corrected):**
+`d84939a803de1e7513bec822e2e707e93b0090e3bff2251658d058b99e7ed951`
+
+(Original, pre-correction digest:
+`7c95810c26d99237995f138b58a9ae5ca07cd7431721cd619f1eb4f4622daf60` —
+superseded because exactly two `example.pl` values and their matching
+`learnerExplanationEn` illustration snippets changed, per the correction
+addendum above. All other candidateContent — complements, requiredness,
+keys, `cefr`, `teachingStatus`, `usage`, and the other 38 examples — is
+byte-identical to the original commit, verified programmatically.)
 
 B1–B4 digests independently recomputed and confirmed unchanged:
 `3849e0082e59e0984e7082c35e5b492eb3a228706aab2a7323575a5a9f9e619e`,

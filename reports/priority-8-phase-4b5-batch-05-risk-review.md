@@ -6,6 +6,16 @@ linguistic decision the matrix already settled or re-litigate the two
 `umówić się` policy adjudications; it checks that authoring faithfully
 implements them.
 
+**Correction addendum.** Independent review of the original authoring
+approved every structural finding in this document without change (40/40
+matrix conformance, all `umówić się` boundary findings, `co do` deferral,
+`KIEDY` non-structural treatment, live guards, all 23 mutation results, and
+the 40 active-production / 0 recognition-only classification) and flagged
+exactly two example-quality issues, both corrected in a follow-up commit —
+see §22 below for the correction and its quiet-reuse verification. This is
+distinct from, and must not be confused with, the two first-pass
+authoring-time quiet-reuse collisions already recorded in §19.
+
 ## 1. `oglądać` presentation-context `w + Locative`
 
 The single pattern carries required Accusative object plus optional
@@ -272,6 +282,55 @@ invalidate it. It pins the Batch 5 content digest, the frozen matrix
 SHA-256, exact candidate keys, provenance counts, and the presence of all
 14 new live guard rules, plus targeted structural invariants for every
 high-risk lemma (§§1–16 above).
+
+## 22. Independent-review example-quality correction
+
+Two example records were corrected following independent review of the
+original committed authoring; both changes are confined to `example.pl` and
+the matching illustrative snippet inside `learnerExplanationEn` — no
+complement, requiredness, key, `cefr`, `teachingStatus`, or `usage` value
+changed anywhere in the 40-pattern corpus, verified programmatically against
+the pre-correction commit.
+
+**G-1 — `dzwonić` / `ze-reported-content-clause`.** "Dzwonię, że będę
+późno." was an English-calqued rendering: Polish idiomatically expresses
+"I'll be late" with *spóźnić się*, not a literal "będę późno" ("[I] will-be
+late"). Independently confirmed against this product's own corpus: *spóźnię
+się*/*spóźniliśmy się* forms appear 3 times across `data-*.js`; the calqued
+form appears 0 times. Corrected to "Dzwonię, że się spóźnię." The English
+gloss and the required-`że`-clause structure are unchanged; no target
+participant was added.
+
+**G-2 — `powiedzieć` / `do-genitive-accusative-content`.** "Powiedziałem
+prawdę do koleżanki." placed the optional `do`+Genitive recipient in
+trailing position, inconsistent with its four `do`+Genitive sibling rows
+(`do-genitive-o-locative-topic`, `-ze-clause`, `-zeby-clause`,
+`-interrogative-clause`), all of which place `do koleżanki` immediately
+after the verb. The reviewer's suggested minimal reorder — "Powiedziałem do
+koleżanki prawdę." — reads naturally on inspection and required no further
+lexical substitution. Required Accusative content and optional
+`do`+Genitive recipient are both still realized; structure unchanged.
+
+**Quiet-reuse verification for both corrected sentences**, using the same
+two layers established in §19: the historical-lock/index scan (1665
+entities, `card.pl/ex` + `drill.prompt/answer`) returned zero collisions for
+both; the supplemental raw-text scan (190 files, ~8.3 MB, excluding staging
+and Batch 5's own reports) returned zero collisions for both. Neither scan
+is described as complete — the index scan does not reach nested grammar-deck
+arrays, as already documented in §19.
+
+Post-correction totals, independently reconfirmed: 10 lemmas / 15 meanings /
+40 patterns / 40 examples; 40 active-production / 0 recognition-only; 0
+repository-reuse / 40 editorial-generated; 40 unique Polish strings; 39
+unique English strings — the one approved `powiedzieć` żeby-clause English
+duplicate ("I told my friend to wait.", between the Dative and `do`+Genitive
+recipient-mode rows) is untouched by this correction, since neither
+corrected pattern is one of that pair. The Batch 5 digest changed from
+`7c95810c26d99237995f138b58a9ae5ca07cd7431721cd619f1eb4f4622daf60` to
+`d84939a803de1e7513bec822e2e707e93b0090e3bff2251658d058b99e7ed951`; B1–B4
+digests independently reconfirmed unchanged. The frozen matrix, the guard
+registry, the guard interpreter, and the progress test are all
+byte-identical to the original commit (0-line diffs).
 
 ## Concerns and open items
 
