@@ -988,10 +988,15 @@ private clause-kind vocabulary is `ze`, `czy`, `zeby`, `interrogative`,
   states "a `czy` clause is **one realization** of the interrogative-dependent
   construction" and "`Czy` is **not a fifth locked type**". The product
   therefore uses `clauseKind: interrogative`, and a primary example that
-  happens to use `czy` creates **no** separate type, pattern, or key. This is
-  distinct from Batch 2/3 `zapominać` and `kłócić się`, whose own sources list
-  a `czy` clause directly and which legitimately carry
-  `clauseKind: czy` in live staging.
+  happens to use `czy` creates **no** separate type, pattern, or key. Live
+  staging does carry `clauseKind: czy` on the already-frozen Batch 2/3 records
+  `zapominać` and `kłócić się`, but their frozen Phase 3 evidence is
+  **interrogative-dependent** (`że ZDANIE | ZDANIE PYTAJNOZALEŻNE` and
+  `ZDANIE PYTAJNOZALEŻNE` / `ŻE` respectively), not a direct literal-`czy`
+  source. Those prior-batch authoring decisions are **outside Batch 7 scope**;
+  this matrix takes no position on them and does **not** cite them as
+  source-level precedent for a literal `czy` mapping. Batch 7 maps
+  `ZDANIE PYTAJNOZALEŻNE` to `interrogative` on its own frozen evidence alone.
 - **No direct-speech pattern anywhere in Batch 7.** No Batch 7 source lists
   direct speech, so none is authored — including for `przepraszać` and
   `uczyć`, where an apology or an instruction could plausibly be quoted.
@@ -1176,7 +1181,7 @@ the locked model.
 | **B. `jeść` / `pić` consumption normalization** | **NOT normalized.** `jeść` has an all-optional object plus an optional Instrumental implement; `pić` has a single required Accusative and **no** Instrumental. The asymmetry is exactly what the two sources say and is preserved. | Guards D, F. Guard D pins two optional complements; guard F pins one required complement, so neither can drift toward the other. |
 | **C. `jeść` / `brać`,`wziąć` (Batch 4) instrumental means** | **Convergent, not donated.** Both use `case:instrumental role=means` under `lexical-frame`, each from its own exact `CZYM`/means evidence. `brać`/`wziąć` additionally carry `requiredLexicalItems: ["udział"]` and a participation meaning that `jeść` must never acquire. | Validator `requiredLexicalItems` allowlist; guard D. |
 | **D. `kochać` / released `lubić`** | **NO TRANSFER.** `lubić` is already released with `accusative-object` + `infinitive-activity` under one meaning. `kochać` sense 3 has the same shape pair from `WSJP-KOCH-03` alone. Product overlap is not linguistic donation, and `kochać`'s three-meaning split must not be flattened toward `lubić`'s single meaning. | Guard H (`exactMeaningSet: true`, three keys). |
-| **E. `wiedzieć` / released `znać`; `wiedzieć` / `rozumieć`,`pamiętać`,`zapominać`** | **NO TRANSFER.** `znać` (acquaintance) is a different released lemma with a different scope; `rozumieć`/`pamiętać`/`zapominać` are separately authored Batch 2/5 records. Shared clause kinds are independently sourced convergence. Notably `wiedzieć` gets **no `czy` complement** while `zapominać` legitimately has one — the difference is preserved, not smoothed. | Guards B, C. |
+| **E. `wiedzieć` / released `znać`; `wiedzieć` / `rozumieć`,`pamiętać`,`zapominać`** | **NO TRANSFER.** `znać` (acquaintance) is a different released lemma with a different scope; `rozumieć`/`pamiętać`/`zapominać` are separately authored Batch 2/5 records. Shared clause kinds are independently sourced convergence. `wiedzieć` gets **no `czy` complement**: its own frozen source is interrogative-dependent, so `interrogative` is the only mapping. Live staging's `clauseKind: czy` on already-frozen `zapominać` is a prior-batch authoring state outside Batch 7 scope (§11) and is not precedent here. | Guards B, C. |
 | **F. `przepraszać` / `dziękować` (released) and `zapraszać` (Batch 6)** | **NO TRANSFER.** `dziękować` supplies role convention only (§13); its **Dative** person is not imported into `przepraszać`, which has an Accusative person. `zapraszać`'s `na`/`do` positions are not imported. | Guards I, J. Guard J's allowlist contains only `za+accusative`. |
 | **G. `życzyć` / `życzyć sobie`** | **STRICT SEPARATION.** See §10. | Rule-target identity check; guard K; editorial fields; review. |
 | **H. `uczyć` / `uczyć się` (released canonical)** | **STRICT SEPARATION.** See §10. Nothing is inherited in either direction; the released `uczyć się` record's own scope note already asserts the boundary. | Rule-target identity check; guard N (every authorized `uczyć` row carries the Accusative learner, which `uczyć się` never has); validator `requiredLexicalItems` allowlist; editorial fields; review. |
@@ -1446,7 +1451,7 @@ For every one of the 23 product rows:
 | requiredness exact | **pass** — §6; every value traced to parenthesisation |
 | optionality exact | **pass** — §6, §7 |
 | `relationType` valid | **pass** — all `lexical-frame`, a locked enum member; no row triggers the `means-method` or `subject-experiencer` obligations |
-| `role` valid | **pass** — §13; all ten values used are locked enum members; none invented |
+| `role` valid | **pass** — §13; all **six** role values used (`content`, `object`, `topic`, `interlocutor`, `recipient`, `means`) are among the **ten** locked enum members; none invented |
 | `clauseKind` exact | **pass** — §11; `ze`/`zeby`/`interrogative` kept distinct, `czy` used nowhere, no direct speech |
 | no maximal merger | **pass** — §4.1; `uczyć` and `wiedzieć` alternatives split, never combined |
 | no generalized-role concretization | **pass** — §12; `SKĄD` and `GDZIE` receive no preposition and no row |
