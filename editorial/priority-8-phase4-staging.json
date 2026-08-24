@@ -1,9 +1,9 @@
 {
   "stagingSchemaVersion": 1,
-  "stagingRevision": 6,
+  "stagingRevision": 7,
   "priority": 8,
   "phase": "4B",
-  "phaseStep": "4B5",
+  "phaseStep": "4B6",
   "frozenFullPatternCount": 68,
   "sources": {
     "phase3BFreezeCsv": {
@@ -7912,9 +7912,59 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "meal-preparation",
+            "glossesEn": [
+              "prepare a hot meal",
+              "cook food (for someone)"
+            ],
+            "internalScope": "Preparing a hot meal or dish (WSJP sense 3), separate from food itself boiling/cooking and every other gotować sense. Source gives exact (CO) + (KOMU), both positions parenthesised: one schema with an optional Accusative prepared dish/meal and an optional Dative beneficiary, faithfully authored with zero required complements per the Phase 4B5 all-optional-pattern precedent. Neither position is promoted to required. dla + Genitive appears only outside the exact schema and receives no frame credit; it is never authored."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "accusative-dish-dative-beneficiary",
+            "meaningKeyRef": "meal-preparation",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": false,
+                "role": "object"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Both the prepared dish (Accusative) and the person it's for (Dative) are optional and can be named together or left out: gotuję obiad mamie (I'm cooking dinner for my mom)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "meal-preparation",
+            "patternKeyRef": "accusative-dish-dative-beneficiary",
+            "pl": "Gotuję obiad mojej mamie.",
+            "en": "I'm cooking dinner for my mom.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -7931,9 +7981,99 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "booking-reservation",
+            "glossesEn": [
+              "book something",
+              "reserve something"
+            ],
+            "internalScope": "Booking a table, room, seat, ticket, service, or comparable reservable item for a customer/beneficiary (WSJP sense 1). Source gives CO + (KOMU) and CO + (dla KOGO): the booked item is required in both schemas, while Dative and dla + Genitive are alternative, never-cumulative optional beneficiary/customer realizations. Setting time or resources aside (sense 2) and its na + Accusative purpose and dla allocation semantics are a separate meaning and receive no Phase 4 product row here; sense 2 was inspected only as a contrast boundary."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "accusative-item-dative-beneficiary",
+            "meaningKeyRef": "booking-reservation",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Name what you're booking with the Accusative; add who it's for with an optional Dative: rezerwuję stolik znajomym (I'm reserving a table for my friends)."
+          },
+          {
+            "candidatePatternKey": "accusative-item-dla-genitive-beneficiary",
+            "meaningKeyRef": "booking-reservation",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "dla",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "dla + Genitive is an alternative way to name the beneficiary, never combined with the Dative form: rezerwuję pokój dla rodziców (I'm reserving a room for my parents)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "booking-reservation",
+            "patternKeyRef": "accusative-item-dative-beneficiary",
+            "pl": "Rezerwuję stolik znajomym.",
+            "en": "I'm reserving a table for my friends.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "booking-reservation",
+            "patternKeyRef": "accusative-item-dla-genitive-beneficiary",
+            "pl": "Rezerwuję pokój dla rodziców.",
+            "en": "I'm reserving a room for my parents.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -7950,9 +8090,155 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "experiencing-joy",
+            "glossesEn": [
+              "be happy about something",
+              "look forward to something",
+              "enjoy something"
+            ],
+            "internalScope": "Lexical-reflexive experiencing of joy (WSJP sense 1); się is part of the canonical lemma identity, never a complement, and nothing transfers from non-reflexive cieszyć. Source gives z KOGO/CZEGO | na CO, a separate że ZDANIE, and KIM/CZYM: four alternative cause/content schemas that are never combined into one cumulative frame. z + Genitive marks an existing/completed source or cause of joy; na + Accusative marks an anticipated occasion or object; Instrumental marks a nominal cause/object; że marks a propositional cause/content. The four are semantically distinct, not interchangeable labels for the same relation."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "z-genitive-realized-cause",
+            "meaningKeyRef": "experiencing-joy",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "genitive",
+                "required": true,
+                "role": "topic"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For an existing or already-received source of joy, use z + Genitive: cieszę się z twojego sukcesu (I'm happy about your success)."
+          },
+          {
+            "candidatePatternKey": "na-accusative-anticipated-occasion",
+            "meaningKeyRef": "experiencing-joy",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "accusative",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For an occasion you're looking forward to, use na + Accusative: cieszę się na wakacje (I'm looking forward to the holidays)."
+          },
+          {
+            "candidatePatternKey": "instrumental-nominal-cause",
+            "meaningKeyRef": "experiencing-joy",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "instrumental",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For a nominal cause or object of satisfaction, use the bare Instrumental: cieszę się zaufaniem zespołu (I enjoy the team's trust)."
+          },
+          {
+            "candidatePatternKey": "ze-propositional-cause",
+            "meaningKeyRef": "experiencing-joy",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For a propositional cause, add a że clause: cieszę się, że przyjechałeś (I'm happy that you came)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "experiencing-joy",
+            "patternKeyRef": "z-genitive-realized-cause",
+            "pl": "Cieszę się z twojego sukcesu.",
+            "en": "I'm happy about your success.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "experiencing-joy",
+            "patternKeyRef": "na-accusative-anticipated-occasion",
+            "pl": "Cieszę się na wakacje.",
+            "en": "I'm looking forward to the holidays.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "experiencing-joy",
+            "patternKeyRef": "instrumental-nominal-cause",
+            "pl": "Cieszę się zaufaniem zespołu.",
+            "en": "I enjoy the team's trust.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "experiencing-joy",
+            "patternKeyRef": "ze-propositional-cause",
+            "pl": "Cieszę się, że przyjechałeś.",
+            "en": "I'm happy that you came.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -7969,9 +8255,153 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "worry-concern",
+            "glossesEn": [
+              "worry about something",
+              "be concerned about something"
+            ],
+            "internalScope": "Lexical-reflexive worrying or being sustainedly concerned (WSJP entry); się is part of the canonical lemma identity, never a complement. Semantically distinct from fear: expresses worry/sustained concern, not fear. Source directly gives CZYM, o KOGO/CO, że ZDANIE, and ZDANIE PYTAJNOZALEŻNE: four alternative cause/content schemas. No construction is borrowed from non-reflexive martwić or from bać się; the o + Accusative overlap with released bać się is accepted product overlap, not linguistic donation, and does not remove or hide this row — the additional Instrumental and clause inventory teach meaningful new behavior."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "instrumental-worry-cause",
+            "meaningKeyRef": "worry-concern",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "instrumental",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For the cause of your worry, use the bare Instrumental: martwię się twoim zdrowiem (I'm worried about your health)."
+          },
+          {
+            "candidatePatternKey": "o-accusative-concern-object",
+            "meaningKeyRef": "worry-concern",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "o",
+                "case": "accusative",
+                "required": true,
+                "role": "topic"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For the person or thing you're concerned about, use o + Accusative: martwię się o egzamin (I'm worried about the exam)."
+          },
+          {
+            "candidatePatternKey": "ze-worry-proposition",
+            "meaningKeyRef": "worry-concern",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For a worrying fact or possibility, add a że clause: martwię się, że się spóźnimy (I'm worried that we'll be late)."
+          },
+          {
+            "candidatePatternKey": "interrogative-worry-content",
+            "meaningKeyRef": "worry-concern",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "interrogative",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For an uncertain worrying question, add an embedded question: martwię się, jak sobie poradzimy (I'm worried about how we'll manage)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "worry-concern",
+            "patternKeyRef": "instrumental-worry-cause",
+            "pl": "Martwię się twoim zdrowiem.",
+            "en": "I'm worried about your health.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "worry-concern",
+            "patternKeyRef": "o-accusative-concern-object",
+            "pl": "Martwię się o egzamin.",
+            "en": "I'm worried about the exam.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "worry-concern",
+            "patternKeyRef": "ze-worry-proposition",
+            "pl": "Martwię się, że się spóźnimy.",
+            "en": "I'm worried that we'll be late.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "worry-concern",
+            "patternKeyRef": "interrogative-worry-content",
+            "pl": "Martwię się, jak sobie poradzimy.",
+            "en": "I'm worried about how we'll manage.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -7988,9 +8418,267 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "consent",
+            "glossesEn": [
+              "agree to something",
+              "consent to a proposal or action"
+            ],
+            "internalScope": "Lexical-reflexive consent to a proposal or action (WSJP sense 1); się is part of the canonical lemma identity, never a complement. Source gives na KOGO/CO, żeby ZDANIE, infinitive, and direct speech: four alternative content schemas, none parenthesised, none carrying a partner position. No z + Instrumental partner belongs here; that relation is exclusive to opinion-agreement. Kept strictly separate from opinion/interpersonal agreement and from matching/correspondence, which is excluded entirely."
+          },
+          {
+            "candidateMeaningKey": "opinion-agreement",
+            "glossesEn": [
+              "agree with someone",
+              "share someone's opinion"
+            ],
+            "internalScope": "Lexical-reflexive agreement with a person or opinion (WSJP sense 2); się is part of the canonical lemma identity, never a complement. Source gives z KIM/CZYM, optional z KIM/CZYM with a że clause, and direct speech. z + Instrumental is required as its own row and optional when attached to the że row; the direct-speech row is listed alone in the source and therefore carries no partner complement, following the source rather than analogy with the other rows. No na, infinitive, or żeby is imported from consent."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "na-accusative-consented-proposal",
+            "meaningKeyRef": "consent",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "accusative",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For the proposal or action you're agreeing to, use na + Accusative: zgadzam się na twoją propozycję (I agree to your proposal)."
+          },
+          {
+            "candidatePatternKey": "zeby-consented-event",
+            "meaningKeyRef": "consent",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For consent expressed as letting someone do something, add a żeby clause: zgadzam się, żebyś został dłużej (I agree that you can stay longer)."
+          },
+          {
+            "candidatePatternKey": "infinitive-consented-action",
+            "meaningKeyRef": "consent",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For consenting to do something yourself, add a bare infinitive: zgadzam się zapłacić połowę (I agree to pay half)."
+          },
+          {
+            "candidatePatternKey": "direct-speech-consent",
+            "meaningKeyRef": "consent",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "direct-speech",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Consent is often given as a short spoken reply to an offer or plan: zapytałem, czy możemy zacząć jutro. „Zgadzam się” — odpowiedział (I asked if we could start tomorrow. \"I agree,\" he replied)."
+          },
+          {
+            "candidatePatternKey": "z-instrumental-agreement-partner",
+            "meaningKeyRef": "opinion-agreement",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": true,
+                "role": "interlocutor"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "To agree with a person or their view, use z + Instrumental: zgadzam się z tobą (I agree with you)."
+          },
+          {
+            "candidatePatternKey": "ze-agreed-proposition",
+            "meaningKeyRef": "opinion-agreement",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": false,
+                "role": "interlocutor"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Add a że clause for what you agree with; naming who you agree with (z + Instrumental) is optional: zgadzam się z nim, że to dobry pomysł (I agree with him that it's a good idea)."
+          },
+          {
+            "candidatePatternKey": "direct-speech-agreement",
+            "meaningKeyRef": "opinion-agreement",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "direct-speech",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Agreement with an opinion is often a short spoken reply, with no partner named in this exact shape: powiedziałem, że film był świetny. „Zgadzam się” — dodała (I said the film was great. \"I agree,\" she added)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "consent",
+            "patternKeyRef": "na-accusative-consented-proposal",
+            "pl": "Zgadzam się na twoją propozycję.",
+            "en": "I agree to your proposal.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "consent",
+            "patternKeyRef": "zeby-consented-event",
+            "pl": "Zgadzam się, żebyś został dłużej.",
+            "en": "I agree that you can stay longer.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "consent",
+            "patternKeyRef": "infinitive-consented-action",
+            "pl": "Zgadzam się zapłacić połowę.",
+            "en": "I agree to pay half.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "consent",
+            "patternKeyRef": "direct-speech-consent",
+            "pl": "Zapytałem, czy możemy zacząć jutro. „Zgadzam się” — odpowiedział.",
+            "en": "I asked if we could start tomorrow. \"I agree,\" he replied.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "opinion-agreement",
+            "patternKeyRef": "z-instrumental-agreement-partner",
+            "pl": "Zgadzam się z tobą.",
+            "en": "I agree with you.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "opinion-agreement",
+            "patternKeyRef": "ze-agreed-proposition",
+            "pl": "Zgadzam się z nim, że to dobry pomysł.",
+            "en": "I agree with him that it's a good idea.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "opinion-agreement",
+            "patternKeyRef": "direct-speech-agreement",
+            "pl": "Powiedziałem, że film był świetny. „Zgadzam się” — dodała.",
+            "en": "I said the film was great. \"I agree,\" she added.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -8007,9 +8695,100 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "invitation",
+            "glossesEn": [
+              "invite someone (to an event)",
+              "invite someone (to a place)"
+            ],
+            "internalScope": "Inviting a person to an event/activity, a destination/institution, or another selected place (WSJP sense 1). Source gives KOGO + na CO | do CZEGO and separately KOGO + GDZIE: the invitee is required in both, while na + Accusative (event/activity) and do + Genitive (destination/institution) are alternative, exact concrete Składnia positions, never simultaneous slots and never described as narrowed realizations or exclusive government. The separate generalized GDZIE schema is selected source evidence that receives no product row; it stays fully unconcretized — no w, u, na + Locative, or other place form may ever be derived from it."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "accusative-invitee-na-accusative-event",
+            "meaningKeyRef": "invitation",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "accusative",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For an event or activity, name who you're inviting (Accusative) and what to (na + Accusative): zapraszam cię na urodziny (I'm inviting you to my birthday party)."
+          },
+          {
+            "candidatePatternKey": "accusative-invitee-do-genitive-destination",
+            "meaningKeyRef": "invitation",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For a destination or institution, use do + Genitive instead: zapraszam cię do domu (I'm inviting you to my house)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "invitation",
+            "patternKeyRef": "accusative-invitee-na-accusative-event",
+            "pl": "Zapraszam cię na urodziny.",
+            "en": "I'm inviting you to my birthday party.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "invitation",
+            "patternKeyRef": "accusative-invitee-do-genitive-destination",
+            "pl": "Zapraszam cię do domu.",
+            "en": "I'm inviting you to my house.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -8026,9 +8805,221 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "directive-instruction",
+            "glossesEn": [
+              "instruct someone to do something",
+              "order/direct someone to act"
+            ],
+            "internalScope": "Directing or instructing someone to act (WSJP sense 1). Source gives optional Dative addressee with infinitive, żeby, direct speech, or CO, the optional Dative distributing over all four content alternatives; its normative note states the Accusative position is ordinarily a gerund/action noun, a lexical-semantic fact the locked schema cannot encode structurally and that is carried here in internalScope and learnerExplanationEn only. The infinitive here is a command/instruction relation, never glossed as ordinary recommendation. This meaning's Accusative-object pattern (dative-accusative-action-noun) is structurally identical to recommendation's dative-accusative-recommended-item; the semantic split between an instructed action-noun and a recommended item cannot be enforced structurally and depends on this internalScope, the glosses, the learner explanation, the example, and independent review."
+          },
+          {
+            "candidateMeaningKey": "recommendation",
+            "glossesEn": [
+              "recommend a person or item"
+            ],
+            "internalScope": "Recommending a person or item to a potential user/customer (WSJP sense 2), independent of directive-instruction. Source gives optional Dative recipient plus a required Accusative recommended person/item; no infinitive, żeby, or direct speech belongs here."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "dative-infinitive-instruction",
+            "meaningKeyRef": "directive-instruction",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For an instruction to act, use a bare infinitive; naming who is instructed (Dative) is optional: lekarz polecił mi odpoczywać (the doctor told me to rest)."
+          },
+          {
+            "candidatePatternKey": "dative-zeby-instruction",
+            "meaningKeyRef": "directive-instruction",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "A żeby clause is another way to give the same instruction: szef polecił mi, żebym przygotował raport (my boss told me to prepare the report)."
+          },
+          {
+            "candidatePatternKey": "dative-direct-speech-instruction",
+            "meaningKeyRef": "directive-instruction",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "direct-speech",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "An instruction can also be quoted directly: „Zamknij drzwi” — polecił mi kierownik (\"Close the door,\" the manager instructed me)."
+          },
+          {
+            "candidatePatternKey": "dative-accusative-action-noun",
+            "meaningKeyRef": "directive-instruction",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The Accusative names the ordered action as a noun (usually a gerund/action noun), not a recommended item: trener polecił zawodnikom rozgrzewkę (the coach ordered the players to warm up)."
+          },
+          {
+            "candidatePatternKey": "dative-accusative-recommended-item",
+            "meaningKeyRef": "recommendation",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Name the recommended person or item with the Accusative; the recipient (Dative) is optional: polecam ci tę restaurację (I recommend this restaurant to you)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "directive-instruction",
+            "patternKeyRef": "dative-infinitive-instruction",
+            "pl": "Lekarz polecił mi odpoczywać.",
+            "en": "The doctor told me to rest.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "directive-instruction",
+            "patternKeyRef": "dative-zeby-instruction",
+            "pl": "Szef polecił mi, żebym przygotował raport.",
+            "en": "My boss told me to prepare the report.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "directive-instruction",
+            "patternKeyRef": "dative-direct-speech-instruction",
+            "pl": "„Zamknij drzwi” — polecił mi kierownik.",
+            "en": "\"Close the door,\" the manager instructed me.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "directive-instruction",
+            "patternKeyRef": "dative-accusative-action-noun",
+            "pl": "Trener polecił zawodnikom rozgrzewkę.",
+            "en": "The coach ordered the players to warm up.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "recommendation",
+            "patternKeyRef": "dative-accusative-recommended-item",
+            "pl": "Polecam ci tę restaurację.",
+            "en": "I recommend this restaurant to you.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -8045,9 +9036,214 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "giving-advice",
+            "glossesEn": [
+              "give advice to someone",
+              "advise someone"
+            ],
+            "internalScope": "Non-reflexive advice sense 2, giving advice about how someone should act (WSJP sense 2), strictly independent from lexical radzić sobie: no sobie in any form and no z + Instrumental coping syntax is authored anywhere on this lemma. Source gives required KOMU + CO; required KOMU with żeby or an interrogative-dependent clause; direct speech plus required KOMU; and optional KOMU with an infinitive. Dative is required in the nominal, żeby, interrogative, and direct-speech schemas but optional in the infinitive schema alone; this asymmetry is the defining structural fact of the lemma and is never normalized in either direction."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "dative-accusative-advice-item",
+            "meaningKeyRef": "giving-advice",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "dative",
+                "required": true,
+                "role": "recipient"
+              },
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Name who you're advising (Dative, required) and the advice item (Accusative): radzę ci ostrożność (I advise you to be careful)."
+          },
+          {
+            "candidatePatternKey": "dative-zeby-advice",
+            "meaningKeyRef": "giving-advice",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "dative",
+                "required": true,
+                "role": "recipient"
+              },
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "A żeby clause gives the advised action, with the advisee (Dative) still required: radzę ci, żebyś odpoczął (I advise you to rest)."
+          },
+          {
+            "candidatePatternKey": "dative-interrogative-advice",
+            "meaningKeyRef": "giving-advice",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "dative",
+                "required": true,
+                "role": "recipient"
+              },
+              {
+                "type": "clause",
+                "clauseKind": "interrogative",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "An embedded question gives advice content, with the advisee (Dative) still required: radzę ci, jak rozwiązać ten problem (I advise you on how to solve this problem)."
+          },
+          {
+            "candidatePatternKey": "dative-direct-speech-advice",
+            "meaningKeyRef": "giving-advice",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "dative",
+                "required": true,
+                "role": "recipient"
+              },
+              {
+                "type": "clause",
+                "clauseKind": "direct-speech",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Advice can be quoted directly, with the advisee (Dative) still required: „Odpocznij trochę” — poradziła mi przyjaciółka (\"Get some rest,\" my friend advised me)."
+          },
+          {
+            "candidatePatternKey": "dative-infinitive-advice",
+            "meaningKeyRef": "giving-advice",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "With a bare infinitive, the advisee (Dative) becomes optional, unlike every other row above: radzę ci zjeść coś przed wyjściem (I advise you to eat something before leaving)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "giving-advice",
+            "patternKeyRef": "dative-accusative-advice-item",
+            "pl": "Radzę ci ostrożność.",
+            "en": "I advise you to be careful.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "giving-advice",
+            "patternKeyRef": "dative-zeby-advice",
+            "pl": "Radzę ci, żebyś odpoczął.",
+            "en": "I advise you to rest.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "giving-advice",
+            "patternKeyRef": "dative-interrogative-advice",
+            "pl": "Radzę ci, jak rozwiązać ten problem.",
+            "en": "I advise you on how to solve this problem.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "giving-advice",
+            "patternKeyRef": "dative-direct-speech-advice",
+            "pl": "„Odpocznij trochę” — poradziła mi przyjaciółka.",
+            "en": "\"Get some rest,\" my friend advised me.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "giving-advice",
+            "patternKeyRef": "dative-infinitive-advice",
+            "pl": "Radzę ci zjeść coś przed wyjściem.",
+            "en": "I advise you to eat something before leaving.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -8064,9 +9260,217 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "appearance-harmony",
+            "glossesEn": [
+              "match (in appearance/character)",
+              "go well with something"
+            ],
+            "internalScope": "Appearance/character harmony or match with a target (WSJP sense 1). Source gives exact do KOGO/CZEGO, unparenthesised. No Dative is imported from senses 4 or 5; no na + Accusative from sense 2."
+          },
+          {
+            "candidateMeaningKey": "physical-fit",
+            "glossesEn": [
+              "fit (by size/shape)"
+            ],
+            "internalScope": "Physical fit by size or shape (WSJP sense 2). Source gives optional do KOGO/CZEGO or na KOGO/CO: two alternative, all-optional single-complement target realizations, never combined into one row and never promoted to required. No Dative belongs here."
+          },
+          {
+            "candidateMeaningKey": "typical-appropriateness",
+            "glossesEn": [
+              "be typical of/appropriate for someone or something"
+            ],
+            "internalScope": "Being typical of or appropriate for a person or thing (WSJP sense 4). Source gives optional KOMU plus do KOGO/CZEGO: the reference target (do + Genitive) is required, the evaluator (Dative) is optional. This do + Genitive is a reference-target relation, distinct from sense 1's harmony target and sense 2's fit target despite the repeated surface form. This Dative is not the sense-5 expectation-holder and carries no subject-experiencer wording."
+          },
+          {
+            "candidateMeaningKey": "expectation-suitability",
+            "glossesEn": [
+              "suit someone",
+              "satisfy someone's expectations"
+            ],
+            "internalScope": "Satisfying someone's expectations or suiting them (WSJP sense 5). Source gives optional KOMU/CZEMU as the only listed position: one all-optional single-complement pattern. Phase 3 notes this sense is suitable for a subject-experiencer characterization, but the exact Składnia lists no subject position and the locked relationType subject-experiencer requires both subject and experiencer roles; inventing a required Nominative subject absent from the source would violate the exact-source policy and destroy this all-optional shape. This row is therefore authored as lexical-frame with the Dative role experiencer, following the released canonical zależeć precedent (dative-experiencer-na-locative, also lexical-frame with no source-listed subject); the richer subject-experiencer characterization remains a product-wording/Phase 4C fact carried here, not a structural field. Do not apply this wording to senses 1, 2, or 4."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "do-genitive-harmony-target",
+            "meaningKeyRef": "appearance-harmony",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For an appearance/character match, use do + Genitive: ten krawat pasuje do garnituru (this tie matches the suit)."
+          },
+          {
+            "candidatePatternKey": "do-genitive-fit-target",
+            "meaningKeyRef": "physical-fit",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": false,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For a physical fit by size/shape, do + Genitive is one optional target form: ten klucz pasuje do zamka (this key fits the lock)."
+          },
+          {
+            "candidatePatternKey": "na-accusative-fitted-object",
+            "meaningKeyRef": "physical-fit",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "accusative",
+                "required": false,
+                "role": "target"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "na + Accusative is the alternative optional target form for a physical fit: ten pierścionek pasuje na mój palec (this ring fits my finger)."
+          },
+          {
+            "candidatePatternKey": "dative-evaluator-do-genitive-reference",
+            "meaningKeyRef": "typical-appropriateness",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "experiencer"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "do + Genitive names what something is being compared against; adding a Dative optionally names whose judgment it is: ten kolor mi do ciebie nie pasuje (I don't think this color suits you)."
+          },
+          {
+            "candidatePatternKey": "dative-expectation-holder",
+            "meaningKeyRef": "expectation-suitability",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "experiencer"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Name whose expectations are or aren't satisfied with an optional Dative: ten termin mi nie pasuje (this date doesn't suit me)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "appearance-harmony",
+            "patternKeyRef": "do-genitive-harmony-target",
+            "pl": "Ten krawat pasuje do garnituru.",
+            "en": "This tie matches the suit.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "physical-fit",
+            "patternKeyRef": "do-genitive-fit-target",
+            "pl": "Ten klucz pasuje do zamka.",
+            "en": "This key fits the lock.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "physical-fit",
+            "patternKeyRef": "na-accusative-fitted-object",
+            "pl": "Ten pierścionek pasuje na mój palec.",
+            "en": "This ring fits my finger.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "typical-appropriateness",
+            "patternKeyRef": "dative-evaluator-do-genitive-reference",
+            "pl": "Ten kolor mi do ciebie nie pasuje.",
+            "en": "I don't think this color suits you.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "expectation-suitability",
+            "patternKeyRef": "dative-expectation-holder",
+            "pl": "Ten termin mi nie pasuje.",
+            "en": "This date doesn't suit me.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -8083,9 +9487,92 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "ability-possibility",
+            "glossesEn": [
+              "be able to do something",
+              "be physically/objectively possible"
+            ],
+            "internalScope": "Objective possibility or ability to do something (WSJP sense 1). Source gives an exact infinitive in Składnia. Semantically distinct from permission despite the identical infinitive shape; the distinction is not structurally enforceable and is carried here and in the learner explanation."
+          },
+          {
+            "candidateMeaningKey": "permission",
+            "glossesEn": [
+              "have permission to do something",
+              "be allowed to do something"
+            ],
+            "internalScope": "Absence of prohibition or having permission to do something (WSJP sense 2). Source gives an exact infinitive in Składnia. Also owns the request/help question use (Czy mogę…?, WSJP sense 4): three independent frozen statements assign that use to this meaning as sentence-level interrogative and pragmatic packaging over the same infinitive frame, never as a distinct complement, clauseKind, or architecture type. No czy clause, question complement, or third meaning is ever authored for this sense."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "infinitive-possible-action",
+            "meaningKeyRef": "ability-possibility",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For what you're able to do, use a bare infinitive: mogę podnieść tę walizkę (I can lift this suitcase)."
+          },
+          {
+            "candidatePatternKey": "infinitive-permitted-action",
+            "meaningKeyRef": "permission",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For what you're allowed to do, use the same bare-infinitive shape; a permission request is just this construction asked as a question: czy mogę otworzyć okno? (may I open the window?)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "ability-possibility",
+            "patternKeyRef": "infinitive-possible-action",
+            "pl": "Mogę podnieść tę walizkę.",
+            "en": "I can lift this suitcase.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "permission",
+            "patternKeyRef": "infinitive-permitted-action",
+            "pl": "Czy mogę otworzyć okno?",
+            "en": "May I open the window?",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {

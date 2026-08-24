@@ -1667,6 +1667,762 @@
           "role": "topic"
         }
       ]
+    },
+    {
+      "ruleId": "p8-4b-gotowac-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "gotować",
+      "verificationOrder": 52,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "meal-preparation",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": false,
+                "role": "object"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-rezerwowac-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "rezerwować",
+      "verificationOrder": 53,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "booking-reservation",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "dla",
+                "case": "genitive",
+                "required": false,
+                "role": "recipient"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-rezerwowac-authorized-preposition-cases",
+      "kind": "allow-only-preposition-case-signatures",
+      "lemma": "rezerwować",
+      "verificationOrder": 53,
+      "allowedSignatures": [
+        {
+          "type": "preposition-case",
+          "preposition": "dla",
+          "case": "genitive",
+          "required": false,
+          "role": "recipient"
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-cieszyc-sie-lexical-identity",
+      "kind": "require-lexical-identity",
+      "lemma": "cieszyć się",
+      "verificationOrder": 54,
+      "lexicalItems": [
+        "się"
+      ]
+    },
+    {
+      "ruleId": "p8-4b-cieszyc-sie-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "cieszyć się",
+      "verificationOrder": 54,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "experiencing-joy",
+          "patterns": [
+            [
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "genitive",
+                "required": true,
+                "role": "topic"
+              }
+            ],
+            [
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "accusative",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            [
+              {
+                "type": "case",
+                "case": "instrumental",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-cieszyc-sie-authorized-preposition-cases",
+      "kind": "allow-only-preposition-case-signatures",
+      "lemma": "cieszyć się",
+      "verificationOrder": 54,
+      "allowedSignatures": [
+        {
+          "type": "preposition-case",
+          "preposition": "z",
+          "case": "genitive",
+          "required": true,
+          "role": "topic"
+        },
+        {
+          "type": "preposition-case",
+          "preposition": "na",
+          "case": "accusative",
+          "required": true,
+          "role": "target"
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-martwic-sie-lexical-identity",
+      "kind": "require-lexical-identity",
+      "lemma": "martwić się",
+      "verificationOrder": 55,
+      "lexicalItems": [
+        "się"
+      ]
+    },
+    {
+      "ruleId": "p8-4b-martwic-sie-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "martwić się",
+      "verificationOrder": 55,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "worry-concern",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "instrumental",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            [
+              {
+                "type": "preposition-case",
+                "preposition": "o",
+                "case": "accusative",
+                "required": true,
+                "role": "topic"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "interrogative",
+                "required": true,
+                "role": "content"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-martwic-sie-authorized-preposition-cases",
+      "kind": "allow-only-preposition-case-signatures",
+      "lemma": "martwić się",
+      "verificationOrder": 55,
+      "allowedSignatures": [
+        {
+          "type": "preposition-case",
+          "preposition": "o",
+          "case": "accusative",
+          "required": true,
+          "role": "topic"
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-zgadzac-sie-lexical-identity",
+      "kind": "require-lexical-identity",
+      "lemma": "zgadzać się",
+      "verificationOrder": 56,
+      "lexicalItems": [
+        "się"
+      ]
+    },
+    {
+      "ruleId": "p8-4b-zgadzac-sie-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "zgadzać się",
+      "verificationOrder": 56,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "consent",
+          "patterns": [
+            [
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "accusative",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "direct-speech",
+                "required": true,
+                "role": "content"
+              }
+            ]
+          ]
+        },
+        {
+          "meaningKey": "opinion-agreement",
+          "patterns": [
+            [
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": true,
+                "role": "interlocutor"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": false,
+                "role": "interlocutor"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "direct-speech",
+                "required": true,
+                "role": "content"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-zgadzac-sie-authorized-preposition-cases",
+      "kind": "allow-only-preposition-case-signatures",
+      "lemma": "zgadzać się",
+      "verificationOrder": 56,
+      "allowedSignatures": [
+        {
+          "type": "preposition-case",
+          "preposition": "na",
+          "case": "accusative",
+          "required": true,
+          "role": "target"
+        },
+        {
+          "type": "preposition-case",
+          "preposition": "z",
+          "case": "instrumental",
+          "required": true,
+          "role": "interlocutor"
+        },
+        {
+          "type": "preposition-case",
+          "preposition": "z",
+          "case": "instrumental",
+          "required": false,
+          "role": "interlocutor"
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-zapraszac-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "zapraszać",
+      "verificationOrder": 57,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "invitation",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "accusative",
+                "required": true,
+                "role": "target"
+              }
+            ],
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-zapraszac-authorized-preposition-cases",
+      "kind": "allow-only-preposition-case-signatures",
+      "lemma": "zapraszać",
+      "verificationOrder": 57,
+      "allowedSignatures": [
+        {
+          "type": "preposition-case",
+          "preposition": "na",
+          "case": "accusative",
+          "required": true,
+          "role": "target"
+        },
+        {
+          "type": "preposition-case",
+          "preposition": "do",
+          "case": "genitive",
+          "required": true,
+          "role": "target"
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-polecac-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "polecać",
+      "verificationOrder": 58,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "directive-instruction",
+          "patterns": [
+            [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "direct-speech",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ],
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ]
+          ]
+        },
+        {
+          "meaningKey": "recommendation",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-radzic-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "radzić",
+      "verificationOrder": 59,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "giving-advice",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "dative",
+                "required": true,
+                "role": "recipient"
+              },
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            [
+              {
+                "type": "case",
+                "case": "dative",
+                "required": true,
+                "role": "recipient"
+              },
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            [
+              {
+                "type": "case",
+                "case": "dative",
+                "required": true,
+                "role": "recipient"
+              },
+              {
+                "type": "clause",
+                "clauseKind": "interrogative",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            [
+              {
+                "type": "case",
+                "case": "dative",
+                "required": true,
+                "role": "recipient"
+              },
+              {
+                "type": "clause",
+                "clauseKind": "direct-speech",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "recipient"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-radzic-no-z-instrumental-coping",
+      "kind": "forbid-complement-match",
+      "lemma": "radzić",
+      "verificationOrder": 59,
+      "signature": {
+        "type": "preposition-case",
+        "preposition": "z",
+        "case": "instrumental"
+      }
+    },
+    {
+      "ruleId": "p8-4b-pasowac-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "pasować",
+      "verificationOrder": 60,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "appearance-harmony",
+          "patterns": [
+            [
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              }
+            ]
+          ]
+        },
+        {
+          "meaningKey": "physical-fit",
+          "patterns": [
+            [
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": false,
+                "role": "target"
+              }
+            ],
+            [
+              {
+                "type": "preposition-case",
+                "preposition": "na",
+                "case": "accusative",
+                "required": false,
+                "role": "target"
+              }
+            ]
+          ]
+        },
+        {
+          "meaningKey": "typical-appropriateness",
+          "patterns": [
+            [
+              {
+                "type": "preposition-case",
+                "preposition": "do",
+                "case": "genitive",
+                "required": true,
+                "role": "target"
+              },
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "experiencer"
+              }
+            ]
+          ]
+        },
+        {
+          "meaningKey": "expectation-suitability",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "dative",
+                "required": false,
+                "role": "experiencer"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-pasowac-authorized-preposition-cases",
+      "kind": "allow-only-preposition-case-signatures",
+      "lemma": "pasować",
+      "verificationOrder": 60,
+      "allowedSignatures": [
+        {
+          "type": "preposition-case",
+          "preposition": "do",
+          "case": "genitive",
+          "required": true,
+          "role": "target"
+        },
+        {
+          "type": "preposition-case",
+          "preposition": "do",
+          "case": "genitive",
+          "required": false,
+          "role": "target"
+        },
+        {
+          "type": "preposition-case",
+          "preposition": "na",
+          "case": "accusative",
+          "required": false,
+          "role": "target"
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-moc-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "móc",
+      "verificationOrder": 61,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "ability-possibility",
+          "patterns": [
+            [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ]
+          ]
+        },
+        {
+          "meaningKey": "permission",
+          "patterns": [
+            [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-moc-no-question-clause",
+      "kind": "forbid-complement-match",
+      "lemma": "móc",
+      "verificationOrder": 61,
+      "signature": {
+        "type": "clause",
+        "clauseKind": "czy"
+      }
     }
   ]
 }
