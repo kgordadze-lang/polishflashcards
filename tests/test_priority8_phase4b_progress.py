@@ -1,4 +1,10 @@
-"""Moving live-progress gate; Batch 2-7 update its phase and batch boundary."""
+"""Moving live-progress gate; Batch 2-7 update its phase and batch boundary.
+
+Batch 7 is the final authoring batch: all seven batches are complete, every
+frozen full-pattern lemma now carries candidateContent, and the future-empty
+set is empty. That does not mean Phase 4B is approved - the final 68-lemma
+reconciliation still follows independent Batch 7 review.
+"""
 
 import json
 import unittest
@@ -18,10 +24,10 @@ import validate_priority8_staging as validator  # noqa: E402
 STAGING_PATH = ROOT / "editorial/priority-8-phase4-staging.json"
 EMPTY_CONTENT = {"meanings": [], "patterns": [], "examples": []}
 CURRENT_AUTHORED = tuple(
-    item for batch in validator.AUTHORING_BATCHES[:6] for item in batch
+    item for batch in validator.AUTHORING_BATCHES[:7] for item in batch
 )
 CURRENT_FUTURE = tuple(
-    item for batch in validator.AUTHORING_BATCHES[6:] for item in batch
+    item for batch in validator.AUTHORING_BATCHES[7:] for item in batch
 )
 
 
@@ -48,8 +54,8 @@ class Priority8Phase4BProgressTests(unittest.TestCase):
 
     def test_current_envelope_and_full_pattern_count(self):
         self.assertEqual(1, self.data["stagingSchemaVersion"])
-        self.assertEqual(7, self.data["stagingRevision"])
-        self.assertEqual("4B6", self.data["phaseStep"])
+        self.assertEqual(8, self.data["stagingRevision"])
+        self.assertEqual("4B7", self.data["phaseStep"])
         self.assertEqual(68, self.data["frozenFullPatternCount"])
         self.assertEqual(68, len(self.data["lemmas"]))
 
@@ -60,8 +66,10 @@ class Priority8Phase4BProgressTests(unittest.TestCase):
             if item["candidateContent"] != EMPTY_CONTENT
         )
         self.assertEqual(CURRENT_AUTHORED, authored)
-        self.assertEqual(59, len(CURRENT_AUTHORED))
-        self.assertEqual(9, len(CURRENT_FUTURE))
+        self.assertEqual(68, len(CURRENT_AUTHORED))
+        self.assertEqual(0, len(CURRENT_FUTURE))
+        self.assertEqual(70, CURRENT_AUTHORED[-1][0])
+        self.assertEqual(7, len(validator.AUTHORING_BATCHES))
         for order, lemma in CURRENT_FUTURE:
             with self.subTest(order=order, lemma=lemma):
                 item = self.by_order[order]
@@ -83,7 +91,7 @@ class Priority8Phase4BProgressTests(unittest.TestCase):
                 for item in authored_records)
             for collection in ("meanings", "patterns", "examples")
         )
-        self.assertEqual((82, 201, 201), totals)
+        self.assertEqual((95, 224, 224), totals)
 
     def test_no_production_or_canonical_runtime_ids(self):
         for key, value in walk(self.data):

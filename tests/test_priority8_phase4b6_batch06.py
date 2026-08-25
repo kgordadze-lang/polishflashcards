@@ -589,7 +589,10 @@ class Priority8Phase4B6Batch06Tests(unittest.TestCase):
             self.assertIn(expected_id, rule_ids)
         self.assertEqual(21, len(EXPECTED_BATCH_6_RULE_IDS))
         self.assertEqual(2, registry["registryVersion"])
-        self.assertEqual(57, len(registry["rules"]))
+        # Batch 6 pins its own 21 rules, not the registry total: later batches
+        # legitimately add rules, so a fixed total would be a moving-state
+        # assertion of exactly the kind this historical lock avoids.
+        self.assertGreaterEqual(len(registry["rules"]), 57)
 
 
 if __name__ == "__main__":

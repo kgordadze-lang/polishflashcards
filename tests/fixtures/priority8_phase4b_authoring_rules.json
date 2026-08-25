@@ -2423,6 +2423,484 @@
         "type": "clause",
         "clauseKind": "czy"
       }
+    },
+    {
+      "ruleId": "p8-4b-musiec-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "musieć",
+      "verificationOrder": 62,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "necessity-obligation",
+          "patterns": [
+            [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-wiedziec-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "wiedzieć",
+      "verificationOrder": 63,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "factual-knowledge",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            [
+              {
+                "type": "preposition-case",
+                "preposition": "o",
+                "case": "locative",
+                "required": true,
+                "role": "topic"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "interrogative",
+                "required": true,
+                "role": "content"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-wiedziec-authorized-preposition-cases",
+      "kind": "allow-only-preposition-case-signatures",
+      "lemma": "wiedzieć",
+      "verificationOrder": 63,
+      "allowedSignatures": [
+        {
+          "type": "preposition-case",
+          "preposition": "o",
+          "case": "locative",
+          "required": true,
+          "role": "topic"
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-jesc-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "jeść",
+      "verificationOrder": 64,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "food-consumption",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": false,
+                "role": "object"
+              },
+              {
+                "type": "case",
+                "case": "instrumental",
+                "required": false,
+                "role": "means"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-jesc-no-lexical-genitive",
+      "kind": "forbid-complement-match",
+      "lemma": "jeść",
+      "verificationOrder": 64,
+      "signature": {
+        "type": "case",
+        "case": "genitive"
+      }
+    },
+    {
+      "ruleId": "p8-4b-pic-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "pić",
+      "verificationOrder": 65,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "liquid-consumption",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-pic-no-lexical-genitive",
+      "kind": "forbid-complement-match",
+      "lemma": "pić",
+      "verificationOrder": 65,
+      "signature": {
+        "type": "case",
+        "case": "genitive"
+      }
+    },
+    {
+      "ruleId": "p8-4b-kochac-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "kochać",
+      "verificationOrder": 66,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "person-love",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ]
+          ]
+        },
+        {
+          "meaningKey": "idea-or-place-attachment",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ]
+          ]
+        },
+        {
+          "meaningKey": "strong-liking",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-przepraszac-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "przepraszać",
+      "verificationOrder": 67,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "apology",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "interlocutor"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "za",
+                "case": "accusative",
+                "required": true,
+                "role": "topic"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": false,
+                "role": "interlocutor"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-przepraszac-authorized-preposition-cases",
+      "kind": "allow-only-preposition-case-signatures",
+      "lemma": "przepraszać",
+      "verificationOrder": 67,
+      "allowedSignatures": [
+        {
+          "type": "preposition-case",
+          "preposition": "za",
+          "case": "accusative",
+          "required": true,
+          "role": "topic"
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-zyczyc-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "życzyć",
+      "verificationOrder": 68,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "good-wishes",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "dative",
+                "required": true,
+                "role": "recipient"
+              },
+              {
+                "type": "case",
+                "case": "genitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            [
+              {
+                "type": "case",
+                "case": "dative",
+                "required": true,
+                "role": "recipient"
+              },
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-korzystac-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "korzystać",
+      "verificationOrder": 69,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "resource-use",
+          "patterns": [
+            [
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "genitive",
+                "required": true,
+                "role": "object"
+              }
+            ]
+          ]
+        },
+        {
+          "meaningKey": "benefit-from-advantage",
+          "patterns": [
+            [
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "genitive",
+                "required": true,
+                "role": "object"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-korzystac-authorized-preposition-cases",
+      "kind": "allow-only-preposition-case-signatures",
+      "lemma": "korzystać",
+      "verificationOrder": 69,
+      "allowedSignatures": [
+        {
+          "type": "preposition-case",
+          "preposition": "z",
+          "case": "genitive",
+          "required": true,
+          "role": "object"
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-uczyc-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "uczyć",
+      "verificationOrder": 70,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "teaching-instruction",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "case",
+                "case": "genitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "clause",
+                "clauseKind": "interrogative",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "o",
+                "case": "locative",
+                "required": true,
+                "role": "topic"
+              }
+            ]
+          ]
+        },
+        {
+          "meaningKey": "school-subject-teaching",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "genitive",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": false,
+                "role": "object"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-uczyc-authorized-preposition-cases",
+      "kind": "allow-only-preposition-case-signatures",
+      "lemma": "uczyć",
+      "verificationOrder": 70,
+      "allowedSignatures": [
+        {
+          "type": "preposition-case",
+          "preposition": "o",
+          "case": "locative",
+          "required": true,
+          "role": "topic"
+        }
+      ]
     }
   ]
 }

@@ -1,9 +1,9 @@
 {
   "stagingSchemaVersion": 1,
-  "stagingRevision": 7,
+  "stagingRevision": 8,
   "priority": 8,
   "phase": "4B",
-  "phaseStep": "4B6",
+  "phaseStep": "4B7",
   "frozenFullPatternCount": 68,
   "sources": {
     "phase3BFreezeCsv": {
@@ -9589,9 +9589,52 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "necessity-obligation",
+            "glossesEn": [
+              "have to do something",
+              "must do something"
+            ],
+            "internalScope": "Core necessity or obligation to do something (WSJP sense 1). The frozen source lists an unrestricted-subject schema and a zero-subject schema, both with a bare infinitive; personal versus impersonal realization is a sentence-level fact and creates no second complement, pattern or meaning. Excludes the separate discourse uses for advice, expectation, criticism and elliptical modal talk. No subject, impersonal or question complement is ever authored."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "infinitive-required-action",
+            "meaningKeyRef": "necessity-obligation",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Musieć always takes a bare infinitive: muszę iść do lekarza (I have to go to the doctor). Polish uses this one construction whether or not the sentence names who has to act, so impersonal sentences add nothing new to learn."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "necessity-obligation",
+            "patternKeyRef": "infinitive-required-action",
+            "pl": "Muszę dziś iść do lekarza.",
+            "en": "I have to go to the doctor today.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -9608,9 +9651,153 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "factual-knowledge",
+            "glossesEn": [
+              "know (a fact)",
+              "know about something"
+            ],
+            "internalScope": "Knowing content that can be stated as true (WSJP sense 1), with nominal, topical, propositional and interrogative-dependent content as four alternatives of one meaning. The alternatives are never cumulative. The source also selects a generalized SKĄD source-of-knowledge position: it is verified evidence but has no representable form in the locked four-type model, so it receives no complement and no pattern, and no od/z or other concrete source preposition may ever be inferred from it. A czy sentence is one surface realization of the interrogative-dependent clause, never a separate clause kind. No syntax from znać."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "accusative-known-content",
+            "meaningKeyRef": "factual-knowledge",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For content you already know, wiedzieć takes an Accusative object, in practice usually a pronoun such as to, wszystko or coś: wiem to od dawna (I've known that for a long time)."
+          },
+          {
+            "candidatePatternKey": "o-locative-known-topic",
+            "meaningKeyRef": "factual-knowledge",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "o",
+                "case": "locative",
+                "required": true,
+                "role": "topic"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "To name the area or topic you know about, use o + Locative: wiem o twoich problemach (I know about your problems)."
+          },
+          {
+            "candidatePatternKey": "ze-known-proposition",
+            "meaningKeyRef": "factual-knowledge",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Use że to introduce a fact you know: wiem, że masz dużo pracy (I know that you have a lot of work)."
+          },
+          {
+            "candidatePatternKey": "interrogative-queried-content",
+            "meaningKeyRef": "factual-knowledge",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "interrogative",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "When the content is an open question rather than a fact, use a dependent question clause. For a yes/no question that word is czy: nie wiem, czy zdążymy (I don't know whether we'll make it); question words such as gdzie or kiedy work the same way."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "factual-knowledge",
+            "patternKeyRef": "accusative-known-content",
+            "pl": "Wiem to od dawna.",
+            "en": "I have known that for a long time.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "factual-knowledge",
+            "patternKeyRef": "o-locative-known-topic",
+            "pl": "Wiem o twoich problemach.",
+            "en": "I know about your problems.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "factual-knowledge",
+            "patternKeyRef": "ze-known-proposition",
+            "pl": "Wiem, że masz teraz dużo pracy.",
+            "en": "I know that you have a lot of work right now.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "factual-knowledge",
+            "patternKeyRef": "interrogative-queried-content",
+            "pl": "Nie wiem, czy zdążymy na pociąg.",
+            "en": "I don't know whether we'll make the train.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -9627,9 +9814,59 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "food-consumption",
+            "glossesEn": [
+              "eat",
+              "eat something"
+            ],
+            "internalScope": "Ordinary consumption of food (WSJP jeść I sense 1). The exact source schema is (CO) + (CZYM): both the food object and the eating implement are optional, in one single pattern. Excludes meal, diet, figurative and every other jeść sense. The positive lexical object is Accusative; the Genitive that appears after a negated verb is ordinary Polish sentence grammar applying to negated objects generally, so it is correct Polish but is deliberately not authored here as a lemma-specific pattern. No partitive Genitive is established by this schema."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "accusative-food-instrumental-implement",
+            "meaningKeyRef": "food-consumption",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": false,
+                "role": "object"
+              },
+              {
+                "type": "case",
+                "case": "instrumental",
+                "required": false,
+                "role": "means"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Both parts are optional: put the food in the Accusative and the implement in the Instrumental — dziecko je zupę łyżką (the child eats the soup with a spoon) — or just say je (is eating). After a negated verb the object switches to the Genitive (nie je zupy); that is the general Polish rule for negated objects, not a separate pattern of jeść."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "food-consumption",
+            "patternKeyRef": "accusative-food-instrumental-implement",
+            "pl": "Dziecko je zupę łyżką.",
+            "en": "The child is eating the soup with a spoon.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -9646,9 +9883,53 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "liquid-consumption",
+            "glossesEn": [
+              "drink",
+              "drink something"
+            ],
+            "internalScope": "Ordinary consumption of a liquid by an animate subject (WSJP sense 1). The exact source schema lists only CO, so the Accusative drink object is the whole complement inventory. The animate subject is a selectional restriction, not a complement. Excludes the alcohol-use sense, plant absorption, footwear and figurative senses; no Genitive, partitive or quantity-derived pattern is inferred, and container, source and quantity phrases remain ordinary context."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "accusative-drink-object",
+            "meaningKeyRef": "liquid-consumption",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The drink goes in the Accusative: piję kawę (I drink coffee). Keep this everyday drinking sense apart from pić used for drinking alcohol."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "liquid-consumption",
+            "patternKeyRef": "accusative-drink-object",
+            "pl": "Codziennie rano piję kawę.",
+            "en": "I drink coffee every morning.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -9665,9 +9946,166 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "person-love",
+            "glossesEn": [
+              "love (a person)"
+            ],
+            "internalScope": "Emotional love of a person (WSJP sense 1). The Accusative object here is a person. This meaning is structurally identical to the idea/place and strong-liking Accusative rows, so no structural guard can prove the split; the distinction lives in this scope note, the glosses, the learner explanation and the example, all of which must keep the object clearly a person. No infinitive belongs to this meaning."
+          },
+          {
+            "candidateMeaningKey": "idea-or-place-attachment",
+            "glossesEn": [
+              "love (a place or ideal)",
+              "be deeply attached to"
+            ],
+            "internalScope": "Emotional attachment to an idea, value or place such as freedom, a homeland or a home town (WSJP sense 2). Deeper than ordinary preference and not directed at a person. Structurally identical to the other two Accusative rows, so the distinction is carried semantically here and in the example, never structurally. No infinitive belongs to this meaning."
+          },
+          {
+            "candidateMeaningKey": "strong-liking",
+            "glossesEn": [
+              "love (doing something)",
+              "really like"
+            ],
+            "internalScope": "Strong liking of a thing or of doing something (WSJP sense 3) — everyday preference semantics, close to English 'I love chocolate', rather than emotional love or attachment. This is the only kochać meaning that also takes an infinitive; the Accusative and the infinitive are alternatives, never cumulative."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "accusative-loved-person",
+            "meaningKeyRef": "person-love",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A1",
+              "production": "A1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For loving a person, kochać takes a plain Accusative object: kocham swoją babcię (I love my grandmother)."
+          },
+          {
+            "candidatePatternKey": "accusative-cherished-idea-or-place",
+            "meaningKeyRef": "idea-or-place-attachment",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The same Accusative shape covers a deep attachment to a place, a country or an ideal: kocham swoje rodzinne miasto (I love my home town). This is emotional attachment, not just liking something."
+          },
+          {
+            "candidatePatternKey": "accusative-strongly-liked-thing",
+            "meaningKeyRef": "strong-liking",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Kochać also expresses a strong everyday preference for a thing, like English I love chocolate: moja siostra kocha czekoladę."
+          },
+          {
+            "candidatePatternKey": "infinitive-strongly-liked-activity",
+            "meaningKeyRef": "strong-liking",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For an activity you love doing, use a bare infinitive: dzieci kochają biegać po plaży (the children love running on the beach). Only this liking sense takes an infinitive."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "person-love",
+            "patternKeyRef": "accusative-loved-person",
+            "pl": "Bardzo kocham swoją babcię.",
+            "en": "I love my grandmother very much.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "idea-or-place-attachment",
+            "patternKeyRef": "accusative-cherished-idea-or-place",
+            "pl": "Kocham swoje rodzinne miasto.",
+            "en": "I love my home town.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "strong-liking",
+            "patternKeyRef": "accusative-strongly-liked-thing",
+            "pl": "Moja siostra kocha czekoladę.",
+            "en": "My sister loves chocolate.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "strong-liking",
+            "patternKeyRef": "infinitive-strongly-liked-activity",
+            "pl": "Dzieci kochają biegać po plaży.",
+            "en": "The children love running on the beach.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -9684,9 +10122,99 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "apology",
+            "glossesEn": [
+              "apologise",
+              "say sorry"
+            ],
+            "internalScope": "Asking forgiveness for wrongdoing or inappropriate behaviour, with a nominal offence/reason schema and an alternative explanation-clause schema. The person apologised to is a person in both schemas. The requiredness asymmetry is the defining fact of this lemma: the person is required together with za + Accusative, but optional in the że schema, and neither value may be normalized to the other. The two schemas are alternatives and never combine. The frozen discourse-marker use of przepraszam adds nothing to this record."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "accusative-person-za-accusative-offence",
+            "meaningKeyRef": "apology",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "interlocutor"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "za",
+                "case": "accusative",
+                "required": true,
+                "role": "topic"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Name the person in the Accusative and what you are sorry for with za + Accusative; in this pattern you need both: Marek przeprasza nauczyciela za spóźnienie (Marek apologises to the teacher for being late)."
+          },
+          {
+            "candidatePatternKey": "accusative-person-ze-explanation",
+            "meaningKeyRef": "apology",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": false,
+                "role": "interlocutor"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "You can also explain yourself with a że clause, and here the person is optional: przepraszam cię, że nie zadzwoniłem (I'm sorry I didn't call you), or simply przepraszam, że nie zadzwoniłem."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "apology",
+            "patternKeyRef": "accusative-person-za-accusative-offence",
+            "pl": "Marek przeprasza nauczyciela za spóźnienie.",
+            "en": "Marek apologises to the teacher for being late.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "apology",
+            "patternKeyRef": "accusative-person-ze-explanation",
+            "pl": "Przepraszam cię, że nie zadzwoniłem wczoraj.",
+            "en": "I'm sorry I didn't call you yesterday.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -9703,9 +10231,98 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "good-wishes",
+            "glossesEn": [
+              "wish somebody something",
+              "wish somebody well"
+            ],
+            "internalScope": "Expressing a good wish to a recipient (WSJP sense 1). The Dative recipient is required in both schemas; the Genitive wished thing and the żeby wished event are two alternative realizations of the same content slot and are never cumulative. No infinitive is listed in the exact sense and none is authored. The authored identity is bare życzyć: an ordinary Dative recipient such as ci or dzieciom is in scope, but the separate lexical phrase życzyć sobie is a different identity and supplies no syntax, meaning or example material here."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "dative-recipient-genitive-wished-thing",
+            "meaningKeyRef": "good-wishes",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "dative",
+                "required": true,
+                "role": "recipient"
+              },
+              {
+                "type": "case",
+                "case": "genitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The person gets the Dative and the thing you wish them the Genitive: życzę ci zdrowia (I wish you health)."
+          },
+          {
+            "candidatePatternKey": "dative-recipient-zeby-wished-event",
+            "meaningKeyRef": "good-wishes",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "dative",
+                "required": true,
+                "role": "recipient"
+              },
+              {
+                "type": "clause",
+                "clauseKind": "zeby",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "To wish for something to happen, keep the Dative person and use a żeby clause instead of the Genitive: życzę ci, żebyś zdał egzamin (I hope you pass the exam). Use one or the other, not both."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "good-wishes",
+            "patternKeyRef": "dative-recipient-genitive-wished-thing",
+            "pl": "Życzę ci zdrowia i szczęścia.",
+            "en": "I wish you health and happiness.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "good-wishes",
+            "patternKeyRef": "dative-recipient-zeby-wished-event",
+            "pl": "Życzę ci, żebyś zdał ten egzamin.",
+            "en": "I hope you pass this exam.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -9722,9 +10339,96 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "resource-use",
+            "glossesEn": [
+              "use",
+              "make use of"
+            ],
+            "internalScope": "Using a resource, tool, facility or service (WSJP sense 2), with exact z + Genitive government. Structurally identical to the benefit-from meaning, so no structural guard can prove which semantics sits under which key; the distinction is carried by this scope note, the glosses, the learner explanation and a clearly resource-oriented example. No syntax from używać, which takes a direct Genitive instead."
+          },
+          {
+            "candidateMeaningKey": "benefit-from-advantage",
+            "glossesEn": [
+              "take advantage of",
+              "benefit from"
+            ],
+            "internalScope": "Benefiting from an advantage, concession or favourable circumstance such as a discount, a relief or an opportunity (WSJP sense 1), with the same exact z + Genitive government as the resource-use meaning. The identical form is exactly what the frozen evidence records, so the meanings are kept apart semantically rather than structurally, and are never merged into one generic 'use' meaning."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "z-genitive-used-resource",
+            "meaningKeyRef": "resource-use",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "genitive",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For using a resource, service or facility, korzystać takes z + Genitive: korzystam z komunikacji miejskiej (I use public transport)."
+          },
+          {
+            "candidatePatternKey": "z-genitive-source-of-benefit",
+            "meaningKeyRef": "benefit-from-advantage",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "genitive",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "The same z + Genitive also covers taking advantage of something that benefits you, such as a discount or an opportunity: studenci korzystają ze zniżek (students take advantage of discounts)."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "resource-use",
+            "patternKeyRef": "z-genitive-used-resource",
+            "pl": "Codziennie korzystam z komunikacji miejskiej.",
+            "en": "I use public transport every day.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "benefit-from-advantage",
+            "patternKeyRef": "z-genitive-source-of-benefit",
+            "pl": "Studenci chętnie korzystają ze zniżek studenckich.",
+            "en": "Students readily take advantage of student discounts.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     },
     {
@@ -9741,9 +10445,261 @@
       "bindingConstraints": [],
       "stagingReviewStatus": "draft",
       "candidateContent": {
-        "meanings": [],
-        "patterns": [],
-        "examples": []
+        "meanings": [
+          {
+            "candidateMeaningKey": "teaching-instruction",
+            "glossesEn": [
+              "teach somebody something",
+              "instruct"
+            ],
+            "internalScope": "Teaching or instructing a learner or entity — imparting content, a skill, a proposition, procedural information or a topic (WSJP non-reflexive sense 1). The five alternatives are strict alternatives and must never be merged into one maximal frame. The Accusative position covers a person or another taught entity; in the o + Locative alternative the source restricts it to a person, which is recorded here rather than in the role. The authored identity is non-reflexive uczyć: nothing is inherited from the separate lemma uczyć się, and no example may use it."
+          },
+          {
+            "candidateMeaningKey": "school-subject-teaching",
+            "glossesEn": [
+              "teach (a school subject)"
+            ],
+            "internalScope": "Teaching a school subject (WSJP non-reflexive sense 2). The exact source schema is (KOGO) + CZEGO + GDZIE: the learner is optional, the subject Genitive is required, and the generalized GDZIE place position is verified source evidence that the locked four-type model cannot represent — it receives no complement, no preposition and no pattern, and no w, na, u or other concrete place form may be derived from it. Non-reflexive identity as above."
+          }
+        ],
+        "patterns": [
+          {
+            "candidatePatternKey": "accusative-learner-genitive-taught-content",
+            "meaningKeyRef": "teaching-instruction",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "case",
+                "case": "genitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "Uczyć teaches somebody something: the learner takes the Accusative and what you teach takes the Genitive — babcia uczy wnuczkę cierpliwości (grandma teaches her granddaughter patience). Note that uczyć się (to learn) is a different verb."
+          },
+          {
+            "candidatePatternKey": "accusative-learner-infinitive-taught-skill",
+            "meaningKeyRef": "teaching-instruction",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For a skill, keep the Accusative learner and add a bare infinitive: ojciec uczy syna pływać (the father is teaching his son to swim)."
+          },
+          {
+            "candidatePatternKey": "accusative-learner-ze-taught-proposition",
+            "meaningKeyRef": "teaching-instruction",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "B1"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "To teach that something is the case, use a że clause after the Accusative learner: rodzice uczą dzieci, że warto mówić prawdę (parents teach their children that it's worth telling the truth)."
+          },
+          {
+            "candidatePatternKey": "accusative-learner-interrogative-taught-content",
+            "meaningKeyRef": "teaching-instruction",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "clause",
+                "clauseKind": "interrogative",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "To teach how, when or whether to do something, use a dependent question clause after the Accusative learner: instruktor uczy kursantów, jak reagować (the instructor teaches the trainees how to react)."
+          },
+          {
+            "candidatePatternKey": "accusative-person-o-locative-taught-topic",
+            "meaningKeyRef": "teaching-instruction",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              },
+              {
+                "type": "preposition-case",
+                "preposition": "o",
+                "case": "locative",
+                "required": true,
+                "role": "topic"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "common",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "To name a topic you teach about rather than a subject to be mastered, use o + Locative with an Accusative person: nauczycielka uczy dzieci o zwyczajach w innych krajach (the teacher teaches the children about customs in other countries)."
+          },
+          {
+            "candidatePatternKey": "accusative-learner-genitive-school-subject",
+            "meaningKeyRef": "school-subject-teaching",
+            "relationType": "lexical-frame",
+            "complements": [
+              {
+                "type": "case",
+                "case": "genitive",
+                "required": true,
+                "role": "content"
+              },
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": false,
+                "role": "object"
+              }
+            ],
+            "cefr": {
+              "recognition": "A2",
+              "production": "A2"
+            },
+            "teachingStatus": "active-production",
+            "usage": {
+              "priority": "core",
+              "register": "neutral"
+            },
+            "learnerExplanationEn": "For teaching a school subject, the subject takes the Genitive and naming the pupils is optional: pani Nowak uczy dzieci matematyki, or simply uczy matematyki."
+          }
+        ],
+        "examples": [
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "teaching-instruction",
+            "patternKeyRef": "accusative-learner-genitive-taught-content",
+            "pl": "Babcia uczy wnuczkę cierpliwości.",
+            "en": "Grandma teaches her granddaughter patience.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "teaching-instruction",
+            "patternKeyRef": "accusative-learner-infinitive-taught-skill",
+            "pl": "Ojciec uczy syna pływać.",
+            "en": "The father is teaching his son to swim.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "teaching-instruction",
+            "patternKeyRef": "accusative-learner-ze-taught-proposition",
+            "pl": "Rodzice uczą dzieci, że warto mówić prawdę.",
+            "en": "Parents teach their children that it is worth telling the truth.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "teaching-instruction",
+            "patternKeyRef": "accusative-learner-interrogative-taught-content",
+            "pl": "Instruktor uczy kursantów, jak reagować w niebezpiecznej sytuacji.",
+            "en": "The instructor teaches the trainees how to react in a dangerous situation.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "teaching-instruction",
+            "patternKeyRef": "accusative-person-o-locative-taught-topic",
+            "pl": "Nauczycielka uczy dzieci o zwyczajach w innych krajach.",
+            "en": "The teacher teaches the children about customs in other countries.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          },
+          {
+            "candidateExampleKey": "primary",
+            "meaningKeyRef": "school-subject-teaching",
+            "patternKeyRef": "accusative-learner-genitive-school-subject",
+            "pl": "Pani Nowak uczy dzieci matematyki.",
+            "en": "Mrs Nowak teaches the children maths.",
+            "candidateOrigin": {
+              "kind": "editorial-generated"
+            }
+          }
+        ]
       }
     }
   ]
