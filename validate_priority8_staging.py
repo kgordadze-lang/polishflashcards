@@ -98,7 +98,7 @@ PREPOSITION_CASE_IDS = {
 }
 ROLES = {
     "subject", "object", "recipient", "experiencer", "predicate",
-    "content", "topic", "interlocutor", "means", "target",
+    "content", "topic", "interlocutor", "means", "target", "source",
 }
 CLAUSE_KINDS = {"ze", "czy", "zeby", "interrogative", "direct-speech"}
 CEFR_LEVELS = ("A1", "A2", "B1", "above-b1")

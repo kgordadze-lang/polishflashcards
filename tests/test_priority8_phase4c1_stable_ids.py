@@ -1,5 +1,6 @@
 import copy
 import hashlib
+import inspect
 import json
 import unittest
 from collections import Counter
@@ -20,13 +21,15 @@ FROZEN_FILE_SHA256 = {
         "b74bff54122ffb25c5ce8215e5bf28f8aa8823eabc2528cae8b1066a7eb1ab8b",
     "editorial/priority-8-phase4-staging.json":
         "6ba1bcab43feeee5bfb99a5ac67eace8befa12c3df67f44bfb94191bf1a80adc",
-    "content/verb-patterns.json":
-        "889b44aa7f87f25325364188a9283a36b22aa6d5d491fc347bb7be73072ba14d",
-    "priority7_tooling.py":
-        "4fda51f3ba53c60d524a067037b106414921db71663feddbd5ac0143b7f7d8e3",
     "priority8_phase1_transition.py":
         "ebf3d05381d11ab1c0ffa3b6a8329e9486320ef3c69cf2b90642d53910de64ef",
 }
+LOCKED_ALLOCATOR_SOURCE_SHA256 = (
+    "ef9236f5b4841627631aebb45122e5d0a943ec642b3bcd26671f2f0c41769f03")
+LOCKED_ALLOCATOR_FUNCTIONS = (
+    "normalize_canonical_lemma", "allocate_lemma_id", "allocate_meaning_id",
+    "allocate_pattern_id", "allocate_example_id", "pattern_readable_stem",
+)
 METADATA_ONLY = {"zaczynać", "przeczytać"}
 SOURCE_ROWS = {
     ("wracać", "return-to-earlier-place", "z-genitive-return-source"),
@@ -81,9 +84,17 @@ class Priority8Phase4C1StableIdTests(unittest.TestCase):
             phase4c1.projection_from_staging(self.staging),
         )
 
-    def test_03_frozen_sources_allocator_and_canonical_bytes_are_unchanged(self):
+    def test_03_frozen_sources_and_locked_allocator_are_unchanged(self):
         for relative, expected in FROZEN_FILE_SHA256.items():
             self.assertEqual(expected, sha256(ROOT / relative), relative)
+        allocator_source = "".join(
+            inspect.getsource(getattr(phase4c1.tooling, name))
+            for name in LOCKED_ALLOCATOR_FUNCTIONS
+        ).encode("utf-8")
+        self.assertEqual(
+            LOCKED_ALLOCATOR_SOURCE_SHA256,
+            hashlib.sha256(allocator_source).hexdigest(),
+        )
 
     def test_04_all_154_released_ids_reproduce_exactly(self):
         counts = Counter(row["kind"] for row in self.released)

@@ -52,7 +52,7 @@
 var PP_VERB_PATTERNS = (function () {
   "use strict";
 
-  var FORMAT_VERSION = 1;
+  var FORMAT_VERSION = 2;
   /* The public envelope is closed: exactly these three keys, in any order.
      Anything else - including a non-release wrapper's own fields - is not the
      public runtime shape and is refused whole. */
@@ -155,7 +155,7 @@ var PP_VERB_PATTERNS = (function () {
   var TEACHING_STATUSES = ["active-production", "recognition-only"];
   var ROLES = [
     "subject", "object", "recipient", "experiencer", "predicate", "content",
-    "topic", "interlocutor", "means", "target"
+    "topic", "interlocutor", "means", "target", "source"
   ];
   var ACTIVITY_KEYS = [
     "reference", "search", "grammar-choose", "grammar-build", "type-it",
@@ -164,10 +164,12 @@ var PP_VERB_PATTERNS = (function () {
   var CEFR_LEVELS = ["A1", "A2", "B1", "above-b1"];
   var USAGE_PRIORITIES = ["core", "common", "limited"];
   var REGISTERS = ["neutral", "formal", "informal"];
-  var CLAUSE_KINDS = ["ze", "czy", "zeby", "interrogative"];
+  var CLAUSE_KINDS = [
+    "ze", "czy", "zeby", "interrogative", "direct-speech"
+  ];
   var CLAUSE_TOKENS = {
     ze: "że …", czy: "czy …", zeby: "żeby …",
-    interrogative: "pytanie …"
+    interrogative: "pytanie …", "direct-speech": "„…”"
   };
   var CONTENT_KINDS = ["card", "topic", "drill", "scenario"];
   var CONTENT_PURPOSES = ["support", "practice", "context", "contrast"];
@@ -186,13 +188,15 @@ var PP_VERB_PATTERNS = (function () {
     topic: "what it is about",
     interlocutor: "the person you talk to",
     means: "how it is done",
-    target: "what it is aimed at"
+    target: "what it is aimed at",
+    source: "where it comes from"
   };
   /* One context-sensitive override, per the locked phrasebook. */
   var SUBJECT_EXPERIENCER_SUBJECT = "the thing that appeals";
   /* Which diagnostic question a headline placeholder uses. A person-shaped
      role takes the animate question, everything else the inanimate one. */
   var ANIMATE_ROLES = ["recipient", "interlocutor", "experiencer"];
+  var REQUIRED_LEXICAL_ITEM_RE = /^[a-ząćęłńóśźż]+$/;
 
   var LEVEL_LABELS = {
     A1: "A1", A2: "A2", B1: "B1", "above-b1": "B1+"
@@ -355,6 +359,17 @@ var PP_VERB_PATTERNS = (function () {
     return !("case" in value) && !("preposition" in value);
   }
 
+  function validRequiredLexicalItems(value) {
+    var seen = emptyDict();
+    if (!Array.isArray(value) || value.length < 1 || value.length > 4) {
+      return false;
+    }
+    return value.every(function (item) {
+      return typeof item === "string" && REQUIRED_LEXICAL_ITEM_RE.test(item) &&
+        !seenBefore(seen, item);
+    });
+  }
+
   function validPattern(value) {
     if (!isPlainObject(value)) return false;
     if (!closedKeys(
@@ -362,11 +377,13 @@ var PP_VERB_PATTERNS = (function () {
         ["id", "relationType", "complements", "cefr", "teachingStatus",
          "usage", "learnerExplanationEn", "activityEligibility"],
         ["aspectEquivalentPatternIds", "examples", "contentRefs",
-         "errorNotes"])) return false;
+         "errorNotes", "requiredLexicalItems"])) return false;
     if (!isNonEmptyString(value.id)) return false;
     if (!inList(RELATION_TYPES, value.relationType)) return false;
     if (!inList(TEACHING_STATUSES, value.teachingStatus)) return false;
     if (!isNonEmptyString(value.learnerExplanationEn)) return false;
+    if ("requiredLexicalItems" in value &&
+        !validRequiredLexicalItems(value.requiredLexicalItems)) return false;
     if (!Array.isArray(value.complements) || !value.complements.length) return false;
     if (!value.complements.every(validComplement)) return false;
     if (!isPlainObject(value.cefr)) return false;
@@ -523,6 +540,9 @@ var PP_VERB_PATTERNS = (function () {
      it cannot drift from the data it summarises. */
   function headlineFor(displayLemma, pattern) {
     var parts = [{ text: displayLemma, lang: "pl" }];
+    (pattern.requiredLexicalItems || []).forEach(function (item) {
+      parts.push({ text: item, lang: "pl" });
+    });
     pattern.complements.forEach(function (complement) {
       var questions, animate, token;
       if (complement.type === "infinitive") {
@@ -534,6 +554,9 @@ var PP_VERB_PATTERNS = (function () {
         parts.push({ text: "+", lang: null });
         parts.push({ text: CLAUSE_TOKENS[complement.clauseKind], lang: "pl" });
         return;
+      }
+      if (pattern.requiredLexicalItems && pattern.requiredLexicalItems.length) {
+        parts.push({ text: "+", lang: null });
       }
       questions = questionsFor(complement);
       if (!questions.length) {
@@ -1302,6 +1325,10 @@ var PP_VERB_PATTERNS = (function () {
     FORMAT_VERSION: FORMAT_VERSION,
     ENVELOPE_KEYS: ENVELOPE_KEYS.slice(),
     CASE_ORDER: CASE_ORDER.slice(),
+    ROLES: ROLES.slice(),
+    CLAUSE_KINDS: CLAUSE_KINDS.slice(),
+    COMPLEMENT_TYPES: COMPLEMENT_TYPES.slice(),
+    RELATION_TYPES: RELATION_TYPES.slice(),
     NO_CASE_BUCKET: NO_CASE_BUCKET,
     NO_CASE_LABEL: NO_CASE_LABEL,
     ROLE_PHRASES: ROLE_PHRASES,

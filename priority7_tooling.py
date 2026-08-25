@@ -23,7 +23,7 @@ from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
 
 
-FORMAT_VERSION = 1
+FORMAT_VERSION = 2
 SCOPE_VERSION = 1
 EDITORIAL_ARTIFACT_STATUS = "priority-7-editorial-nonproduction"
 SPECIFICATION_ARTIFACT_STATUS = "specification-example-not-production"
@@ -59,9 +59,9 @@ PREPOSITION_CASE_IDS = {
 }
 ROLES = {
     "subject", "object", "recipient", "experiencer", "predicate",
-    "content", "topic", "interlocutor", "means", "target",
+    "content", "topic", "interlocutor", "means", "target", "source",
 }
-CLAUSE_KINDS = {"ze", "czy", "zeby", "interrogative"}
+CLAUSE_KINDS = {"ze", "czy", "zeby", "interrogative", "direct-speech"}
 ASPECTS = {"imperfective", "perfective", "biaspectual", "unresolved"}
 CEFR_LEVELS = ("A1", "A2", "B1", "above-b1")
 TEACHING_STATUSES = {"active-production", "recognition-only", "deferred"}
@@ -174,6 +174,7 @@ CONTENT_KINDS = {"card", "topic", "drill", "scenario"}
 CONTENT_PURPOSES = {"support", "practice", "context", "contrast"}
 ERROR_KINDS = {"documented-common-error", "predicted-distractor"}
 PREPOSITION_RE = re.compile(r"^[a-ząćęłńóśźż]+$")
+REQUIRED_LEXICAL_ITEM_RE = PREPOSITION_RE
 
 # The private keys the shipping JavaScript loader mirrors exactly in its own
 # rejection list.  This set is a locked cross-language contract and must not
@@ -614,6 +615,9 @@ def review_scope(
             pattern.get("aspectEquivalentPatternIds")),
         "usage": _project_usage(pattern["usage"]),
     })
+    if "requiredLexicalItems" in pattern:
+        result["pattern"]["requiredLexicalItems"] = copy.deepcopy(
+            pattern["requiredLexicalItems"])
     if stage in ("native-linguistic", "product-approval"):
         result["pattern"].update({
             "cefr": _project_cefr(pattern["cefr"]),
@@ -796,6 +800,19 @@ def _string_list(
         _add(issues, "SCHEMA_ARRAY_UNIQUE", path, "Array values must be unique.")
         valid = False
     return valid
+
+
+def _validate_required_lexical_items(
+        value: Any, path: str, issues: list[Issue]) -> None:
+    """Validate ordered fixed words that belong to a pattern's structure."""
+    if not _string_list(
+            value, path, issues, min_items=1, max_items=4, unique=True):
+        return
+    for index, item in enumerate(value):
+        if not REQUIRED_LEXICAL_ITEM_RE.fullmatch(item):
+            _add(
+                issues, "REQUIRED_LEXICAL_ITEM_INVALID", f"{path}[{index}]",
+                "Required lexical items must be exact lowercase NFC Polish words.")
 
 
 def _validate_repository_source(
@@ -1908,7 +1925,7 @@ def _validate_pattern(
     }
     allowed = required | {
         "aspectEquivalentPatternIds", "examples", "contentRefs", "errorNotes",
-        "releaseMode"}
+        "releaseMode", "requiredLexicalItems"}
     if not _closed_object(value, path, required, allowed, issues):
         return
     # Absent means the strictest chain, so no existing record silently becomes
@@ -1956,6 +1973,9 @@ def _validate_pattern(
     _validate_usage(value.get("usage"), f"{path}.usage", teaching_status, issues)
     _nonempty_string(value.get("learnerExplanationEn"),
                      f"{path}.learnerExplanationEn", issues, 3)
+    if "requiredLexicalItems" in value:
+        _validate_required_lexical_items(
+            value["requiredLexicalItems"], f"{path}.requiredLexicalItems", issues)
 
     eligibility = value.get("activityEligibility")
     eligibility_ok = _string_list(
@@ -2369,7 +2389,8 @@ def validate_specification_fixture(
                      "$.specificationNotice", issues, 20)
     if (type(document.get("formatVersion")) is not int or
             document.get("formatVersion") != FORMAT_VERSION):
-        _add(issues, "FORMAT_VERSION", "$.formatVersion", "formatVersion must be 1.")
+        _add(issues, "FORMAT_VERSION", "$.formatVersion",
+             f"formatVersion must be {FORMAT_VERSION}.")
     revision = document.get("patternDataRevision")
     if type(revision) is not int or revision < 1:
         _add(issues, "PATTERN_REVISION", "$.patternDataRevision",
@@ -2537,7 +2558,8 @@ def validate_editorial(
              "Editorial artifactStatus is missing or incorrect.")
     if (type(document.get("formatVersion")) is not int or
             document.get("formatVersion") != FORMAT_VERSION):
-        _add(issues, "FORMAT_VERSION", "$.formatVersion", "formatVersion must be 1.")
+        _add(issues, "FORMAT_VERSION", "$.formatVersion",
+             f"formatVersion must be {FORMAT_VERSION}.")
     if not isinstance(context.allocation_registry, Mapping):
         _add(issues, "ALLOCATION_REGISTRY_TYPE", "$allocationRegistry",
              "Allocation registry must be an object mapping IDs to records.")
@@ -2588,7 +2610,8 @@ def validate_runtime(
     _recursive_private_key_check(document, "$", issues)
     if (type(document.get("formatVersion")) is not int or
             document.get("formatVersion") != FORMAT_VERSION):
-        _add(issues, "FORMAT_VERSION", "$.formatVersion", "formatVersion must be 1.")
+        _add(issues, "FORMAT_VERSION", "$.formatVersion",
+             f"formatVersion must be {FORMAT_VERSION}.")
     revision = document.get("patternDataRevision")
     if type(revision) is not int or revision < 1:
         _add(issues, "PATTERN_REVISION", "$.patternDataRevision",
@@ -2700,7 +2723,7 @@ def validate_runtime(
                     "activityEligibility"}
                 allowed_pattern = required_pattern | {
                     "aspectEquivalentPatternIds", "examples", "contentRefs",
-                    "errorNotes"}
+                    "errorNotes", "requiredLexicalItems"}
                 if not _closed_object(
                         pattern, pattern_path, required_pattern, allowed_pattern,
                         issues):
@@ -2737,6 +2760,10 @@ def validate_runtime(
                                 teaching_status, issues)
                 _nonempty_string(pattern.get("learnerExplanationEn"),
                                  f"{pattern_path}.learnerExplanationEn", issues, 3)
+                if "requiredLexicalItems" in pattern:
+                    _validate_required_lexical_items(
+                        pattern["requiredLexicalItems"],
+                        f"{pattern_path}.requiredLexicalItems", issues)
                 eligibility = pattern.get("activityEligibility")
                 _string_list(eligibility, f"{pattern_path}.activityEligibility",
                              issues, unique=True, allowed=ACTIVITY_KEYS)
@@ -2891,6 +2918,9 @@ def _runtime_pattern(
         "learnerExplanationEn": pattern["learnerExplanationEn"],
         "activityEligibility": sorted(pattern["activityEligibility"]),
     }
+    if "requiredLexicalItems" in pattern:
+        runtime["requiredLexicalItems"] = copy.deepcopy(
+            pattern["requiredLexicalItems"])
     equivalents = sorted(
         target for target in pattern.get("aspectEquivalentPatternIds", [])
         if target in admitted_pattern_ids)
@@ -3097,6 +3127,9 @@ def _structure_for_entity(entity: _EntityInfo) -> dict[str, Any]:
                 example["id"] for example in entity.record.get("examples", [])],
             "examplesPresent": "examples" in entity.record,
         })
+        if "requiredLexicalItems" in entity.record:
+            result["requiredLexicalItems"] = copy.deepcopy(
+                entity.record["requiredLexicalItems"])
     elif entity.kind == "example":
         result["parentPatternId"] = entity.parent_id
     return result
@@ -3209,7 +3242,10 @@ def _validate_frozen_structure_row(
         _add(issues, "FROZEN_KIND", f"{path}.kind",
              "Frozen structure has an unknown entity kind.")
         return False
-    if not _closed_object(row, path, required, required, issues):
+    allowed = set(required)
+    if kind == "pattern":
+        allowed.add("requiredLexicalItems")
+    if not _closed_object(row, path, required, allowed, issues):
         return False
     _id_syntax(row.get("id"), kind, f"{path}.id", issues)
     if kind == "lemma":
@@ -3237,6 +3273,10 @@ def _validate_frozen_structure_row(
                    f"{path}.parentMeaningId", issues)
         relation_type = row.get("relationType")
         _enum(relation_type, RELATION_TYPES, f"{path}.relationType", issues)
+        if "requiredLexicalItems" in row:
+            _validate_required_lexical_items(
+                row["requiredLexicalItems"],
+                f"{path}.requiredLexicalItems", issues)
         complements = row.get("complements")
         if not isinstance(complements, list) or not complements:
             _add(issues, "COMPLEMENTS_REQUIRED", f"{path}.complements",
@@ -3861,6 +3901,9 @@ def _frozen_scope_digests_for_pattern(
         "errorNotes": copy.deepcopy(pattern_wording["errorNotes"]),
         "contentRefs": copy.deepcopy(pattern_structure["contentRefs"]),
     }
+    if "requiredLexicalItems" in pattern_structure:
+        pattern["requiredLexicalItems"] = copy.deepcopy(
+            pattern_structure["requiredLexicalItems"])
     if pattern_structure["examplesPresent"]:
         pattern["examples"] = examples
     return {
@@ -3883,7 +3926,7 @@ def _validate_frozen_document(value: Any) -> list[Issue]:
     if (type(value.get("formatVersion")) is not int or
             value.get("formatVersion") != FORMAT_VERSION):
         _add(issues, "FROZEN_FORMAT_VERSION", "$frozen.formatVersion",
-             "Frozen formatVersion must be 1.")
+             f"Frozen formatVersion must be {FORMAT_VERSION}.")
     revision = value.get("patternDataRevision")
     if type(revision) is not int or revision < 1:
         _add(issues, "FROZEN_REVISION", "$frozen.patternDataRevision",
