@@ -1,0 +1,2247 @@
+{
+  "freezeSchemaVersion": 1,
+  "priority": 8,
+  "phase": "4B",
+  "status": "frozen",
+  "sourceStaging": {
+    "phaseStep": "4B7",
+    "stagingRevision": 8
+  },
+  "counts": {
+    "lemmas": 68,
+    "meanings": 95,
+    "patterns": 224,
+    "examples": 224,
+    "totalCandidateKeys": 543
+  },
+  "candidateKeyFreezeDigest": "0d636b3c81c15f51e36558ef5d9c18e35b189b5f5a143003c283b4732f33be27",
+  "lemmas": [
+    {
+      "verificationOrder": 1,
+      "canonicalLemma": "pracować",
+      "meanings": [
+        {
+          "candidateMeaningKey": "production-creation",
+          "patterns": [
+            {
+              "candidatePatternKey": "nad-instrumental-work-object",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 2,
+      "canonicalLemma": "iść",
+      "meanings": [
+        {
+          "candidateMeaningKey": "directed-on-foot-motion",
+          "patterns": [
+            {
+              "candidatePatternKey": "do-genitive-destination",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "na-accusative-destination",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "infinitive-purpose",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 3,
+      "canonicalLemma": "chodzić",
+      "meanings": [
+        {
+          "candidateMeaningKey": "regular-attendance",
+          "patterns": [
+            {
+              "candidatePatternKey": "na-accusative-activity",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "regular-on-foot-motion",
+          "patterns": [
+            {
+              "candidatePatternKey": "do-genitive-destination",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "infinitive-purpose",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 4,
+      "canonicalLemma": "jechać",
+      "meanings": [
+        {
+          "candidateMeaningKey": "directed-transport-travel",
+          "patterns": [
+            {
+              "candidatePatternKey": "do-genitive-destination",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "instrumental-vehicle",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "na-locative-equipment",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 5,
+      "canonicalLemma": "jeździć",
+      "meanings": [
+        {
+          "candidateMeaningKey": "habitual-transport-travel",
+          "patterns": [
+            {
+              "candidatePatternKey": "do-genitive-destination",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "instrumental-vehicle",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "na-locative-equipment",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 6,
+      "canonicalLemma": "dojść",
+      "meanings": [
+        {
+          "candidateMeaningKey": "abstract-conclusion",
+          "patterns": [
+            {
+              "candidatePatternKey": "do-genitive-result",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 7,
+      "canonicalLemma": "dojechać",
+      "meanings": [
+        {
+          "candidateMeaningKey": "transport-endpoint-arrival",
+          "patterns": [
+            {
+              "candidatePatternKey": "do-genitive-endpoint",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "na-accusative-endpoint",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "instrumental-vehicle",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "na-locative-equipment",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 8,
+      "canonicalLemma": "wracać",
+      "meanings": [
+        {
+          "candidateMeaningKey": "return-to-earlier-place",
+          "patterns": [
+            {
+              "candidatePatternKey": "do-genitive-return-goal",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "z-genitive-return-source",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 9,
+      "canonicalLemma": "wrócić",
+      "meanings": [
+        {
+          "candidateMeaningKey": "completed-return-to-earlier-place",
+          "patterns": [
+            {
+              "candidatePatternKey": "do-genitive-return-goal",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "z-genitive-return-source",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 10,
+      "canonicalLemma": "przyjść",
+      "meanings": [
+        {
+          "candidateMeaningKey": "literal-place-arrival",
+          "patterns": [
+            {
+              "candidatePatternKey": "do-genitive-place-destination",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "one-off-activity-arrival",
+          "patterns": [
+            {
+              "candidatePatternKey": "na-accusative-event-destination",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "infinitive-purpose",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 11,
+      "canonicalLemma": "przyjechać",
+      "meanings": [
+        {
+          "candidateMeaningKey": "transport-destination-arrival",
+          "patterns": [
+            {
+              "candidatePatternKey": "do-genitive-destination",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "na-accusative-destination",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 12,
+      "canonicalLemma": "wyjść",
+      "meanings": [
+        {
+          "candidateMeaningKey": "literal-exit-from-place",
+          "patterns": [
+            {
+              "candidatePatternKey": "z-genitive-source",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "do-genitive-destination",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "na-accusative-destination",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 13,
+      "canonicalLemma": "wyjechać",
+      "meanings": [
+        {
+          "candidateMeaningKey": "transport-departure",
+          "patterns": [
+            {
+              "candidatePatternKey": "z-genitive-source",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 14,
+      "canonicalLemma": "przynosić",
+      "meanings": [
+        {
+          "candidateMeaningKey": "physical-carrying",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-object",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 15,
+      "canonicalLemma": "odpowiadać",
+      "meanings": [
+        {
+          "candidateMeaningKey": "answering-by-speech",
+          "patterns": [
+            {
+              "candidatePatternKey": "na-accusative-question",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "ze-content-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "direct-speech",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 16,
+      "canonicalLemma": "zamawiać",
+      "meanings": [
+        {
+          "candidateMeaningKey": "commissioning-ordering",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-item",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dative-beneficiary",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dla-genitive-beneficiary",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "u-genitive-provider",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 18,
+      "canonicalLemma": "zacząć",
+      "meanings": [
+        {
+          "candidateMeaningKey": "bounded-onset",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-activity",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "infinitive",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 19,
+      "canonicalLemma": "kończyć",
+      "meanings": [
+        {
+          "candidateMeaningKey": "activity-completion",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-task",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "infinitive",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 20,
+      "canonicalLemma": "pamiętać",
+      "meanings": [
+        {
+          "candidateMeaningKey": "recall-retain",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-recollection",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "o-locative-topic",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "obligation-reminder",
+          "patterns": [
+            {
+              "candidatePatternKey": "infinitive-obligation",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "zeby-clause-obligation",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 21,
+      "canonicalLemma": "zapominać",
+      "meanings": [
+        {
+          "candidateMeaningKey": "recall-failure",
+          "patterns": [
+            {
+              "candidatePatternKey": "genitive-object",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "accusative-object",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "o-locative-topic",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "ze-content-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "interrogative-forgotten-content",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "failure-to-act",
+          "patterns": [
+            {
+              "candidatePatternKey": "infinitive-failure",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 22,
+      "canonicalLemma": "próbować",
+      "meanings": [
+        {
+          "candidateMeaningKey": "attempt-action-result",
+          "patterns": [
+            {
+              "candidatePatternKey": "infinitive",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "genitive-action-noun",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "taste-sample-food-drink",
+          "patterns": [
+            {
+              "candidatePatternKey": "genitive-sampled-object",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 23,
+      "canonicalLemma": "pozwalać",
+      "meanings": [
+        {
+          "candidateMeaningKey": "human-permission",
+          "patterns": [
+            {
+              "candidatePatternKey": "dative-na-accusative-permission",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dative-zeby-permission",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "infinitive",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "inanimate-enabling",
+          "patterns": [
+            {
+              "candidatePatternKey": "na-accusative-enabling",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "infinitive",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "zeby-enabling",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 24,
+      "canonicalLemma": "unikać",
+      "meanings": [
+        {
+          "candidateMeaningKey": "avoidance",
+          "patterns": [
+            {
+              "candidatePatternKey": "genitive-object",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 25,
+      "canonicalLemma": "wymagać",
+      "meanings": [
+        {
+          "candidateMeaningKey": "person-requires-behavior",
+          "patterns": [
+            {
+              "candidatePatternKey": "genitive-required-content",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "zeby-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "situation-requires-content",
+          "patterns": [
+            {
+              "candidatePatternKey": "genitive-required-content",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "zeby-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 26,
+      "canonicalLemma": "należeć",
+      "meanings": [
+        {
+          "candidateMeaningKey": "ownership",
+          "patterns": [
+            {
+              "candidatePatternKey": "do-genitive-owner",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "organization-membership",
+          "patterns": [
+            {
+              "candidatePatternKey": "do-genitive-organization",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 27,
+      "canonicalLemma": "kłócić się",
+      "meanings": [
+        {
+          "candidateMeaningKey": "interpersonal-quarrelling",
+          "patterns": [
+            {
+              "candidatePatternKey": "z-instrumental-interlocutor",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "o-accusative-topic",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "ze-content-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "interrogative-disputed-content",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 28,
+      "canonicalLemma": "pokazywać",
+      "meanings": [
+        {
+          "candidateMeaningKey": "directing-attention-to-content",
+          "patterns": [
+            {
+              "candidatePatternKey": "dative-recipient-accusative-thing",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "na-accusative-pointing",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "interrogative-dependent-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 29,
+      "canonicalLemma": "radzić sobie",
+      "meanings": [
+        {
+          "candidateMeaningKey": "coping-with-difficulty",
+          "patterns": [
+            {
+              "candidatePatternKey": "z-instrumental-topic",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 30,
+      "canonicalLemma": "kupować",
+      "meanings": [
+        {
+          "candidateMeaningKey": "process-purchase",
+          "patterns": [
+            {
+              "candidatePatternKey": "seller-price-schema",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dative-beneficiary-schema",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dla-beneficiary-schema",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 31,
+      "canonicalLemma": "kupić",
+      "meanings": [
+        {
+          "candidateMeaningKey": "completed-purchase",
+          "patterns": [
+            {
+              "candidatePatternKey": "seller-price-schema",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dative-beneficiary-schema",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dla-beneficiary-schema",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 32,
+      "canonicalLemma": "dawać",
+      "meanings": [
+        {
+          "candidateMeaningKey": "transfer-to-recipient",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-thing-dative-recipient",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 33,
+      "canonicalLemma": "dać",
+      "meanings": [
+        {
+          "candidateMeaningKey": "completed-transfer-to-recipient",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-thing-dative-recipient",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 34,
+      "canonicalLemma": "brać",
+      "meanings": [
+        {
+          "candidateMeaningKey": "literal-taking",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-entity-optional-instrumental-means",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "accusative-entity-za-accusative-gripped-part",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "fixed-participation",
+          "patterns": [
+            {
+              "candidatePatternKey": "w-locative-participation-target",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 35,
+      "canonicalLemma": "wziąć",
+      "meanings": [
+        {
+          "candidateMeaningKey": "bounded-literal-taking",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-entity-optional-instrumental-means",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "accusative-entity-za-accusative-gripped-part",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "fixed-participation",
+          "patterns": [
+            {
+              "candidatePatternKey": "w-locative-participation-target",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 36,
+      "canonicalLemma": "czytać",
+      "meanings": [
+        {
+          "candidateMeaningKey": "reading-written-content",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-content-optional-listener",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "o-locative-topic",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "ze-content-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "interrogative-content-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "direct-speech-content",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 38,
+      "canonicalLemma": "pisać",
+      "meanings": [
+        {
+          "candidateMeaningKey": "text-creation",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-created-text",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "written-correspondence",
+          "patterns": [
+            {
+              "candidatePatternKey": "dative-topic",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dative-ze-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dative-zeby-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dative-interrogative-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dative-direct-speech",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dative-accusative-content",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "do-genitive-topic",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "do-genitive-ze-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "do-genitive-zeby-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "do-genitive-interrogative-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "do-genitive-direct-speech",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "do-genitive-accusative-content",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 39,
+      "canonicalLemma": "napisać",
+      "meanings": [
+        {
+          "candidateMeaningKey": "completed-text-creation",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-created-text",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "completed-written-correspondence",
+          "patterns": [
+            {
+              "candidatePatternKey": "dative-topic",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dative-ze-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dative-zeby-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dative-interrogative-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dative-direct-speech",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dative-accusative-content",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "do-genitive-topic",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "do-genitive-ze-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "do-genitive-zeby-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "do-genitive-interrogative-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "do-genitive-direct-speech",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "do-genitive-accusative-content",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 40,
+      "canonicalLemma": "spotykać się",
+      "meanings": [
+        {
+          "candidateMeaningKey": "recurring-social-meeting",
+          "patterns": [
+            {
+              "candidatePatternKey": "z-instrumental-meeting-partner",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 41,
+      "canonicalLemma": "spotkać się",
+      "meanings": [
+        {
+          "candidateMeaningKey": "completed-social-meeting",
+          "patterns": [
+            {
+              "candidatePatternKey": "z-instrumental-meeting-partner",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 42,
+      "canonicalLemma": "oglądać",
+      "meanings": [
+        {
+          "candidateMeaningKey": "processual-viewing",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-content-optional-presentation-context",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 43,
+      "canonicalLemma": "obejrzeć",
+      "meanings": [
+        {
+          "candidateMeaningKey": "completed-viewing",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-content",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 44,
+      "canonicalLemma": "skończyć",
+      "meanings": [
+        {
+          "candidateMeaningKey": "activity-completion",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-task",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "infinitive",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "definitive-cessation",
+          "patterns": [
+            {
+              "candidatePatternKey": "z-instrumental-ceased-activity",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 45,
+      "canonicalLemma": "chcieć",
+      "meanings": [
+        {
+          "candidateMeaningKey": "desire",
+          "patterns": [
+            {
+              "candidatePatternKey": "genitive-desired-object",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "infinitive-own-action",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "zeby-desired-event",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "polite-request-or-intention",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-requested-object",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "infinitive-intended-action",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "zeby-requested-event",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 46,
+      "canonicalLemma": "robić",
+      "meanings": [
+        {
+          "candidateMeaningKey": "entity-creation",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-created-entity",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "activity-performance",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-activity-noun",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 47,
+      "canonicalLemma": "rozumieć",
+      "meanings": [
+        {
+          "candidateMeaningKey": "content-comprehension",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-content",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "ze-content-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "interrogative-content-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "empathic-person-understanding",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-person",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 48,
+      "canonicalLemma": "mieszkać",
+      "meanings": [
+        {
+          "candidateMeaningKey": "long-term-residence",
+          "patterns": [
+            {
+              "candidatePatternKey": "w-locative-residence-optional-co-resident",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 49,
+      "canonicalLemma": "umówić się",
+      "meanings": [
+        {
+          "candidateMeaningKey": "meeting-arrangement",
+          "patterns": [
+            {
+              "candidatePatternKey": "z-instrumental-partner-na-accusative-event",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "do-genitive-appointment-venue",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "mutual-agreement",
+          "patterns": [
+            {
+              "candidatePatternKey": "na-accusative-agreed-term",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "o-accusative-agreed-subject",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "ze-agreement-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "zeby-agreed-action-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "interrogative-agreement-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 50,
+      "canonicalLemma": "dzwonić",
+      "meanings": [
+        {
+          "candidateMeaningKey": "telephone-contact",
+          "patterns": [
+            {
+              "candidatePatternKey": "do-genitive-call-target",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "na-accusative-call-target",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "ze-reported-content-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "zeby-requested-content-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 51,
+      "canonicalLemma": "powiedzieć",
+      "meanings": [
+        {
+          "candidateMeaningKey": "spoken-communication",
+          "patterns": [
+            {
+              "candidatePatternKey": "dative-accusative-content",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dative-o-locative-topic",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dative-ze-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dative-zeby-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dative-interrogative-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "do-genitive-accusative-content",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "do-genitive-o-locative-topic",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "do-genitive-ze-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "do-genitive-zeby-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "do-genitive-interrogative-clause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "direct-speech-content",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 52,
+      "canonicalLemma": "gotować",
+      "meanings": [
+        {
+          "candidateMeaningKey": "meal-preparation",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-dish-dative-beneficiary",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 53,
+      "canonicalLemma": "rezerwować",
+      "meanings": [
+        {
+          "candidateMeaningKey": "booking-reservation",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-item-dative-beneficiary",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "accusative-item-dla-genitive-beneficiary",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 54,
+      "canonicalLemma": "cieszyć się",
+      "meanings": [
+        {
+          "candidateMeaningKey": "experiencing-joy",
+          "patterns": [
+            {
+              "candidatePatternKey": "z-genitive-realized-cause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "na-accusative-anticipated-occasion",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "instrumental-nominal-cause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "ze-propositional-cause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 55,
+      "canonicalLemma": "martwić się",
+      "meanings": [
+        {
+          "candidateMeaningKey": "worry-concern",
+          "patterns": [
+            {
+              "candidatePatternKey": "instrumental-worry-cause",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "o-accusative-concern-object",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "ze-worry-proposition",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "interrogative-worry-content",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 56,
+      "canonicalLemma": "zgadzać się",
+      "meanings": [
+        {
+          "candidateMeaningKey": "consent",
+          "patterns": [
+            {
+              "candidatePatternKey": "na-accusative-consented-proposal",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "zeby-consented-event",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "infinitive-consented-action",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "direct-speech-consent",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "opinion-agreement",
+          "patterns": [
+            {
+              "candidatePatternKey": "z-instrumental-agreement-partner",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "ze-agreed-proposition",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "direct-speech-agreement",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 57,
+      "canonicalLemma": "zapraszać",
+      "meanings": [
+        {
+          "candidateMeaningKey": "invitation",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-invitee-na-accusative-event",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "accusative-invitee-do-genitive-destination",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 58,
+      "canonicalLemma": "polecać",
+      "meanings": [
+        {
+          "candidateMeaningKey": "directive-instruction",
+          "patterns": [
+            {
+              "candidatePatternKey": "dative-infinitive-instruction",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dative-zeby-instruction",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dative-direct-speech-instruction",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dative-accusative-action-noun",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "recommendation",
+          "patterns": [
+            {
+              "candidatePatternKey": "dative-accusative-recommended-item",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 59,
+      "canonicalLemma": "radzić",
+      "meanings": [
+        {
+          "candidateMeaningKey": "giving-advice",
+          "patterns": [
+            {
+              "candidatePatternKey": "dative-accusative-advice-item",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dative-zeby-advice",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dative-interrogative-advice",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dative-direct-speech-advice",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dative-infinitive-advice",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 60,
+      "canonicalLemma": "pasować",
+      "meanings": [
+        {
+          "candidateMeaningKey": "appearance-harmony",
+          "patterns": [
+            {
+              "candidatePatternKey": "do-genitive-harmony-target",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "physical-fit",
+          "patterns": [
+            {
+              "candidatePatternKey": "do-genitive-fit-target",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "na-accusative-fitted-object",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "typical-appropriateness",
+          "patterns": [
+            {
+              "candidatePatternKey": "dative-evaluator-do-genitive-reference",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "expectation-suitability",
+          "patterns": [
+            {
+              "candidatePatternKey": "dative-expectation-holder",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 61,
+      "canonicalLemma": "móc",
+      "meanings": [
+        {
+          "candidateMeaningKey": "ability-possibility",
+          "patterns": [
+            {
+              "candidatePatternKey": "infinitive-possible-action",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "permission",
+          "patterns": [
+            {
+              "candidatePatternKey": "infinitive-permitted-action",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 62,
+      "canonicalLemma": "musieć",
+      "meanings": [
+        {
+          "candidateMeaningKey": "necessity-obligation",
+          "patterns": [
+            {
+              "candidatePatternKey": "infinitive-required-action",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 63,
+      "canonicalLemma": "wiedzieć",
+      "meanings": [
+        {
+          "candidateMeaningKey": "factual-knowledge",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-known-content",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "o-locative-known-topic",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "ze-known-proposition",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "interrogative-queried-content",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 64,
+      "canonicalLemma": "jeść",
+      "meanings": [
+        {
+          "candidateMeaningKey": "food-consumption",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-food-instrumental-implement",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 65,
+      "canonicalLemma": "pić",
+      "meanings": [
+        {
+          "candidateMeaningKey": "liquid-consumption",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-drink-object",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 66,
+      "canonicalLemma": "kochać",
+      "meanings": [
+        {
+          "candidateMeaningKey": "person-love",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-loved-person",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "idea-or-place-attachment",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-cherished-idea-or-place",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "strong-liking",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-strongly-liked-thing",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "infinitive-strongly-liked-activity",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 67,
+      "canonicalLemma": "przepraszać",
+      "meanings": [
+        {
+          "candidateMeaningKey": "apology",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-person-za-accusative-offence",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "accusative-person-ze-explanation",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 68,
+      "canonicalLemma": "życzyć",
+      "meanings": [
+        {
+          "candidateMeaningKey": "good-wishes",
+          "patterns": [
+            {
+              "candidatePatternKey": "dative-recipient-genitive-wished-thing",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "dative-recipient-zeby-wished-event",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 69,
+      "canonicalLemma": "korzystać",
+      "meanings": [
+        {
+          "candidateMeaningKey": "resource-use",
+          "patterns": [
+            {
+              "candidatePatternKey": "z-genitive-used-resource",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "benefit-from-advantage",
+          "patterns": [
+            {
+              "candidatePatternKey": "z-genitive-source-of-benefit",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "verificationOrder": 70,
+      "canonicalLemma": "uczyć",
+      "meanings": [
+        {
+          "candidateMeaningKey": "teaching-instruction",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-learner-genitive-taught-content",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "accusative-learner-infinitive-taught-skill",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "accusative-learner-ze-taught-proposition",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "accusative-learner-interrogative-taught-content",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            },
+            {
+              "candidatePatternKey": "accusative-person-o-locative-taught-topic",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        },
+        {
+          "candidateMeaningKey": "school-subject-teaching",
+          "patterns": [
+            {
+              "candidatePatternKey": "accusative-learner-genitive-school-subject",
+              "example": {
+                "candidateExampleKey": "primary"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
