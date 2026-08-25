@@ -3225,7 +3225,7 @@
               "priority": "core",
               "register": "neutral"
             },
-            "learnerExplanationEn": "The required thing takes the Genitive; you can optionally add od + Genitive for the person it's required from: wymaga lojalności od pracowników (it requires loyalty from employees)."
+            "learnerExplanationEn": "The required thing takes the Genitive; you can optionally add od + Genitive for the person it's required from: szef wymaga lojalności od pracowników (the boss requires loyalty from employees)."
           },
           {
             "candidatePatternKey": "zeby-clause",
@@ -10192,7 +10192,7 @@
               "priority": "common",
               "register": "neutral"
             },
-            "learnerExplanationEn": "You can also explain yourself with a że clause, and here the person is optional: przepraszam cię, że nie zadzwoniłem (I'm sorry I didn't call you), or simply przepraszam, że nie zadzwoniłem."
+            "learnerExplanationEn": "You can also explain yourself with a że clause, and here the person is optional: przepraszam cię, że nie zadzwoniłem (I apologise to you for not calling), or simply przepraszam, że nie zadzwoniłem."
           }
         ],
         "examples": [
@@ -10608,7 +10608,7 @@
               "priority": "common",
               "register": "neutral"
             },
-            "learnerExplanationEn": "To name a topic you teach about rather than a subject to be mastered, use o + Locative with an Accusative person: nauczycielka uczy dzieci o zwyczajach w innych krajach (the teacher teaches the children about customs in other countries)."
+            "learnerExplanationEn": "To name a topic you teach about rather than a subject to be mastered, use o + Locative with an Accusative person: nauczycielka uczy uczniów o polskich zwyczajach (the teacher teaches the pupils about Polish customs)."
           },
           {
             "candidatePatternKey": "accusative-learner-genitive-school-subject",
