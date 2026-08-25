@@ -22,7 +22,12 @@ import validate_priority8_staging as validator  # noqa: E402
 
 
 STAGING_PATH = ROOT / "editorial/priority-8-phase4-staging.json"
+RULES_PATH = ROOT / "tests/fixtures/priority8_phase4b_authoring_rules.json"
 EMPTY_CONTENT = {"meanings": [], "patterns": [], "examples": []}
+RECONCILIATION_RULE_IDS = {
+    "p8-4b-zapominac-exact-pattern-shapes",
+    "p8-4b-klocic-sie-exact-pattern-shapes",
+}
 CURRENT_AUTHORED = tuple(
     item for batch in validator.AUTHORING_BATCHES[:7] for item in batch
 )
@@ -92,6 +97,36 @@ class Priority8Phase4BProgressTests(unittest.TestCase):
             for collection in ("meanings", "patterns", "examples")
         )
         self.assertEqual((95, 224, 224), totals)
+
+    def test_current_teaching_status_split_and_recognition_only_control(self):
+        patterns = [
+            (item["canonicalLemma"], pattern)
+            for item in self.data["lemmas"]
+            for pattern in item["candidateContent"]["patterns"]
+        ]
+        self.assertEqual(
+            Counter({"active-production": 222, "recognition-only": 2}),
+            Counter(pattern["teachingStatus"] for _, pattern in patterns),
+        )
+        recognition_only = {
+            (lemma, pattern["meaningKeyRef"], pattern["candidatePatternKey"])
+            for lemma, pattern in patterns
+            if pattern["teachingStatus"] == "recognition-only"
+        }
+        self.assertEqual(
+            {
+                ("pozwalać", "inanimate-enabling", "zeby-enabling"),
+                ("wymagać", "situation-requires-content", "zeby-clause"),
+            },
+            recognition_only,
+        )
+
+    def test_current_reconciliation_guard_ids_are_present(self):
+        registry = json.loads(RULES_PATH.read_text(encoding="utf-8"))
+        rule_ids = {rule["ruleId"] for rule in registry["rules"]}
+        self.assertTrue(RECONCILIATION_RULE_IDS <= rule_ids)
+        self.assertEqual(2, registry["registryVersion"])
+        self.assertGreaterEqual(len(registry["rules"]), 74)
 
     def test_no_production_or_canonical_runtime_ids(self):
         for key, value in walk(self.data):

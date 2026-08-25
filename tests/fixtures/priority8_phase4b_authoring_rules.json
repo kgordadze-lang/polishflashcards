@@ -17,6 +17,73 @@
       ]
     },
     {
+      "ruleId": "p8-4b-zapominac-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "zapominać",
+      "verificationOrder": 21,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "recall-failure",
+          "patterns": [
+            [
+              {
+                "type": "case",
+                "case": "genitive",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            [
+              {
+                "type": "case",
+                "case": "accusative",
+                "required": true,
+                "role": "object"
+              }
+            ],
+            [
+              {
+                "type": "preposition-case",
+                "preposition": "o",
+                "case": "locative",
+                "required": true,
+                "role": "topic"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "interrogative",
+                "required": true,
+                "role": "content"
+              }
+            ]
+          ]
+        },
+        {
+          "meaningKey": "failure-to-act",
+          "patterns": [
+            [
+              {
+                "type": "infinitive",
+                "required": true,
+                "role": "content"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
       "ruleId": "p8-4b-unikac-no-infinitive",
       "kind": "forbid-complement-match",
       "lemma": "unikać",
@@ -98,6 +165,54 @@
                 "case": "genitive",
                 "required": false,
                 "role": "target"
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "p8-4b-klocic-sie-exact-pattern-shapes",
+      "kind": "require-exact-pattern-shapes",
+      "lemma": "kłócić się",
+      "verificationOrder": 27,
+      "exactMeaningSet": true,
+      "meaningShapes": [
+        {
+          "meaningKey": "interpersonal-quarrelling",
+          "patterns": [
+            [
+              {
+                "type": "preposition-case",
+                "preposition": "z",
+                "case": "instrumental",
+                "required": true,
+                "role": "interlocutor"
+              }
+            ],
+            [
+              {
+                "type": "preposition-case",
+                "preposition": "o",
+                "case": "accusative",
+                "required": true,
+                "role": "topic"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "ze",
+                "required": true,
+                "role": "content"
+              }
+            ],
+            [
+              {
+                "type": "clause",
+                "clauseKind": "interrogative",
+                "required": true,
+                "role": "content"
               }
             ]
           ]
@@ -2421,7 +2536,7 @@
       "verificationOrder": 61,
       "signature": {
         "type": "clause",
-        "clauseKind": "czy"
+        "clauseKind": "interrogative"
       }
     },
     {

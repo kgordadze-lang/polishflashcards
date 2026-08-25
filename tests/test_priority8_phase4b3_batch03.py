@@ -29,7 +29,7 @@ BATCH_3_DIGEST_FIELDS = (
     "metadataAspectPartner",
 )
 BATCH_3_APPROVED_DIGEST = (
-    "8276864944181e47b573767151e98b556b52037b7920335d32fb510aeee58edb"
+    "313b50ec3fe5a2764c4f477c0f47ceef7733cadade7c7b183350f335bcff7197"
 )
 ALLOWED_REVIEW_STATUSES = {
     "draft", "independently-reviewed", "human-approved",
@@ -338,6 +338,34 @@ class Priority8Phase4B3Batch03Tests(unittest.TestCase):
         self.assertEqual("kłócić się", klocic["canonicalLemma"])
         names = {item["canonicalLemma"] for item in self.data["lemmas"]}
         self.assertNotIn("kłócić", names)
+
+    def test_klocic_sie_interrogative_reconciliation_is_pinned(self):
+        klocic = record(self.data, "kłócić się")
+        pattern = next(
+            item for item in klocic["candidateContent"]["patterns"]
+            if item["candidatePatternKey"]
+            == "interrogative-disputed-content"
+        )
+        self.assertEqual("interpersonal-quarrelling", pattern["meaningKeyRef"])
+        self.assertEqual(
+            [{"type": "clause", "clauseKind": "interrogative",
+              "required": True, "role": "content"}],
+            pattern["complements"],
+        )
+        self.assertEqual(
+            {"recognition": "A2", "production": "A2"}, pattern["cefr"])
+        self.assertEqual("active-production", pattern["teachingStatus"])
+        examples = klocic["candidateContent"]["examples"]
+        self.assertEqual(
+            1,
+            sum(example["patternKeyRef"]
+                == "interrogative-disputed-content"
+                for example in examples),
+        )
+        self.assertFalse(any(
+            item["candidatePatternKey"] == "czy-dependent-clause"
+            for item in klocic["candidateContent"]["patterns"]
+        ))
 
     def test_radzic_sobie_preserves_lexical_sobie(self):
         radzic = record(self.data, "radzić sobie")

@@ -335,3 +335,30 @@ Combined: 141 tests, OK. (One additional dedicated test,
 ```
 PASS: Priority 8 4B3 staging revision 4 is read-only valid (68 lemmas, 21 constrained records, 12 global constraints).
 ```
+
+## Final reconciliation correction note (2026-08-25)
+
+This labelled note preserves the historical Batch 3 account while recording
+the later human-adjudicated Phase 4B reconciliation.
+
+- `kłócić się/czy-dependent-clause` is superseded by
+  `interrogative-disputed-content`; its clause kind is now `interrogative`
+  and the dependent example reference was renamed in lockstep. HD-1 changes
+  the row from B1/none recognition-only to A2/A2 active-production. The
+  existing Polish `czy` sentence remains unchanged.
+- `p8-4b-klocic-sie-exact-pattern-shapes` now protects the complete corrected
+  family while the pre-existing lexical-identity guard continues to protect
+  `się`.
+- P8-SR-001 corrects the person-subject example to `Szef wymaga lojalności od
+  pracowników.` / `The boss requires loyalty from employees.` The replacement
+  remains `editorial-generated`: Layer A found zero matches in 1,665 indexed
+  entities and Layer B found zero broad raw-text hits.
+- Current Batch 3 status is 28 active-production / 2 recognition-only; the two
+  retained rows are `pozwalać/inanimate-enabling/zeby-enabling` and
+  `wymagać/situation-requires-content/zeby-clause`.
+- Pre-reconciliation digest
+  `8276864944181e47b573767151e98b556b52037b7920335d32fb510aeee58edb`
+  is superseded by current digest
+  `313b50ec3fe5a2764c4f477c0f47ceef7733cadade7c7b183350f335bcff7197`.
+
+No source-oriented candidate key or coarse Phase 4B `target` role was changed.

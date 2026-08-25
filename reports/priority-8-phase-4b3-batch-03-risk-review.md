@@ -103,3 +103,16 @@ content digest tests are independent of `phaseStep`/`stagingRevision`, per
 and the new `tests/test_priority8_phase4b3_batch03.py` were changed, exactly
 as the test lifecycle architecture anticipates for a Batch 3 authoring
 commit.
+
+## Final reconciliation correction note (2026-08-25)
+
+The historical `kłócić się` pacing/classification question above is
+resolved by HD-1: the row is now A2/A2 active-production under
+`interrogative-disputed-content` with `clauseKind: interrogative`. The old
+`czy-dependent-clause` key and B1 recognition-only rationale are superseded.
+The new `p8-4b-klocic-sie-exact-pattern-shapes` rule closes the structural
+blind spot. P8-SR-001 also makes the `wymagać` person-subject example explicit
+without changing its shape. Current Batch 3 digest is
+`313b50ec3fe5a2764c4f477c0f47ceef7733cadade7c7b183350f335bcff7197`;
+`8276864944181e47b573767151e98b556b52037b7920335d32fb510aeee58edb`
+is the superseded pre-reconciliation value.

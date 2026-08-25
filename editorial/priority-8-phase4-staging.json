@@ -2488,7 +2488,7 @@
               "forget",
               "lose recall of something"
             ],
-            "internalScope": "Losing recall of people, things, events, or information. Direct Genitive and direct Accusative both realize the remembered/forgotten object; o+Locative names a remembered topic; że and czy content clauses realize forgotten propositional/question content. All are directly verified for this exact sense. Excludes the distinct failure-to-act meaning below and does not use żeby; that schema was explicitly rejected by Phase 3."
+            "internalScope": "Losing recall of people, things, events, or information. Direct Genitive and direct Accusative both realize the remembered/forgotten object; o+Locative names a remembered topic; że clauses realize forgotten propositional content and interrogative-dependent clauses realize forgotten question content (a czy sentence is one realization of that clause type, never a separate clause kind). All are directly verified for this exact sense. Excludes the distinct failure-to-act meaning below and does not use żeby; that schema was explicitly rejected by Phase 3."
           },
           {
             "candidateMeaningKey": "failure-to-act",
@@ -2594,26 +2594,27 @@
             "learnerExplanationEn": "Use że to introduce what you forget: zapominam, że mam spotkanie (I forget that I have a meeting)."
           },
           {
-            "candidatePatternKey": "czy-dependent-clause",
+            "candidatePatternKey": "interrogative-forgotten-content",
             "meaningKeyRef": "recall-failure",
             "relationType": "lexical-frame",
             "complements": [
               {
                 "type": "clause",
-                "clauseKind": "czy",
+                "clauseKind": "interrogative",
                 "required": true,
                 "role": "content"
               }
             ],
             "cefr": {
-              "recognition": "B1"
+              "recognition": "A2",
+              "production": "A2"
             },
-            "teachingStatus": "recognition-only",
+            "teachingStatus": "active-production",
             "usage": {
               "priority": "common",
               "register": "neutral"
             },
-            "learnerExplanationEn": "Use czy to introduce a forgotten yes/no question: zapominam, czy zamknąłem drzwi (I forget whether I locked the door)."
+            "learnerExplanationEn": "Use a dependent question clause for a forgotten question. For a yes/no question that word is czy: zapominam, czy zamknąłem drzwi (I forget whether I locked the door); question words such as gdzie or kiedy work the same way."
           },
           {
             "candidatePatternKey": "infinitive-failure",
@@ -2682,7 +2683,7 @@
           {
             "candidateExampleKey": "primary",
             "meaningKeyRef": "recall-failure",
-            "patternKeyRef": "czy-dependent-clause",
+            "patternKeyRef": "interrogative-forgotten-content",
             "pl": "Zapominam, czy zamknąłem drzwi.",
             "en": "I forget whether I locked the door.",
             "candidateOrigin": {
@@ -3321,8 +3322,8 @@
             "candidateExampleKey": "primary",
             "meaningKeyRef": "person-requires-behavior",
             "patternKeyRef": "genitive-required-content",
-            "pl": "Wymaga lojalności od pracowników.",
-            "en": "It requires loyalty from employees.",
+            "pl": "Szef wymaga lojalności od pracowników.",
+            "en": "The boss requires loyalty from employees.",
             "candidateOrigin": {
               "kind": "editorial-generated"
             }
@@ -3567,26 +3568,27 @@
             "learnerExplanationEn": "Use że to introduce the topic as a clause: kłócimy się, że nikt nie sprząta (we argue that nobody cleans up)."
           },
           {
-            "candidatePatternKey": "czy-dependent-clause",
+            "candidatePatternKey": "interrogative-disputed-content",
             "meaningKeyRef": "interpersonal-quarrelling",
             "relationType": "lexical-frame",
             "complements": [
               {
                 "type": "clause",
-                "clauseKind": "czy",
+                "clauseKind": "interrogative",
                 "required": true,
                 "role": "content"
               }
             ],
             "cefr": {
-              "recognition": "B1"
+              "recognition": "A2",
+              "production": "A2"
             },
-            "teachingStatus": "recognition-only",
+            "teachingStatus": "active-production",
             "usage": {
               "priority": "common",
               "register": "neutral"
             },
-            "learnerExplanationEn": "Use czy to introduce an undecided yes/no topic: kłócimy się, czy powinniśmy wyjechać (we're arguing about whether we should leave)."
+            "learnerExplanationEn": "Use a dependent question clause when the disputed point is an open question. For a yes/no question that word is czy: kłócimy się, czy powinniśmy wyjechać (we're arguing about whether we should leave); question words such as gdzie or kiedy work the same way."
           }
         ],
         "examples": [
@@ -3623,7 +3625,7 @@
           {
             "candidateExampleKey": "primary",
             "meaningKeyRef": "interpersonal-quarrelling",
-            "patternKeyRef": "czy-dependent-clause",
+            "patternKeyRef": "interrogative-disputed-content",
             "pl": "Kłócimy się, czy powinniśmy wyjechać.",
             "en": "We're arguing about whether we should leave.",
             "candidateOrigin": {
@@ -8936,7 +8938,7 @@
               "priority": "common",
               "register": "neutral"
             },
-            "learnerExplanationEn": "The Accusative names the ordered action as a noun (usually a gerund/action noun), not a recommended item: trener poleca zawodnikom rozgrzewkę (the coach orders the players to warm up)."
+            "learnerExplanationEn": "The Accusative names the ordered action as a noun (usually a gerund/action noun), not a recommended item: trener poleca zawodnikom rozgrzewkę (the coach instructs the players to warm up)."
           },
           {
             "candidatePatternKey": "dative-accusative-recommended-item",
@@ -9004,7 +9006,7 @@
             "meaningKeyRef": "directive-instruction",
             "patternKeyRef": "dative-accusative-action-noun",
             "pl": "Trener poleca zawodnikom rozgrzewkę.",
-            "en": "The coach orders the players to warm up.",
+            "en": "The coach instructs the players to warm up.",
             "candidateOrigin": {
               "kind": "editorial-generated"
             }
@@ -9620,7 +9622,7 @@
               "priority": "core",
               "register": "neutral"
             },
-            "learnerExplanationEn": "Musieć always takes a bare infinitive: muszę iść do lekarza (I have to go to the doctor). Polish uses this one construction whether or not the sentence names who has to act, so impersonal sentences add nothing new to learn."
+            "learnerExplanationEn": "Musieć always takes a bare infinitive: muszę iść do lekarza (I have to go to the doctor). This is the only construction it uses."
           }
         ],
         "examples": [
@@ -9852,7 +9854,7 @@
               "priority": "core",
               "register": "neutral"
             },
-            "learnerExplanationEn": "Both parts are optional: put the food in the Accusative and the implement in the Instrumental — dziecko je zupę łyżką (the child eats the soup with a spoon) — or just say je (is eating). After a negated verb the object switches to the Genitive (nie je zupy); that is the general Polish rule for negated objects, not a separate pattern of jeść."
+            "learnerExplanationEn": "Both parts are optional: the food takes the Accusative and the implement the Instrumental — dziecko je zupę łyżką (the child eats the soup with a spoon) — or just je (is eating). Jeść has no Genitive object of its own."
           }
         ],
         "examples": [
@@ -9965,8 +9967,8 @@
           {
             "candidateMeaningKey": "strong-liking",
             "glossesEn": [
-              "love (doing something)",
-              "really like"
+              "really like",
+              "love (a thing or an activity)"
             ],
             "internalScope": "Strong liking of a thing or of doing something (WSJP sense 3) — everyday preference semantics, close to English 'I love chocolate', rather than emotional love or attachment. This is the only kochać meaning that also takes an infinitive; the Accusative and the infinitive are alternatives, never cumulative."
           }
@@ -10209,7 +10211,7 @@
             "meaningKeyRef": "apology",
             "patternKeyRef": "accusative-person-ze-explanation",
             "pl": "Przepraszam cię, że nie zadzwoniłem wczoraj.",
-            "en": "I'm sorry I didn't call you yesterday.",
+            "en": "I apologise to you for not calling yesterday.",
             "candidateOrigin": {
               "kind": "editorial-generated"
             }
@@ -10298,7 +10300,7 @@
               "priority": "common",
               "register": "neutral"
             },
-            "learnerExplanationEn": "To wish for something to happen, keep the Dative person and use a żeby clause instead of the Genitive: życzę ci, żebyś zdał egzamin (I hope you pass the exam). Use one or the other, not both."
+            "learnerExplanationEn": "To wish for something to happen, keep the Dative person and use a żeby clause instead of the Genitive: życzę ci, żebyś zdał egzamin (literally 'I wish for you that you pass the exam'; English usually says I hope you pass). Use one or the other, not both."
           }
         ],
         "examples": [
@@ -10635,7 +10637,7 @@
               "priority": "core",
               "register": "neutral"
             },
-            "learnerExplanationEn": "For teaching a school subject, the subject takes the Genitive and naming the pupils is optional: pani Nowak uczy dzieci matematyki, or simply uczy matematyki."
+            "learnerExplanationEn": "For teaching a school subject, the subject takes the Genitive and naming the pupils is optional: pani Nowak uczy moją córkę matematyki, or simply uczy matematyki."
           }
         ],
         "examples": [
@@ -10683,8 +10685,8 @@
             "candidateExampleKey": "primary",
             "meaningKeyRef": "teaching-instruction",
             "patternKeyRef": "accusative-person-o-locative-taught-topic",
-            "pl": "Nauczycielka uczy dzieci o zwyczajach w innych krajach.",
-            "en": "The teacher teaches the children about customs in other countries.",
+            "pl": "Nauczycielka uczy uczniów o polskich zwyczajach.",
+            "en": "The teacher teaches the pupils about Polish customs.",
             "candidateOrigin": {
               "kind": "editorial-generated"
             }
@@ -10693,8 +10695,8 @@
             "candidateExampleKey": "primary",
             "meaningKeyRef": "school-subject-teaching",
             "patternKeyRef": "accusative-learner-genitive-school-subject",
-            "pl": "Pani Nowak uczy dzieci matematyki.",
-            "en": "Mrs Nowak teaches the children maths.",
+            "pl": "Pani Nowak uczy moją córkę matematyki.",
+            "en": "Mrs Nowak teaches my daughter maths.",
             "candidateOrigin": {
               "kind": "editorial-generated"
             }

@@ -303,3 +303,30 @@ Combined: 124 tests, OK.
 ```
 PASS: Priority 8 4B2 staging revision 3 is read-only valid (68 lemmas, 21 constrained records, 12 global constraints).
 ```
+
+## Final reconciliation correction note (2026-08-25)
+
+This note records the later, human-adjudicated Phase 4B reconciliation without
+rewriting the historical Batch 2 authoring account above. The earlier
+`zapominać/czy-dependent-clause`, `clauseKind: czy`, B1 recognition-only
+classification, and related digest claims are superseded for the current live
+Phase 4B state.
+
+- Pattern key: `czy-dependent-clause` →
+  `interrogative-forgotten-content`; the single example `patternKeyRef` changed
+  with it.
+- Clause kind: `czy` → `interrogative`; the unchanged Polish `czy` sentence
+  remains an authorized realization of that dependent-question type.
+- CEFR/status: B1/none recognition-only → A2/A2 active-production, resolving
+  the historical pacing question through HD-1. Current Batch 2 status is 28
+  active-production / 0 recognition-only.
+- The exact accepted learner explanation and `internalScope` correction are now
+  live, and `p8-4b-zapominac-exact-pattern-shapes` protects the corrected shape.
+- Immediately pre-reconciliation Batch 2 digest
+  `dd55047bbd7db3d28224d6366015c7353479206e4ffba64cf8b6397efb8d8db8`
+  is superseded by current digest
+  `87c07469634cc039e68e2f52a5f306a05ca7753e1e4d328d58542c4b549e2f82`.
+
+The Polish example did not change, so its existing `editorial-generated`
+provenance remains valid. This is a reconciliation correction within 4B7
+revision 8, not a rewrite of the Batch 2 historical boundary.

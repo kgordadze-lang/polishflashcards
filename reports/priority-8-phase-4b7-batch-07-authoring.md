@@ -378,3 +378,36 @@ deterministic Batch 7 digest, and every targeted per-lemma invariant listed in
 lifecycle state: not `phaseStep`, not `stagingRevision`, not the future-empty
 count, not review status beyond the allowed lifecycle vocabulary, and not the
 registry total.
+
+## Final reconciliation correction note (2026-08-25)
+
+The final Phase 4B reconciliation preserves the historical Batch 7 account
+above and supersedes only the following live editorial fields:
+
+- `musieć`: learner explanation shortened to the accepted construction-focused
+  wording.
+- `jeść`: learner explanation returns negation to sentence-grammar ownership
+  and retains the no-lexical-Genitive boundary.
+- `kochać/strong-liking`: glosses are now `really like` and
+  `love (a thing or an activity)`.
+- `przepraszać/accusative-person-ze-explanation`: English is now `I apologise
+  to you for not calling yesterday.`; Polish is unchanged.
+- `życzyć/dative-recipient-zeby-wished-event`: the accepted literal-gloss
+  explanation now makes the required Dative visible; the example pair is
+  unchanged.
+- `uczyć/accusative-person-o-locative-taught-topic`: example is now
+  `Nauczycielka uczy uczniów o polskich zwyczajach.` / `The teacher teaches
+  the pupils about Polish customs.`
+- `uczyć/accusative-learner-genitive-school-subject`: example is now
+  `Pani Nowak uczy moją córkę matematyki.` / `Mrs Nowak teaches my daughter
+  maths.`, with the inline learner gloss updated in lockstep.
+
+The two new Polish `uczyć` sentences remain `editorial-generated`: Layer A
+found zero matches in 1,665 indexed entities and Layer B found zero broad
+raw-text hits. Pre-reconciliation Batch 7 digest
+`88aed6dc4b972ddc3ce7ea18b5e987d95ae1f38d5eb5a742a45be7332c372672`
+is superseded by current digest
+`a2d34c616d416f6a36f2346a2c4190522f1102087b3745ab0605be29c5430d9e`.
+The B7 matrix SHA remains unchanged. The global guard registry is now 74
+rules solely because the reconciliation adds two early-batch shape guards;
+the 15 Batch 7 rule IDs remain unchanged.

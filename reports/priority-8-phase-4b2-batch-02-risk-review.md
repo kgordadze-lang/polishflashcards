@@ -99,3 +99,17 @@ pass unchanged because its approved-content digest test is independent of
 and the new `tests/test_priority8_phase4b2_batch02.py` were changed, exactly
 as the test lifecycle architecture anticipates for a Batch 2 authoring
 commit.
+
+## Final reconciliation correction note (2026-08-25)
+
+The residual question recorded above for `zapominać` is resolved by human
+decision HD-1. The row is now
+`interrogative-forgotten-content`, uses `clauseKind: interrogative`, and is
+A2/A2 active-production. Its historical `czy-dependent-clause` key and B1
+recognition-only rationale are superseded. The exact-shape rule
+`p8-4b-zapominac-exact-pattern-shapes` now rejects the obsolete `czy` shape
+and unauthorized clause-family alternatives. The current Batch 2 digest is
+`87c07469634cc039e68e2f52a5f306a05ca7753e1e4d328d58542c4b549e2f82`;
+the immediately pre-reconciliation value
+`dd55047bbd7db3d28224d6366015c7353479206e4ffba64cf8b6397efb8d8db8`
+is retained only as superseded historical evidence.

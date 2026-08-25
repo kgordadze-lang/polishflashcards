@@ -366,3 +366,23 @@ review, §19): **243 tests total (219 pre-Batch-6 baseline + 24 new
 `test_priority8_phase4b6_batch06.py`), all passing.**
 
 `git diff --check` clean. Exactly six changed paths (see completion report).
+
+## Final reconciliation correction note (2026-08-25)
+
+The original Batch 6 context above remains historical. The final Phase 4B
+reconciliation applies two current corrections:
+
+- `polecać/dative-accusative-action-noun` keeps
+  `Trener poleca zawodnikom rozgrzewkę.` and its directive A4 shape, while the
+  English and matching inline gloss now read `The coach instructs the players
+  to warm up.` The older `orders` wording is superseded.
+- `p8-4b-moc-no-question-clause` now forbids the real question-complement
+  signature `clauseKind: interrogative`, superseding its obsolete
+  surface-specific `clauseKind: czy` signature. Its rule ID is unchanged.
+
+Pre-reconciliation Batch 6 digest
+`cff207b6e728fb203ba05a9ba94915432957be76101b3bd6a0f65137cdda98d5`
+is superseded by current digest
+`ec9148072c58879334e1eeeae1b20f62259ceecf56ea18500f0d0fb4666e610a`.
+The Batch 6 structural shapes, 21 Batch 6 rule IDs, CEFR/status values, frozen
+matrix, and Polish examples are unchanged by this note.

@@ -29,7 +29,7 @@ BATCH_2_DIGEST_FIELDS = (
     "metadataAspectPartner",
 )
 BATCH_2_APPROVED_DIGEST = (
-    "dd55047bbd7db3d28224d6366015c7353479206e4ffba64cf8b6397efb8d8db8"
+    "87c07469634cc039e68e2f52a5f306a05ca7753e1e4d328d58542c4b549e2f82"
 )
 ALLOWED_REVIEW_STATUSES = {
     "draft", "independently-reviewed", "human-approved",
@@ -233,6 +233,34 @@ class Priority8Phase4B2Batch02Tests(unittest.TestCase):
         )
         names = {item["canonicalLemma"] for item in self.data["lemmas"]}
         self.assertNotIn("zaczynać", names)
+
+    def test_zapominac_interrogative_reconciliation_is_pinned(self):
+        zapominac = record(self.data, "zapominać")
+        pattern = next(
+            item for item in zapominac["candidateContent"]["patterns"]
+            if item["candidatePatternKey"]
+            == "interrogative-forgotten-content"
+        )
+        self.assertEqual("recall-failure", pattern["meaningKeyRef"])
+        self.assertEqual(
+            [{"type": "clause", "clauseKind": "interrogative",
+              "required": True, "role": "content"}],
+            pattern["complements"],
+        )
+        self.assertEqual(
+            {"recognition": "A2", "production": "A2"}, pattern["cefr"])
+        self.assertEqual("active-production", pattern["teachingStatus"])
+        examples = zapominac["candidateContent"]["examples"]
+        self.assertEqual(
+            1,
+            sum(example["patternKeyRef"]
+                == "interrogative-forgotten-content"
+                for example in examples),
+        )
+        self.assertFalse(any(
+            item["candidatePatternKey"] == "czy-dependent-clause"
+            for item in zapominac["candidateContent"]["patterns"]
+        ))
 
     def test_applicable_binding_constraints_unchanged(self):
         expected = {

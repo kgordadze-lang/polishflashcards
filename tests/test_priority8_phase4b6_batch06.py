@@ -35,7 +35,7 @@ BATCH_6_DIGEST_FIELDS = (
     "requiredLexicalItems",
 )
 BATCH_6_APPROVED_DIGEST = (
-    "cff207b6e728fb203ba05a9ba94915432957be76101b3bd6a0f65137cdda98d5"
+    "ec9148072c58879334e1eeeae1b20f62259ceecf56ea18500f0d0fb4666e610a"
 )
 ALLOWED_REVIEW_STATUSES = {
     "draft", "independently-reviewed", "human-approved",
@@ -581,6 +581,15 @@ class Priority8Phase4B6Batch06Tests(unittest.TestCase):
             if c["type"] == "clause"
         }
         self.assertEqual(set(), clause_kinds)
+        registry = json.loads(RULES_PATH.read_text(encoding="utf-8"))
+        rule = next(
+            item for item in registry["rules"]
+            if item["ruleId"] == "p8-4b-moc-no-question-clause"
+        )
+        self.assertEqual(
+            {"type": "clause", "clauseKind": "interrogative"},
+            rule["signature"],
+        )
 
     def test_batch_6_live_guard_rules_are_present(self):
         registry = json.loads(RULES_PATH.read_text(encoding="utf-8"))
