@@ -120,7 +120,7 @@ A2/A2.
 **Recognition-only decisions: none.** No Batch 7 row is marginal enough to
 withhold production, and `recognition-only` must never be used to park an
 authoring concern. All 23 rows are `active-production`. Every row is
-`register: neutral`; 8 rows are `priority: core` and 15 are `priority: common`.
+`register: neutral`; 10 rows are `priority: core` and 13 are `priority: common`.
 
 ## 5. Examples, lexical identity and provenance
 
