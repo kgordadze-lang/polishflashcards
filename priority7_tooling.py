@@ -3668,6 +3668,9 @@ def _derive_runtime_from_frozen(
                     "learnerExplanationEn": wording["learnerExplanationEn"],
                     "activityEligibility": sorted(policy["activityEligibility"]),
                 }
+                if "requiredLexicalItems" in structure:
+                    runtime_pattern["requiredLexicalItems"] = copy.deepcopy(
+                        structure["requiredLexicalItems"])
                 for complement, override in zip(
                         structure["complements"], wording["questionOverrides"]):
                     runtime_complement = copy.deepcopy(complement)
