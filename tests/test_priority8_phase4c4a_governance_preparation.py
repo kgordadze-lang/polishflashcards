@@ -8,8 +8,10 @@ The suite proves three separable things and keeps them separable.
 2. *Truthfulness of the constructed governance*: every evidence field is
    grounded in a committed artifact, every actor is nonhuman, and nothing claims
    authority nobody granted.
-3. *The absence that matters*: no product approval, no approved review state, no
-   release authorization, no freeze, no runtime exposure.
+3. *The historical absence that matters*: at the immutable Phase 4C4A endpoint,
+   no product approval, no approved review state, no release authorization, no
+   freeze, and no runtime exposure existed.  Later release-governance phases may
+   advance the live editorial records without rewriting this checkpoint.
 
 The adversarial class is deliberately large, because this phase is the one that
 could most easily manufacture authority by accident.
@@ -41,6 +43,7 @@ STABLE_MAP_PATH = "editorial/priority-8-phase4c-stable-id-map.json"
 FREEZE_PATH = "editorial/priority-8-phase4-candidate-key-freeze.json"
 
 BASELINE_COMMIT = "816176f591909d505549e2818d6b8d6d75c67f25"
+PHASE4C4A_COMMIT = "4e81202591cf2c8609983346e3c24fe2c185a8b8"
 
 CANDIDATES_SHA256 = (
     "c54e611da32ad61c4c020545594ec1f33c0bcea6937f31c9e7a31d29bc5fa7e9")
@@ -91,6 +94,11 @@ class Phase4C4ABase(unittest.TestCase):
         cls.candidates = read_json(CANDIDATES_PATH)
         cls.baseline_corpus = git_json(CORPUS_PATH)
         cls.baseline_context = git_json(CONTEXT_PATH)
+        cls.phase4c4a_corpus = git_json(CORPUS_PATH, PHASE4C4A_COMMIT)
+        cls.phase4c4a_context_document = git_json(
+            CONTEXT_PATH, PHASE4C4A_COMMIT)
+        cls.phase4c4a_manifest = git_json(MANIFEST_PATH, PHASE4C4A_COMMIT)
+        cls.phase4c4a_preview = git_json(PREVIEW_PATH, PHASE4C4A_COMMIT)
         cls.new_lemma_ids = {
             lemma["id"]
             for lemma in cls.candidates["canonicalCandidates"]["lemmas"]}
@@ -99,6 +107,13 @@ class Phase4C4ABase(unittest.TestCase):
             if lemma["id"] in cls.new_lemma_ids]
         cls.new_patterns = [
             pattern for lemma, _meaning, pattern in iter_patterns(cls.corpus)
+            if lemma["id"] in cls.new_lemma_ids]
+        cls.phase4c4a_new_lemmas = [
+            lemma for lemma in cls.phase4c4a_corpus["lemmas"]
+            if lemma["id"] in cls.new_lemma_ids]
+        cls.phase4c4a_new_patterns = [
+            pattern for lemma, _meaning, pattern in iter_patterns(
+                cls.phase4c4a_corpus)
             if lemma["id"] in cls.new_lemma_ids]
         cls.source_register = bridge.load_source_register()
 
@@ -121,6 +136,40 @@ class Phase4C4ABase(unittest.TestCase):
         self.assertIn(
             code, {issue.code for issue in issues},
             f"expected {code}; got {sorted({i.code for i in issues})}")
+
+    def assert_phase4c4a_preapproval_snapshot(
+            self, corpus=None, context_document=None, manifest=None):
+        """Assert the exact state at the immutable Phase 4C4A checkpoint."""
+        corpus = self.phase4c4a_corpus if corpus is None else corpus
+        context_document = (self.phase4c4a_context_document
+                            if context_document is None else context_document)
+        manifest = self.phase4c4a_manifest if manifest is None else manifest
+        patterns = [
+            pattern for lemma, _meaning, pattern in iter_patterns(corpus)
+            if lemma["id"] in self.new_lemma_ids]
+        self.assertEqual(224, len(patterns))
+        self.assertEqual({"editorial-reviewed"},
+                         {pattern["reviewState"] for pattern in patterns})
+        self.assertEqual(0, sum(
+            event["kind"] == "product-approval"
+            for pattern in patterns for event in pattern["reviewEvents"]))
+        self.assertTrue(all(
+            [event["kind"] for event in pattern["reviewEvents"]] == [
+                "reference-verification", "editorial-review"]
+            for pattern in patterns))
+        self.assertTrue(all(
+            "reviewerRef" not in event and "actorRef" in event
+            for pattern in patterns for event in pattern["reviewEvents"]))
+        self.assertTrue(all(
+            example["audioEligible"] is False
+            for pattern in patterns for example in pattern["examples"]))
+        self.assertTrue(all(
+            pattern["activityEligibility"] == [] for pattern in patterns))
+        self.assertEqual({}, context_document["allocationRegistry"])
+        self.assertIs(False, manifest["productApproved"])
+        self.assertIs(False, manifest["releaseAuthorized"])
+        self.assertEqual("awaiting-human-product-review",
+                         manifest["reviewState"])
 
 
 class PackagingFidelity(Phase4C4ABase):
@@ -442,10 +491,12 @@ class ActorRegistry(Phase4C4ABase):
                         event.get("corroboratingActorRefs", []))
 
     def test_the_source_and_registry_facts_are_otherwise_untouched(self):
-        for field in ("sourceRegistry", "allocationRegistry", "contextStatus",
+        for field in ("sourceRegistry", "contextStatus",
                       "pronunciationPlaybackAuthorized"):
             self.assertEqual(
                 self.baseline_context[field], self.context_document[field])
+        self.assertEqual(
+            {}, self.phase4c4a_context_document["allocationRegistry"])
 
     def test_the_context_notice_is_appended_not_rewritten(self):
         self.assertTrue(
@@ -455,14 +506,44 @@ class ActorRegistry(Phase4C4ABase):
 
 class ReviewEventChain(Phase4C4ABase):
     def test_every_pattern_has_exactly_the_two_nonhuman_stages(self):
-        for pattern in self.new_patterns:
-            kinds = [event["kind"] for event in pattern["reviewEvents"]]
-            self.assertEqual(
-                ["reference-verification", "editorial-review"], kinds)
+        self.assert_phase4c4a_preapproval_snapshot()
+
+        def first_phase4c4a_pattern(corpus):
+            return next(
+                pattern for lemma, _meaning, pattern in iter_patterns(corpus)
+                if lemma["id"] in self.new_lemma_ids)
+
+        product_approval = copy.deepcopy(self.phase4c4a_corpus)
+        first_phase4c4a_pattern(product_approval)["reviewEvents"].append(
+            {"kind": "product-approval"})
+        with self.assertRaises(AssertionError):
+            self.assert_phase4c4a_preapproval_snapshot(product_approval)
+
+        approved = copy.deepcopy(self.phase4c4a_corpus)
+        first_phase4c4a_pattern(approved)["reviewState"] = "approved"
+        with self.assertRaises(AssertionError):
+            self.assert_phase4c4a_preapproval_snapshot(approved)
+
+        allocated_context = copy.deepcopy(self.phase4c4a_context_document)
+        allocated_context["allocationRegistry"] = {"vp-p-example": {}}
+        with self.assertRaises(AssertionError):
+            self.assert_phase4c4a_preapproval_snapshot(
+                context_document=allocated_context)
+
+        third_event = copy.deepcopy(self.phase4c4a_corpus)
+        first_phase4c4a_pattern(third_event)["reviewEvents"].append(
+            {"kind": "editorial-review"})
+        with self.assertRaises(AssertionError):
+            self.assert_phase4c4a_preapproval_snapshot(third_event)
+
+        audio_enabled = copy.deepcopy(self.phase4c4a_corpus)
+        first_phase4c4a_pattern(audio_enabled)["examples"][0]["audioEligible"] = True
+        with self.assertRaises(AssertionError):
+            self.assert_phase4c4a_preapproval_snapshot(audio_enabled)
 
     def test_every_event_is_nonhuman(self):
         for pattern in self.new_patterns:
-            for event in pattern["reviewEvents"]:
+            for event in pattern["reviewEvents"][:2]:
                 self.assertNotIn("reviewerRef", event)
                 self.assertIn("actorRef", event)
 
@@ -478,7 +559,7 @@ class ReviewEventChain(Phase4C4ABase):
 
     def test_review_dates_are_grounded_and_nondecreasing(self):
         for pattern in self.new_patterns:
-            reference, editorial = pattern["reviewEvents"]
+            reference, editorial = pattern["reviewEvents"][:2]
             self.assertIn(reference["reviewedAt"], {"2026-08-20", "2026-08-21"})
             self.assertEqual(
                 bridge.PHASE_4B_RECONCILIATION_DATE, editorial["reviewedAt"])
@@ -513,7 +594,7 @@ class ReviewEventChain(Phase4C4ABase):
 
 class ReviewStateAndAbsentAuthority(Phase4C4ABase):
     def test_every_new_pattern_is_editorial_reviewed(self):
-        states = {p["reviewState"] for p in self.new_patterns}
+        states = {p["reviewState"] for p in self.phase4c4a_new_patterns}
         self.assertEqual({"editorial-reviewed"}, states)
 
     def test_review_state_is_derived_not_asserted(self):
@@ -531,35 +612,38 @@ class ReviewStateAndAbsentAuthority(Phase4C4ABase):
             self.assertEqual(derived, pattern["reviewState"])
 
     def test_there_are_zero_product_approval_events(self):
-        for pattern in self.new_patterns:
+        for pattern in self.phase4c4a_new_patterns:
             for event in pattern["reviewEvents"]:
                 self.assertNotEqual("product-approval", event["kind"])
 
     def test_no_new_pattern_is_approved(self):
-        for pattern in self.new_patterns:
+        for pattern in self.phase4c4a_new_patterns:
             self.assertNotEqual("approved", pattern["reviewState"])
 
     def test_the_released_forty_five_remain_the_only_approved_patterns(self):
         approved = [
-            pattern["id"] for _l, _m, pattern in iter_patterns(self.corpus)
+            pattern["id"] for _l, _m, pattern in iter_patterns(
+                self.phase4c4a_corpus)
             if pattern["reviewState"] == "approved"]
         self.assertEqual(45, len(approved))
-        self.assertFalse(set(approved) & {p["id"] for p in self.new_patterns})
+        self.assertFalse(
+            set(approved) & {p["id"] for p in self.phase4c4a_new_patterns})
 
     def test_the_manifest_records_that_nothing_is_approved(self):
-        self.assertIs(False, self.manifest["productApproved"])
-        self.assertIs(False, self.manifest["releaseAuthorized"])
+        self.assertIs(False, self.phase4c4a_manifest["productApproved"])
+        self.assertIs(False, self.phase4c4a_manifest["releaseAuthorized"])
         self.assertEqual(
-            "awaiting-human-product-review", self.manifest["reviewState"])
+            "awaiting-human-product-review",
+            self.phase4c4a_manifest["reviewState"])
 
     def test_no_release_authorization_artifact_exists(self):
-        for pattern in self.new_patterns:
+        for pattern in self.phase4c4a_new_patterns:
             self.assertNotIn("releaseAuthorization", pattern)
-        self.assertNotIn("releaseAuthorization", self.corpus)
-        self.assertNotIn("allocations", self.corpus)
+        self.assertNotIn("releaseAuthorization", self.phase4c4a_corpus)
+        self.assertNotIn("allocations", self.phase4c4a_corpus)
 
     def test_the_allocation_registry_gained_nothing(self):
-        self.assertEqual({}, self.context_document["allocationRegistry"])
+        self.assertEqual({}, self.phase4c4a_context_document["allocationRegistry"])
 
     def test_no_tombstone_exists(self):
         self.assertEqual([], read_json(STABLE_MAP_PATH)["tombstones"])
@@ -567,7 +651,7 @@ class ReviewStateAndAbsentAuthority(Phase4C4ABase):
     def test_no_frozen_snapshot_was_produced(self):
         for name in ("identity", "structure", "wording", "policy",
                      "tombstones", "reviewHistory", "runtimeProjection"):
-            self.assertNotIn(name, self.corpus)
+            self.assertNotIn(name, self.phase4c4a_corpus)
 
 
 class EligibilityAndAudioBoundary(Phase4C4ABase):
@@ -578,7 +662,7 @@ class EligibilityAndAudioBoundary(Phase4C4ABase):
     def test_audio_is_disabled_pre_approval_on_all_new_examples(self):
         values = [
             example["audioEligible"]
-            for pattern in self.new_patterns
+            for pattern in self.phase4c4a_new_patterns
             for example in pattern["examples"]]
         self.assertEqual(224, len(values))
         self.assertTrue(all(value is False for value in values))
@@ -586,13 +670,14 @@ class EligibilityAndAudioBoundary(Phase4C4ABase):
     def test_enabling_audio_before_approval_is_refused_by_the_validator(self):
         # This is the rule that forces the pre-approval representation, and it
         # is asserted rather than assumed.
-        corpus = copy.deepcopy(self.corpus)
+        corpus = copy.deepcopy(self.phase4c4a_corpus)
         for lemma, _meaning, pattern in iter_patterns(corpus):
             if lemma["id"] not in self.new_lemma_ids:
                 continue
             pattern["examples"][0]["audioEligible"] = True
             break
-        self.assert_rejected(corpus, "AUDIO_NOT_AUTHORIZED")
+        self.assert_rejected(
+            corpus, "AUDIO_NOT_AUTHORIZED", self.phase4c4a_context_document)
 
     def test_the_released_forty_five_keep_their_authorized_audio(self):
         for lemma, _meaning, pattern in iter_patterns(self.corpus):
@@ -628,10 +713,10 @@ class EditorialValidation(Phase4C4ABase):
 
     def test_the_packaging_is_deterministic(self):
         rebuilt = bridge.build_corpus(
-            read_json(CANDIDATES_PATH), read_json(CORPUS_PATH),
+            read_json(CANDIDATES_PATH), self.phase4c4a_corpus,
             bridge.load_source_register())
         self.assertEqual(
-            bridge._canonical_bytes(self.corpus),
+            bridge._canonical_bytes(self.phase4c4a_corpus),
             bridge._canonical_bytes(rebuilt))
 
     def test_rebuilding_from_the_baseline_reproduces_the_corpus(self):
@@ -639,32 +724,36 @@ class EditorialValidation(Phase4C4ABase):
             read_json(CANDIDATES_PATH), self.baseline_corpus,
             bridge.load_source_register())
         self.assertEqual(
-            bridge._canonical_bytes(self.corpus),
+            bridge._canonical_bytes(self.phase4c4a_corpus),
             bridge._canonical_bytes(rebuilt))
 
 
 class HumanReviewPackage(Phase4C4ABase):
     def test_the_manifest_covers_every_one_of_the_224_patterns(self):
         self.assertEqual(
-            {p["id"] for p in self.new_patterns},
-            {row["patternId"] for row in self.manifest["rows"]})
+            {p["id"] for p in self.phase4c4a_new_patterns},
+            {row["patternId"] for row in self.phase4c4a_manifest["rows"]})
         self.assertEqual(
             {"lemmas": 68, "meanings": 95, "patterns": 224, "examples": 224},
-            self.manifest["reviewSet"])
+            self.phase4c4a_manifest["reviewSet"])
 
     def test_the_manifest_binds_the_exact_reviewed_inputs(self):
         self.assertEqual(
-            CANDIDATES_SHA256, self.manifest["sourceCanonicalCandidatesSha256"])
+            CANDIDATES_SHA256,
+            self.phase4c4a_manifest["sourceCanonicalCandidatesSha256"])
         self.assertEqual(
-            STABLE_MAP_SHA256, self.manifest["sourceStableIdMapSha256"])
+            STABLE_MAP_SHA256,
+            self.phase4c4a_manifest["sourceStableIdMapSha256"])
         self.assertEqual(
-            FREEZE_DIGEST, self.manifest["sourceCandidateKeyFreezeDigest"])
+            FREEZE_DIGEST,
+            self.phase4c4a_manifest["sourceCandidateKeyFreezeDigest"])
         self.assertEqual(
-            bridge._canonical_digest(self.corpus),
-            self.manifest["packagedEditorialCorpusDigest"])
+            bridge._canonical_digest(self.phase4c4a_corpus),
+            self.phase4c4a_manifest["packagedEditorialCorpusDigest"])
         self.assertEqual(
-            bridge._canonical_digest(self.preview),
-            self.manifest["reviewPreviewDigest"])
+            bridge._canonical_digest(self.phase4c4a_preview),
+            self.phase4c4a_manifest["reviewPreviewDigest"])
+        self.assertEqual(self.phase4c4a_manifest, self.manifest)
 
     def test_every_manifest_row_exposes_what_a_reviewer_must_assess(self):
         required = {
@@ -672,13 +761,14 @@ class HumanReviewPackage(Phase4C4ABase):
             "glossesEn", "relationType", "complements", "cefr",
             "teachingStatus", "usage", "learnerExplanationEn", "examplePl",
             "exampleEn"}
-        for row in self.manifest["rows"]:
+        for row in self.phase4c4a_manifest["rows"]:
             self.assertTrue(required <= set(row))
             self.assertTrue(row["examplePl"] and row["exampleEn"])
 
     def test_the_manifest_row_content_matches_the_corpus(self):
-        rows = {row["patternId"]: row for row in self.manifest["rows"]}
-        for pattern in self.new_patterns:
+        rows = {
+            row["patternId"]: row for row in self.phase4c4a_manifest["rows"]}
+        for pattern in self.phase4c4a_new_patterns:
             row = rows[pattern["id"]]
             self.assertEqual(pattern["learnerExplanationEn"],
                              row["learnerExplanationEn"])
@@ -687,24 +777,25 @@ class HumanReviewPackage(Phase4C4ABase):
 
     def test_the_preview_is_a_valid_runtime_document(self):
         issues = tooling.validate_runtime(
-            self.preview, tooling.ValidationContext())
+            self.phase4c4a_preview, tooling.ValidationContext())
         self.assertEqual([], [(i.code, i.path) for i in issues])
 
     def test_the_preview_contains_exactly_the_pending_records(self):
-        self.assertEqual(68, len(self.preview["lemmas"]))
+        self.assertEqual(68, len(self.phase4c4a_preview["lemmas"]))
         patterns = [
-            pattern for lemma in self.preview["lemmas"]
+            pattern for lemma in self.phase4c4a_preview["lemmas"]
             for meaning in lemma["meanings"]
             for pattern in meaning["patterns"]]
         self.assertEqual(224, len(patterns))
         self.assertEqual(
-            {p["id"] for p in self.new_patterns}, {p["id"] for p in patterns})
+            {p["id"] for p in self.phase4c4a_new_patterns},
+            {p["id"] for p in patterns})
 
     def test_the_preview_claims_no_release_revision_advance(self):
         released = read_json("content/verb-patterns.json")
         self.assertEqual(
             released["patternDataRevision"],
-            self.preview["patternDataRevision"])
+            self.phase4c4a_preview["patternDataRevision"])
 
 
 class RuntimeAndProductionIsolation(Phase4C4ABase):
@@ -718,7 +809,8 @@ class RuntimeAndProductionIsolation(Phase4C4ABase):
         # The strongest proof that packaging granted no runtime exposure: the
         # real non-release projection admits approved patterns only.
         projected = tooling.project_runtime_nonrelease(
-            self.corpus, 2, self.context())
+            self.phase4c4a_corpus, 2,
+            self.context(self.phase4c4a_context_document))
         patterns = [
             pattern for lemma in projected["lemmas"]
             for meaning in lemma["meanings"]
@@ -765,7 +857,7 @@ class RuntimeAndProductionIsolation(Phase4C4ABase):
 
 class AdversarialGovernance(Phase4C4ABase):
     def mutate_first_new_pattern(self, mutate):
-        corpus = copy.deepcopy(self.corpus)
+        corpus = copy.deepcopy(self.phase4c4a_corpus)
         for lemma, meaning, pattern in iter_patterns(corpus):
             if lemma["id"] in self.new_lemma_ids:
                 mutate(lemma, meaning, pattern)
