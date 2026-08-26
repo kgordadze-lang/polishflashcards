@@ -244,12 +244,25 @@ class Priority8Phase4C2SchemaExtensionTests(unittest.TestCase):
                 self.assertFalse(js_probe(changed)["accepted"])
 
     def test_09_upgraded_editorial_projects_the_released_runtime_exactly(self):
-        upgraded = copy.deepcopy(self.editorial)
+        # Phase 4C2 owns the exact editorial population at its starting
+        # checkpoint, not a permanent assertion that no later phase may approve
+        # additional patterns.  Re-read that immutable local Git snapshot and
+        # apply only Phase 4C2's format-envelope upgrade.
+        upgraded = git_json("editorial/verb-pattern-candidates.json")
         upgraded["formatVersion"] = 2
         self.assertEqual([], tooling.validate_editorial(upgraded, self.context))
         self.assertEqual(
             self.runtime,
             tooling.project_runtime_nonrelease(upgraded, 2, self.context))
+
+        # Historical scoping remains strict: changing the owned approved
+        # population no longer reproduces the exact released runtime.
+        tampered = copy.deepcopy(upgraded)
+        first_pattern(tampered)["reviewState"] = "research"
+        self.assertIn(
+            "REVIEW_STATE_MISMATCH",
+            {issue.code for issue in tooling.validate_editorial(
+                tampered, self.context)})
 
     def test_10_all_45_released_render_and_search_projections_are_exact(self):
         before = js_probe(

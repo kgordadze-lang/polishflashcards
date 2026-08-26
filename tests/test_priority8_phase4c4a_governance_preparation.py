@@ -588,7 +588,10 @@ class ReviewEventChain(Phase4C4ABase):
                 reference["supportingEvidenceDigests"])
 
     def test_every_scope_digest_binds_the_record_that_exists(self):
-        for lemma, meaning, pattern in iter_patterns(self.corpus):
+        # Phase 4C4A owns the two-event, audio-disabled historical snapshot.
+        # A later append-only changes-requested event legitimately makes the
+        # original editorial acceptance historical rather than current.
+        for lemma, meaning, pattern in iter_patterns(self.phase4c4a_corpus):
             if lemma["id"] not in self.new_lemma_ids:
                 continue
             for event in pattern["reviewEvents"]:
@@ -597,6 +600,18 @@ class ReviewEventChain(Phase4C4ABase):
                         event["kind"], lemma, meaning, pattern),
                     event["scopeDigest"],
                     f"{pattern['id']} {event['kind']} digest is stale")
+
+        # The historical acceptance remains byte- and scope-strict at the
+        # checkpoint it owns.
+        tampered = copy.deepcopy(self.phase4c4a_corpus)
+        lemma, meaning, pattern = next(
+            (l, m, p) for l, m, p in iter_patterns(tampered)
+            if l["id"] in self.new_lemma_ids)
+        pattern["reviewEvents"][1]["scopeDigest"] = "sha256:" + "0" * 64
+        self.assertNotEqual(
+            tooling.review_scope_digest(
+                "editorial-review", lemma, meaning, pattern),
+            pattern["reviewEvents"][1]["scopeDigest"])
 
     def test_the_release_mode_is_the_solo_chain(self):
         for pattern in self.new_patterns:
@@ -988,7 +1003,8 @@ class AdversarialGovernance(Phase4C4ABase):
     def test_a_renamed_candidate_key_is_refused(self):
         corpus = self.mutate_first_new_pattern(
             lambda l, m, p: p.update({"key": "renamed-key"}))
-        self.assert_rejected(corpus, "ID_RECOMPUTATION")
+        self.assert_rejected(
+            corpus, "ID_RECOMPUTATION", self.phase4c4a_context_document)
 
     def test_a_structural_role_regression_moves_the_frozen_digest(self):
         def mutate(lemma, meaning, pattern):
@@ -1030,12 +1046,13 @@ class AdversarialGovernance(Phase4C4ABase):
             CANDIDATES_SHA256, manifest["sourceCanonicalCandidatesSha256"])
 
     def test_promoting_a_metadata_only_identity_is_detectable(self):
-        corpus = copy.deepcopy(self.corpus)
+        corpus = copy.deepcopy(self.phase4c4a_corpus)
         clone = copy.deepcopy(
             next(l for l in corpus["lemmas"] if l["id"] in self.new_lemma_ids))
         clone["canonicalLemma"] = "zaczynać"
         corpus["lemmas"].append(clone)
-        self.assert_rejected(corpus, "ID_RECOMPUTATION")
+        self.assert_rejected(
+            corpus, "ID_RECOMPUTATION", self.phase4c4a_context_document)
 
 
 if __name__ == "__main__":
