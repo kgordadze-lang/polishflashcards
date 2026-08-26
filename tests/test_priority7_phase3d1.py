@@ -127,6 +127,41 @@ RUNTIME_FIXTURE = FIXTURE_DIR / "runtime-fixture.json"
 EDITORIAL_CORPUS = ROOT / "editorial" / "verb-pattern-candidates.json"
 UI_SUITE = ROOT / "tests" / "test_priority7_choose_ui.js"
 
+PRIORITY7_ACTOR_IDS = frozenset({
+    "priority7-reference-analysis", "priority7-editorial-review",
+    "priority7-editorial-corroboration", "priority7-example-generation",
+})
+
+
+def priority7_corpus(document):
+    """Exact released Priority 7 identity slice, independent of ordering."""
+    released = json.loads(
+        (ROOT / "content" / "verb-patterns.json").read_text(encoding="utf-8"))
+    expected_lemmas = {lemma["id"] for lemma in released["lemmas"]}
+    expected_meanings = {
+        meaning["id"] for lemma in released["lemmas"]
+        for meaning in lemma["meanings"]}
+    expected_patterns = {
+        pattern["id"] for lemma in released["lemmas"]
+        for meaning in lemma["meanings"] for pattern in meaning["patterns"]}
+    lemmas = [lemma for lemma in document["lemmas"]
+              if lemma.get("id") in expected_lemmas]
+    meanings = [meaning for lemma in lemmas for meaning in lemma["meanings"]]
+    patterns = [pattern for meaning in meanings for pattern in meaning["patterns"]]
+    observed = ([lemma["id"] for lemma in lemmas],
+                [meaning["id"] for meaning in meanings],
+                [pattern["id"] for pattern in patterns])
+    expected = (expected_lemmas, expected_meanings, expected_patterns)
+    if any(len(ids) != len(wanted) or set(ids) != wanted
+           for ids, wanted in zip(observed, expected)):
+        raise AssertionError("historical Priority 7 identity set changed")
+    return {**document, "lemmas": lemmas}
+
+
+def priority7_actors(registry):
+    return {key: value for key, value in registry.items()
+            if key in PRIORITY7_ACTOR_IDS}
+
 EXERCISE_MARKER = "priority-7-exercise-fixture-synthetic-nonrelease"
 MARK = "SYNTHETIC-NONRELEASE"
 # The test-only identifier namespace this phase uses, and the release namespace
@@ -429,7 +464,7 @@ class StableIdSpaceTests(unittest.TestCase):
             self.assertNotIn(f'"{registry}"', text)
         # The corpus knows nothing about exercises, and gained nothing here.
         self.assertNotIn("exercise", text.lower())
-        self.assertEqual(30, len(corpus["lemmas"]))
+        self.assertEqual(30, len(priority7_corpus(corpus)["lemmas"]))
 
 
 class HarnessBoundaryTests(unittest.TestCase):
@@ -754,6 +789,7 @@ class ReleaseBoundaryTests(unittest.TestCase):
                 H2.without_phase_4fh2_content_completion(
                     H21.without_phase_4fh21_product_reapproval(
                         json.loads(read(EDITORIAL_CORPUS))))))
+        corpus = priority7_corpus(corpus)
         states, events, eligibility, audio, meanings = [], 0, 0, 0, 0
         for lemma in corpus["lemmas"]:
             for meaning in lemma["meanings"]:
@@ -882,6 +918,7 @@ class ReleaseBoundaryTests(unittest.TestCase):
             F2.without_phase_4ff2_product_approval(
                 H2.without_phase_4fh2_content_completion(
                     H21.without_phase_4fh21_product_reapproval(live_corpus))))
+        corpus = priority7_corpus(corpus)
         context = E1.without_phase_4fe1_actors(
             F2.without_phase_4ff2_reviewer(
                 H2.without_phase_4fh2_context(
@@ -898,7 +935,8 @@ class ReleaseBoundaryTests(unittest.TestCase):
         # The prerequisites that still block 3D-2 are the empty authorRegistry,
         # the unregistered editorial actor and the absent product authority.
         self.assertEqual({}, context.get("authorRegistry", {}) or {})
-        actors = context.get("editorialActorRegistry", {})
+        actors = priority7_actors(
+            context.get("editorialActorRegistry", {}))
         self.assertIn("priority7-reference-analysis", actors)
         # Stated as the missing capability rather than as a closed key set:
         # what blocks 3D-2 is that no actor can perform the tier-2 editorial

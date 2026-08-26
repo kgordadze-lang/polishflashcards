@@ -127,6 +127,31 @@ FIXTURE_DIR = ROOT / "tests" / "fixtures" / "priority7"
 FIXTURE_PATH = FIXTURE_DIR / "runtime-fixture.json"
 EDITORIAL_CORPUS = ROOT / "editorial" / "verb-pattern-candidates.json"
 
+
+def priority7_corpus(document):
+    """Exact released Priority 7 identity slice, independent of ordering."""
+    released = json.loads(
+        (ROOT / "content" / "verb-patterns.json").read_text(encoding="utf-8"))
+    expected_lemmas = {lemma["id"] for lemma in released["lemmas"]}
+    expected_meanings = {
+        meaning["id"] for lemma in released["lemmas"]
+        for meaning in lemma["meanings"]}
+    expected_patterns = {
+        pattern["id"] for lemma in released["lemmas"]
+        for meaning in lemma["meanings"] for pattern in meaning["patterns"]}
+    lemmas = [lemma for lemma in document["lemmas"]
+              if lemma.get("id") in expected_lemmas]
+    meanings = [meaning for lemma in lemmas for meaning in lemma["meanings"]]
+    patterns = [pattern for meaning in meanings for pattern in meaning["patterns"]]
+    observed = ([lemma["id"] for lemma in lemmas],
+                [meaning["id"] for meaning in meanings],
+                [pattern["id"] for pattern in patterns])
+    expected = (expected_lemmas, expected_meanings, expected_patterns)
+    if any(len(ids) != len(wanted) or set(ids) != wanted
+           for ids, wanted in zip(observed, expected)):
+        raise AssertionError("historical Priority 7 identity set changed")
+    return {**document, "lemmas": lemmas}
+
 # One marker string every synthetic record carries, so a stray copy of this data
 # announces itself wherever it is found.
 MARK = "SYNTHETIC-NONRELEASE"
@@ -743,6 +768,7 @@ class SyntheticFixtureTests(unittest.TestCase):
 
     def test_fixture_contains_no_real_editorial_lemma_or_gloss(self):
         corpus = json.loads(EDITORIAL_CORPUS.read_text(encoding="utf-8"))
+        historical = priority7_corpus(corpus)
         real_lemmas = set()
         real_glosses = set()
         for lemma in corpus["lemmas"]:
@@ -750,7 +776,7 @@ class SyntheticFixtureTests(unittest.TestCase):
             for meaning in lemma["meanings"]:
                 real_glosses.update(meaning["glossesEn"])
         self.assertEqual(45, sum(
-            len(meaning["patterns"]) for lemma in corpus["lemmas"]
+            len(meaning["patterns"]) for lemma in historical["lemmas"]
             for meaning in lemma["meanings"]))
         haystack = self.raw
         for lemma in sorted(real_lemmas):
@@ -795,6 +821,7 @@ class SyntheticFixtureTests(unittest.TestCase):
             F2.without_phase_4ff2_product_approval(
                 H2.without_phase_4fh2_content_completion(
                     H21.without_phase_4fh21_product_reapproval(live))))
+        corpus = priority7_corpus(corpus)
         states, kinds, eligibility, audio = [], [], 0, 0
         for lemma in corpus["lemmas"]:
             for meaning in lemma["meanings"]:

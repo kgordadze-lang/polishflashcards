@@ -130,6 +130,41 @@ def i1_shipping_text(path, root=ROOT):
 FIXTURE = ROOT / "tests" / "fixtures" / "priority7" / "synthetic-release-editorial.json"
 CORPUS = ROOT / "editorial" / "verb-pattern-candidates.json"
 CONTEXT_FILE = ROOT / "editorial" / "priority-7-authoring-context.json"
+PUBLIC_RUNTIME = ROOT / "content" / "verb-patterns.json"
+
+PRIORITY7_ACTOR_IDS = frozenset({
+    "priority7-reference-analysis", "priority7-editorial-review",
+    "priority7-editorial-corroboration", "priority7-example-generation",
+})
+
+
+def priority7_corpus(document):
+    """Exact released Priority 7 identity slice, independent of ordering."""
+    released = json.loads(PUBLIC_RUNTIME.read_text(encoding="utf-8"))
+    expected_lemmas = {lemma["id"] for lemma in released["lemmas"]}
+    expected_meanings = {
+        meaning["id"] for lemma in released["lemmas"]
+        for meaning in lemma["meanings"]}
+    expected_patterns = {
+        pattern["id"] for lemma in released["lemmas"]
+        for meaning in lemma["meanings"] for pattern in meaning["patterns"]}
+    lemmas = [lemma for lemma in document["lemmas"]
+              if lemma.get("id") in expected_lemmas]
+    meanings = [meaning for lemma in lemmas for meaning in lemma["meanings"]]
+    patterns = [pattern for meaning in meanings for pattern in meaning["patterns"]]
+    observed = ([lemma["id"] for lemma in lemmas],
+                [meaning["id"] for meaning in meanings],
+                [pattern["id"] for pattern in patterns])
+    expected = (expected_lemmas, expected_meanings, expected_patterns)
+    if any(len(ids) != len(wanted) or set(ids) != wanted
+           for ids, wanted in zip(observed, expected)):
+        raise AssertionError("historical Priority 7 identity set changed")
+    return {**document, "lemmas": lemmas}
+
+
+def priority7_actors(registry):
+    return {key: value for key, value in registry.items()
+            if key in PRIORITY7_ACTOR_IDS}
 
 REVIEWED_AT = "2026-08-08"
 LATER = "2026-08-09"
@@ -2284,7 +2319,8 @@ class RealGovernanceBoundary(Phase4ETestCase):
         unmodified files; the tier-3 claim as Phase 4E made it is asserted
         over the normalised corpus, where it still holds.
         """
-        corpus = self.live_corpus()
+        live = self.live_corpus()
+        corpus = priority7_corpus(live)
         patterns = [pattern for lemma in corpus["lemmas"]
                     for meaning in lemma["meanings"]
                     for pattern in meaning["patterns"]]
@@ -2297,7 +2333,7 @@ class RealGovernanceBoundary(Phase4ETestCase):
              for lemma in self.real_corpus()["lemmas"]
              for meaning in lemma["meanings"]
              for pattern in meaning["patterns"]})
-        blob = json.dumps(corpus, ensure_ascii=False)
+        blob = json.dumps(live, ensure_ascii=False)
         for token in ("external-verification", "native-linguistic",
                       HUMAN_REVIEWED_MODE):
             with self.subTest(token=token):
@@ -2327,7 +2363,7 @@ class RealGovernanceBoundary(Phase4ETestCase):
 
     def test_the_real_patterns_stand_at_tier_one_of_the_solo_chain(self):
         """Phase 4E built this chain; Phase 4F-A ran its first stage only."""
-        corpus = self.real_corpus()
+        corpus = priority7_corpus(self.real_corpus())
         patterns = [pattern for lemma in corpus["lemmas"]
                     for meaning in lemma["meanings"]
                     for pattern in meaning["patterns"]]
@@ -2380,7 +2416,7 @@ class RealGovernanceBoundary(Phase4ETestCase):
         document = self.real_context_document()
         self.assertEqual({}, document["authorRegistry"])
         self.assertEqual({}, document["allocationRegistry"])
-        actors = document["editorialActorRegistry"]
+        actors = priority7_actors(document["editorialActorRegistry"])
         self.assertEqual({"priority7-reference-analysis"}, set(actors))
         record = actors["priority7-reference-analysis"]
         self.assertIs(False, record["human"])

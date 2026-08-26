@@ -224,6 +224,30 @@ def live_corpus() -> dict:
     return json.loads(read(CORPUS_PATH))
 
 
+def priority7_corpus(document):
+    """Exact released Priority 7 identity slice, independent of ordering."""
+    released = released_runtime()
+    expected_lemmas = {lemma["id"] for lemma in released["lemmas"]}
+    expected_meanings = {
+        meaning["id"] for lemma in released["lemmas"]
+        for meaning in lemma["meanings"]}
+    expected_patterns = {
+        pattern["id"] for lemma in released["lemmas"]
+        for meaning in lemma["meanings"] for pattern in meaning["patterns"]}
+    lemmas = [lemma for lemma in document["lemmas"]
+              if lemma.get("id") in expected_lemmas]
+    meanings = [meaning for lemma in lemmas for meaning in lemma["meanings"]]
+    patterns = [pattern for meaning in meanings for pattern in meaning["patterns"]]
+    observed = ([lemma["id"] for lemma in lemmas],
+                [meaning["id"] for meaning in meanings],
+                [pattern["id"] for pattern in patterns])
+    expected = (expected_lemmas, expected_meanings, expected_patterns)
+    if any(len(ids) != len(wanted) or set(ids) != wanted
+           for ids, wanted in zip(observed, expected)):
+        raise AssertionError("historical Priority 7 identity set changed")
+    return {**document, "lemmas": lemmas}
+
+
 @functools.lru_cache(maxsize=1)
 def official_runtime() -> dict:
     """The runtime, via the ONLY approval-gated path there is.
@@ -285,7 +309,7 @@ class StartingCheckpointTests(unittest.TestCase):
         self.assertEqual(CONTEXT_SHA256, sha256(read_bytes(CONTEXT_PATH)))
 
     def test_the_approved_corpus_is_30_34_45_45_and_all_approved(self):
-        corpus = live_corpus()
+        corpus = priority7_corpus(live_corpus())
         patterns = patterns_of(corpus)
         self.assertEqual(LEMMA_COUNT, len(corpus["lemmas"]))
         self.assertEqual(
@@ -450,7 +474,8 @@ class ContentCorrespondenceTests(unittest.TestCase):
         self.assertEqual(EXAMPLE_COUNT, len(examples_of(self.runtime)))
 
     def test_exactly_one_example_per_pattern_with_no_gap_and_no_extra(self):
-        corpus_ids = {p["id"] for p in patterns_of(live_corpus())}
+        corpus_ids = {
+            p["id"] for p in patterns_of(priority7_corpus(live_corpus()))}
         runtime_ids = {p["id"] for p in self.patterns}
         self.assertEqual(set(), corpus_ids - runtime_ids, "missing pattern IDs")
         self.assertEqual(set(), runtime_ids - corpus_ids, "extra pattern IDs")
@@ -488,7 +513,7 @@ class ContentCorrespondenceTests(unittest.TestCase):
 
     def test_the_runtime_examples_are_the_corpus_examples(self):
         corpus = {e["id"]: (e["pl"], e["en"])
-                  for e in examples_of(live_corpus())}
+                  for e in examples_of(priority7_corpus(live_corpus()))}
         released = {e["id"]: (e["pl"], e["en"])
                     for e in examples_of(self.runtime)}
         self.assertEqual(corpus, released)

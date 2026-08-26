@@ -212,6 +212,7 @@ import priority7_phase4fh3_normalizer as H3  # noqa: E402
 
 CORPUS = ROOT / "editorial" / "verb-pattern-candidates.json"
 CONTEXT_FILE = ROOT / "editorial" / "priority-7-authoring-context.json"
+PUBLIC_RUNTIME = ROOT / "content" / "verb-patterns.json"
 MATRIX = ROOT / "reports" / "priority-7-phase-4fa-reference-matrix.csv"
 SUMMARY = ROOT / "reports" / "priority-7-phase-4fa-summary.md"
 SPEC = ROOT / "reports" / "priority-7-pattern-data-specification.md"
@@ -262,6 +263,40 @@ WSJP_DISTINCT_ENTRY_SENSE_URLS = 34
 NOTE_REWRITES = 8
 
 _REPOSITORY_INDEX = None
+
+PRIORITY7_ACTOR_IDS = frozenset({
+    "priority7-reference-analysis", "priority7-editorial-review",
+    "priority7-editorial-corroboration", "priority7-example-generation",
+})
+
+
+def priority7_corpus(document):
+    """Exact released Priority 7 identity slice, independent of ordering."""
+    released = json.loads(PUBLIC_RUNTIME.read_text(encoding="utf-8"))
+    expected_lemmas = {lemma["id"] for lemma in released["lemmas"]}
+    expected_meanings = {
+        meaning["id"] for lemma in released["lemmas"]
+        for meaning in lemma["meanings"]}
+    expected_patterns = {
+        pattern["id"] for lemma in released["lemmas"]
+        for meaning in lemma["meanings"] for pattern in meaning["patterns"]}
+    lemmas = [lemma for lemma in document["lemmas"]
+              if lemma.get("id") in expected_lemmas]
+    meanings = [meaning for lemma in lemmas for meaning in lemma["meanings"]]
+    patterns = [pattern for meaning in meanings for pattern in meaning["patterns"]]
+    observed = ([lemma["id"] for lemma in lemmas],
+                [meaning["id"] for meaning in meanings],
+                [pattern["id"] for pattern in patterns])
+    expected = (expected_lemmas, expected_meanings, expected_patterns)
+    if any(len(ids) != len(wanted) or set(ids) != wanted
+           for ids, wanted in zip(observed, expected)):
+        raise AssertionError("historical Priority 7 identity set changed")
+    return {**document, "lemmas": lemmas}
+
+
+def priority7_actors(registry):
+    return {key: value for key, value in registry.items()
+            if key in PRIORITY7_ACTOR_IDS}
 
 
 def repository_index():
@@ -852,14 +887,16 @@ class AuditedOutcome(Phase4FATestCase):
             without_phase_4fc2_examples(self.corpus), build_context()))
 
     def test_the_inventory_is_unchanged_and_every_row_is_verified(self):
-        self.assertEqual(30, len(self.corpus["lemmas"]))
+        corpus = priority7_corpus(self.corpus)
+        patterns = [pattern for _, _, pattern in iter_patterns(corpus)]
+        self.assertEqual(30, len(corpus["lemmas"]))
         self.assertEqual(
-            34, sum(len(lemma["meanings"]) for lemma in self.corpus["lemmas"]))
-        self.assertEqual(45, len(self.patterns))
+            34, sum(len(lemma["meanings"]) for lemma in corpus["lemmas"]))
+        self.assertEqual(45, len(patterns))
         self.assertEqual(
             {"reference-verified": 45},
             dict(collections.Counter(
-                pattern["reviewState"] for pattern in self.patterns)))
+                pattern["reviewState"] for pattern in patterns)))
 
     def test_no_pattern_remains_at_research(self):
         self.assertEqual(
@@ -943,7 +980,7 @@ class AuditedOutcome(Phase4FATestCase):
                 self.assertNotIn(kind, live_blob)
 
     def test_no_row_stands_above_reference_verified(self):
-        for pattern in self.patterns:
+        for _, _, pattern in iter_patterns(priority7_corpus(self.corpus)):
             with self.subTest(pattern_id=pattern["id"]):
                 self.assertNotIn(
                     pattern["reviewState"],
@@ -1002,7 +1039,8 @@ class StateIsDerivedNotAsserted(Phase4FATestCase):
         digest cannot appear anywhere else unnoticed.
         """
         superseded = {}
-        for lemma, meaning, pattern in iter_patterns(self.corpus):
+        for lemma, meaning, pattern in iter_patterns(
+                priority7_corpus(self.corpus)):
             with self.subTest(pattern_id=pattern["id"]):
                 events = pattern["reviewEvents"]
                 for event in events:
@@ -1086,7 +1124,7 @@ class SubframeSupportIsEvidenced(Phase4FATestCase):
         A subframe acceptance may not describe itself as licensed by a printed
         schema, and every acceptance must state the day the entry was re-opened.
         """
-        for pattern in self.patterns:
+        for _, _, pattern in iter_patterns(priority7_corpus(self.corpus)):
             note = pattern["reviewEvents"][0]["note"]
             with self.subTest(pattern_id=pattern["id"]):
                 self.assertIn(INSPECTED_ON, note)
@@ -1171,7 +1209,7 @@ class NonhumanReferenceActor(Phase4FATestCase):
         # carries the tier-2 editorial role.  A later phase registering a
         # non-review actor -- Phase 4F-C2's example generator -- leaves that
         # boundary exactly where Phase 4F-A left it.
-        actors = self.document["editorialActorRegistry"]
+        actors = priority7_actors(self.document["editorialActorRegistry"])
         self.assertIn(REFERENCE_ACTOR, actors)
         review_roles = {"reference-verification", "editorial-review"}
         with_review_role = {
@@ -1339,7 +1377,8 @@ class EvidenceIsLoadBearing(Phase4FATestCase):
         self.assertIn("REVIEW_STATE_MISMATCH", found)
 
     def test_the_evidence_accounting_matches_the_repaired_corpus(self):
-        records = [record for _, _, pattern in iter_patterns(self.corpus)
+        records = [record for _, _, pattern in iter_patterns(
+                       priority7_corpus(self.corpus))
                    for record in pattern["evidence"]]
         wsjp = [record for record in records
                 if record["sourceId"] == "wsjp-pan"]
@@ -1364,7 +1403,7 @@ class EvidenceIsLoadBearing(Phase4FATestCase):
 
     def test_only_wsjp_records_carry_the_inspection_date(self):
         by_date = collections.defaultdict(set)
-        for _, _, pattern in iter_patterns(self.corpus):
+        for _, _, pattern in iter_patterns(priority7_corpus(self.corpus)):
             for record in pattern["evidence"]:
                 by_date[record["checkedAt"]].add(record["sourceId"])
         self.assertEqual({"wsjp-pan"}, by_date[INSPECTED_ON])
@@ -1372,7 +1411,8 @@ class EvidenceIsLoadBearing(Phase4FATestCase):
         self.assertEqual({INSPECTED_ON, COMPILED_ON}, set(by_date))
 
     def test_every_wsjp_record_was_re_inspected_none_left_stale(self):
-        wsjp = [record for _, _, pattern in iter_patterns(self.corpus)
+        wsjp = [record for _, _, pattern in iter_patterns(
+                    priority7_corpus(self.corpus))
                 for record in wsjp_records(pattern)]
         self.assertEqual(WSJP_RECORDS, len(wsjp))
         self.assertEqual({INSPECTED_ON},
@@ -1486,7 +1526,9 @@ class MatrixAgreesWithTheCorpus(Phase4FATestCase):
 
     def test_the_matrix_covers_every_pattern_exactly_once(self):
         self.assertEqual(45, len(self.rows))
-        self.assertEqual({pattern["id"] for pattern in self.patterns},
+        self.assertEqual(
+                         {pattern["id"] for _, _, pattern in iter_patterns(
+                             priority7_corpus(self.corpus))},
                          {row["patternId"] for row in self.rows})
 
     def test_the_matrix_counts_are_the_reported_counts(self):

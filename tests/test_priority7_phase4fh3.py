@@ -309,6 +309,30 @@ def load_corpus():
     return json.loads(read(CORPUS_PATH))
 
 
+def priority7_corpus(document):
+    """Exact released Priority 7 identity slice, independent of ordering."""
+    released = json.loads(read("content/verb-patterns.json"))
+    expected_lemmas = {lemma["id"] for lemma in released["lemmas"]}
+    expected_meanings = {
+        meaning["id"] for lemma in released["lemmas"]
+        for meaning in lemma["meanings"]}
+    expected_patterns = {
+        pattern["id"] for lemma in released["lemmas"]
+        for meaning in lemma["meanings"] for pattern in meaning["patterns"]}
+    lemmas = [lemma for lemma in document["lemmas"]
+              if lemma.get("id") in expected_lemmas]
+    meanings = [meaning for lemma in lemmas for meaning in lemma["meanings"]]
+    patterns = [pattern for meaning in meanings for pattern in meaning["patterns"]]
+    observed = ([lemma["id"] for lemma in lemmas],
+                [meaning["id"] for meaning in meanings],
+                [pattern["id"] for pattern in patterns])
+    expected = (expected_lemmas, expected_meanings, expected_patterns)
+    if any(len(ids) != len(wanted) or set(ids) != wanted
+           for ids, wanted in zip(observed, expected)):
+        raise AssertionError("historical Priority 7 identity set changed")
+    return {**document, "lemmas": lemmas}
+
+
 def footprint():
     """Every path this workspace has touched, committed or not.
 
@@ -699,16 +723,18 @@ class ContentAndGovernanceTests(unittest.TestCase):
                 self.assertEqual(digest, sha256_text(text))
 
     def test_the_governance_totals_are_exactly_what_h21_left(self):
-        self.assertEqual(LEMMA_COUNT, len(self.corpus["lemmas"]))
+        corpus = priority7_corpus(self.corpus)
+        patterns = [pattern for _l, _m, pattern in iter_patterns(corpus)]
+        self.assertEqual(LEMMA_COUNT, len(corpus["lemmas"]))
         self.assertEqual(MEANING_COUNT,
                          sum(len(lemma["meanings"])
-                             for lemma in self.corpus["lemmas"]))
-        self.assertEqual(PATTERN_COUNT, len(self.patterns))
+                             for lemma in corpus["lemmas"]))
+        self.assertEqual(PATTERN_COUNT, len(patterns))
         self.assertEqual(EXAMPLE_COUNT,
-                         sum(len(pattern["examples"]) for pattern in self.patterns))
+                         sum(len(pattern["examples"]) for pattern in patterns))
         self.assertEqual(
             APPROVED_COUNT,
-            sum(1 for pattern in self.patterns
+            sum(1 for pattern in patterns
                 if pattern["reviewState"] == "approved"))
 
     def test_no_review_event_of_any_kind_was_created(self):
@@ -721,7 +747,8 @@ class ContentAndGovernanceTests(unittest.TestCase):
     def test_the_teaching_status_split_did_not_move(self):
         """The badge's population is a content fact, and H3 changed no content."""
         counted = collections.Counter(
-            pattern["teachingStatus"] for pattern in self.patterns)
+            pattern["teachingStatus"] for _l, _m, pattern in iter_patterns(
+                priority7_corpus(self.corpus)))
         self.assertEqual(RECOGNITION_ONLY_COUNT, counted["recognition-only"])
         self.assertEqual(ACTIVE_PRODUCTION_COUNT, counted["active-production"])
         self.assertEqual(PATTERN_COUNT, sum(counted.values()))

@@ -174,6 +174,30 @@ def load_corpus():
     return json.loads(CORPUS.read_text(encoding="utf-8"))
 
 
+def priority7_corpus(document):
+    """Exact released Priority 7 identity slice, independent of ordering."""
+    released = json.loads(PUBLIC_RUNTIME.read_text(encoding="utf-8"))
+    expected_lemmas = {lemma["id"] for lemma in released["lemmas"]}
+    expected_meanings = {
+        meaning["id"] for lemma in released["lemmas"]
+        for meaning in lemma["meanings"]}
+    expected_patterns = {
+        pattern["id"] for lemma in released["lemmas"]
+        for meaning in lemma["meanings"] for pattern in meaning["patterns"]}
+    lemmas = [lemma for lemma in document["lemmas"]
+              if lemma.get("id") in expected_lemmas]
+    meanings = [meaning for lemma in lemmas for meaning in lemma["meanings"]]
+    patterns = [pattern for meaning in meanings for pattern in meaning["patterns"]]
+    observed = ([lemma["id"] for lemma in lemmas],
+                [meaning["id"] for meaning in meanings],
+                [pattern["id"] for pattern in patterns])
+    expected = (expected_lemmas, expected_meanings, expected_patterns)
+    if any(len(ids) != len(wanted) or set(ids) != wanted
+           for ids, wanted in zip(observed, expected)):
+        raise AssertionError("historical Priority 7 identity set changed")
+    return {**document, "lemmas": lemmas}
+
+
 def load_context_document():
     return json.loads(CONTEXT_FILE.read_text(encoding="utf-8"))
 
@@ -335,7 +359,9 @@ class LedgerCoverage(unittest.TestCase):
 
     def test_the_45_review_ids_biject_onto_the_45_real_patterns(self):
         mapped = [row["patternId"] for row in self.mapping.values()]
-        real = {pattern["id"] for _, _, pattern in iter_patterns(self.corpus)}
+        real = {
+            pattern["id"] for _, _, pattern in
+            iter_patterns(priority7_corpus(self.corpus))}
         self.assertEqual(45, len(set(mapped)), "no pattern mapped twice")
         self.assertEqual(real, set(mapped),
                          "every real pattern received exactly one decision")
@@ -759,11 +785,14 @@ class TruthfulLowerStateIsPinned(unittest.TestCase):
                     self.assertNotIn("reviewerRef", event)
 
     def test_the_45_patterns_hold_the_phase_4fa_states_and_nothing_higher(self):
-        self.assertEqual(45, len(self.patterns))
+        patterns = [
+            pattern for _, _, pattern in
+            iter_patterns(priority7_corpus(self.corpus))]
+        self.assertEqual(45, len(patterns))
         states = collections.Counter(
-            pattern["reviewState"] for pattern in self.patterns)
+            pattern["reviewState"] for pattern in patterns)
         self.assertEqual({"reference-verified": 45}, dict(states))
-        for pattern in self.patterns:
+        for pattern in patterns:
             with self.subTest(pattern_id=pattern["id"]):
                 self.assertNotIn(pattern["reviewState"],
                                  {"externally-verified", "native-reviewed",
@@ -1314,7 +1343,7 @@ class CanonicalCorpusUnchanged(unittest.TestCase):
         self.assertNotEqual(self.LINGUISTIC_PROJECTION_SHA256, f"sha256:{digest}")
 
     def test_corpus_shape_is_unchanged(self):
-        corpus = self.normalised()
+        corpus = priority7_corpus(self.normalised())
         meanings = sum(len(lemma["meanings"]) for lemma in corpus["lemmas"])
         patterns = list(iter_patterns(corpus))
         examples = sum(len(pattern.get("examples") or [])
@@ -1332,7 +1361,7 @@ class CanonicalCorpusUnchanged(unittest.TestCase):
         re-open: the Mędak demo PDF is not re-inspectable and the repository
         records establish what the app teaches, not what Polish requires.
         """
-        corpus = load_corpus()
+        corpus = priority7_corpus(load_corpus())
         total = 0
         re_inspected = []
         for _, _, pattern in iter_patterns(corpus):

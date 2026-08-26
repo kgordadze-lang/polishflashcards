@@ -190,6 +190,7 @@ from priority7_tooling import (  # noqa: E402
 
 CORPUS = ROOT / "editorial" / "verb-pattern-candidates.json"
 CONTEXT_FILE = ROOT / "editorial" / "priority-7-authoring-context.json"
+PUBLIC_RUNTIME = ROOT / "content" / "verb-patterns.json"
 MATRIX = ROOT / "reports" / "phase-4fb3a" / "adjudication-matrix.csv"
 B3A_SUMMARY = ROOT / "reports" / "phase-4fb3a" / "summary.md"
 B3B_SUMMARY = ROOT / "reports" / "priority-7-phase-4fb3b-summary.md"
@@ -665,6 +666,30 @@ def load_corpus():
             F2.without_phase_4ff2_product_approval(
                 H2.without_phase_4fh2_content_completion(
                     H21.without_phase_4fh21_product_reapproval(live_corpus())))))
+
+
+def priority7_corpus(document):
+    """Exact released Priority 7 identity slice, independent of ordering."""
+    released = json.loads(PUBLIC_RUNTIME.read_text(encoding="utf-8"))
+    expected_lemmas = {lemma["id"] for lemma in released["lemmas"]}
+    expected_meanings = {
+        meaning["id"] for lemma in released["lemmas"]
+        for meaning in lemma["meanings"]}
+    expected_patterns = {
+        pattern["id"] for lemma in released["lemmas"]
+        for meaning in lemma["meanings"] for pattern in meaning["patterns"]}
+    lemmas = [lemma for lemma in document["lemmas"]
+              if lemma.get("id") in expected_lemmas]
+    meanings = [meaning for lemma in lemmas for meaning in lemma["meanings"]]
+    patterns = [pattern for meaning in meanings for pattern in meaning["patterns"]]
+    observed = ([lemma["id"] for lemma in lemmas],
+                [meaning["id"] for meaning in meanings],
+                [pattern["id"] for pattern in patterns])
+    expected = (expected_lemmas, expected_meanings, expected_patterns)
+    if any(len(ids) != len(wanted) or set(ids) != wanted
+           for ids, wanted in zip(observed, expected)):
+        raise AssertionError("historical Priority 7 identity set changed")
+    return {**document, "lemmas": lemmas}
 
 
 def live_corpus():
@@ -1378,7 +1403,8 @@ class RequiredFlagRendererTests(unittest.TestCase):
 
     def test_exactly_two_complements_are_now_optional(self):
         flags = [(pattern["id"], complement["required"])
-                 for _, _, pattern in iter_patterns(load_corpus())
+                 for _, _, pattern in iter_patterns(
+                     priority7_corpus(load_corpus()))
                  for complement in pattern["complements"]]
         self.assertEqual(54, len(flags))
         optional = sorted({pid for pid, required in flags if not required})
@@ -1406,7 +1432,8 @@ class ReferenceTierTests(unittest.TestCase):
         self.assertEqual([], validate_editorial(self.corpus, build_context()))
 
     def test_all_forty_five_patterns_are_reference_verified(self):
-        states = [p["reviewState"] for _, _, p in iter_patterns(self.corpus)]
+        states = [p["reviewState"] for _, _, p in iter_patterns(
+            priority7_corpus(self.corpus))]
         self.assertEqual(PATTERN_COUNT, len(states))
         self.assertEqual({"reference-verified"}, set(states))
 
@@ -1457,7 +1484,8 @@ class NoEditorialAdvancementTests(unittest.TestCase):
             self.assertNotIn(f'"{kind}"', blob, kind)
 
     def test_no_pattern_is_editorial_reviewed_or_approved(self):
-        states = {p["reviewState"] for _, _, p in iter_patterns(self.corpus)}
+        states = {p["reviewState"] for _, _, p in iter_patterns(
+            priority7_corpus(self.corpus))}
         self.assertNotIn("editorial-reviewed", states)
         self.assertNotIn("approved", states)
 
