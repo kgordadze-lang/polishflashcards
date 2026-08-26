@@ -14,6 +14,10 @@ import priority8_phase4c3_canonical_projection as phase4c3  # noqa: E402
 from tests.test_priority8_phase4c2_schema_extensions import js_probe  # noqa: E402
 
 
+PHASE4C3_COMMIT = "816176f591909d505549e2818d6b8d6d75c67f25"
+TOOLING_PATH = "priority7_tooling.py"
+
+
 PROTECTED_HASHES = {
     "editorial/priority-8-phase4-staging.json":
         "6ba1bcab43feeee5bfb99a5ac67eace8befa12c3df67f44bfb94191bf1a80adc",
@@ -42,6 +46,17 @@ PROTECTED_HASHES = {
 
 def sha256(relative):
     return hashlib.sha256((ROOT / relative).read_bytes()).hexdigest()
+
+
+def git_bytes(commit, relative):
+    run = subprocess.run(
+        ["git", "show", f"{commit}:{relative}"], cwd=ROOT,
+        capture_output=True)
+    if run.returncode != 0:
+        raise AssertionError(
+            f"historical object unavailable: {commit}:{relative}: "
+            f"{run.stderr.decode('utf-8', errors='replace')}")
+    return run.stdout
 
 
 class Priority8Phase4C3CanonicalProjectionTests(unittest.TestCase):
@@ -342,8 +357,26 @@ class Priority8Phase4C3CanonicalProjectionTests(unittest.TestCase):
         self.assertEqual(154, len({row["id"] for row in rows}))
 
     def test_30_all_protected_inputs_and_production_paths_are_unchanged(self):
-        for relative, expected in PROTECTED_HASHES.items():
+        live_hashes = {
+            relative: expected
+            for relative, expected in PROTECTED_HASHES.items()
+            if relative != TOOLING_PATH
+        }
+        for relative, expected in live_hashes.items():
             self.assertEqual(expected, sha256(relative), relative)
+
+        historical_tooling = git_bytes(PHASE4C3_COMMIT, TOOLING_PATH)
+        expected_tooling = PROTECTED_HASHES[TOOLING_PATH]
+        self.assertEqual(
+            expected_tooling,
+            hashlib.sha256(historical_tooling).hexdigest(),
+            f"{TOOLING_PATH} at Phase 4C3 endpoint {PHASE4C3_COMMIT}")
+        with self.assertRaises(AssertionError):
+            self.assertEqual(
+                expected_tooling,
+                hashlib.sha256(
+                    historical_tooling + b"\n# historical-tamper"
+                ).hexdigest())
 
     def test_31_regeneration_is_byte_identical_and_default_is_verify_only(self):
         self.assertEqual(self.generated, self.persisted)

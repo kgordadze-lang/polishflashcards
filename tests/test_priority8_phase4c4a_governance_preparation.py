@@ -44,6 +44,7 @@ FREEZE_PATH = "editorial/priority-8-phase4-candidate-key-freeze.json"
 
 BASELINE_COMMIT = "816176f591909d505549e2818d6b8d6d75c67f25"
 PHASE4C4A_COMMIT = "4e81202591cf2c8609983346e3c24fe2c185a8b8"
+PHASE4C4A_FINAL_COMMIT = "2e3e42df34c0899f7dbb93d0bbea4c24823e2e58"
 
 CANDIDATES_SHA256 = (
     "c54e611da32ad61c4c020545594ec1f33c0bcea6937f31c9e7a31d29bc5fa7e9")
@@ -71,6 +72,17 @@ def git_json(relative, commit=BASELINE_COMMIT):
     if run.returncode != 0:
         raise AssertionError(run.stderr)
     return json.loads(run.stdout)
+
+
+def git_bytes(relative, commit):
+    run = subprocess.run(
+        ["git", "show", f"{commit}:{relative}"], cwd=ROOT,
+        capture_output=True)
+    if run.returncode != 0:
+        raise AssertionError(
+            f"historical object unavailable: {commit}:{relative}: "
+            f"{run.stderr.decode('utf-8', errors='replace')}")
+    return run.stdout
 
 
 def sha256_file(relative):
@@ -846,13 +858,25 @@ class RuntimeAndProductionIsolation(Phase4C4ABase):
             self.assertEqual(git_json(relative), read_json(relative))
 
     def test_no_schema_or_runtime_source_changed(self):
-        for relative in ("priority7_tooling.py", "pp-verb-patterns.js",
+        for relative in ("pp-verb-patterns.js",
                          "validate_priority8_staging.py", "index.html",
                          "sw.js", "audio-manifest.json"):
             run = subprocess.run(
                 ["git", "diff", "--quiet", BASELINE_COMMIT, "--", relative],
                 cwd=ROOT)
             self.assertEqual(0, run.returncode, f"{relative} changed")
+
+        tooling_path = "priority7_tooling.py"
+        baseline_tooling = git_bytes(tooling_path, BASELINE_COMMIT)
+        for endpoint in (PHASE4C4A_COMMIT, PHASE4C4A_FINAL_COMMIT):
+            self.assertEqual(
+                baseline_tooling, git_bytes(tooling_path, endpoint),
+                f"{tooling_path} changed during Phase 4C4A at {endpoint}")
+        with self.assertRaises(AssertionError):
+            self.assertEqual(
+                baseline_tooling,
+                git_bytes(tooling_path, PHASE4C4A_FINAL_COMMIT)
+                + b"\n# historical-tamper")
 
 
 class AdversarialGovernance(Phase4C4ABase):
