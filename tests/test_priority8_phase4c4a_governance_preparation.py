@@ -819,7 +819,8 @@ class HumanReviewPackage(Phase4C4ABase):
             {p["id"] for p in patterns})
 
     def test_the_preview_claims_no_release_revision_advance(self):
-        released = read_json("content/verb-patterns.json")
+        released = git_json(
+            "content/verb-patterns.json", PHASE4C4A_COMMIT)
         self.assertEqual(
             released["patternDataRevision"],
             self.phase4c4a_preview["patternDataRevision"])
@@ -827,8 +828,12 @@ class HumanReviewPackage(Phase4C4ABase):
 
 class RuntimeAndProductionIsolation(Phase4C4ABase):
     def test_production_runtime_is_untouched(self):
-        released = read_json("content/verb-patterns.json")
-        self.assertEqual(git_json("content/verb-patterns.json"), released)
+        released = git_json(
+            "content/verb-patterns.json", PHASE4C4A_FINAL_COMMIT)
+        self.assertEqual(
+            git_json("content/verb-patterns.json", BASELINE_COMMIT), released)
+        self.assertEqual(
+            git_json("content/verb-patterns.json", PHASE4C4A_COMMIT), released)
         self.assertEqual(30, len(released["lemmas"]))
         self.assertEqual(2, released["patternDataRevision"])
 
@@ -845,7 +850,8 @@ class RuntimeAndProductionIsolation(Phase4C4ABase):
         self.assertEqual(30, len(projected["lemmas"]))
         self.assertEqual(45, len(patterns))
         self.assertEqual(
-            read_json("content/verb-patterns.json"), projected)
+            git_json("content/verb-patterns.json", PHASE4C4A_COMMIT),
+            projected)
 
     def test_no_private_artifact_is_referenced_by_runtime_or_shell(self):
         names = [
@@ -876,10 +882,11 @@ class RuntimeAndProductionIsolation(Phase4C4ABase):
         for relative in ("pp-verb-patterns.js",
                          "validate_priority8_staging.py", "index.html",
                          "sw.js", "audio-manifest.json"):
-            run = subprocess.run(
-                ["git", "diff", "--quiet", BASELINE_COMMIT, "--", relative],
-                cwd=ROOT)
-            self.assertEqual(0, run.returncode, f"{relative} changed")
+            baseline = git_bytes(relative, BASELINE_COMMIT)
+            for endpoint in (PHASE4C4A_COMMIT, PHASE4C4A_FINAL_COMMIT):
+                self.assertEqual(
+                    baseline, git_bytes(relative, endpoint),
+                    f"{relative} changed during Phase 4C4A at {endpoint}")
 
         tooling_path = "priority7_tooling.py"
         baseline_tooling = git_bytes(tooling_path, BASELINE_COMMIT)

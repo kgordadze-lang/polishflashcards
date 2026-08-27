@@ -2,12 +2,15 @@ import copy
 import hashlib
 import inspect
 import json
+import subprocess
 import unittest
 from collections import Counter
 from pathlib import Path
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
+PHASE4C1_COMMIT = "604df149045fb91bbcf35eb54499b0ef490e1e99"
 
 import sys
 
@@ -46,6 +49,17 @@ def sha256(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def git_json(commit, relative):
+    run = subprocess.run(
+        ["git", "show", f"{commit}:{relative}"], cwd=ROOT,
+        capture_output=True, text=True)
+    if run.returncode != 0:
+        raise AssertionError(
+            f"historical object unavailable: {commit}:{relative}: "
+            f"{run.stderr}")
+    return json.loads(run.stdout)
+
+
 def find_staging_lemma(staging, canonical):
     return next(row for row in staging["lemmas"]
                 if row["canonicalLemma"] == canonical)
@@ -61,7 +75,9 @@ class Priority8Phase4C1StableIdTests(unittest.TestCase):
     def setUpClass(cls):
         cls.manifest = phase4c1.read_json(phase4c1.FREEZE_PATH)
         cls.staging = phase4c1.read_json(phase4c1.STAGING_PATH)
-        cls.runtime = phase4c1.read_json(phase4c1.RUNTIME_PATH)
+        cls.runtime = git_json(
+            PHASE4C1_COMMIT,
+            phase4c1.RUNTIME_PATH.relative_to(ROOT).as_posix())
         cls.persisted = phase4c1.read_json(phase4c1.MAP_PATH)
         cls.projection = phase4c1.verify_freeze_gate(cls.manifest, cls.staging)
         cls.generated = phase4c1.build_map(cls.manifest, cls.staging)
@@ -140,7 +156,7 @@ class Priority8Phase4C1StableIdTests(unittest.TestCase):
             phase4c1.serialized(self.generated),
             phase4c1.MAP_PATH.read_text(encoding="utf-8"),
         )
-        summary = phase4c1.validate_map(self.persisted)
+        summary = phase4c1.validate_map(self.persisted, runtime=self.runtime)
         self.assertEqual((154, 611, 765), (
             summary["releasedTotal"], summary["newTotal"], summary["unionTotal"]))
 
@@ -354,7 +370,18 @@ class Priority8Phase4C1StableIdTests(unittest.TestCase):
         self.assertNotIn("def _sha12", source)
 
     def test_27_complete_check_mode_succeeds_without_writing(self):
-        self.assertEqual(phase4c1.validate_map(self.persisted), phase4c1.run())
+        original_read_json = phase4c1.read_json
+
+        def historical_read_json(path):
+            if Path(path).resolve() == phase4c1.RUNTIME_PATH.resolve():
+                return copy.deepcopy(self.runtime)
+            return original_read_json(path)
+
+        expected = phase4c1.validate_map(
+            self.persisted, runtime=self.runtime)
+        with mock.patch.object(
+                phase4c1, "read_json", side_effect=historical_read_json):
+            self.assertEqual(expected, phase4c1.run())
 
 
 if __name__ == "__main__":

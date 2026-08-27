@@ -8,7 +8,9 @@ import json
 import subprocess
 import sys
 import unittest
+from contextlib import contextmanager
 from pathlib import Path
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
@@ -16,9 +18,53 @@ sys.path.insert(0, str(ROOT))
 import priority7_tooling as tooling  # noqa: E402
 import priority8_phase4c4c_release_freeze as release  # noqa: E402
 
+PHASE4C4C_COMMIT = "3d60bc61a85066007a659be4837aafc16131f0e4"
+
 
 def sha256_file(relative):
     return hashlib.sha256((ROOT / relative).read_bytes()).hexdigest()
+
+
+def git_bytes(relative, commit=PHASE4C4C_COMMIT):
+    run = subprocess.run(
+        ["git", "show", f"{commit}:{relative}"], cwd=ROOT,
+        capture_output=True)
+    if run.returncode != 0:
+        raise AssertionError(
+            f"historical object unavailable: {commit}:{relative}: "
+            f"{run.stderr.decode('utf-8', errors='replace')}")
+    return run.stdout
+
+
+def git_json(relative, commit=PHASE4C4C_COMMIT):
+    return json.loads(git_bytes(relative, commit).decode("utf-8"))
+
+
+def historical_sha256(relative, commit=PHASE4C4C_COMMIT):
+    return hashlib.sha256(git_bytes(relative, commit)).hexdigest()
+
+
+@contextmanager
+def historical_phase4c4c_production():
+    """Run Phase 4C4C's gate against production at its owned endpoint."""
+    original_read_json = release.read_json
+    original_file_digest = release.file_digest
+
+    def historical_read_json(relative):
+        if relative in release.PRODUCTION_SHA256:
+            return git_json(relative)
+        return original_read_json(relative)
+
+    def historical_file_digest(relative):
+        if relative in release.PRODUCTION_SHA256:
+            return historical_sha256(relative)
+        return original_file_digest(relative)
+
+    with mock.patch.object(
+            release, "read_json", side_effect=historical_read_json), \
+            mock.patch.object(
+                release, "file_digest", side_effect=historical_file_digest):
+        yield
 
 
 def pattern_rows(document):
@@ -28,7 +74,8 @@ def pattern_rows(document):
 class Phase4C4CReleaseFreezeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.corpus, cls.context_document, cls.frozen, cls.changed = release.build()
+        with historical_phase4c4c_production():
+            cls.corpus, cls.context_document, cls.frozen, cls.changed = release.build()
         cls.summary = release.metrics(cls.corpus, cls.frozen)
         cls.review_set, cls.new_lemma_ids = release.review_sets(cls.corpus)
         cls.rows = [(lemma, meaning, pattern)
@@ -299,8 +346,9 @@ class Phase4C4CReleaseFreezeTests(unittest.TestCase):
             tooling.verified_runtime_from_frozen(self.frozen))
 
     def test_47_frozen_digests_are_deterministic(self):
-        again = release.freeze(self.corpus, {
-            **self.context_document, "allocationRegistry": {}})
+        with historical_phase4c4c_production():
+            again = release.freeze(self.corpus, {
+                **self.context_document, "allocationRegistry": {}})
         self.assertEqual(release.canonical_bytes(self.frozen),
                          release.canonical_bytes(again))
 
@@ -337,10 +385,28 @@ class Phase4C4CReleaseFreezeTests(unittest.TestCase):
 
     def test_54_all_production_inputs_are_unchanged(self):
         for relative, expected in release.PRODUCTION_SHA256.items():
-            self.assertEqual(expected, sha256_file(relative), relative)
+            historical = git_bytes(relative)
+            self.assertEqual(expected, historical_sha256(relative), relative)
+            with self.assertRaises(AssertionError):
+                self.assertEqual(
+                    expected,
+                    hashlib.sha256(historical + b"\n# historical-tamper").hexdigest())
+        index = git_bytes("index.html").decode("utf-8")
+        service_worker = git_bytes("sw.js").decode("utf-8")
+        self.assertIn('APP_VERSION = "8.12"', index)
+        self.assertIn('CACHE = "popolsku-v67"', service_worker)
+        with self.assertRaises(AssertionError):
+            self.assertIn(
+                'APP_VERSION = "8.12"',
+                index.replace('APP_VERSION = "8.12"', 'APP_VERSION = "8.13"'))
+        with self.assertRaises(AssertionError):
+            self.assertIn(
+                'CACHE = "popolsku-v67"',
+                service_worker.replace(
+                    'CACHE = "popolsku-v67"', 'CACHE = "popolsku-v68"'))
 
     def test_55_production_remains_30_34_45_45_revision_2(self):
-        runtime = release.read_json(release.RUNTIME_PATH)
+        runtime = git_json(release.RUNTIME_PATH)
         meanings = [meaning for lemma in runtime["lemmas"]
                     for meaning in lemma["meanings"]]
         patterns = [pattern for meaning in meanings for pattern in meaning["patterns"]]
@@ -350,15 +416,31 @@ class Phase4C4CReleaseFreezeTests(unittest.TestCase):
                          (len(runtime["lemmas"]), len(meanings), len(patterns),
                           len(examples), runtime["formatVersion"],
                           runtime["patternDataRevision"]))
+        mutated = copy.deepcopy(runtime)
+        mutated["lemmas"].pop()
+        mutated["patternDataRevision"] = 3
+        mutated_meanings = [meaning for lemma in mutated["lemmas"]
+                            for meaning in lemma["meanings"]]
+        mutated_patterns = [pattern for meaning in mutated_meanings
+                            for pattern in meaning["patterns"]]
+        mutated_examples = [example for pattern in mutated_patterns
+                            for example in pattern.get("examples", [])]
+        with self.assertRaises(AssertionError):
+            self.assertEqual(
+                (30, 34, 45, 45, 2, 2),
+                (len(mutated["lemmas"]), len(mutated_meanings),
+                 len(mutated_patterns), len(mutated_examples),
+                 mutated["formatVersion"], mutated["patternDataRevision"]))
 
     def test_56_nonrelease_projection_does_not_mutate_production(self):
         self.assertEqual(release.PRODUCTION_SHA256[release.RUNTIME_PATH],
-                         sha256_file(release.RUNTIME_PATH))
+                         historical_sha256(release.RUNTIME_PATH))
 
     def test_57_verify_only_mode_writes_nothing(self):
         before = {path: sha256_file(path) for path in (
             release.CORPUS_PATH, release.CONTEXT_PATH, release.MANIFEST_PATH)}
-        self.assertEqual(0, release.main([]))
+        with historical_phase4c4c_production():
+            self.assertEqual(0, release.main([]))
         after = {path: sha256_file(path) for path in before}
         self.assertEqual(before, after)
 

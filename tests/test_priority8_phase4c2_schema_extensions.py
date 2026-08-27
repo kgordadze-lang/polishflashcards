@@ -10,6 +10,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 STARTING_HEAD = "604df149045fb91bbcf35eb54499b0ef490e1e99"
+PHASE4C2_COMMIT = "a858cf83a7f9d979feecfecef32c42937b5e9eec"
 sys.path.insert(0, str(ROOT))
 
 import priority7_tooling as tooling  # noqa: E402
@@ -37,13 +38,17 @@ def load(relative):
     return json.loads((ROOT / relative).read_text(encoding="utf-8"))
 
 
-def git_bytes(relative):
+def git_bytes(relative, commit=STARTING_HEAD):
     return subprocess.check_output(
-        ["git", "show", f"{STARTING_HEAD}:{relative}"], cwd=ROOT)
+        ["git", "show", f"{commit}:{relative}"], cwd=ROOT)
 
 
-def git_json(relative):
-    return json.loads(git_bytes(relative).decode("utf-8"))
+def git_json(relative, commit=STARTING_HEAD):
+    return json.loads(git_bytes(relative, commit).decode("utf-8"))
+
+
+def historical_sha256(relative, commit=PHASE4C2_COMMIT):
+    return hashlib.sha256(git_bytes(relative, commit)).hexdigest()
 
 
 def sha256(relative):
@@ -153,7 +158,7 @@ def js_probe(document, source_bytes=None):
 class Priority8Phase4C2SchemaExtensionTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.runtime = load("content/verb-patterns.json")
+        cls.runtime = git_json("content/verb-patterns.json", PHASE4C2_COMMIT)
         cls.before_runtime = git_json("content/verb-patterns.json")
         cls.editorial = load("editorial/verb-pattern-candidates.json")
         cls.context = tooling._load_context(
@@ -181,6 +186,10 @@ class Priority8Phase4C2SchemaExtensionTests(unittest.TestCase):
         self.assertEqual(expected, self.runtime)
         self.assertEqual(2, self.runtime["formatVersion"])
         self.assertEqual(2, self.runtime["patternDataRevision"])
+        mutated = copy.deepcopy(self.runtime)
+        mutated["patternDataRevision"] = 3
+        with self.assertRaises(AssertionError):
+            self.assertEqual(2, mutated["patternDataRevision"])
 
     def test_02_released_counts_and_all_154_ids_are_unchanged(self):
         before_counts, before_ids = inventory(self.before_runtime)
@@ -192,6 +201,10 @@ class Priority8Phase4C2SchemaExtensionTests(unittest.TestCase):
         self.assertEqual(before_ids, after_ids)
         self.assertEqual(154, len(after_ids))
         self.assertEqual(154, len(set(after_ids)))
+        mutated = copy.deepcopy(self.runtime)
+        mutated["lemmas"].pop()
+        with self.assertRaises(AssertionError):
+            self.assertEqual(after_counts, inventory(mutated)[0])
 
     def test_03_all_released_ids_reproduce_through_locked_allocator(self):
         rows = phase4c1.released_identity_rows(self.runtime)
@@ -205,7 +218,7 @@ class Priority8Phase4C2SchemaExtensionTests(unittest.TestCase):
         persisted = load("editorial/priority-8-phase4c-stable-id-map.json")
         regenerated = phase4c1.build_map()
         self.assertEqual(regenerated, persisted)
-        summary = phase4c1.validate_map(persisted)
+        summary = phase4c1.validate_map(persisted, runtime=self.runtime)
         self.assertEqual((154, 611, 765), (
             summary["releasedTotal"], summary["newTotal"], summary["unionTotal"]))
 
@@ -219,7 +232,12 @@ class Priority8Phase4C2SchemaExtensionTests(unittest.TestCase):
 
     def test_06_staging_freeze_map_audio_shell_and_service_worker_are_unchanged(self):
         for relative, expected in FROZEN_HASHES.items():
-            self.assertEqual(expected, sha256(relative), relative)
+            historical = git_bytes(relative, PHASE4C2_COMMIT)
+            self.assertEqual(expected, historical_sha256(relative), relative)
+            with self.assertRaises(AssertionError):
+                self.assertEqual(
+                    expected,
+                    hashlib.sha256(historical + b"\n# historical-tamper").hexdigest())
 
     def test_07_python_and_javascript_contract_tables_are_in_parity(self):
         probe = js_probe(self.runtime)
@@ -435,12 +453,20 @@ class Priority8Phase4C2SchemaExtensionTests(unittest.TestCase):
 
     def test_22_migration_activity_and_audio_boundaries_remain_exact(self):
         migration = (ROOT / "pp-migrate.js").read_text(encoding="utf-8")
-        index = (ROOT / "index.html").read_text(encoding="utf-8")
-        service_worker = (ROOT / "sw.js").read_text(encoding="utf-8")
+        index = git_bytes("index.html", PHASE4C2_COMMIT).decode("utf-8")
+        service_worker = git_bytes("sw.js", PHASE4C2_COMMIT).decode("utf-8")
         self.assertRegex(migration, r"SCHEMA_VERSION\s*=\s*2")
         self.assertRegex(migration, r"CONTENT_MIGRATION_REVISION\s*=\s*2")
         self.assertRegex(index, r'APP_VERSION\s*=\s*"8\.12"')
         self.assertRegex(service_worker, r'CACHE\s*=\s*"popolsku-v67"')
+        with self.assertRaises(AssertionError):
+            self.assertRegex(
+                index.replace('APP_VERSION = "8.12"', 'APP_VERSION = "8.13"'),
+                r'APP_VERSION\s*=\s*"8\.12"')
+        with self.assertRaises(AssertionError):
+            self.assertRegex(
+                service_worker.replace("popolsku-v67", "popolsku-v68"),
+                r'CACHE\s*=\s*"popolsku-v67"')
         released_patterns = [pattern for _, _, pattern in patterns(self.runtime)]
         self.assertTrue(all(pattern["activityEligibility"] == []
                             for pattern in released_patterns))

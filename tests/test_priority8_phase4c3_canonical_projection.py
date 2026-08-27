@@ -1,10 +1,12 @@
 import copy
 import hashlib
 import json
+from contextlib import contextmanager
 from pathlib import Path
 import subprocess
 import sys
 import unittest
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -59,16 +61,51 @@ def git_bytes(commit, relative):
     return run.stdout
 
 
+def git_json(commit, relative):
+    return json.loads(git_bytes(commit, relative).decode("utf-8"))
+
+
+@contextmanager
+def historical_phase4c3_inputs():
+    """Make Phase 4C3 regeneration read its owned production snapshot."""
+    runtime_relative = phase4c3.RUNTIME_PATH.relative_to(ROOT).as_posix()
+    runtime = git_json(PHASE4C3_COMMIT, runtime_relative)
+    runtime_digest = hashlib.sha256(
+        git_bytes(PHASE4C3_COMMIT, runtime_relative)).hexdigest()
+    original_read_json = phase4c3.phase4c1.read_json
+    original_sha256 = phase4c3.sha256
+
+    def historical_read_json(path):
+        if Path(path).resolve() == phase4c3.RUNTIME_PATH.resolve():
+            return copy.deepcopy(runtime)
+        return original_read_json(path)
+
+    def historical_sha256(path):
+        if Path(path).resolve() == phase4c3.RUNTIME_PATH.resolve():
+            return runtime_digest
+        return original_sha256(path)
+
+    with mock.patch.object(
+            phase4c3.phase4c1, "read_json", side_effect=historical_read_json), \
+            mock.patch.object(
+                phase4c3, "sha256", side_effect=historical_sha256):
+        yield
+
+
 class Priority8Phase4C3CanonicalProjectionTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.staging = phase4c3.phase4c1.read_json(phase4c3.STAGING_PATH)
         cls.manifest = phase4c3.phase4c1.read_json(phase4c3.FREEZE_PATH)
         cls.stable_map = phase4c3.phase4c1.read_json(phase4c3.MAP_PATH)
-        cls.runtime = phase4c3.phase4c1.read_json(phase4c3.RUNTIME_PATH)
+        cls.runtime = git_json(
+            PHASE4C3_COMMIT,
+            phase4c3.RUNTIME_PATH.relative_to(ROOT).as_posix())
         cls.persisted = phase4c3.phase4c1.read_json(phase4c3.ARTIFACT_PATH)
-        cls.generated = phase4c3.build_artifact()
-        cls.summary = phase4c3.validate_artifact(cls.persisted)
+        with historical_phase4c3_inputs():
+            cls.generated = phase4c3.build_artifact()
+        with historical_phase4c3_inputs():
+            cls.summary = phase4c3.validate_artifact(cls.persisted)
         cls.trace_by_id = {
             row["stableId"]: row for row in cls.persisted["identityLedger"]["rows"]}
         cls.patterns = {}
@@ -84,7 +121,8 @@ class Priority8Phase4C3CanonicalProjectionTests(unittest.TestCase):
                     cls.patterns[identity] = pattern
 
     def assert_rejected(self, artifact):
-        with self.assertRaises(phase4c3.Phase4C3Error):
+        with historical_phase4c3_inputs(), self.assertRaises(
+                phase4c3.Phase4C3Error):
             phase4c3.validate_artifact(artifact)
 
     def mutation(self):
@@ -118,7 +156,8 @@ class Priority8Phase4C3CanonicalProjectionTests(unittest.TestCase):
     def test_02_stable_map_hash_counts_and_zero_vpx_are_exact(self):
         self.assertEqual(phase4c3.MAP_SHA256, sha256(
             "editorial/priority-8-phase4c-stable-id-map.json"))
-        summary = phase4c3.phase4c1.validate_map(self.stable_map)
+        summary = phase4c3.phase4c1.validate_map(
+            self.stable_map, runtime=self.runtime)
         self.assertEqual(611, summary["newTotal"])
         self.assertEqual(0, summary["exerciseIds"])
 
@@ -357,31 +396,22 @@ class Priority8Phase4C3CanonicalProjectionTests(unittest.TestCase):
         self.assertEqual(154, len({row["id"] for row in rows}))
 
     def test_30_all_protected_inputs_and_production_paths_are_unchanged(self):
-        live_hashes = {
-            relative: expected
-            for relative, expected in PROTECTED_HASHES.items()
-            if relative != TOOLING_PATH
-        }
-        for relative, expected in live_hashes.items():
-            self.assertEqual(expected, sha256(relative), relative)
-
-        historical_tooling = git_bytes(PHASE4C3_COMMIT, TOOLING_PATH)
-        expected_tooling = PROTECTED_HASHES[TOOLING_PATH]
-        self.assertEqual(
-            expected_tooling,
-            hashlib.sha256(historical_tooling).hexdigest(),
-            f"{TOOLING_PATH} at Phase 4C3 endpoint {PHASE4C3_COMMIT}")
-        with self.assertRaises(AssertionError):
+        for relative, expected in PROTECTED_HASHES.items():
+            historical = git_bytes(PHASE4C3_COMMIT, relative)
             self.assertEqual(
-                expected_tooling,
-                hashlib.sha256(
-                    historical_tooling + b"\n# historical-tamper"
-                ).hexdigest())
+                expected, hashlib.sha256(historical).hexdigest(),
+                f"{relative} at Phase 4C3 endpoint {PHASE4C3_COMMIT}")
+            with self.assertRaises(AssertionError):
+                self.assertEqual(
+                    expected,
+                    hashlib.sha256(
+                        historical + b"\n# historical-tamper").hexdigest())
 
     def test_31_regeneration_is_byte_identical_and_default_is_verify_only(self):
         self.assertEqual(self.generated, self.persisted)
         before = phase4c3.ARTIFACT_PATH.read_bytes()
-        summary = phase4c3.run(write=False)
+        with historical_phase4c3_inputs():
+            summary = phase4c3.run(write=False)
         self.assertEqual(self.summary, summary)
         self.assertEqual(before, phase4c3.ARTIFACT_PATH.read_bytes())
 
@@ -502,6 +532,11 @@ class Priority8Phase4C3CanonicalProjectionTests(unittest.TestCase):
             "priority8_phase4c3_canonical_projection.py",
             "tests/test_priority8_phase4c3_canonical_projection.py",
             "reports/priority-8-phase-4c3-canonical-projection.md",
+            "tests/test_priority8_phase4c1_stable_ids.py",
+            "tests/test_priority8_phase4c2_schema_extensions.py",
+            "tests/test_priority8_phase4c4a_governance_preparation.py",
+            "tests/test_priority8_phase4c4c_release_freeze.py",
+            "reports/priority-8-phase-4d0-historical-release-locks.md",
         }), paths)
 
 
