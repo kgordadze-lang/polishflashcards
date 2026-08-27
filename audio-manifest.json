@@ -1,6 +1,6 @@
 {
 "voice": "pl-PL-MarekNeural",
-"generatedAt": "2026-08-20T12:35:38.597530Z",
+"generatedAt": "2026-08-27T15:22:52.769972Z",
 "audioDir": "audio",
 "entries": {
 "000311d1288f": {
@@ -13610,6 +13610,882 @@
 "0b4d3fbd75d7": {
 "pl": "W końcu znalazłam nową pracę.",
 "file": "audio/0b4d3fbd75d7.mp3"
+},
+"9b1ffa9729fd": {
+"pl": "Biorę udział w konferencji.",
+"file": "audio/9b1ffa9729fd.mp3"
+},
+"428e47a16e14": {
+"pl": "Biorę kostki lodu szczypcami.",
+"file": "audio/428e47a16e14.mp3"
+},
+"9955c5136f55": {
+"pl": "Biorę dziecko za rękę.",
+"file": "audio/9955c5136f55.mp3"
+},
+"b301590bc85f": {
+"pl": "Chcę pomocy od brata.",
+"file": "audio/b301590bc85f.mp3"
+},
+"94037521da33": {
+"pl": "Chcę zwiedzić Kraków.",
+"file": "audio/94037521da33.mp3"
+},
+"9ef34e96258a": {
+"pl": "Chcę, żeby dzieci były szczęśliwe.",
+"file": "audio/9ef34e96258a.mp3"
+},
+"b7d52690f88d": {
+"pl": "Chciałbym herbatę.",
+"file": "audio/b7d52690f88d.mp3"
+},
+"5b085cefeab5": {
+"pl": "Chciałbym zapytać o rezerwację.",
+"file": "audio/5b085cefeab5.mp3"
+},
+"87d9b2abe332": {
+"pl": "Chciałbym, żebyś do mnie zadzwonił.",
+"file": "audio/87d9b2abe332.mp3"
+},
+"11c4cda995e7": {
+"pl": "Chodzę na kurs polskiego.",
+"file": "audio/11c4cda995e7.mp3"
+},
+"b04cc8c764b1": {
+"pl": "Chodzę do biblioteki.",
+"file": "audio/b04cc8c764b1.mp3"
+},
+"d5ba5b7f2400": {
+"pl": "Chodzę pływać.",
+"file": "audio/d5ba5b7f2400.mp3"
+},
+"11707a4764e6": {
+"pl": "Cieszę się zaufaniem zespołu.",
+"file": "audio/11707a4764e6.mp3"
+},
+"04bd81bed4ff": {
+"pl": "Cieszę się na wakacje.",
+"file": "audio/04bd81bed4ff.mp3"
+},
+"3deb1c213942": {
+"pl": "Cieszę się z twojego sukcesu.",
+"file": "audio/3deb1c213942.mp3"
+},
+"4714c1af24d9": {
+"pl": "Cieszę się, że przyjechałeś.",
+"file": "audio/4714c1af24d9.mp3"
+},
+"c8fce39f7338": {
+"pl": "Czytam dzieciom książkę.",
+"file": "audio/c8fce39f7338.mp3"
+},
+"21deeea36483": {
+"pl": "Czytam dzieciom: „Ala ma kota”.",
+"file": "audio/21deeea36483.mp3"
+},
+"23380fbc140d": {
+"pl": "Czytam, dlaczego ceny rosną.",
+"file": "audio/23380fbc140d.mp3"
+},
+"11b422e81ce4": {
+"pl": "Czytam o polityce.",
+"file": "audio/11b422e81ce4.mp3"
+},
+"fab62435d12f": {
+"pl": "Czytam, że ceny rosną.",
+"file": "audio/fab62435d12f.mp3"
+},
+"a133ead35f55": {
+"pl": "Dałem sąsiadowi klucze.",
+"file": "audio/a133ead35f55.mp3"
+},
+"4144cf3a88f6": {
+"pl": "Daję sąsiadowi klucze.",
+"file": "audio/4144cf3a88f6.mp3"
+},
+"c1a58702404f": {
+"pl": "Dojedziemy do hotelu.",
+"file": "audio/c1a58702404f.mp3"
+},
+"093ec34565c3": {
+"pl": "Dojadę pociągiem.",
+"file": "audio/093ec34565c3.mp3"
+},
+"c08710b2f3cf": {
+"pl": "Dojedziemy na stację.",
+"file": "audio/c08710b2f3cf.mp3"
+},
+"d543bc006fa8": {
+"pl": "Dojedziemy na rowerach.",
+"file": "audio/d543bc006fa8.mp3"
+},
+"0b97e1c1967a": {
+"pl": "Doszliśmy do wniosku.",
+"file": "audio/0b97e1c1967a.mp3"
+},
+"8fb4d3789b66": {
+"pl": "Dzwonię do mamy.",
+"file": "audio/8fb4d3789b66.mp3"
+},
+"76b537b20503": {
+"pl": "Dzwonię na policję.",
+"file": "audio/76b537b20503.mp3"
+},
+"057b6fb7e09d": {
+"pl": "Dzwonię, że się spóźnię.",
+"file": "audio/057b6fb7e09d.mp3"
+},
+"f30200191d71": {
+"pl": "Dzwonię, żebyś odebrał paczkę.",
+"file": "audio/f30200191d71.mp3"
+},
+"fd4902354994": {
+"pl": "Gotuję obiad mojej mamie.",
+"file": "audio/fd4902354994.mp3"
+},
+"6ef40296fd5b": {
+"pl": "Idę kupić chleb.",
+"file": "audio/6ef40296fd5b.mp3"
+},
+"ab8c5faeed0d": {
+"pl": "Idę na basen.",
+"file": "audio/ab8c5faeed0d.mp3"
+},
+"5a01f4fb05af": {
+"pl": "Jadę do Gdańska.",
+"file": "audio/5a01f4fb05af.mp3"
+},
+"2d146d29e71a": {
+"pl": "Jadę autobusem.",
+"file": "audio/2d146d29e71a.mp3"
+},
+"3de26703beef": {
+"pl": "Jadę na rowerze.",
+"file": "audio/3de26703beef.mp3"
+},
+"3e3078aaafef": {
+"pl": "Dziecko je zupę łyżką.",
+"file": "audio/3e3078aaafef.mp3"
+},
+"b2b65b728f8e": {
+"pl": "Jeżdżę do Gdyni.",
+"file": "audio/b2b65b728f8e.mp3"
+},
+"f8ee0887e0b0": {
+"pl": "Jeżdżę tramwajem.",
+"file": "audio/f8ee0887e0b0.mp3"
+},
+"93e0c386d595": {
+"pl": "Jeżdżę na nartach.",
+"file": "audio/93e0c386d595.mp3"
+},
+"a8379ed88ca5": {
+"pl": "Kłócimy się, czy powinniśmy wyjechać.",
+"file": "audio/a8379ed88ca5.mp3"
+},
+"87601020e134": {
+"pl": "Kłócimy się o drobiazgi.",
+"file": "audio/87601020e134.mp3"
+},
+"966ff0477baf": {
+"pl": "Kłócę się z bratem.",
+"file": "audio/966ff0477baf.mp3"
+},
+"9848a2b4dc84": {
+"pl": "Kłócimy się, że nikt nie sprząta.",
+"file": "audio/9848a2b4dc84.mp3"
+},
+"cd9a0160998a": {
+"pl": "Kocham swoje rodzinne miasto.",
+"file": "audio/cd9a0160998a.mp3"
+},
+"d3395ce2eade": {
+"pl": "Bardzo kocham swoją babcię.",
+"file": "audio/d3395ce2eade.mp3"
+},
+"decd88f47e8c": {
+"pl": "Moja siostra kocha czekoladę.",
+"file": "audio/decd88f47e8c.mp3"
+},
+"5aa059de6ad2": {
+"pl": "Dzieci kochają biegać po plaży.",
+"file": "audio/5aa059de6ad2.mp3"
+},
+"8b19ac00de55": {
+"pl": "Kończę pracę.",
+"file": "audio/8b19ac00de55.mp3"
+},
+"3cfc7433c9bd": {
+"pl": "Kończę czytać książkę.",
+"file": "audio/3cfc7433c9bd.mp3"
+},
+"068a5a439252": {
+"pl": "Studenci chętnie korzystają ze zniżek studenckich.",
+"file": "audio/068a5a439252.mp3"
+},
+"1e72309024e1": {
+"pl": "Codziennie korzystam z komunikacji miejskiej.",
+"file": "audio/1e72309024e1.mp3"
+},
+"2f09d514256b": {
+"pl": "Kupię chleb od piekarza za pięć złotych.",
+"file": "audio/2f09d514256b.mp3"
+},
+"aba503da5aa6": {
+"pl": "Kupuję dzieciom zabawki.",
+"file": "audio/aba503da5aa6.mp3"
+},
+"cd9d66232c05": {
+"pl": "Kupuję zabawki dla dzieci.",
+"file": "audio/cd9d66232c05.mp3"
+},
+"f6c377e1814f": {
+"pl": "Kupuję warzywa od rolnika za dziesięć złotych.",
+"file": "audio/f6c377e1814f.mp3"
+},
+"de7960dec234": {
+"pl": "Martwię się twoim zdrowiem.",
+"file": "audio/de7960dec234.mp3"
+},
+"9817533abed5": {
+"pl": "Martwię się, jak sobie poradzimy.",
+"file": "audio/9817533abed5.mp3"
+},
+"d8bef8993e4b": {
+"pl": "Martwię się o egzamin.",
+"file": "audio/d8bef8993e4b.mp3"
+},
+"40793df42111": {
+"pl": "Martwię się, że się spóźnimy.",
+"file": "audio/40793df42111.mp3"
+},
+"2d34772993cd": {
+"pl": "Mieszkam w Warszawie z bratem.",
+"file": "audio/2d34772993cd.mp3"
+},
+"81c5a8ecc879": {
+"pl": "Mogę podnieść tę walizkę.",
+"file": "audio/81c5a8ecc879.mp3"
+},
+"f09318502577": {
+"pl": "Czy mogę otworzyć okno?",
+"file": "audio/f09318502577.mp3"
+},
+"c55a23061791": {
+"pl": "Muszę dziś iść do lekarza.",
+"file": "audio/c55a23061791.mp3"
+},
+"c2fdb5c1b3f6": {
+"pl": "Należę do klubu sportowego.",
+"file": "audio/c2fdb5c1b3f6.mp3"
+},
+"a9443da0e00c": {
+"pl": "Ten dom należy do sąsiadki.",
+"file": "audio/a9443da0e00c.mp3"
+},
+"138c5fdea448": {
+"pl": "Napisałem powieść.",
+"file": "audio/138c5fdea448.mp3"
+},
+"48eaf661eb95": {
+"pl": "Napisałem koledze wiadomość.",
+"file": "audio/48eaf661eb95.mp3"
+},
+"41285fe7ee96": {
+"pl": "Napisałem koledze: „Wracam jutro”.",
+"file": "audio/41285fe7ee96.mp3"
+},
+"b05d84608195": {
+"pl": "Napisałem koledze, o której wrócę.",
+"file": "audio/b05d84608195.mp3"
+},
+"68dfa5801107": {
+"pl": "Napisałem koledze o wakacjach.",
+"file": "audio/68dfa5801107.mp3"
+},
+"485aa2820de7": {
+"pl": "Napisałem koledze, że wrócę jutro.",
+"file": "audio/485aa2820de7.mp3"
+},
+"b0b33b4669ee": {
+"pl": "Napisałem koledze, żeby zadzwonił.",
+"file": "audio/b0b33b4669ee.mp3"
+},
+"c975894d4742": {
+"pl": "Napisałem do koleżanki wiadomość.",
+"file": "audio/c975894d4742.mp3"
+},
+"399b2398f8f9": {
+"pl": "Napisałem do koleżanki: „Wracam jutro”.",
+"file": "audio/399b2398f8f9.mp3"
+},
+"78cf114f0fcc": {
+"pl": "Napisałem do koleżanki, o której wrócę.",
+"file": "audio/78cf114f0fcc.mp3"
+},
+"6dedf61c1d3c": {
+"pl": "Napisałem do koleżanki o wakacjach.",
+"file": "audio/6dedf61c1d3c.mp3"
+},
+"ea77343a565a": {
+"pl": "Napisałem do koleżanki, że wracam jutro.",
+"file": "audio/ea77343a565a.mp3"
+},
+"e60499ab39c3": {
+"pl": "Napisałem do koleżanki, żeby zadzwoniła.",
+"file": "audio/e60499ab39c3.mp3"
+},
+"f1edc140dd9c": {
+"pl": "Obejrzałem ten film.",
+"file": "audio/f1edc140dd9c.mp3"
+},
+"0329b14c8894": {
+"pl": "Odpowiadam: „Nie wiem”.",
+"file": "audio/0329b14c8894.mp3"
+},
+"b5079f0a3540": {
+"pl": "Odpowiadam na pytanie.",
+"file": "audio/b5079f0a3540.mp3"
+},
+"a592f1bcbc07": {
+"pl": "Odpowiadam, że nie wiem.",
+"file": "audio/a592f1bcbc07.mp3"
+},
+"e449d196a5f1": {
+"pl": "Oglądam ją w nowym serialu.",
+"file": "audio/e449d196a5f1.mp3"
+},
+"89c3a5bcaa7a": {
+"pl": "Pamiętaj zamknąć drzwi.",
+"file": "audio/89c3a5bcaa7a.mp3"
+},
+"97da6778ed1f": {
+"pl": "Pamiętaj, żeby dzieci umyły ręce.",
+"file": "audio/97da6778ed1f.mp3"
+},
+"a66c456c5cb7": {
+"pl": "Pamiętam ten dzień.",
+"file": "audio/a66c456c5cb7.mp3"
+},
+"a4beac0bf3f3": {
+"pl": "Pamiętam o twoich urodzinach.",
+"file": "audio/a4beac0bf3f3.mp3"
+},
+"05310f290938": {
+"pl": "Ten krawat pasuje do garnituru.",
+"file": "audio/05310f290938.mp3"
+},
+"f8fa28beeb09": {
+"pl": "Ten termin mi nie pasuje.",
+"file": "audio/f8fa28beeb09.mp3"
+},
+"c818b94577ea": {
+"pl": "Ten klucz pasuje do zamka.",
+"file": "audio/c818b94577ea.mp3"
+},
+"9273dea32b6b": {
+"pl": "Ten pierścionek pasuje na mój palec.",
+"file": "audio/9273dea32b6b.mp3"
+},
+"c0c69f55ae33": {
+"pl": "Ten kolor mi do ciebie nie pasuje.",
+"file": "audio/c0c69f55ae33.mp3"
+},
+"b61cfb07d402": {
+"pl": "Codziennie rano piję kawę.",
+"file": "audio/b61cfb07d402.mp3"
+},
+"f6a562f50ca5": {
+"pl": "Piszę powieść.",
+"file": "audio/f6a562f50ca5.mp3"
+},
+"950806ff10e0": {
+"pl": "Piszę koledze wiadomość.",
+"file": "audio/950806ff10e0.mp3"
+},
+"12f57a0ea9da": {
+"pl": "Piszę koledze: „Wracam jutro”.",
+"file": "audio/12f57a0ea9da.mp3"
+},
+"df99d55c652a": {
+"pl": "Piszę koledze, o której wrócę.",
+"file": "audio/df99d55c652a.mp3"
+},
+"1cc037d1f0ab": {
+"pl": "Piszę koledze o wakacjach.",
+"file": "audio/1cc037d1f0ab.mp3"
+},
+"ebc12725709a": {
+"pl": "Piszę koledze, że wracam jutro.",
+"file": "audio/ebc12725709a.mp3"
+},
+"c31424445e47": {
+"pl": "Piszę koledze, żeby zadzwonił.",
+"file": "audio/c31424445e47.mp3"
+},
+"1c5a5becb1fd": {
+"pl": "Piszę do koleżanki wiadomość.",
+"file": "audio/1c5a5becb1fd.mp3"
+},
+"fcb3516bffbd": {
+"pl": "Piszę do koleżanki: „Wracam jutro”.",
+"file": "audio/fcb3516bffbd.mp3"
+},
+"dd4ee3bc610f": {
+"pl": "Piszę do koleżanki, o której wrócę.",
+"file": "audio/dd4ee3bc610f.mp3"
+},
+"ef47d526ff99": {
+"pl": "Piszę do koleżanki o wakacjach.",
+"file": "audio/ef47d526ff99.mp3"
+},
+"c31da85c044b": {
+"pl": "Piszę do koleżanki, że wracam jutro.",
+"file": "audio/c31da85c044b.mp3"
+},
+"8407402869bf": {
+"pl": "Piszę do koleżanki, żeby zadzwoniła.",
+"file": "audio/8407402869bf.mp3"
+},
+"da5e6a3da642": {
+"pl": "Pokazuję dzieciom zdjęcia.",
+"file": "audio/da5e6a3da642.mp3"
+},
+"bd6763a597bb": {
+"pl": "Pokazuję, jak to zrobić.",
+"file": "audio/bd6763a597bb.mp3"
+},
+"e031006c7031": {
+"pl": "Pokazuję na mapę.",
+"file": "audio/e031006c7031.mp3"
+},
+"3de1b3160f9a": {
+"pl": "Trener poleca zawodnikom rozgrzewkę.",
+"file": "audio/3de1b3160f9a.mp3"
+},
+"0b0ae5676611": {
+"pl": "Kierownik poleca mi: „Zamknij drzwi”.",
+"file": "audio/0b0ae5676611.mp3"
+},
+"d6243757c891": {
+"pl": "Lekarz poleca mi odpoczywać.",
+"file": "audio/d6243757c891.mp3"
+},
+"b0b8e4ec9eca": {
+"pl": "Szef poleca mi, żebym przygotował raport.",
+"file": "audio/b0b8e4ec9eca.mp3"
+},
+"557c6d2de4c5": {
+"pl": "Polecam ci tę restaurację.",
+"file": "audio/557c6d2de4c5.mp3"
+},
+"882b445a558e": {
+"pl": "Powiedziałem koledze prawdę.",
+"file": "audio/882b445a558e.mp3"
+},
+"945a8bd7c9fc": {
+"pl": "Powiedziałem koledze, o której wracam.",
+"file": "audio/945a8bd7c9fc.mp3"
+},
+"cdbc53deb8fa": {
+"pl": "Powiedziałem koledze o problemie.",
+"file": "audio/cdbc53deb8fa.mp3"
+},
+"3cd4175e754b": {
+"pl": "Powiedziałem koledze, że wyjeżdżam.",
+"file": "audio/3cd4175e754b.mp3"
+},
+"98ee75b71dba": {
+"pl": "Powiedziałem koledze, żeby poczekał.",
+"file": "audio/98ee75b71dba.mp3"
+},
+"b9cdbbfa3d0b": {
+"pl": "Powiedziałem: „Zaraz wracam”.",
+"file": "audio/b9cdbbfa3d0b.mp3"
+},
+"170c6d9660e8": {
+"pl": "Powiedziałem do koleżanki prawdę.",
+"file": "audio/170c6d9660e8.mp3"
+},
+"fe82f1997fde": {
+"pl": "Powiedziałem do koleżanki, o której wracam.",
+"file": "audio/fe82f1997fde.mp3"
+},
+"47ee41d4d494": {
+"pl": "Powiedziałem do koleżanki o problemie.",
+"file": "audio/47ee41d4d494.mp3"
+},
+"63f860263cf1": {
+"pl": "Powiedziałem do koleżanki, że wyjeżdżam.",
+"file": "audio/63f860263cf1.mp3"
+},
+"e4f22d7fd504": {
+"pl": "Powiedziałem do koleżanki, żeby poczekała.",
+"file": "audio/e4f22d7fd504.mp3"
+},
+"22fa473ca991": {
+"pl": "Mama pozwala mi na wyjście.",
+"file": "audio/22fa473ca991.mp3"
+},
+"3231ac5d48e7": {
+"pl": "Mama pozwala, żeby dzieci oglądały bajki.",
+"file": "audio/3231ac5d48e7.mp3"
+},
+"973f48ae586e": {
+"pl": "Pozwalam pracować z domu.",
+"file": "audio/973f48ae586e.mp3"
+},
+"55a70e3d584d": {
+"pl": "Internet pozwala pracować zdalnie.",
+"file": "audio/55a70e3d584d.mp3"
+},
+"450d11ef88ac": {
+"pl": "Internet pozwala na szybką komunikację.",
+"file": "audio/450d11ef88ac.mp3"
+},
+"d6ac0051c7ad": {
+"pl": "Prawo pozwala, żeby firmy stosowały ulgi.",
+"file": "audio/d6ac0051c7ad.mp3"
+},
+"f80cc1d805b1": {
+"pl": "Pracuję nad nowym filmem.",
+"file": "audio/f80cc1d805b1.mp3"
+},
+"3eeb11c7ee17": {
+"pl": "Próbuję szczęścia.",
+"file": "audio/3eeb11c7ee17.mp3"
+},
+"06be7cfeacaa": {
+"pl": "Próbuję rozwiązać problem.",
+"file": "audio/06be7cfeacaa.mp3"
+},
+"71df8517ac0b": {
+"pl": "Próbuję zupy.",
+"file": "audio/71df8517ac0b.mp3"
+},
+"109f21264b0a": {
+"pl": "Marek przeprasza nauczyciela za spóźnienie.",
+"file": "audio/109f21264b0a.mp3"
+},
+"f0239657daca": {
+"pl": "Przepraszam cię, że nie zadzwoniłem wczoraj.",
+"file": "audio/f0239657daca.mp3"
+},
+"07411741db8d": {
+"pl": "Przyjadę do Warszawy.",
+"file": "audio/07411741db8d.mp3"
+},
+"8e3d82dc0e1c": {
+"pl": "Przyjadę na dworzec.",
+"file": "audio/8e3d82dc0e1c.mp3"
+},
+"ee3a63f0de94": {
+"pl": "Przyszliśmy do muzeum.",
+"file": "audio/ee3a63f0de94.mp3"
+},
+"444f91d3189f": {
+"pl": "Przyszedłem odebrać dokument.",
+"file": "audio/444f91d3189f.mp3"
+},
+"d539d96bfa4c": {
+"pl": "Przyszliśmy na koncert.",
+"file": "audio/d539d96bfa4c.mp3"
+},
+"245595f72457": {
+"pl": "Przynoszę kawę.",
+"file": "audio/245595f72457.mp3"
+},
+"4c9d2959e7e2": {
+"pl": "Radzę ci ostrożność.",
+"file": "audio/4c9d2959e7e2.mp3"
+},
+"5cd4f719a9be": {
+"pl": "Radzę ci: „Odpocznij trochę”.",
+"file": "audio/5cd4f719a9be.mp3"
+},
+"61cdef3a1bd0": {
+"pl": "Radzę ci zjeść coś przed wyjściem.",
+"file": "audio/61cdef3a1bd0.mp3"
+},
+"edc07b91c6c7": {
+"pl": "Radzę ci, jak rozwiązać ten problem.",
+"file": "audio/edc07b91c6c7.mp3"
+},
+"efa58ee5bf2f": {
+"pl": "Radzę ci, żebyś odpoczął.",
+"file": "audio/efa58ee5bf2f.mp3"
+},
+"fb66ed06d341": {
+"pl": "Radzę sobie z trudnościami.",
+"file": "audio/fb66ed06d341.mp3"
+},
+"9a50c4eb993b": {
+"pl": "Rezerwuję stolik znajomym.",
+"file": "audio/9a50c4eb993b.mp3"
+},
+"98e34a63cb74": {
+"pl": "Rezerwuję pokój dla rodziców.",
+"file": "audio/98e34a63cb74.mp3"
+},
+"bb99d3840476": {
+"pl": "Robię pranie.",
+"file": "audio/bb99d3840476.mp3"
+},
+"628698103ce3": {
+"pl": "Robię ciasto.",
+"file": "audio/628698103ce3.mp3"
+},
+"245040f37e3a": {
+"pl": "Rozumiem żart.",
+"file": "audio/245040f37e3a.mp3"
+},
+"91f8bb56b05e": {
+"pl": "Rozumiem, dlaczego się spóźniłeś.",
+"file": "audio/91f8bb56b05e.mp3"
+},
+"79df34439500": {
+"pl": "Rozumiem, że jesteś zmęczony.",
+"file": "audio/79df34439500.mp3"
+},
+"d914dba6b71d": {
+"pl": "Rozumiem cię jak nikt inny.",
+"file": "audio/d914dba6b71d.mp3"
+},
+"dba97a28222a": {
+"pl": "Skończyłem pracę.",
+"file": "audio/dba97a28222a.mp3"
+},
+"e38a1e5b1228": {
+"pl": "Skończyłem pisać raport.",
+"file": "audio/e38a1e5b1228.mp3"
+},
+"21ae85830122": {
+"pl": "Skończyłem z paleniem.",
+"file": "audio/21ae85830122.mp3"
+},
+"1c975b980221": {
+"pl": "Spotkałem się z przyjaciółmi.",
+"file": "audio/1c975b980221.mp3"
+},
+"9d0791f1549d": {
+"pl": "Spotykam się z przyjaciółmi.",
+"file": "audio/9d0791f1549d.mp3"
+},
+"f4a782b65440": {
+"pl": "Pani Nowak uczy moją córkę matematyki.",
+"file": "audio/f4a782b65440.mp3"
+},
+"04d96f3f813d": {
+"pl": "Babcia uczy wnuczkę cierpliwości.",
+"file": "audio/04d96f3f813d.mp3"
+},
+"de2b76f21638": {
+"pl": "Ojciec uczy syna pływać.",
+"file": "audio/de2b76f21638.mp3"
+},
+"b50c137e103c": {
+"pl": "Instruktor uczy kursantów, jak reagować w niebezpiecznej sytuacji.",
+"file": "audio/b50c137e103c.mp3"
+},
+"58cbb1655370": {
+"pl": "Rodzice uczą dzieci, że warto mówić prawdę.",
+"file": "audio/58cbb1655370.mp3"
+},
+"2848b6bfb70b": {
+"pl": "Nauczycielka uczy uczniów o polskich zwyczajach.",
+"file": "audio/2848b6bfb70b.mp3"
+},
+"7aed3a914036": {
+"pl": "Umówiłem się z żoną do lekarza.",
+"file": "audio/7aed3a914036.mp3"
+},
+"825d2c8b0220": {
+"pl": "Umówiłem się z kolegą na kawę.",
+"file": "audio/825d2c8b0220.mp3"
+},
+"72fa42b008f5": {
+"pl": "Umówiłem się z zespołem, kto za co odpowiada.",
+"file": "audio/72fa42b008f5.mp3"
+},
+"ffb64558a6a9": {
+"pl": "Umówiłem się z szefem na podwyżkę.",
+"file": "audio/ffb64558a6a9.mp3"
+},
+"ef1d401a6ef0": {
+"pl": "Umówiłem się ze sprzedawcą o cenę.",
+"file": "audio/ef1d401a6ef0.mp3"
+},
+"677917ce3ad6": {
+"pl": "Umówiłem się z bratem, że pomoże mi w przeprowadzce.",
+"file": "audio/677917ce3ad6.mp3"
+},
+"98eb12b5c21d": {
+"pl": "Umówiłem się z kolegą, żeby zachować to w tajemnicy.",
+"file": "audio/98eb12b5c21d.mp3"
+},
+"2f23ffd19cb9": {
+"pl": "Unikam słodyczy.",
+"file": "audio/2f23ffd19cb9.mp3"
+},
+"cd1bb70c1660": {
+"pl": "Wiem to od dawna.",
+"file": "audio/cd1bb70c1660.mp3"
+},
+"1d70e3b1d4f1": {
+"pl": "Nie wiem, czy zdążymy na pociąg.",
+"file": "audio/1d70e3b1d4f1.mp3"
+},
+"a2a66d276f1a": {
+"pl": "Wiem o twoich problemach.",
+"file": "audio/a2a66d276f1a.mp3"
+},
+"2514b25e4a85": {
+"pl": "Wiem, że masz teraz dużo pracy.",
+"file": "audio/2514b25e4a85.mp3"
+},
+"495c10f4143b": {
+"pl": "Wracam do mieszkania.",
+"file": "audio/495c10f4143b.mp3"
+},
+"f5899a238e3e": {
+"pl": "Wracam z kina.",
+"file": "audio/f5899a238e3e.mp3"
+},
+"6d18ab587b02": {
+"pl": "Wrócę do mieszkania.",
+"file": "audio/6d18ab587b02.mp3"
+},
+"bab668d854c8": {
+"pl": "Wróciłem z kina.",
+"file": "audio/bab668d854c8.mp3"
+},
+"aa17cff6160c": {
+"pl": "Wyjadę z miasta.",
+"file": "audio/aa17cff6160c.mp3"
+},
+"864bb03fa79d": {
+"pl": "Wyjdę do ogrodu.",
+"file": "audio/864bb03fa79d.mp3"
+},
+"76073abfe8aa": {
+"pl": "Wyjdę na balkon.",
+"file": "audio/76073abfe8aa.mp3"
+},
+"1e0e5e2b80ec": {
+"pl": "Szef wymaga lojalności od pracowników.",
+"file": "audio/1e0e5e2b80ec.mp3"
+},
+"3e0cb09156c7": {
+"pl": "Szef wymaga, żeby pracownicy przychodzili punktualnie.",
+"file": "audio/3e0cb09156c7.mp3"
+},
+"3462e84baada": {
+"pl": "Sytuacja wymaga, żeby wszyscy zachowali spokój.",
+"file": "audio/3462e84baada.mp3"
+},
+"b40376466e0d": {
+"pl": "Wziąłem kostkę lodu szczypcami.",
+"file": "audio/b40376466e0d.mp3"
+},
+"9f0f2162174a": {
+"pl": "Wziąłem dziecko za rękę.",
+"file": "audio/9f0f2162174a.mp3"
+},
+"76f31776b9fc": {
+"pl": "Wziąłem udział w konferencji.",
+"file": "audio/76f31776b9fc.mp3"
+},
+"6e10f3e8e76f": {
+"pl": "Zacząłem lekcję.",
+"file": "audio/6e10f3e8e76f.mp3"
+},
+"aa6eeec08797": {
+"pl": "Zacząłem czytać książkę.",
+"file": "audio/aa6eeec08797.mp3"
+},
+"445b64e8dcba": {
+"pl": "Zamawiam pizzę.",
+"file": "audio/445b64e8dcba.mp3"
+},
+"9152010935fa": {
+"pl": "Zamawiam mężowi prezent.",
+"file": "audio/9152010935fa.mp3"
+},
+"cfae756233e1": {
+"pl": "Zamawiam prezent dla żony.",
+"file": "audio/cfae756233e1.mp3"
+},
+"fd92a2de4aab": {
+"pl": "Zamawiam meble u stolarza.",
+"file": "audio/fd92a2de4aab.mp3"
+},
+"9cec7948963a": {
+"pl": "Zapominam zadzwonić.",
+"file": "audio/9cec7948963a.mp3"
+},
+"87e950462aed": {
+"pl": "Zapominam tę twarz.",
+"file": "audio/87e950462aed.mp3"
+},
+"925763703230": {
+"pl": "Zapominam numeru telefonu.",
+"file": "audio/925763703230.mp3"
+},
+"4b94069b8494": {
+"pl": "Zapominam, czy zamknąłem drzwi.",
+"file": "audio/4b94069b8494.mp3"
+},
+"cb6d624da8ea": {
+"pl": "Zapominam o spotkaniu.",
+"file": "audio/cb6d624da8ea.mp3"
+},
+"3023b077de1d": {
+"pl": "Zapominam, że mam spotkanie.",
+"file": "audio/3023b077de1d.mp3"
+},
+"485fb2bf832d": {
+"pl": "Zapraszam cię do domu.",
+"file": "audio/485fb2bf832d.mp3"
+},
+"1c603f6d707f": {
+"pl": "Zapraszam cię na urodziny.",
+"file": "audio/1c603f6d707f.mp3"
+},
+"62b4959430ad": {
+"pl": "Zapytałem, czy możemy zacząć jutro. „Zgadzam się” — odpowiedział.",
+"file": "audio/62b4959430ad.mp3"
+},
+"45dc80797f7b": {
+"pl": "Zgadzam się zapłacić połowę.",
+"file": "audio/45dc80797f7b.mp3"
+},
+"c87a92ba8b9f": {
+"pl": "Zgadzam się na twoją propozycję.",
+"file": "audio/c87a92ba8b9f.mp3"
+},
+"4637e0839349": {
+"pl": "Zgadzam się, żebyś został dłużej.",
+"file": "audio/4637e0839349.mp3"
+},
+"6c3ce9da7820": {
+"pl": "Powiedziałem, że film był świetny. „Zgadzam się” — dodała.",
+"file": "audio/6c3ce9da7820.mp3"
+},
+"1753c72171cd": {
+"pl": "Zgadzam się z tobą.",
+"file": "audio/1753c72171cd.mp3"
+},
+"feb8c899741a": {
+"pl": "Zgadzam się z nim, że to dobry pomysł.",
+"file": "audio/feb8c899741a.mp3"
+},
+"732561f322de": {
+"pl": "Życzę ci zdrowia i szczęścia.",
+"file": "audio/732561f322de.mp3"
+},
+"cf8bcb825e00": {
+"pl": "Życzę ci, żebyś zdał ten egzamin.",
+"file": "audio/cf8bcb825e00.mp3"
 }
 }
 }
