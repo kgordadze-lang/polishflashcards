@@ -2677,6 +2677,16 @@ function getVisibleTopics(){
   }));
   return out;
 }
+function pRefreshTopicSearch(){
+  const level = LEVELS.find(lv => lv.level === "Verb Patterns");
+  const topic = level && level.topics.find(t =>
+    t.kind === "patterns" && t.surface === "verb-index"
+  );
+  if(!topic) return false;
+  topic.searchText = PP_VERB_PATTERNS.searchText();
+  HAY.delete(topic);
+  return true;
+}
 function clearSearch(){
   S.query = ""; const el = $("search");
   if(el) el.value = "";
@@ -4348,12 +4358,16 @@ function pStartChoosePractice(items){
    runtime means the reference surface has nothing to show, never that some
    other document gets shown instead.
 
-   On success, only what is already on screen is refreshed: the topic tile's
-   count and, if the learner is already standing on the unavailable state, the
-   index. Nothing is persisted, nothing navigates and no focus moves. */
+   On success, the one Verb Patterns topic takes a fresh search projection from
+   the accepted runtime and drops its cached haystack before anything visible is
+   rerendered. This also resolves a query that was typed while loading, without
+   asking the learner to edit it. The topic tile's count and, if the learner is
+   already standing on the unavailable state, the index are then refreshed.
+   Nothing is persisted, nothing navigates and no focus moves. */
 const PRIORITY7_RUNTIME_URL = "./content/verb-patterns.json";
 function pSettleRuntime(accepted){
   if(accepted !== true) return;                    /* unavailable is a settled answer */
+  pRefreshTopicSearch();
   if($("home").classList.contains("active")) renderTopics();
   if($("patterns").classList.contains("active") && P.view === "index") pRenderIndex(false);
 }
