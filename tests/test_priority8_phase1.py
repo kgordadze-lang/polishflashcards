@@ -7,6 +7,8 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+import tarfile
+import tempfile
 import types
 import unittest
 
@@ -14,6 +16,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 PHASE1_BASELINE = "e036a53c4bd6a7c39e79db0b23ad75ae97db3949"
 PHASE1_RELEASE = "caf3716d503a51d90e3238f1a566de6caad6fef0"
+PHASE4D2_RELEASE = "a6420870f8c12fc25ffe15cd66b0a159bcac2fee"
 sys.path.insert(0, str(ROOT))
 
 import pp_audio_rule
@@ -53,6 +56,23 @@ def git_audio_keys(revision):
             if path.startswith("audio/") and path.endswith(".mp3")}
 
 
+def historical_required_keys(revision):
+    """Rebuild required phrases from the named Git revision, never live bytes."""
+    archive = subprocess.run(
+        ["git", "archive", revision], cwd=ROOT, capture_output=True)
+    if archive.returncode:
+        raise AssertionError(
+            f"required historical archive unavailable: {revision}: "
+            f"{archive.stderr.decode('utf-8', 'replace').strip()}")
+    with tempfile.TemporaryDirectory() as temporary:
+        root = Path(temporary)
+        with tarfile.open(fileobj=io.BytesIO(archive.stdout)) as bundle:
+            bundle.extractall(root, filter="data")
+        required = pp_audio_rule.required_phrases(
+            str(root / "data-*.js"), root / "content" / "verb-patterns.json")
+    return {phrase_key(phrase) for phrase in required}
+
+
 def patterns(document):
     for lemma in document["lemmas"]:
         for meaning in lemma["meanings"]:
@@ -84,8 +104,10 @@ def phrase_key(phrase):
 
 
 def current_audio_file_problems(manifest, live_keys, file_sizes):
-    """Current structural checks intentionally do not require future clips."""
+    """Current full-reconciliation checks for manifest, files, and required audio."""
     problems = list(verify_audio.manifest_integrity_problems(manifest))
+    for key in sorted(live_keys - set(manifest)):
+        problems.append(f"missing required manifest entry: {key}")
     for key, entry in manifest.items():
         size = file_sizes.get(Path(entry["file"]).stem)
         if size is None:
@@ -224,6 +246,9 @@ class Priority8Phase1AudioTests(unittest.TestCase):
         cls.manifest = load("audio-manifest.json")["entries"]
         cls.phase1_manifest = git_json(PHASE1_RELEASE, "audio-manifest.json")["entries"]
         cls.baseline_manifest = git_json(PHASE1_BASELINE, "audio-manifest.json")["entries"]
+        cls.phase4d2_manifest = git_json(PHASE4D2_RELEASE, "audio-manifest.json")["entries"]
+        cls.phase4d2_disk = git_audio_keys(PHASE4D2_RELEASE)
+        cls.phase4d2_live = historical_required_keys(PHASE4D2_RELEASE)
         cls.phase1_runtime = git_json(PHASE1_RELEASE, "content/verb-patterns.json")
         cls.rows = list(csv.DictReader(io.StringIO(
             git_bytes(PHASE1_RELEASE, "reports/priority-8-audio-reuse.csv")
@@ -254,16 +279,46 @@ class Priority8Phase1AudioTests(unittest.TestCase):
         del historical_missing[next(iter(historical_missing))]
         self.assertNotEqual(set(historical_missing), phase1_disk)
 
-        # Current integrity is live; 219 future clips may remain absent for now.
+        # Phase 4D2 is an immutable pre-audio checkpoint: 219 valid clips were pending.
+        pre_audio_missing = self.phase4d2_live - set(self.phase4d2_manifest)
+        self.assertEqual(3402, len(self.phase4d2_manifest))
+        self.assertEqual(3402, len(self.phase4d2_disk))
+        self.assertEqual(set(self.phase4d2_manifest), self.phase4d2_disk)
+        self.assertEqual(219, len(pre_audio_missing))
+        self.assertTrue(set(self.phase4d2_manifest) < self.phase4d2_live)
+        self.assertEqual(
+            [], verify_audio.manifest_integrity_problems(self.phase4d2_manifest))
+        self.assertTrue(set(self.phase4d2_manifest).issubset(self.phase4d2_live))
+        altered_missing = set(pre_audio_missing)
+        altered_missing.pop()
+        self.assertNotEqual(219, len(altered_missing))
+        synthetic_pre_audio_full = dict(self.phase4d2_manifest)
+        synthetic_pre_audio_full.update({key: {} for key in pre_audio_missing})
+        self.assertNotEqual(3402, len(synthetic_pre_audio_full))
+
+        # Current Phase 4E1 state is complete, not a future-audio exception.
         required = pp_audio_rule.required_phrases(
             str(ROOT / "data-*.js"), ROOT / "content" / "verb-patterns.json")
         live = {phrase_key(item) for item in required}
         files = {path.stem: path.stat().st_size
                  for path in (ROOT / "audio").glob("*.mp3")}
         self.assertEqual([], current_audio_file_problems(self.manifest, live, files))
+        self.assertEqual(3621, len(self.manifest))
+        self.assertEqual(3621, len(files))
         self.assertEqual(set(self.manifest), set(files))
-        self.assertTrue(set(self.manifest).issubset(live))
-        self.assertNotEqual(set(self.manifest), live)
+        self.assertEqual(set(self.manifest), live)
+        missing_manifest = copy.deepcopy(self.manifest)
+        del missing_manifest[next(iter(missing_manifest))]
+        self.assertTrue(any("missing required manifest entry" in problem for problem in
+                            current_audio_file_problems(missing_manifest, live, files)))
+        missing_current_file = dict(files)
+        del missing_current_file[next(iter(missing_current_file))]
+        self.assertTrue(any("missing referenced MP3" in problem for problem in
+                            current_audio_file_problems(
+                                self.manifest, live, missing_current_file)))
+        orphan_manifest = copy.deepcopy(self.manifest)
+        orphan_manifest["ffffffffffff"] = copy.deepcopy(self.manifest[next(iter(self.manifest))])
+        self.assertTrue(current_audio_file_problems(orphan_manifest, live, files))
 
     def test_20_reused_clips_and_entries_are_byte_identical(self):
         reused = [row for row in self.rows
