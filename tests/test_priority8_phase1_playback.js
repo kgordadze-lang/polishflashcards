@@ -18,11 +18,61 @@ function countOf(text, token) {
   while ((at = text.indexOf(token, at)) !== -1) { n++; at += token.length; }
   return n;
 }
+function gitFile(revision, path) {
+  var task = $.NSTask.alloc.init;
+  task.launchPath = '/usr/bin/git';
+  task.arguments = $(['--no-pager', '-C', ROOT, 'show', revision + ':' + path]);
+  var pipe = $.NSPipe.pipe;
+  task.standardOutput = pipe;
+  task.standardError = pipe;
+  task.launch;
+  var data = pipe.fileHandleForReading.readDataToEndOfFile;
+  task.waitUntilExit;
+  if (task.terminationStatus !== 0)
+    throw new Error('required historical object unavailable: ' + revision + ':' + path);
+  return ObjC.unwrap($.NSString.alloc.initWithDataEncoding(data, $.NSUTF8StringEncoding));
+}
+function phase1Stats(runtime) {
+  var result = { examples: [], recognitionOnly: 0 };
+  runtime.lemmas.forEach(function (lemma) {
+    lemma.meanings.forEach(function (meaning) {
+      meaning.patterns.forEach(function (pattern) {
+        (pattern.examples || []).forEach(function (example) { result.examples.push(example); });
+        if (pattern.teachingStatus === 'recognition-only') result.recognitionOnly++;
+      });
+    });
+  });
+  return result;
+}
+function pRenderLemmaSource(index) {
+  var start = index.indexOf('function pRenderLemma(entry){');
+  var end = index.indexOf('\nfunction pRenderUnavailable', start);
+  return start === -1 || end === -1 ? '' : index.slice(start, end);
+}
+function currentRenderUsesOnlyStaticAudioIcon(index) {
+  var body = pRenderLemmaSource(index);
+  var assignments = body.match(/\b\w+\.innerHTML\s*=\s*[^;]+;/g) || [];
+  var icon = (index.match(/const G_AUDIO='([^']*)';/) || [])[1];
+  return icon.indexOf('<svg') === 0 && icon.indexOf('pattern.') === -1 &&
+    assignments.length === 1 && assignments[0] === 'audio.innerHTML = G_AUDIO;' &&
+    body.indexOf('const pl = pEl("p", "vp-example-pl", pattern.example.pl);') !== -1 &&
+    body.indexOf('audio.setAttribute("data-say", encodeURIComponent(pattern.example.pl));') !== -1;
+}
+function phase1ButtonUsesEmoji(index) {
+  return index.indexOf('pEl("button", "mini-audio vp-example-audio", null)') !== -1 &&
+    index.indexOf('audio.type = "button";') !== -1 &&
+    index.indexOf('audio.textContent = "🔊";') !== -1;
+}
 var ROOT = rootPath();
 var INDEX = readFile(ROOT + 'index.html');
 var HELPER = readFile(ROOT + 'pp-verb-patterns.js');
 var WORKER = readFile(ROOT + 'sw.js');
 var RUNTIME = JSON.parse(readFile(ROOT + 'content/verb-patterns.json'));
+var PHASE1_RELEASE = 'caf3716d503a51d90e3238f1a566de6caad6fef0';
+var PHASE1_INDEX = gitFile(PHASE1_RELEASE, 'index.html');
+var PHASE1_HELPER = gitFile(PHASE1_RELEASE, 'pp-verb-patterns.js');
+var PHASE1_WORKER = gitFile(PHASE1_RELEASE, 'sw.js');
+var PHASE1_RUNTIME = JSON.parse(gitFile(PHASE1_RELEASE, 'content/verb-patterns.json'));
 (0, eval)(HELPER);
 
 var PASS = 0, FAIL = 0, LOG = [];
@@ -35,35 +85,49 @@ function eq(name, actual, expected) {
   ok(name + (a === e ? '' : ' (got ' + a + ', want ' + e + ')'), a === e);
 }
 
-// The released view retains pronunciation permission without creating an activity.
+// Current runtime acceptance remains live; exact Phase-1 counts are snapshots.
 ok('A1 revision-2 runtime is accepted', PP_VERB_PATTERNS.acceptRuntimeDocument(RUNTIME));
-var examples = [], activities = [], recognitionOnly = 0;
+var examples = [], activities = [];
 for (var i = 0; i < PP_VERB_PATTERNS.summary().lemmas; i++) {
   var lemma = PP_VERB_PATTERNS.lemma(i);
   lemma.meanings.forEach(function (meaning) {
     meaning.patterns.forEach(function (pattern) {
-      if (pattern.example) examples.push(pattern.example);
       activities.push(pattern.eligibility);
-      if (pattern.recognitionOnly) recognitionOnly++;
     });
   });
 }
-eq('A2 all 45 derived examples carry pronunciation permission',
-   [examples.length, examples.filter(function (e) { return e.audioEligible; }).length],
-   [45, 45]);
+var phase1 = phase1Stats(PHASE1_RUNTIME);
+var phase1MissingAudio = JSON.parse(JSON.stringify(PHASE1_RUNTIME));
+phase1MissingAudio.lemmas[0].meanings[0].patterns[0].examples[0].audioEligible = false;
+ok('A2 historical 45 derived examples carry pronunciation permission',
+   JSON.stringify([phase1.examples.length,
+     phase1.examples.filter(function (e) { return e.audioEligible; }).length]) === '[45,45]' &&
+   JSON.stringify([phase1Stats(phase1MissingAudio).examples.length,
+     phase1Stats(phase1MissingAudio).examples.filter(function (e) { return e.audioEligible; }).length]) !== '[45,45]');
 eq('A3 pronunciation does not infer an activity',
    activities.filter(function (list) { return list.length; }).length, 0);
-eq('A4 recognition-only remains recognition-only', recognitionOnly, 4);
+var phase1RecognitionMutation = JSON.parse(JSON.stringify(PHASE1_RUNTIME));
+phase1RecognitionMutation.lemmas.forEach(function (lemma) {
+  lemma.meanings.forEach(function (meaning) {
+    meaning.patterns.forEach(function (pattern) {
+      if (pattern.teachingStatus === 'recognition-only') pattern.teachingStatus = 'introduced';
+    });
+  });
+});
+ok('A4 historical recognition-only count remains four',
+   phase1.recognitionOnly === 4 && phase1Stats(phase1RecognitionMutation).recognitionOnly !== 4);
 
 // Rendering uses a native button and the one shared data-say/player path.
 ok('B1 control is conditional only on the projected audio flag',
    INDEX.indexOf('if(pattern.example.audioEligible){') !== -1);
-ok('B2 control is a native button with the existing shared audio class',
-   INDEX.indexOf('pEl("button", "mini-audio vp-example-audio", null)') !== -1 &&
-   INDEX.indexOf('audio.type = "button";') !== -1 &&
-   INDEX.indexOf('audio.textContent = "🔊";') !== -1);
-ok('B2 runtime-derived reference text is never parsed through innerHTML',
-   /function pRenderLemma\(entry\)\{[\s\S]*?audio\.innerHTML/.test(INDEX) === false);
+ok('B2 historical native control uses the Phase-1 emoji implementation',
+   phase1ButtonUsesEmoji(PHASE1_INDEX) &&
+   !phase1ButtonUsesEmoji(PHASE1_INDEX.replace('audio.textContent = "🔊";',
+                                                'audio.innerHTML = G_AUDIO;')));
+ok('B2 current render permits only the static G_AUDIO innerHTML assignment',
+   currentRenderUsesOnlyStaticAudioIcon(INDEX) &&
+   !currentRenderUsesOnlyStaticAudioIcon(INDEX.replace('audio.innerHTML = G_AUDIO;',
+                                                        'audio.innerHTML = pattern.example.pl;')));
 ok('B3 exact Polish is encoded for the shared click delegate',
    INDEX.indexOf('audio.setAttribute("data-say", encodeURIComponent(pattern.example.pl));') !== -1 &&
    INDEX.indexOf('e.target.closest("[data-say]")') !== -1);
@@ -107,10 +171,12 @@ ok('D7 reduced motion suppresses the shared speaking animation',
    INDEX.indexOf('.fab.speaking,.ex-audio.speaking,.mini-audio.speaking{animation:none}') !== -1);
 
 // Worker behavior is inherited unchanged by each new content-hashed MP3.
-eq('E1 shell and persistent audio cache markers are correct',
-   [(WORKER.match(/const CACHE = "([^"]+)"/) || [])[1],
-    (WORKER.match(/const AUDIO_CACHE = "([^"]+)"/) || [])[1]],
-   ['popolsku-v67', 'popolsku-audio']);
+ok('E1 historical shell and persistent audio cache markers are correct',
+   JSON.stringify([(PHASE1_WORKER.match(/const CACHE = "([^"]+)"/) || [])[1],
+     (PHASE1_WORKER.match(/const AUDIO_CACHE = "([^"]+)"/) || [])[1]]) ===
+     '["popolsku-v67","popolsku-audio"]' &&
+   PHASE1_WORKER.replace('const CACHE = "popolsku-v67";',
+                         'const CACHE = "popolsku-v68";').indexOf('const CACHE = "popolsku-v67";') === -1);
 ok('E2 runtime and manifest remain network-first while audio stays cache-first',
    WORKER.indexOf('if (category === "audio-manifest") { networkFirst') !== -1 &&
    WORKER.indexOf('if (category === "pattern-runtime") { networkFirst') !== -1 &&
@@ -122,10 +188,12 @@ ok('E4 no forced worker activation was introduced',
    WORKER.replace(/\/\*[\s\S]*?\*\//g, '').indexOf('skipWaiting()') === -1 &&
    WORKER.replace(/\/\*[\s\S]*?\*\//g, '').indexOf('clients.claim()') === -1);
 
-eq('F1 release marker advanced with no new helper storage or analytics',
-   [(INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1],
-    countOf(HELPER, 'localStorage'), countOf(HELPER, 'analytics')],
-   ['8.12', 0, 0]);
+ok('F1 historical release marker advanced with no new helper storage or analytics',
+   JSON.stringify([(PHASE1_INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1],
+     countOf(PHASE1_HELPER, 'localStorage'), countOf(PHASE1_HELPER, 'analytics')]) ===
+     '["8.12",0,0]' &&
+   (PHASE1_INDEX.replace('APP_VERSION = "8.12";', 'APP_VERSION = "8.13";')
+     .match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1] !== '8.12');
 
 if (FAIL) {
   LOG.forEach(function (line) { console.log(line); });
