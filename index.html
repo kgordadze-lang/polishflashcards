@@ -2515,6 +2515,7 @@ function showScreen(scr, deferFocus, restoreScroll){
   const fromScreen=ppCurrentScreen();
   const toScreen=$(scr);
   if(fromScreen && fromScreen.id==="patterns" && fromScreen!==toScreen) stopAllAudio();
+  else if(fromScreen && fromScreen!==toScreen && typeof stopAllAudio==="function") stopAllAudio();
   if(fromScreen && fromScreen!==toScreen) ppRememberScreenScroll(fromScreen.id);   /* where the outgoing screen was left */
   document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
   toScreen.classList.add("active");
@@ -2987,6 +2988,12 @@ function ppSyncFaceA11y(){
   ppSyncFlipFaces($("flip"));
 }
 function render(){
+  /* Every render selects a fresh flashcard context (initial topic, Next, Previous,
+     Shuffle, direction change or mark-and-advance). Retire the old attempt/status
+     before persistent face nodes receive new learning content, so a late rejection
+     from card A can never describe card B. Existing currentAudio/currentUtterance
+     identity checks remain the only stale-callback state machine. */
+  stopAllAudio();
   if(S.pos >= S.queue.length){ showDone(); return; }
   $("cardView").style.display="flex"; $("doneView").style.display="none";
   updateDirToggle();                            /* show/hide + label the direction toggle */
@@ -3351,8 +3358,18 @@ function ppAudioStatusHost(){
    an activity, never changes progress. */
 function showAudioStatus(kind, btn){
   const box = ppAudioStatusHost();
-  if(btn && typeof btn.insertAdjacentElement === "function"){
-    try{ btn.insertAdjacentElement("afterend", box); }catch(e){}
+  /* A flashcard FAB is an absolute child of a transformed face, so its immediate
+     DOM position is not its reading-order position. Keep feedback outside both
+     flip-card layers, after the complete learning stage and before navigation.
+     Other pronunciation surfaces retain their established adjacent placement. */
+  let anchor = btn;
+  if(btn && typeof btn.closest === "function"){
+    const flip = btn.closest("#flip");
+    const stage = flip && typeof flip.closest === "function" ? flip.closest(".stage") : null;
+    if(stage) anchor = stage;
+  }
+  if(anchor && typeof anchor.insertAdjacentElement === "function"){
+    try{ anchor.insertAdjacentElement("afterend", box); }catch(e){}
   } else if(document.body && !box.parentNode){ document.body.appendChild(box); }
   const failed = kind === "failed";
   audioStatusMsgEl.textContent = failed ? AUDIO_FAILED_MSG : AUDIO_FALLBACK_MSG;
