@@ -37,8 +37,8 @@ const AUDIO_CACHE = "popolsku-audio";
  * a practical bound, not a mathematically exact byte limit, and it is honest
  * about that.
  *
- * 3,402 clips is today's complete library (verify_audio.py), so the ceiling
- * leaves room for roughly 800 future clips before anything is ever evicted: a
+ * 3,621 clips is today's complete library (verify_audio.py), so the ceiling
+ * leaves 579 entries of headroom (about 16%) before anything is ever evicted: a
  * learner who warms the whole library never loses a clip to this policy.
  *
  * The policy is INSERTION-ORDER (FIFO) trimming, not LRU. Cache.keys()
@@ -49,7 +49,7 @@ const AUDIO_CACHE = "popolsku-audio";
  * miss online, and offline it reaches the same accessible retry state as any
  * other unavailable clip.
  * ------------------------------------------------------------------ */
-const AUDIO_CACHE_MAX_ENTRIES = 4200;   /* ceiling: today's 3,402 clips + ~23% headroom */
+const AUDIO_CACHE_MAX_ENTRIES = 4200;   /* ceiling: today's 3,621 clips + 579 entries (~16%) headroom */
 const AUDIO_CACHE_TRIM_TO = 4000;       /* trim target, so trimming is not a per-write cost */
 const AUDIO_QUOTA_EVICTION_BATCH = 64;  /* oldest clips dropped before one quota retry */
 const AUDIO_QUOTA_RETRY_LIMIT = 1;      /* one retry per write, structurally never a loop */

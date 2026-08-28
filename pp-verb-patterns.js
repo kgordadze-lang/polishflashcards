@@ -4,9 +4,9 @@
    The fifth isolated helper, alongside pp-usage.js / pp-answer.js /
    pp-distractor.js / pp-migrate.js: one global, no DOM and no storage, so
    tests can drive exactly the code the app runs. Module evaluation performs no
-   network work. The one transport primitive below is dormant unless a caller
-   explicitly invokes it with an injected request function and URL; ordinary
-   startup has no such call site in Phase 3F-A.
+   network work. The transport primitive below runs only when a caller supplies
+   an injected request function and URL; application startup supplies the
+   released runtime document, while tests can provide isolated inputs.
 
    WHAT THIS FILE DECIDES, and all it decides:
      whether a parsed runtime document has the expected public shape, carries

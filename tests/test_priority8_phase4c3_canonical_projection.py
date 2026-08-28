@@ -16,8 +16,17 @@ import priority8_phase4c3_canonical_projection as phase4c3  # noqa: E402
 from tests.test_priority8_phase4c2_schema_extensions import js_probe  # noqa: E402
 
 
+PHASE4C3_PARENT = "a858cf83a7f9d979feecfecef32c42937b5e9eec"
 PHASE4C3_COMMIT = "816176f591909d505549e2818d6b8d6d75c67f25"
 TOOLING_PATH = "priority7_tooling.py"
+
+
+HISTORICAL_CHANGED_PATHS = (
+    ("A", "editorial/priority-8-phase4c-canonical-candidates.json"),
+    ("A", "priority8_phase4c3_canonical_projection.py"),
+    ("A", "reports/priority-8-phase-4c3-canonical-projection.md"),
+    ("A", "tests/test_priority8_phase4c3_canonical_projection.py"),
+)
 
 
 PROTECTED_HASHES = {
@@ -63,6 +72,33 @@ def git_bytes(commit, relative):
 
 def git_json(commit, relative):
     return json.loads(git_bytes(commit, relative).decode("utf-8"))
+
+
+def historical_changed_paths(rows=None):
+    """Return the exact immutable Phase 4C3 parent-to-endpoint path delta."""
+    if rows is None:
+        run = subprocess.run(
+            ["git", "diff", "--name-status", "--no-renames",
+             PHASE4C3_PARENT, PHASE4C3_COMMIT],
+            cwd=ROOT, capture_output=True, text=True)
+        if run.returncode != 0:
+            raise AssertionError(
+                f"historical Phase 4C3 objects unavailable: {run.stderr.strip()}")
+        parsed = []
+        for line in run.stdout.splitlines():
+            fields = line.split("\t")
+            if len(fields) != 2:
+                raise AssertionError(
+                    f"malformed historical Phase 4C3 path row: {line!r}")
+            parsed.append(tuple(fields))
+        rows = tuple(parsed)
+    else:
+        rows = tuple(tuple(row) for row in rows)
+    if rows != HISTORICAL_CHANGED_PATHS:
+        raise AssertionError(
+            "historical Phase 4C3 change scope mismatch: "
+            f"{rows!r} != {HISTORICAL_CHANGED_PATHS!r}")
+    return rows
 
 
 @contextmanager
@@ -524,20 +560,38 @@ class Priority8Phase4C3CanonicalProjectionTests(unittest.TestCase):
         self.assert_rejected(changed)
 
     def test_46_no_unexpected_changed_paths_exist(self):
-        output = subprocess.check_output(
-            ["git", "status", "--short"], cwd=ROOT, text=True)
-        paths = {line[3:] for line in output.splitlines() if line}
-        self.assertTrue(paths.issubset({
-            "editorial/priority-8-phase4c-canonical-candidates.json",
-            "priority8_phase4c3_canonical_projection.py",
-            "tests/test_priority8_phase4c3_canonical_projection.py",
-            "reports/priority-8-phase-4c3-canonical-projection.md",
-            "tests/test_priority8_phase4c1_stable_ids.py",
-            "tests/test_priority8_phase4c2_schema_extensions.py",
-            "tests/test_priority8_phase4c4a_governance_preparation.py",
-            "tests/test_priority8_phase4c4c_release_freeze.py",
-            "reports/priority-8-phase-4d0-historical-release-locks.md",
-        }), paths)
+        self.assertEqual(HISTORICAL_CHANGED_PATHS, historical_changed_paths())
+
+        mutations = (
+            HISTORICAL_CHANGED_PATHS[:-1],
+            HISTORICAL_CHANGED_PATHS + (("A", "unexpected-path"),),
+            (("M", HISTORICAL_CHANGED_PATHS[0][1]),)
+            + HISTORICAL_CHANGED_PATHS[1:],
+        )
+        for mutated in mutations:
+            with self.subTest(mutated=mutated), self.assertRaisesRegex(
+                    AssertionError, "historical Phase 4C3 change scope mismatch"):
+                historical_changed_paths(mutated)
+
+        malformed = subprocess.CompletedProcess(
+            args=[], returncode=0, stdout="A\tone\textra\n", stderr="")
+        with mock.patch("subprocess.run", return_value=malformed), \
+                self.assertRaisesRegex(
+                    AssertionError, "malformed historical Phase 4C3 path row"):
+            historical_changed_paths()
+
+        unavailable = subprocess.CompletedProcess(
+            args=[], returncode=128, stdout="", stderr="bad object")
+        with mock.patch("subprocess.run", return_value=unavailable), \
+                self.assertRaisesRegex(
+                    AssertionError, "historical Phase 4C3 objects unavailable"):
+            historical_changed_paths()
+
+        with mock.patch("subprocess.check_output", return_value="main\n") \
+                as current_branch:
+            self.assertEqual(HISTORICAL_CHANGED_PATHS,
+                             historical_changed_paths())
+        current_branch.assert_not_called()
 
 
 if __name__ == "__main__":
