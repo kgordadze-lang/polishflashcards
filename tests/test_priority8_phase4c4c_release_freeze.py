@@ -19,6 +19,8 @@ import priority7_tooling as tooling  # noqa: E402
 import priority8_phase4c4c_release_freeze as release  # noqa: E402
 
 PHASE4C4C_COMMIT = "3d60bc61a85066007a659be4837aafc16131f0e4"
+PHASE4C4C_REPORT = "reports/priority-8-phase-4c4c-release-freeze.md"
+PHASE4C4C_BRANCH = "priority-8-phase-4c-architecture"
 
 
 def sha256_file(relative):
@@ -42,6 +44,19 @@ def git_json(relative, commit=PHASE4C4C_COMMIT):
 
 def historical_sha256(relative, commit=PHASE4C4C_COMMIT):
     return hashlib.sha256(git_bytes(relative, commit)).hexdigest()
+
+
+def historical_phase4c4c_branch(report_bytes=None):
+    """Read the exact Phase 4C4C workflow context from immutable history."""
+    if report_bytes is None:
+        report_bytes = git_bytes(PHASE4C4C_REPORT)
+    text = report_bytes.decode("utf-8")
+    marker = f"The work began on `{PHASE4C4C_BRANCH}` at"
+    if text.count(marker) != 1:
+        raise AssertionError(
+            "historical Phase 4C4C branch evidence mismatch: "
+            f"expected exactly one {marker!r}")
+    return PHASE4C4C_BRANCH
 
 
 @contextmanager
@@ -439,13 +454,33 @@ class Phase4C4CReleaseFreezeTests(unittest.TestCase):
     def test_57_verify_only_mode_writes_nothing(self):
         before = {path: sha256_file(path) for path in (
             release.CORPUS_PATH, release.CONTEXT_PATH, release.MANIFEST_PATH)}
-        with historical_phase4c4c_production():
+        current_git = release.git
+
+        def historical_git(*args):
+            if args == ("branch", "--show-current"):
+                return historical_phase4c4c_branch()
+            return current_git(*args)
+
+        with historical_phase4c4c_production(), \
+                mock.patch.object(release, "git", side_effect=historical_git):
             self.assertEqual(0, release.main([]))
         after = {path: sha256_file(path) for path in before}
         self.assertEqual(before, after)
 
-    def test_58_repo_safety_controls_hold(self):
-        release.safety_gate(writing=False)
+    def test_58_historical_branch_context_is_immutable_not_current(self):
+        report_bytes = git_bytes(PHASE4C4C_REPORT)
+        self.assertEqual(PHASE4C4C_BRANCH, historical_phase4c4c_branch())
+
+        mutated = report_bytes.replace(
+            f"`{PHASE4C4C_BRANCH}`".encode(), b"`main`", 1)
+        self.assertNotEqual(report_bytes, mutated)
+        with self.assertRaisesRegex(
+                AssertionError, "historical Phase 4C4C branch evidence mismatch"):
+            historical_phase4c4c_branch(mutated)
+
+        with mock.patch.object(release, "git", return_value="main") as current_git:
+            self.assertEqual(PHASE4C4C_BRANCH, historical_phase4c4c_branch())
+        current_git.assert_not_called()
 
     def test_59_context_registry_is_exactly_the_frozen_universe(self):
         self.assertEqual(

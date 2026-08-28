@@ -9,10 +9,17 @@ import subprocess
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
 START = "61108de211934d50d44f89d3fc1876c5752f0f06"
+END = "e8064b6d7fefaebc2b494433130dd36f74f2475e"
+HISTORICAL_CHANGED_PATHS = (
+    ("M", "index.html"),
+    ("A", "reports/priority-8-phase-4f1-verb-patterns-search.md"),
+    ("A", "tests/test_priority8_phase4f1_verb_patterns_search.py"),
+)
 INDEX = (ROOT / "index.html").read_text(encoding="utf-8")
 RUNTIME = json.loads((ROOT / "content/verb-patterns.json").read_text(encoding="utf-8"))
 SIX = ("brać", "gotować", "dojechać", "odpowiadać", "uczyć się", "radzić sobie")
@@ -35,6 +42,32 @@ def extract_function(source: str, name: str) -> str:
 
 def git_bytes(path: str) -> bytes:
     return subprocess.check_output(["git", "show", f"{START}:{path}"], cwd=ROOT)
+
+
+def historical_changed_paths(rows=None):
+    """Return the exact immutable Phase 4F1 parent-to-endpoint path delta."""
+    if rows is None:
+        run = subprocess.run(
+            ["git", "diff", "--name-status", START, END], cwd=ROOT,
+            capture_output=True, text=True)
+        if run.returncode != 0:
+            raise AssertionError(
+                f"historical Phase 4F1 objects unavailable: {run.stderr.strip()}")
+        parsed = []
+        for line in run.stdout.splitlines():
+            fields = line.split("\t")
+            if len(fields) != 2:
+                raise AssertionError(
+                    f"malformed historical Phase 4F1 path row: {line!r}")
+            parsed.append(tuple(fields))
+        rows = tuple(parsed)
+    else:
+        rows = tuple(tuple(row) for row in rows)
+    if rows != HISTORICAL_CHANGED_PATHS:
+        raise AssertionError(
+            "historical Phase 4F1 change scope mismatch: "
+            f"{rows!r} != {HISTORICAL_CHANGED_PATHS!r}")
+    return rows
 
 
 def run_lifecycle_probe() -> dict:
@@ -262,12 +295,22 @@ class Priority8Phase4F1VerbPatternsSearchTests(unittest.TestCase):
         self.assertIn('const APP_VERSION = "8.13";', INDEX)
         self.assertIn('const CACHE = "popolsku-v68";', worker)
         self.assertIn('const AUDIO_CACHE = "popolsku-audio";', worker)
-        changed = set(subprocess.check_output(
-            ["git", "diff", "--name-only", START], cwd=ROOT, text=True).splitlines())
-        self.assertLessEqual(changed, {
-            "index.html", "tests/test_priority8_phase4f1_verb_patterns_search.py",
-            "reports/priority-8-phase-4f1-verb-patterns-search.md",
-        })
+        self.assertEqual(HISTORICAL_CHANGED_PATHS, historical_changed_paths())
+
+        mutations = (
+            HISTORICAL_CHANGED_PATHS[:-1],
+            HISTORICAL_CHANGED_PATHS + (("A", "unexpected-path"),),
+            (("A", "index.html"),) + HISTORICAL_CHANGED_PATHS[1:],
+        )
+        for mutated in mutations:
+            with self.subTest(mutated=mutated), self.assertRaisesRegex(
+                    AssertionError, "historical Phase 4F1 change scope mismatch"):
+                historical_changed_paths(mutated)
+
+        with mock.patch("subprocess.check_output", return_value="main\n") \
+                as current_branch:
+            self.assertEqual(HISTORICAL_CHANGED_PATHS, historical_changed_paths())
+        current_branch.assert_not_called()
 
 
 if __name__ == "__main__":
