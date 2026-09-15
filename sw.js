@@ -53,6 +53,7 @@ const AUDIO_CACHE_MAX_ENTRIES = 4200;   /* ceiling: today's 3,621 clips + 579 en
 const AUDIO_CACHE_TRIM_TO = 4000;       /* trim target, so trimming is not a per-write cost */
 const AUDIO_QUOTA_EVICTION_BATCH = 64;  /* oldest clips dropped before one quota retry */
 const AUDIO_QUOTA_RETRY_LIMIT = 1;      /* one retry per write, structurally never a loop */
+const OFFLINE_AUDIO_MANIFEST_MAX = 5000; /* strict protocol bound; safely above today's 3,621 */
 /* Cleanup on activate matches ONLY a numbered app-shell cache: "popolsku-v"
    followed by digits and nothing else. A prefix test would also swallow
    popolsku-video, popolsku-vocabulary, popolsku-vectors or a "popolsku-v56-beta"
@@ -209,9 +210,14 @@ const SW_STATE = {
   range: { synthesized: 0, unsatisfiable: 0, cacheMiss: 0, passthrough: 0, bodyReadFailed: 0 },
   audio: {
     retentionChecks: 0, trimmed: 0, writeFailures: 0,
-    recoveryAttempts: 0, recovered: 0, recoveryFailed: 0
+    recoveryAttempts: 0, recovered: 0, recoveryFailed: 0,
+    storeValidatedCalls: 0
   },
-  audioFailures: []
+  audioFailures: [],
+  offlineAudio: {
+    reconciliations: 0, reconcileCacheOpsActive: 0,
+    reconcileCacheOpsMax: 0, invalidRequests: 0
+  }
 };
 self.ppSwState = SW_STATE;
 
@@ -651,27 +657,100 @@ function trimAudioCache(protectedKey) {
   });
 }
 
-/* A cache.put failure for a clip is treated as storage pressure whatever the
-   browser called it - QuotaExceededError, a bare DOMException, a vendor name we
-   have never seen. Sniffing one error name would silently skip recovery on the
-   browsers this was not tested on, and the recovery is safe either way: bounded
-   eviction of already-expendable immutable clips, then exactly one retry.
-   `attempt` makes the "at most once" structural rather than a comment. */
-function recoverAudioWrite(key, spare, attempt) {
-  if (!spare || attempt > AUDIO_QUOTA_RETRY_LIMIT) return undefined;
+/* Quota recovery is a single-flight barrier. Every write records the recovery
+   epoch before its first put. If several puts from that epoch fail together,
+   the first caller performs one bounded 64-entry eviction wave and the others
+   await it (or observe that it already finished); each caller then retries its
+   own response at most once. A later write that began after that wave may start
+   a new one. This coalesces concurrent pressure without creating a loop or
+   serializing successful network fetches. */
+let audioRecoveryEpoch = 0;
+let audioRecoveryBarrier = null;
+let audioRecoveryLastResult = { epoch: 0, ok: true };
+
+function recoverAudioWrite(key, observedEpoch) {
+  if (audioRecoveryBarrier) return audioRecoveryBarrier;
+  if (audioRecoveryEpoch > observedEpoch) return Promise.resolve(audioRecoveryLastResult);
+
   SW_STATE.audio.recoveryAttempts++;
   audioEntryEstimate = null;
-  return caches.open(AUDIO_CACHE).then(cache => cache.keys().then(requests => {
+  const wave = caches.open(AUDIO_CACHE).then(cache => cache.keys().then(requests => {
     const victims = audioCacheEntries(requests)
       .filter(entry => entry.url !== key)
       .slice(0, AUDIO_QUOTA_EVICTION_BATCH);
     return deleteAudioEntries(cache, victims);
-  }).then(() => cache.put(key, spare))).then(() => {
-    SW_STATE.audio.recovered++;
+  })).then(() => {
+    audioRecoveryEpoch++;
+    audioRecoveryLastResult = { epoch: audioRecoveryEpoch, ok: true };
+    return audioRecoveryLastResult;
   }, err => {
+    audioRecoveryEpoch++;
+    audioRecoveryLastResult = { epoch: audioRecoveryEpoch, ok: false };
     SW_STATE.audio.recoveryFailed++;
-    recordAudioFailure("quota-retry", key, err);
+    recordAudioFailure("quota-recovery", key, err);
     swWarn("audio quota recovery failed for " + key, err && err.message);
+    return audioRecoveryLastResult;
+  });
+  audioRecoveryBarrier = wave.then(result => {
+    audioRecoveryBarrier = null;
+    return result;
+  }, err => {
+    audioRecoveryBarrier = null;
+    throw err;
+  });
+  return audioRecoveryBarrier;
+}
+
+function audioStoreResult(outcome, extra) {
+  const result = { outcome: outcome };
+  if (extra) Object.keys(extra).forEach(name => { result[name] = extra[name]; });
+  return result;
+}
+
+/* THE validated audio storage primitive. Both ordinary playback and explicit
+   offline download call this exact promise-returning function. It owns response
+   validation, clones, the first put, retention, coalesced quota recovery and the
+   one permitted retry. Range responses fail the status-200 gate before cloning. */
+function storeValidatedAudio(key, response) {
+  SW_STATE.audio.storeValidatedCalls++;
+  if (!isApprovedAudioKey(key) || !isCacheableResponse(response, key)) {
+    return Promise.resolve(audioStoreResult("bad-response"));
+  }
+
+  let copy, spare;
+  try {
+    copy = response.clone();
+    spare = response.clone();
+  } catch (err) {
+    recordWriteFailure(key, err);
+    SW_STATE.audio.writeFailures++;
+    recordAudioFailure("clone", key, err);
+    return Promise.resolve(audioStoreResult("storage-failed"));
+  }
+
+  const observedEpoch = audioRecoveryEpoch;
+  return caches.open(AUDIO_CACHE).then(cache => cache.put(key, copy)).then(() => {
+    SW_STATE.writes.succeeded++;
+    return Promise.resolve(afterAudioWrite(key)).then(() => audioStoreResult("stored"));
+  }, err => {
+    recordWriteFailure(key, err);
+    SW_STATE.audio.writeFailures++;
+    recordAudioFailure("write", key, err);
+    return recoverAudioWrite(key, observedEpoch).then(recovery => {
+      if (!recovery.ok || AUDIO_QUOTA_RETRY_LIMIT < 1) {
+        return audioStoreResult("storage-failed");
+      }
+      return caches.open(AUDIO_CACHE).then(cache => cache.put(key, spare)).then(() => {
+        SW_STATE.audio.recovered++;
+        return Promise.resolve(afterAudioWrite(key)).then(() =>
+          audioStoreResult("stored", { recovered: true }));
+      }, retryErr => {
+        SW_STATE.audio.recoveryFailed++;
+        recordAudioFailure("quota-retry", key, retryErr);
+        swWarn("audio quota retry failed for " + key, retryErr && retryErr.message);
+        return audioStoreResult("storage-failed");
+      });
+    });
   });
 }
 
@@ -680,25 +759,26 @@ function recoverAudioWrite(key, spare, attempt) {
 function cacheWrite(event, cacheName, key, response) {
   if (!key || !isCacheableResponse(response, key)) { SW_STATE.writes.skipped++; return false; }
   const clip = cacheName === AUDIO_CACHE && isApprovedAudioKey(key);
-  let copy, spare = null;
+  if (clip) {
+    SW_STATE.writes.scheduled++;
+    const audioWrite = storeValidatedAudio(key, response).then(() => undefined);
+    keepAlive(event, audioWrite);
+    return true;
+  }
+
+  let copy;
   try {
     copy = response.clone();
-    /* One extra clone, taken before anything can read the body, is what makes a
-       single quota retry possible at all: a consumed response cannot be stored. */
-    if (clip) spare = response.clone();
   }
   catch (err) { recordWriteFailure(key, err); return false; }
   const write = caches.open(cacheName)
     .then(cache => cache.put(key, copy))
     .then(() => {
       SW_STATE.writes.succeeded++;
-      return clip ? afterAudioWrite(key) : undefined;
+      return undefined;
     }, err => {
       recordWriteFailure(key, err);
-      if (!clip) return undefined;
-      SW_STATE.audio.writeFailures++;
-      recordAudioFailure("write", key, err);
-      return recoverAudioWrite(key, spare, 1);
+      return undefined;
     });
   SW_STATE.writes.scheduled++;
   keepAlive(event, write);
@@ -850,6 +930,198 @@ function evictInvalidEntry(cache, cacheName, key, hit) {
     return undefined;
   });
 }
+
+/* ------------------------------------------------------------------ *
+ * Offline-audio local message protocol (Phase 1 engine only)
+ *
+ * The page may request intent, but never receives a Response body and never
+ * writes Cache Storage. Every URL crosses this worker trust boundary again.
+ * Tokens are short, ephemeral correlation strings echoed only to the sending
+ * MessagePort; they are neither stored nor sent over the network.
+ * ------------------------------------------------------------------ */
+function isOfflineAudioToken(value) {
+  return typeof value === "string" && value.length > 0 && value.length <= 160;
+}
+
+function offlineAudioKey(value) {
+  if (typeof value !== "string" || value === "" || value !== value.trim()) return null;
+  const url = parseUrl(value, ROOT_KEY);
+  if (!url || !sameOrigin(url) || url.protocol !== self.location.protocol) return null;
+  if (url.search || url.hash || canonicalPath(url.pathname) !== url.pathname) return null;
+  if (url.pathname.slice(0, SCOPE_PATH.length) !== SCOPE_PATH) return null;
+  const relative = url.pathname.slice(SCOPE_PATH.length);
+  if (!/^audio\/[a-f0-9]+\.mp3$/.test(relative)) return null;
+  const key = canonicalKeyFor(url);
+  if (!key || !isApprovedAudioKey(key)) return null;
+  /* Accept exactly the committed manifest spelling or the exact canonical URL.
+     Alternate dot segments, leading slashes and encoded spellings are rejected. */
+  if (value !== relative && value !== key) return null;
+  return key;
+}
+
+function offlineAudioManifestKeys(values) {
+  if (!Array.isArray(values) || values.length > OFFLINE_AUDIO_MANIFEST_MAX) return null;
+  const seen = Object.create(null), keys = [];
+  for (let i = 0; i < values.length; i++) {
+    const key = offlineAudioKey(values[i]);
+    if (!key || seen[key]) return null;
+    seen[key] = true;
+    keys.push(key);
+  }
+  return keys;
+}
+
+function noteReconcileCacheOp(delta) {
+  const stats = SW_STATE.offlineAudio;
+  stats.reconcileCacheOpsActive += delta;
+  if (stats.reconcileCacheOpsActive > stats.reconcileCacheOpsMax) {
+    stats.reconcileCacheOpsMax = stats.reconcileCacheOpsActive;
+  }
+}
+
+/* One keys() scan followed by sequential metadata-only match/delete work. The
+   bound is deliberately one Cache operation at a time: reconciliation is rare,
+   clips are tiny in number relative to an unbounded Promise.all, and no response
+   body is read. */
+function reconcileOfflineAudio(values) {
+  const keys = offlineAudioManifestKeys(values);
+  if (!keys) return Promise.resolve(audioStoreResult("invalid-request"));
+  SW_STATE.offlineAudio.reconciliations++;
+  const wanted = Object.create(null);
+  keys.forEach(key => { wanted[key] = true; });
+
+  return caches.open(AUDIO_CACHE).then(cache => cache.keys().then(requests => {
+    const exactStored = Object.create(null);
+    (requests || []).forEach(request => {
+      const url = request && typeof request.url === "string" ? request.url : null;
+      if (url && wanted[url]) exactStored[url] = true;
+    });
+
+    const present = [], missing = [];
+    let invalid = 0, chain = Promise.resolve();
+    keys.forEach(key => {
+      chain = chain.then(() => {
+        if (!exactStored[key]) { missing.push(key); return undefined; }
+        noteReconcileCacheOp(1);
+        return cache.match(key).then(hit => {
+          noteReconcileCacheOp(-1);
+          if (hit && isCacheableResponse(hit, key)) { present.push(key); return undefined; }
+          invalid++;
+          noteReconcileCacheOp(1);
+          return evictInvalidEntry(cache, AUDIO_CACHE, key, hit).then(() => {
+            noteReconcileCacheOp(-1);
+            missing.push(key);
+          });
+        }, err => {
+          noteReconcileCacheOp(-1);
+          missing.push(key);
+          swWarn("offline audio reconciliation match failed for " + key, err && err.message);
+        });
+      });
+    });
+    return chain.then(() => ({
+      outcome: "reconciled",
+      total: keys.length,
+      presentCount: present.length,
+      missingCount: missing.length,
+      present: present,
+      missing: missing,
+      invalid: invalid,
+      mutationGeneration: offlineAudioMutationGeneration
+    }));
+  }));
+}
+
+/* Network fetches may run concurrently, but explicit audio cache mutations are
+   committed through one ordered queue. Remove increments the generation immediately,
+   then joins this queue. A downloader fetch from an older generation either
+   sees that invalidation before writing or finishes its queued write before the
+   subsequent deletion; it can never recreate the cache after Remove. */
+let offlineAudioMutationGeneration = 0;
+let offlineAudioMutationTail = Promise.resolve();
+
+function enqueueOfflineAudioMutation(work) {
+  const next = offlineAudioMutationTail.then(work, work);
+  offlineAudioMutationTail = next.then(() => undefined, () => undefined);
+  return next;
+}
+
+function storeOneOfflineAudio(value, mutationGeneration) {
+  const key = offlineAudioKey(value);
+  if (!key || !Number.isSafeInteger(mutationGeneration) || mutationGeneration < 0) {
+    return Promise.resolve(audioStoreResult("invalid-request"));
+  }
+  if (mutationGeneration !== offlineAudioMutationGeneration) {
+    return Promise.resolve(audioStoreResult("stale"));
+  }
+
+  return cacheMatch(AUDIO_CACHE, key).then(hit => {
+    if (hit) return audioStoreResult("already-present");
+    if (mutationGeneration !== offlineAudioMutationGeneration) return audioStoreResult("stale");
+    /* This worker owns a new complete GET. No page/media headers are copied, so
+       Range and If-Range are structurally absent. */
+    const request = new Request(key, { method: "GET", credentials: "same-origin", cache: "no-store" });
+    return fetch(request).then(response => {
+      if (!isCacheableResponse(response, key)) return audioStoreResult("bad-response");
+      return enqueueOfflineAudioMutation(() => {
+        if (mutationGeneration !== offlineAudioMutationGeneration) {
+          return audioStoreResult("stale");
+        }
+        SW_STATE.writes.scheduled++;
+        return storeValidatedAudio(key, response);
+      });
+    }, () => audioStoreResult("network-failed"));
+  });
+}
+
+function removeOfflineAudio() {
+  offlineAudioMutationGeneration++;
+  const generation = offlineAudioMutationGeneration;
+  return enqueueOfflineAudioMutation(() => caches.delete(AUDIO_CACHE).then(deleted => {
+    audioEntryEstimate = null;
+    return { outcome: "removed", deleted: deleted, mutationGeneration: generation };
+  }, err => {
+    audioEntryEstimate = null;
+    recordAudioFailure("remove", AUDIO_CACHE, err);
+    return { outcome: "remove-failed", mutationGeneration: generation };
+  }));
+}
+
+function postOfflineAudioReply(event, command, token, work) {
+  const port = event && event.ports && event.ports[0];
+  if (!port || typeof port.postMessage !== "function") return;
+  const reply = Promise.resolve(work).then(result => {
+    port.postMessage(Object.assign({ command: command, token: token }, result));
+  }, err => {
+    port.postMessage({ command: command, token: token, outcome: "worker-failed" });
+    swWarn("offline audio command failed: " + command, err && err.message);
+  });
+  keepAlive(event, reply);
+}
+
+self.addEventListener("message", event => {
+  const data = event && event.data;
+  const command = data && data.command;
+  if (command !== "offline-audio-reconcile" && command !== "offline-audio-store-one" &&
+      command !== "offline-audio-remove") return;
+
+  const token = data && data.token;
+  if (!isOfflineAudioToken(token)) {
+    SW_STATE.offlineAudio.invalidRequests++;
+    postOfflineAudioReply(event, command, token, audioStoreResult("invalid-request"));
+    return;
+  }
+  if (command === "offline-audio-reconcile") {
+    postOfflineAudioReply(event, command, token, reconcileOfflineAudio(data.files));
+    return;
+  }
+  if (command === "offline-audio-store-one") {
+    postOfflineAudioReply(event, command, token,
+      storeOneOfflineAudio(data.file, data.mutationGeneration));
+    return;
+  }
+  postOfflineAudioReply(event, command, token, removeOfflineAudio());
+});
 
 /* Network-first: fresh when online, cached copy when offline. Used for the things
    that legitimately change between deploys. cache:"no-store" skips the browser's

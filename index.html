@@ -3298,6 +3298,300 @@ fetch("audio-manifest.json", { cache: "no-store" })
   .then(settleAudioManifest)
   .catch(() => settleAudioManifest(null));    /* offline first-load, missing file, or unreadable JSON */
 
+/* OFFLINE_AUDIO_ENGINE_START
+   Phase 1 only: a dormant, non-visible engine for the future Offline audio
+   screen. Nothing calls this during ordinary learning or pronunciation. The
+   page owns queue intent and pause; the active worker remains the only durable
+   Cache Storage writer and the final reconciliation remains completion truth. */
+const PPOfflineAudioEngine = (() => {
+  const MAX_MANIFEST_ITEMS = 5000;
+  const CONCURRENCY = 3;
+  const BAD_RESPONSE_LIMIT = 3;
+  const CHANNEL_TIMEOUT_MS = 30000;
+  let instanceSequence = 0;
+
+  function scopeUrl(baseHref){
+    return new URL("./", baseHref || document.baseURI || location.href);
+  }
+
+  function canonicalAudioUrl(value, baseHref){
+    if(typeof value !== "string" || !value || value !== value.trim()) return null;
+    let base, url;
+    try{ base = scopeUrl(baseHref); url = new URL(value, base); }catch(e){ return null; }
+    if(url.origin !== base.origin || url.search || url.hash) return null;
+    if(url.pathname.slice(0, base.pathname.length) !== base.pathname) return null;
+    const relative = url.pathname.slice(base.pathname.length);
+    if(!/^audio\/[a-f0-9]+\.mp3$/.test(relative)) return null;
+    const canonical = url.origin + url.pathname;
+    if(value !== relative && value !== canonical) return null;
+    return canonical;
+  }
+
+  function prepareManifest(values, baseHref){
+    if(!Array.isArray(values) || values.length > MAX_MANIFEST_ITEMS){
+      throw new TypeError("Invalid offline audio manifest set");
+    }
+    const seen = new Set(), urls = [];
+    for(const value of values){
+      const url = canonicalAudioUrl(value, baseHref);
+      if(!url) throw new TypeError("Invalid offline audio manifest URL: " + value);
+      if(seen.has(url)) continue;
+      seen.add(url); urls.push(url);
+    }
+    return urls;
+  }
+
+  function channelFailure(message){
+    const error = new Error(message || "Offline audio worker unavailable");
+    error.code = "offline-audio-channel";
+    return error;
+  }
+
+  function workerRequest(command, payload, token, timeoutMs){
+    if(!("serviceWorker" in navigator) || typeof MessageChannel !== "function"){
+      return Promise.reject(channelFailure());
+    }
+    return Promise.resolve(navigator.serviceWorker.ready).then(registration => {
+      const worker = registration && registration.active;
+      if(!worker || typeof worker.postMessage !== "function") throw channelFailure();
+      return new Promise((resolve, reject) => {
+        const channel = new MessageChannel();
+        let settled = false;
+        const finish = (fn, value) => {
+          if(settled) return;
+          settled = true;
+          clearTimeout(timer);
+          try{ channel.port1.close(); }catch(e){}
+          fn(value);
+        };
+        const timer = setTimeout(() => finish(reject, channelFailure("Offline audio worker timed out")),
+          timeoutMs || CHANNEL_TIMEOUT_MS);
+        channel.port1.onmessage = event => {
+          const reply = event && event.data;
+          if(!reply || reply.command !== command || reply.token !== token){
+            finish(reject, channelFailure("Invalid offline audio worker reply"));
+            return;
+          }
+          finish(resolve, reply);
+        };
+        channel.port1.onmessageerror = () => finish(reject, channelFailure());
+        try{
+          worker.postMessage(Object.assign({ command:command, token:token }, payload || {}), [channel.port2]);
+        }catch(e){ finish(reject, channelFailure()); }
+      });
+    });
+  }
+
+  function create(manifestFiles, options){
+    const config = options || {};
+    const urls = prepareManifest(manifestFiles, config.baseHref);
+    const urlSet = new Set(urls);
+    const transport = typeof config.transport === "function" ? config.transport : workerRequest;
+    const notify = typeof config.onState === "function" ? config.onState : () => {};
+    const instance = ++instanceSequence;
+    let generation = 0, requestSequence = 0, mutationGeneration = null;
+    let pauseRequested = false, active = 0, maxActive = 0, sessionPromise = null;
+    let state = {
+      status:"idle", total:urls.length, present:0, missing:urls.length,
+      active:0, maxActive:0, badResponses:0, generation:0, reason:null
+    };
+
+    function snapshot(){ return Object.assign({}, state); }
+    function publish(changes){
+      state = Object.assign({}, state, changes, {
+        active:active, maxActive:maxActive, generation:generation
+      });
+      notify(snapshot());
+      return snapshot();
+    }
+    function token(run){ return "oa-" + instance + "-" + run + "-" + (++requestSequence); }
+    function send(command, payload, run){
+      try{
+        return Promise.resolve(transport(command, payload || {}, token(run), config.timeoutMs));
+      }catch(e){
+        return Promise.reject(channelFailure());
+      }
+    }
+
+    function validateReconciliation(reply){
+      if(!reply || reply.outcome !== "reconciled" || reply.total !== urls.length ||
+         !Number.isSafeInteger(reply.mutationGeneration) || reply.mutationGeneration < 0 ||
+         !Array.isArray(reply.present) || !Array.isArray(reply.missing)) throw channelFailure();
+      const seen = new Set();
+      for(const url of reply.present.concat(reply.missing)){
+        if(!urlSet.has(url) || seen.has(url)) throw channelFailure();
+        seen.add(url);
+      }
+      if(seen.size !== urls.length || reply.present.length + reply.missing.length !== urls.length ||
+         reply.presentCount !== reply.present.length || reply.missingCount !== reply.missing.length){
+        throw channelFailure();
+      }
+      return reply;
+    }
+
+    function reconcileFor(run, nextStatus){
+      if(run !== generation) return Promise.resolve(null);
+      publish({ status:nextStatus || "checking", reason:null });
+      return send("offline-audio-reconcile", { files:urls.slice() }, run).then(validateReconciliation).then(reply => {
+        if(run !== generation) return null;
+        mutationGeneration = reply.mutationGeneration;
+        publish({
+          present:reply.presentCount, missing:reply.missingCount,
+          status:reply.missingCount === 0 ? "complete" : "ready"
+        });
+        return reply;
+      });
+    }
+
+    function reconcile(){
+      const run = ++generation;
+      pauseRequested = false;
+      return reconcileFor(run, "checking").then(() => snapshot()).catch(() => {
+        if(run === generation) publish({ status:"interrupted", reason:"worker-channel" });
+        return snapshot();
+      });
+    }
+
+    function runStart(){
+      const run = ++generation;
+      pauseRequested = false;
+      let stopReason = null, badResponses = 0, queue = [], next = 0;
+
+      function stop(reason){ if(!stopReason) stopReason = reason; }
+      function handleStore(reply){
+        if(run !== generation) return;
+        const outcome = reply && reply.outcome;
+        if(outcome === "stored" || outcome === "already-present"){
+          publish({ present:Math.min(urls.length, state.present + 1),
+                    missing:Math.max(0, state.missing - 1) });
+          return;
+        }
+        if(outcome === "network-failed"){ stop("network-failed"); return; }
+        if(outcome === "storage-failed"){ stop("storage-failed"); return; }
+        if(outcome === "bad-response"){
+          badResponses++;
+          publish({ badResponses:badResponses });
+          if(badResponses >= BAD_RESPONSE_LIMIT) stop("bad-response");
+          return;
+        }
+        stop(outcome === "stale" ? "stale" : "worker-channel");
+      }
+
+      function lane(){
+        if(run !== generation || pauseRequested || stopReason || next >= queue.length){
+          return Promise.resolve();
+        }
+        const file = queue[next++];
+        active++; maxActive = Math.max(maxActive, active);
+        publish({ status:"downloading" });
+        return send("offline-audio-store-one", {
+          file:file, mutationGeneration:mutationGeneration
+        }, run).then(handleStore, () => { if(run === generation) stop("worker-channel"); }).then(() => {
+          active--; publish({});
+          return lane();
+        });
+      }
+
+      function finalState(reply){
+        if(run !== generation || !reply) return snapshot();
+        let status;
+        if(stopReason === "storage-failed") status = "storage-failed";
+        else if(stopReason === "network-failed") status = "network-failed";
+        else if(stopReason === "worker-channel" || stopReason === "stale") status = "interrupted";
+        else if(pauseRequested) status = "paused";
+        else if(reply.missingCount === 0) status = "complete";
+        else if(badResponses > 0) status = "incomplete";
+        else status = "retention-conflict";
+        return publish({ status:status, reason:stopReason, badResponses:badResponses });
+      }
+
+      return reconcileFor(run, "checking").then(reply => {
+        if(run !== generation || !reply) return snapshot();
+        queue = reply.missing.slice();
+        if(queue.length === 0) return snapshot();
+        if(pauseRequested) return reconcileFor(run, "checking").then(finalState);
+        publish({ status:"downloading", badResponses:0 });
+        /* Promise.all covers exactly the three fixed scheduler lanes, never the
+           manifest. Each lane owns at most one store-one request at a time. */
+        const lanes = [];
+        for(let i=0; i<CONCURRENCY; i++) lanes.push(lane());
+        return Promise.all(lanes).then(() => {
+          if(run !== generation) return snapshot();
+          return reconcileFor(run, "checking").then(finalState);
+        });
+      }).catch(() => {
+        if(run === generation) publish({ status:"interrupted", reason:"worker-channel" });
+        return snapshot();
+      });
+    }
+
+    function start(){
+      /* A rapid Continue while the cooperative Pause is still draining joins
+         the current session instead of creating three additional lanes. */
+      if(sessionPromise) return sessionPromise;
+      const work = runStart();
+      sessionPromise = work.then(result => {
+        sessionPromise = null;
+        return result;
+      }, err => {
+        sessionPromise = null;
+        throw err;
+      });
+      return sessionPromise;
+    }
+
+    function pause(){
+      pauseRequested = true;
+      if(state.status === "downloading" || state.status === "checking"){
+        publish({ status:active ? "pausing" : "paused" });
+      }
+      return snapshot();
+    }
+
+    function remove(){
+      const run = ++generation;
+      pauseRequested = true;
+      publish({ status:"removing", reason:null });
+      return send("offline-audio-remove", {}, run).then(reply => {
+        if(run !== generation) return snapshot();
+        if(!reply || reply.outcome !== "removed"){
+          return publish({ status:"remove-failed", reason:"remove-failed" });
+        }
+        return reconcileFor(run, "checking").then(reconciled => {
+          if(run !== generation || !reconciled) return snapshot();
+          return publish({ status:reconciled.presentCount === 0 ? "removed" : "remove-failed",
+                           reason:reconciled.presentCount === 0 ? null : "remove-failed" });
+        });
+      }).catch(() => {
+        if(run === generation) publish({ status:"remove-failed", reason:"worker-channel" });
+        return snapshot();
+      });
+    }
+
+    return {
+      reconcile:reconcile,
+      start:start,
+      continueDownload:start,
+      pause:pause,
+      remove:remove,
+      getState:snapshot,
+      getManifestUrls:() => urls.slice()
+    };
+  }
+
+  return {
+    create:create,
+    prepareManifest:prepareManifest,
+    constants:{
+      MAX_MANIFEST_ITEMS:MAX_MANIFEST_ITEMS,
+      CONCURRENCY:CONCURRENCY,
+      BAD_RESPONSE_LIMIT:BAD_RESPONSE_LIMIT
+    }
+  };
+})();
+window.PPOfflineAudioEngine = PPOfflineAudioEngine;
+/* OFFLINE_AUDIO_ENGINE_END */
+
 function clearSpeaking(){ if(speakBtn){ speakBtn.classList.remove("speaking"); speakBtn=null; } }
 
 /* ---------------- shared audio status and retry (MLG-4A-04) ----------------
