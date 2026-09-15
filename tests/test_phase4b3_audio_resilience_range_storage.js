@@ -1351,7 +1351,7 @@ eq('M0 the shared failure wording', FAILED_MSG, "Audio couldn't play. Check your
 eq('M0 the shared retry wording', RETRY_MSG, 'Try again');
 
 var SRC = {};
-['ppNormalize', 'clearSpeaking', 'ppAudioStatusHost', 'showAudioStatus', 'clearAudioStatus',
+['ppNormalize', 'clearSpeaking', 'ppAudioStatusHost', 'ppAudioStatusAnchor', 'showAudioStatus', 'clearAudioStatus',
  'retryAudio', 'stopAllAudio', 'speakText', 'playPreGenerated', 'speakCardMain', 'speakFallback',
  'currentRate', 'settleAudioManifest'].forEach(function (n) { SRC[n] = extractFunction(INDEX, n); });
 

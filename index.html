@@ -3353,21 +3353,30 @@ function ppAudioStatusHost(){
   return box;
 }
 
+/* The status belongs to the pronunciation action, but it must not become a
+   third column in a horizontal learner-content row. Promote those controls to
+   the smallest surrounding block that owns the complete example/answer, while
+   keeping the established flashcard boundary outside the transformed #flip.
+   Controls already in vertical flow retain direct adjacency. */
+function ppAudioStatusAnchor(btn){
+  if(!btn || typeof btn.closest !== "function") return btn;
+  const flip = btn.closest("#flip");
+  const stage = flip && typeof flip.closest === "function" ? flip.closest(".stage") : null;
+  if(stage) return stage;
+  const flowHosts = [".vp-example", ".ex-line", ".fb-good", ".brow", ".v-row"];
+  for(const selector of flowHosts){
+    const host = btn.closest(selector);
+    if(host) return host;
+  }
+  return btn;
+}
+
 /* kind: "fallback" (speech is standing in for a clip that failed) or "failed"
    (nothing can produce audio for this phrase). Never moves focus, never renders
    an activity, never changes progress. */
 function showAudioStatus(kind, btn){
   const box = ppAudioStatusHost();
-  /* A flashcard FAB is an absolute child of a transformed face, so its immediate
-     DOM position is not its reading-order position. Keep feedback outside both
-     flip-card layers, after the complete learning stage and before navigation.
-     Other pronunciation surfaces retain their established adjacent placement. */
-  let anchor = btn;
-  if(btn && typeof btn.closest === "function"){
-    const flip = btn.closest("#flip");
-    const stage = flip && typeof flip.closest === "function" ? flip.closest(".stage") : null;
-    if(stage) anchor = stage;
-  }
+  const anchor = ppAudioStatusAnchor(btn);
   if(anchor && typeof anchor.insertAdjacentElement === "function"){
     try{ anchor.insertAdjacentElement("afterend", box); }catch(e){}
   } else if(document.body && !box.parentNode){ document.body.appendChild(box); }

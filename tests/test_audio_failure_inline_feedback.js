@@ -152,12 +152,14 @@ function currentRate() { return SPEEDS[currentSpeed]; }
 function voiceHint() {}
 function showDone() { showDoneCalls++; }
 
-['ppNormalize', 'clearSpeaking', 'ppAudioStatusHost', 'showAudioStatus', 'clearAudioStatus',
+['ppNormalize', 'clearSpeaking', 'ppAudioStatusHost', 'ppAudioStatusAnchor', 'showAudioStatus', 'clearAudioStatus',
  'retryAudio', 'stopAllAudio', 'speakText', 'playPreGenerated', 'speakFallback', 'render']
   .forEach(function (name) { (0, eval)(extractFunction(INDEX, name)); });
 
 var body, cardView, stage, scene, flip, face, flashBtn, controls;
-var patternExample, patternRow, patternBtn, otherBtn;
+var patternBlock, patternExample, patternRow, patternPl, patternBtn, patternEn, otherBtn;
+var grammarCard, grammarRow, grammarBtn, feedbackBox, feedbackRow, feedbackBtn;
+var bubble, bubbleRow, bubbleBtn, verdict, verdictRow, verdictBtn;
 function reset(options) {
   options = options || {};
   document = makeDocument(); body = document.body;
@@ -168,9 +170,24 @@ function reset(options) {
   face = el(document, 'div', '', 'face', flip);
   flashBtn = el(document, 'button', 'speak', 'fab', face);
   controls = el(document, 'div', '', 'controls', cardView);
-  patternExample = el(document, 'div', '', 'vp-example', body);
+  patternBlock = el(document, 'section', '', 'vp-pattern', body);
+  patternExample = el(document, 'div', '', 'vp-example', patternBlock);
   patternRow = el(document, 'div', '', 'vp-example-pl-row', patternExample);
+  patternPl = el(document, 'p', '', 'vp-example-pl', patternRow);
   patternBtn = el(document, 'button', '', 'mini-audio vp-example-audio', patternRow);
+  patternEn = el(document, 'p', '', 'vp-example-en', patternExample);
+  grammarCard = el(document, 'div', '', 'face', body);
+  grammarRow = el(document, 'div', '', 'ex-line', grammarCard);
+  grammarBtn = el(document, 'button', '', 'mini-audio', grammarRow);
+  feedbackBox = el(document, 'div', '', 'fb-box', body);
+  feedbackRow = el(document, 'div', '', 'fb-good', feedbackBox);
+  feedbackBtn = el(document, 'button', '', 'mini-audio', feedbackRow);
+  bubble = el(document, 'div', '', 'bubble', body);
+  bubbleRow = el(document, 'div', '', 'brow', bubble);
+  bubbleBtn = el(document, 'button', '', 'mini-audio', bubbleRow);
+  verdict = el(document, 'div', '', 'verdict', body);
+  verdictRow = el(document, 'div', '', 'v-row', verdict);
+  verdictBtn = el(document, 'button', '', 'mini-audio', verdictRow);
   otherBtn = el(document, 'button', '', 'mini-audio', body);
   FakeAudio.created = [];
   speechSynthesis = new FakeSynth(); window = {};
@@ -207,58 +224,90 @@ eq('A8 Retry is a reachable native named button',
    [audioRetryEl.tagName, audioRetryEl.type, audioRetryEl.hidden, audioRetryEl.disabled, audioRetryEl.tabIndex],
    ['BUTTON', 'button', false, false, 0]);
 
-// B. The shared non-flashcard path remains shared: Verb Patterns does not gain a
-// separate status implementation or player.
+// B. Verb Patterns uses the same shared node, but the complete example owns it:
+// the status follows Polish + speaker + English in the pattern's vertical flow
+// rather than becoming a third item in the horizontal Polish row.
 clearAudioStatus();
+showAudioStatus('fallback', patternBtn);
+eq('B1 device-voice status uses the shared node and expected wording',
+   [statusCount(), audioStatusMsgEl.textContent, audioRetryEl.hidden],
+   [1, AUDIO_FALLBACK_MSG, true]);
+eq('B2 Verb Patterns status follows the complete example in vertical flow',
+   [audioStatusEl.parentNode === patternBlock,
+    patternBlock.children[patternBlock.children.indexOf(patternExample) + 1] === audioStatusEl],
+   [true, true]);
+eq('B3 status is not a competing child of the horizontal Polish row',
+   [audioStatusEl.parentNode === patternRow, patternRow.children.indexOf(audioStatusEl)], [false, -1]);
+eq('B4 learner text and speaker remain in their intended content containers',
+   [patternPl.parentNode === patternRow, patternBtn.parentNode === patternRow,
+    patternEn.parentNode === patternExample, patternRow.children.length],
+   [true, true, true, 2]);
+
+// The longer terminal panel follows exactly the same safe anchor path and keeps
+// its accessible association with the initiating pronunciation control.
 showAudioStatus('failed', patternBtn);
-eq('B1 Verb Patterns uses the same status node', statusCount(), 1);
-eq('B2 Verb Patterns status remains adjacent to its pronunciation action',
-   patternRow.children[patternRow.children.indexOf(patternBtn) + 1] === audioStatusEl, true);
-eq('B3 ownership moves cleanly between controls',
+eq('B5 terminal failure reuses the safe Verb Patterns placement',
+   [statusCount(), audioStatusEl.parentNode === patternBlock,
+    patternRow.children.indexOf(audioStatusEl), audioRetryEl.hidden], [1, true, -1, false]);
+eq('B6 ownership moves cleanly between controls',
    [flashBtn.getAttribute('aria-describedby'), patternBtn.getAttribute('aria-describedby')],
    [null, 'ppAudioStatusMsg']);
 clearAudioStatus();
-eq('B4 cleanup releases only the current owner and hides Retry',
+eq('B7 cleanup releases only the current owner and hides Retry',
    [patternBtn.getAttribute('aria-describedby'), audioStatusEl.hidden, audioRetryEl.hidden, audioRetryEl.tabIndex],
    [null, true, true, -1]);
 
-// C. One logical failure survives repeated terminal signals/retries; recovery
+// C. Known horizontal learner-content rows get their nearest complete semantic
+// host; a control already in vertical flow keeps the established adjacent path.
+showAudioStatus('fallback', grammarBtn);
+eq('C1 grammar example status follows the complete example row', audioStatusEl.parentNode === grammarCard, true);
+showAudioStatus('fallback', feedbackBtn);
+eq('C2 answer-feedback status follows the complete feedback row', audioStatusEl.parentNode === feedbackBox, true);
+showAudioStatus('fallback', bubbleBtn);
+eq('C3 conversation status follows the complete phrase row', audioStatusEl.parentNode === bubble, true);
+showAudioStatus('fallback', verdictBtn);
+eq('C4 typed-answer status follows the complete answer row', audioStatusEl.parentNode === verdict, true);
+showAudioStatus('fallback', otherBtn);
+eq('C5 a control already in vertical flow retains direct adjacency',
+   body.children[body.children.indexOf(otherBtn) + 1] === audioStatusEl, true);
+
+// D. One logical failure survives repeated terminal signals/retries; recovery
 // clears it, and Retry uses the exact failed phrase/control through speakText.
 reset({ noSpeech: true });
 speakText('A', flashBtn); lastAudio().fireError();
-eq('C1 first terminal failure exposes one panel', [statusCount(), audioStatusEl.children.length], [1, 2]);
+eq('D1 first terminal failure exposes one panel', [statusCount(), audioStatusEl.children.length], [1, 2]);
 lastAudio().rejectPlay();
-eq('C2 the duplicate failure channel appends no panel', [statusCount(), audioStatusEl.children.length], [1, 2]);
+eq('D2 the duplicate failure channel appends no panel', [statusCount(), audioStatusEl.children.length], [1, 2]);
 audioRetryEl.click();
-eq('C3 Retry returns focus and starts one fresh correct clip',
+eq('D3 Retry returns focus and starts one fresh correct clip',
    [flashBtn.focusCount, document.activeElement === flashBtn, FakeAudio.created.length, lastAudio().src],
    [1, true, 2, 'audio/a.mp3']);
 lastAudio().fireError();
-eq('C4 repeated Retry failure retains one logical panel',
+eq('D4 repeated Retry failure retains one logical panel',
    [statusCount(), audioStatusEl.children.length, audioStatusMsgEl.textContent], [1, 2, AUDIO_FAILED_MSG]);
 audioRetryEl.click(); lastAudio().fireEnded();
-eq('C5 successful Retry leaves the UI in its normal state',
+eq('D5 successful Retry leaves the UI in its normal state',
    [audioStatusEl.hidden, audioStatusMsgEl.textContent, audioRetryEl.hidden], [true, '', true]);
 
-// D. Critical stale-navigation ordering. render() is the actual flashcard
+// E. Critical stale-navigation ordering. render() is the actual flashcard
 // boundary; the completion branch keeps its dependency surface intentionally
 // small while still executing the shipping cleanup call.
 reset({ noSpeech: true });
 speakText('A', flashBtn); var staleA = lastAudio();
 render();
-eq('D1 flashcard render stops A and clears its retry/status',
+eq('E1 flashcard render stops A and clears its retry/status',
    [staleA.pauses, currentAudio, audioRetryRequest, audioStatusEl.hidden, showDoneCalls],
    [1, null, null, true, 1]);
 speakText('B', otherBtn); var liveB = lastAudio();
 staleA.fireError(); staleA.rejectPlay();
-eq('D2 delayed A failure cannot announce into B',
+eq('E2 delayed A failure cannot announce into B',
    [currentAudio === liveB, audioStatusEl.hidden, audioStatusMsgEl.textContent], [true, true, '']);
 liveB.fireError();
-eq('D3 B alone may own the current failure',
+eq('E3 B alone may own the current failure',
    [audioStatusEl.hidden, audioStatusMsgEl.textContent, audioStatusOwner === otherBtn],
    [false, AUDIO_FAILED_MSG, true]);
 
-// E. Static call-path and layout contracts cover every flashcard content switch
+// F. Static call-path and layout contracts cover every flashcard content switch
 // without recreating the whole application renderer in the fake DOM.
 var renderSrc = extractFunction(INDEX, 'render');
 var advanceSrc = extractFunction(INDEX, 'advance');
@@ -266,30 +315,34 @@ var prevSrc = extractFunction(INDEX, 'goPrev');
 var shuffleSrc = extractFunction(INDEX, 'shuffle');
 var startSrc = extractFunction(INDEX, 'startTopic');
 var showScreenSrc = extractFunction(INDEX, 'showScreen');
-ok('E1 render cleans audio before its completion/content branch',
+var patternIndexSrc = extractFunction(INDEX, 'pRenderIndex');
+ok('F1 render cleans audio before its completion/content branch',
    renderSrc.indexOf('stopAllAudio();') !== -1 && renderSrc.indexOf('stopAllAudio();') < renderSrc.indexOf('if(S.pos >= S.queue.length)'));
-ok('E2 Next and Previous both route through the cleanup render',
+ok('F2 Next and Previous both route through the cleanup render',
    advanceSrc.indexOf('render();') !== -1 && prevSrc.indexOf('render();') !== -1);
-ok('E3 Shuffle and topic changes route through the cleanup render',
+ok('F3 Shuffle and topic changes route through the cleanup render',
    shuffleSrc.indexOf('render();') !== -1 && startSrc.indexOf('render();') !== -1);
-ok('E4 direction changes retain the same cleanup render call',
+ok('F4 direction changes retain the same cleanup render call',
    INDEX.indexOf('cardDir = (cardDir === "en") ? "pl" : "en";') !== -1 &&
    INDEX.indexOf('render();                                     /* re-renders front-side up in the new direction */') !== -1);
-ok('E5 screen/topic changes use the shared cleanup boundary',
+ok('F5 screen/topic changes use the shared cleanup boundary',
    showScreenSrc.indexOf('fromScreen!==toScreen && typeof stopAllAudio==="function"') !== -1 &&
    showScreenSrc.indexOf('stopAllAudio();') !== -1);
+ok('F6 returning to the Verb Patterns index clears old status/audio before replacing content',
+   patternIndexSrc.indexOf('stopAllAudio();') !== -1 &&
+   patternIndexSrc.indexOf('stopAllAudio();') < patternIndexSrc.indexOf('body.textContent = "";'));
 
 var css = INDEX;
 var statusRule = (css.match(/\.audio-status\{([^}]*)\}/) || ['', ''])[1];
-ok('E6 status participates in normal flow',
+ok('F7 status participates in normal flow',
    statusRule.indexOf('position:absolute') === -1 && statusRule.indexOf('position:fixed') === -1 &&
    statusRule.indexOf('display:flex') !== -1);
-ok('E7 no responsive rule restores overlay positioning',
+ok('F8 no responsive rule restores overlay positioning',
    !/@media[\s\S]*?\.audio-status\s*\{[^}]*(position\s*:\s*(absolute|fixed))/i.test(css));
-eq('E8 one app-shell failure implementation remains',
+eq('F9 one app-shell failure implementation remains',
    [countOf(INDEX, 'function showAudioStatus('), countOf(INDEX, 'function retryAudio('), countOf(INDEX, 'Audio couldn\'t play.')],
    [1, 1, 1]);
-ok('E9 Listening still delegates to the shared card/audio path',
+ok('F10 Listening still delegates to the shared card/audio path',
    extractFunction(INDEX, 'lPlayCurrent').indexOf('speakCardMain(L.qs[L.i].c, $("lPlay"))') !== -1);
 
 LOG.forEach(function (line) { console.log(line); });
