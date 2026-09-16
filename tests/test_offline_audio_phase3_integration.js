@@ -67,7 +67,8 @@ function defaultTransportHarness(protocolWorker,registrationExtras){
 }
 
 // Historical provenance and protocol boundary.
-eq('P3-01 engine suite remains at least the approved 89/0 baseline',[PHASE1_PASS,PHASE1_FAIL],[89,0]);
+eq('P3-01 engine suite includes the production MIME regressions at 102/0',
+   [PHASE1_PASS,PHASE1_FAIL],[102,0]);
 eq('P3-02 historical commit is the exact engine parent',
    runGit(['rev-parse','3a5b27ff4ae34a4aea09cef50fa8228fc789a166^']).output.trim(),oldCommit);
 eq('P3-03 historical tree is exact',runGit(['rev-parse',oldCommit+'^{tree}']).output.trim(),oldTree);
@@ -177,7 +178,7 @@ eq('P3-37 bad response is never cached',
 eq('P3-38 retention conflict never loops',
    [conflictRun.value.status,conflictWorker.fetchCalls.length],['retention-conflict',1]);
 eq('P3-39 Remove clears only popolsku-audio',
-   [removal.value.outcome,raceWorker.caches.names.sort()],['removed',['popolsku-audio','popolsku-v71','unrelated-cache']]);
+   [removal.value.outcome,raceWorker.caches.names.sort()],['removed',['popolsku-audio','popolsku-v72','unrelated-cache']]);
 eq('P3-40 ordinary lazy playback warms audio again after Remove',
    [rewarm.response.value.status,raceWorker.caches.inventory('popolsku-audio').length],[200,1]);
 eq('P3-41 warm Range playback remains correct',[warmRange.response.value.status,warmRange.response.value.headers.get('content-range')],[206,'bytes 1-3/6']);
@@ -205,7 +206,7 @@ eq('P3-50 release markers match the current candidate',
    [(CURRENT_INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/)||[])[1],
     (CURRENT_SW.match(/const CACHE\s*=\s*"([^"]+)"/)||[])[1],
     (CURRENT_SW.match(/const AUDIO_CACHE\s*=\s*"([^"]+)"/)||[])[1]],
-   ['9.16','popolsku-v71','popolsku-audio']);
+   ['9.16','popolsku-v72','popolsku-audio']);
 
 console.log('Offline audio Phase 3 integration tests: '+PASS+' passed, '+FAIL+' failed.');
 FAILURES.forEach(function(line){console.log('  '+line);});

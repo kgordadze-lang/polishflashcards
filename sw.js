@@ -23,7 +23,7 @@
    index.html: a technical cache revision (a worker/caching change with no
    learner-visible difference) bumps this alone, and a release that changes what
    the learner sees bumps APP_VERSION. Either may move without the other. */
-const CACHE = "popolsku-v71";
+const CACHE = "popolsku-v72";
 const AUDIO_CACHE = "popolsku-audio";
 
 /* ------------------------------------------------------------------ *
@@ -292,20 +292,20 @@ function canonicalPathOf(asset) {
  * also has to agree with what the key says it is.
  *
  * The accepted types are the ones this repository is actually served with, as
- * measured against the deployment, not a generic list. Two spellings are allowed
- * where both are current and standards-blessed: JavaScript may arrive as
+ * measured against the deployment, not a generic list. JavaScript may arrive as
  * text/javascript (what the deployment sends today, and what the HTML spec now
  * prescribes) or application/javascript (the older registration still emitted by
  * plenty of static hosts), and the web-app manifest may arrive as
  * application/manifest+json (its registered type) or application/json (what a
- * plain static host derives from the .json extension).
+ * plain static host derives from the .json extension). Canonical MP3 responses
+ * accept both audio/mpeg and the audio/mp3 spelling emitted by production.
  * ------------------------------------------------------------------ */
 const MEDIA_GROUPS = {
   document: ["text/html"],
   script: ["text/javascript", "application/javascript"],
   json: ["application/json"],
   manifest: ["application/manifest+json", "application/json"],
-  audio: ["audio/mpeg"],
+  audio: ["audio/mpeg", "audio/mp3"],
   svg: ["image/svg+xml"],
   png: ["image/png"],
   font: ["font/woff2"]

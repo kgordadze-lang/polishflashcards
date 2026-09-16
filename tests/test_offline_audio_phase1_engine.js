@@ -232,7 +232,8 @@ FakeCaches.prototype.inventory = function (name) { return this.map[name] ? this.
 var ORIGIN = 'https://popolsku.app';
 var SW_EPILOGUE = '\nreturn { state:SW_STATE, AUDIO_CACHE:AUDIO_CACHE, CACHE:CACHE,' +
   ' storeValidatedAudio:storeValidatedAudio, reconcileOfflineAudio:reconcileOfflineAudio,' +
-  ' removeOfflineAudio:removeOfflineAudio, offlineAudioKey:offlineAudioKey };';
+  ' removeOfflineAudio:removeOfflineAudio, offlineAudioKey:offlineAudioKey,' +
+  ' isCacheableResponse:isCacheableResponse };';
 function makeWorker(options) {
   options = options || {};
   var caches = new FakeCaches(options.seed || {}), listeners = {}, fetchCalls = [];
@@ -340,6 +341,68 @@ eq('A7 worker rejects unbounded reconciliation input',
    send(validationWorker, 'offline-audio-reconcile', { files:tooMany }).value.outcome, 'invalid-request');
 ok('A8 protocol is local-only and has no reporting vocabulary',
    !/telemetry|analytics|sendBeacon|reporting endpoint/i.test(ENGINE_SRC + SW_SRC));
+
+// Production MIME regression: the deployed host serves canonical MP3 files as
+// audio/mp3. Exercise every consumer of the shared response validator locally.
+var productionFile = hashFile(90), productionUrl = absolute(productionFile);
+var productionMpeg = audioResponse(productionUrl);
+var productionMp3 = audioResponse(productionUrl, { headers:{'Content-Type':'audio/mp3'} });
+eq('A9 shared validator accepts both deployed canonical MP3 media types',
+   [validationWorker.api.isCacheableResponse(productionMpeg, productionUrl),
+    validationWorker.api.isCacheableResponse(productionMp3, productionUrl)], [true,true]);
+var sharedMimeStore = watch(validationWorker.api.storeValidatedAudio(productionUrl, productionMp3)); drain();
+eq('A10 storeValidatedAudio accepts audio/mp3 through the shared validator',
+   [sharedMimeStore.value.outcome, validationWorker.caches.inventory('popolsku-audio')],
+   ['stored',[productionUrl]]);
+var explicitMimeFile = hashFile(91), explicitMimeWorker = makeWorker({ route:function (url) {
+  return P.resolve(audioResponse(url, { headers:{'Content-Type':'audio/mp3'} }));
+} });
+var explicitMimeGeneration = send(explicitMimeWorker, 'offline-audio-reconcile',
+  { files:[explicitMimeFile] }).value.mutationGeneration;
+var explicitMimeResult = send(explicitMimeWorker, 'offline-audio-store-one',
+  { file:explicitMimeFile, mutationGeneration:explicitMimeGeneration }).value;
+eq('A11 explicit offline-audio-store-one stores a production audio/mp3 response',
+   [explicitMimeResult.outcome, explicitMimeWorker.caches.inventory('popolsku-audio')],
+   ['stored',[absolute(explicitMimeFile)]]);
+var reconcileMimeFile = hashFile(92), reconcileMimeWorker = makeWorker({
+  seed:seedAudio([reconcileMimeFile], function (url) {
+    return audioResponse(url, { headers:{'Content-Type':'audio/mp3'} });
+  })
+});
+var reconcileMimeResult = send(reconcileMimeWorker, 'offline-audio-reconcile',
+  { files:[reconcileMimeFile] }).value;
+eq('A12 reconciliation treats a valid cached audio/mp3 response as present',
+   [reconcileMimeResult.presentCount, reconcileMimeResult.missingCount, reconcileMimeResult.invalid],
+   [1,0,0]);
+var lazyMimeFile = hashFile(93), lazyMimeWorker = makeWorker({ route:function (url) {
+  return P.resolve(audioResponse(url, { headers:{'Content-Type':'audio/mp3'} }));
+} });
+var lazyMimeRun = fireFetch(lazyMimeWorker, new FakeRequest(absolute(lazyMimeFile))); drain();
+eq('A13 ordinary lazy cache warming stores a production audio/mp3 response',
+   [lazyMimeRun.response.value.status, lazyMimeWorker.caches.inventory('popolsku-audio')],
+   [200,[absolute(lazyMimeFile)]]);
+[
+  ['status 206', productionUrl, { status:206 }],
+  ['redirected response', productionUrl, { redirected:true }],
+  ['cross-origin key', 'https://evil.example/' + productionFile, {}],
+  ['noncanonical path', ORIGIN + '/media/00000000005a.mp3', {}]
+].forEach(function (row, i) {
+  var worker = makeWorker(), response = audioResponse(row[1],
+    Object.assign({ headers:{'Content-Type':'audio/mp3'} }, row[2]));
+  var result = watch(worker.api.storeValidatedAudio(row[1], response)); drain();
+  eq('A14 audio/mp3 ' + row[0] + ' is rejected from full audio storage ' + i,
+     [result.value.outcome, worker.caches.inventory('popolsku-audio')], ['bad-response',null]);
+});
+[
+  ['text/html', { headers:{'Content-Type':'text/html'} }],
+  ['application/octet-stream', { headers:{'Content-Type':'application/octet-stream'} }],
+  ['missing Content-Type', { headers:{} }],
+  ['bad status', { status:404, ok:false, headers:{'Content-Type':'audio/mp3'} }]
+].forEach(function (row, i) {
+  var response = audioResponse(productionUrl, row[1]);
+  eq('A15 ' + row[0] + ' remains rejected by the shared validator ' + i,
+     validationWorker.api.isCacheableResponse(response, productionUrl), false);
+});
 
 // B. Exact reconciliation: one key scan, sequential metadata reads, no bodies.
 var exactFiles = files(6, 100), exactSeed = seedAudio([exactFiles[0]]);
@@ -592,7 +655,7 @@ ok('H2 retention conflict does not enter a redownload loop', conflictWorker.fetc
 
 // I. Remove ordering, exact cache deletion and ordinary lazy rewarming.
 var raceFile = hashFile(20000), raceDeferred = deferred();
-var raceSeed = seedAudio([hashFile(20001)]); raceSeed['popolsku-v71'] = { [ORIGIN + '/']:new FakeResponse({headers:{'Content-Type':'text/html'}}) };
+var raceSeed = seedAudio([hashFile(20001)]); raceSeed['popolsku-v72'] = { [ORIGIN + '/']:new FakeResponse({headers:{'Content-Type':'text/html'}}) };
 raceSeed['unrelated-cache'] = { [ORIGIN + '/tool']:new FakeResponse({headers:{'Content-Type':'text/plain'}}) };
 var raceWorker = makeWorker({ seed:raceSeed, route:function () { return raceDeferred.promise; } });
 var raceGeneration = send(raceWorker, 'offline-audio-reconcile', { files:[raceFile] }).value.mutationGeneration;
@@ -602,7 +665,7 @@ var learningState = { progress:'unchanged' };
 var removal = send(raceWorker, 'offline-audio-remove', {}, 'race-remove');
 eq('I1 Remove deletes exactly popolsku-audio and preserves other caches/state',
    [removal.value.outcome, raceWorker.caches.names.sort(), learningState.progress],
-   ['removed',['popolsku-v71','unrelated-cache'],'unchanged']);
+   ['removed',['popolsku-v72','unrelated-cache'],'unchanged']);
 raceDeferred.resolve(audioResponse(absolute(raceFile))); drain();
 eq('I2 late downloader fetch is stale and cannot resurrect audio after Remove',
    [staleStore.value.outcome, raceWorker.caches.inventory('popolsku-audio')], ['stale',null]);
@@ -675,7 +738,7 @@ eq('L2 release markers match the current candidate',
    [(INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1],
     (SW_SRC.match(/const CACHE\s*=\s*"([^"]+)"/) || [])[1],
     (SW_SRC.match(/const AUDIO_CACHE\s*=\s*"([^"]+)"/) || [])[1]],
-   ['9.16','popolsku-v71','popolsku-audio']);
+   ['9.16','popolsku-v72','popolsku-audio']);
 ok('L3 page engine never accesses Cache Storage directly or persistent tracking',
    ENGINE_SRC.indexOf('caches.') === -1 && ENGINE_SRC.indexOf('localStorage') === -1 &&
    ENGINE_SRC.indexOf('navigator.storage') === -1);
