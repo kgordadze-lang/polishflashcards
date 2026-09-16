@@ -145,8 +145,8 @@ ok('Privacy says audio stays local and outside backups',INDEX.indexOf('Saved pro
 ok('Privacy describes removal and eviction',INDEX.indexOf('can be removed from Offline audio')!==-1 && INDEX.indexOf('clear or evict saved audio')!==-1);
 ok('Privacy date is 15 September 2026',INDEX.indexOf('Last updated 15 September 2026')!==-1);
 ok('Install says install alone does not download all audio',INDEX.indexOf('installing the app by itself does not download them all')!==-1);
-eq('APP_VERSION remains 9.15',count(INDEX,'const APP_VERSION = "9.15"'),1);
-eq('shell cache remains popolsku-v70',count(SW,'const CACHE = "popolsku-v70"'),1);
+eq('APP_VERSION is release 9.16',count(INDEX,'const APP_VERSION = "9.16"'),1);
+eq('shell cache is release generation popolsku-v71',count(SW,'const CACHE = "popolsku-v71"'),1);
 eq('audio cache remains popolsku-audio',count(SW,'const AUDIO_CACHE = "popolsku-audio"'),1);
 ok('worker file contains no Phase 2 screen markup or controller',SW.indexOf('id="offlineAudio"')===-1 && SW.indexOf('PPOfflineAudioUI')===-1);
 ok('ordinary audioMap lookup remains present',INDEX.indexOf('const file = audioMap[key]')!==-1);

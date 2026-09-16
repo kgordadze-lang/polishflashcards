@@ -177,7 +177,7 @@ eq('P3-37 bad response is never cached',
 eq('P3-38 retention conflict never loops',
    [conflictRun.value.status,conflictWorker.fetchCalls.length],['retention-conflict',1]);
 eq('P3-39 Remove clears only popolsku-audio',
-   [removal.value.outcome,raceWorker.caches.names.sort()],['removed',['popolsku-audio','popolsku-v70','unrelated-cache']]);
+   [removal.value.outcome,raceWorker.caches.names.sort()],['removed',['popolsku-audio','popolsku-v71','unrelated-cache']]);
 eq('P3-40 ordinary lazy playback warms audio again after Remove',
    [rewarm.response.value.status,raceWorker.caches.inventory('popolsku-audio').length],[200,1]);
 eq('P3-41 warm Range playback remains correct',[warmRange.response.value.status,warmRange.response.value.headers.get('content-range')],[206,'bytes 1-3/6']);
@@ -201,11 +201,11 @@ ok('P3-48 no durable download/capability state is added',
 ok('P3-49 no analytics or telemetry is added to Offline audio',
    ENGINE_SRC.indexOf('analytics')===-1 && ENGINE_SRC.indexOf('telemetry')===-1 &&
    UI_SRC.indexOf('analytics')===-1 && UI_SRC.indexOf('telemetry')===-1);
-eq('P3-50 release markers remain frozen',
+eq('P3-50 release markers match the current candidate',
    [(CURRENT_INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/)||[])[1],
     (CURRENT_SW.match(/const CACHE\s*=\s*"([^"]+)"/)||[])[1],
     (CURRENT_SW.match(/const AUDIO_CACHE\s*=\s*"([^"]+)"/)||[])[1]],
-   ['9.15','popolsku-v70','popolsku-audio']);
+   ['9.16','popolsku-v71','popolsku-audio']);
 
 console.log('Offline audio Phase 3 integration tests: '+PASS+' passed, '+FAIL+' failed.');
 FAILURES.forEach(function(line){console.log('  '+line);});

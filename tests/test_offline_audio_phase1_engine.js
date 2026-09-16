@@ -592,7 +592,7 @@ ok('H2 retention conflict does not enter a redownload loop', conflictWorker.fetc
 
 // I. Remove ordering, exact cache deletion and ordinary lazy rewarming.
 var raceFile = hashFile(20000), raceDeferred = deferred();
-var raceSeed = seedAudio([hashFile(20001)]); raceSeed['popolsku-v70'] = { [ORIGIN + '/']:new FakeResponse({headers:{'Content-Type':'text/html'}}) };
+var raceSeed = seedAudio([hashFile(20001)]); raceSeed['popolsku-v71'] = { [ORIGIN + '/']:new FakeResponse({headers:{'Content-Type':'text/html'}}) };
 raceSeed['unrelated-cache'] = { [ORIGIN + '/tool']:new FakeResponse({headers:{'Content-Type':'text/plain'}}) };
 var raceWorker = makeWorker({ seed:raceSeed, route:function () { return raceDeferred.promise; } });
 var raceGeneration = send(raceWorker, 'offline-audio-reconcile', { files:[raceFile] }).value.mutationGeneration;
@@ -602,7 +602,7 @@ var learningState = { progress:'unchanged' };
 var removal = send(raceWorker, 'offline-audio-remove', {}, 'race-remove');
 eq('I1 Remove deletes exactly popolsku-audio and preserves other caches/state',
    [removal.value.outcome, raceWorker.caches.names.sort(), learningState.progress],
-   ['removed',['popolsku-v70','unrelated-cache'],'unchanged']);
+   ['removed',['popolsku-v71','unrelated-cache'],'unchanged']);
 raceDeferred.resolve(audioResponse(absolute(raceFile))); drain();
 eq('I2 late downloader fetch is stale and cannot resurrect audio after Remove',
    [staleStore.value.outcome, raceWorker.caches.inventory('popolsku-audio')], ['stale',null]);
@@ -671,11 +671,11 @@ eq('K6 synchronous channel failure is contained and recoverable', throwingRun.va
 ok('L1 Phase 2 adds exactly one learner-visible Offline audio screen and menu entry without changing the engine',
    (INDEX.match(/id="offlineAudio"/g) || []).length === 1 &&
    (INDEX.match(/>Offline audio<\/a>/g) || []).length === 1);
-eq('L2 release markers remain frozen',
+eq('L2 release markers match the current candidate',
    [(INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1],
     (SW_SRC.match(/const CACHE\s*=\s*"([^"]+)"/) || [])[1],
     (SW_SRC.match(/const AUDIO_CACHE\s*=\s*"([^"]+)"/) || [])[1]],
-   ['9.15','popolsku-v70','popolsku-audio']);
+   ['9.16','popolsku-v71','popolsku-audio']);
 ok('L3 page engine never accesses Cache Storage directly or persistent tracking',
    ENGINE_SRC.indexOf('caches.') === -1 && ENGINE_SRC.indexOf('localStorage') === -1 &&
    ENGINE_SRC.indexOf('navigator.storage') === -1);
