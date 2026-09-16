@@ -583,8 +583,9 @@ var throwingRun = watch(throwingEngine.start()); drain();
 eq('K6 synchronous channel failure is contained and recoverable', throwingRun.value.status, 'interrupted');
 
 // L. Static scope/release guards.
-ok('L1 no learner-visible Offline audio screen or menu entry exists',
-   INDEX.indexOf('id="offlineAudio"') === -1 && INDEX.indexOf('>Offline audio<') === -1);
+ok('L1 Phase 2 adds exactly one learner-visible Offline audio screen and menu entry without changing the engine',
+   (INDEX.match(/id="offlineAudio"/g) || []).length === 1 &&
+   (INDEX.match(/>Offline audio<\/a>/g) || []).length === 1);
 eq('L2 release markers remain frozen',
    [(INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1],
     (SW_SRC.match(/const CACHE\s*=\s*"([^"]+)"/) || [])[1],

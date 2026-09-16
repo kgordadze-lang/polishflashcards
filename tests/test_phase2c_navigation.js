@@ -216,6 +216,7 @@ ok('A3 the backdrop keeps a scrim that separates the panel without going visuall
 var DESTS = [
   ['About', '#about', 'a'],
   ['Install', null, 'button'],
+  ['Offline audio', '#offlineAudio', 'a'],
   ['Privacy', '#privacy', 'a'],
   ['What else I listen to', 'guide/listening/', 'a'],
   ['Explore more Polish', 'guide/', 'a'],
@@ -246,8 +247,8 @@ function menuItemLabels(nav) {
   return out;
 }
 eq('A4 the menu renders exactly the approved final order and labels', menuItemLabels(NAV),
-   ['About', 'Install', 'Privacy', 'What else I listen to', 'Explore more Polish', 'Contact']);
-eq('A4 the menu has exactly six destinations', countOf(NAV, '<li'), 6);
+   ['About', 'Install', 'Offline audio', 'Privacy', 'What else I listen to', 'Explore more Polish', 'Contact']);
+eq('A4 the menu has exactly seven destinations', countOf(NAV, '<li'), 7);
 eq('A4 one clear list is the only copy of the menu', countOf(INDEX, 'class="site-nav-list"'), 1);
 ok('A4 Install is a native action button with exact accessible name',
    /^<button\b/.test(tagFor(INDEX, 'siteInstall')) && attr(tagFor(INDEX, 'siteInstall'), 'aria-label') === 'Install');
@@ -352,7 +353,7 @@ var APPROVED_PRIVACY_SUMMARY = [
   'Your progress and settings stay in your browser on this device unless you export a backup yourself.',
   'The app does not send your progress or settings to Po polsku.',
   'Po polsku does not use advertising, marketing cookies, or analytics tools.',
-  'Core app files can be saved for offline use. Other pages are saved when you visit them, and pronunciation clips as you play them.',
+  'Core app files can be saved for offline use. Other pages are saved when you visit them. Pronunciation clips are saved as you play them, or you can optionally download the full pronunciation library from Offline audio.',
   'Links to other websites, and your browser’s own speech feature, involve services Po polsku does not control.'
 ];
 eq('B2 Privacy leads with the exact approved summary', elementTexts(PRIVACY, 'li', ''), APPROVED_PRIVACY_SUMMARY);
@@ -369,8 +370,8 @@ var APPROVED_PRIVACY = [
   'Clearing Po polsku’s site data in your browser removes locally stored progress, settings, downloaded app files, and cached pronunciation clips. It is a full reset: Po polsku has no server-side copy of this data, so export a backup first if you want to keep your progress.',
   'On supported browsers, Po polsku saves its core app files after your first visit so the main app can work offline. These are the app page, its scripts and lesson data, and - where the browser can store them - the fonts and icons.',
   'The separate guide, grammar, and vocabulary pages on this site are saved as you visit them. A page you have never opened will not be there offline.',
-  'Pronunciation clips are saved one at a time, as you play them. A clip you have never played needs a connection the first time. Clips you have already played stay saved across app updates, so if you play a lot of audio you may end up with a few tens of megabytes stored on the device.',
-  'Installing Po polsku to your home screen does not change any of this. It does not download every page or every pronunciation clip in advance.',
+  'Pronunciation clips continue to be saved one at a time as you play them. You may also optionally download the full pronunciation library from Offline audio so the clips are ready without a connection. Saved pronunciation audio stays in this browser on this device, is not included in progress backups, and can be removed from Offline audio.',
+  'Your browser or device may still clear or evict saved audio, especially when storage is low or site data is cleared. Installing Po polsku to your home screen does not automatically download every page or every pronunciation clip.',
   'Every request the app itself makes goes to this site’s own address: the app files, the lesson data, and the pronunciation clips. The app does not load third-party scripts or analytics. Two things sit outside this, and both are covered below: links you choose to open, and your browser’s own speech feature.',
   'Loading any web page still involves ordinary network information. The hosting service that delivers popolsku.app receives the usual details that come with a web request: your IP address, browser and user-agent information, which file was requested, and when. Network providers that carry the connection see more limited connection metadata, because the connection itself is encrypted. That is how the web works rather than something specific to Po polsku. Po polsku’s own code does not add a learner profile, an application-assigned identifier, or an analytics payload to these requests.',
   'Pronunciation normally plays a pronunciation-audio clip supplied with the app. If a clip cannot play, the app may use your browser’s built-in speech feature. That fallback is controlled by your browser or device.',
@@ -381,7 +382,7 @@ var APPROVED_PRIVACY = [
   'Parts of Po polsku link out to other websites, such as the podcast episodes behind the listening sets and the recommendations in the guide. Opening one takes you off Po polsku, and from that point the other site’s own privacy practices apply.',
   'Po polsku does not send your learning progress to those destinations. The destination may receive ordinary request information, including which site you came from, depending on your browser and privacy settings.',
   'If anything on this page is unclear, the Contact page has the address to write to. Contact opens your email app. Messages are handled through email and are not stored by the Po polsku application.',
-  'This page describes how Po polsku works today. Last updated 5 August 2026.'
+  'This page describes how Po polsku works today. Last updated 15 September 2026.'
 ];
 eq('B2 Privacy contains the exact approved subsection copy', elementTexts(PRIVACY, 'p', 'about-p'), APPROVED_PRIVACY);
 // Phase 2 ships factual transparency only: legal review was unavailable, so the page must
@@ -886,7 +887,7 @@ GUIDE_PAGES.forEach(function (page) {
      markup.indexOf('&middot; v' + APP_VERSION + ' &middot; ' + BUILD_YEAR + '</footer>') !== -1);
 });
 ok('E3 the Guide Privacy URL is recognized as a direct app-screen destination',
-   INDEX.indexOf('["about","privacy","contact","install"].includes(ppInitialScreen)') !== -1 &&
+   INDEX.indexOf('["about","privacy","contact","install","offlineAudio"].includes(ppInitialScreen)') !== -1 &&
    INDEX.indexOf('showScreen(ppInitialScreen)') !== -1);
 // Phase 3 made generated output reproducible: the footer year is a declared constant,
 // not a clock reading, so identical sources cannot produce different bytes on a new year.

@@ -153,7 +153,7 @@ eq('A1 the gate is no longer toggled by the hidden attribute', attr(GATE.open, '
 eq('A1 every modal overlay in the shell is a dialog',
    countOf(INDEX, 'class="modal-overlay"') + countOf(INDEX, 'class="site-drawer"'),
    countOf(INDEX, '<dialog class="modal-overlay"') + countOf(INDEX, '<dialog class="site-drawer"'));
-eq('A1 the app ships exactly two modal overlays', countOf(INDEX, '<dialog '), 2);
+eq('A1 the app ships exactly three modal overlays after the Offline audio confirmation is added', countOf(INDEX, '<dialog '), 3);
 
 var SHELL_START = INDEX.indexOf('<div class="wrap" id="appShell">');
 var SHELL_END = INDEX.indexOf('<dialog class="modal-overlay" id="matureGate"');

@@ -1056,7 +1056,7 @@ eq('F9 a direct Privacy arrival starts at the top', direct.win.scrollY, 0);
 ok('F9 a direct Privacy arrival is shown', direct.screens.privacy.classList.contains('active'));
 ok('F9 direct fragment routing still marks its own history entry',
    INDEX.indexOf('history.replaceState({scr:ppInitialScreen,direct:true}') !== -1 &&
-   INDEX.indexOf('["about","privacy","contact","install"].includes(ppInitialScreen)') !== -1);
+   INDEX.indexOf('["about","privacy","contact","install","offlineAudio"].includes(ppInitialScreen)') !== -1);
 ok('F9 the in-app Back route for a direct arrival is unchanged',
    squash(stripComments(extractFunction(INDEX, 'show')))
      .indexOf('if(history.state.direct){history.replaceState({scr:"home"},"",location.pathname+location.search);showScreen("home",deferFocus);}elsehistory.back();') !== -1);

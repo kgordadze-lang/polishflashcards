@@ -767,6 +767,31 @@
   .data-status.err{color:#b3423a;font-weight:600}
   .about-link:focus-visible{outline:2px solid var(--emerald);outline-offset:2px;border-radius:3px}
 
+  /* ---------- offline pronunciation audio ---------- */
+  .offline-audio-card h2{font-size:20px;line-height:1.3;font-weight:800;letter-spacing:-.3px;
+    color:var(--forest);margin:0 0 14px}
+  .offline-audio-state{font-size:16px;line-height:1.45;font-weight:800;color:var(--forest);margin:0 0 8px}
+  .offline-audio-copy,.offline-audio-count,.offline-audio-size,.offline-audio-note{
+    overflow-wrap:anywhere}
+  .offline-audio-copy,.offline-audio-count{font-size:14.5px;line-height:1.55;color:var(--muted);margin:0 0 9px}
+  .offline-audio-count{font-variant-numeric:tabular-nums}
+  .offline-audio-size{font-size:13px;line-height:1.45;color:var(--muted);font-weight:700;margin:0 0 16px}
+  .offline-audio-progress{width:100%;height:12px;display:block;margin:16px 0 8px;accent-color:var(--emerald)}
+  .offline-audio-percent{min-height:20px;font-size:13px;line-height:1.45;color:var(--muted);
+    font-weight:700;font-variant-numeric:tabular-nums;margin:0 0 14px}
+  .offline-audio-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .offline-audio-btn{min-height:44px;max-width:100%;border-radius:13px;padding:11px 16px;
+    font:700 14px/1.4 inherit;cursor:pointer;transition:.15s;overflow-wrap:anywhere}
+  .offline-audio-btn.primary{border:1px solid var(--forest);background:var(--forest);color:var(--cream)}
+  .offline-audio-btn.primary:hover:not(:disabled){background:var(--forest-hover)}
+  .offline-audio-btn.secondary{border:1px solid var(--border);background:var(--card);color:#934b32}
+  .offline-audio-btn.secondary:hover:not(:disabled){border-color:var(--coral);background:#fbeee8}
+  .offline-audio-btn:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
+  .offline-audio-btn:disabled{opacity:.55;cursor:wait}
+  .offline-audio-note{margin:22px 0 0;padding-top:18px;border-top:1px solid var(--border);
+    font-size:12.5px;line-height:1.6;color:var(--muted)}
+  .offline-audio-remove-icon{background:#fbeee8;color:#934b32}
+
   /* ---------- grammar: teach card ---------- */
   .front-q{font-size:25px;line-height:1.22;font-weight:800;letter-spacing:-.5px;color:var(--forest)}
   .front-q .muted{display:block;margin-top:8px;font-size:15px;font-weight:600;color:var(--muted)}
@@ -1153,6 +1178,8 @@
     .topic-main{flex:1 1 100%}
     .pill-practice{flex:1 1 auto;justify-content:center}
     .t-arrow{display:none}
+    .offline-audio-actions{flex-direction:column}
+    .offline-audio-btn{width:100%}
   }
 </style>
 </head>
@@ -1738,7 +1765,7 @@
             <li>Your progress and settings stay in your browser on this device unless you export a backup yourself.</li>
             <li>The app does not send your progress or settings to Po polsku.</li>
             <li>Po polsku does not use advertising, marketing cookies, or analytics tools.</li>
-            <li>Core app files can be saved for offline use. Other pages are saved when you visit them, and pronunciation clips as you play them.</li>
+            <li>Core app files can be saved for offline use. Other pages are saved when you visit them. Pronunciation clips are saved as you play them, or you can optionally download the full pronunciation library from Offline audio.</li>
             <li>Links to other websites, and your browser’s own speech feature, involve services Po polsku does not control.</li>
           </ul>
         </div>
@@ -1775,8 +1802,8 @@
           <h2>Offline use and saved files</h2>
           <p class="about-p">On supported browsers, Po polsku saves its core app files after your first visit so the main app can work offline. These are the app page, its scripts and lesson data, and - where the browser can store them - the fonts and icons.</p>
           <p class="about-p">The separate guide, grammar, and vocabulary pages on this site are saved as you visit them. A page you have never opened will not be there offline.</p>
-          <p class="about-p">Pronunciation clips are saved one at a time, as you play them. A clip you have never played needs a connection the first time. Clips you have already played stay saved across app updates, so if you play a lot of audio you may end up with a few tens of megabytes stored on the device.</p>
-          <p class="about-p">Installing Po polsku to your home screen does not change any of this. It does not download every page or every pronunciation clip in advance.</p>
+          <p class="about-p">Pronunciation clips continue to be saved one at a time as you play them. You may also optionally download the full pronunciation library from Offline audio so the clips are ready without a connection. Saved pronunciation audio stays in this browser on this device, is not included in progress backups, and can be removed from Offline audio.</p>
+          <p class="about-p">Your browser or device may still clear or evict saved audio, especially when storage is low or site data is cleared. Installing Po polsku to your home screen does not automatically download every page or every pronunciation clip.</p>
         </div>
 
         <div class="privacy-section">
@@ -1807,7 +1834,7 @@
         <div class="privacy-section">
           <h2>Questions about privacy</h2>
           <p class="about-p">If anything on this page is unclear, the <a class="about-link" id="dataContactLink" href="#contact">Contact</a> page has the address to write to. Contact opens your email app. Messages are handled through email and are not stored by the Po polsku application.</p>
-          <p class="about-p">This page describes how Po polsku works today. Last updated 5 August 2026.</p>
+          <p class="about-p">This page describes how Po polsku works today. Last updated 15 September 2026.</p>
         </div>
       </div>
     </div>
@@ -1911,7 +1938,39 @@
           <li>Tap <b>Add</b> or <b>Install</b> to confirm.</li>
         </ol>
 
-        <p class="install-note">Once it's added, open Po polsku from your home screen like any other app - it launches full screen. After your first visit the app works offline. Pronunciation clips are saved as you play them, so clips you have not played yet need a connection the first time.</p>
+        <p class="install-note">Once it's added, open Po polsku from your home screen like any other app - it launches full screen. After your first visit the app works offline. Pronunciation clips are saved as you play them. You can also optionally download all pronunciation clips in advance from Offline audio; installing the app by itself does not download them all.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ OFFLINE AUDIO ============ -->
+  <section class="screen" id="offlineAudio">
+    <div class="sbar">
+      <button class="back" id="backOfflineAudio" type="button" aria-label="Back to home">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="sbar-title"><h1>Offline audio</h1></div>
+      <button class="back home-btn" type="button" aria-label="Home page">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </button>
+    </div>
+
+    <div class="privacy-wrap">
+      <div class="privacy-card offline-audio-card">
+        <h2>Pronunciation audio</h2>
+        <p class="offline-audio-state" id="offlineAudioState">Checking downloaded pronunciation audio…</p>
+        <p class="offline-audio-copy" id="offlineAudioCopy"></p>
+        <p class="offline-audio-count" id="offlineAudioCount"></p>
+        <p class="offline-audio-size" id="offlineAudioSize">About 52 MB</p>
+        <progress class="offline-audio-progress" id="offlineAudioProgress"
+                  aria-label="Downloading pronunciation audio"></progress>
+        <p class="offline-audio-percent" id="offlineAudioPercent"></p>
+        <div class="offline-audio-actions">
+          <button class="offline-audio-btn primary" id="offlineAudioPrimary" type="button" hidden></button>
+          <button class="offline-audio-btn secondary" id="offlineAudioRemove" type="button" hidden>Remove offline audio</button>
+        </div>
+        <p class="offline-audio-note">Your browser or device may remove downloaded website data when storage is low or site data is cleared. You can return here to check or download it again.</p>
+        <div class="sr-only" id="offlineAudioLive" role="status" aria-live="polite" aria-atomic="true"></div>
       </div>
     </div>
   </section>
@@ -1939,6 +1998,21 @@
   </div>
 </dialog>
 
+<dialog class="modal-overlay" id="offlineAudioRemoveDialog"
+        aria-labelledby="offlineAudioRemoveTitle" aria-describedby="offlineAudioRemoveBody">
+  <div class="modal-card">
+    <div class="modal-ic offline-audio-remove-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v5M14 11v5"/></svg>
+    </div>
+    <h3 id="offlineAudioRemoveTitle">Remove offline pronunciation audio?</h3>
+    <p id="offlineAudioRemoveBody">This removes all saved pronunciation clips from this device, including clips saved when you played them online. Your learning progress is not affected. Pronunciations will be saved again as you play them.</p>
+    <div class="modal-actions">
+      <button class="modal-btn ghost" id="offlineAudioRemoveCancel" type="button">Cancel</button>
+      <button class="modal-btn solid" id="offlineAudioRemoveConfirm" type="button">Remove audio</button>
+    </div>
+  </div>
+</dialog>
+
 <dialog class="site-drawer" id="siteDrawer" aria-labelledby="siteMenuTitle">
   <div class="site-drawer-panel">
     <div class="site-drawer-head">
@@ -1957,6 +2031,7 @@
           </button>
           <span class="sr-only" id="siteInstallStatus">Open installation instructions</span>
         </li>
+        <li><a href="#offlineAudio" data-app-screen="offlineAudio">Offline audio</a></li>
         <li><a href="#privacy" data-app-screen="privacy">Privacy</a></li>
         <li><a href="guide/listening/">What else I listen to</a></li>
         <!-- Approved refinement: the /guide/ destination keeps its URL and page metadata;
@@ -2398,6 +2473,8 @@ function ppApplyScreenScroll(scr, restore){
 function ppOpenSharedOverlay(overlay, initialTarget){
   if(!overlay || overlay.open || typeof overlay.showModal!=="function") return false;
   if(ppSiteMenuIsOpen()) return false;                 /* never stack two modal layers */
+  const mature=$("matureGate"), removal=$("offlineAudioRemoveDialog");
+  if((mature && mature!==overlay && mature.open) || (removal && removal!==overlay && removal.open)) return false;
   const invoker=document.activeElement;
   if(ppCanFocus(invoker) && ppIsInteractiveTarget(invoker)) ppOverlayReturnTargets.set(overlay.id, invoker);
   else ppOverlayReturnTargets.delete(overlay.id);
@@ -2476,8 +2553,9 @@ function ppRestoreSiteMenuBackground(){
 function ppOpenSiteMenu(){
   const drawer=$("siteDrawer"), button=$("siteMenuButton"), close=$("siteMenuClose");
   if(!drawer || !button || !close || drawer.open || typeof drawer.showModal!=="function") return false;
-  const mature=$("matureGate");
-  if(mature && mature.open) return false;          /* never stack two modal layers */
+  const mature=$("matureGate"), removal=$("offlineAudioRemoveDialog");
+  if(mature && mature.open) return false;            /* never stack two modal layers */
+  if(removal && removal.open) return false;
   try{ drawer.showModal(); }catch(e){ return false; }
   if(!ppIsolateSiteMenuBackground()){
     drawer.close();
@@ -2514,6 +2592,8 @@ function showScreen(scr, deferFocus, restoreScroll){
      destination at the top, unchanged. */
   const fromScreen=ppCurrentScreen();
   const toScreen=$(scr);
+  if(fromScreen && fromScreen.id==="offlineAudio" && fromScreen!==toScreen && window.PPOfflineAudioUI)
+    window.PPOfflineAudioUI.leave();                 /* cooperative and deliberately does not block navigation */
   if(fromScreen && fromScreen.id==="patterns" && fromScreen!==toScreen) stopAllAudio();
   else if(fromScreen && fromScreen!==toScreen && typeof stopAllAudio==="function") stopAllAudio();
   if(fromScreen && fromScreen!==toScreen) ppRememberScreenScroll(fromScreen.id);   /* where the outgoing screen was left */
@@ -2521,6 +2601,7 @@ function showScreen(scr, deferFocus, restoreScroll){
   toScreen.classList.add("active");
   const ft=document.querySelector("footer"); if(ft) ft.hidden = (scr!=="home");   /* the compact version footer lives on home only */
   if(scr==="home" && window.PP_A2HS) window.PP_A2HS.onHome();
+  if(scr==="offlineAudio" && window.PPOfflineAudioUI) window.PPOfflineAudioUI.enter();
   ppApplyScreenScroll(scr, restoreScroll===true);
   if(!deferFocus) ppRouteScreenFocus(fromScreen, toScreen);   /* still preventScroll:true, so it cannot move what was just restored */
 }
@@ -2545,7 +2626,7 @@ function show(scr, deferFocus){
 ppUseManualScrollRestoration();     /* routing owns screen offsets from here on - see ppApplyScreenScroll */
 window.addEventListener("popstate", e=> showScreen((e.state && e.state.scr) || "home", false, true));
 const ppInitialScreen=location.hash.slice(1);
-if(["about","privacy","contact","install"].includes(ppInitialScreen) && $(ppInitialScreen)){
+if(["about","privacy","contact","install","offlineAudio"].includes(ppInitialScreen) && $(ppInitialScreen)){
   history.replaceState({scr:ppInitialScreen,direct:true}, "",
     location.pathname + location.search + "#" + ppInitialScreen);
   showScreen(ppInitialScreen);
@@ -3191,6 +3272,8 @@ function restart(){ startTopic(S.levelIdx, S.topicIdx); }
         speechSynthesis so nothing breaks silently while you catch up on audio. */
 
 let audioMap = {};              /* normalized Polish text -> "audio/<hash>.mp3" */
+let audioManifestFiles = null;  /* active entries[*].file values; Offline audio validates these separately */
+let audioManifestRequest = null;
 /* Has the manifest come back yet? audioMap alone cannot say: while the fetch is
    in flight it is empty, which reads exactly like "this phrase has no clip". Any
    playback decided from that emptiness picks the device voice for a phrase Marek
@@ -3199,11 +3282,15 @@ let audioMap = {};              /* normalized Polish text -> "audio/<hash>.mp3" 
    that tells those two apart; "ready" and "unavailable" are both SETTLED, and
    only "loading" holds playback back. */
 let audioManifestStatus = "loading";   /* "loading" | "ready" | "unavailable" */
-let currentAudio = null;        /* the <audio> element currently playing, if any */
-let currentUtterance = null;    /* the speech attempt allowed to report back, if any */
-let speakBtn = null;
+/* `var` is intentional for these audio-owner references: direct informational
+   hash routing runs before this source position and calls stopAllAudio(). Hoisted
+   undefined/null ownership is the same idle state, while a lexical TDZ would make
+   #about/#privacy/#contact/#install/#offlineAudio fall back to Home. */
+var currentAudio = null;        /* the <audio> element currently playing, if any */
+var currentUtterance = null;    /* the speech attempt allowed to report back, if any */
+var speakBtn = null;
 let plVoice = null;             /* speechSynthesis fallback voice, if any */
-let audioRetryRequest = null;   /* {text, btn} - what "Try again" re-attempts */
+var audioRetryRequest = null;   /* {text, btn} - what "Try again" re-attempts */
 
 /* Audio speed preference: 'normal' (0.9x) or 'slow' (0.7x). Persisted across sessions. */
 const SPEED_KEY = "popolsku-speed";
@@ -3258,6 +3345,11 @@ function settleAudioManifest(manifest){
      hence the explicit array exclusion. A container of the wrong shape is not a
      manifest we can read, so it settles unavailable rather than half-read. */
   const usable = !!entries && typeof entries === "object" && !Array.isArray(entries);
+  /* Preserve the canonical inventory from the same manifest request. Do not derive
+     it from audioMap: audioMap is a phrase lookup and intentionally skips unusable
+     playback entries, while Offline audio must fail closed if any file identity is
+     malformed. PPOfflineAudioEngine.prepareManifest() owns that validation. */
+  audioManifestFiles = usable ? Object.values(entries).map(entry => entry && entry.file) : null;
   const map = {};
   if(usable){
     for(const entry of Object.values(entries)){
@@ -3282,6 +3374,7 @@ function settleAudioManifest(manifest){
   syncListeningAudioReadiness();
   syncRoundAudioReadiness();
   if(typeof syncPatternAudioReadiness === "function") syncPatternAudioReadiness();
+  return manifest;
 }
 
 function syncPatternAudioReadiness(){
@@ -3291,12 +3384,19 @@ function syncPatternAudioReadiness(){
   });
 }
 
-/* Load the manifest once at startup - one request, no retry, no polling. Failure
-   is fine: "unavailable" is a settled answer, and speechSynthesis takes over. */
-fetch("audio-manifest.json", { cache: "no-store" })
-  .then(r => r.ok ? r.json() : null)          /* HTTP error -> null -> unavailable */
-  .then(settleAudioManifest)
-  .catch(() => settleAudioManifest(null));    /* offline first-load, missing file, or unreadable JSON */
+/* One shared manifest loader serves ordinary playback and Offline audio. Startup
+   still makes exactly one request. Only the learner's explicit Retry can force one
+   more request; there is no polling and no second manifest architecture. */
+function loadAudioManifest(force){
+  if(audioManifestRequest && !force) return audioManifestRequest;
+  const request = fetch("audio-manifest.json", { cache:"no-store" })
+    .then(r => r.ok ? r.json() : null)
+    .then(settleAudioManifest)
+    .catch(() => { settleAudioManifest(null); return null; });
+  audioManifestRequest = request;
+  return request;
+}
+loadAudioManifest(false);
 
 /* OFFLINE_AUDIO_ENGINE_START
    Phase 1 only: a dormant, non-visible engine for the future Offline audio
@@ -3592,6 +3692,266 @@ const PPOfflineAudioEngine = (() => {
 window.PPOfflineAudioEngine = PPOfflineAudioEngine;
 /* OFFLINE_AUDIO_ENGINE_END */
 
+/* OFFLINE_AUDIO_UI_START
+   Learner-facing projection of the Phase 1 engine. It never opens Cache Storage,
+   owns no queue, and persists no completion/count/version state. */
+const PPOfflineAudioUI = (() => {
+  let active = false;
+  let entryGeneration = 0;
+  let engineRecord = null;
+  let lastState = null;
+  let unavailableReason = null;
+  let lastDownloadBucket = -1;
+  let lastLiveText = "";
+  let removalPending = false;
+
+  const el = id => document.getElementById(id);
+  const formatCount = value => String(Math.max(0, Number(value) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const noun = value => Number(value) === 1 ? "pronunciation" : "pronunciations";
+  const isDownloadActive = state => !!state && (state.status === "downloading" || state.status === "pausing");
+
+  function announce(message){
+    if(!active || !message || message === lastLiveText) return;
+    lastLiveText = message;
+    el("offlineAudioLive").textContent = message;
+  }
+
+  function setPrimary(label, action, disabled){
+    const button=el("offlineAudioPrimary");
+    button.hidden=!label;
+    button.textContent=label || "";
+    button.dataset.action=action || "";
+    button.disabled=!!disabled;
+  }
+
+  function setRemove(visible, disabled){
+    const button=el("offlineAudioRemove");
+    button.hidden=!visible;
+    button.disabled=!!disabled;
+  }
+
+  function renderOfflineAudio(state){
+    if(!active || !state) return;
+    lastState=Object.assign({}, state);
+    const status=state.status || "interrupted";
+    const total=Math.max(0, Number(state.total) || 0);
+    const present=Math.min(total, Math.max(0, Number(state.present) || 0));
+    const stateText=el("offlineAudioState"), copy=el("offlineAudioCopy"), count=el("offlineAudioCount");
+    const size=el("offlineAudioSize"), progress=el("offlineAudioProgress"), percent=el("offlineAudioPercent");
+    stateText.textContent=""; copy.textContent=""; count.textContent=""; percent.textContent="";
+    size.hidden=false; progress.hidden=false; progress.max=total || 1;
+    setPrimary("", "", false); setRemove(false, false);
+
+    if(status === "checking"){
+      stateText.textContent="Checking downloaded pronunciation audio…";
+      progress.removeAttribute("value");
+      progress.setAttribute("aria-valuetext", "Checking downloaded pronunciation audio");
+      return;
+    }
+
+    if(status === "interrupted" || status === "unavailable"){
+      stateText.textContent="Offline audio isn’t available in this browser right now.";
+      copy.textContent="Pronunciation still works normally when available online.";
+      size.hidden=true; progress.hidden=true;
+      setPrimary("Try again", "retry-check", false);
+      return;
+    }
+
+    progress.value=present;
+    const roundedPercent=total ? Math.round((present/total)*100) : 0;
+    progress.setAttribute("aria-valuetext", formatCount(present)+" of "+formatCount(total)+", "+roundedPercent+" percent");
+
+    if(status === "ready" && present === 0){
+      stateText.textContent="0 of "+formatCount(total)+" available offline";
+      copy.textContent="Download all pronunciation audio so it works without an internet connection.";
+      setPrimary("Download audio", "download", false);
+    }else if(status === "ready" || status === "paused"){
+      stateText.textContent="Download incomplete";
+      count.textContent=formatCount(present)+" of "+formatCount(total)+" available offline";
+      if(status === "paused") copy.textContent="You can continue any time.";
+      setPrimary("Continue download", "continue", false); setRemove(present>0, false);
+    }else if(status === "downloading"){
+      stateText.textContent="Downloading pronunciation audio";
+      count.textContent=formatCount(present)+" of "+formatCount(total);
+      /* The final acknowledgement can momentarily equal total before the engine's
+         mandatory reconciliation. Keep that instant indeterminate rather than claim
+         100%; Complete is rendered only from the reconciled `complete` state. */
+      if(total && present >= total){
+        progress.removeAttribute("value");
+        progress.setAttribute("aria-valuetext", formatCount(present)+" of "+formatCount(total)+", completing final check");
+        percent.textContent="Final check…";
+      }else percent.textContent=roundedPercent+"%";
+      setPrimary("Pause", "pause", false);
+    }else if(status === "pausing"){
+      stateText.textContent="Pausing after current downloads…";
+      count.textContent=formatCount(present)+" of "+formatCount(total);
+      setPrimary("Pause", "pause", true);
+    }else if(status === "complete"){
+      stateText.textContent="Pronunciation audio available offline";
+      count.textContent=formatCount(total)+" "+noun(total)+" downloaded";
+      setRemove(true, false);
+    }else if(status === "network-failed"){
+      stateText.textContent="Download paused because the audio couldn’t be reached.";
+      count.textContent=formatCount(present)+" of "+formatCount(total)+(present===1 ? " is" : " are")+" available offline.";
+      setPrimary("Continue download", "continue", false); setRemove(present>0, false);
+    }else if(status === "storage-failed"){
+      stateText.textContent="There isn’t enough browser storage to finish.";
+      count.textContent=formatCount(present)+" of "+formatCount(total)+(present===1 ? " is" : " are")+" still available offline.";
+      setPrimary("Try again", "continue", false); setRemove(present>0, false);
+    }else if(status === "incomplete"){
+      stateText.textContent="Download incomplete.";
+      count.textContent=formatCount(present)+" of "+formatCount(total)+(present===1 ? " is" : " are")+" available offline.";
+      copy.textContent="One or more pronunciations couldn’t be downloaded.";
+      setPrimary("Try again", "continue", false); setRemove(present>0, false);
+    }else if(status === "retention-conflict"){
+      stateText.textContent="Download incomplete";
+      copy.textContent="The browser couldn’t keep the full pronunciation library in offline storage.";
+      count.textContent=formatCount(present)+" of "+formatCount(total)+(present===1 ? " is" : " are")+" currently available offline.";
+      setRemove(present>0, false);                    /* deliberately no endless Continue loop */
+    }else if(status === "removing"){
+      stateText.textContent="Removing downloaded pronunciation audio…";
+      progress.removeAttribute("value");
+      progress.setAttribute("aria-valuetext", "Removing downloaded pronunciation audio");
+      setRemove(true, true);
+    }else if(status === "removed"){
+      stateText.textContent="Downloaded pronunciation audio removed.";
+      copy.textContent="Pronunciations will be saved again as you play them online.";
+      progress.value=0;
+      progress.setAttribute("aria-valuetext", "0 of "+formatCount(total)+", 0 percent");
+      setPrimary("Download audio", "download", false);
+    }else if(status === "remove-failed"){
+      stateText.textContent="Downloaded audio couldn’t be removed. Nothing else was changed.";
+      size.hidden=true; progress.hidden=true;
+      setPrimary("Try again", "retry-remove", false);
+    }
+  }
+
+  function handleEngineState(record, state){
+    if(record !== engineRecord || !record.accept) return; /* stale manifest/entry callback */
+    const previous=lastState && lastState.status;
+    if(active) renderOfflineAudio(state);
+    if(!active) return;
+    const total=Number(state.total)||0, present=Number(state.present)||0;
+    if(state.status === "downloading"){
+      const bucket=total ? Math.floor((present*10)/total) : 0;
+      if(previous !== "downloading"){
+        lastDownloadBucket=bucket;
+        announce("Download started. "+formatCount(present)+" of "+formatCount(total)+" available offline.");
+      }else if(bucket > lastDownloadBucket && bucket > 0 && bucket < 10){
+        lastDownloadBucket=bucket;
+        announce((bucket*10)+" percent downloaded. "+formatCount(present)+" of "+formatCount(total)+" available offline.");
+      }
+    }else if(state.status === "paused" && previous !== "paused") announce("Download paused.");
+    else if(state.status === "network-failed" && previous !== state.status) announce("Download paused because the audio couldn’t be reached.");
+    else if(state.status === "storage-failed" && previous !== state.status) announce("There isn’t enough browser storage to finish.");
+    else if(state.status === "incomplete" && previous !== state.status) announce("Download incomplete. One or more pronunciations couldn’t be downloaded.");
+    else if(state.status === "retention-conflict" && previous !== state.status) announce("Download incomplete. The browser couldn’t keep the full pronunciation library.");
+    else if(state.status === "complete" && previous !== "complete") announce("Pronunciation audio is available offline.");
+    else if(state.status === "removed" && previous !== "removed") announce("Downloaded pronunciation audio removed.");
+    else if(state.status === "remove-failed" && previous !== "remove-failed") announce("Downloaded audio couldn’t be removed.");
+  }
+
+  function capabilityAvailable(){
+    return "serviceWorker" in navigator && typeof MessageChannel === "function" && "caches" in window;
+  }
+
+  function check(forceManifest){
+    const entry=++entryGeneration;
+    unavailableReason=null;
+    renderOfflineAudio({status:"checking", total:engineRecord ? engineRecord.urls.length : 0, present:0});
+    return loadAudioManifest(forceManifest===true).then(() => {
+      if(!active || entry!==entryGeneration) return null;
+      let urls;
+      try{
+        if(!audioManifestFiles || !audioManifestFiles.length) throw new TypeError("Missing audio manifest files");
+        urls=PPOfflineAudioEngine.prepareManifest(audioManifestFiles);
+      }catch(e){
+        unavailableReason="manifest";
+        renderOfflineAudio({status:"unavailable",total:0,present:0});
+        return null;
+      }
+      if(!capabilityAvailable()){
+        unavailableReason="capability";
+        renderOfflineAudio({status:"unavailable",total:urls.length,present:0});
+        return null;
+      }
+      const identity=urls.join("\n");
+      if(!engineRecord || engineRecord.identity!==identity){
+        if(engineRecord && isDownloadActive(engineRecord.engine.getState())) engineRecord.engine.pause();
+        const record={identity:identity,urls:urls,engine:null,accept:false};
+        record.engine=PPOfflineAudioEngine.create(urls,{onState:state=>handleEngineState(record,state)});
+        engineRecord=record;
+      }
+      engineRecord.accept=true;
+      return engineRecord.engine.reconcile();         /* screen-entry truth always comes from the worker */
+    });
+  }
+
+  function requestPersistence(){
+    try{
+      if(window.PP_A2HS && typeof window.PP_A2HS.requestPersist === "function")
+        window.PP_A2HS.requestPersist();
+    }catch(e){}                                      /* best effort; never blocks download */
+  }
+
+  function begin(action){
+    if(!engineRecord) return;
+    requestPersistence();
+    if(action === "download") engineRecord.engine.start();
+    else engineRecord.engine.continueDownload();
+  }
+
+  function confirmRemoval(){
+    if(!engineRecord || removalPending) return;
+    removalPending=true;
+    ppCloseSharedOverlay(el("offlineAudioRemoveDialog"), false);
+    Promise.resolve(engineRecord.engine.remove()).then(()=>{},()=>{}).then(()=>{ removalPending=false; });
+  }
+
+  function enter(){
+    active=true; lastDownloadBucket=-1; lastLiveText="";
+    el("offlineAudioLive").textContent="";
+    return check(false);
+  }
+
+  function leave(){
+    active=false; entryGeneration++;
+    if(engineRecord) engineRecord.accept=false;
+    if(engineRecord && isDownloadActive(engineRecord.engine.getState())) engineRecord.engine.pause();
+  }
+
+  el("offlineAudioPrimary").addEventListener("click", e=>{
+    const action=e.currentTarget.dataset.action;
+    if(action === "download" || action === "continue") begin(action);
+    else if(action === "pause" && engineRecord) engineRecord.engine.pause();
+    else if(action === "retry-check") check(unavailableReason === "manifest");
+    else if(action === "retry-remove" && engineRecord && !removalPending){
+      removalPending=true;
+      Promise.resolve(engineRecord.engine.remove()).then(()=>{},()=>{}).then(()=>{ removalPending=false; });
+    }
+  });
+  el("offlineAudioRemove").addEventListener("click", ()=>{
+    ppOpenSharedOverlay(el("offlineAudioRemoveDialog"), el("offlineAudioRemoveCancel"));
+  });
+  el("offlineAudioRemoveCancel").addEventListener("click", ()=>ppCloseSharedOverlay(el("offlineAudioRemoveDialog")));
+  el("offlineAudioRemoveConfirm").addEventListener("click", confirmRemoval);
+  el("offlineAudioRemoveDialog").addEventListener("cancel", e=>{
+    if(ppCloseSharedOverlay(el("offlineAudioRemoveDialog"))) e.preventDefault();
+  });
+  el("offlineAudioRemoveDialog").addEventListener("close", ()=>{
+    ppRestoreSiteMenuBackground();                    /* safety for an unexpected native close */
+  });
+  document.addEventListener("visibilitychange", ()=>{
+    if(document.visibilityState === "hidden" && active && engineRecord && isDownloadActive(engineRecord.engine.getState()))
+      engineRecord.engine.pause();
+  });
+
+  if(el("offlineAudio").classList.contains("active")) enter(); /* direct-hash startup ran before this controller existed */
+  return {enter:enter,leave:leave,getState:()=>lastState && Object.assign({},lastState)};
+})();
+window.PPOfflineAudioUI=PPOfflineAudioUI;
+/* OFFLINE_AUDIO_UI_END */
+
 function clearSpeaking(){ if(speakBtn){ speakBtn.classList.remove("speaking"); speakBtn=null; } }
 
 /* ---------------- shared audio status and retry (MLG-4A-04) ----------------
@@ -3612,8 +3972,8 @@ const AUDIO_FALLBACK_MSG = "Using your device's voice.";
 const AUDIO_FAILED_MSG = "Audio couldn't play. Check your connection, then try again.";
 const AUDIO_RETRY_MSG = "Try again";
 
-let audioStatusEl = null, audioStatusMsgEl = null, audioRetryEl = null;
-let audioStatusOwner = null;    /* the control the visible status currently belongs to */
+var audioStatusEl = null, audioStatusMsgEl = null, audioRetryEl = null;
+var audioStatusOwner = null;    /* the control the visible status currently belongs to */
 
 /* Built once and reused. A live region has to exist before its text changes for
    the change to be announced reliably, so this is created and parked in the
@@ -3878,6 +4238,7 @@ $("backPrivacy").addEventListener("click", ()=>show("home"));
 $("backAbout").addEventListener("click", ()=>show("home"));
 $("backContact").addEventListener("click", ()=>show("home"));
 $("backInstall").addEventListener("click", ()=>show("home"));
+$("backOfflineAudio").addEventListener("click", ()=>show("home"));
 
 /* Native button activation gives Enter and Space exactly one click. The Study
    shortcut guard treats the button/dialog controls as interactive and ignores them. */
@@ -7126,7 +7487,7 @@ const PP_A2HS = (function(){
     });
   }
 
-  return { init, install, installState, syncMenuInstall, snooze, bump, onHome, nudgeHTML };
+  return { init, install, installState, syncMenuInstall, snooze, bump, onHome, nudgeHTML, requestPersist };
 })();
 window.PP_A2HS = PP_A2HS;
 PP_A2HS.init();
