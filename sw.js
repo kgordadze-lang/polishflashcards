@@ -1102,13 +1102,20 @@ function postOfflineAudioReply(event, command, token, work) {
 self.addEventListener("message", event => {
   const data = event && event.data;
   const command = data && data.command;
-  if (command !== "offline-audio-reconcile" && command !== "offline-audio-store-one" &&
+  if (command !== "offline-audio-capabilities" && command !== "offline-audio-reconcile" && command !== "offline-audio-store-one" &&
       command !== "offline-audio-remove") return;
 
   const token = data && data.token;
   if (!isOfflineAudioToken(token)) {
     SW_STATE.offlineAudio.invalidRequests++;
     postOfflineAudioReply(event, command, token, audioStoreResult("invalid-request"));
+    return;
+  }
+  if (command === "offline-audio-capabilities") {
+    postOfflineAudioReply(event, command, token, {
+      outcome: "supported",
+      protocolVersion: 1
+    });
     return;
   }
   if (command === "offline-audio-reconcile") {

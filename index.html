@@ -3408,6 +3408,8 @@ const PPOfflineAudioEngine = (() => {
   const CONCURRENCY = 3;
   const BAD_RESPONSE_LIMIT = 3;
   const CHANNEL_TIMEOUT_MS = 30000;
+  const CAPABILITY_TIMEOUT_MS = 2500;
+  const PROTOCOL_VERSION = 1;
   let instanceSequence = 0;
 
   function scopeUrl(baseHref){
@@ -3444,6 +3446,12 @@ const PPOfflineAudioEngine = (() => {
   function channelFailure(message){
     const error = new Error(message || "Offline audio worker unavailable");
     error.code = "offline-audio-channel";
+    return error;
+  }
+
+  function protocolFailure(){
+    const error = channelFailure("Offline audio worker protocol unavailable");
+    error.code = "offline-audio-protocol";
     return error;
   }
 
@@ -3507,12 +3515,25 @@ const PPOfflineAudioEngine = (() => {
       return snapshot();
     }
     function token(run){ return "oa-" + instance + "-" + run + "-" + (++requestSequence); }
-    function send(command, payload, run){
+    function send(command, payload, run, timeoutMs){
       try{
-        return Promise.resolve(transport(command, payload || {}, token(run), config.timeoutMs));
+        return Promise.resolve(transport(command, payload || {}, token(run), timeoutMs || config.timeoutMs));
       }catch(e){
         return Promise.reject(channelFailure());
       }
+    }
+
+    function probeCapabilities(run){
+      return send("offline-audio-capabilities", {}, run, CAPABILITY_TIMEOUT_MS).then(reply => {
+        if(!reply || reply.outcome !== "supported" || reply.protocolVersion !== PROTOCOL_VERSION){
+          throw protocolFailure();
+        }
+        return reply;
+      }, () => { throw protocolFailure(); });
+    }
+
+    function interruptionReason(error){
+      return error && error.code === "offline-audio-protocol" ? "worker-protocol" : "worker-channel";
     }
 
     function validateReconciliation(reply){
@@ -3534,7 +3555,16 @@ const PPOfflineAudioEngine = (() => {
     function reconcileFor(run, nextStatus){
       if(run !== generation) return Promise.resolve(null);
       publish({ status:nextStatus || "checking", reason:null });
-      return send("offline-audio-reconcile", { files:urls.slice() }, run).then(validateReconciliation).then(reply => {
+      /* Probe the active worker with no manifest or audio data before asking it
+         to scan the full library. Historical workers ignore this command, so a
+         dedicated short timeout can fail fast without weakening normal work. */
+      return probeCapabilities(run).then(() => {
+        if(run !== generation) return null;
+        return send("offline-audio-reconcile", { files:urls.slice() }, run);
+      }).then(reply => {
+        if(run !== generation || !reply) return null;
+        return validateReconciliation(reply);
+      }).then(reply => {
         if(run !== generation) return null;
         mutationGeneration = reply.mutationGeneration;
         publish({
@@ -3548,8 +3578,8 @@ const PPOfflineAudioEngine = (() => {
     function reconcile(){
       const run = ++generation;
       pauseRequested = false;
-      return reconcileFor(run, "checking").then(() => snapshot()).catch(() => {
-        if(run === generation) publish({ status:"interrupted", reason:"worker-channel" });
+      return reconcileFor(run, "checking").then(() => snapshot()).catch(error => {
+        if(run === generation) publish({ status:"interrupted", reason:interruptionReason(error) });
         return snapshot();
       });
     }
@@ -3629,8 +3659,8 @@ const PPOfflineAudioEngine = (() => {
           if(run !== generation) return snapshot();
           return reconcileFor(run, "checking").then(finalState);
         });
-      }).catch(() => {
-        if(run === generation) publish({ status:"interrupted", reason:"worker-channel" });
+      }).catch(error => {
+        if(run === generation) publish({ status:"interrupted", reason:interruptionReason(error) });
         return snapshot();
       });
     }
@@ -3700,6 +3730,13 @@ const PPOfflineAudioEngine = (() => {
       return snapshot();
     }
 
+    function invalidateWorker(){
+      generation++;
+      pauseRequested = true;
+      mutationGeneration = null;
+      return publish({ status:"interrupted", reason:"worker-changed" });
+    }
+
     function remove(){
       const run = ++generation;
       pauseRequested = true;
@@ -3725,6 +3762,7 @@ const PPOfflineAudioEngine = (() => {
       start:start,
       continueDownload:start,
       pause:pause,
+      invalidateWorker:invalidateWorker,
       remove:remove,
       getState:snapshot,
       getManifestUrls:() => urls.slice()
@@ -3809,6 +3847,14 @@ const PPOfflineAudioUI = (() => {
       return;
     }
 
+    if(status === "update-pending"){
+      stateText.textContent="Offline audio will be available after Po polsku finishes updating.";
+      copy.textContent="Close and reopen Po polsku, then try again.";
+      size.hidden=true; progress.hidden=true;
+      setPrimary("Try again", "retry-check", false);
+      return;
+    }
+
     progress.value=present;
     const roundedPercent=total ? Math.round((present/total)*100) : 0;
     progress.setAttribute("aria-valuetext", formatCount(present)+" of "+formatCount(total)+", "+roundedPercent+" percent");
@@ -3883,6 +3929,7 @@ const PPOfflineAudioUI = (() => {
     const previous=lastState && lastState.status;
     if(active) renderOfflineAudio(state);
     if(!active) return;
+    if(state.status === "interrupted" && state.reason === "worker-protocol") inspectUpdateState(record, state);
     const total=Number(state.total)||0, present=Number(state.present)||0;
     if(state.status === "downloading"){
       const bucket=total ? Math.floor((present*10)/total) : 0;
@@ -3901,6 +3948,24 @@ const PPOfflineAudioUI = (() => {
     else if(state.status === "complete" && previous !== "complete") announce("Pronunciation audio is available offline.");
     else if(state.status === "removed" && previous !== "removed") announce("Downloaded pronunciation audio removed.");
     else if(state.status === "remove-failed" && previous !== "remove-failed") announce("Downloaded audio couldn’t be removed.");
+  }
+
+  function inspectUpdateState(record, state){
+    const inspectedEntry=entryGeneration;
+    let registration;
+    try{
+      registration=navigator.serviceWorker && typeof navigator.serviceWorker.getRegistration === "function"
+        ? navigator.serviceWorker.getRegistration()
+        : navigator.serviceWorker.ready;
+    }catch(e){ return; }
+    Promise.resolve(registration).then(reg => {
+      if(!active || inspectedEntry!==entryGeneration || record!==engineRecord || !record.accept) return;
+      const current=record.engine.getState();
+      if(current.status!=="interrupted" || current.reason!=="worker-protocol") return;
+      if(reg && (reg.waiting || reg.installing)){
+        renderOfflineAudio({status:"update-pending",total:state.total,present:state.present,reason:"worker-protocol"});
+      }
+    },()=>{});
   }
 
   function capabilityAvailable(){
@@ -3997,6 +4062,11 @@ const PPOfflineAudioUI = (() => {
     if(document.visibilityState === "hidden" && active && engineRecord && isDownloadActive(engineRecord.engine.getState()))
       engineRecord.engine.pause();
   });
+  if("serviceWorker" in navigator && typeof navigator.serviceWorker.addEventListener === "function"){
+    navigator.serviceWorker.addEventListener("controllerchange", ()=>{
+      if(engineRecord) engineRecord.engine.invalidateWorker();
+    });
+  }
 
   if(el("offlineAudio").classList.contains("active")) enter(); /* direct-hash startup ran before this controller existed */
   return {enter:enter,leave:leave,getState:()=>lastState && Object.assign({},lastState)};

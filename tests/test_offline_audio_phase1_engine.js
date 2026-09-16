@@ -648,6 +648,7 @@ channelBroken = false;
 var recovered = watch(replaceEngine.continueDownload()); drain();
 eq('K2 Continue uses a fresh reconciliation and recovers', [recovered.value.status, recovered.value.present], ['complete',4]);
 var staleHeld = [], staleTransport = function (command, payload, token) {
+  if (command === 'offline-audio-capabilities') return P.resolve({ outcome:'supported', protocolVersion:1 });
   if (command === 'offline-audio-store-one') { var d = deferred(); staleHeld.push(d); return d.promise; }
   if (command === 'offline-audio-remove') return P.resolve({ outcome:'removed' });
   return P.resolve({ outcome:'reconciled', total:4, presentCount:0, missingCount:4,
