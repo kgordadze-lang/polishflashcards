@@ -415,6 +415,90 @@ var continueRun = watch(pauseEngine.continueDownload()); drain();
 eq('E4 Continue reconciles and fetches missing only',
    [continueRun.value.status, continueRun.value.present, pauseWorker.fetchCalls.length], ['complete',8,8]);
 
+// E2. Independent-review regression: re-entry while the old Pause drain is alive.
+var reentryFiles = files(8, 8500), reentryHeld = [], reentryActive = 0, reentryMax = 0, reentryStates = [];
+var reentryWorker = makeWorker({ route:function (url) {
+  reentryActive++; reentryMax = Math.max(reentryMax, reentryActive);
+  if (reentryHeld.length < 3) {
+    var d = deferred();
+    reentryHeld.push({ url:url, deferred:d });
+    return d.promise.then(function (response) { reentryActive--; return response; }, function (error) {
+      reentryActive--; throw error;
+    });
+  }
+  reentryActive--;
+  return P.resolve(audioResponse(url));
+} });
+var reentryEngine = runEngine(reentryWorker, reentryFiles, { onState:function (state) { reentryStates.push(state); } });
+var reentrySession = reentryEngine.start();
+eq('E5 same-generation Start/Continue calls join the exact active session promise',
+   [reentryEngine.start() === reentrySession, reentryEngine.continueDownload() === reentrySession], [true,true]);
+var reentryOldRun = watch(reentrySession); drain();
+eq('E6 re-entry fixture holds exactly three old operations',
+   [reentryHeld.length, reentryWorker.fetchCalls.length, reentryEngine.getState().active], [3,3,3]);
+reentryEngine.pause(); drain();
+var reentryCheck = watch(reentryEngine.reconcile()); drain();
+eq('E7 authoritative re-entry reconciliation advances to truthful ready state while old lanes drain',
+   [reentryCheck.value.status, reentryCheck.value.present, reentryEngine.getState().active], ['ready',0,3]);
+var queuedOne = reentryEngine.continueDownload();
+var queuedTwo = reentryEngine.continueDownload();
+var queuedThree = reentryEngine.continueDownload();
+var queuedRun = watch(queuedOne); drain();
+eq('E8 rapid Continue presses join one queued successor and start no fourth request',
+   [queuedTwo === queuedOne, queuedThree === queuedOne, queuedRun.state, reentryWorker.fetchCalls.length],
+   [true,true,'pending',3]);
+var stateEventsBeforeStaleTail = reentryStates.length;
+reentryHeld[0].deferred.resolve(audioResponse(reentryHeld[0].url)); drain();
+eq('E9 a stale lane tail decrements accounting without publishing into the new generation',
+   [reentryEngine.getState().status, reentryEngine.getState().active, reentryStates.length],
+   ['ready',2,stateEventsBeforeStaleTail]);
+reentryHeld.slice(1).forEach(function (item) { item.deferred.resolve(audioResponse(item.url)); }); drain();
+eq('E10 one queued Continue automatically completes after the stale three-lane drain',
+   [queuedRun.state, queuedRun.value.status, queuedRun.value.present, reentryWorker.fetchCalls.length],
+   ['fulfilled','complete',8,8]);
+eq('E11 old and successor sessions never overlap above concurrency three',
+   [reentryMax, queuedRun.value.maxActive, reentryActive], [3,3,0]);
+eq('E12 the superseded old session cannot overwrite successor completion',
+   [reentryOldRun.state, reentryEngine.getState().status], ['fulfilled','complete']);
+
+// A queued successor is generation-owned: Remove cancels it before the stale drain ends.
+var queuedRemoveFiles = files(8, 8600), queuedRemoveHeld = [];
+var queuedRemoveWorker = makeWorker({ route:function (url) {
+  if (queuedRemoveHeld.length < 3) { var d = deferred(); queuedRemoveHeld.push({url:url,deferred:d}); return d.promise; }
+  return P.resolve(audioResponse(url));
+} });
+var queuedRemoveEngine = runEngine(queuedRemoveWorker, queuedRemoveFiles);
+queuedRemoveEngine.start(); drain(); queuedRemoveEngine.pause();
+watch(queuedRemoveEngine.reconcile()); drain();
+var canceledByRemove = watch(queuedRemoveEngine.continueDownload()); drain();
+var authoritativeRemove = watch(queuedRemoveEngine.remove()); drain();
+eq('E13 Remove becomes authoritative while the queued successor is waiting',
+   [authoritativeRemove.value.status, canceledByRemove.state, queuedRemoveWorker.fetchCalls.length],
+   ['removed','pending',3]);
+queuedRemoveHeld.forEach(function (item) { item.deferred.resolve(audioResponse(item.url)); }); drain();
+eq('E14 Remove cancels the queued successor with no post-Remove store request',
+   [canceledByRemove.value.status, queuedRemoveEngine.getState().status, queuedRemoveWorker.fetchCalls.length],
+   ['removed','removed',3]);
+
+// A newer reconciliation likewise invalidates an older queued Continue.
+var queuedCheckFiles = files(8, 8700), queuedCheckHeld = [];
+var queuedCheckWorker = makeWorker({ route:function (url) {
+  if (queuedCheckHeld.length < 3) { var d = deferred(); queuedCheckHeld.push({url:url,deferred:d}); return d.promise; }
+  return P.resolve(audioResponse(url));
+} });
+var queuedCheckEngine = runEngine(queuedCheckWorker, queuedCheckFiles);
+queuedCheckEngine.start(); drain(); queuedCheckEngine.pause();
+watch(queuedCheckEngine.reconcile()); drain();
+var canceledByCheck = watch(queuedCheckEngine.continueDownload()); drain();
+var newerCheck = watch(queuedCheckEngine.reconcile()); drain();
+eq('E15 newer reconciliation supersedes the queued Continue before stale drain completion',
+   [newerCheck.value.status, canceledByCheck.state, queuedCheckWorker.fetchCalls.length],
+   ['ready','pending',3]);
+queuedCheckHeld.forEach(function (item) { item.deferred.resolve(audioResponse(item.url)); }); drain();
+eq('E16 newer reconciliation cancels the old successor without new scheduler lanes',
+   [canceledByCheck.value.status, queuedCheckEngine.getState().status, queuedCheckWorker.fetchCalls.length],
+   ['ready','ready',3]);
+
 // F. Bounded failures and valid partial retention.
 var networkCalls = 0, networkWorker = makeWorker({ route:function (url) {
   networkCalls++; return networkCalls === 1 ? P.reject(new TypeError('offline')) : P.resolve(audioResponse(url));

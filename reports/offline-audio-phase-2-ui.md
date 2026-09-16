@@ -209,3 +209,92 @@ The in-app browser eventually established a usable local service-worker channel 
 - `audio-manifest.json`, `audio/*.mp3`, content, generated pages, and `sitemap.xml` were not changed.
 - No analytics, telemetry, cookies, identifiers, reporting endpoint, external API, second manifest/cache/audio store, direct page Cache Storage write, Background Sync, or durable completion/version marker was added.
 - Git remotes remain empty. Nothing was pushed or deployed. Production was never accessed.
+
+## Independent review correction — stale-session re-entry race
+
+### Review finding and deterministic reproduction
+
+Independent review after the original Phase 2 commit found one cross-phase race in the approved page engine. The correction started from commit `62c6439271bab2c71f223cc2c0721fc7daa27098`, tree `ac0462ee44336ae707dbda9dae41d53d4b279448`, on `offline-audio-phase-2-ui`, with a clean worktree, zero remotes, and `push.default=nothing`.
+
+The defect was reproduced with eight missing files and three controlled unresolved `offline-audio-store-one` operations:
+
+1. `start()` created three lanes and held all three requests.
+2. `pause()` stopped further scheduling.
+3. `reconcile()` simulated immediate screen re-entry, advanced the page-engine generation, and truthfully published `ready` with the old lanes still draining.
+4. One explicit `continueDownload()` ran before those old lanes settled.
+5. The old implementation's unconditional `if(sessionPromise) return sessionPromise;` joined the obsolete session instead of arranging current-generation work.
+6. After the stale replies settled, no successor scheduler began, so the learner needed a second Continue activation.
+
+The Phase 1 suite's original 77 assertions covered ordinary Pause then Continue after the old session had already settled, but not Continue after a newer reconciliation while the old session was still alive.
+
+### Root cause and correction architecture
+
+`sessionPromise` described whether some scheduler session existed, but not which generation owned it. That distinction is essential after reconciliation or Remove advances `generation`.
+
+The page engine now keeps four related in-memory values:
+
+- `sessionPromise` — the currently draining/running session;
+- `sessionGeneration` — the exact generation owned by that session;
+- `queuedSuccessorPromise` — at most one actionable successor waiting for a stale session;
+- `queuedSuccessorGeneration` — the authoritative generation from which the latest explicit Continue requested that successor.
+
+The resulting contract is:
+
+- an active session whose `sessionGeneration === generation` remains joinable, preserving rapid same-generation Start/Continue deduplication;
+- a session from an older generation is never cleared or overlapped;
+- one queued successor waits on the stale session promise, and repeated Continue calls join that exact successor promise;
+- only after the stale session fully settles does the successor compare its owned request generation with current `generation`;
+- equality begins one fresh `runStart()`, which performs its own fresh reconciliation before scheduling missing files;
+- mismatch resolves harmlessly from the current snapshot and starts no lanes.
+
+`sessionPromise` could not simply be cleared during re-entry: the three old lanes would remain alive while a fresh run created three more, permitting six simultaneous operations and violating the approved concurrency-3 architecture. Waiting on the owned stale session creates a strict drain boundary. The controlled regression observed both the transport-level maximum and engine `maxActive` as exactly 3, never 4–6.
+
+A later explicit Continue from a newer authoritative generation may take ownership of the same one waiting successor. Without such a new explicit request, Remove or any newer reconciliation leaves the queued generation stale, so it cancels when the drain finishes. No persistent generation metadata is used.
+
+### Stale lane callback hygiene
+
+Each lane still decrements the shared `active` counter when its request settles. If its run generation is stale, the tail now updates only the internal counter fields without calling `publish()` and without recursively scheduling another item. Thus global accounting reaches zero correctly, but an old reply cannot emit misleading state into the newly reconciled/removed generation. Current-generation lane tails retain the original publish-and-next-lane path.
+
+### New controlled-promise assertions
+
+`tests/test_offline_audio_phase1_engine.js` now has 12 additional shipping-code assertions, increasing the suite from **77 to 89 passed**:
+
+- **E5** — repeated same-generation Start/Continue returns the exact active session promise;
+- **E6** — the re-entry fixture holds exactly three old operations;
+- **E7** — re-entry reconciliation reaches truthful `ready` while those lanes drain;
+- **E8** — three rapid Continue calls join one pending successor and start no fourth request;
+- **E9** — one stale lane tail decrements active accounting without a state notification;
+- **E10** — the one queued Continue automatically fresh-reconciles, downloads the five remaining clips, and reaches Complete without a second activation;
+- **E11** — old drain plus successor has transport maximum 3, engine maximum 3, and ends with zero active operations;
+- **E12** — the superseded old session cannot overwrite successor completion;
+- **E13–E14** — Remove becomes authoritative, the queued successor remains pending until drain, then resolves Removed with exactly the original three requests and no post-Remove scheduling;
+- **E15–E16** — a newer reconciliation similarly invalidates the older queued successor and creates no new lanes.
+
+The pre-existing ordinary Pause/Continue assertion remains green and still proves missing-only continuation after a normally settled pause.
+
+### Correction validation
+
+The current maintained Phase 2/protected total is **3,282 passed, 0 failed**. This is the original 3,270 total plus the 12 new engine regressions; no original assertion was removed or weakened.
+
+| Command | Current result |
+|---|---:|
+| `osascript -l JavaScript tests/test_offline_audio_phase1_engine.js` | **89 passed, 0 failed** |
+| `osascript -l JavaScript tests/test_offline_audio_phase2_ui.js` | **104 passed, 0 failed** |
+| `osascript -l JavaScript tests/test_audio_fallback.js` | **585 passed, 0 failed** |
+| `osascript -l JavaScript tests/test_audio_failure_inline_feedback.js` | **38 passed, 0 failed** |
+| `osascript -l JavaScript tests/test_priority8_phase1_playback.js` | **25 passed, 0 failed** |
+| `osascript -l JavaScript tests/test_phase1a_accessibility.js` | **82 passed, 0 failed** |
+| `osascript -l JavaScript tests/test_phase1b_keyboard_focus.js` | **214 passed, 0 failed** |
+| `osascript -l JavaScript tests/test_phase2a_core_activity_accessibility.js` | **127 passed, 0 failed** |
+| `osascript -l JavaScript tests/test_listening_accessibility.js` | **229 passed, 0 failed** |
+| `osascript -l JavaScript tests/test_listening_variety.js` | **193 passed, 0 failed** |
+| `osascript -l JavaScript tests/test_mixed_audio.js` | **260 passed, 0 failed** |
+| `osascript -l JavaScript tests/test_mixed_accessibility.js` | **411 passed, 0 failed** |
+| `osascript -l JavaScript tests/test_conversation_accessibility.js` | **101 passed, 0 failed** |
+| `osascript -l JavaScript tests/test_podcast_accessibility.js` | **100 passed, 0 failed** |
+| `osascript -l JavaScript tests/test_grammar_interaction.js` | **616 passed, 0 failed** |
+| `osascript -l JavaScript tests/test_phase3b_overlays.js` | **108 passed, 0 failed** |
+
+All repository validators were rerun successfully: `validate_content.py`, `verify_audio.py`, `validate_priority8_staging.py`, `build_pages.py --check`, and `git diff --check`.
+
+Only `index.html`, `tests/test_offline_audio_phase1_engine.js`, and this report changed in the correction. `sw.js` remained byte-identical at SHA-256 `00e292f31436de532f3b053e5ce63f180cb62efa41f1a31b492efc643799da82`. Release markers remain app `9.15`, shell `popolsku-v70`, and audio cache `popolsku-audio`. Audio remains 3,621 required / 3,621 manifest / 3,621 MP3 / zero missing / zero orphaned. No UI, copy, navigation, Privacy, Install, persistence, worker, content, audio, manifest, generated page, sitemap, analytics, telemetry, Background Sync, cache, or persistent download-state change was made.

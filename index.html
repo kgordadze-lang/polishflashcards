@@ -3490,7 +3490,9 @@ const PPOfflineAudioEngine = (() => {
     const notify = typeof config.onState === "function" ? config.onState : () => {};
     const instance = ++instanceSequence;
     let generation = 0, requestSequence = 0, mutationGeneration = null;
-    let pauseRequested = false, active = 0, maxActive = 0, sessionPromise = null;
+    let pauseRequested = false, active = 0, maxActive = 0;
+    let sessionPromise = null, sessionGeneration = null;
+    let queuedSuccessorPromise = null, queuedSuccessorGeneration = null;
     let state = {
       status:"idle", total:urls.length, present:0, missing:urls.length,
       active:0, maxActive:0, badResponses:0, generation:0, reason:null
@@ -3587,7 +3589,15 @@ const PPOfflineAudioEngine = (() => {
         return send("offline-audio-store-one", {
           file:file, mutationGeneration:mutationGeneration
         }, run).then(handleStore, () => { if(run === generation) stop("worker-channel"); }).then(() => {
-          active--; publish({});
+          active--;
+          if(run !== generation){
+            /* The old lane still owns one slot until this tail, but its reply no
+               longer owns learner-visible state. Keep internal counters exact
+               without publishing a stale callback into the newer generation. */
+            state=Object.assign({},state,{active:active,maxActive:maxActive,generation:generation});
+            return;
+          }
+          publish({});
           return lane();
         });
       }
@@ -3625,19 +3635,61 @@ const PPOfflineAudioEngine = (() => {
       });
     }
 
-    function start(){
-      /* A rapid Continue while the cooperative Pause is still draining joins
-         the current session instead of creating three additional lanes. */
-      if(sessionPromise) return sessionPromise;
+    function startSession(){
       const work = runStart();
-      sessionPromise = work.then(result => {
-        sessionPromise = null;
+      const ownedGeneration = generation;
+      let ownedPromise = null;
+      ownedPromise = work.then(result => {
+        if(sessionPromise === ownedPromise){
+          sessionPromise = null; sessionGeneration = null;
+        }
         return result;
       }, err => {
-        sessionPromise = null;
+        if(sessionPromise === ownedPromise){
+          sessionPromise = null; sessionGeneration = null;
+        }
         throw err;
       });
-      return sessionPromise;
+      sessionPromise = ownedPromise;
+      sessionGeneration = ownedGeneration;
+      return ownedPromise;
+    }
+
+    function queueSuccessor(requestGeneration){
+      /* There is at most one actionable successor. A later explicit Continue
+         from a newer authoritative generation may take ownership of the same
+         wait; without that new request, generation mismatch cancels it. */
+      if(queuedSuccessorPromise){
+        queuedSuccessorGeneration = requestGeneration;
+        return queuedSuccessorPromise;
+      }
+      const drainingSession = sessionPromise;
+      queuedSuccessorGeneration = requestGeneration;
+      let successor = null;
+      const afterDrain = () => {
+        const requestedGeneration = queuedSuccessorGeneration;
+        if(queuedSuccessorPromise === successor){
+          queuedSuccessorPromise = null; queuedSuccessorGeneration = null;
+        }
+        if(requestedGeneration !== generation) return snapshot();
+        /* The stale session has fully settled, so beginning three fresh lanes
+           here can never overlap its at-most-three old lanes. */
+        return startSession();
+      };
+      successor = Promise.resolve(drainingSession).then(afterDrain, afterDrain);
+      queuedSuccessorPromise = successor;
+      return successor;
+    }
+
+    function start(){
+      if(sessionPromise){
+        /* Repeated Start/Continue within the same active generation joins the
+           current work. After reconcile/remove advanced generation, one queued
+           successor waits for that stale session to drain instead. */
+        if(sessionGeneration === generation) return sessionPromise;
+        return queueSuccessor(generation);
+      }
+      return startSession();
     }
 
     function pause(){
