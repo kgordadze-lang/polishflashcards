@@ -48,8 +48,29 @@ var BUILD = readFile(ROOT + 'build_pages.py');
 var MIGRATE = readFile(ROOT + 'pp-migrate.js');
 var GEN_PAGE_PATH = 'grammar/biernik-accusative/index.html';
 var GEN_PAGE = readFile(ROOT + GEN_PAGE_PATH);
-var CLIP_FILE = 'audio/000311d1288f.mp3';
+function selectManifestClipFile() {
+  var manifest;
+  try {
+    manifest = JSON.parse(readFile(ROOT + 'audio-manifest.json'));
+  } catch (error) {
+    throw new Error('audio fixture selection: audio-manifest.json is not valid JSON');
+  }
+  if (!manifest || !manifest.entries || typeof manifest.entries !== 'object') {
+    throw new Error('audio fixture selection: audio-manifest.json has no entries object');
+  }
+  var ids = Object.keys(manifest.entries).sort();
+  for (var i = 0; i < ids.length; i++) {
+    var id = ids[i], entry = manifest.entries[id];
+    if (/^[0-9a-f]{12}$/.test(id) && entry && typeof entry.file === 'string' &&
+        entry.file === 'audio/' + id + '.mp3') return entry.file;
+  }
+  throw new Error('audio fixture selection: no entry maps a 12-hex ID to its audio/<id>.mp3 path');
+}
+var CLIP_FILE = selectManifestClipFile();
 var CLIP_BYTES = readBytes(ROOT + CLIP_FILE);
+if (!CLIP_BYTES || CLIP_BYTES.length <= 1000) {
+  throw new Error('audio fixture selection: manifest-derived MP3 is missing, unreadable or too short: ' + CLIP_FILE);
+}
 
 var PASS = 0, FAIL = 0, LOG = [], INFO = [];
 function ok(name, condition) { if (condition) PASS++; else { FAIL++; LOG.push('FAIL: ' + name); } }
@@ -85,7 +106,9 @@ function codeOnly(src) {
 }
 var SW_CODE = codeOnly(SW_SRC), INDEX_CODE = codeOnly(INDEX);
 
-ok('H0 the repository clip used for byte comparison was read', !!CLIP_BYTES && CLIP_BYTES.length > 1000);
+ok('H0 the manifest-derived repository clip used for byte comparison was read',
+   !!CLIP_BYTES && CLIP_BYTES.length > 1000);
+INFO.push('real-byte fixture selected deterministically from audio-manifest.json: ' + CLIP_FILE);
 var CLIP_LEN = CLIP_BYTES ? CLIP_BYTES.length : 0;
 
 // =========================================================================
