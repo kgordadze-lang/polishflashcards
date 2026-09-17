@@ -1,7 +1,7 @@
 // Maintained current regression extraction; release markers are injected by run_current_tests.py.
 // Deterministic tests for Phase 3B-1A / 3B-2A narrow-screen layout, viewport fit and
 // safe areas. Runs in JavaScriptCore:
-//     osascript -l JavaScript tests/test_phase3b_mobile_layout.js
+//     PYTHONDONTWRITEBYTECODE=1 python3 tests/current/run_current_tests.py
 //
 // Issues covered:
 //   MLG-3A-01  home topic cards collapsed their text column to ~70px at 320px.  (3B-1A)
@@ -476,7 +476,7 @@ eq('G1 the text is not shrunk to force one line', CE ? decl(CE.body, 'font-size'
 ok('G1 focus styling is still declared', blocksFor('.contact-email:focus-visible', '')[0] !== undefined);
 // Phase 3 closeout replaced the visible word "Email" with a decorative inline envelope and
 // an explicit aria-label. The mailto target, the reflow contract above and the 43px touch
-// height are unchanged; tests/test_phase3_closeout.js section D owns the icon and name
+// height are unchanged; tests/current/responsive_closeout.js section D owns the icon and name
 // contract.
 // Priority 6 Phase 4 (risk R-07) turned the one action into four named reasons; Priority 6
 // Phase 4C consolidates them back into one. It shares this single rule set, so the
@@ -545,7 +545,7 @@ eq('H3 the pool still wraps rather than scrolling',
 // Phase 3 closeout resolved it at the source instead: .screen now runs an opacity-only
 // `screenFade` at the same .35s ease, so no transform crosses the viewport edge and no
 // clipping was needed. The shared `fade` keyframe is unchanged for the in-flow elements that
-// still use it. tests/test_phase3_closeout.js section A owns that contract; the assertions
+// still use it. tests/current/responsive_closeout.js section A owns that contract; the assertions
 // below keep pinning the 3-D scene's innocence and the absence of global overflow hiding.
 var FADE = keyframes('fade');
 ok('I1 the shared fade keyframe still exists for its in-flow users', FADE !== null);

@@ -1,7 +1,7 @@
 // Maintained current regression extraction; release markers are injected by run_current_tests.py.
 // Deterministic tests for Phase 3B-2B focus visibility, conversation turn continuity
 // and screen-position restoration. Runs in JavaScriptCore:
-//     osascript -l JavaScript tests/test_phase3b_focus_scroll.js
+//     PYTHONDONTWRITEBYTECODE=1 python3 tests/current/run_current_tests.py
 //
 // Issues covered:
 //   MLG-3A-09  Type It (and the Mixed Quiz typed format) focused an off-screen Next.

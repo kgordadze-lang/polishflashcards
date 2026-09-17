@@ -2,7 +2,7 @@
 // Deterministic tests for Priority 7 Phase 3B - the passive Verb Patterns
 // reference surface, its loader boundary, and the topic-routing default-deny
 // remediation the phase is gated on. Runs in JavaScriptCore:
-//     osascript -l JavaScript tests/test_priority7_patterns_ui.js
+//     PYTHONDONTWRITEBYTECODE=1 python3 tests/current/run_current_tests.py
 //
 // What runs here is the shipping code: pp-verb-patterns.js is loaded as-is, and
 // the renderers, the focus helpers and the routing dispatch are extracted from
@@ -1587,7 +1587,7 @@ eq('J2 Back from the no-data surface leaves for home',
 // Return focus runs through the shipping helpers, not a re-implementation: the
 // invoker is remembered against the #patterns screen id on the way in and
 // restored by ppRouteScreenFocus on the way out. (show()/showScreen() themselves
-// are owned by test_phase1b_keyboard_focus.js and test_phase3b_focus_scroll.js.)
+// are owned by test_phase1b_keyboard_focus.js and tests/current/focus_scroll.js.)
 eq('J2 startPatterns defers focus so the screen transition cannot steal it',
    hasCode(extractFunction(INDEX, 'startPatterns'), 'show("patterns", true);'), true);
 eq('J2 the invoking tile is remembered against this screen and restored on exit',

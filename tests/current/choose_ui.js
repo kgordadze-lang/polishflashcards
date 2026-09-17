@@ -1,7 +1,7 @@
 // Maintained current regression extraction; release markers are injected by run_current_tests.py.
 // Deterministic tests for Priority 7 Phase 3D-1 - the synthetic grammar-choose
 // MECHANICS PROTOTYPE.  Runs in JavaScriptCore:
-//     osascript -l JavaScript tests/test_priority7_choose_ui.js
+//     PYTHONDONTWRITEBYTECODE=1 python3 tests/current/run_current_tests.py
 //
 // What runs here is the shipping code.  pp-verb-patterns.js is loaded as-is and
 // its adapter is driven directly; the Grammar choose engine, the shared focus

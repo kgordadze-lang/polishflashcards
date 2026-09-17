@@ -1,7 +1,7 @@
 // Maintained current regression extraction; release markers are injected by run_current_tests.py.
 // Deterministic tests for Phase 2C responsive navigation and information architecture.
 // Runs in JavaScriptCore:
-//     osascript -l JavaScript tests/test_phase2c_navigation.js
+//     PYTHONDONTWRITEBYTECODE=1 python3 tests/current/run_current_tests.py
 //
 // The suite executes the shipping drawer and install-state functions against a
 // realistic fake DOM. Browser top-layer rendering, real key synthesis, accessibility
@@ -468,7 +468,7 @@ eq('B3 Contact makes no claim about who reads a message or how fast',
      return n + countOf(visibleText(CONTACT).toLowerCase(), s); }, 0), 0);
 // Priority 6 Phase 4C removes the four repeated buttons and their prefilled subjects: one
 // plain mailto: action now follows the list, with no query string of any kind.
-// tests/test_phase3_closeout.js section D owns the icon contract.
+// tests/current/responsive_closeout.js section D owns the icon contract.
 eq('B3 exactly one contact action carries the approved bare mailto route',
    (CONTACT.match(/<a class="contact-email" href="([^"]*)"/g) || []),
    ['<a class="contact-email" href="mailto:hello@popolsku.app"']);
@@ -873,7 +873,7 @@ GUIDE_PAGES.forEach(function (page) {
      countOf(markup, '<a class="guide-primary" href="/">Open the app</a>'), 1);
   // Phase 3 closeout: the progress sentence and its Privacy link left the shared ending.
   // The Privacy screen, the drawer entry and the /#privacy route are unchanged - asserted
-  // immediately below and in tests/test_phase3_closeout.js section F.
+  // immediately below and in tests/current/responsive_closeout.js section F.
   eq('E3 ' + name + ' no longer carries the progress sentence',
      countOf(text, 'Your progress stays on this device and can be backed up anytime.'), 0);
   eq('E3 ' + name + ' no longer carries the progress link',

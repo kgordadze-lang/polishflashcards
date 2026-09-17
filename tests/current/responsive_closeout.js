@@ -1,6 +1,6 @@
 // Maintained current regression extraction; release markers are injected by run_current_tests.py.
 // Deterministic tests for the Mobile Launch Gate Phase 3 closeout. Runs in JavaScriptCore:
-//     osascript -l JavaScript tests/test_phase3_closeout.js
+//     PYTHONDONTWRITEBYTECODE=1 python3 tests/current/run_current_tests.py
 //
 // Covered:
 //   A  MLG-3A-14                the transient 6px entry-animation overflow, resolved at source.

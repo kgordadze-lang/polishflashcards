@@ -2,7 +2,7 @@
 // Deterministic Phase 4B-3 tests: audio resilience (MLG-4A-04), the MP3 Range
 // contract (MLG-4A-05) and bounded audio retention (MLG-4A-08).
 //
-//     osascript -l JavaScript tests/test_phase4b3_audio_resilience_range_storage.js
+//     PYTHONDONTWRITEBYTECODE=1 python3 tests/current/run_current_tests.py
 //
 // WHAT RUNS HERE IS THE SHIPPING CODE
 //   - sw.js is evaluated whole inside a fake worker global and driven with real

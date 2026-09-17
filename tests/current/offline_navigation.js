@@ -1,6 +1,6 @@
 // Maintained current regression extraction; release markers are injected by run_current_tests.py.
 // Deterministic Phase 4B-2 coverage for the shipping sw.js and PP_A2HS block.
-// Runs with: osascript -l JavaScript tests/test_phase4b2_offline_navigation_installability.js
+// Run from the repository root: PYTHONDONTWRITEBYTECODE=1 python3 tests/current/run_current_tests.py
 ObjC.import('Foundation');
 
 function readFile(path) {

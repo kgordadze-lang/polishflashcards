@@ -5,7 +5,7 @@
 // against an obviously synthetic, bare public-runtime fixture. It performs no
 // network I/O and makes no linguistic, review or release-authority claim.
 // Runs in JavaScriptCore:
-//   osascript -l JavaScript tests/test_priority7_release_loader.js
+//   PYTHONDONTWRITEBYTECODE=1 python3 tests/current/run_current_tests.py
 
 ObjC.import('Foundation');
 
