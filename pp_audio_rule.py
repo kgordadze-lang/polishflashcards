@@ -37,6 +37,8 @@ from pathlib import Path
 
 import json5
 
+from verb_patterns_runtime_validator import validate_runtime
+
 DATA_GLOB = "data-*.js"
 VERB_PATTERNS_RUNTIME = "content/verb-patterns.json"
 
@@ -174,7 +176,6 @@ def verb_pattern_audio_examples(runtime_path=VERB_PATTERNS_RUNTIME):
         return []
     with path.open(encoding="utf-8") as handle:
         runtime = json.load(handle)
-    from priority7_tooling import validate_runtime
     issues = validate_runtime(runtime)
     if issues:
         rendered = "\n".join(str(issue) for issue in issues[:20])

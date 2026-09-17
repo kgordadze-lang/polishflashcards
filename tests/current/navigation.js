@@ -1,0 +1,1218 @@
+// Maintained current regression extraction; release markers are injected by run_current_tests.py.
+// Deterministic tests for Phase 2C responsive navigation and information architecture.
+// Runs in JavaScriptCore:
+//     osascript -l JavaScript tests/test_phase2c_navigation.js
+//
+// The suite executes the shipping drawer and install-state functions against a
+// realistic fake DOM. Browser top-layer rendering, real key synthesis, accessibility
+// trees, screen readers, and Android hardware Back remain human checks.
+
+ObjC.import('Foundation');
+
+function readFile(path) {
+  var s = $.NSString.stringWithContentsOfFileEncodingError(path, $.NSUTF8StringEncoding, null);
+  return ObjC.unwrap(s);
+}
+function resolveRoot() {
+  var fm = $.NSFileManager.defaultManager;
+  var cwd = ObjC.unwrap(fm.currentDirectoryPath);
+  var candidates = [cwd + '/', cwd + '/../'];
+  for (var i = 0; i < candidates.length; i++) {
+    if (fm.fileExistsAtPath(candidates[i] + 'index.html')) return candidates[i];
+  }
+  return cwd + '/';
+}
+var ROOT = resolveRoot();
+var INDEX = readFile(ROOT + 'index.html');
+var MARKUP = INDEX.slice(0, INDEX.indexOf('<script src="data-a1.js">'));
+var GUIDE = readFile(ROOT + 'guide/index.html');
+var LISTENING = readFile(ROOT + 'guide/listening/index.html');
+var BUILD = readFile(ROOT + 'build_pages.py');
+var SW = readFile(ROOT + 'sw.js');
+var MIGRATE = readFile(ROOT + 'pp-migrate.js');
+var MANIFEST = readFile(ROOT + 'manifest.json');
+var PASS = 0, FAIL = 0, LOG = [];
+function ok(name, cond) {
+  if (cond) PASS++;
+  else { FAIL++; LOG.push('FAIL: ' + name); }
+}
+function eq(name, actual, expected) {
+  var a = JSON.stringify(actual), e = JSON.stringify(expected);
+  ok(name + (a === e ? '' : '  (got ' + a + ', want ' + e + ')'), a === e);
+}
+function countOf(hay, needle) {
+  var n = 0, at = 0;
+  while ((at = hay.indexOf(needle, at)) !== -1) { n++; at += needle.length; }
+  return n;
+}
+function squash(s) { return String(s).replace(/\s+/g, ''); }
+function visibleText(s) {
+  return String(s).replace(/<[^>]+>/g, ' ')
+    .replace(/&middot;/g, '·').replace(/&amp;/g, '&').replace(/&rsquo;/g, '’')
+    .replace(/&#x27;/g, "'").replace(/\s+/g, ' ').trim();
+}
+function elementTexts(src, tag, className) {
+  var out = [], re = new RegExp('<' + tag + '(?: class="' + className + '")?>([\\s\\S]*?)<\\/' + tag + '>', 'g'), m;
+  while ((m = re.exec(src))) out.push(visibleText(m[1]));
+  return out;
+}
+function hasCode(hay, needle) { return squash(hay).indexOf(squash(needle)) !== -1; }
+function extractFunction(src, name) {
+  var needle = 'function ' + name + '(';
+  var start = src.indexOf(needle);
+  if (start === -1) throw new Error('extract: function ' + name + ' not found');
+  if (src.indexOf(needle, start + 1) !== -1) throw new Error('extract: duplicate ' + name);
+  var open = src.indexOf('{', src.indexOf(')', start));
+  var depth = 0, mode = 'code';
+  for (var j = open; j < src.length; j++) {
+    var c = src[j], n = src[j + 1];
+    if (mode === 'line') { if (c === '\n') mode = 'code'; continue; }
+    if (mode === 'block') { if (c === '*' && n === '/') { mode = 'code'; j++; } continue; }
+    if (mode === 'sq' || mode === 'dq' || mode === 'tpl') {
+      if (c === '\\') { j++; continue; }
+      if (mode === 'sq' && c === "'") mode = 'code';
+      else if (mode === 'dq' && c === '"') mode = 'code';
+      else if (mode === 'tpl' && c === '`') mode = 'code';
+      continue;
+    }
+    if (c === '/' && n === '/') { mode = 'line'; j++; continue; }
+    if (c === '/' && n === '*') { mode = 'block'; j++; continue; }
+    if (c === "'") { mode = 'sq'; continue; }
+    if (c === '"') { mode = 'dq'; continue; }
+    if (c === '`') { mode = 'tpl'; continue; }
+    if (c === '{') depth++;
+    else if (c === '}') { depth--; if (depth === 0) return src.slice(start, j + 1); }
+  }
+  throw new Error('extract: unbalanced ' + name);
+}
+function attr(tag, name) {
+  var m = tag && tag.match(new RegExp('\\s' + name + '="([^"]*)"'));
+  if (m) return m[1];
+  return tag && new RegExp('\\s' + name + '(?:\\s|>|/)').test(tag) ? '' : null;
+}
+function tagFor(src, id) {
+  var re = new RegExp('<[^>]+\\sid="' + id + '"[^>]*>');
+  var m = src.match(re);
+  return m ? m[0] : '';
+}
+function section(id) {
+  var start = INDEX.indexOf('<section class="screen" id="' + id + '">');
+  if (id === 'home') start = INDEX.indexOf('<section class="screen active" id="home">');
+  var end = INDEX.indexOf('</section>', start);
+  return start === -1 || end === -1 ? '' : INDEX.slice(start, end + 10);
+}
+// Every declaration block written for one selector, in source order, wherever it sits -
+// top level, inside a media query, or inside an @supports refinement. Used to read the
+// drawer's visual contract without asserting whole declaration strings.
+function styleRules(selector) {
+  var src = INDEX.replace(/\/\*[\s\S]*?\*\//g, ''), needle = selector + '{', out = [], at = -1;
+  while ((at = src.indexOf(needle, at + 1)) !== -1) {
+    if (at !== 0 && !/[\s{};]/.test(src.charAt(at - 1))) continue;   // not a whole selector
+    var open = at + needle.length;
+    out.push(src.slice(open, src.indexOf('}', open)));
+  }
+  return out;
+}
+function prop(body, name) {
+  var m = body && body.match(new RegExp('(?:^|;)\\s*' + name + '\\s*:\\s*([^;]+)', 'i'));
+  return m ? m[1].trim() : null;
+}
+function alphaOf(color) {
+  var m = String(color).match(/rgba\([^)]*,\s*(\.\d+|\d*\.?\d+)\s*\)/);
+  return m ? parseFloat(m[1]) : null;
+}
+
+// -------------------------------------------------------------------------
+// A. Shipping menu structure, semantics, destinations, and primary controls.
+// -------------------------------------------------------------------------
+var MENU_BUTTON = tagFor(INDEX, 'siteMenuButton');
+var DRAWER_START = INDEX.indexOf('<dialog class="site-drawer" id="siteDrawer"');
+var DRAWER_END = INDEX.indexOf('</dialog>', DRAWER_START);
+var DRAWER = INDEX.slice(DRAWER_START, DRAWER_END + 9);
+var NAV_START = DRAWER.indexOf('<nav aria-label="Site menu">');
+var NAV_END = DRAWER.indexOf('</nav>', NAV_START);
+var NAV = DRAWER.slice(NAV_START, NAV_END + 6);
+// Priority 6 Phase 4: the footer links row. Sliced the same way as the drawer nav so the
+// two navigation surfaces can be asserted independently of each other.
+var FOOT_START = INDEX.indexOf('<footer>');
+var FOOT_END = INDEX.indexOf('</footer>', FOOT_START);
+var FOOT = FOOT_START === -1 ? '' : INDEX.slice(FOOT_START, FOOT_END + 9);
+var FOOT_NAV_START = FOOT.indexOf('<nav class="foot-guides" id="footGuides"');
+var FOOT_NAV_END = FOOT.indexOf('</nav>', FOOT_NAV_START);
+var FOOT_NAV = FOOT_NAV_START === -1 ? '' : FOOT.slice(FOOT_NAV_START, FOOT_NAV_END + 6);
+ok('A1 Menu is a native button', /^<button\b/.test(MENU_BUTTON));
+eq('A1 Menu has the exact accessible name', attr(MENU_BUTTON, 'aria-label'), 'Menu');
+eq('A1 Menu is collapsed initially', attr(MENU_BUTTON, 'aria-expanded'), 'false');
+eq('A1 Menu controls the drawer', attr(MENU_BUTTON, 'aria-controls'), 'siteDrawer');
+eq('A1 Menu remains in the normal tab order', attr(MENU_BUTTON, 'tabindex'), null);
+ok('A1 the hamburger is a visible three-line icon hidden from AT',
+   /<svg[\s\S]*aria-hidden="true"[\s\S]*M4 7h16M4 12h16M4 17h16/.test(section('home')));
+ok('A2 Menu has a practical 44 by 44 CSS target',
+   /\.site-menu-button\s*\{[^}]*width:44px[^}]*height:44px/.test(INDEX));
+ok('A2 Menu retains visible focus styling', /\.site-menu-button:focus-visible\s*\{[^}]*outline:/.test(INDEX));
+eq('A2 the old top-right Add app chip is gone', countOf(INDEX, 'id="ppChip"'), 0);
+eq('A2 the old visible Add app label is gone', countOf(INDEX, '>\n        Add app\n'), 0);
+ok('A3 the drawer is a native dialog without an initial open attribute',
+   /^<dialog\b/.test(tagFor(INDEX, 'siteDrawer')) && attr(tagFor(INDEX, 'siteDrawer'), 'open') === null);
+eq('A3 the drawer references its visible title', attr(tagFor(INDEX, 'siteDrawer'), 'aria-labelledby'), 'siteMenuTitle');
+eq('A3 the drawer has one labelled navigation landmark', countOf(DRAWER, '<nav aria-label="Site menu">'), 1);
+eq('A3 the drawer has one navigation list', countOf(NAV, '<ul class="site-nav-list">'), 1);
+eq('A3 no application-menu role was introduced', countOf(DRAWER, 'role="menu'), 0);
+ok('A3 Close is a native labelled button', /^<button\b/.test(tagFor(INDEX, 'siteMenuClose')) &&
+   attr(tagFor(INDEX, 'siteMenuClose'), 'aria-label') === 'Close menu');
+ok('A3 the drawer can scroll internally', /\.site-drawer-panel\s*\{[^}]*overflow-y:auto/.test(INDEX));
+ok('A3 top, right, and bottom safe-area insets are present',
+   /safe-area-inset-top/.test(INDEX) && /safe-area-inset-right/.test(INDEX) && /safe-area-inset-bottom/.test(INDEX));
+ok('A3 drawer width remains bounded and avoids horizontal overflow', /width:min\(88vw,370px\)/.test(INDEX));
+
+// The approved visual refinement turns the drawer from a nearly full-height side sheet into
+// a content-sized floating glass panel. These assertions pin what that refinement has to keep
+// - an inset panel bounded by the dynamic viewport that can still scroll, and a surface that
+// stays readable when the browser cannot blur - without freezing exact pixel values or
+// reproducing whole declarations as strings.
+var DRAWER_RULES = styleRules('.site-drawer');
+var DRAWER_BASE = DRAWER_RULES[0] || '';
+var DRAWER_GLASS = DRAWER_RULES.filter(function (b) { return /backdrop-filter/.test(b); })[0] || '';
+var DRAWER_PANEL = styleRules('.site-drawer-panel')[0] || '';
+var DRAWER_SCRIM = styleRules('.site-drawer::backdrop')[0] || '';
+ok('A3 the drawer floats free of the top and right edges',
+   /^calc\(/.test(prop(DRAWER_BASE, 'top') || '') && /^calc\(/.test(prop(DRAWER_BASE, 'right') || ''));
+ok('A3 each visible gap carries its own safe-area inset, so the panel clears system UI',
+   (prop(DRAWER_BASE, 'top') || '').indexOf('env(safe-area-inset-top)') !== -1 &&
+   (prop(DRAWER_BASE, 'right') || '').indexOf('env(safe-area-inset-right)') !== -1);
+ok('A3 the bottom and left edges are released so the panel cannot be stretched by the UA',
+   prop(DRAWER_BASE, 'bottom') === 'auto' && prop(DRAWER_BASE, 'left') === 'auto');
+ok('A3 the drawer is content-sized, never unconditionally full height',
+   prop(DRAWER_BASE, 'height') === 'auto' && !/height:100dvh/.test(DRAWER_BASE));
+ok('A3 the one height bound follows the dynamic viewport, not the legacy 100vh',
+   /100dvh/.test(prop(DRAWER_BASE, 'max-height') || '') && !/\b100vh\b/.test(DRAWER_BASE));
+ok('A3 the height bound leaves both vertical safe areas out of the panel',
+   (prop(DRAWER_BASE, 'max-height') || '').indexOf('env(safe-area-inset-top)') !== -1 &&
+   (prop(DRAWER_BASE, 'max-height') || '').indexOf('env(safe-area-inset-bottom)') !== -1);
+ok('A3 the panel may shrink inside that bound, so short viewports scroll instead of clipping',
+   prop(DRAWER_PANEL, 'min-height') === '0' && /^\S+\s+1\s/.test(prop(DRAWER_PANEL, 'flex') || '') &&
+   prop(DRAWER_PANEL, 'overflow-y') === 'auto' && prop(DRAWER_PANEL, 'overscroll-behavior') === 'contain');
+ok('A3 the panel keeps bottom padding of its own so the last item is not flush to the edge',
+   (prop(DRAWER_PANEL, 'padding') || '').split(/\s+/).length >= 3);
+ok('A3 the corners are rounded up from the shared large-radius token, not squared off',
+   /var\(--r-lg\)/.test(prop(DRAWER_BASE, 'border-radius') || '') &&
+   /\+\s*\d/.test(prop(DRAWER_BASE, 'border-radius') || ''));
+ok('A3 the panel is clipped to its own rounded box and keeps a soft border and layered shadow',
+   prop(DRAWER_BASE, 'overflow') === 'hidden' && /var\(--border\)/.test(prop(DRAWER_BASE, 'border') || '') &&
+   (prop(DRAWER_BASE, 'box-shadow') || '').split('rgba').length - 1 >= 2);
+ok('A3 the unblurred fallback surface is the opaque card colour, so text stays readable',
+   prop(DRAWER_BASE, 'background') === 'var(--card)');
+ok('A3 the glass surface is layered on only behind an @supports backdrop-filter test',
+   DRAWER_GLASS !== '' && /@supports[^{]*backdrop-filter/.test(INDEX.replace(/\/\*[\s\S]*?\*\//g, '')));
+ok('A3 the glass rule ships the -webkit- prefix alongside the standard property',
+   /(^|;)\s*-webkit-backdrop-filter\s*:/.test(DRAWER_GLASS) && /(^|;)\s*backdrop-filter\s*:/.test(DRAWER_GLASS));
+ok('A3 the translucent surface stays strongly opaque rather than dramatically transparent',
+   alphaOf(prop(DRAWER_GLASS, 'background')) !== null && alphaOf(prop(DRAWER_GLASS, 'background')) >= 0.8);
+ok('A3 the backdrop keeps a scrim that separates the panel without going visually heavy',
+   alphaOf(prop(DRAWER_SCRIM, 'background')) !== null &&
+   alphaOf(prop(DRAWER_SCRIM, 'background')) >= 0.3 && alphaOf(prop(DRAWER_SCRIM, 'background')) <= 0.6);
+
+// The approved refinement renames the Guide menu label to "Explore more Polish" and
+// moves it near the bottom. The /guide/ destination, its page, and its SEO are untouched.
+var DESTS = [
+  ['About', '#about', 'a'],
+  ['Install', null, 'button'],
+  ['Offline audio', '#offlineAudio', 'a'],
+  ['Privacy', '#privacy', 'a'],
+  ['What else I listen to', 'guide/listening/', 'a'],
+  ['Explore more Polish', 'guide/', 'a'],
+  ['Contact', '#contact', 'a']
+];
+var positions = [];
+DESTS.forEach(function (d) {
+  var needle = d[0] === 'Install' ? '<span>Install</span>' : '>' + d[0] + '</a>';
+  var at = NAV.indexOf(needle);
+  positions.push(at);
+  ok('A4 destination exists: ' + d[0], at !== -1);
+  if (d[1]) ok('A4 ' + d[0] + ' keeps the exact normal-link target',
+               NAV.indexOf('href="' + d[1] + '"') !== -1);
+});
+ok('A4 destinations are in the approved exact order', positions.every(function (at, i) {
+  return at !== -1 && (i === 0 || at > positions[i - 1]);
+}));
+// Read the rendered list items back in document order rather than trusting substring
+// positions alone, so a reordering or an extra item cannot pass unnoticed.
+function menuItemLabels(nav) {
+  var out = [], re = /<li\b[^>]*>([\s\S]*?)<\/li>/g, m;
+  while ((m = re.exec(nav))) {
+    var anchor = m[1].match(/<a\b[^>]*>([\s\S]*?)<\/a>/);
+    if (anchor) { out.push(visibleText(anchor[1])); continue; }
+    var span = m[1].match(/<span>([\s\S]*?)<\/span>/);
+    out.push(visibleText(span ? span[1] : m[1]));
+  }
+  return out;
+}
+eq('A4 the menu renders exactly the approved final order and labels', menuItemLabels(NAV),
+   ['About', 'Install', 'Offline audio', 'Privacy', 'What else I listen to', 'Explore more Polish', 'Contact']);
+eq('A4 the menu has exactly seven destinations', countOf(NAV, '<li'), 7);
+eq('A4 one clear list is the only copy of the menu', countOf(INDEX, 'class="site-nav-list"'), 1);
+ok('A4 Install is a native action button with exact accessible name',
+   /^<button\b/.test(tagFor(INDEX, 'siteInstall')) && attr(tagFor(INDEX, 'siteInstall'), 'aria-label') === 'Install');
+ok('A4 the Guide destination stays discoverable as an ordinary anchor in rendered HTML',
+   /<a href="guide\/">Explore more Polish<\/a>/.test(NAV));
+eq('A4 the approved Guide label is exact and occurs once in the menu',
+   countOf(NAV, '>Explore more Polish</a>'), 1);
+eq('A4 the old visible Guide menu label is absent', countOf(NAV, '>Guide<'), 0);
+eq('A4 the renamed item still points at the unchanged guide/ destination',
+   countOf(NAV, 'href="guide/"'), 1);
+// Priority 6 Phase 4 (risk R-20 / activation A-6 / feedback F-4) added a footer links
+// row, so the app shell briefly reached guide/ from three places; Phase 4C removes that
+// row, so the app shell is back to two. Counting alone would stop being informative, so
+// each occurrence is pinned to the surface that owns it: the <noscript> fallback and the
+// drawer item. The Phase 3 contract this guards - one approved label, one destination, no
+// competing second Guide link - is unchanged, and no occurrence uses any other URL or
+// label.
+eq('A4 the app shell reaches guide/ from exactly the two approved surfaces',
+   countOf(INDEX, 'href="guide/"'), 2);
+eq('A4 every Guide link in the app shell carries the one approved label',
+   countOf(INDEX, '>Explore more Polish</a>'), 2);
+eq('A4 the noscript fallback owns one of them',
+   countOf(INDEX, '<a href="guide/" style="color:#4f46e5">Explore more Polish</a>'), 1);
+eq('A4 the footer no longer owns a competing occurrence',
+   countOf(FOOT, '<a href="guide/">Explore more Polish</a>'), 0);
+eq('A4 Explore more Polish sits near the bottom, with only Contact after it',
+   (NAV.slice(NAV.indexOf('>Explore more Polish</a>')).match(/<li\b/g) || []).length, 1);
+eq('A4 Privacy is the only data/privacy menu destination', countOf(NAV, '>Privacy</a>'), 1);
+eq('A4 Your data stays yours is not a competing menu item', countOf(NAV, 'Your data stays yours'), 0);
+['about','privacy','contact','install'].forEach(function (id) {
+  ok('A5 app target #' + id + ' exists', section(id).length > 0);
+  eq('A5 app target #' + id + ' has one h1', (section(id).match(/<h1\b/g) || []).length, 1);
+});
+var allIds = {}, duplicateIds = [];
+var idRe = /\sid="([^"]+)"/g, idMatch;
+while ((idMatch = idRe.exec(MARKUP))) {
+  if (allIds[idMatch[1]]) duplicateIds.push(idMatch[1]);
+  allIds[idMatch[1]] = true;
+}
+eq('A5 shipping markup contains no duplicate ids', duplicateIds, []);
+['Search','Vocabulary','Grammar','More','A1','A2','B1'].forEach(function (label) {
+  ok('A6 primary control remains represented: ' + label, INDEX.indexOf(label) !== -1);
+  eq('A6 primary control is outside the drawer: ' + label, DRAWER.indexOf('>' + label + '<'), -1);
+});
+ok('A6 Search remains the labelled home search control',
+   /id="search"[^>]*aria-label="Search topics across all levels"/.test(INDEX));
+ok('A6 the home logo and Menu remain siblings in the same top row',
+   section('home').indexOf('class="logo"') < section('home').indexOf('id="siteMenuButton"'));
+
+// -------------------------------------------------------------------------
+// B. Information architecture reorganization and preserved destinations.
+// -------------------------------------------------------------------------
+var ABOUT = section('about'), PRIVACY = section('privacy'), CONTACT = section('contact');
+var APPROVED_ABOUT = [
+  'I’m a foreigner living in Poland, learning Polish while studying for a master’s degree - and trying to use the language in everyday life, not just in a textbook. Po polsku began as a simple way to remember the words and phrases I kept needing in real situations.',
+  'It has grown into a practical learning app with vocabulary, grammar, listening, typing, mixed quizzes, conversations, and pronunciation audio. I review and improve the content continuously. New major content releases follow a structured linguistic and audio-review process.',
+  'Po polsku is genuinely free, requires no account, and keeps your learning progress on your device. It is built for learners who want Polish they can understand, remember, and actually use - so you can take part in everyday life in Poland more confidently and independently.'
+];
+// Priority 6 Phase 1 (claim C-011, risk R-01) replaced the people-based quality sentence
+// with the approved process wording, and aligned "completely free" to the approved
+// "genuinely free" proof point (claim C-002, risk R-18). This guard is deliberately
+// narrow - it pins only the two phrases Phase 1 removed, so it cannot stand in the way of
+// legitimate future About wording. The verbatim three-paragraph contract below is what
+// actually protects this copy.
+eq('B1 About no longer carries the removed people-based quality phrasing',
+   [countOf(ABOUT, 'including my teacher'), countOf(ABOUT, 'native Polish speakers around me')],
+   [0, 0]);
+eq('B1 About contains the exact approved three paragraphs', elementTexts(ABOUT, 'p', 'about-p'), APPROVED_ABOUT);
+eq('B1 About no longer contains separated subsection cards', countOf(ABOUT, 'class="about-contact"'), 0);
+eq('B1 About no longer duplicates Privacy copy', countOf(ABOUT, 'Your data stays yours'), 0);
+eq('B1 About no longer duplicates listening recommendations', countOf(ABOUT, 'What else I listen to'), 0);
+eq('B1 About no longer duplicates Contact', countOf(ABOUT, '>Contact<'), 0);
+ok('B1 About still states the project purpose and free model', ABOUT.indexOf('Po polsku began') !== -1 && ABOUT.indexOf('genuinely free') !== -1);
+// The Phase 2 amendment narrows the destination heading to a plain factual label: the
+// previous slogan claimed more than the detailed sections below it support, because
+// hosting requests, external links, email contact and browser speech all involve other
+// parties. Pinned exactly, and pinned against the slogan returning.
+eq('B2 Privacy has the exact approved destination heading',
+   [countOf(PRIVACY, '<h1>Privacy</h1>'), countOf(INDEX, 'your data stays yours')], [1, 0]);
+eq('B2 Privacy has the exact ten semantic subsection headings', elementTexts(PRIVACY, 'h2', ''), [
+  'In short',
+  'What is stored on your device',
+  'Backups and restoring',
+  'Clearing Po polsku’s data',
+  'Offline use and saved files',
+  'Requests to the network and hosting',
+  'Pronunciation and browser speech',
+  'Advertising, cookies, and analytics',
+  'Links to other websites',
+  'Questions about privacy'
+]);
+eq('B2 Privacy has the exact approved introduction', elementTexts(PRIVACY, 'p', 'privacy-intro'), [
+  'Po polsku is designed to help you learn Polish without requiring an account or building a learner profile.'
+]);
+// Priority 6 Phase 2 (risks R-08, R-09, R-16 - privacy findings P-1, P-2, P-3, P-6, P-7, P-8,
+// P-9 - claims C-017, C-018) restructures Privacy into two levels: a concise summary list
+// followed by the detailed factual sections. Both levels are pinned verbatim, because this
+// is the document users rely on most for trust and every sentence in it is a factual claim
+// about observable behaviour.
+var APPROVED_PRIVACY_SUMMARY = [
+  'You can use Po polsku without an account or personal profile.',
+  'Your progress and settings stay in your browser on this device unless you export a backup yourself.',
+  'The app does not send your progress or settings to Po polsku.',
+  'Po polsku does not use advertising, marketing cookies, or analytics tools.',
+  'Core app files can be saved for offline use. Other pages are saved when you visit them. Pronunciation clips are saved as you play them, or you can optionally download the full pronunciation library from Offline audio.',
+  'Links to other websites, and your browser’s own speech feature, involve services Po polsku does not control.'
+];
+eq('B2 Privacy leads with the exact approved summary', elementTexts(PRIVACY, 'li', ''), APPROVED_PRIVACY_SUMMARY);
+var APPROVED_PRIVACY = [
+  'Po polsku saves your learning progress - which cards you have marked as known or still learning - along with a few settings: playback speed, which side of a card you see first, whether a one-time pronunciation hint has already been shown, and whether you have dismissed the install prompt. All of it is stored by your browser on this device. Po polsku does not send this learning data to an account or central database.',
+  'There is no account or automatic synchronisation. Progress stored in one browser or device does not automatically appear in another, although you can move it yourself with a backup.',
+  'Where supported, the app asks your browser to keep this storage persistently, but the browser decides whether to grant that request. Browser data can still be removed by you or by your browser or device, so a backup is the safest way to keep a separate copy.',
+  'Po polsku has no built-in button that erases everything. Removing your data is done through your browser’s own site-data controls, described further down.',
+  'Backing up builds a JSON file and asks your browser to download it. The file holds your progress and the settings saved under Po polsku’s own storage keys, together with the app version and the date it was exported. It contains no name, no email address, and no identifier for you or your device.',
+  'One setting is left out: the card direction you choose while studying. Everything that records your actual progress is included. Cached app files and saved pronunciation clips are not part of a backup either - a backup is your progress, not the app.',
+  'The file is created on your device and goes wherever you save it. Po polsku does not receive it, because the app has no upload step. If you share the file, you decide with whom.',
+  'Restoring reads a file you pick and asks you to confirm before anything changes. The confirmation shows the backup’s date and how many words it counts as known and still to review. Confirming replaces the Po polsku progress and the included settings on this device. If the file is not valid, or the restore cannot be completed, your existing local data is left unchanged.',
+  'Installing the app can provide a more app-like and reliable experience, but it should not replace keeping a backup.',
+  'Clearing Po polsku’s site data in your browser removes locally stored progress, settings, downloaded app files, and cached pronunciation clips. It is a full reset: Po polsku has no server-side copy of this data, so export a backup first if you want to keep your progress.',
+  'On supported browsers, Po polsku saves its core app files after your first visit so the main app can work offline. These are the app page, its scripts and lesson data, and - where the browser can store them - the fonts and icons.',
+  'The separate guide, grammar, and vocabulary pages on this site are saved as you visit them. A page you have never opened will not be there offline.',
+  'Pronunciation clips continue to be saved one at a time as you play them. You may also optionally download the full pronunciation library from Offline audio so the clips are ready without a connection. Saved pronunciation audio stays in this browser on this device, is not included in progress backups, and can be removed from Offline audio.',
+  'Your browser or device may still clear or evict saved audio, especially when storage is low or site data is cleared. Installing Po polsku to your home screen does not automatically download every page or every pronunciation clip.',
+  'Every request the app itself makes goes to this site’s own address: the app files, the lesson data, and the pronunciation clips. The app does not load third-party scripts or analytics. Two things sit outside this, and both are covered below: links you choose to open, and your browser’s own speech feature.',
+  'Loading any web page still involves ordinary network information. The hosting service that delivers popolsku.app receives the usual details that come with a web request: your IP address, browser and user-agent information, which file was requested, and when. Network providers that carry the connection see more limited connection metadata, because the connection itself is encrypted. That is how the web works rather than something specific to Po polsku. Po polsku’s own code does not add a learner profile, an application-assigned identifier, or an analytics payload to these requests.',
+  'Pronunciation normally plays a pronunciation-audio clip supplied with the app. If a clip cannot play, the app may use your browser’s built-in speech feature. That fallback is controlled by your browser or device.',
+  'When that fallback runs, the Polish text is handed to your browser’s speech system. Some browsers and operating systems produce the speech entirely on the device, and some send the text to their own servers. Which of the two applies is decided by your browser, your operating system, or their provider, and is outside Po polsku’s control.',
+  'The app does not access your microphone, record your voice, or send voice recordings. Po polsku has no speech input of any kind.',
+  'Po polsku does not use advertising, marketing cookies, or analytics tools.',
+  'The app’s own code does not set cookies and contains no analytics, telemetry, or tracking code, and there is no third-party script anywhere in it. The app does not create a persistent user or device identifier. Your progress is recorded against the content itself - which card, in which topic - and never against a profile of you.',
+  'Parts of Po polsku link out to other websites, such as the podcast episodes behind the listening sets and the recommendations in the guide. Opening one takes you off Po polsku, and from that point the other site’s own privacy practices apply.',
+  'Po polsku does not send your learning progress to those destinations. The destination may receive ordinary request information, including which site you came from, depending on your browser and privacy settings.',
+  'If anything on this page is unclear, the Contact page has the address to write to. Contact opens your email app. Messages are handled through email and are not stored by the Po polsku application.',
+  'This page describes how Po polsku works today. Last updated 15 September 2026.'
+];
+eq('B2 Privacy contains the exact approved subsection copy', elementTexts(PRIVACY, 'p', 'about-p'), APPROVED_PRIVACY);
+// Phase 2 ships factual transparency only: legal review was unavailable, so the page must
+// not assert a legal characterisation or an unverifiable absolute. These are the phrases the
+// phase was explicitly forbidden to publish (and Cloudflare, which claim C-017 could not
+// verify from the repository). This guard is what keeps a future copy edit from quietly
+// reintroducing one.
+var FORBIDDEN_PRIVACY_WORDING = [
+  'GDPR', 'legally compliant', 'legal basis', 'data controller', 'data processor',
+  'certified', 'fully private', 'completely anonymous', 'anonymous', 'no personal data',
+  'zero privacy impact', 'no consent required', 'nothing leaves your device',
+  'no tracking', 'no cookies', 'Cloudflare'
+];
+FORBIDDEN_PRIVACY_WORDING.forEach(function (phrase) {
+  eq('B2 Privacy does not claim: ' + phrase, countOf(PRIVACY.toLowerCase(), phrase.toLowerCase()), 0);
+});
+// P-5 terminology, locked in Phase 1, must survive the Phase 2 rewrite.
+eq('B2 Privacy keeps the approved pronunciation-audio terminology',
+   [countOf(PRIVACY, 'pronunciation-audio clip supplied with the app'), countOf(PRIVACY, 'pre-recorded')], [1, 0]);
+// P-8: the effect of clearing site data, and P-1/C-018: backups exclude one setting.
+ok('B2 Privacy states what clearing site data removes',
+   PRIVACY.indexOf('removes locally stored progress, settings, downloaded app files, and cached pronunciation clips') !== -1);
+ok('B2 Privacy does not overstate backup coverage',
+   PRIVACY.indexOf('One setting is left out') !== -1 && countOf(PRIVACY, 'progress and app data') === 0);
+// P-7 and P-9: a dated page and a named contact route, without adding a second contact method.
+ok('B2 Privacy carries an exact last-updated date', /Last updated \d{1,2} [A-Z][a-z]+ \d{4}\./.test(PRIVACY));
+ok('B2 the Privacy contact route points at the existing Contact screen',
+   /id="dataContactLink" href="#contact"/.test(PRIVACY) && countOf(PRIVACY, 'mailto:') === 0);
+ok('B2 Privacy owns the existing backup and restore controls',
+   PRIVACY.indexOf('id="dataBackup"') !== -1 && PRIVACY.indexOf('id="dataRestore"') !== -1 && PRIVACY.indexOf('id="dataFile"') !== -1);
+ok('B2 the install cross-link is now a normal stable anchor',
+   /id="dataInstallLink" href="#install"/.test(PRIVACY) && PRIVACY.indexOf('role="button"') === -1);
+// Priority 6 Phase 4C: the four repeated reasons, each with its own button and prefilled
+// subject, made the page long and heavy. One concise reason list now sits above a single
+// plain address, with the collaboration invitation kept as the fourth item (feedback R-5).
+// The lead stays a lead-in sentence, so the list is the only structure under Contact's h1.
+eq('B3 Contact has the exact approved learner-first lead',
+   elementTexts(CONTACT, 'p', 'contact-lead'), ['Spotted a mistake, hit a problem, or have an idea?']);
+eq('B3 Contact has the exact approved introductory sentence',
+   elementTexts(CONTACT, 'p', 'about-p'), ['Email me about any of the following:']);
+eq('B3 Contact no longer carries the withdrawn four-heading structure',
+   elementTexts(CONTACT, 'h2', ''), []);
+// The four reasons are a real semantic list, not four repeated sections or cards.
+eq('B3 the reasons are a real semantic unordered list', countOf(CONTACT, '<ul class="privacy-list">'), 1);
+eq('B3 the list holds exactly four items', countOf(CONTACT, '<li>'), 4);
+eq('B3 the four approved reasons are the Contact list items, in order', elementTexts(CONTACT, 'li', ''), [
+  'A content mistake: Include the topic name, the Polish phrase, and what seems wrong.',
+  'A technical problem: Include what you were doing, your device and browser, and the version shown at the bottom of the Home screen. Add a screenshot if useful, but check that it contains nothing private.',
+  'A missing topic or phrase: Explain what you were trying to say and where you needed it.',
+  'Something else: Collaborations, useful resources, ideas, or general feedback are always welcome.'
+]);
+// Each label is visually distinct (bold), so the reasons scan quickly without becoming
+// four separate cards or dividers.
+eq('B3 each of the four labels is marked up as visually distinct',
+   (CONTACT.match(/<li><strong>/g) || []).length, 4);
+// Withdrawn wording (earlier copy reviews) must not remain anywhere in public Contact copy,
+// and must not be replaced by another claim that technical detail or a screenshot cannot
+// contain personal or private information.
+['That is technical context, not personal information.',
+ 'Translations, spelling, and pronunciation clips can all be wrong',
+ 'there are a great many of them',
+ 'Po polsku is made by one person, and email is the only channel',
+ 'Pick whichever reason fits below',
+ 'Choose the option that fits best',
+ 'a subject already filled in'].forEach(function (phrase) {
+  eq('B3 withdrawn wording is absent: ' + phrase, countOf(CONTACT, phrase), 0);
+});
+eq('B3 no replacement claim asserts technical detail or a screenshot is free of personal data',
+   ['does not contain anything personal', 'contains no personal', 'is not personal information',
+    'not private information', 'does not include anything private', 'cannot contain personal',
+    'free of personal', 'free of private'].reduce(function (n, s) {
+     return n + countOf(visibleText(CONTACT).toLowerCase(), s.toLowerCase()); }, 0), 0);
+// The technical-problem guidance asks the reporter to check, rather than asserting the
+// content is safe on their behalf.
+ok('B3 the technical-problem guidance asks the reporter to check for private content',
+   CONTACT.indexOf('check that it contains nothing private') !== -1);
+ok('B3 a screenshot is offered as useful, not as a requirement',
+   CONTACT.indexOf('Add a screenshot if useful') !== -1 && countOf(CONTACT, 'screenshot is required') === 0);
+eq('B3 Contact makes no claim about who reads a message or how fast',
+   ['native speaker', 'professional', 'expert', 'reply within', 'response time',
+    'we will', 'guaranteed'].reduce(function (n, s) {
+     return n + countOf(visibleText(CONTACT).toLowerCase(), s); }, 0), 0);
+// Priority 6 Phase 4C removes the four repeated buttons and their prefilled subjects: one
+// plain mailto: action now follows the list, with no query string of any kind.
+// tests/test_phase3_closeout.js section D owns the icon contract.
+eq('B3 exactly one contact action carries the approved bare mailto route',
+   (CONTACT.match(/<a class="contact-email" href="([^"]*)"/g) || []),
+   ['<a class="contact-email" href="mailto:hello@popolsku.app"']);
+eq('B3 the mailto route carries no subject, body, cc or bcc parameter',
+   countOf(CONTACT, 'mailto:hello@popolsku.app?'), 0);
+var CONTACT_EMAIL_LINK = (CONTACT.match(/<a class="contact-email"[\s\S]*?<\/a>/) || [''])[0];
+eq('B3 the button visibly says exactly "hello@popolsku.app"',
+   visibleText(CONTACT_EMAIL_LINK), 'hello@popolsku.app');
+eq('B3 the visible label does not carry a standalone "Email " prefix',
+   countOf(visibleText(CONTACT_EMAIL_LINK), 'Email '), 0);
+eq('B3 the accessible name is restored via aria-label now the visible word "Email" is gone',
+   attr(CONTACT_EMAIL_LINK, 'aria-label'), 'Email hello@popolsku.app');
+eq('B3 the one contact address is the only one in the app shell, on its one entry point',
+   [countOf(INDEX, 'mailto:hello@popolsku.app'), countOf(INDEX, 'mailto:')], [1, 1]);
+eq('B3 exactly one contact action lives on the Contact screen',
+   countOf(CONTACT, 'class="contact-email"'), 1);
+ok('B4 listening recommendations retain their separate generated destination',
+   /<h1>What else I listen to<\/h1>/.test(LISTENING));
+ok('B4 listening page has the exact approved introduction', visibleText(LISTENING).indexOf(
+   'Flashcards help you learn words. Getting used to the sound of Polish takes hours of listening. These are three resources I keep coming back to because they cover different stages of the same journey: clear learner-friendly Polish, real-life listening with plenty of visual context, and natural Polish at full speed.') !== -1);
+// Priority 6 Phase 3 (privacy P-4, risk R-15) harmonises these links with the in-app
+// one: noreferrer as well as noopener, so the destination is not handed this site's URL.
+ok('B4 Real Polish wording and external-link behavior remain present',
+   LISTENING.indexOf('Real Polish') !== -1 && /href="https:\/\/realpolish\.pl\/" target="_blank" rel="noopener noreferrer"/.test(LISTENING));
+ok('B4 Ratio viva wording and external-link behavior remain present',
+   LISTENING.indexOf('Ratio viva') !== -1 && /href="https:\/\/www\.youtube\.com\/@Ratio_viva" target="_blank" rel="noopener noreferrer"/.test(LISTENING));
+// Priority 6 Phase 3 (claim C-020) keeps the payment sentence as narrow as it has to be
+// and adds only what inclusion on this page does NOT mean.
+ok('B4 listening page has the exact approved disclosure', visibleText(LISTENING).indexOf(
+   'These are personal recommendations. None of the creators paid to be included. ' +
+   'Inclusion does not indicate a formal partnership with Po polsku or an ' +
+   'endorsement of the app.') !== -1);
+eq('B4 the disclosure claims nothing about what the creators have done',
+   ['has reviewed', 'have reviewed', 'endorses', 'in partnership with', 'sponsored']
+     .reduce(function (n, s) { return n + countOf(visibleText(LISTENING), s); }, 0), 0);
+eq('B4 removed listening sentence is absent', countOf(LISTENING, 'They are just what worked.'), 0);
+eq('B4 listening recommendations are not duplicated in the app About screen', countOf(ABOUT, 'Real Polish'), 0);
+ok('B5 app footer derives version and runtime year without a second value',
+   INDEX.indexOf('Po polsku · <span id="footVersion"></span> · <span id="footYear"></span>') !== -1 &&
+   INDEX.indexOf('"v" + APP_VERSION') !== -1 && INDEX.indexOf('new Date().getFullYear()') !== -1);
+
+// -------------------------------------------------------------------------
+// C. Execute the shipping drawer functions with realistic modal/focus state.
+// -------------------------------------------------------------------------
+function Classes() { this.names = {}; }
+Classes.prototype.contains = function (name) { return !!this.names[name]; };
+Classes.prototype.add = function (name) { this.names[name] = true; };
+Classes.prototype.remove = function (name) { delete this.names[name]; };
+function El(id, tag) {
+  this.id = id || ''; this.tag = tag || 'div'; this.attrs = {}; this.classList = new Classes();
+  this.hidden = false; this.inert = false; this.disabled = false; this.connected = true;
+  this.parentElement = null; this.children = []; this.focusCount = 0; this.open = false;
+  this.showCount = 0; this.closeCount = 0; this.heading = null;
+}
+El.prototype.append = function (child) { child.parentElement = this; this.children.push(child); return child; };
+El.prototype.setAttribute = function (name, value) { this.attrs[name] = String(value); };
+El.prototype.getAttribute = function (name) {
+  return Object.prototype.hasOwnProperty.call(this.attrs, name) ? this.attrs[name] : null;
+};
+El.prototype.hasAttribute = function (name) { return Object.prototype.hasOwnProperty.call(this.attrs, name); };
+El.prototype.removeAttribute = function (name) { delete this.attrs[name]; };
+El.prototype.focus = function (options) {
+  if (!this.connected || this.disabled) return;
+  for (var node = this; node; node = node.parentElement) {
+    if (node.hidden || node.inert || node.getAttribute('aria-hidden') === 'true') return;
+  }
+  this.focusCount++; this.lastFocusOptions = options || null; fakeDocument.activeElement = this;
+};
+El.prototype.showModal = function () { if (this.open) throw new Error('already open'); this.open = true; this.showCount++; };
+El.prototype.close = function () { if (!this.open) throw new Error('not open'); this.open = false; this.closeCount++; };
+function makeScreen(id) {
+  var screen = new El(id, 'section');
+  var heading = screen.append(new El(id + 'Heading', 'h1')); screen.heading = heading;
+  return screen;
+}
+var fakeBody = new El('body', 'body');
+var appShell = fakeBody.append(new El('appShell'));
+var menuButton = appShell.append(new El('siteMenuButton', 'button')); menuButton.setAttribute('aria-expanded', 'false');
+var backgroundButton = appShell.append(new El('backgroundButton', 'button'));
+var drawer = fakeBody.append(new El('siteDrawer', 'dialog'));
+var menuClose = drawer.append(new El('siteMenuClose', 'button'));
+// Phase 3B-1A made the maturity gate a native <dialog> outside the app shell, on the
+// same modal contract as the drawer, so the drawer's stacking guard reads its open state.
+var mature = fakeBody.append(new El('matureGate', 'dialog'));
+var screens = { about:makeScreen('about'), privacy:makeScreen('privacy'), contact:makeScreen('contact'), install:makeScreen('install') };
+Object.keys(screens).forEach(function (key) { appShell.append(screens[key]); });
+var byId = { appShell:appShell, siteMenuButton:menuButton, backgroundButton:backgroundButton,
+             siteDrawer:drawer, siteMenuClose:menuClose, matureGate:mature,
+             about:screens.about, privacy:screens.privacy, contact:screens.contact, install:screens.install };
+var fakeDocument = {
+  body:fakeBody,
+  activeElement:fakeBody,
+  contains:function (el) { return !!(el && el.connected); }
+};
+function lookup(id) { return byId[id] || null; }
+function focusElement(el) {
+  if (!el || !el.connected || el.disabled) return false;
+  var before = fakeDocument.activeElement;
+  el.focus({preventScroll:true});
+  return fakeDocument.activeElement === el && (before === el || el.focusCount > 0);
+}
+var invokers = [], shown = [], fakeScrollY = 731;
+function useInvoker(el) { invokers.push(el); }
+function showScreenStub(id) { shown.push(id); screens[id].heading.focus({preventScroll:true}); }
+var MENU_BLOCK_START = INDEX.indexOf('var ppSiteMenuBackground = null;');
+var MENU_BLOCK_END = INDEX.indexOf('function showScreen(', MENU_BLOCK_START);
+if (MENU_BLOCK_START === -1 || MENU_BLOCK_END === -1) throw new Error('shipping menu helper block not found');
+var MENU_BLOCK = INDEX.slice(MENU_BLOCK_START, MENU_BLOCK_END);
+var MENU_FACTORY = Function('document','lookup','ppFocusElement','ppUseInvokerForNextScreen','show',
+  'var $=lookup;\n' + MENU_BLOCK + '\nreturn {' +
+  'isOpen:ppSiteMenuIsOpen,isolate:ppIsolateSiteMenuBackground,restore:ppRestoreSiteMenuBackground,' +
+  'open:ppOpenSiteMenu,close:ppCloseSiteMenu,activate:ppActivateSiteMenuScreen,' +
+  'background:function(){return ppSiteMenuBackground;}};');
+var MENU_API = MENU_FACTORY(fakeDocument, lookup, focusElement, useInvoker, showScreenStub);
+var learningState = { card:7, activity:'mixed', score:11, scene:'confirm', level:'A2', topic:'Home', progress:'unchanged' };
+var learningSnapshot = JSON.stringify(learningState);
+
+fakeDocument.activeElement = menuButton;
+ok('C1 shipping open succeeds', MENU_API.open());
+ok('C1 dialog is open in the modal path', drawer.open && MENU_API.isOpen());
+eq('C1 aria-expanded becomes true', menuButton.getAttribute('aria-expanded'), 'true');
+ok('C1 focus moves to Close', fakeDocument.activeElement === menuClose);
+eq('C1 Close receives one explicit final focus move', menuClose.focusCount, 1);
+eq('C1 focus uses preventScroll', menuClose.lastFocusOptions, {preventScroll:true});
+ok('C1 the app shell is inert while open', appShell.inert && appShell.hasAttribute('inert'));
+eq('C1 the app shell is hidden from the accessibility tree', appShell.getAttribute('aria-hidden'), 'true');
+ok('C1 body scrolling is locked by a reversible class', fakeBody.classList.contains('site-menu-open'));
+backgroundButton.focus();
+ok('C2 a background control cannot receive focus while open', fakeDocument.activeElement === menuClose);
+menuButton.focus();
+ok('C2 the inactive Menu button cannot receive focus while open', fakeDocument.activeElement === menuClose);
+eq('C2 repeated open is ignored', MENU_API.open(), false);
+eq('C2 repeated open does not call showModal twice', drawer.showCount, 1);
+eq('C2 opening preserves scroll position', fakeScrollY, 731);
+eq('C2 opening preserves all learning state', JSON.stringify(learningState), learningSnapshot);
+
+ok('C3 shipping close succeeds', MENU_API.close(true));
+eq('C3 aria-expanded becomes false', menuButton.getAttribute('aria-expanded'), 'false');
+ok('C3 dialog is closed', !drawer.open && !MENU_API.isOpen());
+ok('C3 app-shell inertness is removed', !appShell.inert && !appShell.hasAttribute('inert'));
+eq('C3 app-shell aria-hidden is removed', appShell.getAttribute('aria-hidden'), null);
+ok('C3 body scrolling is restored', !fakeBody.classList.contains('site-menu-open'));
+ok('C3 focus returns to Menu', fakeDocument.activeElement === menuButton);
+eq('C3 Menu receives one final close focus move', menuButton.focusCount, 1);
+backgroundButton.focus();
+ok('C3 no focus trap remains after close', fakeDocument.activeElement === backgroundButton);
+eq('C3 closing preserves scroll position', fakeScrollY, 731);
+eq('C3 closing preserves all learning state', JSON.stringify(learningState), learningSnapshot);
+eq('C3 repeated close is ignored', MENU_API.close(true), false);
+
+appShell.inert = true; appShell.setAttribute('inert', 'existing');
+appShell.setAttribute('aria-hidden', 'false'); fakeBody.classList.add('site-menu-open');
+ok('C4 direct background isolation records a pre-existing state', MENU_API.isolate());
+eq('C4 isolation changes aria-hidden while active', appShell.getAttribute('aria-hidden'), 'true');
+ok('C4 restoration succeeds', MENU_API.restore());
+ok('C4 prior inert property is restored', appShell.inert);
+eq('C4 prior inert attribute value is restored', appShell.getAttribute('inert'), 'existing');
+eq('C4 prior aria-hidden value is restored', appShell.getAttribute('aria-hidden'), 'false');
+ok('C4 a pre-existing body lock class is not removed', fakeBody.classList.contains('site-menu-open'));
+appShell.inert = false; appShell.removeAttribute('inert'); appShell.removeAttribute('aria-hidden'); fakeBody.classList.remove('site-menu-open');
+
+mature.open = true; fakeDocument.activeElement = menuButton;
+eq('C5 opening is rejected while the maturity overlay is active', MENU_API.open(), false);
+eq('C5 no second modal layer opened', drawer.open, false);
+mature.open = false;
+menuClose.connected = false;
+eq('C5 an invalid disconnected initial focus target aborts open safely', MENU_API.open(), false);
+ok('C5 failed focus leaves no open dialog or inert app', !drawer.open && !appShell.inert && !MENU_API.background());
+menuClose.connected = true;
+
+for (var cycle = 0; cycle < 3; cycle++) {
+  fakeDocument.activeElement = menuButton;
+  ok('C6 repeated cycle ' + (cycle + 1) + ' opens', MENU_API.open());
+  ok('C6 repeated cycle ' + (cycle + 1) + ' closes', MENU_API.close(true));
+}
+ok('C6 repeated cycles end with the app interactive', !drawer.open && !appShell.inert && !fakeBody.classList.contains('site-menu-open'));
+eq('C6 repeated cycles preserve state', JSON.stringify(learningState), learningSnapshot);
+
+fakeDocument.activeElement = menuButton; MENU_API.open();
+var menuFocusBeforeNav = menuButton.focusCount, aboutFocusBefore = screens.about.heading.focusCount;
+var aboutLink = new El('aboutLink', 'a'); aboutLink.setAttribute('data-app-screen', 'about');
+ok('C7 valid app navigation activates through the shipping helper', MENU_API.activate(aboutLink));
+eq('C7 navigation closes the drawer', drawer.open, false);
+eq('C7 navigation reuses the existing screen router', shown[shown.length - 1], 'about');
+ok('C7 navigation records Menu as the existing return-focus invoker', invokers[invokers.length - 1] === menuButton);
+eq('C7 navigation avoids an intermediate Menu focus move', menuButton.focusCount, menuFocusBeforeNav);
+eq('C7 navigation has one final destination focus', screens.about.heading.focusCount - aboutFocusBefore, 1);
+eq('C7 navigation preserves learning state', JSON.stringify(learningState), learningSnapshot);
+
+// Native dialog cancel is the shared path for desktop Escape and Android Back.
+var historyCalls = 0, cancelPrevented = 0;
+fakeDocument.activeElement = menuButton; MENU_API.open();
+if (MENU_API.close(true)) cancelPrevented++;
+eq('C8 an open-dialog cancel is consumed once', cancelPrevented, 1);
+eq('C8 cancel closes before any history navigation', historyCalls, 0);
+cancelPrevented = 0;
+if (MENU_API.close(true)) cancelPrevented++;
+eq('C8 a closed drawer does not swallow ordinary Back', cancelPrevented, 0);
+eq('C8 the drawer helper block creates no History API state',
+   [countOf(MENU_BLOCK, 'history.pushState'), countOf(MENU_BLOCK, 'history.back'), countOf(MENU_BLOCK, 'popstate')], [0,0,0]);
+ok('C8 shipping cancel listener prevents default only after a successful close',
+   hasCode(INDEX, 'if(ppCloseSiteMenu(true)) e.preventDefault()'));
+ok('C8 backdrop activation owns the same close helper',
+   hasCode(INDEX, 'if(e.target===$("siteDrawer")){ ppCloseSiteMenu(true); return; }'));
+ok('C8 Close owns the same close helper', INDEX.indexOf('$("siteMenuClose").addEventListener("click", ()=>ppCloseSiteMenu(true))') !== -1);
+eq('C9 the native Menu has one click listener', countOf(INDEX, '$("siteMenuButton").addEventListener("click", ppOpenSiteMenu)'), 1);
+ok('C9 Enter and Space cannot reach the global Study shortcut',
+   hasCode(extractFunction(INDEX, 'ppGlobalShortcutBlocked'), 'ppIsInteractiveTarget(e.target)'));
+
+// -------------------------------------------------------------------------
+// D. Execute the shipping install-state architecture.
+// -------------------------------------------------------------------------
+var A2HS_START = INDEX.indexOf('const PP_A2HS = (function(){');
+var A2HS_END = INDEX.indexOf('})();', A2HS_START);
+if (A2HS_START === -1 || A2HS_END === -1) throw new Error('shipping PP_A2HS block not found');
+var A2HS_SOURCE = INDEX.slice(A2HS_START, A2HS_END + 4);
+var A2HS_FACTORY = Function('document','window','navigator','localStorage','matchMedia','location','URLSearchParams',
+                            'show','ppUseInvokerForNextScreen','ppCloseSiteMenu','setTimeout',
+  A2HS_SOURCE + '\nreturn PP_A2HS;');
+function Store(seed) { this.data = seed || {}; }
+Store.prototype.getItem = function (key) { return Object.prototype.hasOwnProperty.call(this.data, key) ? this.data[key] : null; };
+Store.prototype.setItem = function (key, value) { this.data[key] = String(value); };
+Store.prototype.removeItem = function (key) { delete this.data[key]; };
+function makeA2HSEnv(options) {
+  options = options || {};
+  var ids = {
+    siteInstallItem:new El('siteInstallItem'), siteInstallDetail:new El('siteInstallDetail'),
+    siteInstallStatus:new El('siteInstallStatus'), siteInstall:new El('siteInstall','button'),
+    siteMenuButton:new El('siteMenuButton','button'),
+    ppBanner:new El('ppBanner'), ppNative:new El('ppNative')
+  };
+  ids.ppNative.hidden = true;
+  var documentEvents = {}, windowEvents = {}, created = [];
+  var doc = {
+    body:{appendChild:function (el) { created.push(el); }},
+    getElementById:function (id) { return ids[id] || null; },
+    querySelectorAll:function () { return []; },
+    addEventListener:function (type, fn) { documentEvents[type] = fn; },
+    createElement:function () { return {className:'',textContent:'',remove:function(){}}; }
+  };
+  var nav = {
+    userAgent:options.userAgent || 'Mozilla/5.0', platform:options.platform || 'MacIntel',
+    maxTouchPoints:options.maxTouchPoints || 0, standalone:!!options.navigatorStandalone,
+    storage:{persisted:function(){return {then:function(){return {catch:function(){}};}};},
+             persist:function(){return {catch:function(){}};}}
+  };
+  var win = { navigator:nav, addEventListener:function (type, fn) { windowEvents[type] = fn; } };
+  var storage = new Store(options.storage || {});
+  var shownScreens = [], invokerCalls = [], closeCalls = [], timerCalls = 0;
+  function match(query) { return {matches:!!(options.standalone && query === '(display-mode: standalone)')}; }
+  function Params(search) { this.search = search || ''; }
+  Params.prototype.has = function (key) { return this.search.indexOf(key + '=') !== -1; };
+  function showStub(id) { shownScreens.push(id); }
+  function invokerStub(el) { invokerCalls.push(el); }
+  function closeStub(restore) { closeCalls.push(restore); return true; }
+  function timeoutStub() { timerCalls++; }
+  var api = A2HS_FACTORY(doc, win, nav, storage, match, {search:options.search || ''}, Params,
+                          showStub, invokerStub, closeStub, timeoutStub);
+  return {api:api,ids:ids,docEvents:documentEvents,windowEvents:windowEvents,storage:storage,
+          shown:shownScreens,invokers:invokerCalls,closes:closeCalls,created:created,
+          timerCount:function(){return timerCalls;}};
+}
+function addClickTarget(inMenu) {
+  var add = { closest:function (selector) { return selector === '#siteDrawer' && inMenu ? {} : null; } };
+  return { closest:function (selector) { return selector === '[data-a2hs-add]' ? add : null; } };
+}
+function clickEvent(target) {
+  return {target:target,preventCount:0,preventDefault:function(){this.preventCount++;}};
+}
+
+var browser = makeA2HSEnv(); browser.api.init();
+eq('D1 initial supported-browser fallback state is honest instructions', browser.api.installState(), 'instructions');
+eq('D1 Install remains operable in the fallback state', browser.ids.siteInstallItem.hidden, false);
+eq('D1 fallback visible detail says Instructions', browser.ids.siteInstallDetail.textContent, 'Instructions');
+eq('D1 fallback accessible state describes supported-browser instructions',
+   browser.ids.siteInstallStatus.textContent, 'Open installation instructions for supported browsers');
+var promptCount = 0, promptPrevented = 0;
+var promptEvent = {
+  preventDefault:function(){promptPrevented++;},
+  prompt:function(){promptCount++;},
+  userChoice:{then:function(){ /* deliberately pending: exercises the busy guard */ }}
+};
+browser.windowEvents.beforeinstallprompt(promptEvent);
+eq('D2 beforeinstallprompt is prevented and retained by the shipping listener', promptPrevented, 1);
+eq('D2 browser prompt state becomes available', browser.api.installState(), 'prompt');
+eq('D2 menu state visibly says Ready', browser.ids.siteInstallDetail.textContent, 'Ready');
+eq('D2 menu state exposes browser installation availability', browser.ids.siteInstallStatus.textContent, 'Browser installation is available');
+eq('D2 existing Install now shortcut becomes available', browser.ids.ppNative.hidden, false);
+var browserClick = clickEvent(addClickTarget(true));
+browser.docEvents.click(browserClick);
+eq('D3 menu install activation prevents unrelated default navigation', browserClick.preventCount, 1);
+eq('D3 browser installation prompt runs once', promptCount, 1);
+eq('D3 drawer closes once before the prompt', browser.closes, [true]);
+eq('D3 browser prompt path does not navigate to instructions', browser.shown, []);
+browser.docEvents.click(clickEvent(addClickTarget(true)));
+eq('D3 rapid repeated activation cannot run the prompt twice', promptCount, 1);
+eq('D3 rapid repeated activation still does not navigate away', browser.shown, []);
+ok('D3 shipping consumes deferred before reading userChoice',
+   A2HS_SOURCE.indexOf('deferred=null') < A2HS_SOURCE.indexOf('promptEvent.userChoice'));
+ok('D3 shipping has an explicit pending-install guard', A2HS_SOURCE.indexOf('if(installing) return "busy"') !== -1);
+
+var ios = makeA2HSEnv({userAgent:'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X)'}); ios.api.init();
+eq('D4 iPhone/iPad state is derived as instructions', ios.api.installState(), 'ios-instructions');
+eq('D4 iOS state does not pretend one-tap install is ready', ios.ids.siteInstallDetail.textContent, 'Instructions');
+eq('D4 iOS accessible state names Home Screen instructions',
+   ios.ids.siteInstallStatus.textContent, 'Open iPhone or iPad Home Screen instructions');
+var iosClick = clickEvent(addClickTarget(true)); ios.docEvents.click(iosClick);
+eq('D4 iOS menu action routes to the existing instructions screen', ios.shown, ['install']);
+ok('D4 iOS screen routing preserves Menu as the app-screen return target', ios.invokers[0] === ios.ids.siteMenuButton);
+eq('D4 iOS closes without an intermediate focus restoration', ios.closes, [false]);
+
+var unsupported = makeA2HSEnv(); unsupported.api.init();
+unsupported.docEvents.click(clickEvent(addClickTarget(true)));
+eq('D5 unavailable programmatic install is not a dead action', unsupported.shown, ['install']);
+eq('D5 unavailable state is described as instructions rather than automatic install',
+   unsupported.ids.siteInstallStatus.textContent, 'Open installation instructions for supported browsers');
+
+var installed = makeA2HSEnv({standalone:true}); installed.api.init();
+eq('D6 installed PWA state is detected', installed.api.installState(), 'installed');
+eq('D6 installed PWA hides the Install item', installed.ids.siteInstallItem.hidden, true);
+eq('D6 installed PWA exposes no active delegated install action', typeof installed.docEvents.click, 'undefined');
+installed.api.install();
+eq('D6 direct installed-state invocation does not navigate', installed.shown, []);
+
+var installedEvent = makeA2HSEnv(); installedEvent.api.init();
+installedEvent.windowEvents.appinstalled();
+eq('D7 appinstalled is authoritative only for the current session', installedEvent.api.installState(), 'installed');
+eq('D7 appinstalled writes no permanent installed boolean', installedEvent.storage.getItem('popolsku-a2hs'), null);
+eq('D7 appinstalled hides the menu item and banner',
+   [installedEvent.ids.siteInstallItem.hidden, installedEvent.ids.ppBanner.hidden], [true,true]);
+eq('D7 appinstalled retains the existing completion toast', installedEvent.created.length, 1);
+ok('D8 existing beforeinstallprompt and appinstalled event owners remain singular',
+   countOf(INDEX, 'window.addEventListener("beforeinstallprompt"') === 1 && countOf(INDEX, 'window.addEventListener("appinstalled"') === 1);
+eq('D8 installation stays on the single delegated add-action owner', countOf(INDEX, 'e.target.closest("[data-a2hs-add]")'), 1);
+
+// -------------------------------------------------------------------------
+// E. Guide SEO, generated-page boundary, and stable internal links.
+// -------------------------------------------------------------------------
+// Both release markers are read from their single source, so the footer assertion
+// below fails on a skew between app and generated pages rather than on a bumped value.
+var APP_VERSION = (INDEX.match(/const APP_VERSION = "([^"]+)"/) || [])[1];
+var BUILD_YEAR = (BUILD.match(/^BUILD_YEAR = (\d{4})$/m) || [])[1];
+// The 30 committed pages whose breadcrumb links back to the destination hub: 23 grammar,
+// 6 vocabulary and the listening page. The hub itself names the destination unlinked.
+var GUIDE_BREADCRUMB_PAGES = (function () {
+  var manager = $.NSFileManager.defaultManager, pages = [];
+  ['grammar', 'vocabulary'].forEach(function (dir) {
+    var names = ObjC.deepUnwrap(manager.contentsOfDirectoryAtPathError(ROOT + dir, null)) || [];
+    names.sort().forEach(function (name) {
+      var page = ROOT + dir + '/' + name + '/index.html';
+      if (manager.fileExistsAtPath(page)) pages.push(readFile(page));
+    });
+  });
+  pages.push(LISTENING);
+  return pages;
+})();
+// Priority 6 Phase 3 (risk R-06) resolves the destination's three public names into
+// one. The URL, canonical and sitemap entry are deliberately unchanged - only wording.
+eq('E1 Guide document title carries the approved destination name',
+   (GUIDE.match(/<title>([^<]+)<\/title>/) || [])[1],
+   'Explore more Polish - Polish grammar, slang and idioms explained simply | Po polsku');
+eq('E1 Guide canonical remains exact', attr((GUIDE.match(/<link rel="canonical"[^>]*>/) || [''])[0], 'href'), 'https://popolsku.app/guide/');
+eq('E1 Guide has one clear main heading', (GUIDE.match(/<h1\b/g) || []).length, 1);
+ok('E1 Guide main heading is the approved destination name',
+   GUIDE.indexOf('<h1>Explore more Polish</h1>') !== -1);
+ok('E1 Guide learner-facing content is rendered in HTML', GUIDE.indexOf('Grammar Cases') !== -1 && GUIDE.indexOf('Slang &amp; idioms') !== -1);
+eq('E1 Guide has no noindex directive', countOf(GUIDE.toLowerCase(), 'noindex'), 0);
+ok('E1 Guide remains a standalone generated page', BUILD.indexOf('def guide_page(') !== -1 && BUILD.indexOf('guide/index.html') !== -1);
+eq('E1 the destination name reaches the hub, the listening page and the generator',
+   [countOf(GUIDE, 'Explore more Polish') > 0, countOf(LISTENING, 'Explore more Polish') > 0,
+    countOf(BUILD, 'GUIDE_NAME = "Explore more Polish"')], [true, true, 1]);
+eq('E1 the superseded destination names are gone from the public surface',
+   countOf(GUIDE, 'Polish, explained simply') + countOf(GUIDE, 'Polish guide') +
+   countOf(LISTENING, '&rsaquo; Guide') + countOf(INDEX, 'grammar &amp; vocabulary guide'), 0);
+// Phase 3 renders the breadcrumb markup and its BreadcrumbList from one trail, so the
+// destination name is asserted on the pages themselves rather than on a generator literal.
+ok('E1 generated breadcrumbs and back-links use the approved destination name',
+   countOf(GUIDE_BREADCRUMB_PAGES.join(''), '<a href="/guide/">Explore more Polish</a>') === 30 &&
+   countOf(GUIDE_BREADCRUMB_PAGES.join(''), '<a href="/guide/">Guide</a>') === 0);
+ok('E1 generated pages retain their independent logo-only header',
+   /<header class="top"><a href="\/" aria-label="Po polsku home"/.test(GUIDE) && GUIDE.indexOf('siteDrawer') === -1);
+eq('E1 generated-page source has no Add app control', countOf(BUILD, 'ppChip'), 0);
+ok('E2 Guide keeps its listening recommendation link', GUIDE.indexOf('href="/guide/listening/"') !== -1);
+ok('E2 listening page links back to the destination hub',
+   LISTENING.indexOf('href="/guide/">Explore more Polish</a>') !== -1);
+eq('E2 listening canonical remains exact',
+   attr((LISTENING.match(/<link rel="canonical"[^>]*>/) || [''])[0], 'href'), 'https://popolsku.app/guide/listening/');
+eq('E2 listening page title remains meaningful',
+   (LISTENING.match(/<title>([^<]+)<\/title>/) || [])[1], 'Polish podcasts worth listening to | Po polsku');
+eq('E2 listening page has one main heading', (LISTENING.match(/<h1\b/g) || []).length, 1);
+eq('E2 listening page has no noindex directive', countOf(LISTENING.toLowerCase(), 'noindex'), 0);
+var GUIDE_PAGES = [['guide/index.html', GUIDE], ['guide/listening/index.html', LISTENING]];
+GUIDE_PAGES.forEach(function (page) {
+  var name = page[0], markup = page[1], text = visibleText(markup);
+  eq('E3 ' + name + ' has one shared compact ending', countOf(markup, 'class="guide-ending"'), 1);
+  ['Ready to keep learning?',
+   'Practice the same Polish with flashcards, drills, conversations, and listening.',
+   'Genuinely free. No account required.'].forEach(function (line) {
+    ok('E3 ' + name + ' keeps exact ending copy: ' + line, text.indexOf(line) !== -1);
+  });
+  ok('E3 ' + name + ' has one normal primary app link',
+     countOf(markup, '<a class="guide-primary" href="/">Open the app</a>'), 1);
+  // Phase 3 closeout: the progress sentence and its Privacy link left the shared ending.
+  // The Privacy screen, the drawer entry and the /#privacy route are unchanged - asserted
+  // immediately below and in tests/test_phase3_closeout.js section F.
+  eq('E3 ' + name + ' no longer carries the progress sentence',
+     countOf(text, 'Your progress stays on this device and can be backed up anytime.'), 0);
+  eq('E3 ' + name + ' no longer carries the progress link',
+     countOf(markup, 'guide-progress-link') + countOf(markup, 'How progress works'), 0);
+  eq('E3 ' + name + ' removes the old oversized CTA copy',
+     countOf(markup, 'Open the app - flashcards, drills, conversations'), 0);
+  eq('E3 ' + name + ' removes the old duplicate footer marketing sentence',
+     countOf(markup, 'free Polish flashcards with audio. No account, no tracking, works offline.'), 0);
+  // Priority 6 Phase 3 regenerated the pages, so the footer version is the app's own
+  // again: the Phase 1/2 skew is closed and the committed value is pinned exactly.
+  ok('E3 ' + name + ' renders the derived version and declared build year',
+     markup.indexOf('&middot; v' + APP_VERSION + ' &middot; ' + BUILD_YEAR + '</footer>') !== -1);
+});
+ok('E3 the Guide Privacy URL is recognized as a direct app-screen destination',
+   INDEX.indexOf('["about","privacy","contact","install","offlineAudio"].includes(ppInitialScreen)') !== -1 &&
+   INDEX.indexOf('showScreen(ppInitialScreen)') !== -1);
+// Phase 3 made generated output reproducible: the footer year is a declared constant,
+// not a clock reading, so identical sources cannot produce different bytes on a new year.
+ok('E3 generated footer reads APP_VERSION and a declared build year',
+   BUILD.indexOf('def read_app_version()') !== -1 &&
+   /^BUILD_YEAR = 20\d\d$/m.test(BUILD) && BUILD.indexOf('datetime.date.today().year') === -1);
+// The current version is owned by index.html; the generator must derive it rather
+// than carry a second release literal.
+eq('E3 generator does not duplicate the current version literal',
+   countOf(BUILD, 'v__CURRENT_APP_VERSION__') +
+   countOf(BUILD, '"__CURRENT_APP_VERSION__"') +
+   countOf(BUILD, "'__CURRENT_APP_VERSION__'"), 0);
+ok('E3 one generator-owned ending and footer cover Guide, grammar and vocabulary pages',
+   BUILD.indexOf('LEARNING_ENDING_STYLE =') !== -1 &&
+   BUILD.indexOf('def learning_ending():') !== -1 &&
+   BUILD.indexOf('def learning_footer(js=""):') !== -1 &&
+   countOf(BUILD, 'body.append(learning_ending())') === 4 &&
+   BUILD.indexOf('Practice this in the app - free, no account') === -1 &&
+   BUILD.indexOf('Learn these as flashcards in the app - free, no account') === -1);
+var internalFailures = [], hrefRe = /href="(\/[^"]*)"/g, hrefMatch;
+while ((hrefMatch = hrefRe.exec(GUIDE))) {
+  var path = hrefMatch[1].split('#')[0].split('?')[0];
+  var local = path === '/' ? ROOT + 'index.html' : ROOT + path.replace(/^\//, '') + (path.slice(-1) === '/' ? 'index.html' : '');
+  if (!$.NSFileManager.defaultManager.fileExistsAtPath(local)) internalFailures.push(path);
+}
+eq('E4 every rendered internal Guide link resolves to a committed target', internalFailures, []);
+ok('E4 app no-script Guide link remains a normal fallback anchor',
+   /<noscript>[\s\S]*<a href="guide\/"/.test(INDEX));
+ok('E4 Guide does not depend on drawer JavaScript for destination content',
+   GUIDE.indexOf('<main>') !== -1 && GUIDE.indexOf('<script></script>') !== -1);
+
+// -------------------------------------------------------------------------
+// F. Cross-phase safeguard and regression boundaries.
+// -------------------------------------------------------------------------
+eq('F1 app version matches the current release marker',
+   (INDEX.match(/APP_VERSION\s*=\s*"([^"]+)"/) || [])[1], '__CURRENT_APP_VERSION__');
+// Phase 4D bumps the app-shell cache to v65 so the contact CTA polish is isolated
+// from the Phase 4C shell while open tabs remain on their old worker.
+ok('F1 app-shell cache is the current shell revision', /const CACHE = "__CURRENT_SHELL_CACHE__"/.test(SW));
+ok('F1 audio cache remains popolsku-audio', /const AUDIO_CACHE = "popolsku-audio"/.test(SW));
+ok('F1 schema version remains 2', /PP_MIGRATE\.SCHEMA_VERSION = 2/.test(MIGRATE));
+ok('F1 content migration revision remains 2', /PP_MIGRATE\.CONTENT_MIGRATION_REVISION = 2/.test(MIGRATE));
+ok('F1 manifest start URL and display metadata remain intact',
+   MANIFEST.indexOf('"start_url": "./?pwa=1"') !== -1 && MANIFEST.indexOf('"display": "standalone"') !== -1);
+ok('F2 screen routing remains on the existing History API',
+   INDEX.indexOf('history.pushState') !== -1 && INDEX.indexOf('history.back()') !== -1 && INDEX.indexOf('popstate') !== -1);
+eq('F2 no parallel hashchange model was introduced', countOf(INDEX, 'hashchange'), 0);
+ok('F2 a direct informational screen keeps a marked replaceState entry',
+   INDEX.indexOf('history.replaceState({scr:ppInitialScreen,direct:true}') !== -1);
+ok('F2 the in-app Back control returns direct arrivals home without swallowing browser Back',
+   hasCode(extractFunction(INDEX, 'show'), 'if(history.state.direct){ history.replaceState({scr:"home"}, "", location.pathname + location.search); showScreen("home", deferFocus); }else history.back();'));
+ok('F2 drawer navigation reuses show rather than mutating learning state',
+   hasCode(extractFunction(INDEX, 'ppActivateSiteMenuScreen'), 'show(scr)'));
+['S.','G.','C.','T.','L.','R.'].forEach(function (prefix) {
+  eq('F2 drawer helper does not mutate activity namespace ' + prefix, countOf(MENU_BLOCK, prefix), 0);
+});
+eq('F2 drawer helper does not touch localStorage progress', countOf(MENU_BLOCK, 'localStorage'), 0);
+eq('F2 drawer helper does not stop or restart audio',
+   countOf(MENU_BLOCK, 'stopAllAudio') + countOf(MENU_BLOCK, 'playPreGenerated'), 0);
+ok('F3 the maturity overlay keeps its existing shared focus architecture',
+   INDEX.indexOf('ppOpenSharedOverlay($("matureGate"), $("matureCancel"))') !== -1 &&
+   INDEX.indexOf('ppCloseSharedOverlay($("matureGate"))') !== -1);
+ok('F3 the drawer explicitly refuses modal stacking',
+   hasCode(extractFunction(INDEX, 'ppOpenSiteMenu'), 'if(mature && mature.open) return false'));
+eq('F3 no generated template was given the app drawer', countOf(BUILD, 'siteDrawer'), 0);
+
+// -------------------------------------------------------------------------
+// G. Footer links row removed (Priority 6 Phase 4C).
+//
+// Priority 6 Phase 4 added a footer row duplicating About, Privacy, Explore more Polish
+// and Contact one interaction shallower than the drawer. Phase 4C removes that row: the
+// drawer already owns these destinations, and the duplicate made the shell heavier for
+// no accessibility gain no assistive technology could not already reach through the
+// drawer. The version line is the footer's only remaining content.
+// -------------------------------------------------------------------------
+eq('G1 the footer row markup no longer exists', FOOT_NAV, '');
+eq('G1 the footer landmark and its id are gone', countOf(INDEX, 'foot-guides') + countOf(INDEX, 'footGuides'), 0);
+eq('G1 the decorative separators are gone', countOf(INDEX, 'foot-sep'), 0);
+eq('G1 the footer now renders only the version line',
+   FOOT.replace(/\s+/g, ''), '<footer><divclass="foot-version">Popolsku·<spanid="footVersion"></span>·<spanid="footYear"></span></div></footer>');
+eq('G1 the row added no second contact address, and none remains', countOf(FOOT, 'mailto:'), 0);
+// The rule set that styled the row (Priority 6 Phase 4, risk R-20) is dead code once the
+// row is gone, so it left with the row rather than being kept unused.
+eq('G2 the row-specific stylesheet rules are gone',
+   countOf(INDEX, '.foot-guides') + countOf(INDEX, '.foot-sep{'), 0);
+ok('G2 the shared version-line style is still declared',
+   INDEX.indexOf('.foot-version{color:var(--muted)') !== -1);
+// The click-delegation handler that routed the row through show() is gone with it -
+// nothing in the shipped script still references the removed row.
+eq('G3 the footer row click handler no longer exists in the shipped script',
+   countOf(INDEX, '$("footGuides")'), 0);
+eq('G3 the footer row is not rendered by the generated-page templates',
+   countOf(BUILD, 'foot-guides') + countOf(BUILD, 'footGuides'), 0);
+// The drawer/menu is the one navigation surface left, and section A already pins its
+// structure, destinations and behaviour untouched by this removal.
+ok('G4 the drawer menu still carries all five destinations the footer row duplicated',
+   ['About', 'Privacy', 'guide/listening/', 'guide/', 'Contact'].every(function (needle) {
+     return NAV.indexOf(needle) !== -1; }));
+
+// -------------------------------------------------------------------------
+// H. Feedback route (Priority 6 Phase 4C simplification of risk R-07 / feedback F-1..F-4).
+//
+// The route is one bare mailto: link to the existing address, with no query string at
+// all. This is a narrower contract than Phase 4's four subject-tagged routes: nothing of
+// the learner's is prefilled, so there is nothing to decode or re-encode.
+// -------------------------------------------------------------------------
+var FEEDBACK_HREFS = (CONTACT.match(/href="(mailto:[^"]*)"/g) || [])
+  .map(function (h) { return h.slice(6, -1); });
+eq('H1 the Contact screen carries exactly one feedback route', FEEDBACK_HREFS.length, 1);
+eq('H1 the route reaches the one approved address, with no query string',
+   FEEDBACK_HREFS, ['mailto:hello@popolsku.app']);
+eq('H1 the route carries no subject, body, cc or bcc parameter',
+   FEEDBACK_HREFS.filter(function (h) { return h.indexOf('?') !== -1; }), []);
+// A raw space in a mailto: is what makes some clients choke, so the absence of any
+// query content is asserted rather than assumed.
+eq('H1 no route carries a raw space, newline or quote',
+   FEEDBACK_HREFS.filter(function (h) { return /[\s"'<>]/.test(h); }), []);
+// Nothing about the learner may ride along in a URL that leaves the app.
+eq('H2 no route carries progress, storage, identifiers or device data',
+   FEEDBACK_HREFS.filter(function (h) {
+     return /popolsku-|pp-card-dir|localStorage|progress|known|levelIdx|topic=|userAgent|id=/.test(h);
+   }), []);
+// Every mailto: in the shell is a literal href in markup. If one were ever assembled in
+// script, learner state could reach the URL without any of the assertions above noticing.
+eq('H2 no route is built at runtime from application state',
+   INDEX.split('\n').filter(function (line) {
+     return line.indexOf('mailto:') !== -1 &&
+            (/mailto:[^"]*"\s*\+/.test(line) || /\+\s*"[^"]*mailto:/.test(line) ||
+             line.indexOf('encodeURIComponent') !== -1 || /\$\{/.test(line) ||
+             /\.href\s*=/.test(line));
+   }), []);
+eq('H2 every mailto: in the shell is a literal markup href',
+   countOf(INDEX, 'href="mailto:'), countOf(INDEX, 'mailto:'));
+eq('H2 the Contact screen holds no script of its own', countOf(CONTACT, '<script'), 0);
+// Phase 4C removes the footer row, so the drawer is now the only navigation surface that
+// reaches Contact; Privacy still points at the Contact screen rather than growing a
+// competing mailto: of its own.
+eq('H3 Contact is reachable from the drawer menu',
+   countOf(NAV, 'data-app-screen="contact"'), 1);
+eq('H3 the footer no longer duplicates Contact as a separate navigation surface',
+   countOf(FOOT, 'data-app-screen="contact"'), 0);
+eq('H3 Privacy still routes to Contact instead of carrying its own address',
+   [countOf(PRIVACY, 'mailto:'), countOf(PRIVACY, 'id="dataContactLink" href="#contact"')], [0, 1]);
+eq('H4 the generated pages gained no contact route, so no second surface can drift',
+   [countOf(BUILD, 'mailto:'), countOf(GUIDE, 'mailto:'), countOf(LISTENING, 'mailto:')], [0, 0, 0]);
+// The visible label is a plain text node inside a real <a>, not an image, canvas or
+// obfuscated construction, so it can be selected and copied like any other text - and the
+// whole route is static markup, so Contact works with JavaScript disabled.
+eq('H5 the visible label is plain, selectable text in the link',
+   countOf(CONTACT, '</svg>hello@popolsku.app</a>'), 1);
+eq('H5 the address is not built, split or obfuscated by script',
+   [countOf(CONTACT, 'String.fromCharCode'), countOf(CONTACT, 'atob('), countOf(CONTACT, '&#'),
+    countOf(CONTACT, 'data-email'), countOf(CONTACT, '.join(')], [0, 0, 0, 0, 0]);
+eq('H5 Contact is entirely static markup, so no script has to run to see or copy it',
+   countOf(CONTACT, '<script'), 0);
+eq('H5 the Contact copy is static markup, not written in by script at runtime',
+   INDEX.split('\n').filter(function (l) {
+     return (l.indexOf('.innerHTML') !== -1 || l.indexOf('.textContent') !== -1) &&
+            /contact-lead|contact-email|"contact"|#contact/.test(l);
+   }).length, 0);
+eq('H5 the approved lead sentence is present exactly once, as literal markup',
+   countOf(INDEX, '<p class="contact-lead">Spotted a mistake, hit a problem, or have an idea?</p>'), 1);
+// This review only refines structure and wording. No new submission channel of any kind
+// may appear. ("analytics", "telemetry" and "tracking" are checked for actual code, not
+// the word - the app's own Privacy copy uses those words to disclaim having any.)
+eq('H6 no form, endpoint, backend, or third-party submission channel',
+   [countOf(INDEX, '<form'), countOf(INDEX, 'fetch("http'), countOf(INDEX, 'XMLHttpRequest'),
+    countOf(INDEX, 'navigator.sendBeacon'), countOf(INDEX, 'WebSocket')], [0, 0, 0, 0, 0]);
+eq('H6 no analytics, telemetry or tracking code, and no cookie',
+   [countOf(INDEX, 'gtag('), countOf(INDEX, 'ga('), countOf(INDEX, 'googletagmanager'),
+    countOf(INDEX, 'plausible('), countOf(INDEX, 'mixpanel'), countOf(INDEX, 'document.cookie')],
+   [0, 0, 0, 0, 0, 0]);
+
+// -------------------------------------------------------------------------
+// I. Storage footprint after Priority 6 Phase 4 / 4C.
+//
+// The phase was designed to need no persistent state: the footer (with or without the
+// links row Phase 4C removes) is always present for everyone, and the feedback route is
+// static hrefs with nothing prefilled. Nothing distinguishes a first visit from a later
+// one, so nothing has to be stored, exported, restored or described on the Privacy page.
+// These assertions are what keep that true.
+// -------------------------------------------------------------------------
+var STORAGE_KEYS = (INDEX.match(/localStorage\.(?:get|set|remove)Item\(\s*"([^"]+)"/g) || [])
+  .map(function (m) { return m.replace(/.*"([^"]+)"?$/, '$1'); });
+var ALL_KEYS = ['popolsku-progress-v1', 'popolsku-progress-v1-backup', 'popolsku-progress-v2',
+                'popolsku-progress-v2-recovery', 'popolsku-progress-v2-unmapped',
+                'popolsku-speed', 'popolsku-voicehint', 'popolsku-a2hs', 'pp-card-dir'];
+eq('I1 the migration module still declares exactly the five progress keys',
+   ['v1', 'v1backup', 'v2', 'v2recovery', 'unmapped'].filter(function (k) {
+     return new RegExp(k + ':\\s*"popolsku-').test(MIGRATE); }).length, 5);
+eq('I1 every literal storage key the shell touches is one of the nine known keys',
+   STORAGE_KEYS.filter(function (k) { return ALL_KEYS.indexOf(k) === -1; }), []);
+eq('I1 the nine-key footprint did not grow',
+   ALL_KEYS.length, 9);
+eq('I2 no first-visit, onboarding, dismissal or seen flag was added',
+   ['firstvisit', 'first-visit', 'onboard', 'seen', 'tour', 'welcome', 'intro', 'visited',
+    'activation', 'nudge-dismissed'].reduce(function (n, s) {
+     return n + countOf(INDEX, 'popolsku-' + s) + countOf(INDEX, 'pp-' + s); }, 0), 0);
+eq('I2 no timestamp, counter or identifier was introduced for the new surfaces',
+   [countOf(FOOT, 'Date.now'), countOf(FOOT, 'crypto.randomUUID'),
+    countOf(CONTACT, 'Date.now'), countOf(CONTACT, 'crypto.randomUUID')], [0, 0, 0, 0]);
+eq('I3 no alternative storage mechanism was introduced',
+   [countOf(INDEX, 'sessionStorage.'), countOf(INDEX, 'indexedDB'), countOf(INDEX, 'openDatabase'),
+    countOf(INDEX, 'document.cookie'), countOf(INDEX, 'navigator.storage.estimate()')].slice(0, 4),
+   [0, 0, 0, 0]);
+// The Privacy page enumerates the non-progress settings by name. Adding a key without
+// updating that sentence would make a published privacy statement inaccurate, so the
+// enumeration is pinned against the phase that could most easily have broken it.
+ok('I4 the Privacy storage inventory still names exactly the settings that exist',
+   PRIVACY.indexOf('playback speed, which side of a card you see first, whether a one-time ' +
+                   'pronunciation hint has already been shown, and whether you have dismissed ' +
+                   'the install prompt') !== -1);
+eq('I4 Privacy needed no new stored-item disclosure for this phase',
+   ['onboarding', 'guidance', 'tour', 'welcome message', 'whether you have seen'].reduce(
+     function (n, s) { return n + countOf(visibleText(PRIVACY).toLowerCase(), s); }, 0), 0);
+// The one pre-existing "first visit" mention is the offline explanation, not a stored item.
+eq('I4 the only first-visit wording in Privacy is the existing offline sentence',
+   countOf(visibleText(PRIVACY), 'after your first visit so the main app can work offline'), 1);
+eq('I5 the backup envelope still covers the same prefix, so restore behaviour is unchanged',
+   countOf(MIGRATE, 'snapshotPrefix(storage, "popolsku-")'), 1);
+
+// -------------------------------------------------------------------------
+// J. Starting-point guidance (Priority 6 Phase 4 - activation A-3).
+//
+// 15 A1 topics were presented as equals with nothing telling a learner where to begin.
+// The resolution is one approved sentence, shown to everyone on every visit. The
+// activation audit recommended exactly that over a first-visit-only treatment, because
+// per-visitor state would carry privacy implications this build deliberately avoids.
+// -------------------------------------------------------------------------
+var START_SENTENCE = 'Start with any topic below, or use Search to find something specific.';
+var HOME = section('home');
+var START_TAG = tagFor(INDEX, 'startHint');
+var START_EL = (HOME.match(/<p class="start-hint" id="startHint">[\s\S]*?<\/p>/) || [''])[0];
+eq('J1 the approved sentence appears exactly once in the app shell',
+   countOf(INDEX, START_SENTENCE), 1);
+eq('J1 it lives on the Home screen', countOf(HOME, START_SENTENCE), 1);
+eq('J1 it is an ordinary semantic paragraph', /^<p\b/.test(START_TAG), true);
+eq('J1 the visible text is the approved sentence and nothing else',
+   visibleText(START_EL), START_SENTENCE);
+eq('J1 the approved hero strings are byte-identical',
+   ["Learn the Polish<br>you'll <em>actually</em> use.",
+    'Everyday vocabulary, useful grammar, conversation practice, and Polish pronunciation ' +
+    'audio for real life in Poland.',
+    'Genuinely free', 'No account required'].map(function (s) { return countOf(HOME, s); }),
+   [1, 1, 1, 1]);
+// Position: after the search control it refers to, before the navigation it describes.
+var AT_SEARCH = HOME.indexOf('<div class="search">');
+var AT_SEARCH_END = HOME.indexOf('</div>', HOME.indexOf('id="searchClear"'));
+var AT_HINT = HOME.indexOf(START_SENTENCE);
+var AT_CATSEG = HOME.indexOf('<div class="cat-seg" id="catSeg"');
+ok('J2 every anchor for the position contract is present',
+   [AT_SEARCH, AT_SEARCH_END, AT_HINT, AT_CATSEG].every(function (i) { return i !== -1; }));
+ok('J2 it comes after the existing Search control', AT_SEARCH_END < AT_HINT);
+ok('J2 it comes before the level and topic entry interface', AT_HINT < AT_CATSEG);
+ok('J2 it sits above the topic list and the subfilter too',
+   AT_HINT < HOME.indexOf('id="subFilter"') && AT_HINT < HOME.indexOf('<div class="topics" id="topics">'));
+eq('J2 it is not in the footer', [countOf(FOOT, START_SENTENCE), countOf(FOOT, 'start-hint')], [0, 0]);
+['study', 'grammar', 'convo', 'typeit', 'listen', 'round', 'privacy', 'about', 'contact',
+ 'install'].forEach(function (id) {
+  eq('J2 it is not rendered on the ' + id + ' screen', countOf(section(id), START_SENTENCE), 0);
+});
+// Not a control: the word "Search" is prose naming the input above, not a second route to it.
+eq('J3 the paragraph carries no interactive element or handler',
+   [countOf(START_EL, '<a '), countOf(START_EL, '<button'), countOf(START_EL, 'href'),
+    countOf(START_EL, 'onclick'), countOf(START_EL, 'tabindex'),
+    countOf(START_EL, 'role='), countOf(START_EL, 'contenteditable')], [0, 0, 0, 0, 0, 0, 0]);
+eq('J3 no script listens to it', countOf(INDEX, 'startHint'), 1);
+eq('J3 it has no dismiss, close or hide mechanism',
+   [countOf(START_EL, 'dismiss'), countOf(START_EL, 'close'), countOf(START_EL, 'hidden'),
+    countOf(INDEX, 'startHint").hidden'), countOf(INDEX, 'startHint").remove')], [0, 0, 0, 0, 0]);
+eq('J3 it is not a dialog, overlay, banner, toast or tooltip',
+   [countOf(START_EL, 'dialog'), countOf(START_EL, 'modal'), countOf(START_EL, 'overlay'),
+    countOf(START_EL, 'toast'), countOf(START_EL, 'title='), countOf(START_EL, 'popover')],
+   [0, 0, 0, 0, 0, 0]);
+eq('J3 it is not announced as a live region and takes no focus',
+   [countOf(START_EL, 'aria-live'), countOf(START_EL, 'role="status"'),
+    countOf(START_EL, 'role="alert"'), countOf(START_EL, 'autofocus'),
+    countOf(INDEX, 'startHint").focus')], [0, 0, 0, 0, 0]);
+// It is inert markup, so it cannot read storage, navigate, sound, or move progress. The
+// single occurrence of the id asserted above is the markup itself: there is no second
+// reference anywhere in script for any of these to hang off.
+// The id occurs exactly once (J3), and that one occurrence is the markup attribute. No
+// script can therefore reach the paragraph at all, which is what makes every behavioural
+// guarantee below structural rather than a promise: nothing to listen, store, navigate,
+// sound, or mutate progress with.
+eq('J4 the only occurrence of the id is the markup attribute itself',
+   [countOf(INDEX, 'startHint'), countOf(INDEX, 'id="startHint">')], [1, 1]);
+eq('J4 no line that mentions the paragraph also does anything',
+   INDEX.split('\n').filter(function (line) {
+     return line.indexOf('startHint') !== -1 &&
+            ['addEventListener', 'localStorage', 'show(', 'history.', 'speechSynthesis',
+             'startRound', 'openTopic', '.focus(', '.remove(', '.hidden']
+              .some(function (s) { return line.indexOf(s) !== -1; });
+   }), []);
+eq('J4 the guidance added no storage key, first-visit flag or counter',
+   ['popolsku-start', 'popolsku-hint', 'popolsku-firstvisit', 'popolsku-seen',
+    'pp-start-hint', 'startHintSeen'].reduce(function (n, s) {
+     return n + countOf(INDEX, s); }, 0), 0);
+// Layout: a plain block paragraph on the shared secondary-text scale, with no width or
+// nowrap rule that could force page-level horizontal overflow at 320px or at 200% text.
+var START_CSS = (INDEX.match(/\.start-hint\{[^}]*\}/) || [''])[0];
+var TH_HINT_CSS = (INDEX.match(/\.th-hint\{[^}]*\}/) || [''])[0];
+ok('J5 the guidance has its own rule', START_CSS !== '');
+eq('J5 it uses the established secondary-text contrast token, not a literal colour',
+   [/color:var\(--muted\)/.test(START_CSS), countOf(START_CSS, '#')], [true, 0]);
+eq('J5 it matches the existing home-screen hint type scale exactly',
+   [(START_CSS.match(/font-size:([^;}]+)/) || [])[1],
+    (TH_HINT_CSS.match(/font-size:([^;}]+)/) || [])[1]], ['12.5px', '12.5px']);
+eq('J5 nothing prevents it from wrapping or lets it exceed its column',
+   [/white-space:\s*nowrap/.test(START_CSS), /width:/.test(START_CSS),
+    /position:\s*(?:absolute|fixed)/.test(START_CSS), /overflow-x/.test(START_CSS)],
+   [false, false, false, false]);
+eq('J5 it introduces no animation, transition or transform',
+   [countOf(START_CSS, 'animation'), countOf(START_CSS, 'transition'),
+    countOf(START_CSS, 'transform')], [0, 0, 0]);
+eq('J5 it is not hidden at any breakpoint, so it never depends on viewport width',
+   (INDEX.match(/\.start-hint[^{]*\{[^}]*\}/g) || []).filter(function (r) {
+     return /display:\s*none/.test(r); }), []);
+eq('J6 the generated pages did not gain the app-shell guidance',
+   [countOf(BUILD, START_SENTENCE), countOf(BUILD, 'start-hint'),
+    countOf(GUIDE, START_SENTENCE), countOf(LISTENING, START_SENTENCE)], [0, 0, 0, 0]);
+
+console.log('Phase 2C navigation tests: ' + PASS + ' passed, ' + FAIL + ' failed.');
+console.log('  [info] shipping drawer and install-state helpers run against deterministic modal, focus, inert, history and platform state');
+console.log('  [info] real dialog top-layer rendering, key synthesis, Android Back, screen readers, zoom and safe areas remain manual');
+LOG.forEach(function (line) { console.log('  ' + line); });
+if (FAIL > 0) throw new Error('TESTS FAILED: ' + FAIL + ' assertion(s) failed');
