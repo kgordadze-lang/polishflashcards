@@ -292,7 +292,7 @@ eq('C1 the width breakpoints are unchanged from Phase 3B-1A',
 eq('C2 the media-query set is exactly the documented set',
    CONDITIONS.slice().sort(),
    ['(max-height:600px)', '(max-width:360px)', '(max-width:400px)', '(max-width:400px)',
-    '(prefers-reduced-motion:reduce)'].sort());
+    '(min-width:1024px)', '(prefers-reduced-motion:reduce)'].sort());
 
 // -------------------------------------------------------------------------
 // D. Activity header reflow (MLG-3A-04).

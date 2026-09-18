@@ -717,12 +717,21 @@ eq('G3 the Home hero and search copy are unchanged',
    [countOf(INDEX, '<h1>Learn the Polish<br>you\'ll <em>actually</em> use.</h1>'),
     countOf(INDEX, 'Everyday vocabulary, useful grammar, conversation practice, and Polish pronunciation audio for real life in Poland.'),
     countOf(INDEX, 'Search topics')], [1, 4, 2]);
+var HERO_DESKTOP = '@media (min-width:1024px)';
+eq('G3 the hero description keeps its mobile width and widens only on desktop',
+   [declFor('.hero-sub', WIDE, 'max-width'),
+    declFor('.hero-sub', HERO_DESKTOP, 'max-width')],
+   ['34ch', '46ch']);
+eq('G3 the desktop hero override changes no property except max-width',
+   rulesTouching('.hero-sub', HERO_DESKTOP).map(function (b) {
+     return b.body.replace(/\s+/g, '');
+   }), ['max-width:46ch']);
 eq('G4 no generated-page code leaked into the app shell', /build_pages/.test(INDEX), false);
-eq('G4 the app shell declares no new media breakpoint',
+eq('G4 the app shell declares only the focused new desktop breakpoint',
    TOP_RULES.filter(function (r) { return /^@media/.test(r.prelude); })
             .map(function (r) { return r.prelude.replace(/^@media\s*/, '').trim(); }).sort(),
    ['(max-height:600px)', '(max-width:360px)', '(max-width:400px)', '(max-width:400px)',
-    '(prefers-reduced-motion:reduce)']);
+    '(min-width:1024px)', '(prefers-reduced-motion:reduce)']);
 
 console.log('Phase 3 closeout tests: ' + PASS + ' passed, ' + FAIL + ' failed.');
 console.log('  [info] MLG-3A-14 resolved at source: .screen entry is opacity-only `screenFade` at the same .35s ease; the shared `fade` keyframe and its ' + FADE_USERS.length + ' in-flow users are unchanged');

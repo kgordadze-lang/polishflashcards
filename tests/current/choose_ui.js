@@ -1139,7 +1139,8 @@ eq('I2 no new media-query width was introduced', (function () {
   while ((m = re.exec(STYLE))) widths.push(Number(m[1]));
   return widths.sort(function (a, b) { return a - b; });
 })(), [360, 400, 400]);
-eq('I2 no media query at all was added', countOf(STYLE, '@media'), 5);
+eq('I2 the only later media query is the desktop hero width contract',
+   [countOf(STYLE, '@media'), countOf(STYLE, '@media (min-width:1024px)')], [6, 1]);
 eq('I2 this phase added no selector of its own to the stylesheet',
    ['p7-', 'choose-practice', 'vp-choose', 'pattern-practice']
      .filter(function (token) { return STYLE.indexOf(token) !== -1; }), []);
