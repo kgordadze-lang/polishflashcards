@@ -31,6 +31,8 @@ DEPLOY_GUARD = (
     "github.event.repository.default_branch)"
 )
 SETUP_PYTHON_SHA = "5fda3b95a4ea91299a34e894583c3862153e4b97"
+CONFIGURE_PAGES_SHA = "45bfe0192ca1faeb007ade9deae92b16b8254a0d"
+OLD_CONFIGURE_PAGES_SHA = "983d7736d9b0ae728b81ab479565c72886d7745b"
 
 
 class PagesWorkflowEnvironmentTests(unittest.TestCase):
@@ -65,6 +67,27 @@ class PagesWorkflowEnvironmentTests(unittest.TestCase):
         self.assertNotRegex(
             self.workflow,
             r"uses:\s*actions/setup-python@(?![0-9a-f]{40}(?:\s|#|$))")
+
+    def test_workflow_uses_approved_configure_pages_pin(self) -> None:
+        expected = (
+            f"uses: actions/configure-pages@{CONFIGURE_PAGES_SHA} # v6.0.0")
+        self.assertIn(expected, self.workflow)
+        self.assertNotIn(OLD_CONFIGURE_PAGES_SHA, self.workflow)
+        self.assertNotRegex(
+            self.workflow,
+            r"uses:\s*actions/configure-pages@(?![0-9a-f]{40}(?:\s|#|$))")
+
+    def test_all_actions_are_pinned_to_full_commit_shas(self) -> None:
+        uses_lines = [
+            line.strip() for line in self.workflow.splitlines()
+            if line.strip().startswith("uses:")
+        ]
+        self.assertEqual(len(uses_lines), 5)
+        for line in uses_lines:
+            with self.subTest(line=line):
+                self.assertRegex(
+                    line,
+                    r"^uses: actions/[a-z0-9-]+@[0-9a-f]{40} # v\d+\.\d+\.\d+$")
 
     def test_workflow_configures_exact_python_version(self) -> None:
         self.assertIn("python-version: '3.13.5'", self.workflow)
