@@ -25,6 +25,51 @@ from build_pages_artifact import (  # noqa: E402
 
 DEPLOY_MANIFEST = Path("deployment/deploy.txt")
 REPOSITORY_ONLY_MANIFEST = Path("deployment/repository-only.txt")
+DEPLOY_GUARD = (
+    "github.event_name == 'workflow_dispatch' && "
+    "github.ref == format('refs/heads/{0}', "
+    "github.event.repository.default_branch)"
+)
+
+
+class PagesDeploymentGuardTests(unittest.TestCase):
+    @staticmethod
+    def guard_allows(event_name: str, ref: str, default_branch: str) -> bool:
+        return (
+            event_name == "workflow_dispatch"
+            and ref == f"refs/heads/{default_branch}"
+        )
+
+    def test_workflow_uses_full_default_branch_ref_guard(self) -> None:
+        workflow = (ROOT / ".github/workflows/pages.yml").read_text(
+            encoding="utf-8")
+        deploy_job = workflow.split("\n  deploy:\n", 1)[1]
+        condition_block = deploy_job.split("    if: >-\n", 1)[1].split(
+            "\n    needs:", 1)[0]
+        condition = " ".join(
+            line.strip() for line in condition_block.splitlines())
+        self.assertEqual(condition, DEPLOY_GUARD)
+        self.assertNotIn("github.ref_name ==", workflow)
+
+    def test_workflow_dispatch_default_branch_is_allowed(self) -> None:
+        self.assertTrue(self.guard_allows(
+            "workflow_dispatch", "refs/heads/main", "main"))
+
+    def test_workflow_dispatch_other_branch_is_denied(self) -> None:
+        self.assertFalse(self.guard_allows(
+            "workflow_dispatch", "refs/heads/release", "main"))
+
+    def test_workflow_dispatch_same_named_tag_is_denied(self) -> None:
+        self.assertFalse(self.guard_allows(
+            "workflow_dispatch", "refs/tags/main", "main"))
+
+    def test_push_default_branch_is_denied(self) -> None:
+        self.assertFalse(self.guard_allows(
+            "push", "refs/heads/main", "main"))
+
+    def test_pull_request_is_denied(self) -> None:
+        self.assertFalse(self.guard_allows(
+            "pull_request", "refs/pull/17/merge", "main"))
 
 
 class PagesDeploymentBoundaryTests(unittest.TestCase):
@@ -69,12 +114,77 @@ class PagesDeploymentBoundaryTests(unittest.TestCase):
         return load_boundary(
             self.root, DEPLOY_MANIFEST, REPOSITORY_ONLY_MANIFEST)
 
-    def test_valid_partition_passes(self) -> None:
+    def test_fresh_output_directory_succeeds(self) -> None:
         self.fixture()
         boundary = self.boundary()
         report = build_artifact(boundary, self.output)
         self.assertEqual(report.artifact_count, 1)
         self.assertEqual(report.repository_only_count, 3)
+
+    def test_existing_output_directory_is_rejected(self) -> None:
+        self.fixture()
+        self.output.mkdir()
+        with self.assertRaisesRegex(BoundaryError, "already exists"):
+            build_artifact(self.boundary(), self.output)
+
+    def test_existing_output_contents_remain_byte_identical(self) -> None:
+        self.fixture()
+        self.output.mkdir()
+        marker = self.output / "keep.bin"
+        original = b"must remain untouched\x00\xff"
+        marker.write_bytes(original)
+        with self.assertRaisesRegex(BoundaryError, "already exists"):
+            build_artifact(self.boundary(), self.output)
+        self.assertEqual(marker.read_bytes(), original)
+        self.assertEqual([path.name for path in self.output.iterdir()], ["keep.bin"])
+
+    def test_existing_output_file_is_rejected_and_untouched(self) -> None:
+        self.fixture()
+        original = b"existing file\x00"
+        self.output.write_bytes(original)
+        with self.assertRaisesRegex(BoundaryError, "already exists"):
+            build_artifact(self.boundary(), self.output)
+        self.assertEqual(self.output.read_bytes(), original)
+
+    def test_repository_root_as_output_is_rejected(self) -> None:
+        self.fixture()
+        with self.assertRaisesRegex(BoundaryError, "dangerous"):
+            build_artifact(self.boundary(), self.root)
+
+    def test_output_inside_repository_is_rejected(self) -> None:
+        self.fixture()
+        with self.assertRaisesRegex(BoundaryError, "dangerous"):
+            build_artifact(self.boundary(), self.root / "artifact-output")
+
+    def test_relative_output_path_is_rejected(self) -> None:
+        self.fixture()
+        with self.assertRaisesRegex(BoundaryError, "absolute path"):
+            build_artifact(self.boundary(), Path("relative-artifact"))
+
+    def test_filesystem_root_as_output_is_rejected(self) -> None:
+        self.fixture()
+        with self.assertRaisesRegex(BoundaryError, "dangerous"):
+            build_artifact(self.boundary(), Path(self.base.anchor))
+
+    def test_home_directory_as_output_is_rejected(self) -> None:
+        self.fixture()
+        with self.assertRaisesRegex(BoundaryError, "dangerous"):
+            build_artifact(self.boundary(), Path.home())
+
+    def test_symlink_output_is_rejected_and_target_is_untouched(self) -> None:
+        self.fixture()
+        target = self.base / "existing-target"
+        target.mkdir()
+        marker = target / "keep.txt"
+        marker.write_bytes(b"keep")
+        link = self.base / "artifact-link"
+        try:
+            os.symlink(target, link, target_is_directory=True)
+        except (OSError, NotImplementedError) as exc:
+            self.skipTest(f"symlinks unavailable: {exc}")
+        with self.assertRaisesRegex(BoundaryError, "must not be a symlink"):
+            build_artifact(self.boundary(), link)
+        self.assertEqual(marker.read_bytes(), b"keep")
 
     def test_overlap_fails(self) -> None:
         self.fixture(deploy=["index.html", "tool.py"])

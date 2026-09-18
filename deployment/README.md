@@ -23,7 +23,7 @@ PYTHONDONTWRITEBYTECODE=1 python3 build_pages_artifact.py \
   --output /tmp/popolsku-pages-artifact
 ```
 
-The builder recreates only the explicit output directory, copies only `DEPLOY` files, compares every SHA-256, rejects symlinks and hidden deploy files, and proves the resulting file set is exact.
+The builder requires the explicit output directory not to exist, creates it fresh, copies only `DEPLOY` files, compares every SHA-256, rejects symlinks and hidden deploy files, and proves the resulting file set is exact. It never empties or replaces an existing output path.
 
 Run the complete maintained product gate before building:
 
@@ -44,5 +44,7 @@ Decide whether the path is required by the learner-facing web/PWA runtime. Add i
 ## Live activation remains separate
 
 The workflow builds and verifies on pushes and pull requests, but its deploy job is available only for a manual run from the repository's default branch. This implementation does not change GitHub Pages settings, the custom domain, Cloudflare DNS, or the live site.
+
+As defense in depth, checkout does not persist GitHub credentials because the build job does not perform authenticated Git operations.
 
 During a separately reviewed activation, change the Pages publishing source to GitHub Actions, verify that GitHub Settings → Pages still contains the custom domain before and after the first deployment, and leave Cloudflare DNS managed separately.

@@ -234,11 +234,16 @@ def _prepare_output(root: Path, supplied: Path) -> Path:
     anchor = Path(output.anchor)
     if output in (anchor, home, root) or output in root.parents or root in output.parents:
         raise BoundaryError(f"refusing dangerous artifact output path: {output}")
-    if output.exists() and not output.is_dir():
-        raise BoundaryError(f"artifact output exists and is not a directory: {output}")
     if output.exists():
-        shutil.rmtree(output)
-    output.mkdir(parents=True)
+        raise BoundaryError(
+            f"artifact output already exists; choose a fresh path: {output}")
+    try:
+        output.mkdir(parents=True, exist_ok=False)
+    except FileExistsError as exc:
+        raise BoundaryError(
+            f"artifact output already exists; choose a fresh path: {output}") from exc
+    except OSError as exc:
+        raise BoundaryError(f"cannot create artifact output {output}: {exc}") from exc
     return output
 
 

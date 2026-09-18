@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Run maintained current product gate
         env:
@@ -46,7 +48,7 @@ jobs:
     name: Deploy Pages after explicit activation request
     if: >-
       github.event_name == 'workflow_dispatch' &&
-      github.ref_name == github.event.repository.default_branch
+      github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
     needs: build
     runs-on: ubuntu-latest
     permissions:
