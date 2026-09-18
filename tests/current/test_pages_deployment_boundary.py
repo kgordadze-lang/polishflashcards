@@ -30,6 +30,49 @@ DEPLOY_GUARD = (
     "github.ref == format('refs/heads/{0}', "
     "github.event.repository.default_branch)"
 )
+SETUP_PYTHON_SHA = "5fda3b95a4ea91299a34e894583c3862153e4b97"
+
+
+class PagesWorkflowEnvironmentTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.workflow = (ROOT / ".github/workflows/pages.yml").read_text(
+            encoding="utf-8")
+
+    def test_workflow_uses_approved_setup_python_pin(self) -> None:
+        expected = (
+            f"uses: actions/setup-python@{SETUP_PYTHON_SHA} # v7.0.0")
+        self.assertIn(expected, self.workflow)
+        self.assertNotRegex(
+            self.workflow,
+            r"uses:\s*actions/setup-python@(?![0-9a-f]{40}(?:\s|#|$))")
+
+    def test_workflow_configures_exact_python_version(self) -> None:
+        self.assertIn("python-version: '3.13.5'", self.workflow)
+
+    def test_workflow_installs_declared_dependencies_before_gate(self) -> None:
+        install = (
+            "python -m pip install --disable-pip-version-check "
+            "-r requirements-ci.txt")
+        gate = "- name: Run maintained current product gate"
+        self.assertIn(install, self.workflow)
+        self.assertLess(self.workflow.index(install), self.workflow.index(gate))
+
+    def test_workflow_keeps_checkout_credentials_disabled(self) -> None:
+        self.assertIn("persist-credentials: false", self.workflow)
+
+    def test_ci_dependencies_are_exactly_pinned(self) -> None:
+        path = ROOT / "requirements-ci.txt"
+        self.assertTrue(path.is_file())
+        dependencies = [
+            line.strip() for line in path.read_text(encoding="utf-8").splitlines()
+            if line.strip() and not line.lstrip().startswith("#")
+        ]
+        self.assertEqual(dependencies, ["json5==0.9.25"])
+        for dependency in dependencies:
+            self.assertRegex(
+                dependency,
+                r"^[A-Za-z0-9][A-Za-z0-9._-]*==[A-Za-z0-9][A-Za-z0-9._+-]*$")
 
 
 class PagesDeploymentGuardTests(unittest.TestCase):

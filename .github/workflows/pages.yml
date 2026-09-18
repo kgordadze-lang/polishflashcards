@@ -20,21 +20,29 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13.5'
+
+      - name: Install CI dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements-ci.txt
+
       - name: Run maintained current product gate
         env:
           PYTHONDONTWRITEBYTECODE: "1"
         run: |
-          python3 validate_content.py
-          python3 verify_audio.py
-          python3 validate_current_release.py
-          python3 build_pages.py --check
-          python3 tests/current/run_current_tests.py
+          python validate_content.py
+          python verify_audio.py
+          python validate_current_release.py
+          python build_pages.py --check
+          python tests/current/run_current_tests.py
 
       - name: Build exact allowlisted artifact
         env:
           PAGES_ARTIFACT: ${{ runner.temp }}/popolsku-pages-artifact
           PYTHONDONTWRITEBYTECODE: "1"
-        run: python3 build_pages_artifact.py --output "$PAGES_ARTIFACT"
+        run: python build_pages_artifact.py --output "$PAGES_ARTIFACT"
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0

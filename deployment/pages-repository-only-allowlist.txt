@@ -12,6 +12,7 @@ icon-maskable-source.svg
 icon-source.svg
 pp_audio_rule.py
 reports/priority-5-forward-frozen-baseline.json
+requirements-ci.txt
 tests/current/README.md
 tests/current/audio_resilience.js
 tests/current/choose_ui.js
