@@ -10,7 +10,7 @@ Together the manifests must equal `git ls-files`, with no overlap. A newly track
 
 ## Local verification
 
-GitHub Pages verification uses Python 3.13.5 and installs the dependencies pinned in `requirements-ci.txt` before running the maintained product gate.
+GitHub Pages verification uses Python 3.13.5 and installs the dependencies pinned in `requirements-ci.txt` before running the maintained product gate. Build and verification run on macOS because the maintained JavaScript regressions use JavaScriptCore through `osascript`; the deploy job remains on Ubuntu.
 
 Validate the partition without building:
 

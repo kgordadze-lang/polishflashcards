@@ -38,6 +38,25 @@ class PagesWorkflowEnvironmentTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.workflow = (ROOT / ".github/workflows/pages.yml").read_text(
             encoding="utf-8")
+        cls.build_job, cls.deploy_job = cls.workflow.split(
+            "\n  build:\n", 1)[1].split("\n  deploy:\n", 1)
+
+    def test_workflow_uses_required_job_runners(self) -> None:
+        build_runners = [
+            line.strip() for line in self.build_job.splitlines()
+            if line.strip().startswith("runs-on:")
+        ]
+        deploy_runners = [
+            line.strip() for line in self.deploy_job.splitlines()
+            if line.strip().startswith("runs-on:")
+        ]
+        self.assertEqual(build_runners, ["runs-on: macos-15-intel"])
+        self.assertEqual(deploy_runners, ["runs-on: ubuntu-latest"])
+        self.assertNotIn("macos-latest", self.workflow)
+
+    def test_build_job_runs_maintained_current_tests(self) -> None:
+        self.assertIn(
+            "python tests/current/run_current_tests.py", self.build_job)
 
     def test_workflow_uses_approved_setup_python_pin(self) -> None:
         expected = (
