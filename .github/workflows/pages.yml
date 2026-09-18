@@ -1,0 +1,62 @@
+name: Verify and stage GitHub Pages
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  build:
+    name: Build and verify Pages artifact
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: read
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Run maintained current product gate
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python3 validate_content.py
+          python3 verify_audio.py
+          python3 validate_current_release.py
+          python3 build_pages.py --check
+          python3 tests/current/run_current_tests.py
+
+      - name: Build exact allowlisted artifact
+        env:
+          PAGES_ARTIFACT: ${{ runner.temp }}/popolsku-pages-artifact
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python3 build_pages_artifact.py --output "$PAGES_ARTIFACT"
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
+
+      - name: Upload verified Pages artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: ${{ runner.temp }}/popolsku-pages-artifact
+
+  deploy:
+    name: Deploy Pages after explicit activation request
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      github.ref_name == github.event.repository.default_branch
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy verified Pages artifact
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
