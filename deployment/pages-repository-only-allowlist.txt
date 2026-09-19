@@ -27,6 +27,7 @@ tests/current/run_current_tests.py
 tests/current/service_worker_cache.js
 tests/current/test_audio_generation.py
 tests/current/test_content_policy.py
+tests/current/test_generated_page_navigation.py
 tests/current/test_pages_deployment_boundary.py
 tests/current/test_speaker_icon_ui.py
 tests/current/test_verb_patterns_runtime_validator.py

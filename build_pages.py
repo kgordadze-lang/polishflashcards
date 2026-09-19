@@ -149,13 +149,17 @@ padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px)
 .wrap{max-width:640px;margin:0 auto;padding:0 20px 48px}
 a{color:var(--emerald)}a:hover{color:var(--sage-hover)}
 a:focus-visible,button:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
-.top{display:flex;align-items:center;gap:12px;padding:26px 0 6px}
+.top{display:flex;align-items:center;gap:12px;padding:26px 0 6px;flex-wrap:wrap}
 .logo-mark{position:relative;width:38px;height:38px;flex:0 0 auto}
 .lm-back{position:absolute;inset:0;border-radius:11px;background:var(--logo-back);transform:rotate(-5deg) translate(-2px,1px)}
 .lm-front{position:absolute;inset:0;border-radius:11px;background:var(--forest);color:var(--cream);
 display:grid;place-items:center;font-weight:800;font-size:14px;letter-spacing:-.5px;box-shadow:0 4px 10px rgba(30,27,75,.18)}
 .lm-kreska{position:absolute;top:6px;right:6px;width:9px;height:2.6px;border-radius:2px;background:var(--emerald);transform:rotate(-28deg);z-index:2}
 .top a{text-decoration:none;color:var(--forest)}.top b{font-size:17px;font-weight:700;letter-spacing:-.3px}
+.page-nav{display:flex;align-items:center;gap:8px;margin-left:auto;max-width:100%}
+.page-nav-link{width:44px;height:44px;flex:0 0 auto;display:grid;place-items:center;background:var(--card);
+border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-sm)}
+.page-nav-link:hover{color:var(--forest);border-color:#cbd5e1}
 .crumbs{font-size:13px;color:var(--muted);margin:14px 0 0}
 .crumbs a{text-decoration:none}
 h1{font-size:30px;line-height:1.1;font-weight:800;letter-spacing:-.9px;margin:16px 0 6px}
@@ -604,7 +608,29 @@ def social_image_dimensions():
     return width, height
 
 
-def head(title, desc, canon, ld, extra_style=""):
+BACK_SVG = ('<svg viewBox="0 0 24 24" width="20" height="20" fill="none" '
+            'stroke="currentColor" stroke-width="2.2" stroke-linecap="round" '
+            'stroke-linejoin="round" aria-hidden="true">'
+            '<path d="M15 18l-6-6 6-6"/></svg>')
+
+HOME_SVG = ('<svg viewBox="0 0 24 24" width="19" height="19" fill="none" '
+            'stroke="currentColor" stroke-width="2.2" stroke-linecap="round" '
+            'stroke-linejoin="round" aria-hidden="true">'
+            '<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>'
+            '<polyline points="9 22 9 12 15 12 15 22"/></svg>')
+
+
+def generated_page_navigation(back_href):
+    """Shared deterministic navigation for a generated learner page."""
+    return (
+        '<nav class="page-nav" aria-label="Page navigation">'
+        f'<a class="page-nav-link" href="{esc(back_href)}" aria-label="Back">{BACK_SVG}</a>'
+        f'<a class="page-nav-link" href="/" aria-label="Home page">{HOME_SVG}</a>'
+        '</nav>'
+    )
+
+
+def head(title, desc, canon, ld, back_href, extra_style=""):
     """One page head. `ld` is the page's complete list of structured-data
     entities, emitted as a single JSON-LD array so a page can carry both its own
     type and its BreadcrumbList without a second script block."""
@@ -642,7 +668,7 @@ def head(title, desc, canon, ld, extra_style=""):
 <div class="wrap">
 <header class="top"><a href="/" aria-label="Po polsku home" style="display:flex;align-items:center;gap:12px">
 <span class="logo-mark"><span class="lm-back"></span><span class="lm-kreska"></span><span class="lm-front">PL</span></span>
-<b>Po polsku</b></a></header>
+<b>Po polsku</b></a>{generated_page_navigation(back_href)}</header>
 <main>
 """
 
@@ -835,7 +861,7 @@ def topic_page(level, topic, slug, audio_idx):
         "provider": {"@type": "Organization", "name": "Po polsku", "url": SITE + "/"},
     }
     crumbs, crumb_ld = breadcrumbs(("Home", "/"), (GUIDE_NAME, GUIDE_PATH), (name, canon))
-    body = [head(title, meta_desc, canon, [ld, crumb_ld], LEARNING_ENDING_STYLE)]
+    body = [head(title, meta_desc, canon, [ld, crumb_ld], GUIDE_PATH, LEARNING_ENDING_STYLE)]
     body.append(crumbs)
     body.append(f'<h1>{esc(name)}</h1>')
     body.append(f'<p class="lede">{esc(desc)}</p>')
@@ -887,7 +913,7 @@ def vocab_page(topic, slug, page_title, audio_idx):
         "provider": {"@type": "Organization", "name": "Po polsku", "url": SITE + "/"},
     }
     crumbs, crumb_ld = breadcrumbs(("Home", "/"), (GUIDE_NAME, GUIDE_PATH), (page_title, canon))
-    body = [head(title, meta_desc, canon, [ld, crumb_ld], LEARNING_ENDING_STYLE)]
+    body = [head(title, meta_desc, canon, [ld, crumb_ld], GUIDE_PATH, LEARNING_ENDING_STYLE)]
     body.append(crumbs)
     body.append(f'<h1>{esc(page_title)}</h1>')
     body.append(f'<p class="lede">{esc(desc)}</p>')
@@ -914,7 +940,7 @@ def guide_page(topics_by_level, vocab_items):
         "provider": {"@type": "Organization", "name": "Po polsku", "url": SITE + "/"},
     }
     crumbs, crumb_ld = breadcrumbs(("Home", "/"), (GUIDE_NAME, canon))
-    body = [head(title, meta_desc, canon, [ld, crumb_ld], LEARNING_ENDING_STYLE)]
+    body = [head(title, meta_desc, canon, [ld, crumb_ld], "/", LEARNING_ENDING_STYLE)]
     body.append(crumbs)
     body.append(f'<h1>{esc(GUIDE_NAME)}</h1>')
     body.append('<p class="lede">Built by a foreigner living in Poland and learning the language '
@@ -970,7 +996,7 @@ def listening_page():
     }
     crumbs, crumb_ld = breadcrumbs(("Home", "/"), (GUIDE_NAME, GUIDE_PATH),
                                    ("What else I listen to", canon))
-    body = [head(title, meta_desc, canon, [ld, crumb_ld], LEARNING_ENDING_STYLE)]
+    body = [head(title, meta_desc, canon, [ld, crumb_ld], GUIDE_PATH, LEARNING_ENDING_STYLE)]
     body.append(crumbs)
     body.append('<h1>What else I listen to</h1>')
     body.append('<p class="lede">Flashcards help you learn words. Getting used to the sound of Polish '
