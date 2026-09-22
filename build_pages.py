@@ -550,7 +550,7 @@ TABLE_CELL_LANGUAGE_OVERRIDES = {
     ("wolacz-vocative", 3, 1, "g"): (("en", "After k, g, ch (and "), ("pl", "syn"), ("en", ")")),
     ("wolacz-vocative", 5, 1, "ex"): (("pl", "Pani doktor!"), ("en", " (title often stays in Nom)")),
     ("stopniowanie-comparison", 6, 0, "g"): (("pl", "coraz"), ("en", " + comparative")),
-    ("stopniowanie-comparison", 6, 2, "g"): (("pl", "jak naj"), ("en", " + superlative")),
+    ("stopniowanie-comparison", 6, 2, "g"): (("pl", "jak"), ("en", " + superlative")),
     ("panowie-panie-panstwo-plural-formal-address", 1, 0, "g"): (("pl", "wy"), ("en", " (informal)")),
     ("zdrobnienia-diminutives", 1, 0, "g"): (("pl", "-ek"), ("en", " (masc)")),
     ("zdrobnienia-diminutives", 1, 1, "g"): (("pl", "-ka"), ("en", " (fem)")),

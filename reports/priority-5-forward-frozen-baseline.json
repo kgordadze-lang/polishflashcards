@@ -2,12 +2,13 @@
   "approvedChanges": [
     "P5-Phase-2A-healthcare-content-lock/8a50d3b0ae35587c61df5f035974434ff12f403a#P5-Phase-2B-activity-policy-override/Long-Type-It-opt-outs-and-removal-of-unnecessary-card-016-cue/Approved-2026-07-31",
     "P5-Phase-2D-healthcare-audio-QA-correction/Human-listening-found-a-TTS-pronunciation-defect-in-jutrzejsza/Approved-replacement-Dzwonie-zeby-odwolac-wizyte-na-jutro/Approved-2026-07-31",
-    "P5-Phase-2E-native-Polish-review-corrections/Native-review-approved-all-Healthcare-Appointments-content-except-one-Card-04-standalone-naturalness-correction-and-optional-hint-additions-for-Cards-12-and-18/User-approved-implementation-and-disclosure-of-the-two-replacement-TTS-phrases-on-2026-08-01"
+    "P5-Phase-2E-native-Polish-review-corrections/Native-review-approved-all-Healthcare-Appointments-content-except-one-Card-04-standalone-naturalness-correction-and-optional-hint-additions-for-Cards-12-and-18/User-approved-implementation-and-disclosure-of-the-two-replacement-TTS-phrases-on-2026-08-01",
+    "P9-Phase-4R1/PC-01-PC-02-PC-03-PC-05-PC-07-count/User-approved-controlled-wording-baseline-update-2026-09-22"
   ],
   "baselineKind": "forward-looking",
   "baselineOriginAppVersion": "7.30",
   "baselineOriginCommit": "d703f4041ec67cb43a2eb85553ca077f780456a2",
-  "contentSha256": "2a71401d8966ccbda59ec696f2c41cc3b48801d5c6059a881183b44ea3a1ce50",
+  "contentSha256": "2dae57f5fb2c189cdd20b278d1ed58c24082c9bb3ea220074a9c42864d2d66bd",
   "formatVersion": 2,
   "legacy": {
     "cards": {
@@ -108528,7 +108529,7 @@
     {
       "field": "hint",
       "path": "data-b1.js#/level:b1/topic:b1-everyday-slang/card:b1-everyday-slang-008",
-      "value": "Any vehicle, from a banger to a supercar. A woman says: kupiłaś."
+      "value": "Any vehicle, from a banger to a supercar. When addressing a woman, use: kupiłaś."
     },
     {
       "field": "pl",
@@ -108828,7 +108829,7 @@
     {
       "field": "hint",
       "path": "data-b1.js#/level:b1/topic:b1-everyday-slang/card:b1-everyday-slang-019",
-      "value": "A light, popular insult - not really offensive. Literally 'a jug'."
+      "value": "A light, popular insult - how it lands depends on the audience and context. Literally 'a jug'."
     },
     {
       "field": "pl",
@@ -108868,7 +108869,7 @@
     {
       "field": "desc",
       "path": "data-b1.js#/level:b1/topic:b1-exclamations",
-      "value": "Everyday exclamations - the mild, clean cousins of Polish swearing."
+      "value": "Everyday exclamations - including milder alternatives to Polish swearing. Even mild expressions need the right audience and setting."
     },
     {
       "field": "emoji",
@@ -109148,7 +109149,7 @@
     {
       "field": "hint",
       "path": "data-b1.js#/level:b1/topic:b1-exclamations/card:b1-exclamations-011",
-      "value": "Mild minced oath - a socially safe substitute for a harder curse. A woman says: zapomniałam."
+      "value": "Mild minced oath - softer than a harder curse, but still not suitable for every audience or setting. A woman says: zapomniałam."
     },
     {
       "field": "pl",
@@ -111023,7 +111024,7 @@
     {
       "field": "hint",
       "path": "data-b1.js#/level:b1/topic:b1-idioms/card:b1-idioms-013",
-      "value": "Literally: to have fallen off the Christmas tree. A woman says: urwałaś."
+      "value": "Literally: to have fallen off the Christmas tree. When addressing a woman, use: urwałaś."
     },
     {
       "field": "pl",
@@ -111148,7 +111149,7 @@
     {
       "field": "hint",
       "path": "data-b1.js#/level:b1/topic:b1-idioms/card:b1-idioms-018",
-      "value": "Literally: to turn the cat around by its tail. A woman says: powiedziałaś."
+      "value": "Literally: to turn the cat around by its tail. When addressing a woman, use: powiedziałaś."
     },
     {
       "field": "pl",
@@ -111323,7 +111324,7 @@
     {
       "field": "hint",
       "path": "data-b1.js#/level:b1/topic:b1-idioms/card:b1-idioms-025",
-      "value": "Literally: a French poodle. Someone who complains about trifles."
+      "value": "Literally: a little French dog. Someone who complains about trifles."
     },
     {
       "field": "pl",
@@ -112248,7 +112249,7 @@
     {
       "field": "hint",
       "path": "data-b1.js#/level:b1/topic:b1-proverbs/card:b1-proverbs-001",
-      "value": "Literally: as you make your bed, so you'll sleep. A woman says: Sama podjęłaś."
+      "value": "Literally: as you make your bed, so you'll sleep. When addressing a woman, use: Sama podjęłaś."
     },
     {
       "field": "pl",
@@ -115683,7 +115684,7 @@
     {
       "field": "teach[002].sub",
       "path": "data-grammar.js#/level:building-sentences/topic:building-sentences-negation",
-      "value": "The negative words all start with ni- - and they decline through the cases like everything else."
+      "value": "Most of these negative words start with ni-; żaden is the exception here. Nikt, nic and żaden change with case; nigdy and nigdzie stay unchanged."
     },
     {
       "field": "teach[002].table[000].e",
@@ -118523,7 +118524,7 @@
     {
       "field": "teach[006].table[000].ex",
       "path": "data-grammar.js#/level:grammar-cases/topic:grammar-cases-accusative",
-      "value": "Kocham cię."
+      "value": "Boli mnie brzuch."
     },
     {
       "field": "teach[006].table[000].g",
@@ -119568,7 +119569,7 @@
     {
       "field": "teach[004].table[002].g",
       "path": "data-grammar.js#/level:grammar-cases/topic:grammar-cases-dative",
-      "value": "-ę → -ęciu"
+      "value": "imię: -ę → -eniu"
     },
     {
       "field": "teach[005].examples[000].en",
@@ -120603,7 +120604,7 @@
     {
       "field": "teach[003].table[002].e",
       "path": "data-grammar.js#/level:grammar-cases/topic:grammar-cases-genitive",
-      "value": "-i"
+      "value": "-y / -i"
     },
     {
       "field": "teach[003].table[002].ex",
@@ -120613,7 +120614,7 @@
     {
       "field": "teach[003].table[002].g",
       "path": "data-grammar.js#/level:grammar-cases/topic:grammar-cases-genitive",
-      "value": "After soft consonant"
+      "value": "After c / after soft consonant"
     },
     {
       "field": "teach[004].examples[000].en",
@@ -120693,7 +120694,7 @@
     {
       "field": "teach[004].table[002].g",
       "path": "data-grammar.js#/level:grammar-cases/topic:grammar-cases-genitive",
-      "value": "-ę → -ęcia / -enia"
+      "value": "-o → -a"
     },
     {
       "field": "teach[005].examples[000].en",
@@ -127353,7 +127354,7 @@
     {
       "field": "teach[006].table[002].g",
       "path": "data-grammar.js#/level:people-numbers/topic:people-numbers-comparison",
-      "value": "jak naj + superlative"
+      "value": "jak + superlative"
     },
     {
       "field": "teach[006].table[003].e",
@@ -127783,7 +127784,7 @@
     {
       "field": "explain",
       "path": "data-grammar.js#/level:people-numbers/topic:people-numbers-comparison/drill:people-numbers-comparison-010",
-      "value": "jak naj + superlative adverb = as ... as possible: jak najszybciej."
+      "value": "jak + superlative adverb = as ... as possible: jak najszybciej."
     },
     {
       "field": "full",
@@ -127933,7 +127934,7 @@
     {
       "field": "teach[000].examples[000].en",
       "path": "data-grammar.js#/level:people-numbers/topic:people-numbers-every-all",
-      "value": "Every student has an ID card."
+      "value": "Every student has a student record book."
     },
     {
       "field": "teach[000].examples[000].pl",
@@ -127943,7 +127944,7 @@
     {
       "field": "teach[000].examples[001].en",
       "path": "data-grammar.js#/level:people-numbers/topic:people-numbers-every-all",
-      "value": "All the students have ID cards."
+      "value": "All the students have student record books."
     },
     {
       "field": "teach[000].examples[001].pl",
@@ -128283,7 +128284,7 @@
     {
       "field": "fullEn",
       "path": "data-grammar.js#/level:people-numbers/topic:people-numbers-every-all/drill:people-numbers-every-all-001",
-      "value": "Every student has an ID card."
+      "value": "Every student has a student record book."
     },
     {
       "field": "options[000]",
@@ -128308,7 +128309,7 @@
     {
       "field": "promptEn",
       "path": "data-grammar.js#/level:people-numbers/topic:people-numbers-every-all/drill:people-numbers-every-all-001",
-      "value": "Every student has an ID card."
+      "value": "Every student has a student record book."
     },
     {
       "field": "answer",
@@ -128328,7 +128329,7 @@
     {
       "field": "fullEn",
       "path": "data-grammar.js#/level:people-numbers/topic:people-numbers-every-all/drill:people-numbers-every-all-002",
-      "value": "All the students have ID cards."
+      "value": "All the students have student record books."
     },
     {
       "field": "options[000]",
@@ -128353,7 +128354,7 @@
     {
       "field": "promptEn",
       "path": "data-grammar.js#/level:people-numbers/topic:people-numbers-every-all/drill:people-numbers-every-all-002",
-      "value": "All the students have ID cards."
+      "value": "All the students have student record books."
     },
     {
       "field": "answer",
@@ -129273,7 +129274,7 @@
     {
       "field": "teach[006].sub",
       "path": "data-grammar.js#/level:people-numbers/topic:people-numbers-nationalities",
-      "value": "The 10 nationalities you'll use most in daily Polish."
+      "value": "The 5 nationalities you'll use most in daily Polish."
     },
     {
       "field": "teach[006].table[000].e",
@@ -132078,7 +132079,7 @@
     {
       "field": "teach[000].front",
       "path": "data-grammar.js#/level:people-numbers/topic:people-numbers-pronouns",
-      "value": "Polish has 5 'genders' in the plural"
+      "value": "Gender forms: 3 singular, 2 plural"
     },
     {
       "field": "teach[000].points[000]",

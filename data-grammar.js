@@ -187,7 +187,7 @@
               table:[
                 { g:"Default", e:"-y", ex:"kawa \u2192 kawy, kobieta \u2192 kobiety" },
                 { g:"After k, g", e:"-i", ex:"książka \u2192 książki, noga \u2192 nogi" },
-                { g:"After soft consonant", e:"-i", ex:"ulica \u2192 ulicy, kuchnia \u2192 kuchni" }
+                { g:"After c / after soft consonant", e:"-y / -i", ex:"ulica \u2192 ulicy, kuchnia \u2192 kuchni" }
               ],
               explain:"If the word ends in <b>-ka, -ga</b>, use <b>-i</b>. If it ends in a soft consonant (like -nia, -cia), you also usually get <b>-i</b>. Everything else takes <b>-y</b>.",
               examples:[
@@ -199,7 +199,7 @@
               table:[
                 { g:"-o \u2192 -a", e:"okno \u2192 okna", ex:"Nie ma okna." },
                 { g:"-e \u2192 -a", e:"mieszkanie \u2192 mieszkania", ex:"Szukam mieszkania." },
-                { g:"-ę \u2192 -ęcia / -enia", e:"dziecko \u2192 dziecka", ex:"Nie mamy dziecka." }
+                { g:"-o \u2192 -a", e:"dziecko \u2192 dziecka", ex:"Nie mamy dziecka." }
               ],
               note:"'Dziecko' is neuter and follows the -o \u2192 -a rule in the singular. Its plural is famously irregular (dzieci).",
               examples:[
@@ -338,7 +338,7 @@
               table:[
                 { g:"-o \u2192 -u", e:"dziecko \u2192 dziecku", ex:"Kupię dziecku lody." },
                 { g:"-e \u2192 -u", e:"pole \u2192 polu", ex:"Idę ku polu." },
-                { g:"-ę \u2192 -ęciu", e:"imię \u2192 imieniu", ex:"(rare)" }
+                { g:"imię: -ę \u2192 -eniu", e:"imię \u2192 imieniu", ex:"(rare)" }
               ],
               examples:[
                 { pl:"Daję dziecku zabawkę.", en:"I'm giving the child a toy." }
@@ -492,7 +492,7 @@
             { front:"Personal pronouns in Accusative",
               sub:"You need these constantly. Short and long forms exist for emphasis.",
               table:[
-                { g:"me", e:"mnie", ex:"Kocham cię." },
+                { g:"me", e:"mnie", ex:"Boli mnie brzuch." },
                 { g:"you (sg)", e:"ciebie / cię", ex:"Widzę cię!" },
                 { g:"him", e:"jego / go", ex:"Znam go." },
                 { g:"her", e:"ją", ex:"Lubię ją." },
@@ -1212,7 +1212,7 @@
           name: "Zaimki (Pronouns & Determiners)", emoji: "\uD83E\uDDED", kind: "grammar", chip: "Grammar A2",
           desc: "mój, ten, jaki - pointing and owning in Nominative",
           teach: [
-            { front:"Polish has 5 'genders' in the plural",
+            { front:"Gender forms: 3 singular, 2 plural",
               sub:"You already know 3 in the singular. The plural adds a second dimension.",
               points:[
                 "Singular: <b>on</b> (masculine), <b>ona</b> (feminine), <b>ono</b> (neuter)",
@@ -1407,7 +1407,7 @@
                 { pl:"Moje koleżanki to Polki.", en:"My (female) friends are Polish." }
               ] },
             { front:"Quick reference table",
-              sub:"The 10 nationalities you'll use most in daily Polish.",
+              sub:"The 5 nationalities you'll use most in daily Polish.",
               table:[
                 { g:"Pole", e:"Polak \u2192 Polacy / Polka \u2192 Polki", ex:"" },
                 { g:"Ukrainian", e:"Ukrainiec \u2192 Ukraińcy / Ukrainka \u2192 Ukrainki", ex:"" },
@@ -1473,8 +1473,8 @@
                 "So the mistake to avoid is <i>każdy studenci mają</i> - mixing a singular word with a plural verb."
               ],
               examples:[
-                { pl:"Każdy student ma indeks.", en:"Every student has an ID card." },
-                { pl:"Wszyscy studenci mają indeksy.", en:"All the students have ID cards." }
+                { pl:"Każdy student ma indeks.", en:"Every student has a student record book." },
+                { pl:"Wszyscy studenci mają indeksy.", en:"All the students have student record books." }
               ] },
 
             { front:"każdy changes for gender",
@@ -1525,12 +1525,12 @@
               note:"Look at the cases hiding inside: <b>każdego dnia</b> is dopełniacz, <b>za każdym razem</b> is narzędnik, and <b>wszystkiego najlepszego</b> is dopełniacz too - it's short for 'życzę ci wszystkiego najlepszego'." }
           ],
           drills: [
-            { id:"people-numbers-every-all-001", type:"choose", prompt:"Każdy student ___ indeks.", promptEn:"Every student has an ID card.",
+            { id:"people-numbers-every-all-001", type:"choose", prompt:"Każdy student ___ indeks.", promptEn:"Every student has a student record book.",
               options:["ma","mają","mieć"], answer:"ma",
-              explain:"każdy is singular, so the verb is singular: ma.", full:"Każdy student ma indeks.", fullEn:"Every student has an ID card." },
-            { id:"people-numbers-every-all-002", type:"choose", prompt:"Wszyscy studenci ___ indeksy.", promptEn:"All the students have ID cards.",
+              explain:"każdy is singular, so the verb is singular: ma.", full:"Każdy student ma indeks.", fullEn:"Every student has a student record book." },
+            { id:"people-numbers-every-all-002", type:"choose", prompt:"Wszyscy studenci ___ indeksy.", promptEn:"All the students have student record books.",
               options:["ma","mają","miały"], answer:"mają",
-              explain:"wszyscy is plural, so the verb is plural: mają.", full:"Wszyscy studenci mają indeksy.", fullEn:"All the students have ID cards." },
+              explain:"wszyscy is plural, so the verb is plural: mają.", full:"Wszyscy studenci mają indeksy.", fullEn:"All the students have student record books." },
             { id:"people-numbers-every-all-003", type:"choose", prompt:"___ koledzy przyszli.", promptEn:"All the colleagues came. (men)",
               options:["Wszyscy","Wszystkie","Każdy"], answer:"Wszyscy",
               explain:"A group of men → wszyscy (like oni).", full:"Wszyscy koledzy przyszli.", fullEn:"All the colleagues came." },
@@ -1647,7 +1647,7 @@
               table:[
                 { g:"coraz + comparative", e:"more and more", ex:"Mówisz coraz lepiej po polsku!" },
                 { g:"im..., tym...", e:"the..., the...", ex:"Im więcej ćwiczysz, tym lepiej mówisz." },
-                { g:"jak naj + superlative", e:"as ... as possible", ex:"Przyjdź jak najszybciej." },
+                { g:"jak + superlative", e:"as ... as possible", ex:"Przyjdź jak najszybciej." },
                 { g:"coś jest coraz gorsze", e:"getting worse", ex:"Pogoda jest coraz gorsza." }
               ],
               note:"<b>coraz lepiej</b> is what Poles will start telling you about your Polish - now you'll know exactly what it means and how it's built." }
@@ -1682,7 +1682,7 @@
               explain:"coraz + comparative = more and more: coraz lepiej.", full:"Mówisz coraz lepiej po polsku!", fullEn:"You speak Polish better and better!" },
             { id:"people-numbers-comparison-010", type:"choose", prompt:"Przyjdź jak ___.", promptEn:"Come as soon as possible.",
               options:["najszybciej","szybciej","najszybszy"], answer:"najszybciej",
-              explain:"jak naj + superlative adverb = as ... as possible: jak najszybciej.", full:"Przyjdź jak najszybciej.", fullEn:"Come as soon as possible." },
+              explain:"jak + superlative adverb = as ... as possible: jak najszybciej.", full:"Przyjdź jak najszybciej.", fullEn:"Come as soon as possible." },
             { id:"people-numbers-comparison-011", type:"choose", prompt:"Im więcej ćwiczysz, ___ lepiej mówisz.", promptEn:"The more you practise, the better you speak.",
               options:["tym","to","tam"], answer:"tym",
               explain:"The pair is fixed: im..., tym... - the..., the...", full:"Im więcej ćwiczysz, tym lepiej mówisz.", fullEn:"The more you practise, the better you speak." },
@@ -2620,7 +2620,7 @@
               ] },
 
             { front:"The ni- family",
-              sub:"The negative words all start with ni- - and they decline through the cases like everything else.",
+              sub:"Most of these negative words start with ni-; żaden is the exception here. Nikt, nic and żaden change with case; nigdy and nigdzie stay unchanged.",
               table:[
                 { g:"nikt → nikogo, nikomu", e:"nobody", ex:"Nie znam tu nikogo." },
                 { g:"nic → niczego, niczym", e:"nothing", ex:"Nic nie widzę." },
