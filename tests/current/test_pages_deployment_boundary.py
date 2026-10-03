@@ -33,6 +33,19 @@ DEPLOY_GUARD = (
 SETUP_PYTHON_SHA = "5fda3b95a4ea91299a34e894583c3862153e4b97"
 CONFIGURE_PAGES_SHA = "45bfe0192ca1faeb007ade9deae92b16b8254a0d"
 OLD_CONFIGURE_PAGES_SHA = "983d7736d9b0ae728b81ab479565c72886d7745b"
+CARD_FLIP_REPOSITORY_ONLY = {
+    "reports/card-flip-control-layout-fix.md",
+    "reports/card-flip-control-layout-release-10.3.md",
+    "tests/current/test_card_flip_layout.py",
+}
+
+
+class CurrentRepositoryClassificationTests(unittest.TestCase):
+    def test_card_flip_release_files_are_repository_only(self) -> None:
+        boundary = load_boundary(ROOT)
+        self.assertTrue(CARD_FLIP_REPOSITORY_ONLY <= set(boundary.repository_only))
+        self.assertTrue(CARD_FLIP_REPOSITORY_ONLY <= boundary.tracked)
+        self.assertFalse(CARD_FLIP_REPOSITORY_ONLY & set(boundary.deploy))
 
 
 class PagesWorkflowEnvironmentTests(unittest.TestCase):
