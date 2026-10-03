@@ -107,9 +107,9 @@ class FlipControlLayoutTests(unittest.TestCase):
         self.assertIn('$("next").addEventListener("click"', INDEX)
         grammar = (ROOT / "data-grammar.js").read_text(encoding="utf-8")
         self.assertIn('It marks the subject - the person or thing <i>doing</i> the action.', grammar)
-        self.assertIn('const APP_VERSION = "9.19";', INDEX)
+        self.assertIn('const APP_VERSION = "10.3";', INDEX)
         worker = (ROOT / "sw.js").read_text(encoding="utf-8")
-        self.assertIn('const CACHE = "popolsku-v75";', worker)
+        self.assertIn('const CACHE = "popolsku-v76";', worker)
         self.assertIn('const AUDIO_CACHE = "popolsku-audio";', worker)
 
 
