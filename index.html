@@ -527,7 +527,8 @@
     border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow)}
   /* The one control stays outside the rotating faces in its own flow row.
      Both faces start below it, so wrapped text can grow without meeting the button. */
-  .flip-control-row{height:55px;display:flex;align-items:flex-end;justify-content:center}
+  .flip-control-row{height:55px;box-sizing:border-box;padding-bottom:4px;
+    display:flex;align-items:flex-end;justify-content:center}
   .flip{position:relative;display:grid;width:100%;min-height:clamp(272px,62dvh,452px);transform-style:preserve-3d;
     transition:transform .55s cubic-bezier(.2,.75,.2,1);cursor:pointer}
   .flip.flipped{transform:rotateY(180deg)}

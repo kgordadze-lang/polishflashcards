@@ -13,6 +13,7 @@ icon-source.svg
 pp_audio_rule.py
 reports/card-flip-control-layout-fix.md
 reports/card-flip-control-layout-release-10.3.md
+reports/flip-control-visual-polish-10.3.md
 reports/pages-artifact-classification-fix-10.3.md
 reports/priority-5-forward-frozen-baseline.json
 requirements-ci.txt
