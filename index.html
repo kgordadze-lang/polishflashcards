@@ -523,23 +523,25 @@
      or the screen is shorter. */
   .stage{flex:1;display:flex;align-items:center;justify-content:center;padding:16px 0 8px;
     min-height:clamp(272px,62dvh,452px)}
-  .scene{position:relative;width:100%;perspective:1600px}
+  .scene{position:relative;width:100%;perspective:1600px;background:var(--card);
+    border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow)}
+  /* The one control stays outside the rotating faces in its own flow row.
+     Both faces start below it, so wrapped text can grow without meeting the button. */
+  .flip-control-row{height:55px;display:flex;align-items:flex-end;justify-content:center}
   .flip{position:relative;display:grid;width:100%;min-height:clamp(272px,62dvh,452px);transform-style:preserve-3d;
     transition:transform .55s cubic-bezier(.2,.75,.2,1);cursor:pointer}
   .flip.flipped{transform:rotateY(180deg)}
-  .flip-control{position:absolute;z-index:3;top:15px;left:50%;transform:translateX(-50%);
-    width:40px;height:40px;border:1px solid var(--border);border-radius:50%;background:#fff;color:var(--muted);
+  .flip-control{width:40px;height:40px;border:1px solid var(--border);border-radius:50%;background:#fff;color:var(--muted);
     display:grid;place-items:center;cursor:pointer;box-shadow:var(--shadow-sm);transition:background .15s,color .15s,border-color .15s}
   .flip-control:hover{border-color:var(--emerald);color:var(--emerald);background:var(--mint-bg)}
-  .flip-control:active{transform:translateX(-50%) scale(.94)}
+  .flip-control:active{transform:scale(.94)}
   .flip-control:focus-visible{outline:2px solid var(--emerald);outline-offset:2px}
   .flip-control svg{width:18px;height:18px}
   /* Both faces share one grid cell, so the card is always exactly as tall as its
      taller face - no JS measuring, no internal scrolling, fonts can reflow freely. */
   .face{position:relative;grid-area:1/1;width:100%;box-sizing:border-box;
     backface-visibility:hidden;-webkit-backface-visibility:hidden;
-    background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);
-    box-shadow:var(--shadow);padding:30px 24px 34px;
+    background:var(--card);border-radius:0 0 var(--r-lg) var(--r-lg);padding:30px 24px 34px;
     display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px}
   .eyebrow{position:absolute;top:20px;left:22px;font-size:11px;font-weight:700;letter-spacing:.7px;
     text-transform:uppercase;color:#94a3b8}
@@ -1296,6 +1298,9 @@
     <div id="cardView" style="display:flex;flex-direction:column;flex:1">
       <div class="stage">
         <div class="scene">
+          <div class="flip-control-row"><button class="flip-control" id="flipControl" type="button" aria-label="Show meaning" title="Show meaning">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3l4 4-4 4"/><path d="M21 7H7"/><path d="M7 21l-4-4 4-4"/><path d="M3 17h14"/></svg>
+          </button></div>
           <div class="flip" id="flip">
             <div class="face">
               <span class="eyebrow" id="eyebrow">Polish</span>
@@ -1344,9 +1349,6 @@
               <button class="btn-primary intro-start" id="introStart" hidden>Start learning</button>
             </div>
           </div>
-          <button class="flip-control" id="flipControl" type="button" aria-label="Show meaning" title="Show meaning">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3l4 4-4 4"/><path d="M21 7H7"/><path d="M7 21l-4-4 4-4"/><path d="M3 17h14"/></svg>
-          </button>
         </div>
       </div>
 
@@ -1407,6 +1409,9 @@
     <!-- learn -->
     <div id="gLearn" style="display:none;flex-direction:column;flex:1">
       <div class="stage"><div class="scene">
+        <div class="flip-control-row"><button class="flip-control" id="gFlipControl" type="button" aria-label="Reveal explanation" title="Reveal explanation">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3l4 4-4 4"/><path d="M21 7H7"/><path d="M7 21l-4-4 4-4"/><path d="M3 17h14"/></svg>
+        </button></div>
         <div class="flip" id="gFlip">
           <div class="face">
             <span class="eyebrow">Concept</span>
@@ -1415,9 +1420,6 @@
           </div>
           <div class="face back-face g-back" id="gBackFace" aria-hidden="true" inert></div>
         </div>
-        <button class="flip-control" id="gFlipControl" type="button" aria-label="Reveal explanation" title="Reveal explanation">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3l4 4-4 4"/><path d="M21 7H7"/><path d="M7 21l-4-4 4-4"/><path d="M3 17h14"/></svg>
-        </button>
       </div></div>
       <div class="controls">
         <button class="ctrl" id="gPrev">

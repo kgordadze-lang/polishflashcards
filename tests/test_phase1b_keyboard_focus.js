@@ -460,7 +460,7 @@ eq('D3 app shell still has one main landmark', countOf(INDEX, '<main '), 1);
 ['flip','gFlip'].forEach(function (id) {
   var at = INDEX.indexOf('id="' + id + '"');
   var controlId = id === 'flip' ? 'flipControl' : 'gFlipControl';
-  var end = INDEX.indexOf('id="' + controlId + '"', at);
+  var end = INDEX.indexOf('<div class="controls">', at);
   ok('D4 #' + id + ' remains a non-interactive container', INDEX.slice(INDEX.lastIndexOf('<div', at), INDEX.indexOf('>', at) + 1).indexOf('role=') === -1);
   ok('D4 #' + id + ' retains an inert/hidden back face contract', INDEX.slice(at, end).indexOf('aria-hidden="true" inert') !== -1);
 });

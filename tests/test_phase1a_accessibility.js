@@ -137,9 +137,9 @@ eq('A1 grammar flip container is not a tab stop', attr(GRAMMAR_FLIP, 'tabindex')
   ok('A2 #' + id + ' has a non-generic accessible name', /^Show|^Reveal/.test(attr(tag, 'aria-label') || ''));
 });
 ok('A2 study native control is a sibling, not a flip descendant',
-   INDEX.indexOf('id="flipControl"') > matchingDivEnd('flip'));
+   INDEX.indexOf('id="flipControl"') < INDEX.indexOf('id="flip"'));
 ok('A2 grammar native control is a sibling, not a flip descendant',
-   INDEX.indexOf('id="gFlipControl"') > matchingDivEnd('gFlip'));
+   INDEX.indexOf('id="gFlipControl"') < INDEX.indexOf('id="gFlip"'));
 ['flip', 'gFlip'].forEach(function (id) {
   var block = INDEX.slice(INDEX.lastIndexOf('<div', INDEX.indexOf('id="' + id + '"')), matchingDivEnd(id));
   var back = block.match(/<div\b[^>]*class="[^"]*\bback-face\b[^"]*"[^>]*>/);
